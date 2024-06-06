@@ -1,0 +1,64 @@
+@import "../main.scss";
+
+.node {
+  span,
+  rect {
+    stroke-width: 2px !important;
+    transition: $transition-basic-1;
+  }
+  &:hover {
+    span {
+      color: $color-3 !important;
+    }
+    rect {
+      stroke: $color-3 !important;
+    }
+  }
+  rect {
+    fill: $background-1 !important;
+    stroke: $color-2 !important;
+  }
+}
+span {
+  color: $color-1 !important;
+}
+.flowchart-link,
+.marker {
+  stroke: $color-2 !important;
+}
+.marker {
+  fill: $color-2 !important;
+}
+
+.flowchart-link {
+  @each $entity in $entities {
+    &.LS-#{$entity} {
+      stroke: color($entity) !important;
+    }
+  }
+}
+
+.edgeLabel {
+  background-color: $background-1 !important;
+  border: 1px solid $color-2 !important;
+  padding: 3px 5px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+}
+
+@each $name, $color in $icon-colors {
+  g[id*="#{$name}"] {
+    rect {
+      stroke: $color !important;
+      fill: #{$color}44 !important;
+    }
+    &:hover {
+      rect {
+        stroke: $color !important;
+      }
+      span {
+        color: $color !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+@import "../main.scss";
+
+:global {
+  #datatables_buttons_info {
+    background: $background-2;
+    color: $color-2;
+    border-color: $color-1;
+    h2 {
+      background: $background-1;
+      color: $color-1;
+    }
+  }
+}

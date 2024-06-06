@@ -1,0 +1,214 @@
+<script>
+  import Head from "@frame/Head.svelte"
+
+  export let type = "page"
+
+  let item = ""
+
+  if (type === "page") item = "La page"
+  if (type === "dataset") item = "Le dataset"
+  if (type === "institution") item = "L'institution"
+  if (type === "folder") item = "Le dossier"
+  if (type === "tag") item = "Le tag"
+  if (type === "variable") item = "La variable"
+  if (type === "modality") item = "La modalité"
+
+  let title = item + " n'existe pas"
+  let description = "Oops. " + item + " que vous cherchez n'existe pas."
+</script>
+
+<Head {title} {description} />
+
+<div class="section _center">
+  <div class="_error">
+    <div class="_number">4</div>
+    <div class="_illustration">
+      <div class="_circle" />
+      <div class="_clip">
+        <div class="_paper">
+          <div class="_face">
+            <div class="_eyes">
+              <div class="_eye _eye-left" />
+              <div class="_eye _eye-right" />
+            </div>
+            <div class="_rosyCheeks _rosyCheeks-left" />
+            <div class="_rosyCheeks _rosyCheeks-right" />
+            <div class="_mouth" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="_number">4</div>
+  </div>
+  <br />
+  <div class="_text">{description}</div>
+  <br />
+  <a class="button" href={"#"}>Page d'accueil</a>
+</div>
+
+<style lang="scss">
+  @import "../main.scss";
+  ._center {
+    --error-page-color: #{$color-3};
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 1.5rem;
+    color: var(--error-page-color);
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  ._error {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+  }
+
+  ._text {
+    text-align: center;
+    padding: 5px;
+  }
+
+  ._number {
+    font-weight: 100;
+    font-size: 15rem;
+    line-height: 1;
+  }
+
+  ._illustration {
+    position: relative;
+    width: 12.2rem;
+    margin: 0 2.1rem;
+  }
+
+  ._circle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 12.2rem;
+    height: 11.4rem;
+    border-radius: 50%;
+    background-color: var(--error-page-color);
+  }
+
+  ._clip {
+    position: absolute;
+    bottom: 0.3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    width: 12.5rem;
+    height: 13rem;
+    border-radius: 0 0 50% 50%;
+  }
+
+  ._paper {
+    position: absolute;
+    bottom: -0.3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 9.2rem;
+    height: 12.4rem;
+    border: 0.3rem solid var(--error-page-color);
+    background-color: white;
+    border-radius: 0.8rem;
+  }
+
+  ._face {
+    position: relative;
+    margin-top: 2.3rem;
+  }
+
+  ._eyes {
+    position: absolute;
+    top: 0;
+    left: 2.4rem;
+    width: 4.6rem;
+    height: 0.8rem;
+  }
+
+  ._eye {
+    position: absolute;
+    bottom: 0;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background-color: var(--error-page-color);
+    animation-name: _eye;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+
+  ._eye-left {
+    left: 0;
+  }
+
+  ._eye-right {
+    right: 0;
+  }
+
+  @keyframes _eye {
+    0% {
+      height: 0.8rem;
+    }
+    50% {
+      height: 0.8rem;
+    }
+    52% {
+      height: 0.1rem;
+    }
+    54% {
+      height: 0.8rem;
+    }
+    100% {
+      height: 0.8rem;
+    }
+  }
+
+  ._rosyCheeks {
+    position: absolute;
+    top: 1.6rem;
+    width: 1rem;
+    height: 0.2rem;
+    border-radius: 50%;
+    background-color: #fdabaf;
+  }
+
+  ._rosyCheeks-left {
+    left: 1.4rem;
+  }
+
+  ._rosyCheeks-right {
+    right: 1.4rem;
+  }
+
+  ._mouth {
+    position: absolute;
+    top: 3.1rem;
+    left: 50%;
+    width: 1.6rem;
+    height: 0.2rem;
+    border-radius: 0.1rem;
+    transform: translateX(-50%);
+    background-color: var(--error-page-color);
+  }
+
+  @media only screen and (max-width: 600px) {
+    ._center {
+      transform: scale(0.5);
+    }
+    ._text {
+      font-size: 2rem;
+    }
+    .button {
+      font-size: 2rem;
+    }
+  }
+</style>

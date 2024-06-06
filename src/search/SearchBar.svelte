@@ -1,0 +1,297 @@
+<script>
+  import { onMount } from "svelte"
+  import page from "page"
+  import db from "@db"
+  import { search_value, page_name } from "@js/store"
+  import { clickOutside, is_mobile, is_http, app_mode } from "@js/util"
+  import Logs from "@js/Logs"
+  import BtnClearInput from "@layout/BtnClearInput.svelte"
+  import SearchHistory from "./SearchHistory"
+  import SearchBarResult from "./SearchBarResult.svelte"
+
+  export let close_menu
+
+  let url_prefix = is_http ? "/#!/" : "/"
+  if (app_mode === "static_render") {
+    url_prefix = "/"
+  }
+
+  $: on_page_search = $page_name === "search"
+  $: on_page_homepage = $page_name === "homepage"
+
+  $: if (!on_page_search && db_initied) {
+    search_input_change()
+  }
+
+  const max_search_result = 100
+  let is_focus_in = false
+  let input_element
+  let nb_result = ""
+  let all_search = []
+  let nav_position = 0
+  let db_initied = false
+
+  SearchHistory.on_change("search_bar", () => search_input_change())
+
+  function init_search_recent() {
+    all_search = SearchHistory.get_recent_search()
+    nb_result = all_search.length
+  }
+
+  async function search_input_change() {
+    nav_position = 0
+    if ($search_value === "") {
+      init_search_recent()
+      return false
+    }
+    let all_search_raw = await db.search($search_value)
+    if ($search_value === "") return false
+    all_search_raw = SearchHistory.put_recent_first(all_search_raw)
+    nb_result = all_search_raw.length
+    all_search = all_search_raw.slice(0, max_search_result)
+  }
+
+  function clear_input() {
+    $search_value = ""
+    select_input()
+    search_input_change()
+  }
+
+  function focusin() {
+    is_focus_in = true
+  }
+
+  function focusout() {
+    is_focus_in = false
+  }
+
+  function go_to_page_search() {
+    page(`${url_prefix}search?search=${$search_value}`)
+    is_focus_in = false
+    close_menu()
+  }
+
+  function keyup(e) {
+    is_focus_in = true
+    const code = e.keyCode ? e.keyCode : e.which
+    if (code !== 13) return
+    if (nav_position === 0) {
+      go_to_page_search()
+    } else {
+      apply_to_all_search((item, item_num, entity) => {
+        if (item_num === nav_position) {
+          page(`${url_prefix}${entity}/${item.id}`)
+          SearchHistory.add(entity, item.id)
+          is_focus_in = false
+          Logs.add("search_bar", { entity, entity_id: item.id })
+        }
+      })
+    }
+  }
+
+  function keydown(e) {
+    const code = e.keyCode ? e.keyCode : e.which
+    if (code === 40) {
+      update_nav_position(1)
+    } else if (code === 38) {
+      update_nav_position(-1)
+    }
+    if (code === 38 || code === 40) {
+      is_focus_in = true
+      e.preventDefault()
+      return false
+    }
+  }
+
+  function apply_to_all_search(callback) {
+    let item_num = 0
+    for (const item of all_search) {
+      item_num += 1
+      callback(item, item_num, item.entity)
+    }
+    all_search = all_search
+  }
+
+  function update_nav_position(move) {
+    nav_position += move
+    if (nav_position < 0) nav_position = 0
+    if (nav_position > nb_result) nav_position = nb_result
+    if (nav_position > max_search_result) nav_position = max_search_result
+    apply_to_all_search((item, item_num) => {
+      item.nav_hover = item_num === nav_position
+    })
+    all_search = all_search
+  }
+
+  function on_click() {
+    is_focus_in = true
+  }
+
+  function select_input() {
+    input_element.focus()
+    is_focus_in = true
+  }
+
+  function window_keydown(e) {
+    const focused_element = window.document.activeElement
+    const is_input_focused =
+      focused_element.tagName === "INPUT" ||
+      focused_element.tagName === "TEXTAREA" ||
+      focused_element.tagName === "SELECT"
+    if (e.key === "/" && !is_focus_in && !is_input_focused && !on_page_search) {
+      e.preventDefault()
+      select_input()
+    }
+  }
+
+  onMount(() => {
+    if (on_page_homepage && !is_mobile) select_input()
+  })
+
+  db.loaded.then(() => {
+    init_search_recent()
+    db_initied = true
+  })
+
+  SearchHistory.on_clear(() => {
+    init_search_recent()
+  })
+
+  $: is_open =
+    is_focus_in && ($search_value !== "" || nb_result > 0 || !db_initied)
+</script>
+
+<svelte:window on:keydown={window_keydown} />
+
+<div
+  class="navbar-item header_search_item"
+  use:clickOutside
+  on:click_outside={focusout}
+>
+  <div
+    class="search_bar_container box_shadow_color shadow_search"
+    class:box_shadow={is_focus_in}
+    class:focus={is_focus_in}
+  >
+    <p class="control has-icons-right">
+      <button
+        class="icon is-small is-left"
+        class:active={$search_value !== "" &&
+          $search_value !== undefined &&
+          is_focus_in &&
+          nb_result > 0}
+        on:click={go_to_page_search}
+      >
+        <i class="fas fa-magnifying-glass" />
+      </button>
+      <input
+        id="header_search_input"
+        class="input"
+        type="text"
+        placeholder="Rechercher..."
+        bind:value={$search_value}
+        on:input={search_input_change}
+        on:keyup={keyup}
+        on:keydown={keydown}
+        on:focusin={focusin}
+        on:click={on_click}
+        bind:this={input_element}
+        class:is_open
+        autocomplete="off"
+        enterkeyhint="search"
+      />
+      {#if $search_value !== ""}
+        <div class="btn_clear_input_wrapper">
+          <BtnClearInput click={clear_input} />
+        </div>
+      {/if}
+    </p>
+
+    <SearchBarResult
+      {is_open}
+      {nb_result}
+      {all_search}
+      search_value={$search_value}
+      {select_input}
+      bind:is_focus_in
+    />
+  </div>
+</div>
+
+<style lang="scss">
+  @import "../main.scss";
+
+  .header_search_item {
+    padding: 0;
+    margin-right: 0px;
+    position: initial;
+
+    .search_bar_container {
+      position: absolute;
+      top: 2.5px;
+      right: 3em;
+      margin-right: 0px;
+      overflow: hidden;
+      background: $background-2;
+      border: 1px solid;
+      border-color: $background-3;
+      transition:
+        border-color $transition-basic-1,
+        box-shadow $transition-basic-1;
+      &.focus {
+        border-color: $color-5;
+      }
+    }
+
+    #header_search_input {
+      position: relative;
+      width: calc(100vw - 820px);
+      max-width: 500px;
+      margin: 0;
+      padding-left: 3.3rem;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      &::placeholder {
+        color: $color-4;
+      }
+    }
+    .btn_clear_input_wrapper {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 40px;
+      padding-right: 0.75em;
+      margin-right: 10px;
+    }
+    .icon {
+      color: $color-2;
+      pointer-events: all;
+      left: 10px;
+      cursor: pointer;
+      transition: color $transition-basic-1;
+      &:hover {
+        color: color("search");
+      }
+      &.active {
+        color: color("search");
+        text-shadow: 0 0 10px;
+      }
+    }
+  }
+
+  :global(html.rounded_design) {
+    .search_bar_container {
+      border-radius: $rounded;
+    }
+  }
+
+  :global(html.page_shadow_colored) {
+    .header_search_item {
+      .search_bar_container.focus {
+        border-color: color("search");
+      }
+    }
+  }
+</style>

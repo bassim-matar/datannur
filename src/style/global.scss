@@ -1,0 +1,270 @@
+@import "../main.scss";
+
+:root {
+  --main_banner_width: 0;
+  --main_banner_height: 0;
+}
+
+// set light or dark mode
+html {
+  --background-1: #{$background-1-light};
+  --background-2: #{$background-2-light};
+  --background-3: #{$background-3-light};
+  --color-1: #{$color-1-light};
+  --color-2: #{$color-2-light};
+  --color-3: #{$color-3-light};
+  --color-4: #{$color-4-light};
+  --color-5: #{$color-5-light};
+  --color-6: #{$color-6-light};
+  --color-type: #{$color-3-dark};
+
+  --color-institution: #{color("institution")};
+  --color-folder: #{color("folder")};
+  --color-tag: #{color("tag")};
+  --color-doc: #{color("doc")};
+  --color-dataset: #{color("dataset")};
+  --color-variable: #{color("variable")};
+  --color-modality: #{color("modality")};
+  --color-log: #{color("log")};
+  --color-entity: #{color("entity")};
+}
+html.dark_mode {
+  --background-1: #{$background-1-dark};
+  --background-2: #{$background-2-dark};
+  --background-3: #{$background-3-dark};
+  --color-1: #{$color-1-dark};
+  --color-2: #{$color-2-dark};
+  --color-3: #{$color-3-dark};
+  --color-4: #{$color-4-dark};
+  --color-5: #{$color-5-dark};
+  --color-6: #{$color-6-dark};
+  --color-type: #{$color-3-light};
+}
+
+html,
+body {
+  width: 100%;
+  margin: 0;
+  overflow-y: auto;
+  color: var(--color-1);
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  background: $background-1;
+  height: 100%;
+  padding: 0;
+  &.dark_mode {
+    color-scheme: dark;
+  }
+  @include scrollbar_light();
+}
+
+body {
+  display: flex;
+  min-height: 100%;
+  background: $background-1;
+  flex-direction: column;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color $transition-basic-1;
+  &:hover {
+    color: $color-3 !important;
+  }
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  -webkit-padding: 0.4em 0;
+  padding: 0.4em;
+  margin: 0 0 0.5em 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+input,
+textarea,
+button,
+select,
+span,
+div[role="button"],
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+button {
+  background: transparent;
+  border: 0;
+  padding: 2px;
+}
+
+.button {
+  background: var(--background-1);
+  transition: border-color $transition-basic-1;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+#wrapper {
+  flex: 1;
+}
+
+.section {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  .no_footer & {
+    padding-bottom: 0;
+  }
+}
+
+.flex_cols {
+  display: flex;
+  gap: 50px;
+  flex-wrap: wrap;
+  .flex_col {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    gap: 10px;
+  }
+}
+
+.num_style {
+  font-weight: bold;
+  font-size: 0.8rem;
+  &.big {
+    font-size: 1.6rem;
+  }
+}
+
+img[alt^="main_banner"] {
+  width: 100%;
+  aspect-ratio: var(--main_banner_width) / var(--main_banner_height);
+}
+img[alt$="special_main_color"] {
+  filter: invert(32%) sepia(59%) saturate(1382%) hue-rotate(206deg)
+    brightness(95%) contrast(87%);
+}
+html.dark_mode img[alt$="special_main_color"] {
+  filter: invert(68%) sepia(8%) saturate(3575%) hue-rotate(179deg)
+    brightness(88%) contrast(103%);
+}
+
+.break_line {
+  word-break: break-all;
+}
+
+html.rounded_design {
+  p > img:not([alt$="not_rounded"]),
+  .button {
+    border-radius: $rounded;
+  }
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.box_shadow {
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+  html.dark_mode & {
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 1);
+  }
+}
+
+html.page_shadow_colored .box_shadow.box_shadow_color {
+  @each $entity in $entities {
+    &.shadow_#{$entity} {
+      box-shadow: 0 8px 8px #{color($entity)}#{$body_gradient_opacity_hex};
+    }
+  }
+}
+
+.copyclip {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+html.dark_mode {
+  strong,
+  .table,
+  .table thead th,
+  .input,
+  .title,
+  .textarea,
+  .button,
+  .select,
+  .content h1,
+  .content h2,
+  .content h3,
+  .content h4,
+  .content h5,
+  .content h6 {
+    color: $color-1;
+  }
+  .tabs a,
+  .navbar-burger,
+  .navbar-item,
+  .navbar-link {
+    color: $color-2;
+  }
+  .button {
+    border-color: $color-5;
+    &:hover {
+      border-color: $color-2-light;
+    }
+  }
+  .input::placeholder {
+    color: $color-4;
+  }
+  code {
+    background-color: #242424;
+    color: #eb002f;
+  }
+  #powerTip {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: #000;
+  }
+}
+
+@media screen and (min-width: 601px) {
+  .section {
+    padding: 0 3rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .section {
+    padding: 0;
+  }
+  h1.title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .num_style {
+    &.big {
+      font-size: 1.2rem;
+    }
+  }
+}

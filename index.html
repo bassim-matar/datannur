@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="" />
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <meta name="app_version" content="{{app_version}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      const dark = window.matchMedia("(prefers-color-scheme: dark)").matches
+      document.documentElement.classList[dark ? "add" : "remove"]("dark_mode")
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/assets/browser_warning.js"></script>
+  </body>
+</html>

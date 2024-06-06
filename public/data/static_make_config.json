@@ -1,0 +1,11 @@
+{
+  "entities": [
+    "institution",
+    "folder",
+    "tag",
+    "doc",
+    "dataset",
+    "variable",
+    "modality"
+  ]
+}

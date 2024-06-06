@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@component/*": ["src/component/*"],
+      "@dark_mode/*": ["src/dark_mode/*"],
+      "@datatable/*": ["src/datatable/*"],
+      "@db": ["src/db.js"],
+      "@favorite/*": ["src/favorite/*"],
+      "@frame/*": ["src/frame/*"],
+      "@infoTable/*": ["src/component/infoTable/*"],
+      "@img/*": ["src/img/*"],
+      "@js/*": ["src/js/*"],
+      "@layout/*": ["src/layout/*"],
+      "@page/*": ["src/page/*"],
+      "@search/*": ["src/search/*"],
+      "@stat/*": ["src/stat/*"],
+      "@tab/*": ["src/tab/*"]
+    }
+  },
+  "exclude": ["test", "app", "public", "node_modules"]
+}

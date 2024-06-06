@@ -1,0 +1,74 @@
+<script>
+  import FilterInput from "./FilterInput.svelte"
+
+  export let columns
+  export let table_id = ""
+  export let loading = true
+  export let nb_sticky = 1
+  export let datatable_update_draw = false
+
+  const filters_left = { 0: 0 }
+
+  function get_width_elem_num(num) {
+    const selector = `.header_filter_wrapper .th_${table_id}_${num}`
+    return document.querySelector(selector)?.offsetWidth
+  }
+
+  function update_sticky_width() {
+    for (let i = 0; i < nb_sticky; i++) {
+      filters_left[i + 1] = filters_left[i] + get_width_elem_num(i)
+    }
+  }
+
+  let loaded = false
+  $: if (!loading && !loaded) {
+    loaded = true
+    setTimeout(() => {
+      update_sticky_width()
+    }, 100)
+    setTimeout(() => {
+      update_sticky_width()
+    }, 1000)
+  }
+
+  $: if (datatable_update_draw) {
+    update_sticky_width()
+  }
+</script>
+
+<tr class="header_filter_wrapper">
+  {#each columns as column, i}
+    {#if i < nb_sticky}
+      <th
+        class="header_filter_th th_{table_id}_{i} sticky"
+        class:dtfc-fixed-left={i + 1 === nb_sticky}
+        style={`left: ${filters_left[i]}px`}
+      >
+        <FilterInput {table_id} {i} {column} />
+      </th>
+    {:else}
+      <th class="header_filter_th">
+        <FilterInput {table_id} {i} {column} />
+      </th>
+    {/if}
+  {/each}
+</tr>
+
+<style lang="scss">
+  @import "../../main.scss";
+
+  .header_filter_wrapper {
+    .header_filter_th {
+      padding: 0;
+      margin: 0;
+      border-bottom: 0;
+      background: $background-2;
+      &.sticky {
+        left: 0;
+        background: $background-2;
+        z-index: 2;
+        position: sticky;
+      }
+    }
+  }
+</style>

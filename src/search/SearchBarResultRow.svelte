@@ -1,0 +1,123 @@
+<script>
+  import Icon from "@layout/Icon.svelte"
+  import Link from "@layout/Link.svelte"
+  import Logs from "@js/Logs"
+  import SearchHistory from "./SearchHistory"
+  import { search_highlight } from "./Search"
+  import Favorite from "@favorite/Favorite.svelte"
+
+  export let item
+  export let search_value
+  export let is_focus_in
+  export let select_input
+
+  function click_link(entity_name, item_id) {
+    setTimeout(() => {
+      SearchHistory.add(entity_name, item_id)
+      Logs.add("search_bar", { entity: entity_name, entity_id: item_id })
+      is_focus_in = false
+    }, 10)
+  }
+
+  function remove_item(entity_name, item_id) {
+    SearchHistory.remove(entity_name, item_id)
+    select_input()
+  }
+</script>
+
+<tr class:nav_hover={item.nav_hover}>
+  <td style="width: 20px;">
+    <div>
+      <Favorite
+        type={item.entity}
+        id={item.id}
+        is_favorite={item.is_favorite}
+        no_margin={true}
+      />
+    </div>
+  </td>
+  <td style="width: 20px;">
+    <div>
+      <Icon type={item.entity} />
+    </div>
+  </td>
+  <td colspan={item.is_recent ? 1 : 2}>
+    <Link
+      href="{item.entity}/{item.id}"
+      click={() => click_link(item.entity, item.id)}
+    >
+      <div class="long_text">
+        {#if search_value === ""}
+          {item.name}
+        {:else}
+          {@html search_highlight(item.name, search_value)}
+        {/if}
+      </div>
+    </Link>
+  </td>
+  {#if search_value === "" || item.is_recent}
+    <td style="width: 20px;">
+      <button
+        class="btn_delete_item"
+        style="cursor: pointer;"
+        on:click={remove_item(item.entity, item.id)}
+      >
+        <i class="fa-solid fa-xmark close"></i>
+        <i class="fa-solid fa-clock-rotate-left recent"></i>
+      </button>
+    </td>
+  {/if}
+</tr>
+
+<style lang="scss">
+  @import "../main.scss";
+
+  tr.nav_hover {
+    background: rgba(127, 127, 127, 0.1);
+  }
+  td {
+    border: 0;
+  }
+  .long_text {
+    word-break: break-word;
+    width: 100%;
+    :global(.search_highlight) {
+      background: rgba(255, 255, 0, 0.5);
+    }
+  }
+
+  .btn_delete_item {
+    margin: 0;
+    position: relative;
+    width: 20px;
+    height: 16px;
+    vertical-align: middle;
+    color: $color-2;
+    .fa-solid {
+      transition: opacity $transition-basic-1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: auto;
+    }
+    .recent {
+      opacity: 1;
+    }
+    .close {
+      opacity: 0;
+      padding-left: 3px;
+    }
+    tr:hover & {
+      opacity: 1;
+      .recent {
+        opacity: 0;
+      }
+      .close {
+        opacity: 1;
+      }
+    }
+    &:hover {
+      text-shadow: 0 0 10px;
+    }
+  }
+</style>

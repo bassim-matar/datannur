@@ -1,0 +1,50 @@
+@import "../main.scss";
+
+div.dt-buttons {
+  position: absolute;
+  right: -45px;
+  top: 0;
+  width: 40px;
+  flex-direction: column;
+  button.button.is-light {
+    margin: 0;
+    background: transparent;
+    color: $color-2;
+    height: 0px;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    transition: $transition-basic-1;
+    &:first-child {
+      height: auto;
+      padding: 10px 2px;
+    }
+    &:hover {
+      color: color("download");
+    }
+  }
+  button.buttons-html5 {
+    height: 0;
+    opacity: 0;
+    transition: $transition-basic-1;
+    &.open {
+      height: 60px;
+      opacity: 1;
+    }
+  }
+  span.icon {
+    display: block;
+    margin: auto;
+  }
+  .button i {
+    transition: 0.3s;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  div.dt-buttons {
+    display: none;
+  }
+}
