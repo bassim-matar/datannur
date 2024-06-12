@@ -2,7 +2,7 @@
   import { onMount } from "svelte"
   import db from "@db"
   import { search_value, page_content_loaded } from "@js/store"
-  import { clickOutside } from "@js/util"
+  import { clickOutside, debounce } from "@js/util"
   import { url_param } from "@js/url_param"
   import Head from "@frame/Head.svelte"
   import Loading from "@frame/Loading.svelte"
@@ -139,7 +139,7 @@
         placeholder="Rechercher..."
         name="search_page_input"
         bind:value={$search_value}
-        on:input={search_input_change}
+        on:input={debounce(search_input_change, 300)}
         on:focusin={focusin}
         bind:this={input_element}
         autocomplete="off"

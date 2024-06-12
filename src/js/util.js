@@ -70,6 +70,14 @@ export function wrap_long_text(text, indent = false) {
   return `<div class="long_text">${text}</div>`
 }
 
+export function debounce(func, wait) {
+  let timeout
+  return function (...args) {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => func.apply(this, args), wait)
+  }
+}
+
 export function reset_cols_search_cache() {
   Object.keys(localStorage)
     .filter(x => x.startsWith("DataTables_"))

@@ -3,7 +3,7 @@
   import page from "page"
   import db from "@db"
   import { search_value, page_name } from "@js/store"
-  import { clickOutside, is_mobile, is_http, app_mode } from "@js/util"
+  import { clickOutside, debounce, is_mobile, is_http, app_mode } from "@js/util"
   import Logs from "@js/Logs"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
   import SearchHistory from "./SearchHistory"
@@ -190,7 +190,7 @@
         type="text"
         placeholder="Rechercher..."
         bind:value={$search_value}
-        on:input={search_input_change}
+        on:input={debounce(search_input_change, 200)}
         on:keyup={keyup}
         on:keydown={keydown}
         on:focusin={focusin}
