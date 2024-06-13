@@ -11,7 +11,7 @@
 
   function get_width_elem_num(num) {
     const selector = `.header_filter_wrapper .th_${table_id}_${num}`
-    return document.querySelector(selector)?.offsetWidth
+    return document.querySelector(selector)?.getBoundingClientRect().width
   }
 
   function update_sticky_width() {
