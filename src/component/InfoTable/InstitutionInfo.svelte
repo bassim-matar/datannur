@@ -1,4 +1,5 @@
 <script>
+  import { entity_names } from "@js/constant"
   import Icon from "@layout/Icon.svelte"
   import Breadcrumb from "@component/Breadcrumb.svelte"
   import ExtendableText from "@layout/ExtendableText.svelte"
@@ -7,10 +8,7 @@
   export let type = "institution"
   export let is_self = false
 
-  let name = "Institution"
-  if (type === "owner") name = "Fournisseur"
-  if (type === "manager") name = "Gestionnaire"
-
+  let name = entity_names[type]
   let icon = "institution"
   if (is_self) {
     name = "Partie de"

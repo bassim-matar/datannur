@@ -2,7 +2,7 @@ export const locale = "fr"
 
 export const entity_names = {
   institution: "Institution",
-  owner: "Propriétaire",
+  owner: "Fournisseur",
   manager: "Gestionnaire",
   folder: "Dossier",
   tag: "Mot clé",

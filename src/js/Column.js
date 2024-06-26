@@ -137,7 +137,7 @@ export default class Column {
         : Render.with_parents_from_id("institution", owner_id, type)
     return {
       data: "owner_name",
-      title: Render.icon("institution") + "Fournisseur",
+      title: Render.icon("institution") + entity_names.owner,
       defaultContent: "",
       render,
     }
@@ -149,7 +149,7 @@ export default class Column {
         : Render.with_parents_from_id("institution", manager_id, type)
     return {
       data: "manager_name",
-      title: Render.icon("institution") + "Gestionnaire",
+      title: Render.icon("institution") + entity_names.manager,
       defaultContent: "",
       render,
     }
