@@ -31,7 +31,7 @@ export default class Search {
       for (const entity in entity_names) {
         entities_data.push({
           name: entity,
-          items: new Index({ tokenize: "full" }),
+          items: new Index({ tokenize: "forward" }),
           data: [],
         })
       }
