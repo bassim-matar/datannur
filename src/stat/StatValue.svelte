@@ -57,6 +57,7 @@
       .cell {
         display: inline-block;
         vertical-align: top;
+        text-align: left;
         &.readable {
           max-width: calc(100% - 120px);
         }
