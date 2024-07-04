@@ -57,8 +57,8 @@
       .cell {
         display: inline-block;
         vertical-align: top;
-        text-align: left;
         &.readable {
+          text-align: left;
           max-width: calc(100% - 120px);
         }
         &.count {
