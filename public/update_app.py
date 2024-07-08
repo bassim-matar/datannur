@@ -11,7 +11,6 @@ to_copy = [
     "index.html",
     "LICENSE.md",
     "manifest.json",
-    "update_app.py",
     "static_make/config.json",
     "static_make/js/make.js",
     "static_make/js/package.json",
