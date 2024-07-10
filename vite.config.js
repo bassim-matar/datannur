@@ -1,5 +1,4 @@
 import path from "path"
-import archiver from "archiver"
 import autoprefixer from "autoprefixer"
 import alias from "@rollup/plugin-alias"
 import autoPreprocess from "svelte-preprocess"
@@ -7,7 +6,7 @@ import FullReload from "vite-plugin-full-reload"
 import { defineConfig } from "vite"
 import { visualizer } from "rollup-plugin-visualizer"
 import { svelte } from "@sveltejs/vite-plugin-svelte"
-import { promises as fs, createWriteStream, existsSync } from "fs"
+import { promises as fs, existsSync } from "fs"
 import { Jsonjsdb_watcher, jsonjsdb_add_config } from "jsonjsdb_editor"
 
 const bundle_view = false
