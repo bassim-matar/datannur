@@ -22,7 +22,6 @@ to_copy = [
 path = Path(__file__).parent
 temp_dir = path / "_temp_update_app"
 
-
 def download_app(zip_url, temp_dir):
     filename = zip_url.split("/")[-1]
     zip_file_path = temp_dir / filename
@@ -48,11 +47,16 @@ def download_app(zip_url, temp_dir):
 
     return True
 
+def get_repo_name(folder_path):
+    for child in folder_path.iterdir():
+        if child.is_dir():
+            return child.name
+    return None
 
 def copy_files(app_path, temp_dir, to_copy):
     print("Copying files from", temp_dir)
     for item in to_copy:
-        source_item = temp_dir / "app" / item
+        source_item = temp_dir / item
         destination_item = app_path / item
         if source_item.is_file():
             destination_item.parent.mkdir(parents=True, exist_ok=True)
@@ -70,6 +74,7 @@ def copy_files(app_path, temp_dir, to_copy):
 def get_file_content(path):
     with open(path, "r") as file:
         return file.read()
+
 
 def add_config():
     path = Path(__file__).parent
@@ -95,7 +100,8 @@ def main():
     temp_dir.mkdir(parents=True, exist_ok=True)
     downloaded = download_app(zip_url, temp_dir)
     if downloaded:
-        copy_files(path, temp_dir, to_copy)
+        repo_name = get_repo_name(temp_dir)
+        copy_files(path, temp_dir / repo_name, to_copy)
         add_config()
     clear_temp_dir(temp_dir)
 
