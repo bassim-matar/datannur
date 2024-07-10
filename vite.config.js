@@ -19,10 +19,9 @@ const mermeid_public_path = "public/assets/external/mermaid.min.js"
 const bulma_css_path = "node_modules/bulma/css/bulma.css"
 const jsonjsdb_config = "public/data/jsonjsdb_config.html"
 const app_version = JSON.parse(await fs.readFile("package.json")).version
-const db_path = "db"
 
 await Jsonjsdb_watcher.set_db("public/data/db")
-await Jsonjsdb_watcher.watch(db_path)
+await Jsonjsdb_watcher.watch("public/data/db_source")
 await Jsonjsdb_watcher.update_preview("preview", "public/data/dataset")
 
 if (!existsSync(mermeid_public_path)) {
@@ -63,26 +62,6 @@ function serve_html_transform(transform) {
 
 function after_build(callback) {
   return { name: "after_build", apply: "build", closeBundle: callback }
-}
-
-async function create_zip(out_dir, zip_folder, zip_filename) {
-  const base_path = path.resolve(".")
-  zip_folder = path.join(base_path, zip_folder)
-  await fs.mkdir(zip_folder, { recursive: true }).catch(console.error)
-  const archive = archiver("zip", { zlib: { level: 9 } })
-  archive.pipe(createWriteStream(path.join(zip_folder, zip_filename)))
-  const add_files_to_archive = async dir => {
-    for (const dirent of await fs.readdir(dir, { withFileTypes: true })) {
-      const full_path = path.join(dir, dirent.name)
-      if (full_path === zip_folder) continue
-      if (dirent.isDirectory()) await add_files_to_archive(full_path)
-      else if (dirent.name !== ".DS_Store") {
-        archive.file(full_path, { name: path.relative(base_path, full_path) })
-      }
-    }
-  }
-  await add_files_to_archive(path.join(base_path, out_dir)).catch(console.error)
-  archive.finalize()
 }
 
 function update_router_index(file, page_dir_from_router_index) {
@@ -146,8 +125,6 @@ export default defineConfig({
 
     after_build(async () => {
       await fs.copyFile("LICENSE.md", out_dir + "/LICENSE.md")
-      await create_zip(out_dir, out_dir + "/zip", "datannuaire.zip")
-      await create_zip(db_path, out_dir + "/zip", "datannuaire_db.zip")
     }),
   ],
 })

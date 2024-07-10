@@ -56,10 +56,10 @@ html {
   background: $background-1;
   height: 100%;
   padding: 0;
+  @include scrollbar_light();
   &.dark_mode {
     color-scheme: dark;
   }
-  @include scrollbar_light();
 }
 
 body {
