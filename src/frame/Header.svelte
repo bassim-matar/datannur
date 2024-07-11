@@ -2,7 +2,7 @@
   import page from "page"
   import db from "@db"
   import { nb_favorite, header_open, page_name } from "@js/store"
-  import { is_http, subfolder } from "@js/util"
+  import { subfolder } from "@js/util"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"
@@ -17,7 +17,7 @@
 
   function go_to_homepage() {
     let url = "/#!/"
-    if (is_http && subfolder) url = `/?homepage`
+    if (subfolder) url = `/?homepage`
     page(url)
   }
 
@@ -42,7 +42,7 @@
   style="max-height: 48px; min-height: 48px;"
 >
   <div class="navbar-brand">
-    <a href="/" on:click|preventDefault={go_to_homepage} class="navbar-item" >
+    <a href="?homepage" on:click|preventDefault={go_to_homepage} class="navbar-item" >
       <img src={logo_src} class="header_logo" alt="logo" />
     </a>
 

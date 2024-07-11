@@ -15,7 +15,7 @@
   if (app_mode === "static_render") {
     url_prefix = ""
   }
-  if (is_http && subfolder) url_prefix = "/" + subfolder + "/#!"
+  else if (is_http && subfolder) url_prefix = "/" + subfolder + "/#!"
 
   let is_script_loaded = false
   let base_url = url_prefix //is_http ? "#!" : ""
