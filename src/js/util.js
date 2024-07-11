@@ -70,6 +70,14 @@ export function wrap_long_text(text, indent = false) {
   return `<div class="long_text">${text}</div>`
 }
 
+function get_sub_folder() {
+  const url = new URL(window.location.href)
+  const pathname = url.pathname.split("/").filter(Boolean)
+  return pathname.length > 0 ? pathname[0] : ""
+}
+export const subfolder = get_sub_folder()
+
+
 export function debounce(func, wait) {
   let timeout
   return function (...args) {

@@ -1,7 +1,7 @@
 <script>
   import page from "page"
   import db from "@db"
-  import { is_http, app_mode } from "@js/util"
+  import { is_http, app_mode, subfolder } from "@js/util"
   import Logs from "@js/Logs"
   import { page_hash, page_content_loaded } from "@js/store"
   import { url_hash } from "@js/url_hash"
@@ -60,6 +60,10 @@
   if (!is_http && app_mode !== "static_render") page.base("")
   if (is_http && app_mode === "static_render") {
     page.base("")
+  }
+
+  if (is_http && app_mode !== "static_render" && subfolder) {
+    page.base(`/${subfolder}/#!`)
   }
 </script>
 

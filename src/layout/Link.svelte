@@ -1,5 +1,5 @@
 <script>
-  import { app_mode, is_http } from "@js/util"
+  import { app_mode } from "@js/util"
 
   export let href
   export let className = ""
@@ -10,8 +10,6 @@
 
   if (app_mode === "static_render") {
     base = ""
-  } else if (is_http){
-    base = "/#!/"
   } else {
     base = "#!/"
   }
