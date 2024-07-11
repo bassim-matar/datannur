@@ -1,0 +1,12 @@
+{
+  "name": "datannaire-app",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "",
+  "scripts": {
+    "sync": "node sync.js"
+  },
+  "dependencies": {
+    "jsonjsdb_editor": "^0.1.13"
+  }
+}
