@@ -2,7 +2,7 @@
   import db from "@db"
   import { footer_visible, is_mermaid_loaded, page_content_loaded } from "@js/store"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
-  import { is_http, app_mode } from "@js/util"
+  import { is_http, app_mode, subfolder } from "@js/util"
   import markdown_render from "@js/markdown"
   import { entity_to_icon, entity_names } from "@js/constant"
   import Render from "@js/Render"
@@ -15,6 +15,7 @@
   if (app_mode === "static_render") {
     url_prefix = ""
   }
+  if (is_http && subfolder) url_prefix = "/" + subfolder + "/#!"
 
   let is_script_loaded = false
   let base_url = url_prefix //is_http ? "#!" : ""

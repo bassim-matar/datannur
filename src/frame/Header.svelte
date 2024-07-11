@@ -1,6 +1,8 @@
 <script>
+  import page from "page"
   import db from "@db"
   import { nb_favorite, header_open, page_name } from "@js/store"
+  import { is_http, subfolder } from "@js/util"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"
@@ -12,6 +14,12 @@
 
   const toggle_header = () => ($header_open = !$header_open)
   const close_menu = () => ($header_open = false)
+
+  function go_to_homepage() {
+    let url = "/#!/"
+    if (is_http && subfolder) url = `/?homepage`
+    page(url)
+  }
 
   let scroll_y = 0
 
@@ -34,9 +42,9 @@
   style="max-height: 48px; min-height: 48px;"
 >
   <div class="navbar-brand">
-    <HeaderLink pages={["", "homepage"]}>
+    <a href="/" on:click|preventDefault={go_to_homepage} class="navbar-item" >
       <img src={logo_src} class="header_logo" alt="logo" />
-    </HeaderLink>
+    </a>
 
     <div class="mobile_right_btn">
       {#if !on_page_search}

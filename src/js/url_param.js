@@ -29,13 +29,6 @@ export class url_param {
   static edit(key, value, mode) {
     const loc = window.location
     let hash
-    if (app_mode === "static_render") {
-      hash = ""
-    } else {
-      hash = loc.hash.split("?")[0]
-      if (hash === "") hash = "#!/"
-    }
-    const url = loc.protocol + "//" + loc.host + loc.pathname + hash
     const params_string = loc.href.split("?")[1]
     const params = new URLSearchParams(params_string)
     if (mode === "set") {
@@ -43,6 +36,16 @@ export class url_param {
     } else if (mode === "delete") {
       params.delete(key)
     }
+    if (app_mode === "static_render") {
+      hash = ""
+    } else {
+      hash = loc.hash.split("?")[0]
+      if (hash === "" && params.toString() !== "") {
+        hash = "#!/"
+      }
+      if (hash === "#!/" && params.toString() === "") hash = ""
+    }
+    const url = loc.protocol + "//" + loc.host + loc.pathname + hash
     let url_with_params = url
     if (params.toString() !== "") {
       url_with_params += "?" + params.toString()

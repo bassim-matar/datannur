@@ -3,7 +3,7 @@
   import page from "page"
   import db from "@db"
   import { search_value, page_name } from "@js/store"
-  import { clickOutside, debounce, is_mobile, is_http, app_mode } from "@js/util"
+  import { clickOutside, debounce, is_mobile, is_http, app_mode, subfolder } from "@js/util"
   import Logs from "@js/Logs"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
   import SearchHistory from "./SearchHistory"
@@ -15,6 +15,7 @@
   if (app_mode === "static_render") {
     url_prefix = "/"
   }
+  else if (is_http && subfolder) url_prefix = "#!/"
 
   $: on_page_search = $page_name === "search"
   $: on_page_homepage = $page_name === "homepage"
