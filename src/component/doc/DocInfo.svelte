@@ -16,7 +16,7 @@
   </tr>
   <tr>
     <td><Icon type="link" /> Lien</td>
-    <td><a href={doc_info.path} target="_blanck">{doc_info.path}</a></td>
+    <td><a class="break_line" href={doc_info.path} target="_blanck">{doc_info.path}</a></td>
   </tr>
   <LastUpdateInfo
     last_update_date={doc_info.last_update}
