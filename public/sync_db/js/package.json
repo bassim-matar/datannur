@@ -7,6 +7,6 @@
     "sync": "node sync.js"
   },
   "dependencies": {
-    "jsonjsdb_editor": "^0.1.13"
+    "jsonjsdb_editor": "^0.1.14"
   }
 }
