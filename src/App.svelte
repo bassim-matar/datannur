@@ -14,20 +14,9 @@
   import "datatables.net-scroller-bm/css/scroller.bulma.min.css"
   import "jquery-powertip/dist/css/jquery.powertip.min.css"
   import "@src/style/global.scss"
-  import { url_param } from "@js/url_param"
   import CheckDb from "@src/app_mode/CheckDb.svelte"
   import Main from "@src/app_mode/Main.svelte"
-  import { app_mode, set_app_mode } from "@js/util"
-
-  const url_app_mode = url_param.get("app_mode")
-  if (url_app_mode == "check_db") {
-    set_app_mode("check_db")
-  } else if (url_app_mode == "static_render") {
-    set_app_mode("static_render")
-  }
-  if (document.querySelector('meta[app_mode="static"]')) {
-    set_app_mode("static_render")
-  }
+  import { app_mode } from "@js/util"
 </script>
 
 {#if app_mode === "check_db"}

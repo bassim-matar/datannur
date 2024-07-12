@@ -1,19 +1,13 @@
 <script>
   import db from "@db"
   import { is_mermaid_loaded } from "@js/store"
-  import { is_mobile, is_http, app_mode } from "@js/util"
+  import { is_mobile, url_prefix } from "@js/util"
   import { entity_names } from "@js/constant"
   import Render from "@js/Render"
   import Loading from "@frame/Loading.svelte"
 
   let svg_diagramm = false
 
-  let url_prefix = is_http ? "#!" : "/#!/"
-  if (app_mode === "static_render") {
-    url_prefix = ""
-  }
-
-  let base_url = url_prefix //is_http ? "#!/" : ""
   const schema = { ...db.tables.__schema__ }
 
   delete schema.one_to_one
@@ -74,7 +68,7 @@
       recursive_icon = " " + Render.icon("recursive")
 
     diagramm_definition += `${table}(${icon}<span>${entity_clean_name}</span>${recursive_icon})\n`
-    diagramm_definition += `click ${table} href "${base_url}/metaDataset/${table}";\n`
+    diagramm_definition += `click ${table} href "${url_prefix}/metaDataset/${table}";\n`
   }
 
   const other_links = []

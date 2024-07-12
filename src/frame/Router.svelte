@@ -56,15 +56,12 @@
 
   page({ hashbang: app_mode !== "static_render" })
 
-  if (is_http && app_mode !== "static_render") page.base("/#!")
-  if (!is_http && app_mode !== "static_render") page.base("")
-  if (is_http && app_mode === "static_render") {
-    page.base("")
+  let base_page = ""
+  if (is_http && app_mode !== "static_render") {
+    if (subfolder) base_page += "/" + subfolder
+    base_page += "/#!"
   }
-
-  if (is_http && app_mode !== "static_render" && subfolder) {
-    page.base(`/${subfolder}/#!`)
-  }
+  page.base(base_page)
 </script>
 
 {#key page_key}

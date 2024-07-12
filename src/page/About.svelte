@@ -2,7 +2,7 @@
   import db from "@db"
   import { footer_visible, is_mermaid_loaded, page_content_loaded } from "@js/store"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
-  import { is_http, app_mode, subfolder } from "@js/util"
+  import { url_prefix } from "@js/util"
   import markdown_render from "@js/markdown"
   import { entity_to_icon, entity_names } from "@js/constant"
   import Render from "@js/Render"
@@ -11,14 +11,7 @@
 
   $footer_visible = true
 
-  let url_prefix = is_http ? "#!" : ""
-  if (app_mode === "static_render") {
-    url_prefix = ""
-  }
-  else if (is_http && subfolder) url_prefix = "/" + subfolder + "/#!"
-
   let is_script_loaded = false
-  let base_url = url_prefix //is_http ? "#!" : ""
   const direction = "TB" // is_mobile ? "TB" : "LR"
   let diagramm_definition = `flowchart ${direction}\n`
 
@@ -82,7 +75,7 @@
       }
 
       let entity_definition = `${entity}(${icon}<span>${entity_clean_name}</span>${recursive_icon})\n`
-      entity_definition += `click ${entity} href "${base_url}/metaDataset/${entity}";\n`
+      entity_definition += `click ${entity} href "${url_prefix}/metaDataset/${entity}";\n`
       code = code.replaceAll("$" + entity, entity)
       code = entity_definition + code
     }

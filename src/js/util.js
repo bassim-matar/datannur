@@ -1,11 +1,28 @@
 import { var_types, entity_to_icon } from "@js/constant"
+import { url_param } from "./url_param"
 
-export let app_mode = "spa"
-export function set_app_mode(mode) {
-  app_mode = mode
-}
+export let app_mode = url_param.get_app_mode()
 
 export const is_http = window.location.protocol.startsWith("http")
+
+function get_sub_folder() {
+  const url = new URL(window.location.href)
+  const pathname = url.pathname.split("/").filter(Boolean)
+  return pathname.length > 0 ? pathname[0] : ""
+}
+export const subfolder = get_sub_folder()
+
+export const url_prefix = (() => {
+  if (app_mode === "static_render") return ""
+  else if (is_http && subfolder) return "/" + subfolder + "/#!"
+  else if (is_http) return "#!"
+  return ""
+})()
+
+export function get_base_link_url() {
+  if (app_mode === "static_render") return ""
+  return "#!/"
+}
 
 export const is_firefox = navigator.userAgent.toLowerCase().includes("firefox")
 
@@ -54,8 +71,7 @@ export function escape_html_entities(str) {
 }
 
 export function link(href, content) {
-  let base = "#!/"
-  if (app_mode === "static_render") base = ""
+  const base = get_base_link_url()
   return `<a href="${base}${href}">${content}</a>`
 }
 
@@ -69,14 +85,6 @@ export function wrap_long_text(text, indent = false) {
   if (indent) text = add_indend(text, indent)
   return `<div class="long_text">${text}</div>`
 }
-
-function get_sub_folder() {
-  const url = new URL(window.location.href)
-  const pathname = url.pathname.split("/").filter(Boolean)
-  return pathname.length > 0 ? pathname[0] : ""
-}
-export const subfolder = get_sub_folder()
-
 
 export function debounce(func, wait) {
   let timeout

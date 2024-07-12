@@ -1,6 +1,7 @@
-import { app_mode } from "@js/util"
-
 export class url_param {
+  static get_app_mode() {
+    return app_mode
+  }
   static get(key) {
     let hash = window.location.hash
     if (app_mode === "static_render") hash = window.location.search
@@ -64,4 +65,15 @@ export class url_param {
     })
     return params_obj
   }
+}
+
+let app_mode = "spa"
+const url_app_mode = url_param.get("app_mode")
+if (url_app_mode == "check_db") {
+  app_mode = "check_db"
+} else if (url_app_mode == "static_render") {
+  app_mode = "static_render"
+}
+if (document.querySelector('meta[app_mode="static"]')) {
+  app_mode = "static_render"
 }

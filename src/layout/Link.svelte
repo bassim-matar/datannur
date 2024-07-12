@@ -1,5 +1,5 @@
 <script>
-  import { app_mode } from "@js/util"
+  import { get_base_link_url } from "@js/util"
 
   export let href
   export let className = ""
@@ -7,13 +7,9 @@
   export let isActive = () => false
 
   let base
-
-  if (app_mode === "static_render") {
-    base = ""
-  } else {
-    base = "#!/"
-  }
   if (href == "/") base = ""
+  else base = get_base_link_url()
+
   function blur(e) {
     this.blur()
   }

@@ -3,19 +3,13 @@
   import page from "page"
   import db from "@db"
   import { search_value, page_name } from "@js/store"
-  import { clickOutside, debounce, is_mobile, is_http, app_mode, subfolder } from "@js/util"
+  import { clickOutside, debounce, is_mobile, url_prefix } from "@js/util"
   import Logs from "@js/Logs"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
   import SearchHistory from "./SearchHistory"
   import SearchBarResult from "./SearchBarResult.svelte"
 
   export let close_menu
-
-  let url_prefix = is_http ? "/#!/" : "/"
-  if (app_mode === "static_render") {
-    url_prefix = "/"
-  }
-  else if (is_http && subfolder) url_prefix = "#!/"
 
   $: on_page_search = $page_name === "search"
   $: on_page_homepage = $page_name === "homepage"
@@ -67,7 +61,7 @@
   }
 
   function go_to_page_search() {
-    page(`${url_prefix}search?search=${$search_value}`)
+    page(`${url_prefix}/search?search=${$search_value}`)
     is_focus_in = false
     close_menu()
   }
@@ -81,7 +75,7 @@
     } else {
       apply_to_all_search((item, item_num, entity) => {
         if (item_num === nav_position) {
-          page(`${url_prefix}${entity}/${item.id}`)
+          page(`${url_prefix}/${entity}/${item.id}`)
           SearchHistory.add(entity, item.id)
           is_focus_in = false
           Logs.add("search_bar", { entity, entity_id: item.id })
