@@ -37,12 +37,14 @@
     .description_wrapper {
       display: block;
       width: 100%;
+      padding-top: 0;
     }
   }
   @media screen and (max-width: 600px) {
     .description_wrapper {
       & > div {
         padding: 10px;
+        padding-top: 0;
       }
     }
     .content {
