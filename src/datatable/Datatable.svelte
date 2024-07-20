@@ -447,8 +447,8 @@
         top: 0;
         bottom: 0;
         width: 12px;
-        &:before,
-        &:after {
+        &::before,
+        &::after {
           position: absolute;
           display: block;
           left: 0;
@@ -456,12 +456,12 @@
           line-height: 9px;
           font-size: 0.8em;
         }
-        &:before {
-          bottom: 50%;
+        &::before {
+          bottom: 52%;
           content: "▲" / "";
         }
-        &:after {
-          top: 50%;
+        &::after {
+          top: 52%;
           content: "▼";
           content: "▼" / "";
         }
@@ -539,10 +539,10 @@
           display: none;
         }
         table.dataTable thead > tr > th.sorting {
-          &:before {
+          &::before {
             bottom: 55%;
           }
-          &:after {
+          &::after {
             top: 55%;
           }
         }
@@ -556,6 +556,12 @@
 
         .dt-column-order {
           color: $color-3;
+          &::before {
+            bottom: 52%;
+          }
+          &::after {
+            top: 52%;
+          }
         }
         ._datatables {
           width: 100% !important;
