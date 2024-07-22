@@ -17,7 +17,7 @@
         files.file(filename, file, { binary: true })
       }
       jszip.generateAsync({ type: "blob" }).then(function (content) {
-        saveAs(content, "datannuaire_files.zip")
+        saveAs(content, "datannur_files.zip")
       })
     })
   }
@@ -25,12 +25,12 @@
 
 <div class="flex_cols">
   <div class="flex_col">
-    <button class="button" on:click={() => window.open("zip/datannuaire.zip")}
-      >L'application datannuaire</button
+    <button class="button" on:click={() => window.open("zip/datannur.zip")}
+      >L'application datannur</button
     >
     <button
       class="button"
-      on:click={() => window.open("zip/datannuaire_db.zip")}
+      on:click={() => window.open("zip/datannur_db.zip")}
       >La base de données Excel</button
     >
     <button class="button" on:click={download_all_files}

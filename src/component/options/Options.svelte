@@ -41,7 +41,7 @@
       data_folder.file(filename, json_data)
     }
     jszip.generateAsync({ type: "blob" }).then(function (content) {
-      saveAs(content, "datannuaire_user_data.zip")
+      saveAs(content, "datannur_user_data.zip")
     })
   }
 

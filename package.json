@@ -1,7 +1,7 @@
 {
-  "name": "datannuaire",
-  "version": "0.7.12",
-  "description": "datannuaire data catalog",
+  "name": "datannur",
+  "version": "0.8.0",
+  "description": "datannur data catalog",
   "type": "module",
   "private": true,
   "main": "src/main.js",

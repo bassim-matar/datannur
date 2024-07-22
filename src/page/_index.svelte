@@ -57,8 +57,8 @@
 </script>
 
 <Head
-  title="datannuaire | Accueil"
-  description="Page d'accueil de datannuaire"
+  title="datannur | Accueil"
+  description="Page d'accueil de datannur"
 />
 
 <section class="section">

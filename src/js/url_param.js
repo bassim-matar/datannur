@@ -5,7 +5,10 @@ export class url_param {
   static get(key) {
     let hash = window.location.hash
     if (app_mode === "static_render") hash = window.location.search
-    if (!hash.includes("?")) return false
+    if (!hash.includes("?")) {
+      hash = window.location.search
+      if (!hash.includes("?")) return false
+    }
     const params_string = hash.split("?")[1]
     if (!params_string) return false
     const urlParams = new URLSearchParams(params_string)
@@ -69,11 +72,11 @@ export class url_param {
 
 let app_mode = "spa"
 const url_app_mode = url_param.get("app_mode")
+
 if (url_app_mode == "check_db") {
   app_mode = "check_db"
 } else if (url_app_mode == "static_render") {
   app_mode = "static_render"
-}
-if (document.querySelector('meta[app_mode="static"]')) {
+} else if (document.querySelector('meta[app_mode="static"]')) {
   app_mode = "static_render"
 }

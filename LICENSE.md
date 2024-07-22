@@ -1,5 +1,5 @@
-# Licence pour le logiciel datannuaire®
-La présente licence a pour objectif de garantir la qualité et la pérennité du logiciel datannuaire®. Elle est conçue pour offrir une garantie maximale aux utilisateurs tout en protégeant les intérêts du concédant. Cette licence inclut trois éléments clés :
+# Licence pour le logiciel datannur®
+La présente licence a pour objectif de garantir la qualité et la pérennité du logiciel datannur®. Elle est conçue pour offrir une garantie maximale aux utilisateurs tout en protégeant les intérêts du concédant. Cette licence inclut trois éléments clés :
 
 1. **Source available** : Le code source du logiciel est disponible pour consultation, modification et audit, ce qui permet aux utilisateurs de vérifier la qualité et la sécurité du logiciel.
 2. **Clause convertible** : En cas d'inactivité prolongée, la licence basculera automatiquement vers une licence Open Source (MIT), garantissant ainsi que le logiciel reste accessible et maintenable par la communauté.

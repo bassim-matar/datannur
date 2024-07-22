@@ -1,9 +1,9 @@
-![datannuaire logo](./public/data/img/main_banner_dark.png#gh-dark-mode-only)
-![datannuaire logo](./public/data/img/main_banner.png#gh-light-mode-only)
+![datannur logo](./public/data/img/main_banner_dark.png#gh-dark-mode-only)
+![datannur logo](./public/data/img/main_banner.png#gh-light-mode-only)
 
-# datannuaire
+# datannur
 
-Datannuaire is a portable data catalog able to run without any server.
+datannur is a portable data catalog able to run without any server.
 
 This repo is proprietary code with source available. Please check the full [License](License) before any usage or contribution.
 [Jsonjsdb](https://github.com/bassim-matar/jsonjsdb) is the main library that makes the app running without server,
@@ -11,7 +11,7 @@ and this one is open source and can be used to build any other app.
 
 ## Why
 
-datannuaire, the portable data catalog
+datannur, the portable data catalog
 
 Allows you to **centralize**, **search** and **visualize** information across a collection of datasets
 

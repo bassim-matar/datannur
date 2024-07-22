@@ -31,11 +31,11 @@
   <footer class="footer">
     <div class="footer-content">
       <div>
-        © {year} dat<span class="main_color">a</span>nnuaire®
+        © {year} dat<span class="main_color">a</span>nnur
       </div>
       {#if app_version}
         <div>
-          Version {app_version}
+          v{app_version}
         </div>
       {/if}
       <div>
@@ -44,7 +44,7 @@
           pages={["meta", "metaFolder", "metaDataset"]}
           className=""
         >
-          Vue Meta
+          vue méta
         </HeaderLink>
       </div>
       <div>
@@ -58,7 +58,7 @@
             <span
             class="break_line use_tooltip tooltip_top"
             title={last_update.absolute}>
-              Actualisé {last_update.relative}
+              actualisé {last_update.relative}
             </span>
           {/if}
         </div>
