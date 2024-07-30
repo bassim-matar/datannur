@@ -3,7 +3,7 @@ import zipfile
 import shutil
 from pathlib import Path
 
-zip_url = "https://github.com/bassim-matar/datannuaire-app/archive/refs/heads/main.zip"
+zip_url = "https://github.com/bassim-matar/datannur-app/archive/refs/heads/main.zip"
 proxy_url = "127.0.0.1:9000"  # to bypass firewall if needed, in case of ssl error: pip install pip_system_certs
 to_copy = [
     "assets",

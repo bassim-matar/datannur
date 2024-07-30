@@ -1,5 +1,5 @@
 #!/bin/bash
-REPO_URL="https://github.com/bassim-matar/datannuaire-app.git"
+REPO_URL="https://github.com/bassim-matar/datannur-app.git"
 APP_DIR="./app"
 VERSION=$(jq -r .version < package.json)
 cd $APP_DIR
