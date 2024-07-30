@@ -12,6 +12,7 @@
   let institution_max = 0
   let folder_max = 0
   let dataset_max = 0
+  let nb_doc_max = 0
   for (const institution of institutions) {
     institution.path_string = get_parent_path(institution)
     if (institution.nb_child_recursive > institution_max) {
@@ -22,6 +23,9 @@
     }
     if (institution.nb_dataset_recursive > dataset_max) {
       dataset_max = institution.nb_dataset_recursive
+    }
+    if (institution.docs_recursive.length > nb_doc_max) {
+      nb_doc_max = institution.docs_recursive.length
     }
   }
 
@@ -53,7 +57,7 @@
     },
     Column.nb_folder_recursive("institution", folder_max),
     Column.nb_dataset_recursive("institution", dataset_max),
-    Column.nb_doc("institution"),
+    Column.nb_doc("institution", nb_doc_max),
     Column.tag(),
     Column.parents(),
     {

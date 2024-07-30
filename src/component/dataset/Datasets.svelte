@@ -54,12 +54,16 @@
 
   let nb_variable_max = 0
   let nb_row_max = 0
+  let nb_doc_max = 0
   for (const dataset of datasets) {
     if (dataset.nb_variable > nb_variable_max) {
       nb_variable_max = dataset.nb_variable
     }
     if (dataset.nb_row > nb_row_max) {
       nb_row_max = dataset.nb_row
+    }
+    if (dataset.nb_doc > nb_doc_max) {
+      nb_doc_max = dataset.nb_doc
     }
   }
 
@@ -88,7 +92,7 @@
 
   if (!is_meta) {
     columns = columns.concat([
-      Column.nb_doc("dataset"),
+      Column.nb_doc("dataset", nb_doc_max, true),
       Column.folder(),
       Column.tag(),
       Column.owner(),

@@ -665,6 +665,9 @@
               &.color_tag {
                 background: color("tag");
               }
+              &.color_doc {
+                background: color("doc");
+              }
               &.color_dataset {
                 background: color("dataset");
               }

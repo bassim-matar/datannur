@@ -18,6 +18,7 @@
 
   let dataset_max = 0
   let folder_max = 0
+  let nb_doc_max = 0
 
   if (!is_meta) {
     for (const folder of folders) {
@@ -27,6 +28,9 @@
       }
       if (folder.nb_child_recursive > folder_max) {
         folder_max = folder.nb_child_recursive
+      }
+      if (folder.nb_doc > nb_doc_max) {
+        nb_doc_max = folder.nb_doc
       }
     }
     folders_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
@@ -85,7 +89,7 @@
         },
       },
       Column.nb_dataset_recursive("folder", dataset_max),
-      Column.nb_doc("folder"),
+      Column.nb_doc("folder", nb_doc_max),
       Column.tag(),
       Column.parents(),
       Column.owner(),

@@ -337,15 +337,17 @@ export default class Column {
       },
     }
   }
-  static nb_doc(entity) {
+  static nb_doc(entity, total, with_name = false) {
     return {
       data: "docs_recursive",
-      title: Render.icon("doc") + "Docs",
+      title: Render.icon("doc") + (with_name ? "Docs" : "<span class='hidden'>nb_docs</span>"),
       filter_type: "input",
       defaultContent: "",
-      render: (data, _, row) => {
+      render: (data, type, row) => {
         if (!data.length) return ""
-        return link(entity + "/" + row.id + "?tab=docs", data.length)
+        const content = link(entity + "/" + row.id + "?tab=docs", data.length)
+        const percent = get_percent(data.length / total)
+        return `${Render.num_percent(content, percent, "doc", type)}`
       },
     }
   }
