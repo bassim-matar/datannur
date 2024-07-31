@@ -47,12 +47,12 @@
       <Icon type={tab.icon} />
     </span>
     <span>
-      <span class="tab_visible">
+      <span class="tab_visible tab_name">
         {tab.name}
       </span>
       {#if tab.nb !== undefined}
         {#if tab.nb === "..."}
-          <Loading type="tab" color_entity={tab.icon}/>
+          <Loading type="tab" color_entity={tab.icon} />
         {:else if tab.nb === parseInt(tab.nb)}
           <span class="num_style tab_visible">
             <Number number={tab.nb} />
@@ -185,7 +185,6 @@
   :global(html.page_shadow_colored) {
     li {
       @each $entity in $entities {
-
         &.tab_entity_#{$entity} {
           a.tab_select_btn:hover {
             color: #{color($entity)} !important;
@@ -207,6 +206,21 @@
           }
         }
       }
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .tab_name {
+      display: none;
+    }
+    .icon_wrapper {
+      :global(.icon) {
+        margin-left: 3px;
+        margin-right: 0;
+      }
+    }
+    a.tab_select_btn {
+      padding-right: 5px;
     }
   }
 </style>

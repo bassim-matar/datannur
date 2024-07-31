@@ -45,6 +45,11 @@ div.dt-buttons {
 
 @media screen and (max-width: 600px) {
   div.dt-buttons {
-    display: none;
+    position: fixed;
+    right: 6px;
+    top: 45px;
+    width: 40px;
+    z-index: 2;
+    background: $background-1;
   }
 }

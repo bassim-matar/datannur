@@ -26,12 +26,21 @@ export function get_base_link_url() {
 
 export const is_firefox = navigator.userAgent.toLowerCase().includes("firefox")
 
-export const document_width =
-  window.innerWidth ||
-  document.documentElement.clientWidth ||
-  document.body.clientWidth
+export function get_document_width() {
+  return (
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth
+  )
+}
 
-export const is_mobile = document_width < 600
+export const document_width = get_document_width()
+
+export function get_is_mobile() {
+  return get_document_width() < 600
+}
+
+export const is_mobile = get_is_mobile()
 
 export const has_touch_screen =
   "ontouchstart" in window ||

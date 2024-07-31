@@ -2,7 +2,7 @@
   import { onMount } from "svelte"
   import { tab_selected, footer_visible } from "@js/store"
   import { url_param } from "@js/url_param"
-  import { is_firefox } from "@js/util"
+  import { is_firefox, get_is_mobile } from "@js/util"
   import Logs from "@js/Logs"
   import TabsBody from "@tab/TabsBody.svelte"
   import TabTitle from "@tab/TabTitle.svelte"
@@ -14,6 +14,8 @@
   let tabs_loaded = {}
   let all_keys = []
   let ul
+  let is_mobile = get_is_mobile()
+  let tabs_title_key = is_mobile
 
   let has_reverse_scroll = !is_firefox
   
@@ -29,6 +31,10 @@
 
   function on_resize() {
     is_last_tab = check_if_last_tab()
+    is_mobile = get_is_mobile()
+    if (!tabs_title_key && is_mobile) {
+      tabs_title_key = true
+    }
   }
 
   function load_tab(tab_key) {
@@ -114,11 +120,13 @@
   class:has_reverse_scroll
   bind:this={ul}
 >
+  {#key tabs_title_key}
   <ul class="tabs_container_ul">
     {#each tabs as tab}
       <TabTitle bind:tab bind:active_tab {select_tab} />
     {/each}
   </ul>
+  {/key}
 </div>
 
 <TabsBody
