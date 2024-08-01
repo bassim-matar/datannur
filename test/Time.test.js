@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest"
 import { get_time_ago } from "@js/Time.js"
 
 const same_date_multiple_times = [
@@ -10,7 +11,7 @@ const same_date_multiple_times = [
 ]
 
 describe("Time", () => {
-  test.each(same_date_multiple_times)(
+  it.each(same_date_multiple_times)(
     "should work with param day = true",
     date_now => {
       const dates = [
