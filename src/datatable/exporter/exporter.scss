@@ -5,8 +5,9 @@ div.dt-buttons {
   right: -45px;
   top: 0;
   width: 40px;
+  display: flex;
   flex-direction: column;
-  button.button.is-light {
+  button.button {
     margin: 0;
     background: transparent;
     color: $color-2;
