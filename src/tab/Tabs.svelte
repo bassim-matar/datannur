@@ -22,7 +22,7 @@
   const get_width = selector => document.querySelector(selector)?.offsetWidth
 
   function is_tabs_overflow() {
-    return get_width(".tabs_container_ul") > get_width("#tabs_container")
+    return get_width(".tabs_container_ul") + 30 > get_width("#tabs_container")
   }
 
   function check_if_last_tab() {
@@ -148,6 +148,7 @@
     @include scrollbar_light();
 
     & > ul {
+      flex-grow: 0;
       border-bottom-width: 0;
       z-index: 1;
     }

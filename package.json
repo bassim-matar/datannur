@@ -1,6 +1,6 @@
 {
   "name": "datannur",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "datannur data catalog",
   "type": "module",
   "private": true,
@@ -16,7 +16,7 @@
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.0",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.4.20",
     "jsonjsdb_editor": "^0.1.14",
     "open-cli": "^8.0.0",
     "puppeteer": "^22.15.0",

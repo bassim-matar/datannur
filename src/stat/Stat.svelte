@@ -72,18 +72,21 @@
       style="color: {show_all ? get_color('entity') : ''}"
       on:click={click_show_all}
     >
-      <Icon type="entity" /> Tout
+      <Icon type="entity" />
+      <span class="btn_select_entity_name">Tout</span>
     </button>
     {#each entities as { entity }}
       <button
         class="button shadow_{entity}"
-        class:selected={visible[entity]}
+        class:active={visible[entity]}
         class:box_shadow_color={visible[entity]}
         style="color: {visible[entity] ? get_color(entity) : ''}"
         on:click={() => show(entity)}
       >
         <Icon type={entity} />
-        {entity_names[entity]}
+        <span class="btn_select_entity_name">
+          {entity_names[entity]}
+        </span>
       </button>
     {/each}
   </div>
@@ -139,12 +142,13 @@
     border-bottom: 1px solid $color-5;
     @include scrollbar_light();
     .button {
+      float: left;
       margin: 5px;
       background: transparent;
       border-color: transparent;
       box-shadow: none;
       height: 0;
-      padding: 10px 20px;
+      padding: 10px;
       font-weight: 600;
       :global(.icon) {
         margin-left: 0;
@@ -157,7 +161,7 @@
   }
 
   :global(html.rounded_design) {
-    .main_wrapper{
+    .main_wrapper {
       overflow: hidden;
       border-bottom-right-radius: $rounded;
     }
@@ -173,8 +177,23 @@
   :global(html.page_shadow_colored .box_shadow.box_shadow_color) {
     .btns .button {
       @each $entity in $entities {
-        &.selected.shadow_#{$entity} {
+        &.active.shadow_#{$entity} {
           text-shadow: 0 0 10px #{color($entity)};
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .btns {
+      padding-left: 10px;
+      .button {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+        margin-right: 0;
+        .btn_select_entity_name {
+          display: none;
         }
       }
     }
