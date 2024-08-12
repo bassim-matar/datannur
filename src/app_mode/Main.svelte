@@ -2,7 +2,12 @@
   import jQuery from "jquery"
   import "jquery-powertip"
   import db from "@db"
-  import { page_hash, footer_visible, page_content_loaded } from "@js/store"
+  import {
+    page_hash,
+    footer_visible,
+    page_content_loaded,
+    search_value,
+  } from "@js/store"
   import Router from "@frame/Router.svelte"
   import Options from "@js/Options"
   import Logs from "@js/Logs"
@@ -72,11 +77,13 @@
     await db.loaded
     const from_search = url_param.get("from_search")
     if (from_search) {
-      url_param.delete("from_search")
       const entity = page_hash_value
       const entity_id = url_hash.get_level_2()
       SearchHistory.add(entity, entity_id)
       Logs.add("search_bar", { entity, entity_id })
+      $search_value = ""
+      url_param.delete("from_search")
+      url_param.delete("search")
     }
   }
 

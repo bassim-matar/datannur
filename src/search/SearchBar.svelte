@@ -75,6 +75,7 @@
     } else {
       apply_to_all_search((item, item_num, entity) => {
         if (item_num === nav_position) {
+          $search_value = ""
           page(`${url_prefix}/${entity}/${item.id}`)
           SearchHistory.add(entity, item.id)
           is_focus_in = false

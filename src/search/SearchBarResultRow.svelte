@@ -1,4 +1,5 @@
 <script>
+  import { search_value as global_search_value } from "@js/store"
   import Icon from "@layout/Icon.svelte"
   import Link from "@layout/Link.svelte"
   import Logs from "@js/Logs"
@@ -13,6 +14,7 @@
 
   function click_link(entity_name, item_id) {
     setTimeout(() => {
+      $global_search_value = ""
       SearchHistory.add(entity_name, item_id)
       Logs.add("search_bar", { entity: entity_name, entity_id: item_id })
       is_focus_in = false

@@ -3,7 +3,7 @@
   import db from "@db"
   import { is_http, app_mode, subfolder } from "@js/util"
   import Logs from "@js/Logs"
-  import { page_hash, page_content_loaded } from "@js/store"
+  import { page_hash, page_content_loaded, search_value } from "@js/store"
   import { url_hash } from "@js/url_hash"
   import router_index from "@src/.generated/router_index"
 
@@ -17,6 +17,7 @@
     if (new_params) params = new_params
     $page_content_loaded = false
     route = router_index[entity].component
+    $search_value = ""
     setTimeout(() => ($page_hash = url_hash.get_level_1()), 1)
   }
 
