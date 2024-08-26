@@ -10,6 +10,7 @@ to_copy = [
     ".htaccess",
     "index.html",
     "LICENSE.md",
+    "CHANGELOG.md",
     "manifest.json",
     "static_make/config.json",
     "static_make/js/make.js",

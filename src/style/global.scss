@@ -114,6 +114,13 @@ button {
   transition: border-color $transition-basic-1;
 }
 
+.basic_link {
+  color: $color-3;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 #app {
   display: flex;
   flex-direction: column;

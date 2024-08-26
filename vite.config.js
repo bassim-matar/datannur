@@ -124,6 +124,7 @@ export default defineConfig({
 
     after_build(async () => {
       await fs.copyFile("LICENSE.md", out_dir + "/LICENSE.md")
+      await fs.copyFile("CHANGELOG.md", out_dir + "/CHANGELOG.md")
     }),
   ],
 })
