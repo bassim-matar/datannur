@@ -1,5 +1,8 @@
 # datannur
 
+## unreleased
+- added : app/readme to the file to update
+
 ## 0.8.5 (2024-08-28)
 
 - changed : db_source/config.xlsx section about_main
