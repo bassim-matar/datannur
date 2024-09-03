@@ -2,6 +2,8 @@
 
 ## unreleased
 - added : app/readme to the file to update
+- fixed : tab title initial width too large on static page
+- fixed : typo in about page
 
 ## 0.8.5 (2024-08-28)
 

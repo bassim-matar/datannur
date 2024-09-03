@@ -19,6 +19,7 @@
   onMount(() => {
     const selector = `.tab_li_${tab.key}`
     min_width = document.querySelector(selector).offsetWidth
+    if (min_width > 500) min_width = 0
   })
 </script>
 
