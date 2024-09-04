@@ -100,11 +100,7 @@
         title: Render.icon("survey_type") + "Type d'enquête",
         defaultContent: "",
       },
-      {
-        data: "delivery_format",
-        title: Render.icon("delivery_format") + "Format livraison",
-        defaultContent: "",
-      },
+      Column.delivery_format(),
       Column.frequency(),
       Column.last_update(),
       Column.period(),

@@ -1,12 +1,13 @@
 # datannur
 
-## unreleased
+## 0.8.6 (2024-09-04)
 - added : app/readme to the file to update
+- added : dataset delivery_format
 - fixed : tab title initial width too large on static page
 - fixed : typo in about page
+- fixed : tag level on tab tag page dataset
 
 ## 0.8.5 (2024-08-28)
-
 - changed : db_source/config.xlsx section about_main
 - changed : markdown link highlight
 - added : changelog file

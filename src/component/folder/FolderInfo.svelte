@@ -12,6 +12,7 @@
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
   import DataPathInfo from "@infoTable/DataPathInfo.svelte"
   import CopyText from "@layout/CopyText.svelte"
+  import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
 
   export let folder_info
 </script>
@@ -32,12 +33,7 @@
         <td>{folder_info.survey_type}</td>
       </tr>
     {/if}
-    {#if folder_info.delivery_format}
-      <tr>
-        <td><Icon type="delivery_format" /> Format livraison</td>
-        <td>{folder_info.delivery_format}</td>
-      </tr>
-    {/if}
+    <DeliveryFormatInfo delivery_format={folder_info.delivery_format} />
     <FrequencyInfo frequency={folder_info.updating_each} />
     <LastUpdateInfo last_update_date={folder_info.last_update_date} />
     <PeriodInfo period={folder_info.period} />

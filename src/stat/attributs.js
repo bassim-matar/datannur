@@ -23,6 +23,7 @@ const attributs = {
     "last_update",
     "tag",
     "localisation",
+    "delivery_format",
     "variable",
     "nb_row",
     "name",

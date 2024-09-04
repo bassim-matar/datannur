@@ -273,6 +273,14 @@ export default class Column {
       render: wrap_long_text,
     }
   }
+  static delivery_format() {
+    return {
+      data: "delivery_format",
+      title: Render.icon("delivery_format") + "Format livraison",
+      defaultContent: "",
+      filter_type: "select",
+    }
+  }
   static period() {
     return {
       data: "period",

@@ -98,6 +98,7 @@
       Column.owner(),
       Column.manager(),
       Column.localisation(),
+      Column.delivery_format(),
       Column.frequency(),
       Column.last_update(),
       Column.period(),

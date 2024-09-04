@@ -82,6 +82,8 @@
     Column.nb_dataset_recursive("tag", dataset_max),
     Column.nb_variable_recursive("tag", variable_max),
   ])
+
+  console.log(tags_sorted)
 </script>
 
 {#if tags && tags.length > 0}

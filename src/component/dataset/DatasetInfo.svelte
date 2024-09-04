@@ -12,7 +12,8 @@
   import LocalisationInfo from "@infoTable/LocalisationInfo.svelte"
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
   import DataPathInfo from "@infoTable/DataPathInfo.svelte"
-  
+  import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
+
   export let dataset_info
 </script>
 
@@ -38,6 +39,7 @@
   {/if}
   <RowInfo nb_row={dataset_info.nb_row} />
   <LocalisationInfo localisation={dataset_info.localisation} />
+  <DeliveryFormatInfo delivery_format={dataset_info.delivery_format} />
   <FrequencyInfo frequency={dataset_info.updating_each} />
   <LastUpdateInfo last_update_date={dataset_info.last_update_date} />
   <PeriodInfo period={dataset_info.period} />
