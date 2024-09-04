@@ -3,11 +3,11 @@
 
 # datannur
 
-datannur is a portable data catalog able to run without any server.
+datannur is a portable data catalog that can run without a server.
 
-This repo is proprietary code with source available. Please check the full [License](License) before any usage or contribution.
-[Jsonjsdb](https://github.com/bassim-matar/jsonjsdb) is the main library that makes the app running without server,
-and this one is open source and can be used to build any other app.
+This repository contains proprietary code with the source available. Before using or contributing, please review the full [License](LICENSE.md).
+If you're looking for the built version of the app, you can find it in this repository: [datannur-app](https://github.com/bassim-matar/datannur-app).
+
 
 ## Why
 
@@ -20,19 +20,16 @@ Aims to improve data organization and to ease their **sharing** and **documentat
 **Simple** and **flexible**, quickly integrates into all types of environments
 
 - **Easy** :
-  No installation or configuration required, free of cost or technical prerequisites
+  No installation or configuration required. datanur is the easiest catalog to implement and maintain
 
 - **Portable** :
-  Operates anywhere (local, cloud, shared disk), simply a folder that can be copied, moved, sent, and opened with any web browser
+  Works anywhere (local, cloud, shared drive), one folder that can be copied, moved, sent and opened with any browser
 
 - **Complete** :
-  Versatile, thorough, and structured around 6 concepts with significant detail: Institution, Folder, Keyword, Dataset, Variable, and Modality
-
-- **Independent** :
-  The catalog is just an interface for viewing metadata; the creation and update process is independent and under your control
+  Flexible, complete and structured around 7 concepts with a high level of detail: Institution, Folder, Keyword, Doc, Dataset, Variable, and Modality
 
 - **Secure** :
-  Thanks to the strict separation between systems, the application is isolated within the browser, cannot alter the machine, and therefore poses no risk
+  Because it is a simple HTML interface isolated in the browser, the application cannot modify anything on the machine and thus poses no risk
 
 ## Tech stack
 

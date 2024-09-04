@@ -1,6 +1,7 @@
 # datannur
 
 ## unreleased
+- changed : Improve readme formulation and links
 - changed : License now in first stable version
 - added : License in pdf format
 
