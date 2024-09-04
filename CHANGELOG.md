@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+- changed : License now in first stable version
+- added : License in pdf format
+
 ## 0.8.6 (2024-09-04)
 - added : app/readme to the file to update
 - added : dataset delivery_format

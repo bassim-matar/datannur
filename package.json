@@ -19,7 +19,7 @@
     "autoprefixer": "^10.4.20",
     "jsonjsdb_editor": "^0.1.14",
     "open-cli": "^8.0.0",
-    "puppeteer": "^23.2.2",
+    "puppeteer": "^23.3.0",
     "rollup-plugin-visualizer": "^5.12.0",
     "sass": "^1.78.0",
     "sitemap": "^8.0.0",
