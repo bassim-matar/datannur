@@ -43,7 +43,7 @@
       <Icon type={item.entity} />
     </div>
   </td>
-  <td colspan={item.is_recent ? 1 : 2}>
+  <td>
     <Link
       href="{item.entity}/{item.id}"
       click={() => click_link(item.entity, item.id)}

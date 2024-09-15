@@ -25,6 +25,7 @@
   let all_search = []
   let nav_position = 0
   let db_initied = false
+  let search_value_debounced = $search_value
 
   SearchHistory.on_change("search_bar", () => search_input_change())
 
@@ -34,6 +35,7 @@
   }
 
   async function search_input_change() {
+    search_value_debounced = $search_value
     nav_position = 0
     if ($search_value === "") {
       init_search_recent()
@@ -48,6 +50,7 @@
 
   function clear_input() {
     $search_value = ""
+    search_value_debounced = $search_value
     select_input()
     search_input_change()
   }
@@ -76,6 +79,7 @@
       apply_to_all_search((item, item_num, entity) => {
         if (item_num === nav_position) {
           $search_value = ""
+          search_value_debounced = $search_value
           router.navigate(`/${entity}/${item.id}`)
           SearchHistory.add(entity, item.id)
           is_focus_in = false
@@ -207,7 +211,7 @@
       {is_open}
       {nb_result}
       {all_search}
-      search_value={$search_value}
+      search_value={search_value_debounced}
       {select_input}
       bind:is_focus_in
     />

@@ -1,5 +1,4 @@
 import db from "@db"
-import { folder } from "jszip"
 
 export default class SearchHistory {
   static db_key = "user_data/search_history"

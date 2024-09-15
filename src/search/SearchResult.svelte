@@ -13,7 +13,7 @@
   export let nb_item
 
   function initied() {
-    const table_id = "search______search"
+    const table_id = "search___search"
     const datatable_search = jQuery("table#" + table_id + "._datatables")
     datatable_search.on("click", ".remove_search_item", function () {
       const elem = jQuery(this)

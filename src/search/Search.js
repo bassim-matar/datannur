@@ -8,6 +8,8 @@ function removeDiacritics(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 }
 export function search_highlight(value, search) {
+  if (!search) return value
+  if (search.trim() === "") return value
   const normalizedSearch = removeDiacritics(search)
     .replaceAll("e", "[eéèêë]")
     .replaceAll("a", "[aâäà]")

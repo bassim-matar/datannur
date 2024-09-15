@@ -22,6 +22,7 @@
   const columns = [
     Column.favorite(),
     Column.name("modality", "Modalité"),
+    Column.description(),
     Column.datatype(),
     {
       data: "nb_variable",
