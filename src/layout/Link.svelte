@@ -1,4 +1,5 @@
 <script>
+  import { router } from "@js/router"
   import { get_base_link_url } from "@js/util"
 
   export let href
@@ -13,6 +14,9 @@
   function blur(e) {
     this.blur()
   }
+  function go_to_href() {
+    router.navigate(href)
+  }
 </script>
 
 <a
@@ -21,6 +25,7 @@
   class:is-active={isActive()}
   on:click={blur}
   on:click={click}
+  on:click|preventDefault={go_to_href}
 >
   <slot />
 </a>

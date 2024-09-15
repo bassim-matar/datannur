@@ -24,7 +24,7 @@ export class url_param {
     const loc = window.location
     let hash = loc.hash.split("?")[0]
     if (hash === "") {
-      hash = "#!/"
+      hash = "#/"
       if (app_mode === "static_render") hash = ""
     }
     const url = loc.protocol + "//" + loc.host + loc.pathname + hash
@@ -45,9 +45,9 @@ export class url_param {
     } else {
       hash = loc.hash.split("?")[0]
       if (hash === "" && params.toString() !== "") {
-        hash = "#!/"
+        hash = "#/"
       }
-      if (hash === "#!/" && params.toString() === "") hash = ""
+      if (hash === "#/" && params.toString() === "") hash = ""
     }
     const url = loc.protocol + "//" + loc.host + loc.pathname + hash
     let url_with_params = url

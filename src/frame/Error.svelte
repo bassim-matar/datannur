@@ -1,5 +1,6 @@
 <script>
   import Head from "@frame/Head.svelte"
+  import Link from "@layout/Link.svelte"
 
   export let type = "page"
 
@@ -43,7 +44,7 @@
   <br />
   <div class="_text">{description}</div>
   <br />
-  <a class="button" href={"#"}>Page d'accueil</a>
+  <Link href="/" className="button">Page d'accueil</Link>
 </div>
 
 <style lang="scss">
@@ -57,10 +58,6 @@
     flex-direction: column;
     font-size: 1.5rem;
     color: var(--error-page-color);
-  }
-
-  a {
-    text-decoration: none;
   }
 
   ._error {
@@ -205,9 +202,6 @@
       transform: scale(0.5);
     }
     ._text {
-      font-size: 2rem;
-    }
-    .button {
       font-size: 2rem;
     }
   }

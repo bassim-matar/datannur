@@ -6,7 +6,7 @@ export class url_hash {
     let hash = window.location.hash
     if (app_mode === "static_render")
       hash = window.location.pathname.substring(1)
-    if (hash.includes("#!/")) hash = hash?.split("#!/")[1]
+    if (hash.includes("#/")) hash = hash?.split("#/")[1]
     hash = hash?.split("?")[0]
     if (!hash || hash === "") return this.default
     return hash

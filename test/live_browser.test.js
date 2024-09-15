@@ -49,7 +49,7 @@ const page_names = [
 describe("UI tests", () => {
   page_names.forEach(page_name => {
     it(`should display the main section for page: ${page_name}`, async () => {
-      await page.goto(`${base_url}#!/${page_name}`)
+      await page.goto(`${base_url}#/${page_name}`)
       const section = await page.waitForSelector(
         "div#wrapper > section.section"
       )

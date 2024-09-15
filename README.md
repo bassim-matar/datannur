@@ -63,7 +63,7 @@ SCSS are also used for style and a subset of Bulma CSS has been used for some co
 - Marked : MIT License - [https://github.com/markedjs/marked](https://github.com/markedjs/marked)
 - Mermaid : MIT License - [https://github.com/mermaid-js/mermaid](https://github.com/mermaid-js/mermaid)
 - MiniMasonry.js : MIT License - [https://github.com/Spope/MiniMasonry.js](https://github.com/Spope/MiniMasonry.js)
-- Page.js : MIT License - [https://github.com/visionmedia/page.js](https://github.com/visionmedia/page.js)
+- Navigo : MIT License - [https://github.com/krasimir/navigo](https://github.com/krasimir/navigo)
 
 ### Dev dependencies licences
 

@@ -1,7 +1,7 @@
 <script>
-  import page from "page"
   import db from "@db"
-  import { is_http, app_mode, subfolder } from "@js/util"
+  import { router } from "@js/router"
+  import { app_mode } from "@js/util"
   import Logs from "@js/Logs"
   import { page_hash, page_content_loaded, search_value } from "@js/store"
   import { url_hash } from "@js/url_hash"
@@ -27,13 +27,14 @@
       params = {}
       entity_id = ""
       window.document.body.setAttribute("page", entity)
-      if (ctx.params.id === undefined) {
-        if (ctx.params[0]) ctx.params = {}
-        update_route(entity, ctx.params)
+      if (!ctx.data) ctx.data = {}
+      if (ctx.data.id === undefined) {
+        if (ctx.data[0]) ctx.data = {}
+        update_route(entity, ctx.data)
         setTimeout(() => Logs.add("load_page", { entity }), 10)
         return false
       }
-      entity_id = ctx.params.id
+      entity_id = ctx.data.id
       const entity_data = db.get(entity, entity_id)
       if (entity_data) {
         update_route(entity, { [entity]: entity_data })
@@ -45,24 +46,28 @@
     }
   }
 
+  if ("_index" in router_index) {
+    router.on("/", set_route("_index"))
+  }
   for (const [entity, { param }] of Object.entries(router_index)) {
     let route_url = false
-    if (entity === "_index") route_url = "/"
-    else if (["_error", "_loading"].includes(entity)) continue
+    if (["_index", "_error", "_loading"].includes(entity)) continue
     else if (param) route_url = `/${entity}/:${param}`
     else route_url = `/${entity}`
-    if (route_url) page(route_url, set_route(entity))
-  }
-  if ("_error" in router_index) page("/*", set_route("_error"))
 
-  page({ hashbang: app_mode !== "static_render" })
-
-  let base_page = ""
-  if (is_http && app_mode !== "static_render") {
-    if (subfolder) base_page += "/" + subfolder
-    base_page += "/#!"
+    if (route_url) {
+      router.on(route_url, set_route(entity))
+    }
   }
-  page.base(base_page)
+  if ("_error" in router_index) {
+    router.notFound(set_route("_error"))
+  }
+
+  if (app_mode !== "static_render" && (!window.location.hash || window.location.hash === "#")) {
+    router.resolve("/")
+  } else {
+    router.resolve()
+  }
 </script>
 
 {#key page_key}

@@ -1,6 +1,7 @@
 # datannur
 
-## unreleased
+## 0.8.7 (2024-09-15)
+- changed : use navigo router lib instead of page.js
 - changed : Improve readme formulation and links
 - changed : License now in first stable version
 - added : License in pdf format

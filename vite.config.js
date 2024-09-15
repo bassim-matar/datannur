@@ -74,12 +74,13 @@ function update_router_index(file, page_dir_from_router_index) {
         if (!file.endsWith(".svelte")) continue
         const filename = file.replace(".svelte", "")
         const module_name = filename.split("[")[0]
+        const route_name = module_name.charAt(0).toLowerCase() + module_name.slice(1)
         let param = false
         if (filename.includes("["))
           param = `"${filename.split("[")[1].split("]")[0]}"`
         const module_path = `${page_dir_from_router_index}/${filename}.svelte`
         imports += `import ${module_name} from "${module_path}"\n`
-        content += `\n  ${module_name}: { component: ${module_name}, param: ${param} },`
+        content += `\n  ${route_name}: { component: ${module_name}, param: ${param} },`
       }
       content += "\n}\n"
       await fs.writeFile(file, imports + content, "utf8")

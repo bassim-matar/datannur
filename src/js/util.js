@@ -14,14 +14,13 @@ export const subfolder = get_sub_folder()
 
 export const url_prefix = (() => {
   if (app_mode === "static_render") return ""
-  else if (is_http && subfolder) return "/" + subfolder + "/#!"
-  else if (is_http) return "#!"
-  return ""
+  else if (is_http && subfolder) return "/" + subfolder + "/#"
+  return "#"
 })()
 
 export function get_base_link_url() {
-  if (app_mode === "static_render") return ""
-  return "#!/"
+  if (app_mode === "static_render") return "/"
+  return "#/"
 }
 
 export const is_firefox = navigator.userAgent.toLowerCase().includes("firefox")
@@ -81,7 +80,8 @@ export function escape_html_entities(str) {
 
 export function link(href, content) {
   const base = get_base_link_url()
-  return `<a href="${base}${href}">${content}</a>`
+  const onclick = `event.preventDefault(); window.go_to_href('${href}')`
+  return `<a href="${base}${href}" onclick="${onclick}">${content}</a>`
 }
 
 export function add_indend(text, indent) {

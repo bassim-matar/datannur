@@ -97,7 +97,7 @@
   let page_loaded_route
   $: if ($page_content_loaded !== false) {
     if (window.location.hash) {
-      page_loaded_route = window.location.hash.split("#!/")[1].split("?")[0]
+      page_loaded_route = window.location.hash.split("#/")[1].split("?")[0]
     } else {
       page_loaded_route = window.location.pathname.substring(1)
     }

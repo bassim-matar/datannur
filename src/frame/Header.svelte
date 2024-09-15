@@ -1,8 +1,8 @@
 <script>
-  import page from "page"
   import db from "@db"
   import { nb_favorite, header_open, page_name } from "@js/store"
-  import { subfolder } from "@js/util"
+  import { router } from "@js/router"
+  // import { subfolder } from "@js/util"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"
@@ -16,9 +16,9 @@
   const close_menu = () => ($header_open = false)
 
   function go_to_homepage() {
-    let url = "/#!/"
-    if (subfolder) url = `/?homepage`
-    page(url)
+    let url = "/"
+    // if (subfolder) url = `/?homepage`
+    router.navigate(url)
   }
 
   let scroll_y = 0
