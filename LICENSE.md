@@ -2,7 +2,7 @@
 
 ## 1. Ayant droit
 
-Le Logiciel datannur® sur lequel la présente licence est octroyée (ci-après le « Logiciel ») a été conçu par ***Bassim Matar datannur, Promenade de l’Eglantine 14, 1110 Morges***, ci-après le Concédant, qui en détient les droits de propriété intellectuelle conformément à la Section 7. 
+Le Logiciel datannur® sur lequel la présente licence est octroyée (ci-après le « Logiciel ») a été conçu par ***Bassim Matar - datannur, Promenade de l’Eglantine 14, 1110 Morges***, ci-après le Concédant, qui en détient les droits de propriété intellectuelle conformément à la Section 7. 
 
 Les droits concédés et obligations qui en découlent ont pour objectifs de garantir la qualité et la pérennité du Logiciel. Ils sont conçus pour offrir une garantie maximale aux utilisateurs tout en protégeant les intérêts du Concédant. 
 
@@ -133,7 +133,7 @@ Le Logiciel, une fois soumis aux termes de la licence MIT suite à l'activation 
 ```
 The MIT License (MIT)
 
-Copyright © 2024-present Bassim Matar
+Copyright © 2024-present Bassim Matar - datannur
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions :
 
@@ -142,4 +142,4 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-Morges, le 1er septembre 2024. Dernière mise à jour le 4 septembre 2024
+Morges, le 1er septembre 2024. Dernière mise à jour le 16 septembre 2024

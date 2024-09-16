@@ -1,5 +1,8 @@
 # datannur
 
+## unreleased
+- fixed : typo in License with the licensor name
+
 ## 0.8.8 (2024-09-16)
 - fixed : search highlight html entities with empty search
 - fixed : search bar debounce sync highlight and result
