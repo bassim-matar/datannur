@@ -4,6 +4,7 @@
   import Title from "@layout/Title.svelte"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
+  import about_file from "@markdown/about_dataset.md?raw"
 
   const datasets = db.get_all("dataset")
   const tags = db.get_all("tag").filter(tag => tag.nb_dataset > 0)
@@ -16,7 +17,7 @@
     datasets,
     tags,
     stat: [{ entity: "dataset", items: datasets }],
-    info: "about_dataset",
+    about_file,
   })
 </script>
 

@@ -5,6 +5,7 @@
   import Title from "@layout/Title.svelte"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
+  import about_file from "@markdown/about_favorite.md?raw"
 
   const institutions = db
     .get_all("institution")
@@ -57,7 +58,7 @@
     variables,
     modalities,
     stat,
-    info: "about_favorite",
+    about_file,
   })
 </script>
 

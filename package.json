@@ -1,7 +1,7 @@
 {
   "name": "datannur",
-  "version": "0.8.7",
-  "description": "datannur data catalog",
+  "version": "0.8.8",
+  "description": "datannur is a portable data catalog that can run without a server",
   "type": "module",
   "private": true,
   "main": "src/main.js",
@@ -19,7 +19,7 @@
     "autoprefixer": "^10.4.20",
     "jsonjsdb_editor": "^0.1.14",
     "open-cli": "^8.0.0",
-    "puppeteer": "^23.3.0",
+    "puppeteer": "^23.3.1",
     "rollup-plugin-visualizer": "^5.12.0",
     "sass": "^1.78.0",
     "sitemap": "^8.0.0",

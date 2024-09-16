@@ -14,6 +14,7 @@
       "@img/*": ["src/img/*"],
       "@js/*": ["src/js/*"],
       "@layout/*": ["src/layout/*"],
+      "@markdown/*": ["src/markdown/*"],
       "@page/*": ["src/page/*"],
       "@search/*": ["src/search/*"],
       "@stat/*": ["src/stat/*"],

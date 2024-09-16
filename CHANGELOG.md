@@ -1,11 +1,12 @@
 # datannur
 
-## unreleased
+## 0.8.8 (2024-09-16)
 - fixed : search highlight html entities with empty search
 - fixed : search bar debounce sync highlight and result
 - fixed : search bar remove recent search btn
 - fixed : search bar colspan diff with recent search
 - added : modality description in table modalities
+- changed : use internal markdown files instead of config.xlsx for about tab
 
 ## 0.8.7 (2024-09-15)
 - changed : use navigo router lib instead of page.js

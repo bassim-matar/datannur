@@ -8,6 +8,7 @@
   import Render from "@js/Render"
   import Title from "@layout/Title.svelte"
   import Loading from "@frame/Loading.svelte"
+  import about_page_organisation from "@markdown/about_page_organisation.md?raw"
 
   $footer_visible = true
 
@@ -22,17 +23,6 @@
     $dark_mode_theme === "dark" ? "_dark" : "",
   )
   $: main_content = markdown_render(about_main_dark)
-
-  let page_num = 0
-  let about_page_all = ""
-  let page_found = true
-  while (page_found) {
-    page_num += 1
-    let config_id = "about_page_" + page_num
-    page_found = db.table_has_id("config", config_id)
-    if (!page_found) break
-    about_page_all += db.get_config(config_id)
-  }
 
   function mermaid_add_entities(code) {
     let code_prefix = false
@@ -86,10 +76,10 @@
 
   async function script_loaded() {
     is_script_loaded = true
-    if (!about_page_all) return
+    if (!about_page_organisation) return
 
     let about_page_parts = []
-    for (const part_level_1 of about_page_all.split("mermaid(")) {
+    for (const part_level_1 of about_page_organisation.split("mermaid(")) {
       for (const part_level_2 of part_level_1.split("```mermaid")) {
         about_page_parts.push(part_level_2)
       }

@@ -3,6 +3,7 @@
   import Head from "@frame/Head.svelte"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
+  import about_file from "@markdown/about_main_meta.md?raw"
 
   const metaFolders = db.get_all("metaFolder")
   const metaDatasets = db.get_all("metaDataset")
@@ -15,7 +16,7 @@
   ]
 
   const tabs = tabs_helper({
-    info: "about_main_meta",
+    about_file,
     metaFolders,
     metaDatasets,
     metaVariables,

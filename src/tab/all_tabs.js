@@ -24,6 +24,7 @@ import MetaDiagramm from "@component/MetaDiagramm.svelte"
 import DatasetPreview from "@component/preview/DatasetPreview.svelte"
 import VariablePreview from "@component/preview/VariablePreview.svelte"
 import TextContent from "@layout/TextContent.svelte"
+import AboutFile from "@layout/AboutFile.svelte"
 import Stat from "@stat/Stat.svelte"
 import AllFav from "@favorite/AllFav.svelte"
 
@@ -190,6 +191,7 @@ export const all_tabs = {
 }
 
 const info_items = {
+  about_file: AboutFile,
   info: TextContent,
   institution_info: InstitutionInfo,
   folder_info: FolderInfo,

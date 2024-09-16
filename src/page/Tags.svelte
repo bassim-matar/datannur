@@ -5,6 +5,7 @@
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
   import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
+  import about_file from "@markdown/about_tag.md?raw"
 
   const tags = db.get_all("tag")
   if (db.use.tag_recursive) {
@@ -15,7 +16,7 @@
   const tabs = tabs_helper({
     tags,
     stat: [{ entity: "tag", items: tags }],
-    info: "about_tag",
+    about_file,
   })
 
   let key_tab = 1

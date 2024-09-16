@@ -5,6 +5,7 @@
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
   import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
+  import about_file from "@markdown/about_institution.md?raw"
 
   const institutions = db.get_all("institution")
   make_parents_relative(0, institutions)
@@ -20,7 +21,7 @@
     institutions,
     tags,
     stat: [{ entity: "institution", items: institutions }],
-    info: "about_institution",
+    about_file,
   })
 
   let key_tab = 1

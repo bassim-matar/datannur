@@ -5,6 +5,7 @@
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
   import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
+  import about_file from "@markdown/about_folder.md?raw"
 
   const folders = db.get_all("folder")
   make_parents_relative(0, folders)
@@ -20,7 +21,7 @@
     folders,
     tags,
     stat: [{ entity: "folder", items: folders }],
-    info: "about_folder",
+    about_file,
   })
 
   let key_tab = 1
