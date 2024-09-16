@@ -51,6 +51,8 @@ div.dt-buttons {
     top: 45px;
     width: 40px;
     z-index: 2;
-    background: $background-1;
+    &[is_open="true"] {
+      background: $background-1;
+    }
   }
 }

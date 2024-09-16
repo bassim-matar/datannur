@@ -2,6 +2,7 @@
 
 ## unreleased
 - fixed : typo in License with the licensor name
+- fixed : overlap between exporter btn, search bar and open_all btn on mobile
 
 ## 0.8.8 (2024-09-16)
 - fixed : search highlight html entities with empty search

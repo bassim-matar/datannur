@@ -171,7 +171,7 @@
   @import "../main.scss";
 
   .section {
-    margin-top: 20px;
+    margin-top: 30px;
   }
 
   .section :global(.search_highlight) {
@@ -183,7 +183,7 @@
   }
 
   p.control {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     .search_page_input {
       width: 100%;
       margin: auto;
