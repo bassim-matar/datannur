@@ -1,6 +1,10 @@
 <script>
   import db from "@db"
-  import { footer_visible, is_mermaid_loaded, page_content_loaded } from "@js/store"
+  import {
+    footer_visible,
+    is_mermaid_loaded,
+    page_content_loaded,
+  } from "@js/store"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import { url_prefix } from "@js/util"
   import markdown_render from "@js/markdown"
@@ -104,10 +108,12 @@
         let [mermaid_code, mardown_code] = about_page_part.split(separator)
         mermaid_code = mermaid_add_entities(mermaid_code)
         if (is_auto_flowchart) mermaid_code = diagramm_definition + mermaid_code
-        mermaid.render("about_page_diagramm_" + part_num, mermaid_code, svg => {
-          content += `<div class="mermaid_block">${svg}</div>`
-          content += markdown_render(mardown_code)
-        })
+        window.mermaid
+          .render("about_page_diagramm_" + part_num, mermaid_code)
+          .then(data => {
+            content += `<div class="mermaid_block">${data.svg}</div>`
+            content += markdown_render(mardown_code)
+          })
       }
     }
 

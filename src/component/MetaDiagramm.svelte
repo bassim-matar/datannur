@@ -105,8 +105,8 @@
   }
 
   function script_loaded() {
-    mermaid.render("diagramm", diagramm_definition, svg => {
-      svg_diagramm = svg
+    window.mermaid.render("diagramm", diagramm_definition).then(data => {
+      svg_diagramm = data.svg
     })
   }
 

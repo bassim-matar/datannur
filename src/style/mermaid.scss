@@ -32,18 +32,24 @@ span {
 
 .flowchart-link {
   @each $entity in $entities {
-    &.LS-#{$entity} {
+    &[id^="L_#{$entity}_"] {
       stroke: color($entity) !important;
     }
   }
 }
 
+.labelBkg {
+  background-color: transparent !important;
+}
 .edgeLabel {
-  background-color: $background-1 !important;
-  border: 1px solid $color-2 !important;
-  padding: 3px 5px !important;
-  border-radius: 10px !important;
-  font-size: 10px !important;
+  background: transparent !important;
+  p {
+    background-color: $background-1 !important;
+    border: 1px solid $color-2 !important;
+    padding: 3px 5px !important;
+    border-radius: 10px !important;
+    font-size: 10px !important;
+  }
 }
 
 @each $name, $color in $icon-colors {

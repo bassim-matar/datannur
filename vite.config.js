@@ -6,7 +6,7 @@ import FullReload from "vite-plugin-full-reload"
 import { defineConfig } from "vite"
 import { visualizer } from "rollup-plugin-visualizer"
 import { svelte } from "@sveltejs/vite-plugin-svelte"
-import { promises as fs, existsSync } from "fs"
+import { promises as fs } from "fs"
 import { Jsonjsdb_watcher, jsonjsdb_add_config } from "jsonjsdb_editor"
 
 const bundle_view = false
@@ -23,9 +23,7 @@ await Jsonjsdb_watcher.set_db("public/data/db")
 await Jsonjsdb_watcher.watch("public/data/db_source")
 await Jsonjsdb_watcher.update_preview("preview", "public/data/dataset")
 
-if (!existsSync(mermeid_public_path)) {
-  await fs.copyFile(mermaid_node_path, mermeid_public_path)
-}
+await fs.copyFile(mermaid_node_path, mermeid_public_path)
 
 async function get_aliases(from) {
   const jsconfig = JSON.parse(await fs.readFile(from)).compilerOptions
