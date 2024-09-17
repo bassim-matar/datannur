@@ -110,7 +110,7 @@
     })
   }
 
-  const mermaid_src = "assets/external/mermaid.min.js"
+  const mermaid_src = "assets/external/mermaid.min.js?v=11.2.1"
 
   $is_mermaid_loaded =
     $is_mermaid_loaded || document.querySelector(`script[src="${mermaid_src}"]`)
