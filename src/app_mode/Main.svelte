@@ -26,6 +26,7 @@
   import Header from "@frame/Header.svelte"
   import Footer from "@frame/Footer.svelte"
   import { copy_text_listen_click } from "@js/copy_text"
+  import default_banner from "@markdown/main/banner.md?raw"
 
   function set_option_default(key, value = true) {
     let option_value = Options.get(key)
@@ -105,13 +106,6 @@
   }
 
   const is_dark = $dark_mode_theme === "dark"
-  const main_banner = new Image()
-  main_banner.src = `data/img/main_banner${is_dark ? "_dark" : ""}.png?v=1`
-  main_banner.onload = () => {
-    const css_var_style = document.documentElement.style
-    css_var_style.setProperty("--main_banner_width", main_banner.width)
-    css_var_style.setProperty("--main_banner_height", main_banner.height)
-  }
   const favicon = is_dark ? icon_dark : icon
 
   jQuery("body").on("mouseover", ".use_tooltip", function () {
@@ -127,6 +121,20 @@
   })
 
   copy_text_listen_click()
+
+  db.loaded.then(() => {
+    const main_banner = new Image()
+    let banner_src = db.table_has_id("config", "banner")
+      ? db.get_config("banner")
+      : default_banner
+    banner_src = banner_src?.split("(")[1]?.split(")")[0]
+    main_banner.src = banner_src?.replace("{dark_mode}", is_dark ? "_dark" : "")
+    main_banner.onload = () => {
+      const css_var_style = document.documentElement.style
+      css_var_style.setProperty("--main_banner_width", main_banner.width)
+      css_var_style.setProperty("--main_banner_height", main_banner.height)
+    }
+  })
 </script>
 
 <svelte:head>
