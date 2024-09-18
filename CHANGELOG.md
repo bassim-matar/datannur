@@ -1,5 +1,8 @@
 # datannur
 
+## unreleased
+- fixed : add line break between about main body and more info
+
 ## 0.8.9 (2024-09-18)
 - fixed : typo in License with the licensor name
 - fixed : overlap between exporter btn, search bar and open_all btn on mobile

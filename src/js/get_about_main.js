@@ -16,5 +16,5 @@ export function get_about_main() {
     ? db.get_config("more_info")
     : default_more_info
 
-  return banner + "\n" + body + "\n" + more_info
+  return banner + "\n" + body + "\n\n" + more_info
 }
