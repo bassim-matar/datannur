@@ -1,10 +1,5 @@
 <script>
-  import db from "@db"
-  import {
-    footer_visible,
-    is_mermaid_loaded,
-    page_content_loaded,
-  } from "@js/store"
+  import { footer_visible, page_content_loaded } from "@js/store"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import { url_prefix } from "@js/util"
   import markdown_render from "@js/markdown"
@@ -14,6 +9,7 @@
   import Loading from "@frame/Loading.svelte"
   import about_page_organisation from "@markdown/about_page_organisation.md?raw"
   import { get_about_main } from "@js/get_about_main"
+  import { ensure_mermaid_loaded } from "@js/ensure_mermaid_loaded"
 
   $footer_visible = true
 
@@ -79,7 +75,7 @@
     return code
   }
 
-  async function script_loaded() {
+  ensure_mermaid_loaded(async () => {
     is_script_loaded = true
     if (!about_page_organisation) return
 
@@ -109,35 +105,15 @@
         let [mermaid_code, mardown_code] = about_page_part.split(separator)
         mermaid_code = mermaid_add_entities(mermaid_code)
         if (is_auto_flowchart) mermaid_code = diagramm_definition + mermaid_code
-        window.mermaid
-          .render("about_page_diagramm_" + part_num, mermaid_code)
-          .then(data => {
-            content += `<div class="mermaid_block">${data.svg}</div>`
-            content += markdown_render(mardown_code)
-          })
+        const diagramm_id = "about_page_diagramm_" + part_num
+        const { svg } = await window.mermaid.render(diagramm_id, mermaid_code)
+        content += `<div class="mermaid_block">${svg}</div>`
+        content += markdown_render(mardown_code)
       }
     }
 
     $page_content_loaded = true
-  }
-
-  const mermaid_src = "assets/external/mermaid.min.js?v=11.2.1"
-
-  $is_mermaid_loaded =
-    $is_mermaid_loaded || document.querySelector(`script[src="${mermaid_src}"]`)
-
-  if ($is_mermaid_loaded) script_loaded()
-  else {
-    document.head.appendChild(
-      Object.assign(document.createElement("script"), {
-        src: mermaid_src,
-        onload: () => {
-          $is_mermaid_loaded = true
-          script_loaded()
-        },
-      }),
-    )
-  }
+  })
 </script>
 
 <section class="section">

@@ -2,6 +2,7 @@
 
 ## unreleased
 - fixed : add line break between about main body and more info
+- changed : refactor mermaid loading
 
 ## 0.8.9 (2024-09-18)
 - fixed : typo in License with the licensor name

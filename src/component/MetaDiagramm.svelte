@@ -1,9 +1,9 @@
 <script>
   import db from "@db"
-  import { is_mermaid_loaded } from "@js/store"
   import { is_mobile, url_prefix } from "@js/util"
   import { entity_names } from "@js/constant"
   import Render from "@js/Render"
+  import { ensure_mermaid_loaded } from "@js/ensure_mermaid_loaded"
   import Loading from "@frame/Loading.svelte"
 
   let svg_diagramm = false
@@ -104,29 +104,10 @@
     diagramm_definition += `${link[0]} <--> ${link[1]}\n`
   }
 
-  function script_loaded() {
-    window.mermaid.render("diagramm", diagramm_definition).then(data => {
-      svg_diagramm = data.svg
-    })
-  }
-
-  const mermaid_src = "assets/external/mermaid.min.js?v=11.2.1"
-
-  $is_mermaid_loaded =
-    $is_mermaid_loaded || document.querySelector(`script[src="${mermaid_src}"]`)
-
-  if ($is_mermaid_loaded) script_loaded()
-  else {
-    document.head.appendChild(
-      Object.assign(document.createElement("script"), {
-        src: mermaid_src,
-        onload: () => {
-          $is_mermaid_loaded = true
-          script_loaded()
-        },
-      }),
-    )
-  }
+  ensure_mermaid_loaded(async () => {
+    const { svg } = await window.mermaid.render("diagramm", diagramm_definition)
+    svg_diagramm = svg
+  })
 </script>
 
 {#if !svg_diagramm}
