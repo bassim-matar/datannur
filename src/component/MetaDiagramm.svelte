@@ -138,15 +138,17 @@
 {/if}
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
+  @use "../style/mermaid.scss" as *;
+  @use "../style/icon.scss" as *;
 
   .tab_inner_tab {
     background: $background-2;
     padding: 30px;
     text-align: center;
     :global {
-      @import "../style/mermaid.scss";
-      @import "../style/icon.scss";
+      @include mermaid_style;
+      @include icon_color;
 
       .icon {
         margin-right: 0;

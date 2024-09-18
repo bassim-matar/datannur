@@ -219,7 +219,7 @@
 </div>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .header_search_item {
     padding: 0;

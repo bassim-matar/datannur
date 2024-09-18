@@ -1,4 +1,4 @@
-@import "../main.scss";
+@use "../main.scss" as *;
 
 :root {
   --main_banner_width: 0;

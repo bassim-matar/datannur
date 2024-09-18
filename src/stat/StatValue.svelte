@@ -35,7 +35,7 @@
 </div>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .value_box {
     position: relative;

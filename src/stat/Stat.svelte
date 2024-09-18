@@ -107,7 +107,7 @@
 </div>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .all_stat_container_wrappper {
     position: relative;

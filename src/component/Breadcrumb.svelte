@@ -33,7 +33,7 @@
 {/if}
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .tree {
     width: 100%;

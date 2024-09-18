@@ -33,11 +33,12 @@
 </div>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
+  @use "../style/icon.scss" as *;
 
   .stat_box {
     :global {
-      @import "../style/icon.scss";
+      @include icon_color;
     }
   }
 

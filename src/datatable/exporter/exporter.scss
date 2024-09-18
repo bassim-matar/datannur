@@ -1,58 +1,60 @@
-@import "../main.scss";
+@use "../main.scss" as *;
 
-div.dt-buttons {
-  position: absolute;
-  right: -45px;
-  top: 0;
-  width: 40px;
-  display: flex;
-  flex-direction: column;
-  button.button {
-    margin: 0;
-    background: transparent;
-    color: $color-2;
-    height: 0px;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    border-radius: 0;
-    transition: $transition-basic-1;
-    &:first-child {
-      height: auto;
-      padding: 10px 2px;
-    }
-    &:hover {
-      color: color("download");
-    }
-  }
-  button.buttons-html5 {
-    height: 0;
-    opacity: 0;
-    transition: $transition-basic-1;
-    &.open {
-      height: 60px;
-      opacity: 1;
-    }
-  }
-  span.icon {
-    display: block;
-    margin: auto;
-  }
-  .button i {
-    transition: 0.3s;
-  }
-}
-
-@media screen and (max-width: 600px) {
+@mixin exporter_style {
   div.dt-buttons {
-    position: fixed;
-    right: 6px;
-    top: 45px;
+    position: absolute;
+    right: -45px;
+    top: 0;
     width: 40px;
-    z-index: 2;
-    &[is_open="true"] {
-      background: $background-1;
+    display: flex;
+    flex-direction: column;
+    button.button {
+      margin: 0;
+      background: transparent;
+      color: $color-2;
+      height: 0px;
+      overflow: hidden;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      transition: $transition-basic-1;
+      &:first-child {
+        height: auto;
+        padding: 10px 2px;
+      }
+      &:hover {
+        color: color("download");
+      }
+    }
+    button.buttons-html5 {
+      height: 0;
+      opacity: 0;
+      transition: $transition-basic-1;
+      &.open {
+        height: 60px;
+        opacity: 1;
+      }
+    }
+    span.icon {
+      display: block;
+      margin: auto;
+    }
+    .button i {
+      transition: 0.3s;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    div.dt-buttons {
+      position: fixed;
+      right: 6px;
+      top: 45px;
+      width: 40px;
+      z-index: 2;
+      &[is_open="true"] {
+        background: $background-1;
+      }
     }
   }
 }

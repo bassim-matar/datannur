@@ -405,9 +405,12 @@
 </div>
 
 <style lang="scss">
-  @import "../main.scss";
-  @import "./exporter/exporter_popup.scss";
-
+  @use "../main.scss" as *;
+  @use "./exporter/exporter_popup.scss" as *;
+  @use "./exporter/exporter.scss" as *;
+  @use "../style/icon.scss" as *;
+  @use "../style/favorite.scss" as *;
+  
   .datatable_main_wrapper {
     :global {
       .dt-scroll {
@@ -479,9 +482,9 @@
 
   .datatable_main_wrapper {
     :global {
-      @import "./exporter/exporter.scss";
-      @import "../style/favorite.scss";
-      @import "../style/icon.scss";
+      @include exporter_style;
+      @include favorite_style;
+      @include icon_color;
 
       table.dataTable th.dt-type-numeric,
       table.dataTable th.dt-type-date,

@@ -168,7 +168,7 @@
 </section>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .section {
     margin-top: 30px;

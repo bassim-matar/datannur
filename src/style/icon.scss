@@ -1,8 +1,10 @@
-@import "../main.scss";
+@use "../main.scss";
 
-@each $name, $color in $icon-colors {
-  .icon_#{$name},
-  .icon_#{$name} i {
-    color: $color;
+@mixin icon_color {
+  @each $name, $color in main.$icon-colors {
+    .icon_#{$name},
+    .icon_#{$name} i {
+      color: $color;
+    }
   }
 }

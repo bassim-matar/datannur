@@ -12,7 +12,7 @@
 {/if}
 
 <style lang="scss">
-  @import "../../main.scss";
+  @use "../../main.scss" as *;
 
   .filter_info_box {
     position: absolute;

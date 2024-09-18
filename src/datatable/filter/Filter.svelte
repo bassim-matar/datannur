@@ -55,7 +55,7 @@
 </tr>
 
 <style lang="scss">
-  @import "../../main.scss";
+  @use "../../main.scss" as *;
 
   .header_filter_wrapper {
     .header_filter_th {

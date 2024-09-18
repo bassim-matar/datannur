@@ -122,7 +122,7 @@
 <DescriptionInfo description={variable_info.description} />
 
 <style lang="scss">
-  @import "../../main.scss";
+  @use "../../main.scss" as *;
 
   .breadcrumb {
     :global(a) {

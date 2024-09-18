@@ -25,7 +25,7 @@
 {/if}
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .tdnn {
     --toggleHeight: 16em;

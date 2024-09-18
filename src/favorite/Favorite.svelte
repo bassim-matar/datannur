@@ -34,7 +34,8 @@
 {/if}
 
 <style lang="scss">
-  @import "../style/favorite.scss";
+  @use "../style/favorite.scss" as *;
+  @include favorite_style;
 
   .favorite {
     margin-left: 10px;

@@ -30,8 +30,10 @@
 {/if}
 
 <style lang="scss">
-  @import "../main.scss";
-  @import "../style/icon.scss";
+  @use "../main.scss" as *;
+  @use "../style/icon.scss" as *;
+
+  @include icon-color;
 
   span.icon {
     width: auto;

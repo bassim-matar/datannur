@@ -17,7 +17,7 @@
 </section>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   section .title {
     color: $color-3;

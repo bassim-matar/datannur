@@ -153,7 +153,10 @@
 </section>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
+  @use "../style/mermaid.scss" as *;
+  @use "../style/icon.scss" as *;
+  
   .page_content_wrapper {
     position: relative;
     background: $background-2;
@@ -168,8 +171,8 @@
     padding: 3.5rem 3.75rem;
     margin: auto;
     :global {
-      @import "../style/icon.scss";
-      @import "../style/mermaid.scss";
+      @include icon_color;
+      @include mermaid_style;
 
       .mermaid_block {
         text-align: center;

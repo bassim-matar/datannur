@@ -61,7 +61,8 @@
 {/if}
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
+  
   .fix_on_mobile {
     @media screen and (max-width: $menu_mobile_limit) {
       padding-left: 0.25em;

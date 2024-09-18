@@ -70,7 +70,7 @@
 </li>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .tab_visible {
     position: relative;

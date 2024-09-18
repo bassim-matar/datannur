@@ -30,7 +30,7 @@
 {/if}
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .navbar-link:not(.is-arrowless)::after{
     border-color: $color-3;

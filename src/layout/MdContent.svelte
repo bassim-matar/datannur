@@ -11,7 +11,7 @@
 </div>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   div.main {
     padding: 3.5rem 3.75rem;

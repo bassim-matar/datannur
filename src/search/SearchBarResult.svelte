@@ -71,7 +71,7 @@
 </div>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   #search_bar_result_outer {
     position: relative;

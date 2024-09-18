@@ -72,7 +72,7 @@
 </tr>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   tr.nav_hover {
     background: rgba(127, 127, 127, 0.1);

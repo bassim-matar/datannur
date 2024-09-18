@@ -30,7 +30,7 @@
 </div>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .iframe_wrapper {
     position: relative;

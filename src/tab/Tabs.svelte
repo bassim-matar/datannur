@@ -138,7 +138,7 @@
 />
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .tabs {
     margin-bottom: -1px;

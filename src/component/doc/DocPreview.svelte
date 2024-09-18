@@ -23,7 +23,7 @@
 </div>
 
 <style lang="scss">
-  @import "../../main.scss";
+  @use "../../main.scss" as *;
 
   .doc_content_wrapper {
     width: calc(50% - 3px);

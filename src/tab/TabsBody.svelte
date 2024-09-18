@@ -40,7 +40,7 @@
 </div>
 
 <style lang="scss">
-  @import "../main.scss";
+  @use "../main.scss" as *;
 
   .tabs_body {
     position: relative;

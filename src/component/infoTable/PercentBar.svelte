@@ -13,7 +13,7 @@
 <span class="num_percent color_{type}" style="width: {percent}%"></span>
 
 <style lang="scss">
-  @import "../../main.scss";
+  @use "../../main.scss" as *;
 
   .num_percent_value {
     position: absolute;
