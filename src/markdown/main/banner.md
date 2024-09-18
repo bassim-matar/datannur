@@ -1,0 +1,1 @@
+![main_banner not_rounded](data/img/main_banner{dark_mode}.png?v=1)

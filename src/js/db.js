@@ -22,7 +22,6 @@ function add_entities_used() {
     db.use.owner = is_db_using("owner")
     db.use.manager = is_db_using("manager")
   }
-  db.use.about = db.get_config("about_main") ? true : false
   if (db.use.tag) {
     const tags = db.get_all("tag")
     if (tags.length > 0 && tags[0].parent_id !== undefined) {

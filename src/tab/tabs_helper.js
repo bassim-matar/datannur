@@ -36,10 +36,6 @@ function get_tab(key, value) {
   }
   if (tab.load_async) tab.nb = "?"
 
-  if (tab.key === "info") {
-    if (!db.get_config(value)) return false
-  }
-
   return tab
 }
 

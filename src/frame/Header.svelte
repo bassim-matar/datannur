@@ -139,7 +139,6 @@
         href="about"
         pages={["about"]}
         icon="about"
-        if_use="about"
         info="A propos"
       >
         <span class="visible_on_mobile">A propos</span>

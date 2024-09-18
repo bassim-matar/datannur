@@ -192,7 +192,6 @@ export const all_tabs = {
 
 const info_items = {
   about_file: AboutFile,
-  info: TextContent,
   institution_info: InstitutionInfo,
   folder_info: FolderInfo,
   tag_info: TagInfo,

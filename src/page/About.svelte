@@ -13,6 +13,7 @@
   import Title from "@layout/Title.svelte"
   import Loading from "@frame/Loading.svelte"
   import about_page_organisation from "@markdown/about_page_organisation.md?raw"
+  import { get_about_main } from "@js/get_about_main"
 
   $footer_visible = true
 
@@ -21,7 +22,7 @@
   let diagramm_definition = `flowchart ${direction}\n`
 
   let content = ""
-  let about_main = db.get_config("about_main")
+  let about_main = get_about_main()
   $: about_main_dark = about_main?.replace(
     "{dark_mode}",
     $dark_mode_theme === "dark" ? "_dark" : "",
@@ -156,7 +157,7 @@
   @use "../main.scss" as *;
   @use "../style/mermaid.scss" as *;
   @use "../style/icon.scss" as *;
-  
+
   .page_content_wrapper {
     position: relative;
     background: $background-2;

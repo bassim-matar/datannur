@@ -4,7 +4,8 @@
   import Head from "@frame/Head.svelte"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
-
+  import { get_about_main } from "@js/get_about_main"
+ 
   let institutions = db.get_all("institution")
   let folders = db.get_all("folder")
   let tags = db.get_all("tag")
@@ -34,7 +35,7 @@
   ]
 
   let tabs = tabs_helper({
-    info: "about_main",
+    about_file: get_about_main(),
     institutions,
     folders,
     tags,
@@ -56,10 +57,7 @@
     !db.use.about
 </script>
 
-<Head
-  title="datannur | Accueil"
-  description="Page d'accueil de datannur"
-/>
+<Head title="datannur | Accueil" description="Page d'accueil de datannur" />
 
 <section class="section">
   {#if all_empty}
