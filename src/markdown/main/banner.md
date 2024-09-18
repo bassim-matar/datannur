@@ -1,1 +1,1 @@
-![main_banner not_rounded](data/img/main_banner{dark_mode}.png?v=1)
+![main_banner not_rounded](assets/main_banner{dark_mode}.png?v=1)

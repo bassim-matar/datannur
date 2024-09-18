@@ -1,5 +1,5 @@
-![datannur logo](./data/img/main_banner_dark.png#gh-dark-mode-only)
-![datannur logo](./data/img/main_banner.png#gh-light-mode-only)
+![datannur logo](./assets/main_banner_dark.png#gh-dark-mode-only)
+![datannur logo](./assets/main_banner.png#gh-light-mode-only)
 
 # datannur
 
