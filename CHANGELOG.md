@@ -5,6 +5,7 @@
 - added : support mermaid in all markdown about tab
 - changed : refactor mermaid loading
 - changed : improve about tab for dataset, doc and favorite
+- changed : make image in about tab full width
 - fixed : add line break between about main body and more info
 - fixed : make main_banner src dynamic in Main.svelte
 

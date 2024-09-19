@@ -32,25 +32,36 @@
   })
 </script>
 
-{#if use_mermaid}
-  <div class="content">
-    {@html html_content}
-    {#if !html_content_loaded}
-      <Loading position="relative" />
-    {/if}
-  </div>
-{:else}
-  <MdContent content={md_content} />
-{/if}
+<div class="about_file_wrapper">
+  {#if use_mermaid}
+    <div class="content">
+      {@html html_content}
+      {#if !html_content_loaded}
+        <Loading position="relative" />
+      {/if}
+    </div>
+  {:else}
+    <MdContent content={md_content} />
+  {/if}
+</div>
 
 <style lang="scss">
   @use "../style/mermaid.scss" as *;
   @use "../style/icon.scss" as *;
 
+  .about_file_wrapper {
+    :global {
+      p img {
+        width: 100%;
+      }
+    }
+  }
+
   .content {
     max-width: 900px;
     padding: 3.5rem 3.75rem;
     margin: auto;
+
     :global {
       @include icon_color;
       @include mermaid_style;

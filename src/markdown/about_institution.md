@@ -1,3 +1,9 @@
-Les institutions sont fournisseur et/ou gestionnaires de jeux de données et de dossiers.
+Une institution représente une personne morale, une de ses composantes ou l'un de ses collaborateurs. Les institutions sont organisées de façon arborescente.
 
-Elles sont regroupées en une arborescence pouvant aller jusqu'aux collaborateurs.
+Une institution peut être associée à des datasets et des dossiers, elle peut en avoir le statut de fournisseur et/ou de gestionnaire.
+
+mermaid(
+  $institution $recursive
+  $institution -- manager - owner --> $folder
+  $institution -- manager - owner --> $dataset
+);
