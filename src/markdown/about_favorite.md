@@ -1,5 +1,5 @@
-Tous les éléments du catalogue peuvent être mis en favoris en cliquant sur **l'étoile**. 
+Les éléments du catalogue peuvent être mis en favoris en cliquant sur l'étoile. 
 
-C'est sur cette page que les éléments favoris sont rassemblés. 
+C'est sur cette page qu'ils sont rassemblés.
 
-Les favoris sont enregistrés dans le navigateur web.
+![add_favorite](assets/tuto/add_favorite{dark_mode}.gif?v=1)

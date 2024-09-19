@@ -3,7 +3,7 @@
   import { is_mobile, url_prefix } from "@js/util"
   import { entity_names } from "@js/constant"
   import Render from "@js/Render"
-  import { ensure_mermaid_loaded } from "@js/ensure_mermaid_loaded"
+  import { ensure_mermaid_loaded } from "@js/mermaid"
   import Loading from "@frame/Loading.svelte"
 
   let svg_diagramm = false

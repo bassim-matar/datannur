@@ -48,7 +48,7 @@ mermaid(
   $tag <--> $variable
 );
 
-Pour finir, certains concepts possèdent des docs (documents de type markdown ou pdf). Un **doc** peut être lié à une multitude de datasets, de dossiers et d'institutions, et inversement.
+Pour finir, certains concepts possèdent des docs (documentations de type markdown ou pdf). Une **doc** peut être liée à une multitude de datasets, de dossiers et d'institutions, et inversement.
 
 mermaid(
   $doc <--> $institution

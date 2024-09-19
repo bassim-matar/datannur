@@ -1,22 +1,16 @@
 <script>
   import { footer_visible, page_content_loaded } from "@js/store"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
-  import { url_prefix } from "@js/util"
   import markdown_render from "@js/markdown"
-  import { entity_to_icon, entity_names } from "@js/constant"
-  import Render from "@js/Render"
   import Title from "@layout/Title.svelte"
   import Loading from "@frame/Loading.svelte"
   import about_page_organisation from "@markdown/about_page_organisation.md?raw"
   import { get_about_main } from "@js/get_about_main"
-  import { ensure_mermaid_loaded } from "@js/ensure_mermaid_loaded"
+  import { ensure_mermaid_loaded, md_with_mermaid_to_html } from "@js/mermaid"
 
   $footer_visible = true
 
   let is_script_loaded = false
-  const direction = "TB" // is_mobile ? "TB" : "LR"
-  let diagramm_definition = `flowchart ${direction}\n`
-
   let content = ""
   let about_main = get_about_main()
   $: about_main_dark = about_main?.replace(
@@ -25,93 +19,10 @@
   )
   $: main_content = markdown_render(about_main_dark)
 
-  function mermaid_add_entities(code) {
-    let code_prefix = false
-    let code_prefixes_search = ["flowchart LR", "flowchart TB"]
-    for (const code_prefix_search of code_prefixes_search) {
-      if (
-        code.startsWith(code_prefix_search) ||
-        code.startsWith("\n" + code_prefix_search)
-      ) {
-        code_prefix = `\n${code_prefix_search}\n`
-        let [before, ...after] = code.split(code_prefix_search)
-        code = after.join("_")
-      }
-    }
-
-    const manager_owner_clean =
-      entity_names["manager"] + " - " + entity_names["owner"]
-    code = code.replaceAll(
-      `-- manager - owner -->`,
-      `-- ${manager_owner_clean} -->`,
-    )
-
-    for (const [entity, icon_name] of Object.entries(entity_to_icon)) {
-      const entity_clean_name = entity_names[entity]
-      code = code.replaceAll(`-- ${entity} -->`, `-- ${entity_clean_name} -->`)
-
-      if (!code.includes("$" + entity)) continue
-
-      let entity_name = entity
-      if (entity === "manager" || entity === "owner") {
-        entity_name = "institution"
-      }
-      let icon = Render.icon(entity_name)
-
-      let recursive_icon = ""
-      const entity_recursive = "$" + entity + " $recursive"
-      if (code.includes(entity_recursive)) {
-        recursive_icon = " " + Render.icon("recursive")
-        code = code.replaceAll(entity_recursive, "")
-      }
-
-      let entity_definition = `${entity}(${icon}<span>${entity_clean_name}</span>${recursive_icon})\n`
-      entity_definition += `click ${entity} href "${url_prefix}/metaDataset/${entity}";\n`
-      code = code.replaceAll("$" + entity, entity)
-      code = entity_definition + code
-    }
-    if (code_prefix) code = code_prefix + code
-
-    return code
-  }
-
   ensure_mermaid_loaded(async () => {
-    is_script_loaded = true
     if (!about_page_organisation) return
-
-    let about_page_parts = []
-    for (const part_level_1 of about_page_organisation.split("mermaid(")) {
-      for (const part_level_2 of part_level_1.split("```mermaid")) {
-        about_page_parts.push(part_level_2)
-      }
-    }
-
-    if (about_page_parts.length === 1) {
-      content += about_page_parts[0]
-      return
-    }
-    let part_num = 0
-    for (const about_page_part of about_page_parts) {
-      part_num += 1
-      if (part_num === 1) {
-        content += markdown_render(about_page_part)
-      } else {
-        let separator = "```"
-        let is_auto_flowchart = false
-        if (about_page_part.includes(");")) {
-          separator = ");"
-          is_auto_flowchart = true
-        }
-        let [mermaid_code, mardown_code] = about_page_part.split(separator)
-        mermaid_code = mermaid_add_entities(mermaid_code)
-        if (is_auto_flowchart) mermaid_code = diagramm_definition + mermaid_code
-        const diagramm_id = "about_page_diagramm_" + part_num
-        const { svg } = await window.mermaid.render(diagramm_id, mermaid_code)
-        content += `<div class="mermaid_block">${svg}</div>`
-        content += markdown_render(mardown_code)
-      }
-    }
-
+    content = await md_with_mermaid_to_html(about_page_organisation)
+    is_script_loaded = true
     $page_content_loaded = true
   })
 </script>

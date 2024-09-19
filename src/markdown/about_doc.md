@@ -1,3 +1,9 @@
-Certains concepts possèdent des docs (documents de type markdown ou pdf). 
+Une doc (documentation) peut être un fichier de type PDF ou Markdown (format utilisé pour les readme).
 
-Un **doc** peut être lié à une multitude de datasets, de dossiers et d'institutions, et inversement.
+Elle peut être associée à une multitude d'institutions, de dossiers et de datasets, et inversement.
+
+mermaid(
+  $institution <--> $doc
+  $folder <--> $doc
+  $dataset <--> $doc
+);
