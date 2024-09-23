@@ -1,4 +1,4 @@
-Les mots clés, ou tags, peuvent être attribués aux variables, aux datasets, aux institutions et aux dossiers.
+Les mots clés peuvent être attribués aux institutions aux dossiers, aux datasets et aux variables.
 
 mermaid(
   $tag $recursive

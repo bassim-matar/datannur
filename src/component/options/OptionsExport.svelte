@@ -8,11 +8,9 @@
     const jszip = new JSZip()
     const files = jszip.folder("files")
     db.browser.getAll(user_files_key, entries => {
-      console.log(entries)
       for (const entry of entries) {
         const filename = entry.k
         const file = entry.v
-        console.log(entry)
         if (!(file instanceof File)) continue
         files.file(filename, file, { binary: true })
       }

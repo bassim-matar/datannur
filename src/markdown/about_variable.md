@@ -4,5 +4,6 @@ Des mots clés peuvent lui être attribué.
 
 mermaid( 
   $dataset --> $variable
+  $tag <--> $variable
   $variable <--> $modality
 );

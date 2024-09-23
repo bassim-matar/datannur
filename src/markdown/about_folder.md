@@ -1,6 +1,6 @@
-Les dossiers permettent de regrouper et organiser les jeux de données en une arborescence. 
+Les dossiers permettent de regrouper et organiser les datasets et les modalités en une arborescence. 
 
-Un dossier peut être indiqué comme étant géré par une institution, et des mots clés peuvent lui être attribué.
+Un dossier peut être indiqué comme étant géré et/ou fourni par une institution, des mots clés et des docs peuvent lui être attribués.
 
 mermaid(
   $folder $recursive
@@ -8,6 +8,7 @@ mermaid(
   $tag $recursive
   $institution -- manager - owner --> $folder
   $tag <--> $folder
+  $doc <--> $folder
   $folder --> $dataset
   $folder --> $modality
 );
