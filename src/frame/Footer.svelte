@@ -35,7 +35,12 @@
       </div>
       {#if app_version}
         <div>
-          v{app_version}
+          <a
+            href="https://github.com/bassim-matar/datannur-app/releases/tag/{app_version}"
+            target="_blanck"
+          >
+            v{app_version}
+          </a>
         </div>
       {/if}
       <div>
@@ -56,8 +61,9 @@
             <Loading type="mini" position="relative" />
           {:else}
             <span
-            class="break_line use_tooltip tooltip_top"
-            title={last_update.absolute}>
+              class="break_line use_tooltip tooltip_top"
+              title={last_update.absolute}
+            >
               actualisé {last_update.relative}
             </span>
           {/if}

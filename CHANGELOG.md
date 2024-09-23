@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- added : link to release on github when clicking on app version in footer
+
 ## 0.8.10 (2024-09-23)
 
 - added : support mermaid in all markdown about tab
