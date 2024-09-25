@@ -1,12 +1,12 @@
 import path from "path"
+import fs from "fs/promises"
 import autoprefixer from "autoprefixer"
-import alias from "@rollup/plugin-alias"
 import autoPreprocess from "svelte-preprocess"
+import alias from "@rollup/plugin-alias"
 import FullReload from "vite-plugin-full-reload"
-import { defineConfig } from "vite"
+import { defineConfig } from "vitest/config"
 import { visualizer } from "rollup-plugin-visualizer"
 import { svelte } from "@sveltejs/vite-plugin-svelte"
-import { promises as fs } from "fs"
 import { Jsonjsdb_watcher, jsonjsdb_add_config } from "jsonjsdb_editor"
 
 const bundle_view = false
@@ -72,7 +72,8 @@ function update_router_index(file, page_dir_from_router_index) {
         if (!file.endsWith(".svelte")) continue
         const filename = file.replace(".svelte", "")
         const module_name = filename.split("[")[0]
-        const route_name = module_name.charAt(0).toLowerCase() + module_name.slice(1)
+        const route_name =
+          module_name.charAt(0).toLowerCase() + module_name.slice(1)
         let param = false
         if (filename.includes("["))
           param = `"${filename.split("[")[1].split("]")[0]}"`
@@ -89,6 +90,7 @@ function update_router_index(file, page_dir_from_router_index) {
 export default defineConfig({
   base: "",
   server: { port: 8080, origin: "", open: true },
+  test: { include: ["test/**/*.test.js"] },
   build: {
     outDir: out_dir,
     chunkSizeWarningLimit: 1000,
