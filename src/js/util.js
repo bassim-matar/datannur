@@ -80,7 +80,7 @@ export function escape_html_entities(str) {
 
 export function link(href, content) {
   const base = get_base_link_url()
-  const onclick = `event.preventDefault(); window.go_to_href('${href}')`
+  const onclick = `window.go_to_href(event, '${href}')`
   return `<a href="${base}${href}" onclick="${onclick}">${content}</a>`
 }
 

@@ -1,8 +1,6 @@
 <script>
   import db from "@db"
   import { nb_favorite, header_open, page_name } from "@js/store"
-  import { router } from "@js/router"
-  // import { subfolder } from "@js/util"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"
@@ -11,15 +9,10 @@
   import MainFilter from "@component/MainFilter.svelte"
   import HeaderDropdown from "./HeaderDropdown.svelte"
   import HeaderLink from "./HeaderLink.svelte"
+  import Link from "@layout/Link.svelte"
 
   const toggle_header = () => ($header_open = !$header_open)
   const close_menu = () => ($header_open = false)
-
-  function go_to_homepage() {
-    let url = "/"
-    // if (subfolder) url = `/?homepage`
-    router.navigate(url)
-  }
 
   let scroll_y = 0
 
@@ -42,9 +35,9 @@
   style="max-height: 48px; min-height: 48px;"
 >
   <div class="navbar-brand">
-    <a href="?homepage" on:click|preventDefault={go_to_homepage} class="navbar-item" >
+    <Link href="" className="navbar-item" click={close_menu}>
       <img src={logo_src} class="header_logo" alt="logo" />
-    </a>
+    </Link>
 
     <div class="mobile_right_btn">
       {#if !on_page_search}

@@ -14,7 +14,9 @@
   function blur(e) {
     this.blur()
   }
-  function go_to_href() {
+  function go_to_href(event) {
+    if (event.ctrlKey || event.metaKey) return
+    event.preventDefault()
     router.navigate(href)
   }
 </script>
@@ -25,7 +27,7 @@
   class:is-active={isActive()}
   on:click={blur}
   on:click={click}
-  on:click|preventDefault={go_to_href}
+  on:click={go_to_href}
 >
   <slot />
 </a>

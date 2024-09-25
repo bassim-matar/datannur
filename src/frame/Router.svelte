@@ -13,6 +13,13 @@
   let entity_id = ""
   $: page_key = `${entity}___${entity_id}`
 
+  function is_spa_homepage() {
+    return (
+      app_mode !== "static_render" &&
+      (!window.location.hash || window.location.hash === "#")
+    )
+  }
+
   function update_route(entity, new_params = false) {
     if (new_params) params = new_params
     $page_content_loaded = false
@@ -60,14 +67,15 @@
     }
   }
   if ("_error" in router_index) {
-    router.notFound(set_route("_error"))
+    router.notFound(set_route("_error"), {
+      before(done) {
+        if (is_spa_homepage()) router.resolve("/")
+        done()
+      },
+    })
   }
 
-  if (app_mode !== "static_render" && (!window.location.hash || window.location.hash === "#")) {
-    router.resolve("/")
-  } else {
-    router.resolve()
-  }
+  is_spa_homepage() ? router.resolve("/") : router.resolve()
 </script>
 
 {#key page_key}

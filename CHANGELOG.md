@@ -6,6 +6,7 @@
 - added : github links to the source code in footer 
 - changed : remove some config files and integrate them in package.json and vite.config.js
 - changed : remove pdf version of the license in the root and move it in public/assets
+- fixed : enable again shortcut that open link in new tab and fix go back to homepage
 
 ## 0.8.10 (2024-09-23)
 
