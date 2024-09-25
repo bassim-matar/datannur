@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fixed : revert datatables to version 2.1.4 to fix bug with fixed col and scroller
+
 ## 0.8.11 (2024-09-26)
 
 - added : link to release on github when clicking on app version in footer
