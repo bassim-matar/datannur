@@ -14,7 +14,7 @@ Before using please review the full [License](LICENSE.md).
 
 For more information check the [website](https://datannur.com).
 
-# Update
+## Update
 
 To update the app to a newer version you need to run this command :
 

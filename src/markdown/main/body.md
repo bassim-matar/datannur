@@ -18,4 +18,4 @@ Flexible, complet et structuré autour de 7 concepts avec un niveau de détail i
 - **Sécurisé** :
 Parce qu’elle est une simple interface HTML isolée dans le navigateur, l’application ne peut rien modifier sur la machine et ne pose ainsi aucun risque
 
-Pour davantage d'information : [datannur.com](https://datannur.com)
+Pour en savoir plus : [datannur.com](https://datannur.com)

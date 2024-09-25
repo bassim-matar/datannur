@@ -3,6 +3,7 @@
   import { footer_visible } from "@js/store"
   import { get_datetime, get_time_ago } from "@js/Time"
   import Loading from "@frame/Loading.svelte"
+  import Icon from "@layout/Icon.svelte"
   import DarkModeSwitch from "@dark_mode/DarkModeSwitch.svelte"
   import HeaderLink from "@frame/HeaderLink.svelte"
 
@@ -31,7 +32,9 @@
   <footer class="footer">
     <div class="footer-content">
       <div>
-        © {year} dat<span class="main_color">a</span>nnur
+        <a href="https://datannur.com" target="_blanck">
+          © {year} dat<span class="main_color">a</span>nnur
+        </a>
       </div>
       {#if app_version}
         <div>
@@ -43,6 +46,11 @@
           </a>
         </div>
       {/if}
+      <div>
+        <a href="https://github.com/bassim-matar/datannur" target="_blanck">
+          <Icon type="github" margin_right={false} /> github
+        </a>
+      </div>
       <div>
         <HeaderLink
           href="meta"
