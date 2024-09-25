@@ -44,7 +44,7 @@
   <br />
   <div class="_text">{description}</div>
   <br />
-  <Link href="/" className="button">Page d'accueil</Link>
+  <Link href="" className="button">Page d'accueil</Link>
 </div>
 
 <style lang="scss">
