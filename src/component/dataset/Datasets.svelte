@@ -4,6 +4,7 @@
   import Column from "@js/Column"
   import Render from "@js/Render"
   import Datatable from "@datatable/Datatable.svelte"
+  import CopyText from "@src/layout/CopyText.svelte"
 
   export let datasets
   export let is_meta = false
@@ -75,16 +76,11 @@
     Column.name("dataset", "Dataset", { is_meta }),
     Column.description(),
     Column.datatype(),
-    {
-      data: "nb_variable",
-      title: Render.icon("variable") + "Variables",
-      render: (data, type, row) => {
-        if (!data) return ""
-        const url = dataset_path + row.id + "?tab=" + tab_variables
-        const percent = get_percent(data / nb_variable_max)
-        return `${Render.num_percent(link(url, data), percent, "variable", type)}`
-      },
-    },
+    Column.nb_variable("dataset", nb_variable_max, {
+      tab: tab_variables,
+      link_path: dataset_path,
+      show_title: true,
+    }),
     Column.nb_row(nb_row_max),
   ])
 

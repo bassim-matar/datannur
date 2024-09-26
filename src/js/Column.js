@@ -3,6 +3,7 @@ import {
   link,
   wrap_long_text,
   get_percent,
+  pluralize,
 } from "@js/util"
 import { get_time_ago, get_datetime, date_to_timestamp } from "@js/Time"
 import { entity_names, entity_to_icon } from "@js/constant"
@@ -243,7 +244,7 @@ export default class Column {
   static favorite() {
     return {
       data: "is_favorite",
-      title: Render.icon("favorite") + "<span class='hidden'>Favoris</span>",
+      title: Render.icon("favorite") + "<span class='hidden'>favorite</span>",
       name: "is_favorite",
       width: "20px",
       tooltip: "Favoris",
@@ -254,7 +255,7 @@ export default class Column {
   static level() {
     return {
       data: "id",
-      title: Render.icon("level") + "<span class='hidden'>Level</span>",
+      title: Render.icon("level") + "<span class='hidden'>level</span>",
       defaultContent: "",
       name: "level",
       filter_type: "input",
@@ -348,7 +349,9 @@ export default class Column {
   static nb_doc(entity, total, with_name = false) {
     return {
       data: "docs_recursive",
-      title: Render.icon("doc") + (with_name ? "Docs" : "<span class='hidden'>nb_docs</span>"),
+      title:
+        Render.icon("doc") +
+        (with_name ? "Docs" : "<span class='hidden'>nb_docs</span>"),
       filter_type: "input",
       defaultContent: "",
       render: (data, type, row) => {
@@ -359,10 +362,26 @@ export default class Column {
       },
     }
   }
+  static nb_child_recursive(entity, total, link_path = false) {
+    if (!link_path) link_path = entity + "/"
+    const entity_plural = pluralize(entity)
+    return {
+      data: "nb_child_recursive",
+      title:
+        Render.icon(entity) + `<span class='hidden'>nb_${entity_plural}</span>`,
+      filter_type: "input",
+      render: (data, type, row) => {
+        if (!data) return ""
+        const content = link(link_path + row.id + `?tab=${entity_plural}`, data)
+        const percent = get_percent(data / total)
+        return `${Render.num_percent(content, percent, entity, type)}`
+      },
+    }
+  }
   static nb_folder_recursive(entity, total) {
     return {
       data: "nb_folder_recursive",
-      title: Render.icon("folder") + "<span class='hidden'>nb_dossiers</span>",
+      title: Render.icon("folder") + "<span class='hidden'>nb_folders</span>",
       filter_type: "input",
       render: (data, type, row) => {
         if (!data) return ""
@@ -385,15 +404,24 @@ export default class Column {
       },
     }
   }
-  static nb_variable_recursive(entity, total) {
+  static nb_variable(entity, total, option) {
+    if (!option) option = {}
+    if (!("link_path" in option)) option.link_path = entity + "/"
+    if (!("tab" in option)) option.tab = "variables"
+    if (!("show_title" in option)) option.show_title = false
+    const title = option.show_title
+      ? "Variables"
+      : `<span class='hidden'>nb_variables</span>`
     return {
-      data: "nb_variable_recursive",
-      title:
-        Render.icon("variable") + "<span class='hidden'>nb_variables</span>",
+      data: "nb_variable" + (option.recursive ? "_recursive" : ""),
+      title: Render.icon("variable") + title,
       filter_type: "input",
       render: (data, type, row) => {
         if (!data) return ""
-        const content = link(entity + "/" + row.id + "?tab=variables", data)
+        const content = link(
+          option.link_path + row.id + `?tab=${option.tab}`,
+          data
+        )
         const percent = get_percent(data / total)
         return `${Render.num_percent(content, percent, "variable", type)}`
       },

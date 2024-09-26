@@ -57,16 +57,11 @@
           return `${Render.num_percent(content, percent, "dataset", type)}`
         },
       },
-      {
-        data: "nb_variable",
-        title: Render.icon("variable") + "Variables",
-        render: (data, type, row) => {
-          if (!data) return ""
-          const url = folder_path + row.id + "?tab=metaVariables"
-          const percent = get_percent(data / variable_max)
-          return `${Render.num_percent(link(url, data), percent, "folder", type)}`
-        },
-      },
+      Column.nb_variable("folder", variable_max, {
+        tab: "metaVariables",
+        link_path: folder_path,
+        show_title: true,
+      }),
     ]
   } else {
     columns = [
@@ -77,17 +72,7 @@
         link_same_entity_tab: true,
       }),
       Column.description(),
-      {
-        data: "nb_child_recursive",
-        title:
-          Render.icon("folder") + "<span class='hidden'>nb_dossiers</span>",
-        render: (data, type, row) => {
-          if (!data) return ""
-          const content = link(folder_path + row.id + "?tab=folders", data)
-          const percent = get_percent(data / folder_max)
-          return `${Render.num_percent(content, percent, "folder", type)}`
-        },
-      },
+      Column.nb_child_recursive("folder", folder_max, folder_path),
       Column.nb_dataset_recursive("folder", dataset_max),
       Column.nb_doc("folder", nb_doc_max),
       Column.tag(),

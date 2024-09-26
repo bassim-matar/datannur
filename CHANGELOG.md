@@ -5,6 +5,7 @@
 - fixed : revert datatables to version 2.1.4 to fix bug with fixed col and scroller
 - fixed : upgrade sass without warning about new JS API
 - fixed : loading logo centered
+- refactor : use Column.nb_child_recursive() and Column.nb_variable()
 
 ## 0.8.11 (2024-09-26)
 

@@ -24,19 +24,7 @@
     Column.name("modality", "Modalité"),
     Column.description(),
     Column.datatype(),
-    {
-      data: "nb_variable",
-      title: Render.icon("variable") + "Variables",
-      render: (data, type, row) => {
-        if (!data) return ""
-        const percent = get_percent(data / nb_variable_max)
-        const content = link(
-          `modality/${row.id}?tab=variables`,
-          Render.num(data),
-        )
-        return `${Render.num_percent(content, percent, "variable", type)}`
-      },
-    },
+    Column.nb_variable("modality", nb_variable_max, { show_title: true }),
     {
       data: "values",
       title: Render.icon("value") + "Nb",

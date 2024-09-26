@@ -1,5 +1,5 @@
 <script>
-  import { link, wrap_long_text, get_percent } from "@js/util"
+  import { wrap_long_text } from "@js/util"
   import { get_parent_path } from "@js/db"
   import Column from "@js/Column"
   import Render from "@js/Render"
@@ -40,21 +40,7 @@
       link_same_entity_tab: true,
     }),
     Column.description(),
-    {
-      data: "nb_child_recursive",
-      title:
-        Render.icon("institution") +
-        "<span class='hidden'>nb_institutions</span>",
-      render: (data, type, row) => {
-        if (!data) return ""
-        const content = link(
-          "institution/" + row.id + "?tab=institutions",
-          data,
-        )
-        const percent = get_percent(data / institution_max)
-        return `${Render.num_percent(content, percent, "institution", type)}`
-      },
-    },
+    Column.nb_child_recursive("institution", institution_max),
     Column.nb_folder_recursive("institution", folder_max),
     Column.nb_dataset_recursive("institution", dataset_max),
     Column.nb_doc("institution", nb_doc_max),

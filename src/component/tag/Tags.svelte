@@ -54,17 +54,7 @@
   }
 
   columns = columns.concat([
-    {
-      data: "nb_child_recursive",
-      title: Render.icon("tag") + "<span class='hidden'>nb_tags</span>",
-      filter_type: "input",
-      render: (data, type, row) => {
-        if (!data) return ""
-        const content = link("tag/" + row.id + "?tab=tags", data)
-        const percent = get_percent(data / tag_max)
-        return `${Render.num_percent(content, percent, "tag", type)}`
-      },
-    },
+    Column.nb_child_recursive("tag", tag_max),
     {
       data: "nb_institution_recursive",
       title:
@@ -80,7 +70,7 @@
     },
     Column.nb_folder_recursive("tag", folder_max),
     Column.nb_dataset_recursive("tag", dataset_max),
-    Column.nb_variable_recursive("tag", variable_max),
+    Column.nb_variable("tag", variable_max),
   ])
 </script>
 
