@@ -66,7 +66,10 @@ function add_nb_child_recursive(entity, item) {
 }
 function add_name(item, entity, alias = false) {
   if (!alias) alias = entity
-  item[`${alias}_name`] = db.get(entity, item[`${alias}_id`])?.name
+  const item_id = item[`${alias}_id`]
+  let item_name = ""
+  if (item_id !== null) item_name =  db.get(entity, item_id)?.name
+  item[`${alias}_name`] = item_name
 }
 function add_variable_num(dataset, entity, variable_entity) {
   const variables = db.get_all(variable_entity, { [entity]: dataset.id })

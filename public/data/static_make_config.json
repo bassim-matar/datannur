@@ -4,8 +4,6 @@
     "folder",
     "tag",
     "doc",
-    "dataset",
-    "variable",
-    "modality"
+    "dataset"
   ]
 }

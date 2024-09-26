@@ -34,6 +34,7 @@ export default class Render {
     return wrap_long_text(`<div class="tree">${content}</div>`)
   }
   static with_parents_from_id(entity, id, type) {
+    if (id === null) return ""
     const element = db.get(entity, id)
     const parents = db.get_parents(entity, id)
     const elements = [...parents, element].reverse()
