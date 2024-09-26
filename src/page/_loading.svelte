@@ -10,14 +10,15 @@
 </script>
 
 <Head {title} />
+
 <img class="loading_logo" src={logo_src} alt="logo" />
 
 <style lang="scss">
-  img {
-    position: fixed;
-    top: calc(50% - 25px);
-    left: calc(50% - 150px);
-    height: 50px;
-    max-width: 90vw;
+  .loading_logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 300px;
   }
 </style>

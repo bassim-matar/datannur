@@ -5,6 +5,8 @@ export let app_mode = url_param.get_app_mode()
 
 export const is_http = window.location.protocol.startsWith("http")
 
+export const delay = ms => new Promise(res => setTimeout(res, ms))
+
 function get_sub_folder() {
   const url = new URL(window.location.href)
   const pathname = url.pathname.split("/").filter(Boolean)
