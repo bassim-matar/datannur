@@ -12,7 +12,7 @@
     "test": "vitest",
     "static-make-js": "vite build && node app/static_make/js/make.js",
     "static-make-py": "vite build && bash app/static_make/py/setup.sh && bash app/static_make/py/make.sh",
-    "ncu": "ncu --reject bulma,sass,datatables.net,datatables.net-bm --packageFile '{package.json,public/**/package.json}'"
+    "ncu": "ncu --reject bulma,datatables.net,datatables.net-bm"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
@@ -22,10 +22,10 @@
     "open-cli": "^8.0.0",
     "puppeteer": "^23.4.1",
     "rollup-plugin-visualizer": "^5.12.0",
-    "sass": "1.78.0",
+    "sass": "^1.79.3",
     "sitemap": "^8.0.0",
     "svelte": "^4.2.19",
-    "svelte-preprocess": "^6.0.2",
+    "svelte-preprocess": "^6.0.3",
     "vite": "^5.4.8",
     "vite-plugin-full-reload": "^1.2.0",
     "vitest": "^2.1.1"
