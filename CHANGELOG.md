@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.8.12 (2024-10-03)
 
 - added : demo dataset with lot of variable to test datatables scroller
 - fixed : revert datatables to version 2.1.4 to fix bug with fixed col and scroller
@@ -8,6 +8,7 @@
 - fixed : loading logo centered
 - fixed : remove errors when dataset has no folder or institution
 - changed : dont make static page for variable and modality
+- changed : make demo data more realistic and complete
 - refactor : use Column.nb_child_recursive() and Column.nb_variable()
 
 ## 0.8.11 (2024-09-26)

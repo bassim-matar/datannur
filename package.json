@@ -1,6 +1,6 @@
 {
   "name": "datannur",
-  "version": "0.8.11",
+  "version": "0.8.12",
   "description": "datannur is a portable data catalog that can run without a server",
   "type": "module",
   "private": true,
@@ -20,15 +20,15 @@
     "autoprefixer": "^10.4.20",
     "jsonjsdb_editor": "^0.1.14",
     "open-cli": "^8.0.0",
-    "puppeteer": "^23.4.1",
+    "puppeteer": "^23.5.0",
     "rollup-plugin-visualizer": "^5.12.0",
-    "sass": "^1.79.3",
+    "sass": "^1.79.4",
     "sitemap": "^8.0.0",
     "svelte": "^4.2.19",
     "svelte-preprocess": "^6.0.3",
     "vite": "^5.4.8",
     "vite-plugin-full-reload": "^1.2.0",
-    "vitest": "^2.1.1"
+    "vitest": "^2.1.2"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
