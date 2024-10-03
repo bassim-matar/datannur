@@ -6,6 +6,7 @@
   export let className = ""
   export let click = () => false
   export let isActive = () => false
+  export let alternative_action = false
 
   let base
   if (href == "/") base = ""
@@ -17,6 +18,10 @@
   function go_to_href(event) {
     if (event.ctrlKey || event.metaKey) return
     event.preventDefault()
+    if (alternative_action) {
+      alternative_action()
+      return
+    }
     router.navigate(href)
   }
 </script>

@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- changed : click on header logo from homepage make tab change to default tab
+
 ## 0.8.12 (2024-10-03)
 
 - added : demo dataset with lot of variable to test datatables scroller
