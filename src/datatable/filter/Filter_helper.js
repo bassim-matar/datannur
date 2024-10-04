@@ -24,10 +24,10 @@ export default class Filter_helper {
     const id = "datatables_title_" + this.table_id + "_filter_" + column_num
     const filter_elem = jQuery("#" + id)
     const filter_container = filter_elem.parent()
-    const unique_values = column.data().unique()
     const column_attr = column.settings().init().columns[column_num]
     const column_date_type = column_attr?.date_type
     const filter_type = column_attr?.filter_type
+    let unique_values = column.data().unique()
 
     if (
       filter_type === "select" ||
@@ -44,6 +44,9 @@ export default class Filter_helper {
           options += '<option value="' + val + '">' + val + "</option>"
         }
       } else {
+        unique_values = unique_values.map(val =>
+          [null, undefined].includes(val) ? "" : val
+        )
         unique_values.sort().each(function (val, j) {
           if (val === "") {
             options += '<option value="__empty__"></option>'

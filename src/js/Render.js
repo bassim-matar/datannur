@@ -74,9 +74,6 @@ export default class Render {
     content += "</ul>"
     return wrap_long_text(content)
   }
-  static if_content(data) {
-    return data ? data : ""
-  }
   static num(data, type = "normal") {
     if (data === false || data === undefined || data === null) return ""
     if (["filter", "sort", "export"].includes(type)) return data

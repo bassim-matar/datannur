@@ -4,6 +4,7 @@
 
 - changed : click on header logo from homepage make tab change to default tab
 - fixed : update to latest datatables version after bug fixed with fixedcolumns 5.0.3
+- fixed : table select input with null option changed to empty string
 
 ## 0.8.12 (2024-10-03)
 
