@@ -12,7 +12,7 @@
     "test": "vitest",
     "static-make-js": "vite build && node app/static_make/js/make.js",
     "static-make-py": "vite build && bash app/static_make/py/setup.sh && bash app/static_make/py/make.sh",
-    "ncu": "ncu --reject bulma,datatables.net,datatables.net-bm"
+    "ncu": "ncu --reject bulma"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
@@ -33,12 +33,12 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
     "bulma": "0.9.4",
-    "datatables.net": "2.1.4",
-    "datatables.net-bm": "2.1.4",
+    "datatables.net": "^2.1.8",
+    "datatables.net-bm": "^2.1.8",
     "datatables.net-buttons": "^3.1.2",
     "datatables.net-buttons-bm": "^3.1.2",
-    "datatables.net-fixedcolumns": "^5.0.2",
-    "datatables.net-fixedcolumns-bm": "^5.0.2",
+    "datatables.net-fixedcolumns": "^5.0.3",
+    "datatables.net-fixedcolumns-bm": "^5.0.3",
     "datatables.net-fixedheader": "^4.0.1",
     "datatables.net-fixedheader-bm": "^4.0.1",
     "datatables.net-scroller": "^2.4.3",
