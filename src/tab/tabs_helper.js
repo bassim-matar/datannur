@@ -1,4 +1,3 @@
-import db from "@db"
 import { all_tabs } from "@tab/all_tabs"
 
 function get_tab(key, value) {
