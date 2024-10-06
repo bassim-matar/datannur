@@ -10,15 +10,38 @@
   import Tabs from "@tab/Tabs.svelte"
   import SearchResult from "@search/SearchResult.svelte"
   import SearchHistory from "@search/SearchHistory"
+  import AboutFile from "@layout/AboutFile.svelte"
+  import about_search from "@markdown/search/about_search.md?raw"
+  import no_result from "@markdown/search/no_result.md?raw"
+  import no_recent_search from "@markdown/search/no_recent_search.md?raw"
 
   let is_loading = true
   let input_element
-  let empty_input = false
   let search_result_data = []
   let tabs = []
   let is_focus_in = false
   let recent_search_change = false
   let tab_key
+
+  function make_tab(name, icon, key, about_file) {
+    return {
+      name,
+      icon,
+      key,
+      component: AboutFile,
+      without_load: true,
+      footer_visible: true,
+      props: { about_file },
+    }
+  }
+  const about_tab = make_tab("A propos", "about", "about", about_search)
+  const no_result_tab = make_tab("Résultat", "search", "no_result", no_result)
+  const no_recent_search_tab = make_tab(
+    "Recherches récentes",
+    "search",
+    "no_recent_search",
+    no_recent_search,
+  )
 
   SearchHistory.on_change("search_page", () => search_input_change())
 
@@ -33,19 +56,9 @@
     search_input_change()
   }
 
-  function set_empty_input_value() {
-    if ($search_value !== "" && $search_value !== undefined) {
-      empty_input = false
-    } else {
-      empty_input = true
-    }
-    set_tab_key()
-  }
-
   function init_search_recent() {
     search_result_data = SearchHistory.get_recent_search()
     const tab_name = "Recherches récentes"
-    set_empty_input_value()
     set_tabs(tab_name)
     is_loading = false
   }
@@ -65,24 +78,29 @@
     is_loading = false
     if ($search_value !== value_before) return false
     search_result_data = SearchHistory.put_recent_first(all_search_raw)
-    set_empty_input_value()
     set_tabs()
   }
 
   function set_tabs(name = "Résultat") {
-    tabs = [
-      {
-        name,
-        icon: "search",
-        key: "search",
-        component: SearchResult,
-        nb: search_result_data.length,
-        props: {
-          search_result_data,
-          search_value: $search_value,
+    set_tab_key()
+    if (search_result_data.length === 0) {
+      tabs = [is_empty_input ? no_recent_search_tab : no_result_tab]
+    } else {
+      tabs = [
+        {
+          name,
+          icon: "search",
+          key: "search",
+          component: SearchResult,
+          nb: search_result_data.length,
+          props: {
+            search_result_data,
+            search_value: $search_value,
+          },
         },
-      },
-    ]
+      ]
+    }
+    tabs.push(about_tab)
   }
 
   function focusin() {
@@ -100,12 +118,11 @@
     }
   }
 
+  $: is_empty_input = ["", undefined, null].includes($search_value)
+
   const url_search_value = url_param.get("search")
   if (url_search_value !== false && url_search_value !== "") {
     $search_value = url_search_value
-  }
-  if ($search_value === "" || $search_value === undefined) {
-    empty_input = true
   }
   set_tab_key()
 
@@ -125,9 +142,7 @@
     <p class="control has-icons-right">
       <button
         class="icon is-small is-left"
-        class:active={$search_value !== "" &&
-          $search_value !== undefined &&
-          search_result_data.length > 0}
+        class:active={!is_empty_input && search_result_data.length > 0}
       >
         <i class="fas fa-magnifying-glass" />
       </button>
@@ -147,7 +162,7 @@
         use:clickOutside
         on:click_outside={focusout}
       />
-      {#if $search_value !== "" && $search_value !== undefined}
+      {#if !is_empty_input}
         <div class="btn_clear_input_wrapper">
           <BtnClearInput click={clear_input} />
         </div>
@@ -156,10 +171,6 @@
   </div>
   {#if is_loading}
     <Loading />
-  {:else if search_result_data.length === 0 && empty_input}
-    <div class="search_exeption_message">Commencer une première recherche</div>
-  {:else if search_result_data.length === 0}
-    <div class="search_exeption_message">Aucun résultat</div>
   {:else}
     {#key tab_key}
       <Tabs {tabs} />
@@ -176,10 +187,6 @@
 
   .section :global(.search_highlight) {
     background: rgba(255, 255, 0, 0.5);
-  }
-
-  .search_exeption_message {
-    text-align: center;
   }
 
   p.control {
