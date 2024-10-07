@@ -190,7 +190,7 @@
   }
 
   p.control {
-    margin-bottom: 10px;
+    margin-bottom: 9px;
     .search_page_input {
       width: 100%;
       margin: auto;
