@@ -15,12 +15,18 @@
     return splited[1].split("%")[0]
   }
 
-  let min_width
+  let min_width = 0
   onMount(() => {
     const selector = `.tab_li_${tab.key}`
     min_width = document.querySelector(selector).offsetWidth
     if (min_width > 500) min_width = 0
   })
+
+  $: if (active_tab === tab.key && tab.nb !== "...") {
+    setTimeout(() => {
+      min_width = 0
+    }, 300)
+  }
 </script>
 
 <li

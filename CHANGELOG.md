@@ -1,9 +1,10 @@
 # datannur
 
-## unreleased
+## 0.8.13 (2024-10-07)
 
 - added : about tab for search page
 - changed : click on header logo from homepage make tab change to default tab
+- changed : adapt switch "show all recursive" to fit aside and be always present when needed
 - fixed : update to latest datatables version after bug fixed with fixedcolumns 5.0.3
 - fixed : table select input with null option changed to empty string
 - fixed : adapt test to new page url with more realistic data

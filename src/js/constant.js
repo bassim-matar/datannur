@@ -1,4 +1,5 @@
 export const locale = "fr"
+export const is_big_limit = 10
 
 export const entity_names = {
   institution: "Institution",

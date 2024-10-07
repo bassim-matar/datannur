@@ -1,15 +1,18 @@
 <script>
   import db from "@db"
+  import { tab_selected } from "@js/store"
   import {
     make_parents_relative,
     get_recursive,
     remove_duplicate_by_id,
     add_minimum_deep,
   } from "@js/db"
+  import { is_big_limit } from "@js/constant"
   import Tags from "@js/Tags"
-  import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
+  import Tabs from "@tab/Tabs.svelte"
   import Title from "@layout/Title.svelte"
+  import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
 
   export let institution
 
@@ -58,9 +61,20 @@
     modalities,
     stat,
   })
+
+  let key_tab = 1
+  $: show_open_all_switch =
+    ($tab_selected.key === "institutions" &&
+      institutions.length > is_big_limit) ||
+    ($tab_selected.key === "folders" && folders.length > is_big_limit)
 </script>
 
 <section class="section">
   <Title type="institution" name={institution.name} id={institution.id} />
-  <Tabs {tabs} />
+  {#if show_open_all_switch}
+    <OpenAllSwitch on_change={value => (key_tab = value)} />
+  {/if}
+  {#key key_tab}
+    <Tabs {tabs} />
+  {/key}
 </section>

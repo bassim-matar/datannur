@@ -48,8 +48,6 @@
   let open_all_recursive = Options.get("open_all_recursive")
   function update_open_all_recursive() {
     Options.set("open_all_recursive", open_all_recursive)
-    reset_cols_search_cache()
-    url_param.reset()
   }
 
   let open_all_tab = Options.get("open_all_tab")
@@ -95,7 +93,11 @@
 <div class="flex_cols">
   <div class="flex_col">
     <h5 class="title is-5">Affichage</h5>
-    <Switch bind:value={open_all_recursive} change={update_open_all_recursive}>
+    <Switch
+      bind:value={open_all_recursive}
+      change={update_open_all_recursive}
+      tree_switch={true}
+    >
       Afficher les éléments imbriqués (institutions et dossiers)
     </Switch>
     <Switch bind:value={open_all_tab} change={update_open_all_tab}>

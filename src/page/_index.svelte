@@ -1,11 +1,14 @@
 <script>
   import db from "@db"
+  import { tab_selected } from "@js/store"
   import { make_parents_relative, add_minimum_deep } from "@js/db"
-  import Head from "@frame/Head.svelte"
-  import Tabs from "@tab/Tabs.svelte"
+  import { is_big_limit } from "@js/constant"
   import { tabs_helper } from "@tab/tabs_helper"
   import { get_about_main } from "@js/get_about_main"
- 
+  import Head from "@frame/Head.svelte"
+  import Tabs from "@tab/Tabs.svelte"
+  import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
+
   let institutions = db.get_all("institution")
   let folders = db.get_all("folder")
   let tags = db.get_all("tag")
@@ -55,6 +58,13 @@
     !db.use.variable &&
     !db.use.modality &&
     !db.use.about
+
+  let key_tab = 1
+  $: show_open_all_switch =
+    ($tab_selected.key === "institutions" &&
+      institutions.length > is_big_limit) ||
+    ($tab_selected.key === "folders" && folders.length > is_big_limit) ||
+    ($tab_selected.key === "tags" && tags.length > is_big_limit)
 </script>
 
 <Head title="datannur | Accueil" description="Page d'accueil de datannur" />
@@ -64,7 +74,12 @@
     <p class="has-text-centered">Le catalogue est vide.</p>
     <p class="has-text-centered">Vous pouvez ajouter du contenu.</p>
   {:else}
-    <Tabs {tabs} />
+    {#if show_open_all_switch}
+      <OpenAllSwitch on_change={value => (key_tab = value)} />
+    {/if}
+    {#key key_tab}
+      <Tabs {tabs} />
+    {/key}
   {/if}
 </section>
 

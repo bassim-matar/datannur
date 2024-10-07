@@ -2,6 +2,8 @@
   export let value
   export let change
   export let slot_position = "right"
+  export let tree_switch = false
+  export let size = "medium"
   let id = window.crypto.randomUUID()
 </script>
 
@@ -9,7 +11,8 @@
   <input
     id="checkbox_{id}"
     type="checkbox"
-    class="switch is-rounded is-outlined"
+    class="switch is-rounded is-outlined {size}"
+    class:tree_switch
     bind:checked={value}
     on:change={change}
   />
@@ -97,6 +100,7 @@
     transform: translate3d(0, 0, 0);
     border-radius: 4px;
     background: #fff;
+    color: #b5b5b5;
     transition: all 0.25s ease-out;
     content: "";
   }
@@ -108,5 +112,35 @@
   .switch[type="checkbox"].is-outlined:checked + label::after,
   .switch[type="checkbox"].is-outlined:checked + label:after {
     background: $color-3;
+  }
+
+  /* special tree_switch */
+  
+  .switch[type="checkbox"].tree_switch + label::after,
+  .switch[type="checkbox"].tree_switch + label:after {
+    background: transparent;
+    content: "\f802";
+    font-family: "Font Awesome 6 Free";
+    top: 8px;
+    left: 0.5rem;
+  }
+  .switch[type="checkbox"].tree_switch:checked + label::after,
+  .switch[type="checkbox"].tree_switch:checked + label:after {
+    left: 1.4rem;
+    background: transparent;
+    color: $color-3;
+  }
+
+  /* special size */
+  .switch[type="checkbox"].small + label {
+    padding-left: 2.8rem;
+  }
+  .switch[type="checkbox"].small + label::before,
+  .switch[type="checkbox"].small + label:before {
+    width: 2.5rem;
+  }
+  .switch[type="checkbox"].small.tree_switch:checked + label::after,
+  .switch[type="checkbox"].small.tree_switch:checked + label:after {
+    left: 1rem;
   }
 </style>

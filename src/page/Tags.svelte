@@ -1,6 +1,8 @@
 <script>
   import db from "@db"
+  import { tab_selected } from "@js/store"
   import { make_parents_relative, add_minimum_deep } from "@js/db"
+  import { is_big_limit } from "@js/constant"
   import Title from "@layout/Title.svelte"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
@@ -20,11 +22,15 @@
   })
 
   let key_tab = 1
+  $: show_open_all_switch =
+    $tab_selected.key === "tags" && tags.length > is_big_limit
 </script>
 
 <section class="section">
   <Title type="tag" name="Mots clés" mode="main_title" />
-  <OpenAllSwitch on_change={value => (key_tab = value)} />
+  {#if show_open_all_switch}
+    <OpenAllSwitch on_change={value => (key_tab = value)} />
+  {/if}
   {#key key_tab}
     <Tabs {tabs} />
   {/key}

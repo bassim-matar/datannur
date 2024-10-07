@@ -3,6 +3,7 @@
   import { tab_selected, footer_visible } from "@js/store"
   import { url_param } from "@js/url_param"
   import { is_firefox, get_is_mobile } from "@js/util"
+  import { is_big_limit } from "@js/constant"
   import Logs from "@js/Logs"
   import TabsBody from "@tab/TabsBody.svelte"
   import TabTitle from "@tab/TabTitle.svelte"
@@ -66,7 +67,7 @@
       $footer_visible = false
       return
     }
-    $footer_visible = tab.footer_visible || tab.nb < 10
+    $footer_visible = tab.footer_visible || tab.nb < is_big_limit
   }
 
   function center_active_tab() {

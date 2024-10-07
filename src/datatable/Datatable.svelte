@@ -10,7 +10,7 @@
   import { onMount, onDestroy } from "svelte"
   import { link, get_percent } from "@js/util"
   import { get_sort_by_name } from "@js/db"
-  import { entity_names } from "@js/constant"
+  import { entity_names, is_big_limit } from "@js/constant"
   import { url_hash } from "@js/url_hash"
   import { tab_selected, all_tables_loaded } from "@js/store"
   import { extendable } from "@js/extendable"
@@ -42,7 +42,7 @@
   let loading = true
   let dom_table = false
   const timeout = load_first ? 1 : 50
-  const is_big = data.length > 10
+  const is_big = data.length > is_big_limit
   let short_table = false
   let nb_sticky = 1
   let datatable_update_draw = 0
