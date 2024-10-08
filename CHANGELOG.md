@@ -3,6 +3,7 @@
 ## unreleased
 
 - changed : use tab for about page
+- changed : rename preview file and md file, move md jsonjs in db
 - fixed : footer vue meta highlight on metavariable page
 - fixed : entity icon in title centered on mobile when no favorite
 
