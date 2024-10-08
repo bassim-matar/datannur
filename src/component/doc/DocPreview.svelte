@@ -1,7 +1,7 @@
 <script>
   import Icon from "@layout/Icon.svelte"
   import PdfViewer from "@layout/PdfViewer.svelte"
-  import Readme from "@layout/Readme.svelte"
+  import MdFileDynamic from "@layout/MdFileDynamic.svelte"
 
   export let doc
 </script>
@@ -16,7 +16,7 @@
       {#if doc.type === "pdf"}
         <PdfViewer pdf={doc.path} />
       {:else if doc.type === "md"}
-        <Readme entity={doc.entity} readme={doc.entity_id} />
+        <MdFileDynamic doc_id={doc.id} />
       {/if}
     </div>
   </div>
