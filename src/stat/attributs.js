@@ -9,7 +9,6 @@ const attributs = {
     "localisation",
     "survey_type",
     "delivery_format",
-    "readme",
     "metadata_path",
     "git_code",
     "level",

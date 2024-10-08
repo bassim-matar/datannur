@@ -69,7 +69,6 @@ export const entity_to_icon = {
   page: "file-lines",
   entity: "globe",
   time_ago: "clock",
-  readme: "book",
   stat: "signal",
   localisation: "location-dot",
   data_path: "server",

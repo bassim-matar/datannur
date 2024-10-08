@@ -110,12 +110,6 @@ export default {
     type: "category",
     variable: "delivery_format",
   },
-  readme: {
-    name: "Readme",
-    type: "string",
-    nb_range: 1,
-    get_value: x => x.readme?.length,
-  },
   metadata_path: {
     name: "Metadonnées",
     type: "string",
