@@ -4,6 +4,7 @@
 
 - changed : use tab for about page
 - fixed : footer vue meta highlight on metavariable page
+- fixed : entity icon in title centered on mobile when no favorite
 
 ## 0.8.13 (2024-10-07)
 

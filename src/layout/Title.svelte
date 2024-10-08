@@ -39,7 +39,7 @@
 
 <div class="fitty_wrapper">
   <div>
-    <h1 class="title">
+    <h1 class="title" class:item_page={id}>
       <Icon {type} mode="main_title" />
       {#if mode !== "main_title"}
         <span>{entity_name}</span>
@@ -64,7 +64,6 @@
 <style lang="scss">
   .fitty_wrapper {
     width: 100%;
-    // margin-bottom: 1.5rem;
     height: 80px;
     display: flex;
     align-items: center;
@@ -76,7 +75,6 @@
       margin: auto;
     }
   }
-
   .title_info {
     font-style: italic;
     cursor: pointer;
@@ -84,18 +82,17 @@
     padding: 0;
     font-size: 1.5rem;
   }
+
   @media screen and (max-width: 600px) {
     .fitty_wrapper {
       padding-left: 20px;
       padding-right: 20px;
-      // margin-bottom: 1rem;
       .fitty {
         padding: 0;
         margin: 0;
         width: 100%;
         box-sizing: border-box;
       }
-
       .title {
         padding: 0;
       }
@@ -105,6 +102,11 @@
     }
     .title_info {
       font-size: 1rem;
+    }
+    .title:not(.item_page) {
+      :global(.icon) {
+        margin-right: 0;
+      }
     }
   }
 </style>
