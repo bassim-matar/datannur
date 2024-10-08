@@ -35,6 +35,8 @@ function get_tab(key, value) {
   }
   if (tab.load_async) tab.nb = "?"
 
+  if (tab.use_about_file) tab.props.about_file = value
+  
   return tab
 }
 
