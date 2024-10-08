@@ -54,7 +54,7 @@
       <div>
         <HeaderLink
           href="meta"
-          pages={["meta", "metaFolder", "metaDataset"]}
+          pages={["meta", "metaFolder", "metaDataset", "metaVariable"]}
           className=""
         >
           vue méta

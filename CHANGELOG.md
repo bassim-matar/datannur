@@ -3,6 +3,7 @@
 ## unreleased
 
 - changed : use tab for about page
+- fixed : footer vue meta highlight on metavariable page
 
 ## 0.8.13 (2024-10-07)
 
