@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- added : jsonjsdb can normalize db schema
 - changed : use tab for about page
 - changed : rename preview file and md file, move md jsonjs in db
 - changed : use md doc from db based on doc id
