@@ -49,19 +49,19 @@ Un dataset, un dossier ou une institution peuvent être liés à un ou plusieurs
 
 mermaid(
   $tag $recursive
-  $tag <--> $institution
-  $tag <--> $folder
-  $tag <--> $dataset
-  $tag <--> $variable
+  $institution <--> $tag
+  $folder <--> $tag
+  $dataset <--> $tag
+  $variable <--> $tag
 );
 
 #### Doc
 Pour finir, certains concepts possèdent des docs (documentations de type markdown ou pdf). Une doc peut être liée à une multitude de datasets, de dossiers et d'institutions, et inversement.
 
 mermaid(
-  $doc <--> $institution
-  $doc <--> $folder
-  $doc <--> $dataset
+  $institution <--> $doc
+  $folder <--> $doc
+  $dataset <--> $doc
 );
 
 
@@ -75,16 +75,16 @@ mermaid(
   $tag $recursive
   $institution -- manager - owner --> $dataset
   $institution -- manager - owner --> $folder
+  $institution <--> $tag
+  $institution <--> $doc
   $folder --> $dataset
   $folder --> $modality
-  $tag <--> $institution
-  $tag <--> $folder
-  $tag <--> $dataset
-  $tag <--> $variable
-  $doc <--> $institution
-  $doc <--> $folder
-  $doc <--> $dataset
+  $folder <--> $tag
+  $folder <--> $doc
   $dataset --> $variable
+  $dataset <--> $tag
+  $dataset <--> $doc
   $variable <--> $modality
+  $variable <--> $tag
   $modality --> $value
 );

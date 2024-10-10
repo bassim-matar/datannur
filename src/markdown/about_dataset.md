@@ -5,12 +5,9 @@ Il peut être géré par un gestionnaire (institution) et être fourni par un fo
 Il peut être contenu dans un seul dossier et une multitude de mot clés et de docs peuvent lui être associé.
 
 mermaid(
-  $folder $recursive
-  $institution $recursive
-  $tag $recursive
   $institution -- manager - owner --> $dataset
   $folder --> $dataset
-  $tag <--> $dataset
-  $doc <--> $dataset
   $dataset --> $variable
+  $dataset <--> $tag
+  $dataset <--> $doc
 );

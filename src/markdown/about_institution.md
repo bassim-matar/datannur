@@ -6,8 +6,8 @@ Une institution peut également avoir des mots clés et des docs.
 
 mermaid(
   $institution $recursive
-  $tag <--> $institution
-  $doc <--> $institution
   $institution -- manager - owner --> $folder
   $institution -- manager - owner --> $dataset
+  $institution <--> $tag
+  $institution <--> $doc 
 );

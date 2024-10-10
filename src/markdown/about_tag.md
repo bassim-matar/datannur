@@ -2,8 +2,8 @@ Les mots clés peuvent être attribués aux institutions aux dossiers, aux datas
 
 mermaid(
   $tag $recursive
-  $tag <--> $institution
-  $tag <--> $folder
-  $tag <--> $dataset
-  $tag <--> $variable
+  $institution <--> $tag
+  $folder <--> $tag
+  $dataset <--> $tag
+  $variable <--> $tag
 );
