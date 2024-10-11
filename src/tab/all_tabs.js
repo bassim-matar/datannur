@@ -119,6 +119,13 @@ export const all_tabs = {
     is_meta: true,
     meta_key: "dataset_variables",
   },
+  variable_metaValues: {
+    name: "Valeurs",
+    icon: "value",
+    component: VariableValues,
+    is_meta: true,
+    meta_key: "variable_values",
+  },
   metaDiagramm: {
     name: "Diagramme",
     icon: "diagram",

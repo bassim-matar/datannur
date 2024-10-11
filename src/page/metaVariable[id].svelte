@@ -20,7 +20,7 @@
 
   let tabs = tabs_helper({
     variable_info: metaVariable,
-    variable_values: metaVariable.values,
+    variable_metaValues: metaVariable.values,
     variable_preview,
   })
 </script>

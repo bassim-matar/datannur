@@ -7,20 +7,23 @@
   export let variable_values
   export let nb_item
   export let load_first = false
+  export let is_meta = false
 
   const has = {}
   for (const value of variable_values) {
     if (value.description) has.description = true
   }
 
-  const columns = [
-    {
+  const columns = []
+
+  if (!is_meta) {
+    columns.push({
       data: "modality_name",
       title: Render.icon("modality") + "modalité",
       render: (data, _, row) => link("modality/" + row.modality_id, data),
-    },
-    Column.value(),
-  ]
+    })
+  }
+  columns.push(Column.value())
   if (has.description) columns.push(Column.description())
 </script>
 

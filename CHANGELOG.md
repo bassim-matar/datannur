@@ -9,6 +9,7 @@
 - changed : markdown many to many relation entity order from main to secondary
 - fixed : footer vue meta highlight on metavariable page
 - fixed : entity icon in title centered on mobile when no favorite
+- fixed : vue meta variable nb value link and value preview
 - removed : readme folder attribut, icon and color
 
 ## 0.8.13 (2024-10-07)

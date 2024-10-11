@@ -48,7 +48,12 @@ export default class Render {
   static value(values, type, row) {
     if (!values || values === "" || values.length === 0) return ""
     const nb_values = row.values.length
-    const entity = "dataset_id" in row ? "variable" : "modality"
+    let entity = "dataset_id" in row ? "variable" : "modality"
+    let tab = entity === "variable" ? "variable_values" : "values"
+    if (row._entity === "metaVariable" ) {
+      entity = "metaVariable"
+      tab = "variable_metaValues"
+    }
     let content = '<ul class="ul_value">'
     let i = 0
     for (const value of values) {
@@ -63,7 +68,6 @@ export default class Render {
     if (nb_values > values.length) {
       const nb_other_values = nb_values - values.length
       const s = nb_other_values > 1 ? "s" : ""
-      const tab = entity === "variable" ? "variable_values" : "values"
       const text = link(
         `${entity}/${row.id}?tab=${tab}`,
         `... ${nb_other_values} autre${s} valeur${s}`
@@ -117,8 +121,12 @@ export default class Render {
   }
   static nb_values(values, type, row) {
     const nb_values = get_nb_values(values, row)
-    const entity = "dataset_id" in row ? "variable" : "modality"
-    const tab = entity === "variable" ? "variable_values" : "values"
+    let entity ="dataset_id" in row ? "variable" : "modality"
+    let tab = entity === "variable" ? "variable_values" : "values"
+    if (row._entity === "metaVariable" ) {
+      entity = "metaVariable"
+      tab = "variable_metaValues"
+    }
     if (!row.nb_row) return ""
     if (type !== "display") return nb_values
     const percent = get_percent(nb_values / row.nb_row)
