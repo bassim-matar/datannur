@@ -7,6 +7,7 @@
 - changed : rename preview file and md file, move md jsonjs in db
 - changed : use md doc from db based on doc id
 - changed : markdown many to many relation entity order from main to secondary
+- changed : denormalize db schema to remove many to many relation table
 - fixed : footer vue meta highlight on metavariable page
 - fixed : entity icon in title centered on mobile when no favorite
 - fixed : vue meta variable nb value link and value preview
