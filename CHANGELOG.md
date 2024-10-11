@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.8.14 (2024-10-11)
 
 - added : jsonjsdb can normalize db schema
 - changed : use tab for about page
