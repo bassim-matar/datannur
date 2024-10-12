@@ -23,7 +23,7 @@
   .table_wrapper {
     display: inline-block;
     vertical-align: top;
-    max-width: calc(50% - 3px);
+    width: calc(50% - 3px);
     max-height: max(100vh - 280px, 170px);
     overflow: hidden;
     padding: 0.5em 0;
