@@ -412,6 +412,7 @@
   @use "../style/favorite.scss" as *;
   
   .datatable_main_wrapper {
+    text-align: left;
     :global {
       .dt-scroll {
         :global(html.rounded_design) & {
@@ -428,6 +429,7 @@
   .dt_loading {
     .dt-scroll {
       max-height: var(--max-height);
+      
       th {
         position: relative;
         padding-right: 30px;
@@ -440,9 +442,6 @@
         bottom: 0;
         left: 0;
         right: 0;
-        :global(th) {
-          border-bottom: 1px solid $color-5;
-        }
       }
       .dt-column-order {
         position: absolute;
@@ -509,12 +508,19 @@
       .dt-scroll-footInner {
         border-top: 1px solid $color-5;
       }
+      .dt-scroll {
+        display: inline-block;
+        vertical-align: top;
+        width: auto;
+        margin: auto;
+        max-width: 100%;
+      }
+      .div.dt-scroll-body,  div.dt-scroll-head, div.dt-scroll-headInner {
+        text-align: left;
+        margin: auto;
+      }
       div.dt-container.dt-empty-footer div.dt-scroll-body {
         border-bottom: 0;
-      }
-      .dt-scroll-headInner,
-      .dt_loading_outer:not(.is_big) .table thead th.sorting {
-        border-bottom: 1px solid $color-5;
       }
       .dt-container {
         table.dataTable.dtfc-scrolling-left tr > .dtfc-fixed-left::after {
@@ -530,6 +536,7 @@
           position: static !important;
           overflow: hidden;
           .dt-scroll-body {
+            width: auto !important;
             @include scrollbar_light();
           }
           .dt-scroll-body,
@@ -566,8 +573,13 @@
             top: 52%;
           }
         }
+        div > ._datatables {
+          text-align: left;
+        }
         ._datatables {
-          width: 100% !important;
+          width: auto !important;
+          text-align: left;
+          margin: auto;
           margin-top: 0 !important;
           margin-bottom: 0 !important;
           background: $background-2;

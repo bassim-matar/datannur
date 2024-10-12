@@ -139,7 +139,6 @@
     padding: 4px 0;
     overflow-x: auto;
     white-space: nowrap;
-    border-bottom: 1px solid $color-5;
     @include scrollbar_light();
     .button {
       float: left;

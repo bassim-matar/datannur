@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- changed : make datatables not stretch to 100% width and remove header border
+
 ## 0.8.14 (2024-10-11)
 
 - added : jsonjsdb can normalize db schema
