@@ -15,6 +15,21 @@
     .querySelector('meta[name="app_version"]')
     ?.getAttribute("content")
 
+  let current_interval
+  let interval = 1000
+  function update_last_modif() {
+    last_update.relative = get_time_ago(last_update.value * 1000)
+    if (
+      interval === 1000 &&
+      !last_update.relative.includes("seconde") &&
+      !last_update.relative.includes("maintenant")
+    ) {
+      clearInterval(current_interval)
+      interval = 60000
+      current_interval = setInterval(update_last_modif, interval)
+    }
+  }
+
   db.loaded.then(() => {
     contact_email = db.get_config("contact_email")
     last_update = false
@@ -23,7 +38,11 @@
       const timestamp = last_update.value * 1000
       const relative = get_time_ago(timestamp)
       const absolute = get_datetime(timestamp)
-      last_update = { relative, absolute }
+      last_update = { relative, absolute, value: last_update.value }
+    }
+
+    if (db.use.info) {
+      current_interval = setInterval(update_last_modif, interval)
     }
   })
 </script>

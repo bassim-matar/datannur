@@ -3,6 +3,7 @@
 ## unreleased
 
 - added : metaDataset last_update info
+- added : footer last update info live updated
 - changed : make datatables not stretch to 100% width and remove header border
 - removed : jsonjsdb metaDataset virtual table for many to many relation
 
