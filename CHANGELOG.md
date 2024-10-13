@@ -2,7 +2,9 @@
 
 ## unreleased
 
+- added : metaDataset last_update info
 - changed : make datatables not stretch to 100% width and remove header border
+- removed : jsonjsdb metaDataset virtual table for many to many relation
 
 ## 0.8.14 (2024-10-11)
 

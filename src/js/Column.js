@@ -5,7 +5,12 @@ import {
   get_percent,
   pluralize,
 } from "@js/util"
-import { get_time_ago, get_datetime, date_to_timestamp } from "@js/Time"
+import {
+  get_time_ago,
+  get_datetime,
+  date_to_timestamp,
+  get_datetime_sortable,
+} from "@js/Time"
 import { entity_names, entity_to_icon } from "@js/constant"
 import Render from "@js/Render"
 
@@ -241,6 +246,29 @@ export default class Column {
       },
     }
   }
+  static last_update_timestamp() {
+    return {
+      data: "last_update_timestamp",
+      title: Render.icon("date") + "Mis à jour",
+      defaultContent: "",
+      render: data => {
+        if (!data) return ""
+        return wrap_long_text(`${get_datetime_sortable(data * 1000)}`)
+      },
+    }
+  }
+  static last_update_time_ago() {
+    return {
+      data: "last_update_timestamp",
+      title: Render.icon("date") + "Moment",
+      defaultContent: "",
+      render: data => {
+        if (!data) return ""
+        return wrap_long_text(`${get_time_ago(data * 1000)}`)
+      },
+    }
+  }
+
   static favorite() {
     return {
       data: "is_favorite",

@@ -9,6 +9,7 @@
   import RowInfo from "@infoTable/RowInfo.svelte"
   import FrequencyInfo from "@infoTable/FrequencyInfo.svelte"
   import LastUpdateInfo from "@infoTable/LastUpdateInfo.svelte"
+  import LastUpdateTimestampInfo from "@infoTable/LastUpdateTimestampInfo.svelte"
   import LocalisationInfo from "@infoTable/LocalisationInfo.svelte"
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
   import DataPathInfo from "@infoTable/DataPathInfo.svelte"
@@ -41,7 +42,11 @@
   <LocalisationInfo localisation={dataset_info.localisation} />
   <DeliveryFormatInfo delivery_format={dataset_info.delivery_format} />
   <FrequencyInfo frequency={dataset_info.updating_each} />
-  <LastUpdateInfo last_update_date={dataset_info.last_update_date} />
+  {#if dataset_info.is_meta}
+    <LastUpdateTimestampInfo last_update_timestamp={dataset_info.last_update_timestamp} />
+  {:else}
+    <LastUpdateInfo last_update_date={dataset_info.last_update_date} />
+  {/if}
   <PeriodInfo period={dataset_info.period} />
   <DataPathInfo data_path={dataset_info.data_path} />
   {#if dataset_info.link}

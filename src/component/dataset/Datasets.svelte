@@ -84,7 +84,11 @@
     Column.nb_row(nb_row_max),
   ])
 
-  if (is_meta) columns.push(Column.metaFolder())
+  if (is_meta) {
+    columns.push(Column.metaFolder())
+    columns.push(Column.last_update_timestamp())
+    columns.push(Column.last_update_time_ago())
+  }
 
   if (!is_meta) {
     columns = columns.concat([
