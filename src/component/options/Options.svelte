@@ -144,3 +144,15 @@
     </BtnImport>
   </div>
 </div>
+
+<style lang="scss">
+  @use "../../main.scss" as *;
+
+  .flex_cols {
+    justify-content: center;
+  }
+
+  .title {
+    text-align: center;
+  }
+  </style>
