@@ -7,6 +7,7 @@
 - added : about functionality tab
 - changed : make datatables not stretch to 100% width and remove header border
 - changed : use __meta_schema__ instead of other meta files
+- changed : complete __meta_schema__ variable and remove virtual table
 - fixed : update jsonjsdb with little fix for empty ids
 - fixed : jsonjsdb types not imported
 - removed : jsonjsdb metaDataset virtual table for many to many relation
