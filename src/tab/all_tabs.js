@@ -197,9 +197,9 @@ export const all_tabs = {
     footer_visible: true,
     use_about_file: true,
   },
-  about_fonctionnality: {
+  about_functionality: {
     name: "Fonctionnalités",
-    icon: "fonctionnality",
+    icon: "functionality",
     component: AboutFile,
     without_load: true,
     footer_visible: true,

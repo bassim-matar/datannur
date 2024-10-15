@@ -77,5 +77,5 @@ export const entity_to_icon = {
   nb_row: "grip-lines",
   link: "link",
   recursive: "rotate-left",
-  fonctionnality: "screwdriver-wrench",
+  functionality: "screwdriver-wrench",
 }
