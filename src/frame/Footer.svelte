@@ -34,14 +34,14 @@
     contact_email = db.get_config("contact_email")
     last_update = false
     if (db.use.info) last_update = db.get("info", "last_update")
+    const last_modif_timestamp = db.get_last_modif_timestamp()
+    if (last_modif_timestamp) last_update = { value: last_modif_timestamp }
+    
     if (last_update) {
       const timestamp = last_update.value * 1000
       const relative = get_time_ago(timestamp)
       const absolute = get_datetime(timestamp)
       last_update = { relative, absolute, value: last_update.value }
-    }
-
-    if (db.use.info) {
       current_interval = setInterval(update_last_modif, interval)
     }
   })
