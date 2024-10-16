@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fixed : typo in about_meta
+
 ## 0.8.15 (2024-10-16)
 
 - added : metaDataset last_update info
