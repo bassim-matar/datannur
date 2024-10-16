@@ -41,7 +41,6 @@
 
   .breadcrumb_element {
     display: grid;
-    // max-width: calc(100vw - 300px);
     width: 100%;
     :global(a) {
       display: inline-block;

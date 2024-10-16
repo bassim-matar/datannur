@@ -36,7 +36,7 @@
       overflow: hidden;
       .doc_content {
         overflow: auto;
-        height: max(100vh - 300px, 170px);
+        height: max(100vh - 301px, 170px);
       }
     }
   }

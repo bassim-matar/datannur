@@ -3,6 +3,7 @@
 ## unreleased
 
 - fixed : typo in about_meta
+- fixed : doc preview a pixel to height
 
 ## 0.8.15 (2024-10-16)
 
