@@ -112,6 +112,7 @@
     .tabs_body {
       border-radius: $rounded-bottom;
       border-top-right-radius: $rounded-size;
+      overflow: hidden;
     }
     .tabs_body.no_first_tab {
       border-top-left-radius: $rounded-size;
