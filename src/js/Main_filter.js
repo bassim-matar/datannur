@@ -1,6 +1,6 @@
 import db from "@db"
 
-export default class Options {
+export default class Main_filter {
   static init() {
     return new Promise(resolve => {
       this.db_key = "user_data/filter_active"

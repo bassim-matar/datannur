@@ -227,9 +227,10 @@ class Process {
     })
   }
   static dataset() {
-    const filters = db.get_all("filter")
+    const filters = get_local_filter()
     const filter_to_name = {}
     for (const filter of filters) {
+      db.use.filter = true
       filter_to_name[filter.id] = filter.name
     }
     db.foreach("dataset", dataset => {
@@ -354,6 +355,23 @@ function add_doc_recursive() {
       item.docs_recursive = docs
     })
   }
+}
+
+export function get_local_filter() {
+  let db_filters = []
+  for (const config_row of db.get_all("config")) {
+    if (config_row.id?.startsWith("filter_")) {
+      db.use.filter = true
+      db_filters.push({
+        id: config_row.value?.split(":")[0]?.trim(),
+        name: config_row.value?.split(":")[1]?.trim(),
+      })
+    }
+  }
+  if (db_filters.length === 0) {
+    db_filters = db.get_all("filter")
+  }
+  return db_filters
 }
 
 export function db_add_processed_data() {

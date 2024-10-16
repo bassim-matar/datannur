@@ -1,12 +1,14 @@
 <script>
-  import db from "@db"
+  import { get_local_filter } from "@js/db"
   import Switch from "@layout/Switch.svelte"
   import Main_filter from "@js/Main_filter"
 
   let filters = []
 
   const saved_filters = Main_filter.get()
-  for (const db_filter of db.get_all("filter")) {
+  const db_filters = get_local_filter()
+
+  for (const db_filter of db_filters) {
     const filter = db_filter
     filter.is_active = true
     filters.push(filter)
@@ -33,7 +35,9 @@
 {/each}
 
 <div class="navbar-item">
-  <button class="button" on:click={() => window.location.reload()}>Appliquer</button>
+  <button class="button" on:click={() => window.location.reload()}
+    >Appliquer</button
+  >
 </div>
 
 <style lang="scss">
@@ -43,14 +47,13 @@
     margin: auto;
   }
   .navbar-item {
-    :global(.switch[type=checkbox]+label){
-      font-size: .875rem;
+    :global(.switch[type="checkbox"] + label) {
+      font-size: 0.875rem;
       color: $color-2;
     }
-    :global(.button){
-      font-size: .875rem;
+    :global(.button) {
+      font-size: 0.875rem;
       color: $color-2;
     }
   }
-  
 </style>
