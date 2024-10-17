@@ -102,7 +102,7 @@
     } else {
       page_loaded_route = window.location.pathname.substring(1)
     }
-    page_loaded_route = page_loaded_route.replace("/", "___")
+    page_loaded_route = page_loaded_route.replaceAll("/", "___")
   }
 
   const is_dark = $dark_mode_theme === "dark"
@@ -128,7 +128,7 @@
       ? db.get_config("banner")
       : default_banner
     banner_src = banner_src?.split("(")[1]?.split(")")[0]
-    main_banner.src = banner_src?.replace("{dark_mode}", is_dark ? "_dark" : "")
+    main_banner.src = banner_src?.replaceAll("{dark_mode}", is_dark ? "_dark" : "")
     main_banner.onload = () => {
       const css_var_style = document.documentElement.style
       css_var_style.setProperty("--main_banner_width", main_banner.width)

@@ -22,7 +22,7 @@
     })
   }
 
-  $: md_content = about_file?.replace(
+  $: md_content = about_file?.replaceAll(
     "{dark_mode}",
     $dark_mode_theme === "dark" ? "_dark" : "",
   )

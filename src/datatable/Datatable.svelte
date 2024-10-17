@@ -58,8 +58,8 @@
   const max_height_load = `max(calc(100vh - ${max_height_value - 82}px), 80px)`
 
   function get_table_id() {
-    let table_id = hash.replace("/", "___")
-    table_id = table_id.replace(/[^a-z0-9_\-,. ]/gi, "")
+    let table_id = hash.replaceAll("/", "___")
+    table_id = table_id.replaceAll(/[^a-z0-9_\-,. ]/gi, "")
     return table_id + "___" + entity
   }
 

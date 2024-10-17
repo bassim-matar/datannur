@@ -9,7 +9,7 @@
 
   let raw_content = db.get_config(info)
 
-  $: content = raw_content?.replace(
+  $: content = raw_content?.replaceAll(
     "{dark_mode}",
     $dark_mode_theme === "dark" ? "_dark" : "",
   )

@@ -5,12 +5,12 @@ import Render from "@js/Render"
 export default class Preview_manager {
   static clean_keys(data) {
     if (typeof data === "string") {
-      return data.replace(".", "_")
+      return data.replaceAll(".", "_")
     }
     for (const row of data) {
       for (const [key, value] of Object.entries(row)) {
         if (key.includes(".")) {
-          const clean_key = key.replace(".", "_")
+          const clean_key = key.replaceAll(".", "_")
           row[clean_key] = value
           delete row[key]
         }

@@ -149,7 +149,7 @@ const start_server = async (index_file, port) => {
 
       const { pathname } = parse(req.url)
       const sanitizedPath = pathname
-        .replace(/^(\.)+/, "")
+        .replaceAll(/^(\.)+/, "")
         .split("/")
         .join(sep)
       const path = resolve(`${process.cwd()}${sanitizedPath}`)
@@ -207,7 +207,7 @@ async function capture_page(page, route, level) {
   }, route)
   try {
     await page.waitForSelector(
-      `#page_loaded_route_${route.replace("/", "___")}`,
+      `#page_loaded_route_${route.replaceAll("/", "___")}`,
       { timeout: 10000 }
     )
     const content = await page.content()
