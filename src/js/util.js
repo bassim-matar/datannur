@@ -77,7 +77,7 @@ export function escape_html_entities(str) {
     '"': "&quot;",
     "'": "&#39;",
   }
-  return String(str).replaceAll(/[&<>"']/g, char => to_replace[char])
+  return String(str).replace(/[&<>"']/g, char => to_replace[char])
 }
 
 export function link(href, content) {

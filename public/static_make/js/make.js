@@ -149,7 +149,7 @@ const start_server = async (index_file, port) => {
 
       const { pathname } = parse(req.url)
       const sanitizedPath = pathname
-        .replaceAll(/^(\.)+/, "")
+        .replace(/^(\.)+/, "")
         .split("/")
         .join(sep)
       const path = resolve(`${process.cwd()}${sanitizedPath}`)

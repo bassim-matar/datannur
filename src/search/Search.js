@@ -5,7 +5,7 @@ import { escape_html_entities } from "@js/util"
 
 function removeDiacritics(str) {
   if (typeof str !== "string") return str
-  return str.normalize("NFD").replaceAll(/[\u0300-\u036f]/g, "")
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 }
 export function search_highlight(value, search) {
   if (!search) return value
@@ -18,7 +18,7 @@ export function search_highlight(value, search) {
     .replaceAll("u", "[uûü]")
     .replaceAll("c", "[cç]")
 
-  return escape_html_entities(value).replaceAll(
+  return escape_html_entities(value).replace(
     new RegExp(`(${normalizedSearch})`, "gi"),
     `<span class="search_highlight">$1</span>`
   )

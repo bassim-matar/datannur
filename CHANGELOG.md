@@ -6,7 +6,7 @@
 - changed : get filter and alias info from config file instead of filter and alias files
 - changed : upgrade to sass 1.80.1
 - changed : put icons in icon folder
-- changed : use replaceAll instead of replace when needed
+- changed : use replaceAll instead of replace when needed (not regex)
 - fixed : typo in about_meta
 - fixed : doc preview a pixel to height
 - fixed : tabs_body overflow hidden without hidding the download button

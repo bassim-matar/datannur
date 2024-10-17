@@ -59,7 +59,7 @@
 
   function get_table_id() {
     let table_id = hash.replaceAll("/", "___")
-    table_id = table_id.replaceAll(/[^a-z0-9_\-,. ]/gi, "")
+    table_id = table_id.replace(/[^a-z0-9_\-,. ]/gi, "")
     return table_id + "___" + entity
   }
 
