@@ -4,6 +4,7 @@
 
 - changed : get last modification timestamp directly from jsonjsdb instead of info file
 - changed : get filter and alias info from config file instead of filter and alias files
+- changed : upgrade to sass 1.80.1
 - fixed : typo in about_meta
 - fixed : doc preview a pixel to height
 - fixed : tabs_body overflow hidden

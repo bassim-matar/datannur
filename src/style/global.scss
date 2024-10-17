@@ -1,3 +1,4 @@
+@use 'sass:string';
 @use "../main.scss" as *;
 
 :root {
@@ -164,11 +165,11 @@ img[alt^="main_banner"] {
   aspect-ratio: var(--main_banner_width) / var(--main_banner_height);
 }
 img[alt$="special_main_color"] {
-  filter: invert(32%) sepia(59%) saturate(1382%) hue-rotate(206deg)
+  filter: string.unquote("invert(32%)") sepia(59%) saturate(1382%) hue-rotate(206deg)
     brightness(95%) contrast(87%);
 }
 html.dark_mode img[alt$="special_main_color"] {
-  filter: invert(68%) sepia(8%) saturate(3575%) hue-rotate(179deg)
+  filter: string.unquote("invert(68%)") sepia(8%) saturate(3575%) hue-rotate(179deg)
     brightness(88%) contrast(103%);
 }
 

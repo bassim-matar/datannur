@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 // light mode
 $background-2-light: #fff; // header and footer
 $background-1-light: #f6f7f8; //#f0f2f5; // main background
@@ -90,7 +92,11 @@ $icon-colors: (
 );
 
 @function color($name) {
-  @return map-get($icon-colors, $name);
+  @if map.has-key($icon-colors, $name) {
+    @return map.get($icon-colors, $name);
+  } @else {
+    @error "No color found for #{$name} in $icon-colors.";
+  }
 }
 
 @mixin scrollbar_light() {
