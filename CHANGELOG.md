@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fixed : tabs_body overflow hidden only when not datatables, so download button is still visible
+
 ## 0.8.16 (2024-10-17)
 
 - added : some screenshot for about page
