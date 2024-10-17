@@ -7,6 +7,7 @@
 - changed : upgrade to sass 1.80.1
 - changed : put icons in icon folder
 - changed : use replaceAll instead of replace when needed (not regex)
+- changed : about fonctionality now use new screen shot all light and dark mode
 - fixed : typo in about_meta
 - fixed : doc preview a pixel to height
 - fixed : tabs_body overflow hidden without hidding the download button
