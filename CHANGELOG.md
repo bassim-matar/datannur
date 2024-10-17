@@ -7,7 +7,7 @@
 - changed : upgrade to sass 1.80.1
 - fixed : typo in about_meta
 - fixed : doc preview a pixel to height
-- fixed : tabs_body overflow hidden
+- fixed : tabs_body overflow hidden without hidding the download button
 - fixed : jsonjsdb dont update last modification when no change
 
 ## 0.8.15 (2024-10-16)

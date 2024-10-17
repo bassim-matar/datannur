@@ -42,9 +42,6 @@
         width: 1%;
         white-space: nowrap;
       }
-      tbody :global(tr:nth-child(even)) {
-        background: $background-2;
-      }
       tbody :global(td) {
         border: 0;
         position: relative;
