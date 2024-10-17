@@ -1,7 +1,8 @@
 # datannur
 
-## unreleased
+## 0.8.16 (2024-10-17)
 
+- added : some screenshot for about page
 - changed : get last modification timestamp directly from jsonjsdb instead of info file
 - changed : get filter and alias info from config file instead of filter and alias files
 - changed : upgrade to sass 1.80.1
