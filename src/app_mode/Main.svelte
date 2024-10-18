@@ -28,6 +28,8 @@
   import { copy_text_listen_click } from "@js/copy_text"
   import default_banner from "@markdown/main/banner.md?raw"
 
+  const timer = performance.now()
+
   function set_option_default(key, value = true) {
     let option_value = Options.get(key)
     if (option_value === undefined) {
@@ -51,18 +53,20 @@
 
   db.search = async () => {}
   db.loaded = (async () => {
+    let timer = performance.now()
     await Main_filter.init()
     const filter = {
       entity: "dataset",
       variable: "type",
       values: Main_filter.get_type_to_filter(),
     }
-    let timer = performance.now()
+    console.log("init filter", Math.round(performance.now() - timer) + " ms")
+    timer = performance.now()
     await db.init({ filter })
     console.log("db init", Math.round(performance.now() - timer) + " ms")
+    timer = performance.now()
     const user_data = await get_user_data()
     db.add_meta(user_data)
-    timer = performance.now()
     db_add_processed_data()
     console.log("db process", Math.round(performance.now() - timer) + " ms")
     timer = performance.now()
@@ -72,6 +76,7 @@
     Logs.init(user_data.log)
     Favorites.init(user_data.favorite)
     SearchHistory.init(user_data.search_history, { limit: 100 })
+    console.log("other init", Math.round(performance.now() - timer) + " ms")
   })()
 
   async function check_from_search(page_hash_value) {
@@ -134,6 +139,8 @@
       css_var_style.setProperty("--main_banner_width", main_banner.width)
       css_var_style.setProperty("--main_banner_height", main_banner.height)
     }
+
+    console.log("all init", Math.round(performance.now() - timer) + " ms")
   })
 </script>
 
