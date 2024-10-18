@@ -9,6 +9,7 @@
     <script>
       const dark = window.matchMedia("(prefers-color-scheme: dark)").matches
       document.documentElement.classList[dark ? "add" : "remove"]("dark_mode")
+      window.__global_timer = performance.now()
     </script>
   </head>
   <body>

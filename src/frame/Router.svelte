@@ -76,6 +76,11 @@
   }
 
   is_spa_homepage() ? router.resolve("/") : router.resolve()
+
+  console.log(
+    "init global timer",
+    Math.round(performance.now() - window.__global_timer) + " ms",
+  )
 </script>
 
 {#key page_key}

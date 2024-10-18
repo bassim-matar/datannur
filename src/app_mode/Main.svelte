@@ -43,16 +43,19 @@
   }
 
   Options.loaded = (async () => {
+    let timer = performance.now()
     await Options.init()
     set_option_default("rounded_design")
     set_option_default("open_all_recursive")
     set_option_default("page_shadow_colored", false)
+    console.log("init option", Math.round(performance.now() - timer) + " ms")
   })()
 
   Dark_mode.init(Options)
 
   db.search = async () => {}
   db.loaded = (async () => {
+    
     let timer = performance.now()
     await Main_filter.init()
     const filter = {
@@ -61,14 +64,17 @@
       values: Main_filter.get_type_to_filter(),
     }
     console.log("init filter", Math.round(performance.now() - timer) + " ms")
+
     timer = performance.now()
     await db.init({ filter })
-    console.log("db init", Math.round(performance.now() - timer) + " ms")
+    console.log("load db", Math.round(performance.now() - timer) + " ms")
+
     timer = performance.now()
     const user_data = await get_user_data()
     db.add_meta(user_data)
     db_add_processed_data()
-    console.log("db process", Math.round(performance.now() - timer) + " ms")
+    console.log("process db", Math.round(performance.now() - timer) + " ms")
+
     timer = performance.now()
     const search = new Search()
     search.init()
@@ -76,7 +82,6 @@
     Logs.init(user_data.log)
     Favorites.init(user_data.favorite)
     SearchHistory.init(user_data.search_history, { limit: 100 })
-    console.log("other init", Math.round(performance.now() - timer) + " ms")
   })()
 
   async function check_from_search(page_hash_value) {
@@ -140,7 +145,7 @@
       css_var_style.setProperty("--main_banner_height", main_banner.height)
     }
 
-    console.log("all init", Math.round(performance.now() - timer) + " ms")
+    console.log("init total", Math.round(performance.now() - timer) + " ms")
   })
 </script>
 
