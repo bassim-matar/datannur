@@ -13,7 +13,7 @@
   import Logs from "@js/Logs"
   import Favorites from "@favorite/Favorites"
   import Main_filter from "@js/Main_filter"
-  import { is_http, has_touch_screen } from "@js/util"
+  import { is_http, has_touch_screen, get_is_mobile } from "@js/util"
   import { url_param } from "@js/url_param"
   import { url_hash } from "@js/url_hash"
   import { db_add_processed_data, get_user_data } from "@js/db"
@@ -31,6 +31,11 @@
   let error_loading_db = false
 
   const timer = performance.now()
+
+  let is_mobile = get_is_mobile()
+  function on_resize() {
+    is_mobile = get_is_mobile()
+  }
 
   function set_option_default(key, value = true) {
     let option_value = Options.get(key)
@@ -165,6 +170,8 @@
   {/if}
 </svelte:head>
 
+<svelte:window on:resize={on_resize} />
+
 {#await Options.loaded then}
   <Header />
   <div id="wrapper" class:no_footer={!$footer_visible}>
@@ -173,7 +180,7 @@
         <h2 class="title">Erreur de chargement</h2>
         <p>Erreur durant le chargement de la base de données.</p>
         <p>Veuillez réessayer de charger l'application plus tard.</p>
-        <p>Si le problème persiste, contactez le support.<p/>
+        <p>Si le problème persiste, contactez le support.</p>
       </div>
     {:else}
       {#await db.loaded}
@@ -188,7 +195,9 @@
       {/await}
     {/if}
   </div>
-  <Footer />
+  {#if !is_mobile}
+    <Footer />
+  {/if}
 {/await}
 
 <style lang="scss">
@@ -204,7 +213,7 @@
     h2 {
       color: $color-3;
     }
-    p{
+    p {
       margin: 0.5em 0;
     }
   }

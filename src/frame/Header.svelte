@@ -3,6 +3,7 @@
   import { nb_favorite, header_open, page_name } from "@js/store"
   import { router } from "@js/router"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
+  import { get_is_mobile } from "@js/util"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"
   import Loading from "@frame/Loading.svelte"
@@ -11,6 +12,7 @@
   import HeaderDropdown from "./HeaderDropdown.svelte"
   import HeaderLink from "./HeaderLink.svelte"
   import Link from "@layout/Link.svelte"
+  import Footer from "@frame/Footer.svelte"
 
   const toggle_header = () => ($header_open = !$header_open)
   const close_menu = () => ($header_open = false)
@@ -26,6 +28,11 @@
       ?.click()
   }
 
+  let is_mobile = get_is_mobile()
+  function on_resize() {
+    is_mobile = get_is_mobile()
+  }
+
   let scroll_y = 0
 
   $: on_page_search = $page_name === "search"
@@ -35,7 +42,7 @@
   db.loaded.then(() => (loading = false))
 </script>
 
-<svelte:window bind:scrollY={scroll_y} />
+<svelte:window bind:scrollY={scroll_y} on:resize={on_resize} />
 
 <div class="navbar_menu_open_space" class:header_open={$header_open} />
 
@@ -163,6 +170,9 @@
         <div class="navbar-item search_bar_input_wrapper">
           <SearchBar {close_menu} />
         </div>
+      {/if}
+      {#if is_mobile}
+        <Footer />
       {/if}
     </div>
   </div>
