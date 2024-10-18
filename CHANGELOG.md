@@ -3,6 +3,7 @@
 ## unreleased
 
 - added : more console log duration during init process 
+- added : special error page for when error during init process 
 - fixed : tabs_body overflow hidden only when not datatables, so download button is still visible
 - fixed : add old variable name only to variable name in search module
 
