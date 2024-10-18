@@ -46,7 +46,8 @@ export default class Search {
       for (const entity of variable.entities) {
         db.foreach(entity.name, item => {
           let name = item[variable.name]
-          if (item.original_name) name += ` (${item.original_name})`
+          if (item.original_name && variable.name === "name")
+            name += ` (${item.original_name})`
           entity.items.add(item.id, removeDiacritics(name))
         })
       }
