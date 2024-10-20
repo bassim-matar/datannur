@@ -12,6 +12,7 @@
 - fixed : tabs_body overflow hidden only when not datatables, so download button is still visible
 - fixed : add old variable name only to variable name in search module
 - fixed : keep footer in menu for mobile version
+- fixed : force input on metaDataset datetime column
 
 ## 0.8.16 (2024-10-17)
 

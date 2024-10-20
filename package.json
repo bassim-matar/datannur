@@ -1,6 +1,6 @@
 {
   "name": "datannur",
-  "version": "0.8.16",
+  "version": "0.8.17",
   "description": "datannur is a portable data catalog that can run without a server",
   "type": "module",
   "private": true,

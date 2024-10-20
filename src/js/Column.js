@@ -251,6 +251,7 @@ export default class Column {
       data: "last_update_timestamp",
       title: Render.icon("date") + "Mis à jour",
       defaultContent: "",
+      filter_type: "input",
       render: data => {
         if (!data) return ""
         return wrap_long_text(`${get_datetime_sortable(data * 1000)}`)
@@ -262,6 +263,7 @@ export default class Column {
       data: "last_update_timestamp",
       title: Render.icon("date") + "Moment",
       defaultContent: "",
+      filter_type: "input",
       render: data => {
         if (!data) return ""
         return wrap_long_text(`${get_time_ago(data * 1000)}`)
