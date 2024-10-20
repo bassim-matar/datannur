@@ -13,6 +13,7 @@
   import DataPathInfo from "@infoTable/DataPathInfo.svelte"
   import CopyText from "@layout/CopyText.svelte"
   import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
+  import DeepLevelInfo from "@infoTable/DeepLevelInfo.svelte"
 
   export let folder_info
 </script>
@@ -20,6 +21,7 @@
 <TableWrapper>
   <IdInfo id={folder_info.id} />
   {#if !folder_info.is_meta}
+    <DeepLevelInfo level={folder_info.parents.length + 1} />
     {#if folder_info.parent_id}
       <FolderInfo folder_id={folder_info.id} is_self={true} />
     {/if}

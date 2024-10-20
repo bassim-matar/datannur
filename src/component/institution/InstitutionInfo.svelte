@@ -5,12 +5,14 @@
   import IdInfo from "@infoTable/IdInfo.svelte"
   import InstitutionInfo from "@infoTable/InstitutionInfo.svelte"
   import TagsInfo from "@infoTable/TagsInfo.svelte"
+  import DeepLevelInfo from "@infoTable/DeepLevelInfo.svelte"
 
   export let institution_info
 </script>
 
 <TableWrapper>
   <IdInfo id={institution_info.id} />
+  <DeepLevelInfo level={institution_info.parents.length + 1} />
   {#if institution_info.parent_id}
     <InstitutionInfo institution_id={institution_info.id} is_self={true} />
   {/if}

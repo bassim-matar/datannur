@@ -3,7 +3,8 @@
 ## unreleased
 
 - added : more console log duration during init process 
-- added : special error page for when error during init process 
+- added : special error page for when error during init process
+- added : deep level info on entity page
 - changed : put footer inside menu in mobile version
 - changed : migrate to svelte 5 with minimal changes
 - changed : put deep level and favorite at the end of the table
