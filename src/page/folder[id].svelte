@@ -59,9 +59,10 @@
     stat,
   })
 
+  const nb_folder = folders.length
   let key_tab = 1
   $: show_open_all_switch =
-    $tab_selected.key === "folders" && folders.length > is_big_limit
+    $tab_selected.key === "folders" && nb_folder > is_big_limit
 </script>
 
 <section class="section">

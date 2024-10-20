@@ -143,8 +143,9 @@
       <button
         class="icon is-small is-left"
         class:active={!is_empty_input && search_result_data.length > 0}
+        aria-label="Rechercher"
       >
-        <i class="fas fa-magnifying-glass" />
+        <i class="fas fa-magnifying-glass"></i>
       </button>
       <input
         class="search_page_input box_shadow_color shadow_search"
@@ -163,9 +164,9 @@
         on:click_outside={focusout}
       />
       {#if !is_empty_input}
-        <div class="btn_clear_input_wrapper">
+        <span class="btn_clear_input_wrapper">
           <BtnClearInput click={clear_input} />
-        </div>
+        </span>
       {/if}
     </p>
   </div>

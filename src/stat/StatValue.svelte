@@ -31,7 +31,7 @@
   <div
     class="percent_background"
     style="width: {percent}%; background: {main_color};"
-  />
+  ></div>
 </div>
 
 <style lang="scss">

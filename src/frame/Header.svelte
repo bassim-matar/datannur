@@ -44,7 +44,7 @@
 
 <svelte:window bind:scrollY={scroll_y} on:resize={on_resize} />
 
-<div class="navbar_menu_open_space" class:header_open={$header_open} />
+<div class="navbar_menu_open_space" class:header_open={$header_open}></div>
 
 <nav
   class="navbar is-fixed-top"
@@ -66,7 +66,7 @@
       {#if !on_page_search}
         <div class="search_bar_btn_wrapper">
           <HeaderLink href="search" pages={["search"]}>
-            <i class="fas fa-magnifying-glass" />
+            <i class="fas fa-magnifying-glass"></i>
           </HeaderLink>
         </div>
       {/if}
@@ -74,9 +74,10 @@
       <button
         class="navbar-burger"
         class:is-active={$header_open}
+        aria-label="menu"
         on:click={toggle_header}
       >
-        <span /><span /><span />
+        <span></span><span></span><span></span>
       </button>
     </div>
   </div>

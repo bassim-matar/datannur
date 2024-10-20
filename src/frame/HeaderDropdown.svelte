@@ -32,10 +32,9 @@
 <style lang="scss">
   @use "../main.scss" as *;
 
-  .navbar-link:not(.is-arrowless)::after{
+  .navbar-link::after {
     border-color: $color-3;
   }
-
   .navbar-item.has-dropdown:hover .navbar-link,
   .navbar-link.is-active,
   .navbar-link:focus,

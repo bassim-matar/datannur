@@ -12,7 +12,7 @@
   let table_wrapper
   let height = 0
   let has_scroll_bar = false
- 
+
   $: if (nb_result !== "") {
     setTimeout(() => {
       const real_height = table_wrapper.offsetHeight + 20
@@ -37,33 +37,35 @@
         <!-- Loading -->
       {:then}
         <table class="table is-striped">
-          {#if search_value === "" && nb_result > 0}
-            <tr>
-              <td colspan="3">
-                <div style="width: 100%;">
-                  {nb_result} recherche{plural} récente{plural}
-                </div>
-              </td>
-            </tr>
-          {/if}
+          <tbody>
+            {#if search_value === "" && nb_result > 0}
+              <tr>
+                <td colspan="3">
+                  <div style="width: 100%;">
+                    {nb_result} recherche{plural} récente{plural}
+                  </div>
+                </td>
+              </tr>
+            {/if}
 
-          {#if search_value !== ""}
-            <tr>
-              <td colspan="3">
-                <div style="width: 100%;">
-                  {nb_result} résultat{plural}
-                </div>
-              </td>
-            </tr>
-          {/if}
-          {#each all_search as item}
-            <SearchBarResultRow
-              {item}
-              {search_value}
-              {select_input}
-              bind:is_focus_in
-            />
-          {/each}
+            {#if search_value !== ""}
+              <tr>
+                <td colspan="3">
+                  <div style="width: 100%;">
+                    {nb_result} résultat{plural}
+                  </div>
+                </td>
+              </tr>
+            {/if}
+            {#each all_search as item}
+              <SearchBarResultRow
+                {item}
+                {search_value}
+                {select_input}
+                bind:is_focus_in
+              />
+            {/each}
+          </tbody>
         </table>
       {/await}
     </div>

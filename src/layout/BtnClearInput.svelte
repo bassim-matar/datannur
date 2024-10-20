@@ -3,8 +3,12 @@
   export let mode = "normal"
 </script>
 
-<button on:click={click} class="btn_clear_input {mode}">
-  <i class="fa-solid fa-xmark" />
+<button
+  on:click={click}
+  class="btn_clear_input {mode}"
+  aria-label="clear_input"
+>
+  <i class="fa-solid fa-xmark"></i>
 </button>
 
 <style lang="scss">

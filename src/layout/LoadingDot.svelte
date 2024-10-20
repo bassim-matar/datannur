@@ -1,4 +1,4 @@
-<div class="loading_dot" />
+<div class="loading_dot"></div>
 
 <style lang="scss">
 

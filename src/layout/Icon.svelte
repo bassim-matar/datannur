@@ -25,7 +25,7 @@
     class:no_margin_right={!margin_right}
     class:with_margin_left={margin_left}
   >
-    <i class="{class_names}" />
+    <i class="{class_names}"></i>
   </span>
 {/if}
 

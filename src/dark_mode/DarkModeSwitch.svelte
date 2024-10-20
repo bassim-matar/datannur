@@ -16,8 +16,8 @@
   $: sun = $dark_mode_theme === "dark" ? "" : "sun"
 </script>
 
-<button id="checkbox_{id}" on:click={toggle} class="tdnn {day}">
-  <div class="moon {sun}" />
+<button id="checkbox_{id}" on:click={toggle} class="tdnn {day}" aria-label="dark_mode">
+  <div class="moon {sun}"></div>
 </button>
 
 {#if label}

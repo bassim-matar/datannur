@@ -1,11 +1,8 @@
+import { mount } from "svelte"
 import App from "./App.svelte"
 
-const app_dom = document.getElementById('app')
-app_dom.innerHTML = ''
-
-const app = new App({
-  target: app_dom,
-  props: {},
-})
+const target = document.getElementById("app")
+target.innerHTML = ""
+const app = mount(App, { target })
 
 export default app

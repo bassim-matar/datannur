@@ -181,8 +181,9 @@
           is_focus_in &&
           nb_result > 0}
         on:click={go_to_page_search}
+        aria-label="Rechercher"
       >
-        <i class="fas fa-magnifying-glass" />
+        <i class="fas fa-magnifying-glass"></i>
       </button>
       <input
         id="header_search_input"
@@ -201,9 +202,9 @@
         enterkeyhint="search"
       />
       {#if $search_value !== ""}
-        <div class="btn_clear_input_wrapper">
+        <span class="btn_clear_input_wrapper">
           <BtnClearInput click={clear_input} />
-        </div>
+        </span>
       {/if}
     </p>
 

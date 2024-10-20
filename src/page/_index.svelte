@@ -59,12 +59,14 @@
     !db.use.modality &&
     !db.use.about
 
+  const nb_institution = institutions.length
+  const nb_folder = folders.length
+  const nb_tag = tags.length
   let key_tab = 1
   $: show_open_all_switch =
-    ($tab_selected.key === "institutions" &&
-      institutions.length > is_big_limit) ||
-    ($tab_selected.key === "folders" && folders.length > is_big_limit) ||
-    ($tab_selected.key === "tags" && tags.length > is_big_limit)
+    ($tab_selected.key === "institutions" && nb_institution > is_big_limit) ||
+    ($tab_selected.key === "folders" && nb_folder > is_big_limit) ||
+    ($tab_selected.key === "tags" && nb_tag > is_big_limit)
 </script>
 
 <Head title="datannur | Accueil" description="Page d'accueil de datannur" />

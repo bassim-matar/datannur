@@ -37,9 +37,9 @@
   class="loading {type} color_entity_{color_entity}"
   style="position: {position};"
 >
-  <div class="inner one" />
-  <div class="inner two" />
-  <div class="inner three" />
+  <div class="inner one"></div>
+  <div class="inner two"></div>
+  <div class="inner three"></div>
   {#if with_timer}
     <div class="timer">{timer}</div>
   {/if}

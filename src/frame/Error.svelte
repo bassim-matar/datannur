@@ -24,17 +24,17 @@
   <div class="_error">
     <div class="_number">4</div>
     <div class="_illustration">
-      <div class="_circle" />
+      <div class="_circle"></div>
       <div class="_clip">
         <div class="_paper">
           <div class="_face">
             <div class="_eyes">
-              <div class="_eye _eye-left" />
-              <div class="_eye _eye-right" />
+              <div class="_eye _eye-left"></div>
+              <div class="_eye _eye-right"></div>
             </div>
-            <div class="_rosyCheeks _rosyCheeks-left" />
-            <div class="_rosyCheeks _rosyCheeks-right" />
-            <div class="_mouth" />
+            <div class="_rosyCheeks _rosyCheeks-left"></div>
+            <div class="_rosyCheeks _rosyCheeks-right"></div>
+            <div class="_mouth"></div>
           </div>
         </div>
       </div>

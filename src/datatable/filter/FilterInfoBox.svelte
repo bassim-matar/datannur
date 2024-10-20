@@ -7,7 +7,7 @@
   <button class="filter_info_box" on:click={click}>
     {nb_active_filter} filtre{nb_active_filter > 1 ? "s" : ""}
     actif{nb_active_filter > 1 ? "s" : ""}
-    <i class="close_btn fa-solid fa-xmark" />
+    <i class="close_btn fa-solid fa-xmark"></i>
   </button>
 {/if}
 

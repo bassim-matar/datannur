@@ -351,7 +351,7 @@
                       {i + 1}
                     {:else if column.data === "is_favorite"}
                       <span class="icon favorite">
-                        <i class="fas fa-star" />
+                        <i class="fas fa-star"></i>
                       </span>
                     {:else}
                       <LoadingDot />

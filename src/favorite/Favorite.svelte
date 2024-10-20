@@ -28,8 +28,9 @@
     class:is-active={is_favorite}
     class:no-margin={no_margin}
     on:click={toggle}
+    aria-label="Favorite"
   >
-    <i class="fas fa-star" />
+    <i class="fas fa-star"></i>
   </button>
 {/if}
 

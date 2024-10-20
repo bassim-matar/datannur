@@ -63,6 +63,7 @@
         class="btn_delete_item"
         style="cursor: pointer;"
         on:click={remove_item(item.entity, item.id)}
+        aria-label="Remove item from recent search"
       >
         <i class="fa-solid fa-xmark close"></i>
         <i class="fa-solid fa-clock-rotate-left recent"></i>

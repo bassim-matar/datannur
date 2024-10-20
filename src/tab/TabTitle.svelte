@@ -35,10 +35,10 @@
   style="min-width: {min_width}px;"
 >
   <div class="rounded_wrapper left">
-    <div class="rounded left" />
+    <div class="rounded left"></div>
   </div>
   <div class="rounded_wrapper right">
-    <div class="rounded right" />
+    <div class="rounded right"></div>
   </div>
 
   <a
@@ -67,7 +67,8 @@
         {:else}
           <span class="num_style tab_visible">{tab.nb}</span>
           <span class="percent_wrapper">
-            <span class="percent" style="width: {100 - to_percent(tab.nb)}%" />
+            <span class="percent" style="width: {100 - to_percent(tab.nb)}%"
+            ></span>
           </span>
         {/if}
       {/if}

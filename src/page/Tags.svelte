@@ -22,8 +22,9 @@
   })
 
   let key_tab = 1
+  const nb_tags = tags.length
   $: show_open_all_switch =
-    $tab_selected.key === "tags" && tags.length > is_big_limit
+    $tab_selected.key === "tags" && nb_tags > is_big_limit
 </script>
 
 <section class="section">

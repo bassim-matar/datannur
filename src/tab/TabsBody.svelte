@@ -135,7 +135,7 @@
 
   @media screen and (max-width: 600px) {
     .tabs_body {
-      .tab_component_wrapper .padding {
+      .tab_component_wrapper.padding {
         padding: 10px;
       }
     }
