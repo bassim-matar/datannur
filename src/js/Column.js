@@ -282,16 +282,14 @@ export default class Column {
   }
   static level() {
     return {
-      data: "id",
+      data: "parents",
       title: Render.icon("level") + "<span class='hidden'>level</span>",
       defaultContent: "",
       name: "level",
       filter_type: "input",
       width: "20px",
       tooltip: "Niveau de profondeur de l'arborecence",
-      render: (data, _, row) => {
-        return row?.parents_relative?.length - row?.minimum_deep + 1
-      },
+      render: data => data.length + 1,
     }
   }
   static localisation() {
