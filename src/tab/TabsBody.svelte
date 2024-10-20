@@ -33,7 +33,7 @@
   })
 
   $: if (active_tab_body) {
-    update_ancestor_height()
+    setTimeout(() => update_ancestor_height(), 1)
   }
 </script>
 

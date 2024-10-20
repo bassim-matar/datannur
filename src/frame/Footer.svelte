@@ -7,6 +7,8 @@
   import DarkModeSwitch from "@dark_mode/DarkModeSwitch.svelte"
   import HeaderLink from "@frame/HeaderLink.svelte"
 
+  export let menu_mobile = false
+
   const year = new Date().getFullYear()
   let contact_email = "loading"
   let last_update = "loading"
@@ -47,7 +49,7 @@
   })
 </script>
 
-{#if $footer_visible}
+{#if $footer_visible || menu_mobile}
   <footer class="footer">
     <div class="footer-content">
       <div>
@@ -119,7 +121,6 @@
     justify-content: center;
     align-items: center;
     padding: 0.3rem 3rem;
-    // background-color: $background-1;
     background-color: transparent;
     color: $color-2;
     .footer-content {

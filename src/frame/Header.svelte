@@ -173,7 +173,7 @@
         </div>
       {/if}
       {#if is_mobile}
-        <Footer />
+        <Footer menu_mobile={true} />
       {/if}
     </div>
   </div>
