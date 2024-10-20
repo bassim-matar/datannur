@@ -33,8 +33,6 @@
   institutions_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
 
   const columns = [
-    Column.favorite(),
-    Column.level(),
     Column.name("institution", "Institution", {
       with_indent: true,
       link_same_entity_tab: true,
@@ -64,6 +62,8 @@
       render: data =>
         data ? `<a href="tel:${data}" target="_blanck" >${data}</a>` : "",
     },
+    Column.level(),
+    Column.favorite(),
   ]
 </script>
 

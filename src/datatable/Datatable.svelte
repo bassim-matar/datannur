@@ -117,8 +117,6 @@
 
   if (window.innerWidth > 1023) {
     for (const column of columns) {
-      if (column.name === "is_favorite") nb_sticky += 1
-      if (column.name === "level") nb_sticky += 1
       if (column.name === "entity") nb_sticky += 1
       if (column.name === "name") nb_sticky += 1
     }

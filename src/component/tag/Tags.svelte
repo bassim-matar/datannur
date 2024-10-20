@@ -34,15 +34,14 @@
   const is_recursive =
     db.use.tag_recursive && ["homepage", "tag", "tags"].includes($page_hash)
 
-  let columns = [Column.favorite()]
+  let columns = []
   if (db.use.tag_recursive) {
-    columns = columns.concat([
-      Column.level(),
+    columns.push(
       Column.name("tag", "Mot clé", {
         with_indent: true,
         link_same_entity_tab: true,
       }),
-    ])
+    )
   } else {
     columns.push(Column.name("tag", "Mot clé"))
   }
@@ -72,6 +71,11 @@
     Column.nb_dataset_recursive("tag", dataset_max),
     Column.nb_variable("tag", variable_max),
   ])
+
+  if (db.use.tag_recursive) {
+    columns.push(Column.level())
+  }
+  columns.push(Column.favorite())
 </script>
 
 {#if tags && tags.length > 0}

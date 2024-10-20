@@ -65,8 +65,6 @@
     ]
   } else {
     columns = [
-      Column.favorite(),
-      Column.level(),
       Column.name("folder", "Dossier", {
         with_indent: true,
         link_same_entity_tab: true,
@@ -105,6 +103,8 @@
             ? wrap_long_text(`<a href="${data}" target="_blanck">${data}</a>`)
             : "",
       },
+      Column.level(),
+      Column.favorite(),
     ]
   }
 </script>

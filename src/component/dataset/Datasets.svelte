@@ -68,11 +68,7 @@
     }
   }
 
-  let columns = []
-  if (!is_meta) {
-    columns.push(Column.favorite())
-  }
-  columns = columns.concat([
+  let columns = [
     Column.name("dataset", "Dataset", { is_meta }),
     Column.description(),
     Column.datatype(),
@@ -82,7 +78,7 @@
       show_title: true,
     }),
     Column.nb_row(nb_row_max),
-  ])
+  ]
 
   if (is_meta) {
     columns.push(Column.metaFolder())
@@ -103,6 +99,7 @@
       Column.last_update(),
       Column.period(),
       Column.data_path(),
+      Column.favorite(),
     ])
   }
 </script>

@@ -6,6 +6,7 @@
 - added : special error page for when error during init process 
 - changed : put footer inside menu in mobile version
 - changed : migrate to svelte 5 with minimal changes
+- changed : put deep level and favorite at the end of the table
 - fixed : tabs_body overflow hidden only when not datatables, so download button is still visible
 - fixed : add old variable name only to variable name in search module
 

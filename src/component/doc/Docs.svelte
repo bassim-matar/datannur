@@ -21,7 +21,6 @@
   }
 
   let columns = [
-    Column.favorite(),
     Column.name("doc", "Doc"),
     {
       data: "type",
@@ -81,6 +80,7 @@
         return `${Render.num_percent(content, percent, "dataset", type)}`
       },
     },
+    Column.favorite(),
   ]
 </script>
 

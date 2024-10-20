@@ -7,20 +7,14 @@
   export let nb_item = false
   export let load_first = false
 
-  let columns = []
-
-  if (!is_meta) {
-    columns.push(Column.favorite())
-  }
-
-  columns = columns.concat([
+  let columns = [
     Column.name("variable", "Variable", { is_meta }),
     Column.original_name(),
     Column.description(),
     Column.datatype(),
     Column.nb_missing(),
     Column.nb_duplicates(),
-  ])
+  ]
 
   columns.push(Column.nb_values())
   columns.push(Column.values_preview())
@@ -31,6 +25,7 @@
       Column.tag(),
       Column.start_date(),
       Column.end_date(),
+      Column.favorite(),
     ])
   }
 </script>

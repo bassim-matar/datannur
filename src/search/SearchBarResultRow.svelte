@@ -30,16 +30,6 @@
 <tr class:nav_hover={item.nav_hover}>
   <td style="width: 20px;">
     <div>
-      <Favorite
-        type={item.entity}
-        id={item.id}
-        is_favorite={item.is_favorite}
-        no_margin={true}
-      />
-    </div>
-  </td>
-  <td style="width: 20px;">
-    <div>
       <Icon type={item.entity} />
     </div>
   </td>
@@ -56,6 +46,16 @@
         {/if}
       </div>
     </Link>
+  </td>
+  <td style="width: 20px;">
+    <div>
+      <Favorite
+        type={item.entity}
+        id={item.id}
+        is_favorite={item.is_favorite}
+        no_margin={true}
+      />
+    </div>
   </td>
   {#if search_value === "" || item.is_recent}
     <td style="width: 20px;">
