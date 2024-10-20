@@ -144,7 +144,7 @@
       float: left;
       margin: 5px;
       background: transparent;
-      border-color: transparent;
+      border-color: transparent !important;
       box-shadow: none;
       height: 0;
       padding: 10px;

@@ -2,6 +2,10 @@
 
 ## unreleased
 
+- fixed : remove stat tab menu border on dark mode
+
+## 0.8.17 (2024-10-20)
+
 - added : more console log duration during init process 
 - added : special error page for when error during init process
 - added : deep level info on entity page
