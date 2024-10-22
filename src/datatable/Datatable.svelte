@@ -57,6 +57,10 @@
   const max_height = `max(calc(100vh - ${max_height_value}px), 170px)`
   const max_height_load = `max(calc(100vh - ${max_height_value - 82}px), 80px)`
 
+  let clickable_rows = true
+  if (["value", "dataset_preview", "variable_preview", "log"].includes(entity))
+    clickable_rows = false
+
   function get_table_id() {
     let table_id = hash.replaceAll("/", "___")
     table_id = table_id.replace(/[^a-z0-9_\-,. ]/gi, "")
@@ -373,6 +377,7 @@
         id={table_id}
         class="_datatables table is-striped"
         class:short_table
+        class:clickable_rows
       >
         <thead>
           <tr>
@@ -408,7 +413,7 @@
   @use "./exporter/exporter.scss" as *;
   @use "../style/icon.scss" as *;
   @use "../style/favorite.scss" as *;
-  
+
   .datatable_main_wrapper {
     text-align: left;
     :global {
@@ -427,7 +432,7 @@
   .dt_loading {
     .dt-scroll {
       max-height: var(--max-height);
-      
+
       th {
         position: relative;
         padding-right: 30px;
@@ -513,7 +518,9 @@
         margin: auto;
         max-width: 100%;
       }
-      .div.dt-scroll-body,  div.dt-scroll-head, div.dt-scroll-headInner {
+      .div.dt-scroll-body,
+      div.dt-scroll-head,
+      div.dt-scroll-headInner {
         text-align: left;
         margin: auto;
       }
@@ -730,8 +737,10 @@
               overflow-y: auto;
             }
           }
-          tbody > tr {
-            cursor: pointer;
+          &.clickable_rows {
+            tbody > tr {
+              cursor: pointer;
+            }
           }
           tbody > tr:hover > td,
           tbody > tr:hover > td.dtfc-fixed-left {

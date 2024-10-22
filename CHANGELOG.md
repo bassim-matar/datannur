@@ -3,6 +3,7 @@
 ## unreleased
 
 - fixed : remove stat tab menu border on dark mode
+- fixed : remove mouse cursor when datatables not clickable
 
 ## 0.8.17 (2024-10-20)
 
