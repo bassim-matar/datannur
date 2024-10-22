@@ -41,12 +41,12 @@ export default class Render {
     return Render.tree(entity, elements, type)
   }
   static first_parent(data, type, row) {
-    if (data.length === 0) return ""
+    if (data.length === 0) return wrap_long_text()
     const parent = data.slice(-1)[0]
     return wrap_long_text(link(row._entity + "/" + parent.id, parent.name))
   }
   static value(values, type, row) {
-    if (!values || values === "" || values.length === 0) return ""
+    if (!values || values === "" || values.length === 0) return wrap_long_text()
     const nb_values = row.values.length
     let entity = "dataset_id" in row ? "variable" : "modality"
     let tab = entity === "variable" ? "variable_values" : "values"
@@ -112,7 +112,7 @@ export default class Render {
     return `<span class='icon icon_${entity}'><i class='${class_names}'></i></span>`
   }
   static modalities_name(modalities) {
-    if (!modalities || modalities.length === 0) return ""
+    if (!modalities || modalities.length === 0) return wrap_long_text()
     let modalities_name = []
     for (const modality of modalities) {
       modalities_name.push(link("modality/" + modality.id, modality.name))
@@ -163,7 +163,7 @@ export default class Render {
       <span class="num_percent color_${color_type}" style="width: ${percent}%"></span>`
   }
   static tags(tags) {
-    if (!tags || tags.length === 0) return ""
+    if (!tags || tags.length === 0) return wrap_long_text()
     let tags_name = []
     for (const tag of tags) {
       tags_name.push(link("tag/" + tag.id, tag.name))
@@ -171,7 +171,7 @@ export default class Render {
     return wrap_long_text(tags_name.join(" | "))
   }
   static copy_cell(data, type) {
-    if (!data) return ""
+    if (!data) return wrap_long_text()
     if (type !== "display") return data
     return wrap_long_text(
       `<span class="${copy_text_classes}" title="${copy_text_msg}">${data}</span>`

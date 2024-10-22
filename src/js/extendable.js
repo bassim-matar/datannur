@@ -1,7 +1,7 @@
 import jQuery from "jquery"
 
 const max_height = 200
-const min_height = 25
+const min_height = 50
 const open_duration = 500
 const close_duration = 2000
 
@@ -13,13 +13,6 @@ export const extendable = {
       if (this.start_width === undefined) {
         this.start_width = elem.width()
       }
-      if (
-        !elem.children().hasClass("ul_value") &&
-        !elem.children().hasClass("tree") &&
-        !elem.hasClass("open") &&
-        this.clientWidth >= this.scrollWidth
-      )
-        return false
       const width = Math.min(elem.width(), this.start_width) + 20
       elem.css({ width: width + "px" })
       elem.addClass("open").removeClass("open_full")

@@ -8,11 +8,11 @@
   import "datatables.net-fixedheader-bm"
   import "datatables.net-scroller-bm"
   import { onMount, onDestroy } from "svelte"
-  import { link, get_percent } from "@js/util"
+  import { link, get_percent, is_mobile } from "@js/util"
   import { get_sort_by_name } from "@js/db"
   import { entity_names, is_big_limit } from "@js/constant"
   import { url_hash } from "@js/url_hash"
-  import { tab_selected, all_tables_loaded } from "@js/store"
+  import { tab_selected, all_tables_loaded, all_tabs } from "@js/store"
   import { extendable } from "@js/extendable"
   import Options from "@js/Options"
   import LoadingDot from "@layout/LoadingDot.svelte"
@@ -29,7 +29,6 @@
   export let entity
   export let data
   export let columns
-  export let nb_item
   export let load_first = false
   export let sort_by_name = true
   export let keep_all_cols = false
@@ -75,18 +74,25 @@
   const exporter = new Exporter(table_id)
   const filter = new Filter_helper(table_id, entity, update_filter_count)
 
-  nb_item = "..."
+  $all_tabs[entity].nb = "..."
 
-  let new_data
+  let new_data = []
   function load_new_data() {
-    new_data = [...data]
+    new_data = []
     if (sort_by_name) {
-      new_data.sort(get_sort_by_name)
+      data.sort(get_sort_by_name)
     }
     let row_num = 0
-    for (const rows of new_data) {
+    for (const rows of data) {
+      if (
+        filter_recursive &&
+        rows.parents_relative.length - rows.minimum_deep !== 0
+      ) {
+        continue
+      }
       row_num += 1
       rows._row_num = row_num
+      new_data.push(rows)
     }
   }
 
@@ -188,12 +194,24 @@
       column.loading_max_width = 20
       continue
     }
+    if (column.has_long_text) {
+      column.loading_width = 274
+      column.loading_max_width = 274
+      continue
+    }
     if (column.name === "name") bold = "bold"
     const cells = []
-    for (const row of new_data.slice(0, nb_row_loading))
-      cells.push(row[column.data])
-    const cells_width = get_text_width(cells, `${bold} 16px BlinkMacSystemFont`)
-    column.loading_width = Math.min(285, cells_width)
+    for (const row of new_data.slice(0, nb_row_loading)) {
+      let value = row[column.data]
+      if (column.from_length) value = value.length
+      if (column.data === "_entity") value = "icon_ico," + value
+      cells.push(value)
+    }
+    const cells_width =
+      Math.round(get_text_width(cells, `${bold} 16px "Helvetica Neue"`) * 100) /
+      100
+    column.loading_width = Math.min(274, cells_width)
+    column.loading_max_width = Math.min(274, cells_width)
   }
 
   function elem_has_clickable(target, container, selector) {
@@ -225,7 +243,7 @@
         pageLength: 100,
         searching: is_big,
         deferRender: is_big,
-        scroller: is_big ? { rowHeight: 41 } : false,
+        scroller: is_big ? { rowHeight: 66 } : false,
         autoWidth: false,
         fixedColumns: { leftColumns: nb_sticky },
         stateSave: true,
@@ -244,18 +262,12 @@
         },
       })
       datatable.on("search.dt", () => {
-        nb_item = get_nb_item(datatable)
+        $all_tabs[entity].nb = get_nb_item(datatable)
         short_table = is_short_table(datatable)
       })
       datatable.on("draw.dt", () => {
         datatable_update_draw += 1
       })
-      if (filter_recursive) {
-        datatable
-          .column("level:name")
-          .search.fixed("filter_recursive", 1)
-          .draw()
-      }
       dom_table = jQuery("table#" + table_id + "._datatables")
       dom_table.on("mouseenter", ".long_text", extendable.open)
       dom_table.on("mouseleave", ".long_text", extendable.close)
@@ -266,6 +278,7 @@
             "a, button, input, select, .copyclip, .favorite"
 
           if (
+            is_mobile ||
             !dom_table ||
             elem_has_clickable(event.target, this, clickable_elems)
           ) {
@@ -280,7 +293,7 @@
       initied()
       datatable.columns.adjust()
       datatable_update_draw += 1
-      nb_item = get_nb_item(datatable)
+      $all_tabs[entity].nb = get_nb_item(datatable)
       short_table = is_short_table(datatable)
       loading = false
       Datatables_timer.end()
@@ -438,7 +451,7 @@
         padding-right: 30px;
       }
       td {
-        height: 41px;
+        height: 66px;
       }
       .loading_filter_wrapper {
         position: sticky;
@@ -702,36 +715,37 @@
               }
             }
           }
+          td div.long_text_empty {
+            width: 250px;
+          }
           td div.long_text {
-            display: table-caption;
-            max-width: 300px;
-            width: auto;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            width: 250px;
+            max-width: 250px;
             padding-right: 0px;
             text-overflow: ellipsis;
-            white-space: nowrap;
-            max-height: 25px;
-            min-height: 25px;
+            white-space: normal;
+            max-height: 50px;
+            min-height: 50px;
             overflow-x: hidden;
             overflow-y: hidden;
             word-wrap: break-word;
             scrollbar-gutter: stable;
+            overflow: hidden;
+            text-overflow: ellipsis;
             .indented_text {
-              display: inline;
               width: 100%;
               box-sizing: border-box;
-            }
-            .tree {
-              text-overflow: ellipsis;
-              overflow: hidden;
             }
             a:nth-child(2) .indented_text {
               display: block;
             }
             &.open {
               white-space: normal;
-              .indented_text {
-                display: block;
-              }
+              display: block;
             }
             &.open_full {
               overflow-y: auto;

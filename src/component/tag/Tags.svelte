@@ -1,14 +1,14 @@
 <script>
+  import { onMount } from "svelte"
   import db from "@db"
-  import { page_hash } from "@js/store"
+  import { page_name } from "@js/store"
   import { get_parent_path } from "@js/db"
   import { link, get_percent } from "@js/util"
   import Column from "@js/Column"
   import Render from "@js/Render"
   import Datatable from "@datatable/Datatable.svelte"
-
+ 
   export let tags
-  export let nb_item = false
   export let load_first = false
 
   let tag_max = 0
@@ -30,9 +30,6 @@
   if (db.use.tag_recursive) {
     tags_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
   }
-
-  const is_recursive =
-    db.use.tag_recursive && ["homepage", "tag", "tags"].includes($page_hash)
 
   let columns = []
   if (db.use.tag_recursive) {
@@ -76,9 +73,19 @@
     columns.push(Column.level())
   }
   columns.push(Column.favorite())
+
+  let is_recursive = false
+  let mounted = false
+  onMount(() => {
+    setTimeout(() => {
+      is_recursive =
+        db.use.tag_recursive && ["homepage", "tag", "tags"].includes($page_name)
+      mounted = true
+    }, 1)
+  })
 </script>
 
-{#if tags && tags.length > 0}
+{#if tags && tags.length > 0 && mounted}
   <Datatable
     entity="tag"
     data={tags_sorted}
@@ -86,6 +93,5 @@
     {is_recursive}
     {columns}
     {load_first}
-    bind:nb_item
   />
 {/if}

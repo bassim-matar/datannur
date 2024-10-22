@@ -28,6 +28,7 @@ export default class Column {
       title: Render.icon(icon) + title_name,
       name: "name",
       tooltip: "Nom de l'entité: " + title_name,
+      has_long_text: true,
       render: (data, type, row) => {
         let indent = false
         let text
@@ -54,6 +55,7 @@ export default class Column {
     return {
       data: "original_name",
       title: Render.icon("name") + "Nom d'origine",
+      has_long_text: true,
       render: data => wrap_long_text(data),
     }
   }
@@ -89,6 +91,7 @@ export default class Column {
       data: folder_name_var,
       title: Render.icon("folder") + "Dossier",
       defaultContent: "",
+      has_long_text: true,
       render,
     }
   }
@@ -97,6 +100,7 @@ export default class Column {
       data: "folder_id",
       title: Render.icon("folder") + "Dossier",
       defaultContent: "",
+      has_long_text: true,
       render: (data, _, row) => {
         if (!data) return ""
         return wrap_long_text(link("folder/" + data, row.folder_name))
@@ -108,6 +112,7 @@ export default class Column {
     return {
       data: "parents",
       title: Render.icon("folder_tree") + "Partie de",
+      has_long_text: true,
       render,
     }
   }
@@ -125,6 +130,7 @@ export default class Column {
       data: "description",
       defaultContent: "",
       title: Render.icon("description") + "Description",
+      has_long_text: true,
       render: data => wrap_long_text(data),
     }
   }
@@ -133,6 +139,7 @@ export default class Column {
       data: "tags",
       title: Render.icon("tag") + "Mots clés",
       defaultContent: "",
+      has_long_text: true,
       render: Render.tags,
     }
   }
@@ -145,6 +152,7 @@ export default class Column {
       data: "owner_name",
       title: Render.icon("institution") + entity_names.owner,
       defaultContent: "",
+      has_long_text: true,
       render,
     }
   }
@@ -157,6 +165,7 @@ export default class Column {
       data: "manager_name",
       title: Render.icon("institution") + entity_names.manager,
       defaultContent: "",
+      has_long_text: true,
       render,
     }
   }
@@ -173,6 +182,7 @@ export default class Column {
       data: "value",
       defaultContent: "",
       title: Render.icon("value") + "Valeur",
+      has_long_text: true,
       render: data => wrap_long_text(data),
     }
   }
@@ -190,6 +200,7 @@ export default class Column {
     return {
       data: "values_preview",
       title: Render.icon("value") + "Valeurs",
+      has_long_text: true,
       defaultContent: "",
       render: Render.value,
     }
@@ -231,6 +242,7 @@ export default class Column {
       defaultContent: "",
       filter_type: "select",
       title: Render.icon("frequency") + "Fréquence",
+      has_long_text: true,
       render: wrap_long_text,
     }
   }
@@ -240,8 +252,9 @@ export default class Column {
       defaultContent: "",
       title: Render.icon("date") + "Mis à jour",
       filter_type: "input",
+      has_long_text: true,
       render: data => {
-        if (!data) return ""
+        if (!data) return wrap_long_text()
         return wrap_long_text(`${data}, ${get_time_ago(data, true, true)}`)
       },
     }
@@ -252,8 +265,9 @@ export default class Column {
       title: Render.icon("date") + "Mis à jour",
       defaultContent: "",
       filter_type: "input",
+      has_long_text: true,
       render: data => {
-        if (!data) return ""
+        if (!data) return wrap_long_text()
         return wrap_long_text(`${get_datetime_sortable(data * 1000)}`)
       },
     }
@@ -264,8 +278,9 @@ export default class Column {
       title: Render.icon("date") + "Moment",
       defaultContent: "",
       filter_type: "input",
+      has_long_text: true,
       render: data => {
-        if (!data) return ""
+        if (!data) return wrap_long_text()
         return wrap_long_text(`${get_time_ago(data * 1000)}`)
       },
     }
@@ -284,14 +299,14 @@ export default class Column {
   }
   static level() {
     return {
-      data: "parents",
+      data: "id",
       title: Render.icon("level") + "<span class='hidden'>level</span>",
       defaultContent: "",
       name: "level",
       filter_type: "input",
       width: "20px",
       tooltip: "Niveau de profondeur de l'arborecence",
-      render: data => data.length + 1,
+      render: (data, type, row) => row.parents?.length + 1,
     }
   }
   static localisation() {
@@ -299,6 +314,7 @@ export default class Column {
       data: "localisation",
       title: Render.icon("localisation") + "Localisation",
       defaultContent: "",
+      has_long_text: true,
       render: wrap_long_text,
     }
   }
@@ -315,6 +331,7 @@ export default class Column {
       data: "period",
       title: Render.icon("date_range") + "Période",
       defaultContent: "",
+      has_long_text: true,
       render: wrap_long_text,
     }
   }
@@ -350,6 +367,7 @@ export default class Column {
     return {
       data: "dataset_name",
       title: Render.icon("dataset") + "Dataset",
+      has_long_text: true,
       render: (data, type, row) =>
         wrap_long_text(
           link(parent_name + "/" + row[parent_name + "_id"], data)
@@ -369,6 +387,7 @@ export default class Column {
       data: "path",
       title: Render.icon("link") + "Lien",
       defaultContent: "",
+      has_long_text: true,
       render: data => {
         return wrap_long_text(`<a href="${data}" target="_blanck">${data}</a>`)
       },
@@ -382,6 +401,7 @@ export default class Column {
         (with_name ? "Docs" : "<span class='hidden'>nb_docs</span>"),
       filter_type: "input",
       defaultContent: "",
+      from_length: true,
       render: (data, type, row) => {
         if (!data.length) return ""
         const content = link(entity + "/" + row.id + "?tab=docs", data.length)

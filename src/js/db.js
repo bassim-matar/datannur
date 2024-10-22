@@ -301,6 +301,7 @@ class Process {
 
       modality.variables = db.get_all("variable", { modality })
       modality.values = db.get_all("value", { modality })
+      modality.nb_value = modality.values.length
       modality.values_preview = [...modality.values.slice(0, 10)]
       for (const value of modality.values) {
         value.modality_name = modality.name

@@ -92,7 +92,8 @@ export function add_indend(text, indent) {
 }
 
 export function wrap_long_text(text, indent = false) {
-  if (text === undefined || text === null || text === "") return ""
+  if (text === undefined || text === null || text === "")
+    return `<div class="long_text_empty"></div>`
   if (indent) text = add_indend(text, indent)
   return `<div class="long_text">${text}</div>`
 }

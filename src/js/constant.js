@@ -1,5 +1,5 @@
 export const locale = "fr"
-export const is_big_limit = 10
+export const is_big_limit = 5
 
 export const entity_names = {
   institution: "Institution",
@@ -78,4 +78,5 @@ export const entity_to_icon = {
   link: "link",
   recursive: "rotate-left",
   functionality: "screwdriver-wrench",
+  preview: "eye",
 }
