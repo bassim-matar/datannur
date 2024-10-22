@@ -57,11 +57,7 @@
         class:padding={tab.padding}
         class:has_footer={tab.footer_visible}
       >
-        <svelte:component
-          this={tab.component}
-          {...tab.props}
-          bind:nb_item={tab.nb}
-        />
+        <svelte:component this={tab.component} {...tab.props} />
       </div>
     {/if}
   {/each}

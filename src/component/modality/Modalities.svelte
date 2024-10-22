@@ -5,7 +5,6 @@
   import Datatable from "@datatable/Datatable.svelte"
 
   export let modalities
-  export let nb_item = false
   export let load_first = false
 
   let nb_value_max = 0
@@ -25,16 +24,16 @@
     Column.datatype(),
     Column.nb_variable("modality", nb_variable_max, { show_title: true }),
     {
-      data: "values",
+      data: "nb_value",
       title: Render.icon("value") + "Nb",
       defaultContent: "",
       tooltip: "Nombre de valeurs",
       render: (data, _, row) => {
-        if (!data.length) return ""
-        const percent = get_percent(data.length / nb_value_max)
+        if (!data) return ""
+        const percent = get_percent(data / nb_value_max)
         const content = link(
           `modality/${row.id}?tab=values`,
-          Render.num(data.length),
+          Render.num(data),
         )
         return `${Render.num_percent(content, percent, "value")}`
       },
@@ -51,6 +50,5 @@
     data={modalities}
     {columns}
     {load_first}
-    bind:nb_item
   />
 {/if}

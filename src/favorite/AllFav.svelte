@@ -3,7 +3,6 @@
   import Column from "@js/Column"
 
   export let all_fav
-  export let nb_item = false
   export let load_first = false
 
   all_fav.sort((a, b) => b.favorite_timestamp - a.favorite_timestamp)
@@ -25,5 +24,4 @@
     sort_by_name={false}
     {columns}
     {load_first}
-    bind:nb_item
   />

@@ -1,11 +1,11 @@
 <script>
   import db from "@db"
+  import { tab_selected } from "@js/store"
   import Preview_manager from "@js/Preview_manager"
   import Datatable from "@datatable/Datatable.svelte"
   import Loading from "@frame/Loading.svelte"
 
   export let variable_preview
-  export let nb_item = false
   export let load_first = false
 
   let variable = variable_preview.variable
@@ -19,7 +19,7 @@
     } else {
       variable = Preview_manager.clean_keys(variable)
       dataset_preview = variable_preview.dataset_id
-      nb_item = 0
+      $tab_selected.nb = 0
       if (typeof dataset_preview !== "string") {
         let dataset_data = dataset_preview
         variable_data = Preview_manager.get_variable_data(
@@ -28,7 +28,7 @@
         )
         variable_data = Preview_manager.add_position(variable_data)
         columns = Preview_manager.get_columns(variable_data)
-        nb_item = variable_data.length
+        $tab_selected.nb = variable_data.length
         return
       }
 
@@ -44,7 +44,7 @@
       )
     }
     columns = Preview_manager.get_columns(variable_data)
-    nb_item = variable_data.length
+    $tab_selected.nb = variable_data.length
   })()
 </script>
 
@@ -52,12 +52,11 @@
   <Loading type="tab_body" color_entity="search"/>
 {:then load_preview}
   <Datatable
-    entity="variable_preview"
+    entity="preview"
     data={variable_data}
     sort_by_name={false}
     {columns}
     keep_all_cols={true}
     {load_first}
-    bind:nb_item
   />
 {/await}

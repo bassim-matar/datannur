@@ -5,7 +5,6 @@
   import Column from "@js/Column"
 
   export let logs
-  export let nb_item = false
   export let load_first = false
 
   $: data_update_key = logs.length
@@ -15,15 +14,14 @@
       data: "action",
       title: Render.icon("log") + "Log",
       render: data => {
-        if (!data) return ""
-        return wrap_long_text(data)
+        return wrap_long_text(data ? data : "")
       },
     },
     {
       data: "element",
       title: Render.icon("entity") + "Element",
       defaultContent: "",
-      render: data => wrap_long_text(data),
+      render: data => wrap_long_text(data ? data : ""),
     },
     Column.time_ago(),
     Column.timestamp(),
@@ -37,5 +35,4 @@
   {columns}
   {load_first}
   {data_update_key}
-  bind:nb_item
 />

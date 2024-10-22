@@ -1,14 +1,10 @@
 <script>
   import db from "@db"
-  import { link, get_percent } from "@js/util"
   import Column from "@js/Column"
-  import Render from "@js/Render"
   import Datatable from "@datatable/Datatable.svelte"
-  import CopyText from "@src/layout/CopyText.svelte"
 
   export let datasets
   export let is_meta = false
-  export let nb_item = false
   export let load_first = false
 
   let dataset_path = "dataset/"
@@ -112,6 +108,5 @@
     sort_by_name={false}
     {load_first}
     meta_path={is_meta ? dataset_path : false}
-    bind:nb_item
   />
 {/if}

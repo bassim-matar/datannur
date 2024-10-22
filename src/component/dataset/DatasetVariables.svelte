@@ -4,7 +4,6 @@
 
   export let dataset_variables
   export let is_meta = false
-  export let nb_item = false
   export let load_first = false
 
   let columns = [
@@ -38,6 +37,5 @@
     {columns}
     {load_first}
     meta_path={is_meta ? "metaVariable/" : false}
-    bind:nb_item
   />
 {/if}

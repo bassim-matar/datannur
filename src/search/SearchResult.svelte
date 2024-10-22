@@ -10,7 +10,6 @@
   export let search_result_data
   export let search_value
   export let load_first
-  export let nb_item
 
   function initied() {
     const table_id = "search___search"
@@ -43,7 +42,7 @@
       title: Render.icon("description") + "Description",
       defaultContent: "",
       render: data => {
-        if ([null, undefined].includes(data)) return ""
+        if ([null, undefined].includes(data)) return wrap_long_text()
         return wrap_long_text(search_highlight(data, search_value))
       },
     },
@@ -52,7 +51,7 @@
       title: Render.icon("folder") + "Dossier",
       defaultContent: "",
       render: (data, _, row) => {
-        if (!data) return ""
+        if (!data) return wrap_long_text()
         return wrap_long_text(link("folder/" + data, row.folder_name))
       },
     },
@@ -92,7 +91,6 @@
       {columns}
       {load_first}
       {initied}
-      bind:nb_item
     />
   </div>
 {/if}

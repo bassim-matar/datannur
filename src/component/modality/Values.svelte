@@ -3,7 +3,6 @@
   import Datatable from "@datatable/Datatable.svelte"
 
   export let values
-  export let nb_item
   export let load_first = false
 
   const has = {}
@@ -16,5 +15,11 @@
 </script>
 
 {#if values.length > 0}
-  <Datatable entity="value" data={values} {columns} {load_first} bind:nb_item keep_all_cols={true} />
+  <Datatable
+    entity="value"
+    data={values}
+    {columns}
+    {load_first}
+    keep_all_cols={true}
+  />
 {/if}

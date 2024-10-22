@@ -1,5 +1,5 @@
 <script>
-  import { tab_selected } from "@js/store"
+  import { all_tabs, tab_selected } from "@js/store"
   import Icon from "@layout/Icon.svelte"
   import Loading from "@frame/Loading.svelte"
   import Number from "@layout/Number.svelte"
@@ -27,6 +27,8 @@
       min_width = 0
     }, 300)
   }
+
+  $: if (active_tab === tab.key) tab.nb = $all_tabs[tab.icon].nb
 </script>
 
 <li

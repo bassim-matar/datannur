@@ -5,7 +5,6 @@
   import { link } from "@js/util"
 
   export let variable_values
-  export let nb_item
   export let load_first = false
   export let is_meta = false
 
@@ -33,7 +32,6 @@
     data={variable_values}
     {load_first}
     {columns}
-    bind:nb_item
     keep_all_cols={true}
   />
 {/if}

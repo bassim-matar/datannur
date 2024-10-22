@@ -1,12 +1,11 @@
 <script>
   import Column from "@js/Column"
   import Render from "@js/Render"
-  import { link, get_percent } from "@js/util"
+  import { link, get_percent, wrap_long_text } from "@js/util"
   import { get_datetime_sortable, get_time_ago } from "@js/Time"
   import Datatable from "@datatable/Datatable.svelte"
 
   export let docs
-  export let nb_item = false
   export let load_first = false
 
   let institution_max = 0
@@ -39,10 +38,11 @@
       title: Render.icon("date") + "Mis à jour",
       defaultContent: "",
       filter_type: "input",
+      has_long_text: true,
       render: (data, type) => {
-        if (!data) return ""
+        if (!data) return wrap_long_text()
         if (type === "export") return data
-        return `${get_datetime_sortable(data, true)}, ${get_time_ago(data)}`
+        return wrap_long_text(`${get_datetime_sortable(data, true)}, ${get_time_ago(data)}`)
       },
     },
     {
@@ -85,5 +85,5 @@
 </script>
 
 {#if docs && docs.length > 0}
-  <Datatable entity="doc" data={docs} {columns} {load_first} bind:nb_item />
+  <Datatable entity="doc" data={docs} {columns} {load_first} />
 {/if}

@@ -6,7 +6,6 @@
   import Datatable from "@datatable/Datatable.svelte"
 
   export let folders
-  export let nb_item = false
   export let load_first = false
   export let is_meta = false
 
@@ -99,9 +98,9 @@
         title: Render.icon("git_code") + "GIT code",
         defaultContent: "",
         render: data =>
-          data
-            ? wrap_long_text(`<a href="${data}" target="_blanck">${data}</a>`)
-            : "",
+          wrap_long_text(
+            data ? `<a href="${data}" target="_blanck">${data}</a>` : "",
+          ),
       },
       Column.level(),
       Column.favorite(),
@@ -118,6 +117,5 @@
     {columns}
     {load_first}
     meta_path={is_meta ? folder_path : false}
-    bind:nb_item
   />
 {/if}

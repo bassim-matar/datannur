@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte"
-  import { tab_selected, footer_visible } from "@js/store"
+  import { tab_selected, footer_visible, all_tabs } from "@js/store"
   import { url_param } from "@js/url_param"
   import { is_firefox, get_is_mobile } from "@js/util"
   import { is_big_limit } from "@js/constant"
@@ -82,6 +82,7 @@
 
   for (const tab of tabs) {
     all_keys.push(tab.key)
+    $all_tabs[tab.icon] = tab
     if (!tab.without_load) {
       tab.props.load_first = active_tab_body === tab.key
     }

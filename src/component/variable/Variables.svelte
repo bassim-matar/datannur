@@ -5,7 +5,6 @@
 
   export let variables
   export let is_meta = false
-  export let nb_item = false
   export let load_first = false
 
   let parent_name = is_meta ? "metaDataset" : "dataset"
@@ -113,6 +112,5 @@
     sort_by_name={false}
     {load_first}
     meta_path={is_meta ? "metaVariable/" : false}
-    bind:nb_item
   />
 {/if}

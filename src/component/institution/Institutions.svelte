@@ -6,7 +6,6 @@
   import Datatable from "@datatable/Datatable.svelte"
 
   export let institutions
-  export let nb_item = false
   export let load_first = false
 
   let institution_max = 0
@@ -49,9 +48,8 @@
       defaultContent: "",
       title: Render.icon("email") + "Email",
       render: data => {
-        if (!data) return ""
         return wrap_long_text(
-          `<a href="mailto:${data}" target="_blanck" >${data}</a>`,
+          data ? `<a href="mailto:${data}" target="_blanck" >${data}</a>` : "",
         )
       },
     },
@@ -75,6 +73,5 @@
     is_recursive={true}
     {columns}
     {load_first}
-    bind:nb_item
   />
 {/if}
