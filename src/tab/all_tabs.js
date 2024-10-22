@@ -172,12 +172,12 @@ export const all_tabs = {
   },
   dataset_preview: {
     name: "Aperçu",
-    icon: "search",
+    icon: "preview",
     component: DatasetPreview,
   },
   variable_preview: {
     name: "Aperçu",
-    icon: "search",
+    icon: "preview",
     component: VariablePreview,
   },
   stat: {
