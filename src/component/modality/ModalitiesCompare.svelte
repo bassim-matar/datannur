@@ -1,17 +1,16 @@
 <script>
   import db from "@db"
-  import { modalities_similitutes } from "@js/store"
+  import { modalities_similitutes, tab_selected } from "@js/store"
   import Column from "@js/Column"
   import Render from "@js/Render"
   import { link, worker } from "@js/util"
+  import {modality_compare_worker} from "@js/modality_compare_worker"
   import Datatable from "@datatable/Datatable.svelte"
   import Loading from "@frame/Loading.svelte"
 
   export let modalities_compare
-  export let nb_item = false
   export let load_first = false
 
-  nb_item = "..."
   let similitutes = []
   let loading = true
 
@@ -21,80 +20,17 @@
       return false
     }
     modalities_compare = db.get_all("modality")
-    similitutes = await worker({ modalities_compare, limit: 50000 }, param => {
-      const limit = param.limit
-      const modalities_to_compare = []
-      for (const modality of param.modalities_compare) {
-        const values_clean = []
-        for (let i = 0; i < modality.values.length; i++) {
-          const value = modality.values[i]
-          let value_clean = value.value.toString().toLowerCase()
-          if (value.description !== null && value.description !== undefined) {
-            value_clean += "___" + value.description.toString().toLowerCase()
-          }
-          values_clean.push(value_clean)
-        }
-        modalities_to_compare.push({
-          modality_id: modality.id,
-          values_clean,
-          name: modality.name,
-          type: modality.type_clean,
-          nb_variable: modality.variables.length,
-          folder_id: modality.folder_id,
-          folder_name: modality.folder_name,
-        })
-      }
-
-      function get_similitudes(modalities_to_compare, limit = false) {
-        const similitutes = []
-        for (const modality_1 of modalities_to_compare) {
-          const nb_value = modality_1.values_clean.length
-          for (const modality_2 of modalities_to_compare) {
-            if (modality_1.modality_id === modality_2.modality_id) continue
-            let nb_similitude = 0
-            for (const value_1 of modality_1.values_clean) {
-              if (modality_2.values_clean.includes(value_1)) nb_similitude += 1
-            }
-            const ratio = nb_similitude / nb_value
-            if (ratio > 0.5) {
-              similitutes.push({
-                modality_1_id: modality_1.modality_id,
-                modality_2_id: modality_2.modality_id,
-                modality_1_folder_id: modality_1.folder_id,
-                modality_2_folder_id: modality_2.folder_id,
-                modality_1_name: modality_1.name,
-                modality_2_name: modality_2.name,
-                modality_1_folder_name: modality_1.folder_name,
-                modality_2_folder_name: modality_2.folder_name,
-                modality_1_type: modality_1.type,
-                modality_2_type: modality_2.type,
-                modality_1_nb_value: modality_1.values_clean.length,
-                modality_2_nb_value: modality_2.values_clean.length,
-                modality_1_nb_variable: modality_1.nb_variable,
-                modality_2_nb_variable: modality_2.nb_variable,
-                ratio,
-              })
-              if (limit && similitutes.length >= limit) return similitutes
-            }
-          }
-        }
-        return similitutes
-      }
-      const similitutes = get_similitudes(modalities_to_compare, limit)
-      similitutes.sort((a, b) => b.ratio - a.ratio)
-      return similitutes
-    })
+    similitutes = await worker({ modalities_compare, limit: 50000 }, modality_compare_worker)
     $modalities_similitutes = similitutes
     loading = false
-
-    if (similitutes.length === 0) nb_item = 0
+    if (similitutes.length === 0) $tab_selected.nb = 0
   })()
 
   const columns = [
     {
       data: "ratio",
       title: Render.icon("compare") + "Similitude",
-      render: data => `${Math.round(data * 100)}%`,
+      render: data => `${data}%`,
     },
     {
       data: "modality_1_id",
@@ -145,11 +81,10 @@
   <Loading type="tab_body" color_entity="compare" />
 {:else if similitutes.length > 0}
   <Datatable
-    entity="modalities_compare"
+    entity="compare"
     data={similitutes}
     {columns}
     {load_first}
-    bind:nb_item
   />
 {:else}
   <div style="padding: 20px; text-align: center;">
