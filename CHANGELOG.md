@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fixed : tabs body overflow hidden when not datatables
+
 ## 0.9.0 (2024-10-23)
 
 - changed : use specific icon for preview
