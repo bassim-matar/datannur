@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.9.0 (2024-10-23)
 
 - changed : use specific icon for preview
 - changed : use two rows for datatables and make column fixed width
