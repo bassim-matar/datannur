@@ -8,6 +8,7 @@
 - fixed : remove mouse cursor when datatables not clickable
 - fixed : tab nb item update from child component with store
 - fixed : move worker logic in js file
+- fixed : page option btn icon margin
 
 ## 0.8.17 (2024-10-20)
 

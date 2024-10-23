@@ -117,10 +117,6 @@
     }
   }
 
-  .tabs_body:not(:has(.tab_component_wrapper.visible .datatable_main_wrapper)) {
-    overflow: hidden;
-  }
-
   :global(html.page_shadow_colored) .tabs_body {
     @each $entity in $entities {
       &.shadow_#{$entity} {
