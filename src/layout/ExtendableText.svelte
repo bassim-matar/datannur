@@ -14,7 +14,7 @@
 <style lang="scss">
   .extendable {
     width: auto;
-    max-height: 25px;
+    max-height: 50px;
     overflow-x: hidden;
     overflow-y: hidden;
     text-overflow: ellipsis;
