@@ -21,6 +21,7 @@
 
   let columns = [
     Column.name("doc", "Doc"),
+    Column.description(),
     {
       data: "type",
       title: Render.icon("type") + "Type",

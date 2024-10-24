@@ -3,6 +3,7 @@
   import Icon from "@layout/Icon.svelte"
 
   export let description
+  export let inside_table = false
 
   let description_clean = description
 
@@ -12,12 +13,25 @@
 </script>
 
 {#if description}
-  <div class="description_wrapper">
-    <div style="font-weight: bold;">
-      <Icon type="description" /> Description
+  {#if inside_table}
+    <tr>
+      <td>
+        <div style="font-weight: bold;">
+          <Icon type="description" /> Description
+        </div>
+      </td>
+      <td>
+        <div class="content inside_table">{@html description_clean}</div>
+      </td>
+    </tr>
+  {:else}
+    <div class="description_wrapper" class:inside_table>
+      <div style="font-weight: bold;">
+        <Icon type="description" /> Description
+      </div>
+      <div class="content">{@html description_clean}</div>
     </div>
-    <div class="content">{@html description_clean}</div>
-  </div>
+  {/if}
 {/if}
 
 <style lang="scss">
@@ -32,6 +46,11 @@
     max-width: 800px;
     word-wrap: break-word;
     box-sizing: border-box;
+    &.inside_table {
+      padding: 0;
+      display: block;
+      width: 100%;
+    }
   }
   @media screen and (max-width: 1023px) {
     .description_wrapper {

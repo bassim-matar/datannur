@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- added : doc description
 - changed : center vertically datatables rows content
 - fixed : tabs body overflow hidden when not datatables
 

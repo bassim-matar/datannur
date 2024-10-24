@@ -4,6 +4,7 @@
   import IdInfo from "@infoTable/IdInfo.svelte"
   import DocPreview from "./DocPreview.svelte"
   import LastUpdateInfo from "@infoTable/LastUpdateInfo.svelte"
+  import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"
 
   export let doc_info
 </script>
@@ -23,5 +24,7 @@
     intraday={true}
     from_timestamp={true}
   />
+  <DescriptionInfo description={doc_info.description} inside_table={true} />
 </TableWrapper>
+
 <DocPreview doc={doc_info} />

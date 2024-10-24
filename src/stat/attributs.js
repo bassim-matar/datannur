@@ -16,7 +16,7 @@ const attributs = {
     "description",
   ],
   tag: ["entity", "level", "name", "description"],
-  doc: ["doc_type", "entity", "doc_path", "last_update_doc", "name"],
+  doc: ["doc_type", "entity", "doc_path", "last_update_doc", "name", "description"],
   dataset: [
     "frequency",
     "last_update",
