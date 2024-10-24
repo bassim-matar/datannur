@@ -40,7 +40,7 @@
   let datatable = false
   let loading = true
   let dom_table = false
-  const timeout = load_first ? 1 : 50
+  let timeout = 1
   const is_big = data.length > is_big_limit
   let short_table = false
   let nb_sticky = 1
@@ -55,6 +55,9 @@
   const max_height_value = 275
   const max_height = `max(calc(100vh - ${max_height_value}px), 170px)`
   const max_height_load = `max(calc(100vh - ${max_height_value - 82}px), 80px)`
+
+  let open_all_tab = Options.get("open_all_tab")
+  if (open_all_tab && !load_first) timeout = 50
 
   let clickable_rows = true
   if (["value", "dataset_preview", "variable_preview", "log"].includes(entity))
@@ -78,12 +81,13 @@
 
   let new_data = []
   function load_new_data() {
+    const temp_data = [...data]
     new_data = []
     if (sort_by_name) {
-      data.sort(get_sort_by_name)
+      temp_data.sort(get_sort_by_name)
     }
     let row_num = 0
-    for (const rows of data) {
+    for (const rows of temp_data) {
       if (
         filter_recursive &&
         rows.parents_relative.length - rows.minimum_deep !== 0
@@ -243,7 +247,7 @@
         pageLength: 100,
         searching: is_big,
         deferRender: is_big,
-        scroller: is_big ? { rowHeight: 66 } : false,
+        scroller: is_big ? { rowHeight: 65 } : false,
         autoWidth: false,
         fixedColumns: { leftColumns: nb_sticky },
         stateSave: true,
@@ -451,7 +455,8 @@
         padding-right: 30px;
       }
       td {
-        height: 66px;
+        height: 65px;
+        vertical-align: middle;
       }
       .loading_filter_wrapper {
         position: sticky;
@@ -607,6 +612,9 @@
               height: 0 !important;
             }
           }
+          tbody tr {
+            height: 65px;
+          }
           tbody tr > .dtfc-fixed-left {
             z-index: 1;
           }
@@ -640,6 +648,7 @@
           tbody > tr > td {
             border: 0;
             text-align: left;
+            vertical-align: middle;
           }
           .ul_value {
             padding-left: 20px;
@@ -719,7 +728,11 @@
             width: 250px;
           }
           td div.long_text {
+            padding: 1px auto;
             display: -webkit-box;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
             line-clamp: 2;
@@ -729,16 +742,18 @@
             text-overflow: ellipsis;
             white-space: normal;
             max-height: 50px;
-            min-height: 50px;
+            min-height: auto;
             overflow-x: hidden;
             overflow-y: hidden;
             word-wrap: break-word;
             scrollbar-gutter: stable;
             overflow: hidden;
             text-overflow: ellipsis;
+            text-align: left;
             .indented_text {
               width: 100%;
               box-sizing: border-box;
+              margin: auto;
             }
             a:nth-child(2) .indented_text {
               display: block;
