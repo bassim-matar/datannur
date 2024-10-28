@@ -10,12 +10,10 @@ import { svelte } from "@sveltejs/vite-plugin-svelte"
 import { Jsonjsdb_watcher, jsonjsdb_add_config } from "jsonjsdb_editor"
 
 const bundle_view = false
-const include_bulma_css_lib = false
 
 const out_dir = "app"
 const mermaid_node_path = "node_modules/mermaid/dist/mermaid.min.js"
 const mermeid_public_path = "public/assets/external/mermaid.min.js"
-const bulma_css_path = "node_modules/bulma/css/bulma.css"
 const jsonjsdb_config = "public/data/jsonjsdb_config.html"
 const app_version = JSON.parse(await fs.readFile("package.json")).version
 
@@ -46,14 +44,6 @@ function html_replace(replacements) {
         return html
       },
     },
-  }
-}
-
-function serve_html_transform(transform) {
-  return {
-    name: "serve_html_transform",
-    apply: "serve",
-    transformIndexHtml: { order: "post", handler: transform },
   }
 }
 
@@ -109,21 +99,11 @@ export default defineConfig({
     svelte({
       preprocess: autoPreprocess({ postcss: { plugins: [autoprefixer] } }),
     }),
-
-    include_bulma_css_lib &&
-      serve_html_transform(html => {
-        return html.replace(
-          "<head>",
-          `<head><link rel="stylesheet" href="${bulma_css_path}" />`
-        )
-      }),
-
     html_replace([
       ["{{app_version}}", app_version],
       [" crossorigin ", " "],
       [` type="module" src="./`, ` defer src="./`],
     ]),
-
     after_build(async () => {
       await fs.copyFile("LICENSE.md", out_dir + "/LICENSE.md")
       await fs.copyFile("CHANGELOG.md", out_dir + "/CHANGELOG.md")
