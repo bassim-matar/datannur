@@ -5,8 +5,7 @@
   import Render from "@js/Render"
   import Datatable from "@datatable/Datatable.svelte"
 
-  export let institutions
-  export let load_first = false
+  let { institutions } = $props()
 
   let institution_max = 0
   let folder_max = 0
@@ -72,6 +71,5 @@
     sort_by_name={false}
     is_recursive={true}
     {columns}
-    {load_first}
   />
 {/if}

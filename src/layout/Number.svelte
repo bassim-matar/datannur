@@ -1,9 +1,9 @@
 <script>
   import { locale } from "@js/constant"
 
-  export let number
+  let { number } = $props()
 
-  $: formattedNumber = number?.toLocaleString(locale)
+  let formattedNumber = $derived(number?.toLocaleString(locale))
 </script>
 
 <span>{formattedNumber}</span>

@@ -2,7 +2,7 @@
   import Head from "@frame/Head.svelte"
   import Link from "@layout/Link.svelte"
 
-  export let type = "page"
+  let { type = "page" } = $props()
 
   let item = ""
 
@@ -41,9 +41,7 @@
     </div>
     <div class="_number">4</div>
   </div>
-  <br />
   <div class="_text">{description}</div>
-  <br />
   <Link href="" className="button">Page d'accueil</Link>
 </div>
 
@@ -53,6 +51,7 @@
   ._center {
     --error-page-color: #{$color-3};
     height: 100%;
+    min-height: calc(100vh - 110px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -199,11 +198,8 @@
   }
 
   @media only screen and (max-width: 600px) {
-    ._center {
+    ._error {
       transform: scale(0.5);
-    }
-    ._text {
-      font-size: 2rem;
     }
   }
 </style>

@@ -1,7 +1,6 @@
 <div class="loading_dot"></div>
 
 <style lang="scss">
-
   .loading_dot:after {
     display: inline-block;
     animation: loading_dot steps(1, end) 3s infinite;

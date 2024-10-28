@@ -4,9 +4,7 @@
   import { entity_names } from "@js/constant"
   import StatValue from "./StatValue.svelte"
 
-  export let attribut
-  export let with_html = false
-  export let entity
+  let { attribut, with_html = false, entity } = $props()
 
   const total_value = attribut.total_value
   const main_color = get_color(entity)

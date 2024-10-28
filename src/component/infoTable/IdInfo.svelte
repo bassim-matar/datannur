@@ -1,7 +1,7 @@
 <script>
   import Icon from "@layout/Icon.svelte"
 
-  export let id
+  let { id } = $props()
 </script>
 
 <tr>

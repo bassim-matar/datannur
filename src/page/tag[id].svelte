@@ -5,10 +5,10 @@
   import { tabs_helper } from "@tab/tabs_helper"
   import Title from "@layout/Title.svelte"
 
-  export let tag
+  let { tag } = $props()
 
-  let opposite = false
-  let tabs
+  let opposite = $state(false)
+  let tabs = $state()
 
   let institutions
   let folders
@@ -40,7 +40,7 @@
     return all
   }
 
-  function load_tabs(opposite) {
+  function load_tabs() {
     if (opposite) {
       institutions = get_opposite("institution", with_institutions)
       folders = get_opposite("folder", with_folders)
@@ -77,14 +77,14 @@
     })
   }
 
-  $: info = opposite ? "(absent)" : "(présent)"
+  let info = $derived(opposite ? "(absent)" : "(présent)")
 
   function toggle_opposite() {
     opposite = !opposite
-    load_tabs(opposite)
+    load_tabs()
   }
 
-  load_tabs(opposite)
+  load_tabs()
 </script>
 
 <section class="section">

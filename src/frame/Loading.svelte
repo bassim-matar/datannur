@@ -1,16 +1,17 @@
 <script>
   import { onDestroy } from "svelte"
 
-  let props = $$restProps
+  let {
+    type = "classic",
+    position = "fixed",
+    color_entity = "",
+    ...rest
+  } = $props()
 
-  export let type = "classic"
-  export let position = "fixed"
-  export let color_entity = ""
-
-  let with_height = false
-  let with_timer = true
-
-  let timer = ""
+  let with_height = $state(false)
+  let with_timer = $state(true)
+  let timer = $state("")
+  
   let loading_timer = setInterval(() => {
     if (timer === "") timer = 0
     timer += 1
@@ -53,14 +54,14 @@
   }
 
   :global(html.page_shadow_colored) {
-      .loading {
-        @each $entity in $entities {
-          &.color_entity_#{$entity} {
-            --loader-color: #{color($entity)};
-          }
+    .loading {
+      @each $entity in $entities {
+        &.color_entity_#{$entity} {
+          --loader-color: #{color($entity)};
         }
       }
     }
+  }
 
   .loading {
     top: calc(50% - 32px);

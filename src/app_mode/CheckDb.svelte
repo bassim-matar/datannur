@@ -1,7 +1,7 @@
 <script>
   import db from "@db"
 
-  let result = "Loading..."
+  let result = $state("Loading...")
 
   db.check_integrity().then(res => {
     console.log(db.db)
@@ -13,7 +13,7 @@
   <h1 class="title">DB Integrity Check</h1>
   <div id="result" style="white-space: pre-wrap">
     {result}
-  </div>  
+  </div>
 </section>
 
 <style lang="scss">

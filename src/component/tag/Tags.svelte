@@ -7,9 +7,11 @@
   import Column from "@js/Column"
   import Render from "@js/Render"
   import Datatable from "@datatable/Datatable.svelte"
- 
-  export let tags
-  export let load_first = false
+
+  let { tags } = $props()
+
+  let is_recursive = $state(false)
+  let mounted = $state(false)
 
   let tag_max = 0
   let institution_max = 0
@@ -31,51 +33,54 @@
     tags_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
   }
 
-  let columns = []
-  if (db.use.tag_recursive) {
-    columns.push(
-      Column.name("tag", "Mot clé", {
-        with_indent: true,
-        link_same_entity_tab: true,
-      }),
-    )
-  } else {
-    columns.push(Column.name("tag", "Mot clé"))
-  }
+  function define_columns() {
+    let columns = []
+    if (db.use.tag_recursive) {
+      columns.push(
+        Column.name("tag", "Mot clé", {
+          with_indent: true,
+          link_same_entity_tab: true,
+        }),
+      )
+    } else {
+      columns.push(Column.name("tag", "Mot clé"))
+    }
 
-  columns.push(Column.description())
+    columns.push(Column.description())
 
-  if (db.use.tag_recursive) {
-    columns.push(Column.parents())
-  }
+    if (db.use.tag_recursive) {
+      columns.push(Column.parents())
+    }
 
-  columns = columns.concat([
-    Column.nb_child_recursive("tag", tag_max),
-    {
-      data: "nb_institution_recursive",
-      title:
-        Render.icon("institution") +
-        "<span class='hidden'>nb_institution</span>",
-      filter_type: "input",
-      render: (data, type, row) => {
-        if (!data) return ""
-        const content = link("tag/" + row.id + "?tab=institutions", data)
-        const percent = get_percent(data / institution_max)
-        return `${Render.num_percent(content, percent, "institution", type)}`
+    columns = columns.concat([
+      Column.nb_child_recursive("tag", tag_max),
+      {
+        data: "nb_institution_recursive",
+        title:
+          Render.icon("institution") +
+          "<span class='hidden'>nb_institution</span>",
+        filter_type: "input",
+        render: (data, type, row) => {
+          if (!data) return ""
+          const content = link("tag/" + row.id + "?tab=institutions", data)
+          const percent = get_percent(data / institution_max)
+          return `${Render.num_percent(content, percent, "institution", type)}`
+        },
       },
-    },
-    Column.nb_folder_recursive("tag", folder_max),
-    Column.nb_dataset_recursive("tag", dataset_max),
-    Column.nb_variable("tag", variable_max),
-  ])
+      Column.nb_folder_recursive("tag", folder_max),
+      Column.nb_dataset_recursive("tag", dataset_max),
+      Column.nb_variable("tag", variable_max),
+    ])
 
-  if (db.use.tag_recursive) {
-    columns.push(Column.level())
+    if (db.use.tag_recursive) {
+      columns.push(Column.level())
+    }
+    columns.push(Column.favorite())
+    return columns
   }
-  columns.push(Column.favorite())
 
-  let is_recursive = false
-  let mounted = false
+  const columns = define_columns()
+
   onMount(() => {
     setTimeout(() => {
       is_recursive =
@@ -92,6 +97,5 @@
     sort_by_name={false}
     {is_recursive}
     {columns}
-    {load_first}
   />
 {/if}

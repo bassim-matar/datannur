@@ -2,11 +2,14 @@
   import db from "@db"
   import { page_name } from "@js/store"
 
-  export let title
-  export let pages = []
-  export let if_use = false
+  let {
+    title,
+    pages = [],
+    if_use = false,
+    children
+  } = $props();
 
-  let visible = !if_use
+  let visible = $state(!if_use)
   let loading = true
 
   db.loaded.then(() => {
@@ -24,7 +27,7 @@
       <span>{title}</span>
     </div>
     <div class="navbar-dropdown box_shadow">
-      <slot />
+      {@render children?.()}
     </div>
   </div>
 {/if}

@@ -15,13 +15,14 @@
   import no_result from "@markdown/search/no_result.md?raw"
   import no_recent_search from "@markdown/search/no_recent_search.md?raw"
 
-  let is_loading = true
-  let input_element
-  let search_result_data = []
-  let tabs = []
-  let is_focus_in = false
+  let is_loading = $state(true)
+  let input_element = $state()
+  let search_result_data = $state([])
+  let tabs = $state([])
+  let is_focus_in = $state(false)
+  let tab_key = $state()
+
   let recent_search_change = false
-  let tab_key
 
   function make_tab(name, icon, key, about_file) {
     return {
@@ -29,7 +30,6 @@
       icon,
       key,
       component: AboutFile,
-      without_load: true,
       footer_visible: true,
       props: { about_file },
     }
@@ -118,7 +118,7 @@
     }
   }
 
-  $: is_empty_input = ["", undefined, null].includes($search_value)
+  let is_empty_input = $derived(["", undefined, null].includes($search_value))
 
   const url_search_value = url_param.get("search")
   if (url_search_value !== false && url_search_value !== "") {
@@ -133,7 +133,7 @@
   })
 </script>
 
-<svelte:window on:keydown={window_keydown} />
+<svelte:window onkeydown={window_keydown} />
 
 <Head title="Recherche" description="Page de recherche" />
 
@@ -155,13 +155,13 @@
         placeholder="Rechercher..."
         name="search_page_input"
         bind:value={$search_value}
-        on:input={debounce(search_input_change, 300)}
-        on:focusin={focusin}
+        oninput={debounce(search_input_change, 300)}
+        onfocusin={focusin}
         bind:this={input_element}
         autocomplete="off"
         enterkeyhint="search"
         use:clickOutside
-        on:click_outside={focusout}
+        onclick_outside={focusout}
       />
       {#if !is_empty_input}
         <span class="btn_clear_input_wrapper">

@@ -5,7 +5,7 @@
   import TypeInfo from "@infoTable/TypeInfo.svelte"
   import FolderInfo from "@infoTable/FolderInfo.svelte"
 
-  export let modality_info
+  let { modality_info } = $props()
 </script>
 
 <TableWrapper>

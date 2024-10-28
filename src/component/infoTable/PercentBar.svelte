@@ -2,11 +2,7 @@
   import { get_percent } from "@js/util"
   import Render from "@js/Render"
 
-  export let value
-  export let nb_row
-  export let type
-
-  export let percent = get_percent(value / nb_row)
+  let { value, nb_row, type, percent = get_percent(value / nb_row) } = $props()
 </script>
 
 <span>{Render.num(value)} ({percent}%)</span>

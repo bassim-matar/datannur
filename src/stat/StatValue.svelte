@@ -3,21 +3,18 @@
   import { extendable } from "@js/extendable"
   import { locale } from "@js/constant"
 
-  export let value
-  export let total_value
-  export let main_color
-  export let with_html = false
+  let { value, total_value, main_color, with_html = false } = $props()
 
   const percent = get_percent(value.count / total_value)
 </script>
 
 <div class="value_box">
   <div class="value_text">
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
       class="cell readable extendable"
-      on:mouseenter={extendable.open}
-      on:mouseleave={extendable.close}
+      onmouseenter={extendable.open}
+      onmouseleave={extendable.close}
     >
       {#if with_html}
         {@html value.readable}
@@ -58,7 +55,7 @@
         display: inline-block;
         vertical-align: top;
         &.readable {
-          text-align: left;
+          text-align: right;
           max-width: calc(100% - 120px);
         }
         &.count {

@@ -1,10 +1,9 @@
 <script>
-  export let nb_active_filter = 0
-  export let click = () => {}
+  let { nb_active_filter = 0, click = () => {} } = $props()
 </script>
 
 {#if nb_active_filter > 0}
-  <button class="filter_info_box" on:click={click}>
+  <button class="filter_info_box" onclick={click}>
     {nb_active_filter} filtre{nb_active_filter > 1 ? "s" : ""}
     actif{nb_active_filter > 1 ? "s" : ""}
     <i class="close_btn fa-solid fa-xmark"></i>

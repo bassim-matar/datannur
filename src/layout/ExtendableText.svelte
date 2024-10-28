@@ -1,14 +1,16 @@
 <script>
   import { extendable } from "@js/extendable"
+  
+  let { ...props } = $props()
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
-  class={`extendable ${$$props.class}`}
-  on:mouseenter={extendable.open_no_margin}
-  on:mouseleave={extendable.close}
+  class={`extendable ${props.class}`}
+  onmouseenter={extendable.open_no_margin}
+  onmouseleave={extendable.close}
 >
-  <slot />
+  {@render props.children?.()}
 </div>
 
 <style lang="scss">

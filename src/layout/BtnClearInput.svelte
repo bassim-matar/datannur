@@ -1,13 +1,8 @@
 <script>
-  export let click
-  export let mode = "normal"
+  let { click, mode = "normal" } = $props()
 </script>
 
-<button
-  on:click={click}
-  class="btn_clear_input {mode}"
-  aria-label="clear_input"
->
+<button onclick={click} class="btn_clear_input {mode}" aria-label="clear_input">
   <i class="fa-solid fa-xmark"></i>
 </button>
 

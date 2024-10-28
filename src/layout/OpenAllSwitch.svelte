@@ -1,11 +1,11 @@
 <script>
   import Switch from "@layout/Switch.svelte"
   import Options from "@js/Options"
-  
-  export let on_change = (value) => {}
 
-  let open_all_recursive = Options.get("open_all_recursive")
-  
+  let { on_change = value => {} } = $props()
+
+  let open_all_recursive = $state(Options.get("open_all_recursive"))
+
   function update_open_all_recursive() {
     Options.set("open_all_recursive", open_all_recursive, () => {
       on_change(open_all_recursive)
@@ -13,15 +13,17 @@
   }
 </script>
 
-<div class="open_all_wrapper use_tooltip" title="Afficher les éléments imbriqués">
+<div
+  class="open_all_wrapper use_tooltip"
+  title="Afficher les éléments imbriqués"
+>
   <Switch
     bind:value={open_all_recursive}
     change={update_open_all_recursive}
     slot_position="left"
     tree_switch={true}
     size="small"
-  >
-  </Switch>
+  ></Switch>
 </div>
 
 <style lang="scss">

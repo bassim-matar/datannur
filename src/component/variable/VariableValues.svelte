@@ -4,9 +4,7 @@
   import Datatable from "@datatable/Datatable.svelte"
   import { link } from "@js/util"
 
-  export let variable_values
-  export let load_first = false
-  export let is_meta = false
+  let { variable_values, is_meta = false } = $props()
 
   const has = {}
   for (const value of variable_values) {
@@ -30,7 +28,6 @@
   <Datatable
     entity="value"
     data={variable_values}
-    {load_first}
     {columns}
     keep_all_cols={true}
   />

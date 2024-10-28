@@ -1,8 +1,8 @@
 <script>
   import Logs from "@js/Logs"
-  import { Dark_mode, dark_mode_theme} from "@dark_mode/Dark_mode"
+  import { Dark_mode, dark_mode_theme } from "@dark_mode/Dark_mode"
 
-  export let label = false
+  let { label = false } = $props()
 
   let id = window.crypto.randomUUID()
 
@@ -12,11 +12,16 @@
     else Logs.add("toggle_dark_mode_btn_on")
   }
 
-  $: day = $dark_mode_theme === "dark" ? "" : "day"
-  $: sun = $dark_mode_theme === "dark" ? "" : "sun"
+  let day = $derived($dark_mode_theme === "dark" ? "" : "day")
+  let sun = $derived($dark_mode_theme === "dark" ? "" : "sun")
 </script>
 
-<button id="checkbox_{id}" on:click={toggle} class="tdnn {day}" aria-label="dark_mode">
+<button
+  id="checkbox_{id}"
+  onclick={toggle}
+  class="tdnn {day}"
+  aria-label="dark_mode"
+>
   <div class="moon {sun}"></div>
 </button>
 
@@ -63,7 +68,8 @@
     width: var(--toggleBtnRadius);
     height: var(--toggleBtnRadius);
     background: var(--bgColor--night);
-    box-shadow: 3em 2.5em 0 0em var(--mooncolor) inset,
+    box-shadow:
+      3em 2.5em 0 0em var(--mooncolor) inset,
       rgba(255, 255, 255, var(--moonstar--opacity)) 0em -7em 0 -4.5em,
       rgba(255, 255, 255, var(--moonstar--opacity)) 3em 7em 0 -4.5em,
       rgba(255, 255, 255, var(--moonstar--opacity)) 2em 13em 0 -4em,
@@ -80,11 +86,16 @@
     width: 7em;
     height: 7em;
     background: var(--suncolor);
-    box-shadow: 3em 3em 0 5em var(--suncolor) inset,
-      0 -5em 0 -2.7em var(--suncolor), 3.5em -3.5em 0 -3em var(--suncolor),
-      5em 0 0 -2.7em var(--suncolor), 3.5em 3.5em 0 -3em var(--suncolor),
-      0 5em 0 -2.7em var(--suncolor), -3.5em 3.5em 0 -3em var(--suncolor),
-      -5em 0 0 -2.7em var(--suncolor), -3.5em -3.5em 0 -3em var(--suncolor);
+    box-shadow:
+      3em 3em 0 5em var(--suncolor) inset,
+      0 -5em 0 -2.7em var(--suncolor),
+      3.5em -3.5em 0 -3em var(--suncolor),
+      5em 0 0 -2.7em var(--suncolor),
+      3.5em 3.5em 0 -3em var(--suncolor),
+      0 5em 0 -2.7em var(--suncolor),
+      -3.5em 3.5em 0 -3em var(--suncolor),
+      -5em 0 0 -2.7em var(--suncolor),
+      -3.5em -3.5em 0 -3em var(--suncolor);
   }
 
   label {

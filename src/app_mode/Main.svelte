@@ -1,4 +1,5 @@
 <script>
+  import { onDestroy } from "svelte"
   import jQuery from "jquery"
   import "jquery-powertip"
   import db from "@db"
@@ -28,11 +29,12 @@
   import { copy_text_listen_click } from "@js/copy_text"
   import default_banner from "@markdown/main/banner.md?raw"
 
-  let error_loading_db = false
+  let error_loading_db = $state(false)
+  let page_loaded_route = $state()
+  let is_mobile = $state(get_is_mobile())
 
   const timer = performance.now()
 
-  let is_mobile = get_is_mobile()
   function on_resize() {
     is_mobile = get_is_mobile()
   }
@@ -116,16 +118,6 @@
     document.documentElement.classList.toggle("has_touch_screen")
   }
 
-  let page_loaded_route
-  $: if ($page_content_loaded !== false) {
-    if (window.location.hash) {
-      page_loaded_route = window.location.hash.split("#/")[1].split("?")[0]
-    } else {
-      page_loaded_route = window.location.pathname.substring(1)
-    }
-    page_loaded_route = page_loaded_route.replaceAll("/", "___")
-  }
-
   const is_dark = $dark_mode_theme === "dark"
   const favicon = is_dark ? icon_dark : icon
 
@@ -161,6 +153,21 @@
 
     console.log("init total", Math.round(performance.now() - timer) + " ms")
   })
+
+  const unsubscribe = page_content_loaded.subscribe(value => {
+    if (value !== false) {
+      if (window.location.hash) {
+        page_loaded_route = window.location.hash.split("#/")[1].split("?")[0]
+      } else {
+        page_loaded_route = window.location.pathname.substring(1)
+      }
+      page_loaded_route = page_loaded_route.replace(/\//g, "___")
+    }
+  })
+
+  onDestroy(() => {
+    unsubscribe()
+  })
 </script>
 
 <svelte:head>
@@ -170,7 +177,7 @@
   {/if}
 </svelte:head>
 
-<svelte:window on:resize={on_resize} />
+<svelte:window onresize={on_resize} />
 
 {#await Options.loaded then}
   <Header />

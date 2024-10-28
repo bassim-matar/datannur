@@ -7,9 +7,7 @@
   import Datatable from "@datatable/Datatable.svelte"
   import Column from "@js/Column"
 
-  export let search_result_data
-  export let search_value
-  export let load_first
+  let { search_result_data, search_value } = $props()
 
   function initied() {
     const table_id = "search___search"
@@ -89,7 +87,6 @@
       data={search_result_data}
       sort_by_name={false}
       {columns}
-      {load_first}
       {initied}
     />
   </div>

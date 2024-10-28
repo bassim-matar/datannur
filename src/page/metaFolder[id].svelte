@@ -4,15 +4,14 @@
   import { tabs_helper } from "@tab/tabs_helper"
   import Title from "@layout/Title.svelte"
 
-  export let metaFolder
+  let { metaFolder } = $props()
 
-  metaFolder.is_meta = true
   let metaDatasets = db.get_all("metaDataset", { metaFolder })
 
   let metaVariables = []
   for (const metaDataset of metaDatasets) {
     metaVariables = metaVariables.concat(
-      db.get_all("metaVariable", { metaDataset })
+      db.get_all("metaVariable", { metaDataset }),
     )
   }
 

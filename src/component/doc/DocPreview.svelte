@@ -3,7 +3,7 @@
   import PdfViewer from "@layout/PdfViewer.svelte"
   import MdFileDynamic from "@layout/MdFileDynamic.svelte"
 
-  export let doc
+  let { doc } = $props()
 </script>
 
 <div class="doc_content_wrapper">

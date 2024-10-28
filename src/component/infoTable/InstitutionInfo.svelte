@@ -4,16 +4,10 @@
   import Breadcrumb from "@component/Breadcrumb.svelte"
   import ExtendableText from "@layout/ExtendableText.svelte"
 
-  export let institution_id
-  export let type = "institution"
-  export let is_self = false
+  let { institution_id, type = "institution", is_self = false } = $props()
 
-  let name = entity_names[type]
-  let icon = "institution"
-  if (is_self) {
-    name = "Partie de"
-    icon = "folder_tree"
-  }
+  const name = is_self ? "Partie de" : entity_names[type]
+  const icon = is_self ? "folder_tree" : "institution"
 </script>
 
 {#if institution_id}

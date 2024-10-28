@@ -1,13 +1,16 @@
 <script>
   import FilterInput from "./FilterInput.svelte"
 
-  export let columns
-  export let table_id = ""
-  export let loading = true
-  export let nb_sticky = 1
-  export let datatable_update_draw = false
+  let {
+    columns,
+    table_id = "",
+    loading = true,
+    nb_sticky = 1,
+    datatable_update_draw = false,
+  } = $props()
 
-  const filters_left = { 0: 0 }
+  let loaded = $state(false)
+  const filters_left = $state({ 0: 0 })
 
   function get_width_elem_num(num) {
     const selector = `.header_filter_wrapper .th_${table_id}_${num}`
@@ -20,20 +23,23 @@
     }
   }
 
-  let loaded = false
-  $: if (!loading && !loaded) {
-    loaded = true
-    setTimeout(() => {
-      update_sticky_width()
-    }, 100)
-    setTimeout(() => {
-      update_sticky_width()
-    }, 1000)
-  }
+  $effect(() => {
+    if (!loading && !loaded) {
+      loaded = true
+      setTimeout(() => {
+        update_sticky_width()
+      }, 100)
+      setTimeout(() => {
+        update_sticky_width()
+      }, 1000)
+    }
+  })
 
-  $: if (datatable_update_draw) {
-    update_sticky_width()
-  }
+  $effect(() => {
+    if (datatable_update_draw) {
+      update_sticky_width()
+    }
+  })
 </script>
 
 <tr class="header_filter_wrapper">

@@ -9,23 +9,23 @@
   import SearchHistory from "./SearchHistory"
   import SearchBarResult from "./SearchBarResult.svelte"
 
-  export let close_menu
+  let { close_menu } = $props()
 
-  $: on_page_search = $page_name === "search"
-  $: on_page_homepage = $page_name === "homepage"
+  let is_focus_in = $state(false)
+  let input_element = $state()
+  let nb_result = $state("")
+  let all_search = $state([])
+  let db_initied = $state(false)
+  let search_value_debounced = $state($search_value)
 
-  $: if (!on_page_search && db_initied) {
-    search_input_change()
-  }
+  let on_page_search = $derived($page_name === "search")
+  let on_page_homepage = $derived($page_name === "homepage")
+  let is_open = $derived(
+    is_focus_in && ($search_value !== "" || nb_result > 0 || !db_initied),
+  )
 
   const max_search_result = 100
-  let is_focus_in = false
-  let input_element
-  let nb_result = ""
-  let all_search = []
   let nav_position = 0
-  let db_initied = false
-  let search_value_debounced = $search_value
 
   SearchHistory.on_change("search_bar", () => search_input_change())
 
@@ -156,17 +156,14 @@
   SearchHistory.on_clear(() => {
     init_search_recent()
   })
-
-  $: is_open =
-    is_focus_in && ($search_value !== "" || nb_result > 0 || !db_initied)
 </script>
 
-<svelte:window on:keydown={window_keydown} />
+<svelte:window onkeydown={window_keydown} />
 
 <div
   class="navbar-item header_search_item"
   use:clickOutside
-  on:click_outside={focusout}
+  onclick_outside={focusout}
 >
   <div
     class="search_bar_container box_shadow_color shadow_search"
@@ -180,7 +177,7 @@
           $search_value !== undefined &&
           is_focus_in &&
           nb_result > 0}
-        on:click={go_to_page_search}
+        onclick={go_to_page_search}
         aria-label="Rechercher"
       >
         <i class="fas fa-magnifying-glass"></i>
@@ -191,11 +188,11 @@
         type="text"
         placeholder="Rechercher..."
         bind:value={$search_value}
-        on:input={debounce(search_input_change, 200)}
-        on:keyup={keyup}
-        on:keydown={keydown}
-        on:focusin={focusin}
-        on:click={on_click}
+        oninput={debounce(search_input_change, 200)}
+        onkeyup={keyup}
+        onkeydown={keydown}
+        onfocusin={focusin}
+        onclick={on_click}
         bind:this={input_element}
         class:is_open
         autocomplete="off"

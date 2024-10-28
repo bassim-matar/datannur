@@ -14,8 +14,16 @@
   import Link from "@layout/Link.svelte"
   import Footer from "@frame/Footer.svelte"
 
+  let scroll_y = $state(0)
+  let loading = $state(true)
+  let is_mobile = $state(get_is_mobile())
+
+  let on_page_search = $derived($page_name === "search")
+  let logo_src = $derived($dark_mode_theme === "dark" ? logo_dark : logo)
+
   const toggle_header = () => ($header_open = !$header_open)
   const close_menu = () => ($header_open = false)
+  const on_resize = () => (is_mobile = get_is_mobile())
 
   function click_on_main_logo() {
     close_menu()
@@ -28,21 +36,10 @@
       ?.click()
   }
 
-  let is_mobile = get_is_mobile()
-  function on_resize() {
-    is_mobile = get_is_mobile()
-  }
-
-  let scroll_y = 0
-
-  $: on_page_search = $page_name === "search"
-  $: logo_src = $dark_mode_theme === "dark" ? logo_dark : logo
-
-  let loading = true
   db.loaded.then(() => (loading = false))
 </script>
 
-<svelte:window bind:scrollY={scroll_y} on:resize={on_resize} />
+<svelte:window bind:scrollY={scroll_y} onresize={on_resize} />
 
 <div class="navbar_menu_open_space" class:header_open={$header_open}></div>
 
@@ -75,7 +72,7 @@
         class="navbar-burger"
         class:is-active={$header_open}
         aria-label="menu"
-        on:click={toggle_header}
+        onclick={toggle_header}
       >
         <span></span><span></span><span></span>
       </button>

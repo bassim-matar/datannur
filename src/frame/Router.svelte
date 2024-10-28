@@ -7,11 +7,11 @@
   import { url_hash } from "@js/url_hash"
   import router_index from "@src/.generated/router_index"
 
-  let route = router_index._loading.component
-  let params = {}
   let entity = ""
-  let entity_id = ""
-  $: page_key = `${entity}___${entity_id}`
+  let route = $state(router_index._loading.component)
+  let params = $state({})
+  let entity_id = $state("")
+  let page_key = $derived(`${entity}___${entity_id}`)
 
   function is_spa_homepage() {
     return (
@@ -44,7 +44,7 @@
       entity_id = ctx.data.id
       const entity_data = db.get(entity, entity_id)
       if (entity_data) {
-        update_route(entity, { [entity]: entity_data })
+        update_route(entity, { [entity]: entity_data, id: entity_id })
         setTimeout(() => Logs.add("load_page", { entity, entity_id }), 10)
       } else {
         update_route("_error", { entity })
@@ -81,8 +81,10 @@
     "init global timer",
     Math.round(performance.now() - window.__global_timer) + " ms",
   )
+
+  const SvelteComponent = $derived(route)
 </script>
 
 {#key page_key}
-  <svelte:component this={route} {...params} />
+  <SvelteComponent {...params} />
 {/key}

@@ -15,7 +15,7 @@
   import DataPathInfo from "@infoTable/DataPathInfo.svelte"
   import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
 
-  export let dataset_info
+  let { dataset_info } = $props()
 </script>
 
 <TableWrapper>
@@ -43,7 +43,9 @@
   <DeliveryFormatInfo delivery_format={dataset_info.delivery_format} />
   <FrequencyInfo frequency={dataset_info.updating_each} />
   {#if dataset_info.is_meta}
-    <LastUpdateTimestampInfo last_update_timestamp={dataset_info.last_update_timestamp} />
+    <LastUpdateTimestampInfo
+      last_update_timestamp={dataset_info.last_update_timestamp}
+    />
   {:else}
     <LastUpdateInfo last_update_date={dataset_info.last_update_date} />
   {/if}

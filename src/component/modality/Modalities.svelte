@@ -4,8 +4,7 @@
   import Render from "@js/Render"
   import Datatable from "@datatable/Datatable.svelte"
 
-  export let modalities
-  export let load_first = false
+  let { modalities } = $props()
 
   let nb_value_max = 0
   let nb_variable_max = 0
@@ -31,10 +30,7 @@
       render: (data, _, row) => {
         if (!data) return ""
         const percent = get_percent(data / nb_value_max)
-        const content = link(
-          `modality/${row.id}?tab=values`,
-          Render.num(data),
-        )
+        const content = link(`modality/${row.id}?tab=values`, Render.num(data))
         return `${Render.num_percent(content, percent, "value")}`
       },
     },
@@ -45,10 +41,5 @@
 </script>
 
 {#if modalities.length > 0}
-  <Datatable
-    entity="modality"
-    data={modalities}
-    {columns}
-    {load_first}
-  />
+  <Datatable entity="modality" data={modalities} {columns} />
 {/if}

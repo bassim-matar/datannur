@@ -4,7 +4,7 @@
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
 
-  export let variable
+  let { variable } = $props()
 
   const dataset = db.get("dataset", variable.dataset_id)
   let variable_preview = false

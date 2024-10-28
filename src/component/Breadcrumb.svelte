@@ -3,10 +3,7 @@
   import { add_indend } from "@js/util"
   import Link from "@layout/Link.svelte"
 
-  export let type
-  export let elem_id
-  export let is_self = false
-  export let className = ""
+  let { type, elem_id, is_self = false, className = "" } = $props()
 
   const elems = db.get_parents(type, elem_id)
 

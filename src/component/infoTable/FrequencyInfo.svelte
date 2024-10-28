@@ -1,7 +1,7 @@
 <script>
   import Icon from "@layout/Icon.svelte"
 
-  export let frequency
+  let { frequency } = $props()
 </script>
 
 {#if frequency}

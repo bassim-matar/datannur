@@ -1,28 +1,32 @@
 <script>
+  import { tick } from "svelte"
   import db from "@db"
   import SearchBarResultRow from "./SearchBarResultRow.svelte"
 
-  export let is_open
-  export let nb_result
-  export let all_search
-  export let search_value
-  export let is_focus_in
-  export let select_input
+  let {
+    is_open,
+    nb_result,
+    all_search,
+    search_value,
+    is_focus_in = $bindable(),
+    select_input,
+  } = $props()
 
-  let table_wrapper
-  let height = 0
-  let has_scroll_bar = false
+  let table_wrapper = $state()
+  let height = $state(0)
+  let has_scroll_bar = $state(false)
 
-  $: if (nb_result !== "") {
-    setTimeout(() => {
+  $effect(async () => {
+    if (nb_result !== "") {
+      await tick()
       const real_height = table_wrapper.offsetHeight + 20
       const window_height = window.innerHeight * 0.9
       has_scroll_bar = real_height > window_height
       height = Math.min(real_height, window_height)
-    }, 1)
-  }
+    }
+  })
 
-  $: plural = nb_result > 1 ? "s" : ""
+  let plural = $derived(nb_result > 1 ? "s" : "")
 </script>
 
 <div id="search_bar_result_outer">

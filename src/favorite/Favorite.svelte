@@ -1,13 +1,15 @@
 <script>
   import Favorites from "./Favorites"
 
-  export let type
-  export let id
-  export let is_favorite
-  export let is_meta = false
-  export let no_margin = false
+  let {
+    type,
+    id,
+    is_favorite,
+    is_meta = false,
+    no_margin = false,
+  } = $props()
 
-  let clicked = false
+  let clicked = $state(false)
 
   function toggle() {
     is_favorite = !is_favorite
@@ -24,10 +26,10 @@
 {#if !is_meta}
   <button
     class="icon favorite"
-    class:clicked={clicked}
+    class:clicked
     class:is-active={is_favorite}
     class:no-margin={no_margin}
-    on:click={toggle}
+    onclick={toggle}
     aria-label="Favorite"
   >
     <i class="fas fa-star"></i>

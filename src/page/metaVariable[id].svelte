@@ -5,8 +5,7 @@
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
 
-  export let metaVariable
-  metaVariable.is_meta = true
+  let { metaVariable } = $props()
 
   let variable_preview = []
   let dataset_preview = []

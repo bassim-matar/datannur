@@ -5,9 +5,10 @@
   import Number from "@layout/Number.svelte"
   import { onMount } from "svelte"
 
-  export let tab
-  export let active_tab
-  export let select_tab
+  let { tab, active_tab = $bindable(), select_tab } = $props()
+
+  let tab_nb = $state(tab.nb)
+  let min_width = $state(0)
 
   function to_percent(value) {
     const splited = value.split("-")
@@ -15,20 +16,23 @@
     return splited[1].split("%")[0]
   }
 
-  let min_width = 0
   onMount(() => {
     const selector = `.tab_li_${tab.key}`
     min_width = document.querySelector(selector).offsetWidth
     if (min_width > 500) min_width = 0
   })
 
-  $: if (active_tab === tab.key && tab.nb !== "...") {
-    setTimeout(() => {
-      min_width = 0
-    }, 300)
-  }
+  $effect(() => {
+    if (active_tab === tab.key && tab_nb !== "...") {
+      setTimeout(() => {
+        min_width = 0
+      }, 300)
+    }
+  })
 
-  $: if (active_tab === tab.key) tab.nb = $all_tabs[tab.icon].nb
+  $effect(() => {
+    if (active_tab === tab.key) tab_nb = $all_tabs[tab.icon].nb
+  })
 </script>
 
 <li
@@ -45,12 +49,12 @@
 
   <a
     href={null}
-    on:click={() => select_tab(tab)}
+    onclick={() => select_tab(tab)}
     class="tab_select_btn"
-    class:is_loaded={tab.nb > 0 ||
-      tab.nb === undefined ||
-      tab.nb === "?" ||
-      (tab.nb?.length > 0 && tab.nb !== "...")}
+    class:is_loaded={tab_nb > 0 ||
+      tab_nb === undefined ||
+      tab_nb === "?" ||
+      (tab_nb?.length > 0 && tab_nb !== "...")}
   >
     <span class="tab_visible icon_wrapper">
       <Icon type={tab.icon} />
@@ -59,17 +63,17 @@
       <span class="tab_visible tab_name">
         {tab.name}
       </span>
-      {#if tab.nb !== undefined}
-        {#if tab.nb === "..."}
+      {#if tab_nb !== undefined}
+        {#if tab_nb === "..."}
           <Loading type="tab" color_entity={tab.icon} />
-        {:else if tab.nb === parseInt(tab.nb)}
+        {:else if tab_nb === parseInt(tab_nb)}
           <span class="num_style tab_visible">
-            <Number number={tab.nb} />
+            <Number number={tab_nb} />
           </span>
         {:else}
-          <span class="num_style tab_visible">{tab.nb}</span>
+          <span class="num_style tab_visible">{tab_nb}</span>
           <span class="percent_wrapper">
-            <span class="percent" style="width: {100 - to_percent(tab.nb)}%"
+            <span class="percent" style="width: {100 - to_percent(tab_nb)}%"
             ></span>
           </span>
         {/if}

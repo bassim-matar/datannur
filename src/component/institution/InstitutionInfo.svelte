@@ -7,7 +7,7 @@
   import TagsInfo from "@infoTable/TagsInfo.svelte"
   import DeepLevelInfo from "@infoTable/DeepLevelInfo.svelte"
 
-  export let institution_info
+  let { institution_info } = $props()
 </script>
 
 <TableWrapper>

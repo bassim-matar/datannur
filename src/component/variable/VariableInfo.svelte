@@ -11,7 +11,7 @@
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
   import TagsInfo from "@infoTable/TagsInfo.svelte"
 
-  export let variable_info
+  let { variable_info } = $props()
 
   let parent_name = variable_info.is_meta ? "metaDataset" : "dataset"
   let dataset = db.get(parent_name, variable_info[parent_name + "_id"])

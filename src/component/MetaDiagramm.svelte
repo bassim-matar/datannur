@@ -6,7 +6,7 @@
   import { ensure_mermaid_loaded } from "@js/mermaid"
   import Loading from "@frame/Loading.svelte"
 
-  let svg_diagramm = false
+  let svg_diagramm = $state(false)
 
   const schema = { ...db.tables.__schema__ }
 

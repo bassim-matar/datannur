@@ -3,11 +3,9 @@
   import Column from "@js/Column"
   import Datatable from "@datatable/Datatable.svelte"
 
-  export let variables
-  export let is_meta = false
-  export let load_first = false
+  let { variables, is_meta = false } = $props()
 
-  let parent_name = is_meta ? "metaDataset" : "dataset"
+  const parent_name = is_meta ? "metaDataset" : "dataset"
 
   let dataset_has_type = false
   let nb_row_max = 0
@@ -69,39 +67,44 @@
     )
   }
 
-  let columns = [
-    Column.name("variable", "Variable", { is_meta }),
-    Column.original_name(),
-    Column.description(),
-    Column.datatype(),
-    Column.nb_row(nb_row_max),
-    Column.nb_missing(),
-    Column.nb_duplicates(),
-  ]
+  function define_columns() {
+    let columns = [
+      Column.name("variable", "Variable", { is_meta }),
+      Column.original_name(),
+      Column.description(),
+      Column.datatype(),
+      Column.nb_row(nb_row_max),
+      Column.nb_missing(),
+      Column.nb_duplicates(),
+    ]
 
-  columns.push(Column.nb_values())
-  columns.push(Column.values_preview())
+    columns.push(Column.nb_values())
+    columns.push(Column.values_preview())
 
-  if (!is_meta) columns.push(Column.modality())
+    if (!is_meta) columns.push(Column.modality())
 
-  columns.push(Column.dataset(parent_name))
+    columns.push(Column.dataset(parent_name))
 
-  if (is_meta) columns.push(Column.metaFolder())
+    if (is_meta) columns.push(Column.metaFolder())
 
-  if (!is_meta) {
-    columns = columns.concat([
-      Column.folder(),
-      Column.owner(),
-      Column.manager(),
-      Column.tag(),
-      Column.start_date(),
-      Column.end_date(),
-    ])
+    if (!is_meta) {
+      columns = columns.concat([
+        Column.folder(),
+        Column.owner(),
+        Column.manager(),
+        Column.tag(),
+        Column.start_date(),
+        Column.end_date(),
+      ])
+    }
+
+    if (!is_meta) {
+      columns.push(Column.favorite())
+    }
+    return columns
   }
 
-  if (!is_meta) {
-    columns.push(Column.favorite())
-  }
+  const columns = define_columns()
 </script>
 
 {#if variables.length > 0}
@@ -110,7 +113,6 @@
     data={variables_sorted}
     {columns}
     sort_by_name={false}
-    {load_first}
     meta_path={is_meta ? "metaVariable/" : false}
   />
 {/if}

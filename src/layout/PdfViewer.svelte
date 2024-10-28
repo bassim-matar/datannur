@@ -2,17 +2,20 @@
   import { has_touch_screen } from "@js/util"
   import Loading from "@frame/Loading.svelte"
 
-  export let pdf
+  let { pdf } = $props()
 
-  let loading = true
+  let loading = $state(true)
+  let url_mobile = $state(
+    "https://drive.google.com/viewerng/viewer?embedded=true&url=",
+  )
+
   let url = pdf + "#toolbar=1&view=FitH"
-  let url_mobile = "https://drive.google.com/viewerng/viewer?embedded=true&url="
   url_mobile += window.location.origin + "/" + url
 </script>
 
 <div class="iframe_wrapper">
   {#if loading}
-    <Loading position="relative" color_entity="doc"/>
+    <Loading position="relative" color_entity="doc" />
   {/if}
   <object
     data={url}
@@ -21,7 +24,7 @@
     class="frame"
     class:loaded={!loading}
     title="pdf viewer"
-    on:load={() => (loading = false)}
+    onload={() => (loading = false)}
   >
     {#if has_touch_screen}
       <embed src={url_mobile} frameborder="0" class="frame" />

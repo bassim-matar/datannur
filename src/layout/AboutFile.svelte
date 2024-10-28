@@ -6,26 +6,36 @@
   import Loading from "@frame/Loading.svelte"
   import { ensure_mermaid_loaded, md_with_mermaid_to_html } from "@js/mermaid"
 
-  export let about_file
+  let { about_file } = $props()
 
-  let md_content = about_file
-  let html_content = ""
-  let html_content_loaded = false
-  const use_mermaid = md_content.includes("mermaid(")
+  let md_content = $state(about_file)
+  let html_content = $state("")
+  let html_content_loaded = $state(false)
+  const use_mermaid = $derived(md_content.includes("mermaid("))
 
-  if (use_mermaid) {
-    ensure_mermaid_loaded(async () => {
-      if (!md_content) return
-      html_content = await md_with_mermaid_to_html(md_content)
-      html_content_loaded = true
-      $page_content_loaded = true
-    })
+  function set_dark_mode_in_content() {
+    md_content = about_file.replaceAll(
+      "{dark_mode}",
+      $dark_mode_theme === "dark" ? "_dark" : "",
+    )
   }
 
-  $: md_content = about_file?.replaceAll(
-    "{dark_mode}",
-    $dark_mode_theme === "dark" ? "_dark" : "",
-  )
+  set_dark_mode_in_content()
+
+  $effect(() => {
+    if (use_mermaid) {
+      ensure_mermaid_loaded(async () => {
+        if (!md_content) return
+        html_content = await md_with_mermaid_to_html(md_content)
+        html_content_loaded = true
+        $page_content_loaded = true
+      })
+    }
+  })
+
+  $effect(() => {
+    set_dark_mode_in_content()
+  })
 
   onMount(() => {
     if (!use_mermaid) $page_content_loaded = true

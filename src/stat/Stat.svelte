@@ -8,13 +8,13 @@
   import { add_values } from "./stat"
   import StatBox from "./StatBox.svelte"
 
-  export let stat
+  let { stat } = $props()
+
+  let show_all = $state(true)
+  let visible = $state({})
+  let loading = $state(false)
 
   let masonry
-  let show_all = true
-  let visible = {}
-  let entities = stat
-  let loading = false
 
   onMount(() => {
     masonry = new MiniMasonry({
@@ -55,7 +55,7 @@
     update_layout()
   }
 
-  entities = entities.filter(x => x.items?.length > 0)
+  const entities = stat.filter(x => x.items?.length > 0)
   entities.forEach(entity => {
     visible[entity.entity] = false
     entity.with_html = entity.entity === "log"
@@ -70,7 +70,7 @@
       class:box_shadow={show_all}
       class:box_shadow_color={show_all}
       style="color: {show_all ? get_color('entity') : ''}"
-      on:click={click_show_all}
+      onclick={click_show_all}
     >
       <Icon type="entity" />
       <span class="btn_select_entity_name">Tout</span>
@@ -81,7 +81,7 @@
         class:active={visible[entity]}
         class:box_shadow_color={visible[entity]}
         style="color: {visible[entity] ? get_color(entity) : ''}"
-        on:click={() => show(entity)}
+        onclick={() => show(entity)}
       >
         <Icon type={entity} />
         <span class="btn_select_entity_name">

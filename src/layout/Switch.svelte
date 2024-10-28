@@ -1,9 +1,13 @@
 <script>
-  export let value
-  export let change
-  export let slot_position = "right"
-  export let tree_switch = false
-  export let size = "medium"
+  let {
+    value = $bindable(),
+    change,
+    slot_position = "right",
+    tree_switch = false,
+    size = "medium",
+    children
+  } = $props()
+  
   let id = window.crypto.randomUUID()
 </script>
 
@@ -14,11 +18,11 @@
     class="switch is-rounded is-outlined {size}"
     class:tree_switch
     bind:checked={value}
-    on:change={change}
+    onchange={change}
   />
   <label for="checkbox_{id}">
     <div class="slot_wrapper">
-      <slot />
+      {@render children?.()}
     </div>
   </label>
 </div>

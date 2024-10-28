@@ -7,10 +7,7 @@
   import { search_highlight } from "./Search"
   import Favorite from "@favorite/Favorite.svelte"
 
-  export let item
-  export let search_value
-  export let is_focus_in
-  export let select_input
+  let { item, search_value, is_focus_in = $bindable(), select_input } = $props()
 
   function click_link(entity_name, item_id) {
     setTimeout(() => {
@@ -62,7 +59,7 @@
       <button
         class="btn_delete_item"
         style="cursor: pointer;"
-        on:click={remove_item(item.entity, item.id)}
+        onclick={() => remove_item(item.entity, item.id)}
         aria-label="Remove item from recent search"
       >
         <i class="fa-solid fa-xmark close"></i>

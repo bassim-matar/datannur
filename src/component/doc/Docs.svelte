@@ -5,8 +5,7 @@
   import { get_datetime_sortable, get_time_ago } from "@js/Time"
   import Datatable from "@datatable/Datatable.svelte"
 
-  export let docs
-  export let load_first = false
+  let { docs } = $props()
 
   let institution_max = 0
   let folder_max = 0
@@ -43,7 +42,9 @@
       render: (data, type) => {
         if (!data) return wrap_long_text()
         if (type === "export") return data
-        return wrap_long_text(`${get_datetime_sortable(data, true)}, ${get_time_ago(data)}`)
+        return wrap_long_text(
+          `${get_datetime_sortable(data, true)}, ${get_time_ago(data)}`,
+        )
       },
     },
     {
@@ -86,5 +87,5 @@
 </script>
 
 {#if docs && docs.length > 0}
-  <Datatable entity="doc" data={docs} {columns} {load_first} />
+  <Datatable entity="doc" data={docs} {columns}  />
 {/if}

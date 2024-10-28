@@ -1,7 +1,9 @@
 <script>
   import TagsListLevel from "@component/tag/TagsListLevel.svelte"
   import Link from "@layout/Link.svelte"
-  export let tag
+
+  let { tag } = $props()
+  
   const tag_children_data = Object.values(tag.children)
 </script>
 

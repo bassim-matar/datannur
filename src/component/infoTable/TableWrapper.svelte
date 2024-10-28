@@ -2,7 +2,7 @@
   import { onMount } from "svelte"
   import { page_content_loaded } from "@js/store"
 
-  export let no_max_height = true
+  let { no_max_height = true, children } = $props()
 
   onMount(() => {
     $page_content_loaded = true
@@ -12,7 +12,7 @@
 <div class="table_wrapper" class:no_max_height>
   <table class="table is-striped">
     <tbody>
-      <slot />
+      {@render children?.()}
     </tbody>
   </table>
 </div>

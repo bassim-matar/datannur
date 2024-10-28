@@ -2,8 +2,7 @@
   import Column from "@js/Column"
   import Datatable from "@datatable/Datatable.svelte"
 
-  export let values
-  export let load_first = false
+  let { values } = $props()
 
   const has = {}
   for (const value of values) {
@@ -15,11 +14,5 @@
 </script>
 
 {#if values.length > 0}
-  <Datatable
-    entity="value"
-    data={values}
-    {columns}
-    {load_first}
-    keep_all_cols={true}
-  />
+  <Datatable entity="value" data={values} {columns} keep_all_cols={true} />
 {/if}

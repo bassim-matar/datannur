@@ -6,15 +6,19 @@
   import Link from "@layout/Link.svelte"
   import Icon from "@layout/Icon.svelte"
 
-  export let href = ""
-  export let icon = false
-  export let className = "navbar-item"
-  export let pages = []
-  export let if_use = false
-  export let standard = false
-  export let info = false
+  let {
+    href = $bindable(""),
+    icon = $bindable(false),
+    className = "navbar-item",
+    pages = $bindable([]),
+    if_use = $bindable(false),
+    standard = false,
+    info = false,
+    children
+  } = $props();
 
-  let standard_readable = false
+  let standard_readable = $state(false)
+  let loading = $state(true)
 
   if (standard) {
     href = pluralize(standard)
@@ -33,7 +37,6 @@
     }
   }
 
-  let loading = true
   db.loaded.then(() => (loading = false))
 </script>
 
@@ -55,7 +58,7 @@
     {#if standard}
       <span>{standard_readable}</span>
     {:else}
-      <slot />
+      {@render children?.()}
     {/if}
   </Link>
 {/if}

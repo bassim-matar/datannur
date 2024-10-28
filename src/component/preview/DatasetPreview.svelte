@@ -5,13 +5,12 @@
   import Datatable from "@datatable/Datatable.svelte"
   import Loading from "@frame/Loading.svelte"
 
-  export let dataset_preview
-  export let load_first = false
+  let { dataset_preview } = $props()
 
-  let dataset_data = false
-  let columns = []
+  let dataset_data = $state(false)
+  let columns = $state([])
 
-  const load_preview = (async () => {
+  async function get_load_preview() {
     $tab_selected.nb = 0
     if (typeof dataset_preview !== "string") {
       dataset_data = dataset_preview
@@ -34,7 +33,9 @@
     })
     columns = Preview_manager.get_columns(dataset_data)
     $tab_selected.nb = dataset_data.length
-  })()
+  }
+
+  const load_preview = get_load_preview()
 </script>
 
 {#await load_preview}
@@ -47,7 +48,6 @@
       sort_by_name={false}
       {columns}
       keep_all_cols={true}
-      {load_first}
     />
   {/if}
 {/await}

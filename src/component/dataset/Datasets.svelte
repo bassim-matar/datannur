@@ -3,17 +3,10 @@
   import Column from "@js/Column"
   import Datatable from "@datatable/Datatable.svelte"
 
-  export let datasets
-  export let is_meta = false
-  export let load_first = false
+  let { datasets, is_meta = false } = $props()
 
-  let dataset_path = "dataset/"
-  let tab_variables = "dataset_variables"
-  if (is_meta) {
-    dataset_path = "metaDataset/"
-    tab_variables = "meta_" + tab_variables
-  }
-
+  const dataset_path = is_meta ? "metaDataset/" : "dataset/"
+  const tab_variables = is_meta ? "meta_dataset_variables" : "dataset_variables"
   const datasets_sorted = [...datasets]
 
   function sort_dataset(to_sort) {
@@ -64,26 +57,34 @@
     }
   }
 
-  let columns = [
-    Column.name("dataset", "Dataset", { is_meta }),
-    Column.description(),
-    Column.datatype(),
-    Column.nb_variable("dataset", nb_variable_max, {
-      tab: tab_variables,
-      link_path: dataset_path,
-      show_title: true,
-    }),
-    Column.nb_row(nb_row_max),
-  ]
+  function define_columns() {
+    if (is_meta) {
+      return [
+        Column.name("dataset", "Dataset", { is_meta }),
+        Column.description(),
+        Column.datatype(),
+        Column.nb_variable("dataset", nb_variable_max, {
+          tab: tab_variables,
+          link_path: dataset_path,
+          show_title: true,
+        }),
+        Column.nb_row(nb_row_max),
+        Column.metaFolder(),
+        Column.last_update_timestamp(),
+        Column.last_update_time_ago(),
+      ]
+    }
 
-  if (is_meta) {
-    columns.push(Column.metaFolder())
-    columns.push(Column.last_update_timestamp())
-    columns.push(Column.last_update_time_ago())
-  }
-
-  if (!is_meta) {
-    columns = columns.concat([
+    return [
+      Column.name("dataset", "Dataset", { is_meta }),
+      Column.description(),
+      Column.datatype(),
+      Column.nb_variable("dataset", nb_variable_max, {
+        tab: tab_variables,
+        link_path: dataset_path,
+        show_title: true,
+      }),
+      Column.nb_row(nb_row_max),
       Column.nb_doc("dataset", nb_doc_max, true),
       Column.folder(),
       Column.tag(),
@@ -96,8 +97,10 @@
       Column.period(),
       Column.data_path(),
       Column.favorite(),
-    ])
+    ]
   }
+
+  const columns = define_columns()
 </script>
 
 {#if datasets.length > 0}
@@ -106,7 +109,6 @@
     data={datasets_sorted}
     {columns}
     sort_by_name={false}
-    {load_first}
     meta_path={is_meta ? dataset_path : false}
   />
 {/if}

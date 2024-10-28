@@ -1,7 +1,7 @@
 <script>
   import Icon from "@layout/Icon.svelte"
 
-  export let delivery_format
+  let { delivery_format } = $props()
 </script>
 
 {#if delivery_format}

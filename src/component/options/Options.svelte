@@ -45,23 +45,23 @@
     })
   }
 
-  let open_all_recursive = Options.get("open_all_recursive")
+  let open_all_recursive = $state(Options.get("open_all_recursive"))
   function update_open_all_recursive() {
     Options.set("open_all_recursive", open_all_recursive)
   }
 
-  let open_all_tab = Options.get("open_all_tab")
+  let open_all_tab = $state(Options.get("open_all_tab"))
   function update_open_all_tab() {
     Options.set("open_all_tab", open_all_tab)
   }
 
-  let rounded_design = Options.get("rounded_design")
+  let rounded_design = $state(Options.get("rounded_design"))
   function update_rounded_design() {
     Options.set("rounded_design", rounded_design)
     document.documentElement.classList.toggle("rounded_design")
   }
 
-  let page_shadow_colored = Options.get("page_shadow_colored")
+  let page_shadow_colored = $state(Options.get("page_shadow_colored"))
   function update_page_shadow_colored() {
     Options.set("page_shadow_colored", page_shadow_colored)
     document.documentElement.classList.toggle("page_shadow_colored")
@@ -119,24 +119,24 @@
 
   <div class="flex_col">
     <h5 class="title is-5">Réinitialiser</h5>
-    <button class="button" on:click={clear_logs}>
+    <button class="button" onclick={clear_logs}>
       Logs <Icon type="log" margin_left={true} />
     </button>
-    <button class="button" on:click={clear_favorite}>
+    <button class="button" onclick={clear_favorite}>
       Favoris <Icon type="favorite" margin_left={true} />
     </button>
-    <button class="button" on:click={reset_cols_search_cache}>
+    <button class="button" onclick={reset_cols_search_cache}>
       Filtres de colonne <Icon type="col_search" margin_left={true} />
     </button>
-    <button class="button" on:click={clear_history_search}>
+    <button class="button" onclick={clear_history_search}>
       Recherches récentes <Icon type="recent_search" margin_left={true} />
     </button>
-    <button class="button" on:click={clear_all}> Tout </button>
+    <button class="button" onclick={clear_all}> Tout </button>
   </div>
 
   <div class="flex_col">
     <h5 class="title is-5">Mes données utilisateur</h5>
-    <button class="button" on:click={download_user_data}>
+    <button class="button" onclick={download_user_data}>
       Exporter <Icon type="download" margin_left={true} />
     </button>
     <BtnImport on_import={import_user_data}>
@@ -155,4 +155,4 @@
   .title {
     text-align: center;
   }
-  </style>
+</style>

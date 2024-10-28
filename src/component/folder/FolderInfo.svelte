@@ -15,7 +15,7 @@
   import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
   import DeepLevelInfo from "@infoTable/DeepLevelInfo.svelte"
 
-  export let folder_info
+  let { folder_info } = $props()
 </script>
 
 <TableWrapper>

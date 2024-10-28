@@ -4,10 +4,10 @@
   import MdContent from "@layout/MdContent.svelte"
   import Loading from "@frame/Loading.svelte"
 
-  export let doc_id
+  let { doc_id } = $props()
 
-  let content
-  let loading = true
+  let content = $state()
+  let loading = $state(true)
 
   onMount(async () => {
     try {

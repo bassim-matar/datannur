@@ -4,9 +4,9 @@
   import logo_dark from "@img/logo_dark.png"
   import Head from "@frame/Head.svelte"
 
-  let props = $$restProps
+  let { ...rest } = $props()
   let title = "Chargement..."
-  $: logo_src = $dark_mode_theme === "dark" ? logo_dark : logo
+  let logo_src = $derived($dark_mode_theme === "dark" ? logo_dark : logo)
 </script>
 
 <Head {title} />

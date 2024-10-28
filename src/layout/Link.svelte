@@ -2,19 +2,17 @@
   import { router } from "@js/router"
   import { get_base_link_url } from "@js/util"
 
-  export let href
-  export let className = ""
-  export let click = () => false
-  export let isActive = () => false
-  export let alternative_action = false
+  let {
+    href,
+    className = "",
+    click = () => false,
+    isActive = () => false,
+    alternative_action = false,
+    children
+  } = $props();
 
-  let base
-  if (href == "/") base = ""
-  else base = get_base_link_url()
+  const base = href === "/" ? "" : get_base_link_url()
 
-  function blur(e) {
-    this.blur()
-  }
   function go_to_href(event) {
     if (event.ctrlKey || event.metaKey) return
     event.preventDefault()
@@ -24,17 +22,20 @@
     }
     router.navigate(href)
   }
+
+  function on_click_event(event) {
+    click(event)
+    go_to_href(event)
+  }
 </script>
 
 <a
   href="{base}{href}"
   class={className}
   class:is-active={isActive()}
-  on:click={blur}
-  on:click={click}
-  on:click={go_to_href}
+  onclick={on_click_event}
 >
-  <slot />
+  {@render children?.()}
 </a>
 
 <style lang="scss">

@@ -7,11 +7,10 @@
   import DarkModeSwitch from "@dark_mode/DarkModeSwitch.svelte"
   import HeaderLink from "@frame/HeaderLink.svelte"
 
-  export let menu_mobile = false
-
+  let { menu_mobile = false } = $props()
+  let contact_email = $state("loading")
+  const last_update = $state({ state: "loading", value: false })
   const year = new Date().getFullYear()
-  let contact_email = "loading"
-  let last_update = "loading"
 
   const app_version = document
     .querySelector('meta[name="app_version"]')
@@ -34,17 +33,19 @@
 
   db.loaded.then(() => {
     contact_email = db.get_config("contact_email")
-    last_update = false
-    if (db.use.info) last_update = db.get("info", "last_update")
+    last_update.state = "loaded"
+    if (db.use.info) {
+      last_update.value = db.get("info", "last_update")?.value
+    }
     const last_modif_timestamp = db.get_last_modif_timestamp()
-    if (last_modif_timestamp) last_update = { value: last_modif_timestamp }
-    
-    if (last_update) {
+    if (last_modif_timestamp) last_update.value = last_modif_timestamp
+    if (last_update.value) {
       const timestamp = last_update.value * 1000
-      const relative = get_time_ago(timestamp)
-      const absolute = get_datetime(timestamp)
-      last_update = { relative, absolute, value: last_update.value }
+      last_update.relative = get_time_ago(timestamp)
+      last_update.absolute = get_datetime(timestamp)
       current_interval = setInterval(update_last_modif, interval)
+    } else {
+      last_update.state = "not_found"
     }
   })
 </script>
@@ -84,18 +85,18 @@
       <div>
         <DarkModeSwitch />
       </div>
-      {#if last_update}
+      {#if last_update.state === "loading"}
         <div>
-          {#if last_update === "loading"}
-            <Loading type="mini" position="relative" />
-          {:else}
-            <span
-              class="break_line use_tooltip tooltip_top"
-              title={last_update.absolute}
-            >
-              actualisé {last_update.relative}
-            </span>
-          {/if}
+          <Loading type="mini" position="relative" />
+        </div>
+      {:else if last_update.state === "loaded"}
+        <div>
+          <span
+            class="break_line use_tooltip tooltip_top"
+            title={last_update.absolute}
+          >
+            actualisé {last_update.relative}
+          </span>
         </div>
       {/if}
 

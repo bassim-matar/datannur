@@ -5,10 +5,8 @@
   import { tabs_helper } from "@tab/tabs_helper"
   import Title from "@layout/Title.svelte"
 
-  export let metaDataset
-
-  metaDataset.is_meta = true
-  metaDataset.folder = { id: metaDataset.metaFolder_id }
+  let { metaDataset } = $props()
+  
   let meta_dataset_variables = db.get_all("metaVariable", { metaDataset })
 
   let dataset_preview = []

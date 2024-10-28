@@ -4,11 +4,8 @@
   import { tab_selected } from "@js/store"
   import { onMount } from "svelte"
 
-  export let tabs
-  export let no_first_tab
-  export let is_last_tab
-  export let active_tab_body
-  export let tabs_loaded
+  let { tabs, no_first_tab, is_last_tab, active_tab_body, tabs_loaded } =
+    $props()
 
   let open_all_tab = Options.get("open_all_tab")
 
@@ -32,12 +29,14 @@
     update_ancestor_height()
   })
 
-  $: if (active_tab_body) {
-    setTimeout(() => update_ancestor_height(), 1)
-  }
+  $effect(() => {
+    if (active_tab_body) {
+      setTimeout(() => update_ancestor_height(), 1)
+    }
+  })
 </script>
 
-<svelte:window on:resize={update_ancestor_height} />
+<svelte:window onresize={update_ancestor_height} />
 
 <div
   class="tabs_body box_shadow box_shadow_color shadow_{$tab_selected.icon}"
@@ -57,7 +56,7 @@
         class:padding={tab.padding}
         class:has_footer={tab.footer_visible}
       >
-        <svelte:component this={tab.component} {...tab.props} />
+        <tab.component {...tab.props} />
       </div>
     {/if}
   {/each}
@@ -120,7 +119,9 @@
   .tabs_body {
     overflow: hidden;
   }
-  .tabs_body:global(:has(.tab_component_wrapper.visible .datatable_main_wrapper)) {
+  .tabs_body:global(
+      :has(.tab_component_wrapper.visible .datatable_main_wrapper)
+    ) {
     overflow: visible !important;
   }
 

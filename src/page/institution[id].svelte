@@ -14,7 +14,9 @@
   import Title from "@layout/Title.svelte"
   import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
 
-  export let institution
+  let { institution } = $props()
+
+  let key_tab = $state(1)
 
   let institutions = db.get_all_childs("institution", institution.id)
   make_parents_relative(institution.id, institutions)
@@ -64,11 +66,10 @@
 
   const nb_institution = institutions.length
   const nb_folder = folders.length
-
-  let key_tab = 1
-  $: show_open_all_switch =
+  let show_open_all_switch = $derived(
     ($tab_selected.key === "institutions" && nb_institution > is_big_limit) ||
-    ($tab_selected.key === "folders" && nb_folder > is_big_limit)
+      ($tab_selected.key === "folders" && nb_folder > is_big_limit),
+  )
 </script>
 
 <section class="section">

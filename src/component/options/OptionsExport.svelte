@@ -23,15 +23,13 @@
 
 <div class="flex_cols">
   <div class="flex_col">
-    <button class="button" on:click={() => window.open("zip/datannur.zip")}
+    <button class="button" onclick={() => window.open("zip/datannur.zip")}
       >L'application datannur</button
     >
-    <button
-      class="button"
-      on:click={() => window.open("zip/datannur_db.zip")}
+    <button class="button" onclick={() => window.open("zip/datannur_db.zip")}
       >La base de données Excel</button
     >
-    <button class="button" on:click={download_all_files}
+    <button class="button" onclick={download_all_files}
       >Mes fichiers chargés</button
     >
   </div>

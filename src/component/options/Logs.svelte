@@ -4,10 +4,7 @@
   import Render from "@js/Render"
   import Column from "@js/Column"
 
-  export let logs
-  export let load_first = false
-
-  $: data_update_key = logs.length
+  let { logs } = $props()
 
   let columns = [
     {
@@ -28,11 +25,4 @@
   ]
 </script>
 
-<Datatable
-  entity="log"
-  data={logs}
-  sort_by_name={false}
-  {columns}
-  {load_first}
-  {data_update_key}
-/>
+<Datatable entity="log" data={logs} sort_by_name={false} {columns} />

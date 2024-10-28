@@ -8,18 +8,21 @@
   import TabsBody from "@tab/TabsBody.svelte"
   import TabTitle from "@tab/TabTitle.svelte"
 
-  export let tabs
+  let { tabs } = $props()
 
-  let active_tab = tabs[0]?.key
-  let active_tab_body = tabs[0]?.key
-  let tabs_loaded = {}
-  let all_keys = []
-  let ul
   let is_mobile = get_is_mobile()
-  let tabs_title_key = is_mobile
-
+  let all_keys = []
   let has_reverse_scroll = !is_firefox
-  
+
+  let active_tab = $state(tabs[0]?.key)
+  let active_tab_body = $state(tabs[0]?.key)
+  let tabs_loaded = $state({ active_tab: 1 })
+  let tabs_title_key = $state(is_mobile)
+  let ul = $state()
+  let is_last_tab = $state()
+
+  let no_first_tab = $derived(active_tab !== tabs[0]?.key)
+
   const get_width = selector => document.querySelector(selector)?.offsetWidth
 
   function is_tabs_overflow() {
@@ -80,23 +83,26 @@
     }, 1)
   }
 
-  for (const tab of tabs) {
-    all_keys.push(tab.key)
-    $all_tabs[tab.icon] = tab
-    if (!tab.without_load) {
-      tab.props.load_first = active_tab_body === tab.key
+  function setup_tabs() {
+    for (const tab of tabs) {
+      all_keys.push(tab.key)
+      $all_tabs[tab.icon] = { ...tab }
     }
   }
 
-  const url_param_tab = url_param.get("tab")
-  if (url_param_tab) {
-    load_tab(url_param_tab)
+  function load_tab_from_url_param() {
+    const url_param_tab = url_param.get("tab")
+    if (url_param_tab) {
+      load_tab(url_param_tab)
+    }
   }
 
-  for (const tab of tabs) {
-    if (active_tab_body === tab.key) {
-      set_footer(tab)
-      $tab_selected = tab
+  function setup_active_tab() {
+    for (const tab of tabs) {
+      if (active_tab_body === tab.key) {
+        set_footer(tab)
+        $tab_selected = tab
+      }
     }
   }
 
@@ -104,15 +110,19 @@
     center_active_tab()
   })
 
-  tabs_loaded[active_tab] = 1
-  $: no_first_tab = active_tab !== tabs[0]?.key
-  $: is_last_tab =
-    tabs.length > 0 &&
-    active_tab === tabs[tabs.length - 1].key &&
-    is_tabs_overflow()
+  $effect(() => {
+    is_last_tab =
+      tabs.length > 0 &&
+      active_tab === tabs[tabs.length - 1].key &&
+      is_tabs_overflow()
+  })
+
+  setup_tabs()
+  load_tab_from_url_param()
+  setup_active_tab()
 </script>
 
-<svelte:window on:resize={on_resize} />
+<svelte:window onresize={on_resize} />
 
 <div
   id="tabs_container"
@@ -123,21 +133,15 @@
   bind:this={ul}
 >
   {#key tabs_title_key}
-  <ul class="tabs_container_ul">
-    {#each tabs as tab}
-      <TabTitle bind:tab bind:active_tab {select_tab} />
-    {/each}
-  </ul>
+    <ul class="tabs_container_ul">
+      {#each tabs as tab}
+        <TabTitle {tab} bind:active_tab {select_tab} />
+      {/each}
+    </ul>
   {/key}
 </div>
 
-<TabsBody
-  bind:tabs
-  {no_first_tab}
-  {is_last_tab}
-  {active_tab_body}
-  {tabs_loaded}
-/>
+<TabsBody {tabs} {no_first_tab} {is_last_tab} {active_tab_body} {tabs_loaded} />
 
 <style lang="scss">
   @use "../main.scss" as *;

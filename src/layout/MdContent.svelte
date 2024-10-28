@@ -1,9 +1,9 @@
 <script>
   import markdown_render from "@js/markdown"
 
-  export let content
+  let { content } = $props()
 
-  $: md_content = content ? markdown_render(content): ""
+  let md_content = $derived(content ? markdown_render(content) : "")
 </script>
 
 <div class="main content">

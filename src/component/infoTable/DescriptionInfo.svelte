@@ -2,10 +2,9 @@
   import markdown_render from "@js/markdown"
   import Icon from "@layout/Icon.svelte"
 
-  export let description
-  export let inside_table = false
+  let { description, inside_table = false } = $props()
 
-  let description_clean = description
+  let description_clean = $state(description)
 
   if (description) {
     description_clean = markdown_render(description)

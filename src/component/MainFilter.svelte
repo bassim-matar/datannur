@@ -3,7 +3,7 @@
   import Switch from "@layout/Switch.svelte"
   import Main_filter from "@js/Main_filter"
 
-  let filters = []
+  let filters = $state([])
 
   const saved_filters = Main_filter.get()
   const db_filters = get_local_filter()
@@ -19,8 +19,7 @@
       }
     }
   }
-  filters = filters
-
+ 
   function update_filter_state() {
     Main_filter.save(filters)
   }
@@ -35,7 +34,7 @@
 {/each}
 
 <div class="navbar-item">
-  <button class="button" on:click={() => window.location.reload()}
+  <button class="button" onclick={() => window.location.reload()}
     >Appliquer</button
   >
 </div>

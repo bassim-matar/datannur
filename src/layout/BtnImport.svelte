@@ -1,7 +1,7 @@
 <script>
-  export let on_import
+  let { on_import, children } = $props()
 
-  let fileinput
+  let fileinput = $state()
 
   const onFileSelected = (e) => {
     let file = e.target.files[0]
@@ -10,12 +10,13 @@
   }
 </script>
 
-<button class="button" on:click={() => fileinput.click()}>
-  <slot />
+<button class="button" onclick={() => fileinput.click()}>
+  {@render children?.()}
 </button>
+
 <input
   style="display:none"
   type="file"
-  on:change={(e) => onFileSelected(e)}
+  onchange={(e) => onFileSelected(e)}
   bind:this={fileinput}
 />

@@ -10,9 +10,9 @@
   const metaVariables = db.get_all("metaVariable")
 
   const stat = [
-    {entity: "folder", items: metaFolders},
-    {entity: "dataset", items: metaDatasets},
-    {entity: "variable", items: metaVariables},
+    { entity: "folder", items: metaFolders },
+    { entity: "dataset", items: metaDatasets },
+    { entity: "variable", items: metaVariables },
   ]
 
   const tabs = tabs_helper({

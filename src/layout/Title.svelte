@@ -7,21 +7,26 @@
   import Favorite from "@favorite/Favorite.svelte"
   import { onMount } from "svelte"
 
-  export let type
-  export let name
-  export let mode = "normal"
-  export let id = false
-  export let info = false
-  export let toggle_info = false
-  export let name_sup = ""
+  let {
+    type,
+    name,
+    mode = "normal",
+    id = false,
+    info = false,
+    toggle_info = false,
+    name_sup = "",
+  } = $props()
+
+  let title = $state(name)
+  let is_favorite = $state(false)
 
   let separator = " | "
   const entity_name = entity_names[type]
-  let title = name
+
   if (mode !== "main_title") {
     title = entity_name + separator + name
   }
-  let is_favorite = false
+
   if (id) {
     const item = db.get(type, id)
     is_favorite = item.is_favorite
@@ -44,7 +49,7 @@
       {#if mode !== "main_title"}
         <span>{entity_name}</span>
         {#if info}
-          <button class="title_info" on:click={toggle_info}>{info}</button>
+          <button class="title_info" onclick={toggle_info}>{info}</button>
         {/if}
         {#if id}
           <Favorite {type} {id} {is_favorite} />

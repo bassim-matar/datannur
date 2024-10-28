@@ -4,7 +4,7 @@
   import { tabs_helper } from "@tab/tabs_helper"
   import Title from "@layout/Title.svelte"
 
-  export let modality
+  let { modality } = $props()
 
   let variables = db.get_all("variable", { modality })
   let values = modality.values

@@ -9,6 +9,8 @@
   import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
   import about_file from "@markdown/about_tag.md?raw"
 
+  let key_tab = $state(1)
+
   const tags = db.get_all("tag")
   if (db.use.tag_recursive) {
     make_parents_relative(0, tags)
@@ -21,10 +23,10 @@
     about_file,
   })
 
-  let key_tab = 1
   const nb_tags = tags.length
-  $: show_open_all_switch =
-    $tab_selected.key === "tags" && nb_tags > is_big_limit
+  let show_open_all_switch = $derived(
+    $tab_selected.key === "tags" && nb_tags > is_big_limit,
+  )
 </script>
 
 <section class="section">

@@ -9,6 +9,8 @@
   import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
   import about_file from "@markdown/about_institution.md?raw"
 
+  let key_tab = $state(1)
+
   const institutions = db.get_all("institution")
   make_parents_relative(0, institutions)
   add_minimum_deep(institutions)
@@ -27,9 +29,10 @@
   })
 
   const nb_institution = institutions.length
-  let key_tab = 1
-  $: show_open_all_switch =
-    $tab_selected.key === "institutions" && nb_institution > is_big_limit
+
+  let show_open_all_switch = $derived(
+    $tab_selected.key === "institutions" && nb_institution > is_big_limit,
+  )
 </script>
 
 <section class="section">

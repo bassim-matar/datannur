@@ -1,31 +1,34 @@
 <script>
   import { entity_to_icon_name } from "@js/util"
 
-  export let type
-  export let margin_right = true
-  export let margin_left = false
-  export let mode = "normal"
+  let {
+    type,
+    margin_right = true,
+    margin_left = false,
+    mode = "normal",
+  } = $props()
 
   let fa_type = "fas"
-  let icon
-  let class_names = ""
+  let icon = $state()
+  let class_names = $state("")
 
-  $: {
+  $effect(() => {
     icon = entity_to_icon_name(type)
     if (icon.startsWith("fa-brands")) {
       class_names = icon
     } else {
       class_names = `${fa_type} fa-${icon}`
     }
-  }
+  })
 </script>
 
 {#if type}
-  <span class="icon icon_{type} {mode}" 
+  <span
+    class="icon icon_{type} {mode}"
     class:no_margin_right={!margin_right}
     class:with_margin_left={margin_left}
   >
-    <i class="{class_names}"></i>
+    <i class={class_names}></i>
   </span>
 {/if}
 

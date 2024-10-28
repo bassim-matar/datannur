@@ -132,7 +132,6 @@ export const all_tabs = {
     component: MetaDiagramm,
     without_num: true,
     without_prop: true,
-    without_load: true,
     footer_visible: true,
   },
   docs: {
@@ -147,7 +146,6 @@ export const all_tabs = {
     without_num: true,
     without_prop: true,
     padding: true,
-    without_load: true,
     footer_visible: true,
   },
   options_import: {
@@ -157,7 +155,6 @@ export const all_tabs = {
     without_num: true,
     without_prop: true,
     padding: true,
-    without_load: true,
     footer_visible: true,
   },
   options: {
@@ -167,7 +164,6 @@ export const all_tabs = {
     without_num: true,
     without_prop: true,
     padding: true,
-    without_load: true,
     footer_visible: true,
   },
   dataset_preview: {
@@ -186,14 +182,12 @@ export const all_tabs = {
     component: Stat,
     without_num: true,
     without_prop: true,
-    without_load: true,
     footer_visible: false,
   },
   about_organisation: {
     name: "Organisation",
     icon: "diagram",
     component: AboutFile,
-    without_load: true,
     footer_visible: true,
     use_about_file: true,
   },
@@ -201,7 +195,6 @@ export const all_tabs = {
     name: "Fonctionnalités",
     icon: "functionality",
     component: AboutFile,
-    without_load: true,
     footer_visible: true,
     use_about_file: true,
   },
@@ -227,7 +220,6 @@ for (const [key, value] of Object.entries(info_items)) {
     name: "A propos",
     icon: "about",
     component: value,
-    without_load: true,
     footer_visible: true,
   }
 }

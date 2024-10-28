@@ -319,17 +319,21 @@ class Process {
   static metaFolder() {
     db.foreach("metaFolder", metaFolder => {
       metaFolder._entity = "metaFolder"
+      metaFolder.is_meta = true
     })
   }
   static metaDataset() {
     db.foreach("metaDataset", metaDataset => {
       metaDataset._entity = "metaDataset"
+      metaDataset.is_meta = true
+      metaDataset.folder = { id: metaDataset.metaFolder_id }
       add_variable_num(metaDataset, "metaDataset", "metaVariable")
     })
   }
   static metaVariable() {
     db.foreach("metaVariable", metaVariable => {
       metaVariable._entity = "metaVariable"
+      metaVariable.is_meta = true
       metaVariable.type_clean = get_variable_type_clean(metaVariable.type)
       const metaDataset = db.get("metaDataset", metaVariable.metaDataset_id)
       metaVariable.nb_row = metaDataset.nb_row

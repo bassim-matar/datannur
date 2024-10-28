@@ -1,7 +1,7 @@
 <script>
   import Icon from "@layout/Icon.svelte"
 
-  export let localisation
+  let { localisation } = $props()
 </script>
 
 {#if localisation}

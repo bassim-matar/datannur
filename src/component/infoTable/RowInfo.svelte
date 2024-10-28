@@ -2,7 +2,7 @@
   import Render from "@js/Render"
   import Icon from "@layout/Icon.svelte"
 
-  export let nb_row
+  let { nb_row } = $props()
 </script>
 
 {#if nb_row}

@@ -2,7 +2,7 @@
   import db from "@db"
   import TagsListLevel from "@component/tag/TagsListLevel.svelte"
 
-  export let tags
+  let { tags } = $props()
 
   function build_tree(tags) {
     const tags_tree = {}

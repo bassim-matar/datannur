@@ -5,16 +5,13 @@
   import Render from "@js/Render"
   import Datatable from "@datatable/Datatable.svelte"
 
-  export let folders
-  export let load_first = false
-  export let is_meta = false
-
-  let columns
+  let { folders, is_meta = false } = $props()
 
   const folders_sorted = [...folders]
 
   let folder_path = is_meta ? "metaFolder/" : "folder/"
 
+  let variable_max = 0
   let dataset_max = 0
   let folder_max = 0
   let nb_doc_max = 0
@@ -36,34 +33,39 @@
   }
 
   if (is_meta) {
-    let dataset_max = 0
-    let variable_max = 0
     for (const folder of folders) {
       dataset_max = Math.max(dataset_max, folder.nb_dataset)
       variable_max = Math.max(variable_max, folder.nb_variable)
     }
+  }
 
-    columns = [
-      Column.name("folder", "Dossiers"),
-      Column.description(),
-      {
-        data: "nb_dataset",
-        title: Render.icon("dataset") + "Datasets",
-        render: (data, type, row) => {
-          if (!data) return ""
-          const content = link(folder_path + row.id + "?tab=metaDatasets", data)
-          const percent = get_percent(data / dataset_max)
-          return `${Render.num_percent(content, percent, "dataset", type)}`
+  function define_columns() {
+    if (is_meta) {
+      return [
+        Column.name("folder", "Dossiers"),
+        Column.description(),
+        {
+          data: "nb_dataset",
+          title: Render.icon("dataset") + "Datasets",
+          render: (data, type, row) => {
+            if (!data) return ""
+            const content = link(
+              folder_path + row.id + "?tab=metaDatasets",
+              data,
+            )
+            const percent = get_percent(data / dataset_max)
+            return `${Render.num_percent(content, percent, "dataset", type)}`
+          },
         },
-      },
-      Column.nb_variable("folder", variable_max, {
-        tab: "metaVariables",
-        link_path: folder_path,
-        show_title: true,
-      }),
-    ]
-  } else {
-    columns = [
+        Column.nb_variable("folder", variable_max, {
+          tab: "metaVariables",
+          link_path: folder_path,
+          show_title: true,
+        }),
+      ]
+    }
+    
+    return [
       Column.name("folder", "Dossier", {
         with_indent: true,
         link_same_entity_tab: true,
@@ -106,6 +108,8 @@
       Column.favorite(),
     ]
   }
+
+  const columns = define_columns()
 </script>
 
 {#if folders && folders.length > 0}
@@ -115,7 +119,6 @@
     sort_by_name={false}
     is_recursive={true}
     {columns}
-    {load_first}
     meta_path={is_meta ? folder_path : false}
   />
 {/if}

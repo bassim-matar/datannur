@@ -24,28 +24,30 @@
   import Filter from "./filter/Filter.svelte"
   import FilterInfoBox from "./filter/FilterInfoBox.svelte"
 
-  DataTable.Buttons.jszip(JSZip)
+  let {
+    entity,
+    data,
+    columns,
+    sort_by_name = true,
+    keep_all_cols = false,
+    meta_path = false,
+    is_recursive = false,
+    initied = () => {},
+  } = $props()
 
-  export let entity
-  export let data
-  export let columns
-  export let load_first = false
-  export let sort_by_name = true
-  export let keep_all_cols = false
-  export let meta_path = false
-  export let is_recursive = false
-  export let data_update_key = false
-  export let initied = () => {}
+  let loading = $state(true)
+  let short_table = $state(false)
+  let nb_sticky = $state(1)
+  let datatable_update_draw = $state(0)
+  let nb_active_filter = $state(0)
+  let clickable_rows = $state(true)
 
   let datatable = false
-  let loading = true
   let dom_table = false
   let timeout = 1
   const is_big = data.length > is_big_limit
-  let short_table = false
-  let nb_sticky = 1
-  let datatable_update_draw = 0
-  let nb_active_filter = 0
+
+  DataTable.Buttons.jszip(JSZip)
 
   let hash = url_hash.get_all()
   const open_all_recursive = Options.get("open_all_recursive")
@@ -57,9 +59,7 @@
   const max_height_load = `max(calc(100vh - ${max_height_value - 82}px), 80px)`
 
   let open_all_tab = Options.get("open_all_tab")
-  if (open_all_tab && !load_first) timeout = 50
 
-  let clickable_rows = true
   if (["value", "dataset_preview", "variable_preview", "log"].includes(entity))
     clickable_rows = false
 
@@ -77,7 +77,7 @@
   const exporter = new Exporter(table_id)
   const filter = new Filter_helper(table_id, entity, update_filter_count)
 
-  $all_tabs[entity].nb = "..."
+  // $all_tabs[entity].nb = "..."
 
   let new_data = []
   function load_new_data() {
@@ -95,46 +95,14 @@
         continue
       }
       row_num += 1
-      rows._row_num = row_num
-      new_data.push(rows)
+      const copy_rows = { ...rows }
+      copy_rows._row_num = row_num
+      new_data.push(copy_rows)
     }
   }
 
-  function reload() {
-    load_new_data()
-    if (datatable) datatable.clear().rows.add(new_data).draw()
-  }
-  $: data_update_key && reload()
   load_new_data()
-
-  if (columns[0]?.title !== "#") {
-    const col_numerotation = {
-      data: "_row_num",
-      name: "_row_num",
-      title: "#",
-      tooltip: "Numéro de ligne",
-      width: "20px",
-    }
-    if (entity in entity_names) {
-      if (meta_path) {
-        col_numerotation.render = (data, type, row) => {
-          return link(meta_path + row.id, data)
-        }
-      } else {
-        col_numerotation.render = (data, type, row) => {
-          return link(entity + "/" + row.id, data)
-        }
-      }
-    }
-    columns = [col_numerotation, ...columns]
-  }
-
-  if (window.innerWidth > 1023) {
-    for (const column of columns) {
-      if (column.name === "entity") nb_sticky += 1
-      if (column.name === "name") nb_sticky += 1
-    }
-  }
+  const nb_row_loading = Math.min(new_data.length, 50)
 
   Datatables_timer.start()
   Datatables_loading.start()
@@ -157,66 +125,104 @@
     )
   }
 
-  function filter_empty_columns(columns, items) {
-    const has_prop = {}
-    for (const item of items) {
-      for (const [key, value] of Object.entries(item)) {
-        if (key === "id" || key === "is_favorite") {
-          has_prop[key] = true
-          continue
+  function define_columns(columns) {
+    let columns_copy = columns.map(obj => ({ ...obj }))
+
+    if (columns_copy[0]?.title !== "#") {
+      const col_numerotation = {
+        data: "_row_num",
+        name: "_row_num",
+        title: "#",
+        tooltip: "Numéro de ligne",
+        width: "20px",
+      }
+      if (entity in entity_names) {
+        if (meta_path) {
+          col_numerotation.render = (data, type, row) => {
+            return link(meta_path + row.id, data)
+          }
+        } else {
+          col_numerotation.render = (data, type, row) => {
+            return link(entity + "/" + row.id, data)
+          }
         }
-        const value = item[key]
-        if (Array.isArray(value)) {
-          if (value.length > 0) has_prop[key] = true
-        } else if (value) has_prop[key] = true
+      }
+      columns_copy = [col_numerotation, ...columns_copy]
+    }
+
+    if (window.innerWidth > 1023) {
+      for (const column of columns_copy) {
+        if (column.name === "entity") nb_sticky += 1
+        if (column.name === "name") nb_sticky += 1
       }
     }
-    return columns.filter(column => column.data in has_prop)
+
+    function filter_empty_columns(columns, items) {
+      const has_prop = {}
+      for (const item of items) {
+        for (const [key, value] of Object.entries(item)) {
+          if (key === "id" || key === "is_favorite") {
+            has_prop[key] = true
+            continue
+          }
+          const value = item[key]
+          if (Array.isArray(value)) {
+            if (value.length > 0) has_prop[key] = true
+          } else if (value) has_prop[key] = true
+        }
+      }
+      const filter_columns = columns.filter(column => column.data in has_prop)
+      return filter_columns
+    }
+
+    if (!keep_all_cols)
+      columns_copy = filter_empty_columns(columns_copy, new_data)
+
+    function get_text_width(lines, font) {
+      const canvas = document.createElement("canvas")
+      const context = canvas.getContext("2d")
+      context.font = font
+      let maxWidth = 0
+      for (const line of lines) {
+        const metrics = context.measureText(line)
+        maxWidth = Math.max(maxWidth, metrics.width)
+      }
+      return maxWidth
+    }
+
+    let bold = ""
+    const mini_col = ["_row_num", "level", "is_favorite", "search_receht"]
+    for (const column of columns_copy) {
+      if (["is_favorite", "type"].includes(column.name))
+        column.search_modality = true
+      if (mini_col.includes(column.name)) {
+        column.loading_max_width = 20
+        continue
+      }
+      if (column.has_long_text) {
+        column.loading_width = 274
+        column.loading_max_width = 274
+        continue
+      }
+      if (column.name === "name") bold = "bold"
+      const cells = []
+      for (const row of new_data.slice(0, nb_row_loading)) {
+        let value = row[column.data]
+        if (column.from_length) value = value.length
+        if (column.data === "_entity") value = "icon_ico," + value
+        cells.push(value)
+      }
+      const cells_width =
+        Math.round(
+          get_text_width(cells, `${bold} 16px "Helvetica Neue"`) * 100,
+        ) / 100
+      column.loading_width = Math.min(274, cells_width)
+      column.loading_max_width = Math.min(274, cells_width)
+    }
+    return columns_copy
   }
 
-  if (!keep_all_cols) columns = filter_empty_columns(columns, new_data)
-
-  function get_text_width(lines, font) {
-    const canvas = document.createElement("canvas")
-    const context = canvas.getContext("2d")
-    context.font = font
-    let maxWidth = 0
-    for (const line of lines) {
-      const metrics = context.measureText(line)
-      maxWidth = Math.max(maxWidth, metrics.width)
-    }
-    return maxWidth
-  }
-
-  const nb_row_loading = Math.min(new_data.length, 50)
-  let bold = ""
-  const mini_col = ["_row_num", "level", "is_favorite", "search_receht"]
-  for (const column of columns) {
-    if (["is_favorite", "type"].includes(column.name))
-      column.search_modality = true
-    if (mini_col.includes(column.name)) {
-      column.loading_max_width = 20
-      continue
-    }
-    if (column.has_long_text) {
-      column.loading_width = 274
-      column.loading_max_width = 274
-      continue
-    }
-    if (column.name === "name") bold = "bold"
-    const cells = []
-    for (const row of new_data.slice(0, nb_row_loading)) {
-      let value = row[column.data]
-      if (column.from_length) value = value.length
-      if (column.data === "_entity") value = "icon_ico," + value
-      cells.push(value)
-    }
-    const cells_width =
-      Math.round(get_text_width(cells, `${bold} 16px "Helvetica Neue"`) * 100) /
-      100
-    column.loading_width = Math.min(274, cells_width)
-    column.loading_max_width = Math.min(274, cells_width)
-  }
+  const columns_copy = define_columns(columns)
 
   function elem_has_clickable(target, container, selector) {
     while (target && target !== container) {
@@ -239,7 +245,7 @@
     setTimeout(() => {
       datatable = new DataTable("table#" + table_id, {
         data: new_data,
-        columns,
+        columns: columns_copy,
         scrollY: max_height,
         scrollX: true,
         scrollCollapse: true,
@@ -330,7 +336,7 @@
   })
 </script>
 
-<svelte:window on:resize={on_resize} />
+<svelte:window onresize={on_resize} />
 
 {#if loading}
   <div class="datatable_main_wrapper dt_loading" class:is_big>
@@ -342,7 +348,7 @@
         <table class="_datatables table is-striped dataTable" class:short_table>
           <thead>
             <tr>
-              {#each columns as column, i}
+              {#each columns_copy as column, i}
                 <th
                   class="sorting"
                   class:sorting_asc={i === 0}
@@ -358,13 +364,13 @@
           </thead>
           {#if is_big}
             <thead class="loading_filter_wrapper">
-              <Filter {columns} />
+              <Filter columns={columns_copy} />
             </thead>
           {/if}
           <tbody>
             {#each Array(nb_row_loading) as _, i}
               <tr>
-                {#each columns as column, j}
+                {#each columns_copy as column, j}
                   <td class:first_col={j === 0}>
                     {#if column.data === "_row_num"}
                       {i + 1}
@@ -398,7 +404,7 @@
       >
         <thead>
           <tr>
-            {#each columns as column, i}
+            {#each columns_copy as column, i}
               <th
                 title={column.tooltip}
                 class:first_col={i === 0}
@@ -411,7 +417,7 @@
         {#if is_big}
           <thead>
             <Filter
-              {columns}
+              columns={columns_copy}
               {table_id}
               {loading}
               {nb_sticky}

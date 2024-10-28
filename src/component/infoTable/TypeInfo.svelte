@@ -1,7 +1,7 @@
 <script>
   import Icon from "@layout/Icon.svelte"
 
-  export let type
+  let { type } = $props()
 </script>
 
 <tr>

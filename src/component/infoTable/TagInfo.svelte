@@ -3,16 +3,10 @@
   import Breadcrumb from "@component/Breadcrumb.svelte"
   import ExtendableText from "@layout/ExtendableText.svelte"
 
-  export let tag_id
-  export let is_self = false
+  let { tag_id, is_self = false } = $props()
 
-  let name = "Tag"
-
-  let icon = "institution"
-  if (is_self) {
-    name = "Partie de"
-    icon = "folder_tree"
-  }
+  const name = is_self ? "Partie de" : "Tag"
+  const icon = is_self ? "folder_tree" : "institution"
 </script>
 
 {#if tag_id}
@@ -20,12 +14,7 @@
     <td><Icon type={icon} /> {name}</td>
     <td>
       <ExtendableText>
-        <Breadcrumb
-          className="tree"
-          type="tag"
-          elem_id={tag_id}
-          {is_self}
-        />
+        <Breadcrumb className="tree" type="tag" elem_id={tag_id} {is_self} />
       </ExtendableText>
     </td>
   </tr>

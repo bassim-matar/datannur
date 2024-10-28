@@ -2,9 +2,7 @@
   import jQuery from "jquery"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
 
-  export let table_id
-  export let i
-  export let column
+  let { table_id, i, column } = $props()
 
   function clear_input() {
     const input = jQuery(this).parent().children("input")

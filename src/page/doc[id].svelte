@@ -5,7 +5,7 @@
   import { tabs_helper } from "@tab/tabs_helper"
   import Title from "@layout/Title.svelte"
 
-  export let doc
+  let { doc } = $props()
 
   const institutions = db.get_all("institution", { doc })
   const folders = db.get_all("folder", { doc })

@@ -1,7 +1,7 @@
 <script>
   import Icon from "@layout/Icon.svelte"
 
-  export let period
+  let { period } = $props()
 </script>
 
 {#if period}

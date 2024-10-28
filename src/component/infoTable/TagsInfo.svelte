@@ -2,7 +2,7 @@
   import Icon from "@layout/Icon.svelte"
   import TagsList from "@component/tag/TagsList.svelte"
 
-  export let tags
+  let { tags } = $props()
 </script>
 
 {#if tags && tags.length > 0}
