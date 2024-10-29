@@ -49,7 +49,10 @@
       }
     }
     @media screen and (max-width: 600px) {
-      display: none;
+      position: fixed;
+      top: 5px;
+      left: calc(50% - 20px);
+      z-index: 50;
     }
   }
 </style>

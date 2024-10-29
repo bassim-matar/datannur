@@ -31,7 +31,7 @@
 
   $effect(() => {
     if (active_tab_body) {
-      setTimeout(() => update_ancestor_height(), 1)
+      update_ancestor_height()
     }
   })
 </script>

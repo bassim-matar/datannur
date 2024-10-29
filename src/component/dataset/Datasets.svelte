@@ -52,8 +52,8 @@
     if (dataset.nb_row > nb_row_max) {
       nb_row_max = dataset.nb_row
     }
-    if (dataset.nb_doc > nb_doc_max) {
-      nb_doc_max = dataset.nb_doc
+    if (dataset.docs_recursive?.length > nb_doc_max) {
+      nb_doc_max = dataset.docs_recursive?.length
     }
   }
 

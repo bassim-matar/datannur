@@ -675,7 +675,6 @@
             .no_result {
               position: fixed;
               left: (calc(50% - 50px));
-              padding: 0.5em 0;
               pointer-events: none;
             }
           }

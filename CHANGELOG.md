@@ -1,12 +1,15 @@
 # datannur
 
-## unreleased
+## 0.9.1 (2024-10-29)
 
 - added : doc description
+- added : filter infobox visible on mobile
 - changed : center vertically datatables rows content
 - changed : migrate all svelte code to version 5
 - fixed : tabs body overflow hidden when not datatables
 - fixed : extendable text in tab info default 2 lines visible
+- fixed : scroll bar page body during tab transition
+- fixed : nb doc max for percent bar in datatable
 - removed : default bulma css
 
 ## 0.9.0 (2024-10-23)

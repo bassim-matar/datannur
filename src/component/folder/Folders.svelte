@@ -25,8 +25,8 @@
       if (folder.nb_child_recursive > folder_max) {
         folder_max = folder.nb_child_recursive
       }
-      if (folder.nb_doc > nb_doc_max) {
-        nb_doc_max = folder.nb_doc
+      if (folder.docs_recursive?.length > nb_doc_max) {
+        nb_doc_max = folder.docs_recursive?.length
       }
     }
     folders_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
