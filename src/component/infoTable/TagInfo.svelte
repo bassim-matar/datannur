@@ -14,7 +14,7 @@
     <td><Icon type={icon} /> {name}</td>
     <td>
       <ExtendableText>
-        <Breadcrumb className="tree" type="tag" elem_id={tag_id} {is_self} />
+        <Breadcrumb type="tag" elem_id={tag_id} {is_self} />
       </ExtendableText>
     </td>
   </tr>

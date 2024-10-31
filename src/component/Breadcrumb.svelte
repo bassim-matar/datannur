@@ -16,56 +16,11 @@
 </script>
 
 {#if elems && elems.length > 0}
-  <div class={className}>
+  <div class="tree">
     {#each elems as elem, i}
-      <div class="breadcrumb_element">
-        <Link href="{type}/{elem.id}">
-          <div class="breadcrumb_element_wrapper">
-            {@html add_indend(elem.name, i)}
-          </div>
-        </Link>
-      </div>
+      <Link href="{type}/{elem.id}">
+        {@html add_indend(elem.name, i)}
+      </Link>
     {/each}
   </div>
 {/if}
-
-<style lang="scss">
-  @use "../main.scss" as *;
-
-  .tree {
-    width: 100%;
-  }
-
-  .breadcrumb_element {
-    display: grid;
-    width: 100%;
-    :global(a) {
-      display: inline-block;
-      max-width: 100%;
-    }
-    .breadcrumb_element_wrapper {
-      width: 100%;
-      :global(.indented_text) {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: calc(50vw - 270px);
-      }
-    }
-  }
-
-  @media screen and (max-width: 1023px) {
-    .breadcrumb_element .breadcrumb_element_wrapper {
-      :global(.indented_text) {
-        max-width: calc(100vw - 350px);
-      }
-    }
-  }
-
-  @media screen and (max-width: 600px) {
-    .breadcrumb_element .breadcrumb_element_wrapper {
-      :global(.indented_text) {
-        max-width: calc(100vw - 50px);
-      }
-    }
-  }
-</style>

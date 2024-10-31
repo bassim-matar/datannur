@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fixed : ellipsis on extendable tree on entity info page
+
 ## 0.9.1 (2024-10-29)
 
 - added : doc description

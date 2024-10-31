@@ -15,6 +15,13 @@
 
 <style lang="scss">
   .extendable {
+    display: -webkit-box;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     width: auto;
     max-height: 50px;
     overflow-x: hidden;
@@ -23,7 +30,8 @@
     white-space: nowrap;
     max-width: min(600px, calc(100vw - 220px));
     &:global(.open) {
-      white-space: pre-wrap;
+      display: block;
+      white-space: normal;
     }
     &:global(.open_full) {
       overflow-y: auto;

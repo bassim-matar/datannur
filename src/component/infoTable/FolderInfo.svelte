@@ -18,12 +18,7 @@
         <Link href="metaFolder/{folder_id}">{folder_id}</Link>
       {:else}
         <ExtendableText>
-          <Breadcrumb
-            className="tree"
-            type="folder"
-            elem_id={folder_id}
-            {is_self}
-          />
+          <Breadcrumb type="folder" elem_id={folder_id} {is_self} />
         </ExtendableText>
       {/if}
     </td>
