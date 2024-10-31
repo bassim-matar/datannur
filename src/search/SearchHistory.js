@@ -9,24 +9,24 @@ export default class SearchHistory {
   static get_all() {
     return this.search_history
   }
-  static add(entity_name, item_id) {
-    let search_item_id = 1
+  static add(entity, entity_id) {
+    let search_entity_id = 1
     this.search_history = this.search_history
       .filter(
         search_item =>
-          search_item.entity_name !== entity_name ||
-          search_item.item_id !== item_id
+          search_item.entity !== entity ||
+          search_item.entity_id !== entity_id
       )
       .map(search_item => {
-        search_item.id = search_item_id
-        search_item_id += 1
+        search_item.id = search_entity_id
+        search_entity_id += 1
         return search_item
       })
 
     this.search_history.unshift({
       id: 0,
-      entity_name,
-      item_id,
+      entity,
+      entity_id,
       timestamp: Date.now(),
     })
     if (this.search_history.length > this.limit) {
@@ -43,11 +43,11 @@ export default class SearchHistory {
   static save() {
     db.browser.set(this.db_key, this.search_history)
   }
-  static remove(entity_name, item_id) {
+  static remove(entity, entity_id) {
     this.search_history = this.search_history.filter(
       search_item =>
-        search_item.entity_name !== entity_name ||
-        search_item.item_id !== item_id
+        search_item.entity !== entity ||
+        search_item.entity_id !== entity_id
     )
     this.save()
     this.call_on_change()
@@ -64,13 +64,13 @@ export default class SearchHistory {
     const result = []
     const recent_search = this.get_all()
     for (const entry of recent_search) {
-      if (!db.table_has_id(entry.entity_name, entry.item_id)) continue
-      const item_data = db.get(entry.entity_name, entry.item_id)
+      if (!db.table_has_id(entry.entity, entry.entity_id)) continue
+      const item_data = db.get(entry.entity, entry.entity_id)
       result.push({
         id: item_data.id,
         name: item_data.name,
         description: item_data.description,
-        entity: entry.entity_name,
+        entity: entry.entity,
         is_recent: true,
         is_favorite: item_data.is_favorite,
         folder_id: item_data.folder_id,
@@ -84,8 +84,8 @@ export default class SearchHistory {
     const recent_search_ids = {}
     const recent_search = this.get_all()
     for (const [i, entry] of recent_search.entries()) {
-      if (!db.table_has_id(entry.entity_name, entry.item_id)) continue
-      recent_search_ids[`${entry.entity_name}-${entry.item_id}`] = i
+      if (!db.table_has_id(entry.entity, entry.entity_id)) continue
+      recent_search_ids[`${entry.entity}-${entry.entity_id}`] = i
     }
     return recent_search_ids
   }
