@@ -168,6 +168,10 @@ export default class Filter_helper {
         return parseInt(value) < parseInt(search_value)
       } else if (search.startsWith(">")) {
         return parseInt(value) > parseInt(search_value)
+      } else if (search.startsWith(`=""`) || search.startsWith(`=''`)) {
+        return this.clean_string(value) === ""
+      } else if (search.startsWith(`!""`) || search.startsWith(`!''`)) {
+        return this.clean_string(value) !== ""
       } else if (search.startsWith("=")) {
         return this.clean_string(value) === this.clean_string(search_value)
       } else if (search.startsWith("!")) {
