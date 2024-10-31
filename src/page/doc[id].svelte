@@ -9,18 +9,23 @@
 
   const institutions = db.get_all("institution", { doc })
   const folders = db.get_all("folder", { doc })
+  const tags = db.get_all("tag", { doc })
   const datasets = db.get_all("dataset", { doc })
 
-  make_parents_relative(false, folders)
   make_parents_relative(false, institutions)
+  make_parents_relative(false, folders)
+  make_parents_relative(false, tags)
 
   add_minimum_deep(institutions)
   add_minimum_deep(folders)
+  add_minimum_deep(tags)
+
 
   let tabs = tabs_helper({
     doc_info: doc,
     institutions,
     folders,
+    tags,
     datasets,
   })
 </script>

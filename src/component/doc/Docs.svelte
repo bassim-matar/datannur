@@ -10,12 +10,14 @@
   let institution_max = 0
   let folder_max = 0
   let dataset_max = 0
+  let tag_max = 0
 
   for (const doc of docs) {
     if (doc.nb_institution > institution_max)
       institution_max = doc.nb_institution
     if (doc.nb_folder > folder_max) folder_max = doc.nb_folder
     if (doc.nb_dataset > dataset_max) dataset_max = doc.nb_dataset
+    if (doc.nb_tag > tag_max) tag_max = doc.nb_tag
   }
 
   let columns = [
@@ -69,6 +71,17 @@
         const content = link("doc/" + row.id + "?tab=folders", data)
         const percent = get_percent(data / folder_max)
         return `${Render.num_percent(content, percent, "folder", type)}`
+      },
+    },
+    {
+      data: "nb_tag",
+      title: Render.icon("tag") + "<span class='hidden'>nb_tag</span>",
+      filter_type: "input",
+      render: (data, type, row) => {
+        if (!data) return ""
+        const content = link("doc/" + row.id + "?tab=tags", data)
+        const percent = get_percent(data / tag_max)
+        return `${Render.num_percent(content, percent, "tag", type)}`
       },
     },
     {

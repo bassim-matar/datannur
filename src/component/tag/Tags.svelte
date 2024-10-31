@@ -17,6 +17,7 @@
   let institution_max = 0
   let folder_max = 0
   let dataset_max = 0
+  let doc_max = 0
   let variable_max = 0
   for (const tag of tags) {
     if (db.use.tag_recursive) tag.path_string = get_parent_path(tag)
@@ -26,6 +27,8 @@
     if (tag.nb_folder > folder_max) folder_max = tag.nb_folder
     if (tag.nb_dataset > dataset_max) dataset_max = tag.nb_dataset
     if (tag.nb_variable > variable_max) variable_max = tag.nb_variable
+    if (tag.docs_recursive?.length > doc_max)
+      doc_max = tag.docs_recursive?.length
   }
 
   const tags_sorted = [...tags]
@@ -68,6 +71,7 @@
         },
       },
       Column.nb_folder_recursive("tag", folder_max),
+      Column.nb_doc("tag", doc_max),
       Column.nb_dataset_recursive("tag", dataset_max),
       Column.nb_variable("tag", variable_max),
     ])

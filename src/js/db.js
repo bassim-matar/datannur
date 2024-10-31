@@ -68,7 +68,7 @@ function add_name(item, entity, alias = false) {
   if (!alias) alias = entity
   const item_id = item[`${alias}_id`]
   let item_name = ""
-  if (item_id !== null) item_name =  db.get(entity, item_id)?.name
+  if (item_id !== null) item_name = db.get(entity, item_id)?.name
   item[`${alias}_name`] = item_name
 }
 function add_variable_num(dataset, entity, variable_entity) {
@@ -216,6 +216,7 @@ class Process {
       add_nb("tag", tag, "folder")
       add_nb("tag", tag, "dataset")
       add_nb("tag", tag, "variable")
+      add_docs("tag", tag)
       add_entities(tag)
       if (db.use.tag_recursive) add_parents("tag", tag)
       add_nb_child("tag", tag)
@@ -258,6 +259,7 @@ class Process {
       add_nb("doc", doc, "institution")
       add_nb("doc", doc, "folder")
       add_nb("doc", doc, "dataset")
+      add_nb("doc", doc, "tag")
       add_entities(doc)
       if (doc.last_update) doc.last_update = doc.last_update * 1000
     })
@@ -342,7 +344,7 @@ class Process {
 }
 
 function add_doc_recursive() {
-  for (const entity of ["institution", "folder", "dataset"]) {
+  for (const entity of ["institution", "folder", "dataset", "tag"]) {
     db.foreach(entity, item => {
       let docs = []
       if (item.docs) docs = [...item.docs]

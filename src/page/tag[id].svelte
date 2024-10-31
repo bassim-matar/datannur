@@ -12,6 +12,7 @@
 
   let institutions
   let folders
+  let docs
   let datasets
   let variables
 
@@ -25,6 +26,7 @@
   const with_folders = db.get_all("folder", { tag })
   const with_datasets = db.get_all("dataset", { tag })
   const with_variables = db.get_all("variable", { tag })
+  const with_docs = db.get_all("doc", { tag })
 
   function get_opposite(entity, with_tag_items) {
     if (with_tag_items.length === 0) return []
@@ -44,24 +46,27 @@
     if (opposite) {
       institutions = get_opposite("institution", with_institutions)
       folders = get_opposite("folder", with_folders)
+      docs = get_opposite("doc", with_docs)
       datasets = get_opposite("dataset", with_datasets)
       variables = get_opposite("variable", with_variables)
     } else {
       institutions = with_institutions
       folders = with_folders
+      docs = with_docs
       datasets = with_datasets
       variables = with_variables
     }
 
-    make_parents_relative(false, folders)
     make_parents_relative(false, institutions)
-
+    make_parents_relative(false, folders)
+   
     add_minimum_deep(institutions)
     add_minimum_deep(folders)
 
     const stat = [
       { entity: "institution", items: institutions },
       { entity: "folder", items: folders },
+      { entity: "doc", items: docs },
       { entity: "dataset", items: datasets },
       { entity: "variable", items: variables },
     ]
@@ -71,6 +76,7 @@
       institutions,
       folders,
       tags,
+      docs,
       datasets,
       variables,
       stat,

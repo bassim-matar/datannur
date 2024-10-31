@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- added : tag doc
 - changed : header favorite btn without name and scrollbar min width larger
 - fixed : ellipsis on extendable tree on entity info page
 
