@@ -8,19 +8,17 @@
 
   let { about_file } = $props()
 
-  let md_content = $state(about_file)
   let html_content = $state("")
   let html_content_loaded = $state(false)
-  const use_mermaid = $derived(md_content.includes("mermaid("))
 
-  function set_dark_mode_in_content() {
-    md_content = about_file.replaceAll(
+  let md_content = $derived(
+    about_file.replaceAll(
       "{dark_mode}",
       $dark_mode_theme === "dark" ? "_dark" : "",
-    )
-  }
+    ),
+  )
 
-  set_dark_mode_in_content()
+  const use_mermaid = about_file.includes("mermaid(")
 
   $effect(() => {
     if (use_mermaid) {
@@ -31,10 +29,6 @@
         $page_content_loaded = true
       })
     }
-  })
-
-  $effect(() => {
-    set_dark_mode_in_content()
   })
 
   onMount(() => {

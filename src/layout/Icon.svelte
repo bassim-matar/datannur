@@ -9,17 +9,8 @@
   } = $props()
 
   let fa_type = "fas"
-  let icon = $state()
-  let class_names = $state("")
-
-  $effect(() => {
-    icon = entity_to_icon_name(type)
-    if (icon.startsWith("fa-brands")) {
-      class_names = icon
-    } else {
-      class_names = `${fa_type} fa-${icon}`
-    }
-  })
+  let icon = entity_to_icon_name(type)
+  let class_names = icon.startsWith("fa-brands") ? icon : `${fa_type} fa-${icon}`
 </script>
 
 {#if type}

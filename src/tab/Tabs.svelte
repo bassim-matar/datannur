@@ -30,7 +30,11 @@
   }
 
   function check_if_last_tab() {
-    return active_tab === tabs[tabs.length - 1].key && is_tabs_overflow()
+    return (
+      tabs.length > 0 &&
+      active_tab === tabs[tabs.length - 1].key &&
+      is_tabs_overflow()
+    )
   }
 
   function on_resize() {
@@ -111,10 +115,7 @@
   })
 
   $effect(() => {
-    is_last_tab =
-      tabs.length > 0 &&
-      active_tab === tabs[tabs.length - 1].key &&
-      is_tabs_overflow()
+    is_last_tab = check_if_last_tab()
   })
 
   setup_tabs()
