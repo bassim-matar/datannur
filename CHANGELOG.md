@@ -4,6 +4,7 @@
 
 - added : tag doc
 - added : table input filter ="" and !"" for empty and not empty
+- added : md to json.js conversion
 - changed : header favorite btn without name and scrollbar min width larger
 - changed : dont use indexdb encryption by default
 - changed : harmonize variable naming in search_history indexdb data
