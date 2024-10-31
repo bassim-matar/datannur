@@ -4,6 +4,7 @@
 
 - added : tag doc
 - changed : header favorite btn without name and scrollbar min width larger
+- changed : dont use indexdb encryption by default
 - fixed : ellipsis on extendable tree on entity info page
 
 ## 0.9.1 (2024-10-29)
