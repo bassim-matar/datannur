@@ -243,7 +243,7 @@
 
     #header_search_input {
       position: relative;
-      width: calc(100vw - 820px);
+      width: calc(100vw - 730px);
       max-width: 500px;
       margin: 0;
       padding-left: 3.3rem;

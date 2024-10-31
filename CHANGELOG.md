@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- changed : header favorite btn without name and scrollbar min width larger
 - fixed : ellipsis on extendable tree on entity info page
 
 ## 0.9.1 (2024-10-29)

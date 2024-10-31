@@ -132,22 +132,15 @@
         <MainFilter />
       </HeaderDropdown>
 
-      <HeaderLink href="favorite" pages={["favorite"]} icon="favorite">
-        <span>
-          Favoris
-          {#if loading}
-            &nbsp;<Loading type="mini" position="relative" />
-          {:else}
-            <span class="num_style">{$nb_favorite}</span>
-          {/if}
-        </span>
-      </HeaderLink>
-
-      {#if loading}
-        <div class="navbar-item">
-          <Loading type="mini" />
-        </div>
-      {/if}
+      <HeaderLink
+        href="favorite"
+        pages={["favorite"]}
+        icon="favorite"
+        info="Favoris"
+        ><span class="num_style navbar-item favorite_number"
+          >{$nb_favorite}</span
+        ></HeaderLink
+      >
 
       <HeaderLink href="about" pages={["about"]} icon="about" info="A propos">
         <span class="visible_on_mobile">A propos</span>
@@ -218,6 +211,9 @@
       &.is-active .navbar-end {
         margin-left: auto;
       }
+    }
+    .favorite_number {
+      padding-right: 0;
     }
   }
 
