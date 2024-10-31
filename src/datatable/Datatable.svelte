@@ -303,6 +303,7 @@
       initied()
       datatable.columns.adjust()
       datatable_update_draw += 1
+      fix_columns_width()
       $all_tabs[entity].nb = get_nb_item(datatable)
       short_table = is_short_table(datatable)
       loading = false
@@ -313,6 +314,17 @@
       }
     }, timeout)
   })
+
+  function fix_columns_width() {
+    if (!datatable) return false
+    datatable
+      .columns()
+      .header()
+      .each(function (header) {
+        const column_with = header.getBoundingClientRect().width
+        jQuery(header).css("min-width", column_with + "px")
+      })
+  }
 
   function on_resize() {
     datatable?.columns?.adjust()
@@ -675,6 +687,7 @@
             .no_result {
               position: fixed;
               left: (calc(50% - 50px));
+              margin-top: -12px;
               pointer-events: none;
             }
           }
@@ -772,11 +785,11 @@
             }
           }
           &.clickable_rows {
-            tbody > tr {
+            tbody > tr:not(:has(.dt-empty)) {
               cursor: pointer;
             }
           }
-          tbody > tr:hover > td,
+          tbody > tr:hover > td:not(.dt-empty),
           tbody > tr:hover > td.dtfc-fixed-left {
             background: $color-6;
           }
