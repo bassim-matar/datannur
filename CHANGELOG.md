@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.9.2 (2024-11-02)
 
 - added : tag doc
 - added : table input filter ="" and !"" for empty and not empty
