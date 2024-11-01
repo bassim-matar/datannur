@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fixed : git language stats with correct gitattributes
+
 ## 0.9.2 (2024-11-02)
 
 - added : tag doc
