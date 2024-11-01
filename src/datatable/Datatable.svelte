@@ -8,21 +8,28 @@
   import "datatables.net-fixedheader-bm"
   import "datatables.net-scroller-bm"
   import { onMount, onDestroy } from "svelte"
-  import { link, get_percent, is_mobile } from "@js/util"
-  import { get_sort_by_name } from "@js/db"
-  import { entity_names, is_big_limit } from "@js/constant"
-  import { url_hash } from "@js/url_hash"
+  import { is_mobile } from "@js/util"
+  import { is_big_limit } from "@js/constant"
   import { tab_selected, all_tables_loaded, all_tabs } from "@js/store"
   import { extendable } from "@js/extendable"
-  import Options from "@js/Options"
-  import LoadingDot from "@layout/LoadingDot.svelte"
   import Exporter from "./exporter/Exporter"
   import Filter_helper from "./filter/Filter_helper"
   import init_favorite from "./favorite/init_favorite"
   import Datatables_timer from "./Datatables_timer"
   import Datatables_loading from "./Datatables_loading"
+  import { define_columns } from "./define_columns"
+  import {
+    get_table_id,
+    get_clean_data,
+    is_short_table,
+    elem_has_clickable,
+    get_nb_sticky,
+    get_nb_item,
+    fix_columns_width,
+  } from "./dt_util"
   import Filter from "./filter/Filter.svelte"
   import FilterInfoBox from "./filter/FilterInfoBox.svelte"
+  import LoadingDot from "@layout/LoadingDot.svelte"
 
   let {
     entity,
@@ -37,200 +44,45 @@
 
   let loading = $state(true)
   let short_table = $state(false)
-  let nb_sticky = $state(1)
   let datatable_update_draw = $state(0)
   let nb_active_filter = $state(0)
-  let clickable_rows = $state(true)
+
+  Datatables_timer.start()
+  Datatables_loading.start()
+  DataTable.Buttons.jszip(JSZip)
 
   let datatable = false
   let dom_table = false
-  let timeout = 1
+
   const is_big = data.length > is_big_limit
-
-  DataTable.Buttons.jszip(JSZip)
-
-  let hash = url_hash.get_all()
-  const open_all_recursive = Options.get("open_all_recursive")
-  let filter_recursive =
-    is_recursive && is_big && hash !== "favorite" && !open_all_recursive
-
   const max_height_value = 275
   const max_height = `max(calc(100vh - ${max_height_value}px), 170px)`
   const max_height_load = `max(calc(100vh - ${max_height_value - 82}px), 80px)`
 
-  let open_all_tab = Options.get("open_all_tab")
-
-  if (["value", "dataset_preview", "variable_preview", "log"].includes(entity))
-    clickable_rows = false
-
-  function get_table_id() {
-    let table_id = hash.replaceAll("/", "___")
-    table_id = table_id.replace(/[^a-z0-9_\-,. ]/gi, "")
-    return table_id + "___" + entity
-  }
-
-  function update_filter_count(current_nb_active_filter) {
-    nb_active_filter = current_nb_active_filter
-  }
-
   const table_id = get_table_id(entity)
   const exporter = new Exporter(table_id)
-  const filter = new Filter_helper(table_id, entity, update_filter_count)
+  const filter = new Filter_helper(table_id, entity, current_nb => {
+    nb_active_filter = current_nb
+  })
 
-  // $all_tabs[entity].nb = "..."
+  const clean_data = get_clean_data(data, sort_by_name, is_recursive, is_big)
+  const nb_row_loading = Math.min(clean_data.length, 50)
+  const columns_copy = define_columns(
+    columns,
+    clean_data,
+    entity,
+    keep_all_cols,
+    meta_path,
+    nb_row_loading,
+  )
+  const nb_sticky = get_nb_sticky(columns_copy)
 
-  let new_data = []
-  function load_new_data() {
-    const temp_data = [...data]
-    new_data = []
-    if (sort_by_name) {
-      temp_data.sort(get_sort_by_name)
-    }
-    let row_num = 0
-    for (const rows of temp_data) {
-      if (
-        filter_recursive &&
-        rows.parents_relative.length - rows.minimum_deep !== 0
-      ) {
-        continue
-      }
-      row_num += 1
-      const copy_rows = { ...rows }
-      copy_rows._row_num = row_num
-      new_data.push(copy_rows)
-    }
-  }
-
-  load_new_data()
-  const nb_row_loading = Math.min(new_data.length, 50)
-
-  Datatables_timer.start()
-  Datatables_loading.start()
-
-  function get_nb_item(dt) {
-    const nb_total = new_data.length
-    const nb_item_display = dt?.page?.info()?.recordsDisplay
-    if (nb_item_display !== nb_total) {
-      const percent = get_percent(nb_item_display / nb_total)
-      return `${nb_item_display} / ${nb_total} - ${percent}%`
-    } else {
-      return nb_item_display
-    }
-  }
-
-  function is_short_table(dt) {
-    return (
-      datatable?.page?.info()?.recordsDisplay > 0 &&
-      datatable?.page?.info()?.recordsDisplay < 11
-    )
-  }
-
-  function define_columns(columns) {
-    let columns_copy = columns.map(obj => ({ ...obj }))
-
-    if (columns_copy[0]?.title !== "#") {
-      const col_numerotation = {
-        data: "_row_num",
-        name: "_row_num",
-        title: "#",
-        tooltip: "Numéro de ligne",
-        width: "20px",
-      }
-      if (entity in entity_names) {
-        if (meta_path) {
-          col_numerotation.render = (data, type, row) => {
-            return link(meta_path + row.id, data)
-          }
-        } else {
-          col_numerotation.render = (data, type, row) => {
-            return link(entity + "/" + row.id, data)
-          }
-        }
-      }
-      columns_copy = [col_numerotation, ...columns_copy]
-    }
-
-    if (window.innerWidth > 1023) {
-      for (const column of columns_copy) {
-        if (column.name === "entity") nb_sticky += 1
-        if (column.name === "name") nb_sticky += 1
-      }
-    }
-
-    function filter_empty_columns(columns, items) {
-      const has_prop = {}
-      for (const item of items) {
-        for (const [key, value] of Object.entries(item)) {
-          if (key === "id" || key === "is_favorite") {
-            has_prop[key] = true
-            continue
-          }
-          const value = item[key]
-          if (Array.isArray(value)) {
-            if (value.length > 0) has_prop[key] = true
-          } else if (value) has_prop[key] = true
-        }
-      }
-      const filter_columns = columns.filter(column => column.data in has_prop)
-      return filter_columns
-    }
-
-    if (!keep_all_cols)
-      columns_copy = filter_empty_columns(columns_copy, new_data)
-
-    function get_text_width(lines, font) {
-      const canvas = document.createElement("canvas")
-      const context = canvas.getContext("2d")
-      context.font = font
-      let maxWidth = 0
-      for (const line of lines) {
-        const metrics = context.measureText(line)
-        maxWidth = Math.max(maxWidth, metrics.width)
-      }
-      return maxWidth
-    }
-
-    let bold = ""
-    const mini_col = ["_row_num", "level", "is_favorite", "search_receht"]
-    for (const column of columns_copy) {
-      if (["is_favorite", "type"].includes(column.name))
-        column.search_modality = true
-      if (mini_col.includes(column.name)) {
-        column.loading_max_width = 20
-        continue
-      }
-      if (column.has_long_text) {
-        column.loading_width = 274
-        column.loading_max_width = 274
-        continue
-      }
-      if (column.name === "name") bold = "bold"
-      const cells = []
-      for (const row of new_data.slice(0, nb_row_loading)) {
-        let value = row[column.data]
-        if (column.from_length) value = value.length
-        if (column.data === "_entity") value = "icon_ico," + value
-        cells.push(value)
-      }
-      const cells_width =
-        Math.round(
-          get_text_width(cells, `${bold} 16px "Helvetica Neue"`) * 100,
-        ) / 100
-      column.loading_width = Math.min(274, cells_width)
-      column.loading_max_width = Math.min(274, cells_width)
-    }
-    return columns_copy
-  }
-
-  const columns_copy = define_columns(columns)
-
-  function elem_has_clickable(target, container, selector) {
-    while (target && target !== container) {
-      if (target.matches(selector)) return true
-      target = target.parentNode
-    }
-    return false
-  }
+  const clickable_rows = ![
+    "value",
+    "dataset_preview",
+    "variable_preview",
+    "log",
+  ].includes(entity)
 
   $all_tables_loaded = 0
   all_tables_loaded.subscribe(value => {
@@ -244,7 +96,7 @@
   onMount(() => {
     setTimeout(() => {
       datatable = new DataTable("table#" + table_id, {
-        data: new_data,
+        data: clean_data,
         columns: columns_copy,
         scrollY: max_height,
         scrollX: true,
@@ -272,7 +124,7 @@
         },
       })
       datatable.on("search.dt", () => {
-        $all_tabs[entity].nb = get_nb_item(datatable)
+        $all_tabs[entity].nb = get_nb_item(datatable, clean_data)
         short_table = is_short_table(datatable)
       })
       datatable.on("draw.dt", () => {
@@ -303,8 +155,8 @@
       initied()
       datatable.columns.adjust()
       datatable_update_draw += 1
-      fix_columns_width()
-      $all_tabs[entity].nb = get_nb_item(datatable)
+      fix_columns_width(datatable)
+      $all_tabs[entity].nb = get_nb_item(datatable, clean_data)
       short_table = is_short_table(datatable)
       loading = false
       Datatables_timer.end()
@@ -312,19 +164,8 @@
       if (Datatables_loading.finished) {
         $all_tables_loaded = true
       }
-    }, timeout)
+    }, 1)
   })
-
-  function fix_columns_width() {
-    if (!datatable) return false
-    datatable
-      .columns()
-      .header()
-      .each(function (header) {
-        const column_with = header.getBoundingClientRect().width
-        jQuery(header).css("min-width", column_with + "px")
-      })
-  }
 
   function on_resize() {
     datatable?.columns?.adjust()

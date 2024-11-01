@@ -9,6 +9,7 @@
 - changed : dont use indexdb encryption by default
 - changed : harmonize variable naming in search_history indexdb data
 - changed : make datatables column width not reduce width when no result
+- changed : refactor datatable js code to extract js code in separate files
 - fixed : ellipsis on extendable tree on entity info page
 - fixed : git language stats in app (build) repo to include assets md, js and css files
 
