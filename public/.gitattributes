@@ -1,0 +1,3 @@
+assets/**/*.md linguist-documentation=true
+assets/**/*.js linguist-vendored=true
+assets/**/*.css linguist-vendored=true

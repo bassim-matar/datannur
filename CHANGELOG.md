@@ -10,6 +10,7 @@
 - changed : harmonize variable naming in search_history indexdb data
 - changed : make datatables column width not reduce width when no result
 - fixed : ellipsis on extendable tree on entity info page
+- fixed : git language stats in app (build) repo to include assets md, js and css files
 
 ## 0.9.1 (2024-10-29)
 
