@@ -7,7 +7,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class={`extendable ${props.class}`}
-  onmouseenter={extendable.open_no_margin}
+  onmouseenter={extendable.open}
   onmouseleave={extendable.close}
 >
   {@render props.children?.()}
@@ -27,7 +27,8 @@
     overflow-x: hidden;
     overflow-y: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    word-break: break-word;
+    white-space: normal;
     max-width: min(600px, calc(100vw - 220px));
     &:global(.open) {
       display: block;

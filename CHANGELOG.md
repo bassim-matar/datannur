@@ -3,6 +3,7 @@
 ## unreleased
 
 - fixed : git language stats with correct gitattributes
+- fixed : extendable fixed width and break word
 
 ## 0.9.2 (2024-11-02)
 
