@@ -53,6 +53,7 @@ mermaid(
   $folder <--> $tag
   $dataset <--> $tag
   $variable <--> $tag
+  $tag <--> $doc
 );
 
 #### Doc
@@ -61,6 +62,7 @@ Pour finir, certains concepts possèdent des docs (documentations de type markdo
 mermaid(
   $institution <--> $doc
   $folder <--> $doc
+  $tag <--> $doc
   $dataset <--> $doc
 );
 
@@ -81,6 +83,7 @@ mermaid(
   $folder --> $modality
   $folder <--> $tag
   $folder <--> $doc
+  $tag <--> $doc
   $dataset --> $variable
   $dataset <--> $tag
   $dataset <--> $doc

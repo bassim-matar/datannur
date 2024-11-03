@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- added : tag doc in md files
 - fixed : git language stats with correct gitattributes
 - fixed : extendable fixed width and break word
 
