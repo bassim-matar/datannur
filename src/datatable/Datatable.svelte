@@ -192,11 +192,8 @@
 <svelte:window onresize={on_resize} />
 
 {#if loading}
-  <div class="datatable_main_wrapper dt_loading" class:is_big>
-    <div
-      class="datatables_outer visible dt-container dt_loading_outer"
-      class:is_big
-    >
+  <div class="datatable_main_wrapper dt_loading">
+    <div class="datatables_outer visible dt-container dt_loading_outer">
       <div class="dt-scroll" style="--max-height: {max_height_load}">
         <table class="_datatables table is-striped dataTable" class:short_table>
           <thead>
@@ -245,7 +242,7 @@
   </div>
 {/if}
 
-<div class="datatable_main_wrapper" class:is_big>
+<div class="datatable_main_wrapper">
   {#if data.length > 0}
     <div class="datatables_outer" class:visible={!loading}>
       <FilterInfoBox {nb_active_filter} click={() => filter.remove_all()} />
