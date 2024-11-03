@@ -119,19 +119,18 @@ export default class Render {
     }
     return wrap_long_text(modalities_name.join(" | "))
   }
-  static nb_values(values, type, row) {
-    const nb_values = get_nb_values(values, row)
-    let entity ="dataset_id" in row ? "variable" : "modality"
+  static nb_values(data, type, row, nb_value_max) {
+    const nb_values = data
+    let entity = "dataset_id" in row ? "variable" : "modality"
     let tab = entity === "variable" ? "variable_values" : "values"
     if (row._entity === "metaVariable" ) {
       entity = "metaVariable"
       tab = "variable_metaValues"
     }
-    if (!row.nb_row) return ""
     if (type !== "display") return nb_values
-    const percent = get_percent(nb_values / row.nb_row)
+    const percent = get_percent(nb_values / nb_value_max)
     let content = Render.num(nb_values)
-    if (values && values.length) {
+    if (nb_values) {
       content = link(`${entity}/${row.id}?tab=${tab}`, content)
     }
     return `${Render.num_percent(content, percent, "value", type)}`

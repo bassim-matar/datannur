@@ -9,6 +9,7 @@
 
   let dataset_has_type = false
   let nb_row_max = 0
+  let nb_value_max = 0
 
   for (const variable of variables) {
     variable.dataset_name = "[error not found]"
@@ -24,6 +25,8 @@
     variable.dataset_name = dataset.name
     variable.nb_row = dataset.nb_row
     nb_row_max = Math.max(nb_row_max, dataset.nb_row)
+    nb_value_max = Math.max(nb_value_max, variable.nb_value)
+
     if (is_meta) {
       variable.metaFolder_id = dataset.metaFolder_id
     } else {
@@ -68,7 +71,7 @@
   }
 
   function define_columns() {
-    let columns = [
+    const columns = [
       Column.name("variable", "Variable", { is_meta }),
       Column.original_name(),
       Column.description(),
@@ -76,32 +79,27 @@
       Column.nb_row(nb_row_max),
       Column.nb_missing(),
       Column.nb_duplicates(),
+      Column.nb_values(nb_value_max),
+      Column.values_preview(),
     ]
-
-    columns.push(Column.nb_values())
-    columns.push(Column.values_preview())
-
-    if (!is_meta) columns.push(Column.modality())
-
-    columns.push(Column.dataset(parent_name))
-
-    if (is_meta) columns.push(Column.metaFolder())
-
-    if (!is_meta) {
-      columns = columns.concat([
+    if (is_meta) {
+      return columns.concat([
+        Column.dataset(parent_name),
+        Column.metaFolder(),
+      ])
+    } else {
+      return columns.concat([
+        Column.modality(),
+        Column.dataset(parent_name),
         Column.folder(),
         Column.owner(),
         Column.manager(),
         Column.tag(),
         Column.start_date(),
         Column.end_date(),
+        Column.favorite(),
       ])
     }
-
-    if (!is_meta) {
-      columns.push(Column.favorite())
-    }
-    return columns
   }
 
   const columns = define_columns()

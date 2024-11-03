@@ -186,14 +186,15 @@ export default class Column {
       render: data => wrap_long_text(data),
     }
   }
-  static nb_values() {
+  static nb_values(nb_value_max) {
     return {
-      data: "values",
+      data: "nb_value",
       title: Render.icon("value") + "Nb",
       defaultContent: "",
       filter_type: "input",
       tooltip: "Nombre de valeurs",
-      render: Render.nb_values,
+      render: (data, type, row) =>
+        Render.nb_values(data, type, row, nb_value_max),
     }
   }
   static values_preview() {

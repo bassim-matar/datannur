@@ -4,29 +4,32 @@
 
   let { dataset_variables, is_meta = false } = $props()
 
+  let nb_value_max = 0
+  for (const variable of dataset_variables) {
+    nb_value_max = Math.max(nb_value_max, variable.nb_value)
+  }
+
   function define_columns() {
-    let columns = [
+    const columns = [
       Column.name("variable", "Variable", { is_meta }),
       Column.original_name(),
       Column.description(),
       Column.datatype(),
       Column.nb_missing(),
       Column.nb_duplicates(),
+      Column.nb_values(nb_value_max),
+      Column.values_preview()
     ]
-
-    columns.push(Column.nb_values())
-    columns.push(Column.values_preview())
-
-    if (!is_meta) {
-      columns = columns.concat([
-        Column.modality(),
-        Column.tag(),
-        Column.start_date(),
-        Column.end_date(),
-        Column.favorite(),
-      ])
-    }
-    return columns
+    return is_meta ? columns : columns.concat([
+      Column.dataset(),
+      Column.folder(),
+      Column.owner(),
+      Column.manager(),
+      Column.tag(),
+      Column.start_date(),
+      Column.end_date(),
+      Column.favorite(),
+    ])
   }
 
   const columns = define_columns()

@@ -289,6 +289,7 @@ class Process {
       variable.nb_row = dataset.nb_row
       const nb_values = get_nb_values(variable.values, variable)
       variable.nb_distinct = nb_values
+      variable.nb_value = nb_values
       if (!nb_values || !variable.nb_duplicate) return
       variable.nb_duplicate = Math.max(variable.nb_row - nb_values, 0)
       if (variable.nb_missing) variable.nb_duplicate -= variable.nb_missing
@@ -339,6 +340,7 @@ class Process {
       metaVariable.type_clean = get_variable_type_clean(metaVariable.type)
       const metaDataset = db.get("metaDataset", metaVariable.metaDataset_id)
       metaVariable.nb_row = metaDataset.nb_row
+      metaVariable.nb_value = get_nb_values(metaVariable.values, metaVariable)
     })
   }
 }
