@@ -231,6 +231,9 @@ export default class Column {
       filter_type: "input",
       defaultContent: "",
       render: (data, type) => {
+        if (type !== "display" ) {
+          return data === "" || data === null ? 0 : parseInt(data)
+        }
         if (!data) return ""
         const percent = get_percent(data / nb_row_max)
         return `${Render.num_percent(data, percent, "nb_row", type)}`
