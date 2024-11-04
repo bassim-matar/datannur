@@ -3,6 +3,7 @@
 ## unreleased
 
 - added : tag doc in md files
+- added : ckeckDb accecc to db object via global window
 - fixed : git language stats with correct gitattributes
 - fixed : extendable fixed width and break word
 - fixed : nb_values width during loading because value infered from list

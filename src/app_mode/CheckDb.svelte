@@ -5,6 +5,7 @@
 
   db.check_integrity().then(res => {
     console.log(db.db)
+    window.datannur_db_check = db.db
     result = JSON.stringify(res, null, 2)
   })
 </script>
