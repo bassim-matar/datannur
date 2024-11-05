@@ -7,7 +7,11 @@
   let id = window.crypto.randomUUID()
 
   function toggle() {
-    Dark_mode.toggle()
+    if (document.startViewTransition) {
+      document.startViewTransition(() => Dark_mode.toggle())
+    } else {
+      Dark_mode.toggle()
+    }
     if ($dark_mode_theme === "dark") Logs.add("toggle_dark_mode_btn_off")
     else Logs.add("toggle_dark_mode_btn_on")
   }

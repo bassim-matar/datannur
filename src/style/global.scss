@@ -1,4 +1,4 @@
-@use 'sass:string';
+@use "sass:string";
 @use "../main.scss" as *;
 
 :root {
@@ -165,12 +165,12 @@ img[alt^="main_banner"] {
   aspect-ratio: var(--main_banner_width) / var(--main_banner_height);
 }
 img[alt$="special_main_color"] {
-  filter: string.unquote("invert(32%)") sepia(59%) saturate(1382%) hue-rotate(206deg)
-    brightness(95%) contrast(87%);
+  filter: string.unquote("invert(32%)") sepia(59%) saturate(1382%)
+    hue-rotate(206deg) brightness(95%) contrast(87%);
 }
 html.dark_mode img[alt$="special_main_color"] {
-  filter: string.unquote("invert(68%)") sepia(8%) saturate(3575%) hue-rotate(179deg)
-    brightness(88%) contrast(103%);
+  filter: string.unquote("invert(68%)") sepia(8%) saturate(3575%)
+    hue-rotate(179deg) brightness(88%) contrast(103%);
 }
 
 .break_line {
@@ -274,5 +274,27 @@ html.dark_mode {
     &.big {
       font-size: 1.2rem;
     }
+  }
+}
+
+::view-transition-group(root) {
+  animation-timing-function: var(--expo-out);
+}
+::view-transition-new(root) {
+  mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="blur"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="0" cy="0" r="18" fill="white" filter="url(%23blur)"/></svg>')
+    top left / 0 no-repeat;
+  mask-origin: content-box;
+  animation: scale 1s;
+  transform-origin: top left;
+}
+::view-transition-old(root),
+.dark_mode::view-transition-old(root) {
+  animation: scale 1s;
+  transform-origin: top left;
+  z-index: -1;
+}
+@keyframes scale {
+  to {
+    mask-size: 350vmax;
   }
 }
