@@ -61,6 +61,9 @@
     entity.with_html = entity.entity === "log"
     entity.attributs = add_values(entity.items, attributs[entity.entity])
   })
+
+  let has_btns = entities.length > 1
+  let no_btns = !has_btns
 </script>
 
 {#if entities.length > 1}
@@ -93,7 +96,7 @@
 {/if}
 
 <div class="main_wrapper">
-  <div class="all_stat_container_wrappper" class:has_btns={entities.length > 1}>
+  <div class="all_stat_container_wrappper" class:no_btns class:has_btns>
     <div class="all_stat_container" class:loading>
       {#each entities as { entity, attributs, with_html }}
         {#if visible[entity] || show_all}
@@ -165,9 +168,8 @@
       border-bottom-right-radius: $rounded;
     }
     .all_stat_container_wrappper {
-      // border-radius: $rounded;
       border-bottom-left-radius: $rounded;
-      &:not(.has_btns) {
+      &.no_btns {
         border-radius: $rounded;
       }
     }

@@ -53,8 +53,10 @@
       <div
         class="tab_component_wrapper {tab.props.class || ''}"
         class:visible={active_tab_body === tab.key}
+        class:not_visible={active_tab_body !== tab.key}
         class:padding={tab.padding}
         class:has_footer={tab.footer_visible}
+        class:without_footer={!tab.footer_visible}
       >
         <tab.component {...tab.props} />
       </div>
@@ -85,10 +87,13 @@
         100vh - var(--tabs-container-height) - var(--footer-height) - 140px,
         170px
       );
-      &:not(.has_footer) {
+      &.padding {
+        padding: 3rem 3rem;
+      }
+      &.without_footer {
         max-height: 100%;
       }
-      &:not(.visible) {
+      &.not_visible {
         position: absolute;
         height: 0px;
         overflow: hidden;
@@ -96,9 +101,6 @@
         width: 100%;
         pointer-events: none;
         z-index: -999999;
-      }
-      &.padding {
-        padding: 3rem 3rem;
       }
     }
   }

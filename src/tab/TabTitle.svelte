@@ -38,6 +38,7 @@
 <li
   class="tab_li_{tab.key} tab_entity_{tab.icon} shadow_{$tab_selected.icon}"
   class:is-active={active_tab === tab.key}
+  class:not_active={active_tab !== tab.key}
   style="min-width: {min_width}px;"
 >
   <div class="rounded_wrapper left">
@@ -137,7 +138,7 @@
     a.tab_select_btn {
       border-radius: $rounded-top;
     }
-    li:not(.is-active) a.tab_select_btn:hover {
+    li.not_active a.tab_select_btn:hover {
       border-radius: $rounded-size;
       border-bottom-color: transparent;
     }
