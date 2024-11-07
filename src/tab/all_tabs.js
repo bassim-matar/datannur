@@ -182,7 +182,7 @@ export const all_tabs = {
     component: Stat,
     without_num: true,
     without_prop: true,
-    footer_visible: false,
+    footer_visible: true,
   },
   about_organisation: {
     name: "Organisation",

@@ -2,41 +2,12 @@
   import Options from "@js/Options"
   import Loading from "@frame/Loading.svelte"
   import { tab_selected } from "@js/store"
-  import { onMount } from "svelte"
 
   let { tabs, no_first_tab, is_last_tab, active_tab_body, tabs_loaded } =
     $props()
 
   let open_all_tab = Options.get("open_all_tab")
-
-  const html_div = document.querySelector("html")
-
-  function update_ancestor_height() {
-    const tabs_container_div = document.getElementById("tabs_container")
-    const tabs_container_height =
-      tabs_container_div?.getBoundingClientRect().height
-    html_div.style.setProperty(
-      "--tabs-container-height",
-      tabs_container_height + "px",
-    )
-
-    const footer_div = document.querySelector("footer.footer")
-    const footer_height = footer_div?.getBoundingClientRect().height || 0
-    html_div.style.setProperty("--footer-height", footer_height + "px")
-  }
-
-  onMount(() => {
-    update_ancestor_height()
-  })
-
-  $effect(() => {
-    if (active_tab_body) {
-      update_ancestor_height()
-    }
-  })
 </script>
-
-<svelte:window onresize={update_ancestor_height} />
 
 <div
   class="tabs_body box_shadow box_shadow_color shadow_{$tab_selected.icon}"
@@ -83,10 +54,6 @@
       right: 0;
       opacity: 1;
       overflow: auto;
-      max-height: max(
-        100vh - var(--tabs-container-height) - var(--footer-height) - 140px,
-        170px
-      );
       &.padding {
         padding: 3rem 3rem;
       }

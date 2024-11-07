@@ -116,8 +116,7 @@
     position: relative;
     width: 100%;
     height: auto;
-    max-height: max(calc(100vh - 235px), 170px);
-    overflow: auto;
+    overflow: hidden;
     background: $background-2;
     @include scrollbar_light();
 
