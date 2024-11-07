@@ -1,12 +1,12 @@
 <script>
   import markdown_render from "@js/markdown"
 
-  let { content } = $props()
+  let { content, mode = "classic" } = $props()
 
   let md_content = $derived(content ? markdown_render(content) : "")
 </script>
 
-<div class="main content">
+<div class="main content" class:classic={mode === "classic"}>
   {@html md_content}
 </div>
 
@@ -14,11 +14,15 @@
   @use "../main.scss" as *;
 
   div.main {
-    padding: 3.5rem 3.75rem;
+    padding: 10px;
     max-width: 900px;
     margin: auto;
     box-sizing: border-box;
     word-wrap: break-word;
+  }
+
+  div.main.classic {
+    padding: 3.5rem 3.75rem;
   }
 
   @media screen and (max-width: 600px) {

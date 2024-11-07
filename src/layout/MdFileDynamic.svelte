@@ -4,7 +4,7 @@
   import MdContent from "@layout/MdContent.svelte"
   import Loading from "@frame/Loading.svelte"
 
-  let { doc_id } = $props()
+  let { doc_id, mode = "classic" } = $props()
 
   let content = $state()
   let loading = $state(true)
@@ -29,5 +29,5 @@
     <p>Impossible de charger le fichier</p>
   </div>
 {:else}
-  <MdContent {content} />
+  <MdContent {content} {mode} />
 {/if}

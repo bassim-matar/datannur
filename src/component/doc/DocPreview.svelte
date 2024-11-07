@@ -6,7 +6,7 @@
   let { doc } = $props()
 </script>
 
-<div class="doc_content_wrapper">
+<div class="doc_content_wrapper" class:has_pdf_format={doc.type === "pdf"}>
   <div style="font-weight: bold;">
     <Icon type="search" /> Aperçu
   </div>
@@ -16,7 +16,7 @@
       {#if doc.type === "pdf"}
         <PdfViewer pdf={doc.path} />
       {:else if doc.type === "md"}
-        <MdFileDynamic doc_id={doc.id} />
+        <MdFileDynamic doc_id={doc.id} mode="no_padding" />
       {/if}
     </div>
   </div>
@@ -32,14 +32,21 @@
     display: inline-block;
     .doc_content_box {
       margin-top: 10px;
-      border: 1px solid $color-5;
       overflow: hidden;
-      .doc_content {
-        overflow: auto;
-        height: max(100vh - 301px, 170px);
+    }
+
+    &.has_pdf_format {
+      .doc_content_box {
+        border: 1px solid $color-5;
+        .doc_content {
+          overflow: auto;
+          height: max(100vh - 301px, 170px);
+        }
       }
     }
   }
+
+  
 
   :global(html.rounded_design) {
     .doc_content_box {
