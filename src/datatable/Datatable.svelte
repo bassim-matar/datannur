@@ -81,6 +81,7 @@
     "value",
     "dataset_preview",
     "variable_preview",
+    "preview",
     "log",
   ].includes(entity)
 
