@@ -12,6 +12,7 @@
 - fixed : sort by dataset nb line as numeric even if empty value
 - fixed : replace css :not() with opposite class name because of warning in latest svelte
 - fixed : no cursor pointer on dataset preview
+- fixed : favorite number display on mobile
 
 ## 0.9.2 (2024-11-02)
 

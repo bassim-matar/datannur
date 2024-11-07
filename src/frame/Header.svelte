@@ -237,6 +237,9 @@
     }
   }
   @media screen and (max-width: $menu_mobile_limit) {
+    .favorite_number {
+      display: contents;
+    }
     .search_bar_input_wrapper {
       display: none;
     }
