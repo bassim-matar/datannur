@@ -18,6 +18,7 @@ export default class Exporter {
     }
   }
   get_buttons() {
+    const filename = this.id
     return [
       {
         text: '<span class="icon icon_download main"><i class="fas fa-cloud-download-alt"></i></span>',
@@ -36,6 +37,7 @@ export default class Exporter {
         extend: "csvHtml5",
         fieldSeparator: ";",
         extension: ".csv",
+        filename,
         bom: true,
         exportOptions: { orthogonal: "export" },
         footer: false,
@@ -43,6 +45,7 @@ export default class Exporter {
       {
         text: '<span class="icon icon_download"><i class="fas fa-file-excel"></i></span>excel',
         extend: "excel",
+        filename,
         title: "",
         exportOptions: { orthogonal: "export" },
         footer: false,

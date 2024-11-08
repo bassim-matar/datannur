@@ -2,6 +2,10 @@
 
 ## unreleased
 
+- changed : table download filename use page and tab name
+
+## 0.9.3 (2024-11-07)
+
 - added : tag doc in md files
 - added : ckeckDb accecc to db object via global window
 - added : dark mode nice transition with view transition on switch
