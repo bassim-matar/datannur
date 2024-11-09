@@ -29,6 +29,7 @@
   } from "./dt_util"
   import Filter from "./filter/Filter.svelte"
   import FilterInfoBox from "./filter/FilterInfoBox.svelte"
+  import PopupSearchOption from "./filter/PopupSearchOption.svelte"
   import LoadingDot from "@layout/LoadingDot.svelte"
 
   let {
@@ -46,6 +47,7 @@
   let short_table = $state(false)
   let datatable_update_draw = $state(0)
   let nb_active_filter = $state(0)
+  let is_popup_search_option_open = $state(false)
 
   Datatables_timer.start()
   Datatables_loading.start()
@@ -117,7 +119,17 @@
           zeroRecords: '<span class="no_result">Aucun résultat</span>',
           buttons: exporter.get_language(),
         },
-        buttons: exporter.get_buttons(),
+        buttons: [
+          ...exporter.get_buttons(),
+          {
+            text: `<span class="icon"><i class="fa-solid fa-magnifying-glass-plus"></i></span>`,
+            action: () => {
+              is_popup_search_option_open = true
+            },
+            className: "search_option",
+            footer: false,
+          },
+        ],
         bDestroy: true,
         initComplete: function () {
           if (!is_big) return false
@@ -191,6 +203,8 @@
 </script>
 
 <svelte:window onresize={on_resize} />
+
+<PopupSearchOption bind:is_open={is_popup_search_option_open} />
 
 {#if loading}
   <div class="datatable_main_wrapper dt_loading">
@@ -635,6 +649,13 @@
           tbody > tr:hover > td .var_main_col,
           tbody > tr:hover > td .long_text:has(.var_main_col) {
             color: $color-3;
+          }
+        }
+        @media screen and (max-width: 600px) {
+          div.dt-buttons .search_option {
+            position: fixed;
+            top: 40px;
+            right: 52px;
           }
         }
       }

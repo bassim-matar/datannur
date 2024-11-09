@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- added : table column filter info popup
 - changed : table download filename use page and tab name
 - changed : align attribute name and value on page entity info on mobile
 

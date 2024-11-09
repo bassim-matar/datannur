@@ -27,6 +27,7 @@ export default class Exporter {
       },
       {
         text: '<span class="icon icon_download"><i class="fas fa-copy"></i></span>copie',
+        className: "download_button",
         extend: "copy",
         title: "",
         exportOptions: { orthogonal: "export" },
@@ -34,6 +35,7 @@ export default class Exporter {
       },
       {
         text: '<span class="icon icon_download"><i class="fas fa-file-csv"></i></span>csv',
+        className: "download_button",
         extend: "csvHtml5",
         fieldSeparator: ";",
         extension: ".csv",
@@ -44,6 +46,7 @@ export default class Exporter {
       },
       {
         text: '<span class="icon icon_download"><i class="fas fa-file-excel"></i></span>excel',
+        className: "download_button",
         extend: "excel",
         filename,
         title: "",
