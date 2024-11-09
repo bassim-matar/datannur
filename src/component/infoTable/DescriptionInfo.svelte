@@ -63,6 +63,7 @@
       & > div {
         padding: 10px;
         padding-top: 0;
+        padding-left: 0;
       }
     }
     .content {

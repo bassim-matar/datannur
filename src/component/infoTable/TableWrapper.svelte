@@ -82,6 +82,10 @@
         clear: both;
         border: 0px;
         width: 100%;
+        padding-left: 40px;
+      }
+      .table :global(td:first-child) {
+        padding-left: 0px;
       }
     }
   }
