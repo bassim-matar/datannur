@@ -17,20 +17,12 @@
         <BtnClearInput click={close_popup} mode="normal" />
       </div>
       <div class="main_content">
-        <h2 class="popup_title">Options de filtre des colonnes</h2>
+        <h2 class="popup_title">options de recherche</h2>
         <table>
           <tbody>
             <tr>
               <td>...</td>
               <td>contient ...</td>
-            </tr>
-            <tr>
-              <td>= ...</td>
-              <td>est exactement égale à ...</td>
-            </tr>
-            <tr>
-              <td>! ...</td>
-              <td>ne contient pas ...</td>
             </tr>
             <tr>
               <td>&gt; ...</td>
@@ -41,12 +33,20 @@
               <td>Plus petit que ...</td>
             </tr>
             <tr>
-              <td>!""</td>
-              <td>ne contient pas de vide</td>
+              <td>= ...</td>
+              <td>ne contient que ...</td>
+            </tr>
+            <tr>
+              <td>! ...</td>
+              <td>ne contient pas ...</td>
             </tr>
             <tr>
               <td>=""</td>
-              <td>ne contient que du vide</td>
+              <td>ne contient rien</td>
+            </tr>
+            <tr>
+              <td>!""</td>
+              <td>ne contient pas rien</td>
             </tr>
           </tbody>
         </table>
