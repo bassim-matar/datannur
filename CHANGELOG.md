@@ -8,6 +8,7 @@
 - fixed : dropdown header menu stick after click
 - fixed : markdown ol padding
 - fixed : extendable on one line
+- fixed : tag page opposite tags tab
 
 ## 0.9.3 (2024-11-07)
 
