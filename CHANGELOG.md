@@ -7,6 +7,7 @@
 - changed : align attribute name and value on page entity info on mobile
 - fixed : dropdown header menu stick after click
 - fixed : markdown ol padding
+- fixed : extendable on one line
 
 ## 0.9.3 (2024-11-07)
 

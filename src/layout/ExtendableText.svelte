@@ -8,7 +8,7 @@
 <div
   class={`extendable ${props.class}`}
   onmouseenter={extendable.open}
-  onmouseleave={extendable.close}
+  onmouseleave={extendable.close_two_lines}
 >
   {@render props.children?.()}
 </div>

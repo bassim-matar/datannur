@@ -1,7 +1,6 @@
 import jQuery from "jquery"
 
 const max_height = 200
-const min_height = 50
 const open_duration = 500
 const close_duration = 2000
 
@@ -16,9 +15,9 @@ export const extendable = {
       })
     }, 300)
   },
-  close() {
-    clearTimeout(this.mouse_enter_timeout)
-    const elem = jQuery(this)
+  close(elem_ref, min_height = 25) {
+    clearTimeout(elem_ref.mouse_enter_timeout)
+    const elem = jQuery(elem_ref)
     if (!elem.hasClass("open")) return false
     const elem_height = elem.height()
     const duration = (elem_height / max_height) * close_duration
@@ -28,4 +27,10 @@ export const extendable = {
       elem.removeClass("open")
     })
   },
+  close_one_line() {
+    return extendable.close(this, 25)
+  },
+  close_two_lines() {
+    return extendable.close(this, 50)
+  }
 }

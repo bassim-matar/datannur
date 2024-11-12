@@ -14,7 +14,7 @@
     <div
       class="cell readable extendable"
       onmouseenter={extendable.open}
-      onmouseleave={extendable.close}
+      onmouseleave={extendable.close_one_line}
     >
       {#if with_html}
         {@html value.readable}
@@ -55,7 +55,7 @@
         display: inline-block;
         vertical-align: top;
         &.readable {
-          text-align: right;
+          text-align: left;
           max-width: calc(100% - 120px);
         }
         &.count {
