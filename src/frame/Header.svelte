@@ -137,8 +137,8 @@
         pages={["favorite"]}
         icon="favorite"
         info="Favoris"
-        ><span class="num_style navbar-item favorite_number"
-          >{$nb_favorite}</span
+        ><span class="visible_on_mobile">Favoris</span><span
+          class="num_style favorite_number">{$nb_favorite}</span
         ></HeaderLink
       >
 
@@ -213,7 +213,7 @@
       }
     }
     .favorite_number {
-      padding-right: 0;
+      padding-left: 8px;
     }
   }
 
@@ -237,9 +237,6 @@
     }
   }
   @media screen and (max-width: $menu_mobile_limit) {
-    .favorite_number {
-      display: contents;
-    }
     .search_bar_input_wrapper {
       display: none;
     }

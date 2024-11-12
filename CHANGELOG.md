@@ -9,6 +9,7 @@
 - fixed : markdown ol padding
 - fixed : extendable on one line
 - fixed : tag page opposite tags tab
+- fixed : header fav btn on mobile
 
 ## 0.9.3 (2024-11-07)
 
