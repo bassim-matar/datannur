@@ -187,10 +187,15 @@ a {
   margin-bottom: 1em;
 }
 
-.content ul {
-  list-style: disc outside;
+.content ul, .content ol {
   margin-left: 2em;
   margin-top: 1em;
+}
+.content ul {
+  list-style: disc outside;
+}
+.content ol {
+  list-style: decimal outside;
 }
 
 .content li + li {
