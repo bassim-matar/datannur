@@ -265,4 +265,12 @@ export default class Filter_helper {
       }
     }
   }
+  get_btn_info_popup(action = () => {}) {
+    return {
+      text: `<span class="icon"><i class="fa-solid fa-magnifying-glass-plus"></i></span>`,
+      action,
+      className: "search_option",
+      footer: false,
+    }
+  }
 }

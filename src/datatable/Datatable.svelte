@@ -96,6 +96,15 @@
     }
   })
 
+  let buttons = exporter.get_buttons()
+  if (is_big) {
+    buttons.push(
+      filter.get_btn_info_popup(() => {
+        is_popup_search_option_open = true
+      }),
+    )
+  }
+
   onMount(() => {
     setTimeout(() => {
       datatable = new DataTable("table#" + table_id, {
@@ -104,8 +113,8 @@
         scrollY: max_height,
         scrollX: true,
         scrollCollapse: true,
-        paging: is_big,
         pageLength: 100,
+        paging: is_big,
         searching: is_big,
         deferRender: is_big,
         scroller: is_big ? { rowHeight: 65 } : false,
@@ -115,22 +124,12 @@
         info: false,
         dom: '<"toolbar">ftB',
         order: [[0, "asc"]],
+        buttons,
+        bDestroy: true,
         language: {
           zeroRecords: '<span class="no_result">Aucun résultat</span>',
           buttons: exporter.get_language(),
         },
-        buttons: [
-          ...exporter.get_buttons(),
-          {
-            text: `<span class="icon"><i class="fa-solid fa-magnifying-glass-plus"></i></span>`,
-            action: () => {
-              is_popup_search_option_open = true
-            },
-            className: "search_option",
-            footer: false,
-          },
-        ],
-        bDestroy: true,
         initComplete: function () {
           if (!is_big) return false
           filter.init(this.api())
@@ -145,7 +144,7 @@
       })
       dom_table = jQuery("table#" + table_id + "._datatables")
       dom_table.on("mouseenter", ".long_text", extendable.open)
-      dom_table.on("mouseleave", ".long_text", extendable.close)
+      dom_table.on("mouseleave", ".long_text", extendable.close_two_lines)
 
       dom_table.on("click", "td", function (event) {
         setTimeout(() => {

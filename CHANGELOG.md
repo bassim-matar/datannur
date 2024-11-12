@@ -10,6 +10,7 @@
 - fixed : extendable on one line
 - fixed : tag page opposite tags tab
 - fixed : header fav btn on mobile
+- fixed : dont show btn filter info popup when no filter
 
 ## 0.9.3 (2024-11-07)
 
