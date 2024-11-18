@@ -14,8 +14,8 @@
     if_use = $bindable(false),
     standard = false,
     info = false,
-    children
-  } = $props();
+    children,
+  } = $props()
 
   let standard_readable = $state(false)
   let loading = $state(true)
@@ -44,10 +44,7 @@
   <Link {href} {click} {className} isActive={() => pages.includes($page_name)}>
     {#if icon}
       {#if info}
-        <span
-          class="break_line use_tooltip fix_on_mobile"
-          title={info}
-        >
+        <span class="break_line use_tooltip fix_on_mobile" title={info}>
           <Icon type={icon} />
         </span>
       {:else}
@@ -65,7 +62,7 @@
 
 <style lang="scss">
   @use "../main.scss" as *;
-  
+
   .fix_on_mobile {
     @media screen and (max-width: $menu_mobile_limit) {
       padding-left: 0.25em;

@@ -1,6 +1,6 @@
 <script>
   import { extendable } from "@js/extendable"
-  
+
   let { ...props } = $props()
 </script>
 

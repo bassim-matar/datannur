@@ -8,8 +8,8 @@
     click = () => false,
     isActive = () => false,
     alternative_action = false,
-    children
-  } = $props();
+    children,
+  } = $props()
 
   const base = href === "/" ? "" : get_base_link_url()
 

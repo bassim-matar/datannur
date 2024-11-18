@@ -5,9 +5,9 @@
     slot_position = "right",
     tree_switch = false,
     size = "medium",
-    children
+    children,
   } = $props()
-  
+
   let id = window.crypto.randomUUID()
 </script>
 
@@ -119,7 +119,7 @@
   }
 
   /* special tree_switch */
-  
+
   .switch[type="checkbox"].tree_switch + label::after,
   .switch[type="checkbox"].tree_switch + label:after {
     background: transparent;

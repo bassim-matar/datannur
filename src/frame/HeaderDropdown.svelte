@@ -2,12 +2,7 @@
   import db from "@db"
   import { page_name } from "@js/store"
 
-  let {
-    title,
-    pages = [],
-    if_use = false,
-    children
-  } = $props();
+  let { title, pages = [], if_use = false, children } = $props()
 
   let visible = $state(!if_use)
   let loading = true

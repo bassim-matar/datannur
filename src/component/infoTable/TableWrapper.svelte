@@ -27,7 +27,7 @@
     max-height: max(100vh - 280px, 170px);
     overflow: hidden;
     padding: 0.5em 0;
-  
+
     :global(html.rounded_design) & {
       border-bottom-left-radius: $rounded;
     }
@@ -51,8 +51,8 @@
 
   .table_wrapper {
     tbody :global(td:first-child) {
-        font-weight: bold;
-      }
+      font-weight: bold;
+    }
   }
 
   @media screen and (max-width: 1023px) {

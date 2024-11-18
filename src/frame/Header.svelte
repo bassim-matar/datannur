@@ -41,8 +41,6 @@
 
 <svelte:window bind:scrollY={scroll_y} onresize={on_resize} />
 
-<div class="navbar_menu_open_space" class:header_open={$header_open}></div>
-
 <nav
   class="navbar is-fixed-top"
   class:header_open={$header_open}
