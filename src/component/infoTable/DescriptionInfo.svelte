@@ -60,14 +60,10 @@
   }
   @media screen and (max-width: 600px) {
     .description_wrapper {
-      & > div {
-        padding: 10px;
-        padding-top: 0;
-        padding-left: 0;
+      .content {
+        padding-top: 0px;
+        padding-right: 5px;
       }
-    }
-    .content {
-      max-width: calc(100vw - 50px);
     }
   }
 </style>
