@@ -212,6 +212,7 @@
     }
     .favorite_number {
       padding-left: 8px;
+      height: 1rem;
     }
   }
 
