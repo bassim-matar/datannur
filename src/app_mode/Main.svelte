@@ -9,7 +9,6 @@
     page_content_loaded,
     search_value,
   } from "@js/store"
-  import Router from "@frame/Router.svelte"
   import Options from "@js/Options"
   import Logs from "@js/Logs"
   import Favorites from "@favorite/Favorites"
@@ -20,18 +19,26 @@
   import { db_add_processed_data, get_user_data } from "@js/db"
   import icon from "@img/icon.png"
   import icon_dark from "@img/icon_dark.png"
-  import Loading from "@page/_loading.svelte"
   import Search from "@search/Search"
   import SearchHistory from "@search/SearchHistory"
   import { Dark_mode, dark_mode_theme } from "@dark_mode/Dark_mode"
+  import { copy_text_listen_click } from "@js/copy_text"
+  import { add_values_to_attribut } from "@stat/stat"
+  import definition from "@stat/attributs_def"
+  import default_banner from "@markdown/main/banner.md?raw"
   import Header from "@frame/Header.svelte"
   import Footer from "@frame/Footer.svelte"
-  import { copy_text_listen_click } from "@js/copy_text"
-  import default_banner from "@markdown/main/banner.md?raw"
+  import Router from "@frame/Router.svelte"
+  import Popup from "@layout/Popup.svelte"
+  import Loading from "@page/_loading.svelte"
+  import StatBox from "@stat/StatBox.svelte"
 
   let error_loading_db = $state(false)
   let page_loaded_route = $state()
   let is_mobile = $state(get_is_mobile())
+  let is_popup_column_stat_open = $state(false)
+  let column_stat_entity = $state()
+  let column_stat_attribut = $state()
 
   const timer = performance.now()
 
@@ -128,9 +135,21 @@
       elem?.powerTip({
         placement: elem.hasClass("tooltip_top") ? "n" : "s",
         smartPlacement: true,
+        mouseOnToPopup: true,
       })
       elem?.powerTip("show")
     }
+  })
+
+  jQuery("body").on("click", ".column_stat_btn", function () {
+    const attribut_name = jQuery(this).data("attribut")
+    column_stat_entity = jQuery(this).data("entity")
+    column_stat_attribut = add_values_to_attribut(window._current_tab_data, {
+      key: attribut_name,
+      ...definition[attribut_name],
+
+    })
+    if (column_stat_attribut) is_popup_column_stat_open = true
   })
 
   copy_text_listen_click()
@@ -206,6 +225,15 @@
     <Footer />
   {/if}
 {/await}
+
+<Popup bind:is_open={is_popup_column_stat_open}>
+  <StatBox
+    entity={column_stat_entity}
+    attribut={column_stat_attribut}
+    with_html={column_stat_entity === "log"}
+    from_popup={true}
+  />
+</Popup>
 
 <style lang="scss">
   @use "../main.scss" as *;

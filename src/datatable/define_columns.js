@@ -1,7 +1,45 @@
 import { entity_names } from "@js/constant"
 import { link } from "@js/util"
+import { stat_exists } from "@stat/stat"
 
-export function define_columns(columns, data, entity, keep_all_cols, meta_path, nb_row_loading) {
+function filter_empty_columns(columns, items) {
+  const has_prop = {}
+  for (const item of items) {
+    for (const [key, value] of Object.entries(item)) {
+      if (key === "id" || key === "is_favorite") {
+        has_prop[key] = true
+        continue
+      }
+      const value = item[key]
+      if (Array.isArray(value)) {
+        if (value.length > 0) has_prop[key] = true
+      } else if (value) has_prop[key] = true
+    }
+  }
+  const filter_columns = columns.filter(column => column.data in has_prop)
+  return filter_columns
+}
+
+function get_text_width(lines, font) {
+  const canvas = document.createElement("canvas")
+  const context = canvas.getContext("2d")
+  context.font = font
+  let maxWidth = 0
+  for (const line of lines) {
+    const metrics = context.measureText(line)
+    maxWidth = Math.max(maxWidth, metrics.width)
+  }
+  return maxWidth
+}
+
+export function define_columns(
+  columns,
+  data,
+  entity,
+  keep_all_cols,
+  meta_path,
+  nb_row_loading
+) {
   let columns_copy = columns.map(obj => ({ ...obj }))
 
   if (columns_copy[0]?.title !== "#") {
@@ -26,42 +64,21 @@ export function define_columns(columns, data, entity, keep_all_cols, meta_path, 
     columns_copy = [col_numerotation, ...columns_copy]
   }
 
-  function filter_empty_columns(columns, items) {
-    const has_prop = {}
-    for (const item of items) {
-      for (const [key, value] of Object.entries(item)) {
-        if (key === "id" || key === "is_favorite") {
-          has_prop[key] = true
-          continue
-        }
-        const value = item[key]
-        if (Array.isArray(value)) {
-          if (value.length > 0) has_prop[key] = true
-        } else if (value) has_prop[key] = true
-      }
-    }
-    const filter_columns = columns.filter(column => column.data in has_prop)
-    return filter_columns
-  }
-
-  if (!keep_all_cols)
-    columns_copy = filter_empty_columns(columns_copy, data)
-
-  function get_text_width(lines, font) {
-    const canvas = document.createElement("canvas")
-    const context = canvas.getContext("2d")
-    context.font = font
-    let maxWidth = 0
-    for (const line of lines) {
-      const metrics = context.measureText(line)
-      maxWidth = Math.max(maxWidth, metrics.width)
-    }
-    return maxWidth
-  }
+  if (!keep_all_cols) columns_copy = filter_empty_columns(columns_copy, data)
 
   let bold = ""
   const mini_col = ["_row_num", "level", "is_favorite", "search_receht"]
   for (const column of columns_copy) {
+    const key = column.name ? column.name : column.data
+    if (key !== "_row_num" && stat_exists(entity, key)) {
+      const column_stat_btn = `
+        <span class="column_stat_btn icon_stat" data-entity="${entity}" data-attribut="${key}">
+          <i class="fa-solid fa-signal">
+        </i></span>`
+      if (column.tooltip) column.tooltip += "&nbsp;&nbsp;" + column_stat_btn
+      else column.tooltip = column_stat_btn
+    }
+
     if (["is_favorite", "type"].includes(column.name))
       column.search_modality = true
     if (mini_col.includes(column.name)) {
@@ -82,9 +99,8 @@ export function define_columns(columns, data, entity, keep_all_cols, meta_path, 
       cells.push(value)
     }
     const cells_width =
-      Math.round(
-        get_text_width(cells, `${bold} 16px "Helvetica Neue"`) * 100,
-      ) / 100
+      Math.round(get_text_width(cells, `${bold} 16px "Helvetica Neue"`) * 100) /
+      100
     column.loading_width = Math.min(274, cells_width)
     column.loading_max_width = Math.min(274, cells_width)
   }

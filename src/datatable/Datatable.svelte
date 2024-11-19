@@ -29,7 +29,8 @@
   } from "./dt_util"
   import Filter from "./filter/Filter.svelte"
   import FilterInfoBox from "./filter/FilterInfoBox.svelte"
-  import PopupSearchOption from "./filter/PopupSearchOption.svelte"
+  import Popup from "@layout/Popup.svelte"
+  import SearchOptionInfo from "./filter/SearchOptionInfo.svelte"
   import LoadingDot from "@layout/LoadingDot.svelte"
 
   let {
@@ -188,6 +189,7 @@
       setTimeout(() => {
         datatable?.columns?.adjust()
         datatable_update_draw += 1
+        window._current_tab_data = clean_data
       }, 1)
     }
   })
@@ -203,7 +205,9 @@
 
 <svelte:window onresize={on_resize} />
 
-<PopupSearchOption bind:is_open={is_popup_search_option_open} />
+<Popup bind:is_open={is_popup_search_option_open}>
+  <SearchOptionInfo />
+</Popup>
 
 {#if loading}
   <div class="datatable_main_wrapper dt_loading">

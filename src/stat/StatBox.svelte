@@ -4,7 +4,7 @@
   import { entity_names } from "@js/constant"
   import StatValue from "./StatValue.svelte"
 
-  let { attribut, with_html = false, entity } = $props()
+  let { entity, attribut, with_html = false, from_popup = false } = $props()
 
   const total_value = attribut.total_value
   const main_color = get_color(entity)
@@ -12,6 +12,7 @@
 
 <div
   class="stat_box box_shadow box_shadow_color shadow_{entity}"
+  class:from_popup
   style="background: {main_color}44;"
 >
   <h2 class="title is-6">
@@ -47,6 +48,9 @@
     box-sizing: border-box;
     border-radius: 4px;
     overflow: hidden;
+    &.from_popup {
+      position: relative;
+    }
     :global(html.rounded_design) & {
       border-radius: $rounded;
     }

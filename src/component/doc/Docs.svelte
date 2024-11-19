@@ -25,6 +25,7 @@
     Column.description(),
     {
       data: "type",
+      name: "doc_type",
       title: Render.icon("type") + "Type",
       defaultContent: "",
       filter_type: "select",
@@ -37,6 +38,7 @@
     Column.doc_path(),
     {
       data: "last_update",
+      name: "last_update_doc",
       title: Render.icon("date") + "Mis à jour",
       defaultContent: "",
       filter_type: "input",

@@ -1,6 +1,6 @@
 import definition from "./attributs_def"
 
-const attributs = {
+export const attributs = {
   institution: ["tag", "email", "phone", "level", "name", "description"],
   folder: [
     "frequency",

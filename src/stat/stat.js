@@ -1,6 +1,7 @@
 import Render from "@js/Render"
 import { get_time_ago } from "@js/Time"
 import Histogram from "./Histogram"
+import { attributs } from "./attributs"
 
 function get_value_readable(start, end) {
   if (start === 0 || start === end) return Render.num(start)
@@ -133,29 +134,38 @@ function add_subtype(items, attribut) {
   return get_values_sorted(values)
 }
 
+export function add_values_to_attribut(items, attribut) {
+  let values
+  let total_value = items.length
+  if (["numeric", "string"].includes(attribut.type)) {
+    values = add_numeric(items, attribut)
+  } else if (attribut.non_exclusive) {
+    values = add_non_exclusive(items, attribut)
+  } else if (attribut.subtype) {
+    values = add_subtype(items, attribut)
+    total_value = items.filter(attribut.subtype).length
+  } else if (attribut.type === "category_ordered") {
+    values = add_category(items, attribut, "start")
+    values.reverse()
+  } else {
+    values = add_category(items, attribut)
+  }
+  if (values.length === 0) return
+  if (values.length === 1 && [0, "0", "__empty__"].includes(values[0].start))
+    return
+  values = add_readable_values(values, attribut.type)
+  return { ...attribut, values, total_value }
+}
+
 export function add_values(items, attributs) {
   const attributs_with_values = []
   for (const attribut of attributs) {
-    let values
-    let total_value = items.length
-    if (["numeric", "string"].includes(attribut.type)) {
-      values = add_numeric(items, attribut)
-    } else if (attribut.non_exclusive) {
-      values = add_non_exclusive(items, attribut)
-    } else if (attribut.subtype) {
-      values = add_subtype(items, attribut)
-      total_value = items.filter(attribut.subtype).length
-    } else if (attribut.type === "category_ordered") {
-      values = add_category(items, attribut, "start")
-      values.reverse()
-    } else {
-      values = add_category(items, attribut)
-    }
-    if (values.length === 0) continue
-    if (values.length === 1 && [0, "0", "__empty__"].includes(values[0].start))
-      continue
-    values = add_readable_values(values, attribut.type)
-    attributs_with_values.push({ ...attribut, values, total_value })
+    const attribut_with_values = add_values_to_attribut(items, attribut)
+    if (attribut_with_values) attributs_with_values.push(attribut_with_values)
   }
   return attributs_with_values
+}
+
+export function stat_exists(entity, attribut) {
+  return attributs[entity]?.includes(attribut)
 }

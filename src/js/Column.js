@@ -140,6 +140,7 @@ export default class Column {
       title: Render.icon("tag") + "Mots clés",
       defaultContent: "",
       has_long_text: true,
+      name: "tag",
       render: Render.tags,
     }
   }
@@ -189,6 +190,7 @@ export default class Column {
   static nb_values(nb_value_max) {
     return {
       data: "nb_value",
+      name: "value",
       title: Render.icon("value") + "Nb",
       defaultContent: "",
       filter_type: "input",
@@ -243,6 +245,7 @@ export default class Column {
   static frequency() {
     return {
       data: "updating_each",
+      name: "frequency",
       defaultContent: "",
       filter_type: "select",
       title: Render.icon("frequency") + "Fréquence",
@@ -253,6 +256,7 @@ export default class Column {
   static last_update() {
     return {
       data: "last_update_date",
+      name: "last_update",
       defaultContent: "",
       title: Render.icon("date") + "Mis à jour",
       filter_type: "input",
@@ -381,6 +385,7 @@ export default class Column {
   static data_path() {
     return {
       data: "data_path",
+
       title: Render.icon("data_path") + "Emplacement",
       defaultContent: "",
       render: Render.copy_cell,
@@ -389,6 +394,7 @@ export default class Column {
   static doc_path() {
     return {
       data: "path",
+      name: "doc_path",
       title: Render.icon("link") + "Lien",
       defaultContent: "",
       has_long_text: true,
@@ -467,6 +473,7 @@ export default class Column {
     return {
       data: "nb_variable" + (option.recursive ? "_recursive" : ""),
       title: Render.icon("variable") + title,
+      name: "variable",
       filter_type: "input",
       render: (data, type, row) => {
         if (!data) return ""

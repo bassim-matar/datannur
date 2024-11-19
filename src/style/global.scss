@@ -210,6 +210,15 @@ html.page_shadow_colored .box_shadow.box_shadow_color {
   }
 }
 
+#powerTip {
+  .column_stat_btn {
+    cursor: pointer;
+  }
+  .icon_stat i {
+    color: color("stat");
+  }
+}
+
 html.dark_mode {
   strong,
   .table,
