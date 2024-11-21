@@ -46,6 +46,7 @@
       data: "email",
       defaultContent: "",
       title: Render.icon("email") + "Email",
+      tooltip: "Email de contact",
       render: data => {
         return wrap_long_text(
           data ? `<a href="mailto:${data}" target="_blanck" >${data}</a>` : "",
@@ -56,6 +57,7 @@
       data: "phone",
       defaultContent: "",
       title: Render.icon("phone") + "Téléphone",
+      tooltip: "Téléphone de contact",
       render: data =>
         data ? `<a href="tel:${data}" target="_blanck" >${data}</a>` : "",
     },

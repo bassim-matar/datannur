@@ -71,7 +71,7 @@
   }
 
   function define_columns() {
-    const columns = [
+    const base = [
       Column.name("variable", "Variable", { is_meta }),
       Column.original_name(),
       Column.description(),
@@ -83,23 +83,20 @@
       Column.values_preview(),
     ]
     if (is_meta) {
-      return columns.concat([
-        Column.dataset(parent_name),
-        Column.metaFolder(),
-      ])
-    } else {
-      return columns.concat([
-        Column.modality(),
-        Column.dataset(parent_name),
-        Column.folder(),
-        Column.owner(),
-        Column.manager(),
-        Column.tag(),
-        Column.start_date(),
-        Column.end_date(),
-        Column.favorite(),
-      ])
+      return [...base, Column.dataset(parent_name), Column.metaFolder()]
     }
+    return [
+      ...base,
+      Column.modality(),
+      Column.dataset(parent_name),
+      Column.folder(),
+      Column.owner(),
+      Column.manager(),
+      Column.tag(),
+      Column.start_date(),
+      Column.end_date(),
+      Column.favorite(),
+    ]
   }
 
   const columns = define_columns()

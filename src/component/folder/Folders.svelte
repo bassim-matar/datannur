@@ -47,6 +47,7 @@
         {
           data: "nb_dataset",
           title: Render.icon("dataset") + "Datasets",
+          tooltip: "Nombre de datasets",
           render: (data, type, row) => {
             if (!data) return ""
             const content = link(
@@ -83,6 +84,7 @@
         data: "survey_type",
         title: Render.icon("survey_type") + "Type d'enquête",
         defaultContent: "",
+        tooltip: "Type d'enquête",
       },
       Column.delivery_format(),
       Column.frequency(),
@@ -92,6 +94,7 @@
         data: "metadata_path",
         title: Render.icon("metadata_path") + "Metadonnées",
         defaultContent: "",
+        tooltip: "Emplacement des métadonnées",
         render: Render.copy_cell,
       },
       Column.data_path(),
@@ -99,6 +102,7 @@
         data: "git_code",
         title: Render.icon("git_code") + "GIT code",
         defaultContent: "",
+        tooltip: "Code source des traitements",
         render: data =>
           wrap_long_text(
             data ? `<a href="${data}" target="_blanck">${data}</a>` : "",

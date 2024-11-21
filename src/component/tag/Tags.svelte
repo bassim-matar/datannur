@@ -63,6 +63,7 @@
           Render.icon("institution") +
           "<span class='hidden'>nb_institution</span>",
         filter_type: "input",
+        tooltip: "Nombre d'institutions",
         render: (data, type, row) => {
           if (!data) return ""
           const content = link("tag/" + row.id + "?tab=institutions", data)

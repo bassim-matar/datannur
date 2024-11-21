@@ -58,33 +58,29 @@
   }
 
   function define_columns() {
-    if (is_meta) {
-      return [
-        Column.name("dataset", "Dataset", { is_meta }),
-        Column.description(),
-        Column.datatype(),
-        Column.nb_variable("dataset", nb_variable_max, {
-          tab: tab_variables,
-          link_path: dataset_path,
-          show_title: true,
-        }),
-        Column.nb_row(nb_row_max),
-        Column.metaFolder(),
-        Column.last_update_timestamp(),
-        Column.last_update_time_ago(),
-      ]
-    }
-
-    return [
+    const base = [
       Column.name("dataset", "Dataset", { is_meta }),
       Column.description(),
-      Column.datatype(),
+      Column.dataset_type(),
       Column.nb_variable("dataset", nb_variable_max, {
         tab: tab_variables,
         link_path: dataset_path,
         show_title: true,
       }),
       Column.nb_row(nb_row_max),
+    ]
+
+    if (is_meta) {
+      return [
+        ...base,
+        Column.metaFolder(),
+        Column.last_update_time_ago(),
+        Column.last_update_timestamp(),
+      ]
+    }
+
+    return [
+      ...base,
       Column.nb_doc("dataset", nb_doc_max, true),
       Column.folder(),
       Column.tag(),

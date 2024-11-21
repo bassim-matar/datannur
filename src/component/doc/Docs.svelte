@@ -29,6 +29,7 @@
       title: Render.icon("type") + "Type",
       defaultContent: "",
       filter_type: "select",
+      tooltip: "Type de fichier (markdown ou pdf)",
       render: (data, type, row) => {
         if (!data) return ""
         if (["filter", "sort", "export"].includes(type)) return data
@@ -43,6 +44,7 @@
       defaultContent: "",
       filter_type: "input",
       has_long_text: true,
+      tooltip: "Date de dernière mise à jour",
       render: (data, type) => {
         if (!data) return wrap_long_text()
         if (type === "export") return data
@@ -57,6 +59,7 @@
         Render.icon("institution") +
         "<span class='hidden'>nb_institutions</span>",
       filter_type: "input",
+      tooltip: "Nombre d'institutions",
       render: (data, type, row) => {
         if (!data) return ""
         const content = link("doc/" + row.id + "?tab=institutions", data)
@@ -68,6 +71,7 @@
       data: "nb_folder",
       title: Render.icon("folder") + "<span class='hidden'>nb_folder</span>",
       filter_type: "input",
+      tooltip: "Nombre de dossiers",
       render: (data, type, row) => {
         if (!data) return ""
         const content = link("doc/" + row.id + "?tab=folders", data)
@@ -79,6 +83,7 @@
       data: "nb_tag",
       title: Render.icon("tag") + "<span class='hidden'>nb_tag</span>",
       filter_type: "input",
+      tooltip: "Nombre de mots clés",
       render: (data, type, row) => {
         if (!data) return ""
         const content = link("doc/" + row.id + "?tab=tags", data)
@@ -90,6 +95,7 @@
       data: "nb_dataset",
       title: Render.icon("dataset") + "<span class='hidden'>nb_dataset</span>",
       filter_type: "input",
+      tooltip: "Nombre de datasets",
       render: (data, type, row) => {
         if (!data) return ""
         const content = link("doc/" + row.id + "?tab=datasets", data)

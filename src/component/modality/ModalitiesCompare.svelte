@@ -32,11 +32,13 @@
     {
       data: "ratio",
       title: Render.icon("compare") + "Similitude",
+      tooltip: "Pourcentage de valeur de la modalité 1 présente dans la modalité 2",
       render: data => `${data}%`,
     },
     {
       data: "modality_1_id",
       title: Render.icon("modality") + "Modalité",
+      tooltip: "Nom de la modalité 1",
       render: (data, type, row) =>
         link("modality/" + data, row.modality_1_name),
     },
@@ -44,20 +46,24 @@
     {
       data: "modality_1_type",
       title: Render.icon("type") + "Type",
+      tooltip: "Type de la modalité 1",
     },
     {
       data: "modality_1_nb_value",
       title: Render.icon("value") + "Valeurs",
+      tooltip: "Nombre de valeurs de la modalité 1",
       render: Render.num,
     },
     {
       data: "modality_1_nb_variable",
       title: Render.icon("variable") + "Variables",
+      tooltip: "Nombre de variables liées à la modalité 1",
       render: Render.num,
     },
     {
       data: "modality_2_id",
       title: Render.icon("modality") + "Similaire à",
+      tooltip: "Nom de la modalité 2",
       render: (data, type, row) =>
         link("modality/" + data, row.modality_2_name),
     },
@@ -65,15 +71,18 @@
     {
       data: "modality_2_type",
       title: Render.icon("type") + "Type",
+      tooltip: "Type de la modalité 2",
     },
     {
       data: "modality_2_nb_value",
       title: Render.icon("value") + "Valeurs",
+      tooltip: "Nombre de valeurs de la modalité 2",
       render: Render.num,
     },
     {
       data: "modality_2_nb_variable",
       title: Render.icon("variable") + "Variables",
+      tooltip: "Nombre de variables liées à la modalité 2",
       render: Render.num,
     },
   ]

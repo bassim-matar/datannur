@@ -10,6 +10,7 @@
     {
       data: "action",
       title: Render.icon("log") + "Log",
+      tooltip: "Action",
       render: data => {
         return wrap_long_text(data ? data : "")
       },
@@ -18,6 +19,7 @@
       data: "element",
       title: Render.icon("entity") + "Element",
       defaultContent: "",
+      tooltip: "Element impliqué",
       render: data => wrap_long_text(data ? data : ""),
     },
     Column.time_ago(),

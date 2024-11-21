@@ -6,7 +6,10 @@
 
   const has = {}
   for (const value of values) {
-    if (value.description) has.description = true
+    if (value.description) {
+      has.description = true
+      break
+    }
   }
 
   const columns = [Column.value()]

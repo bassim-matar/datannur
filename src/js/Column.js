@@ -27,7 +27,7 @@ export default class Column {
       data: "name",
       title: Render.icon(icon) + title_name,
       name: "name",
-      tooltip: "Nom de l'entité: " + title_name,
+      tooltip: "Nom",
       has_long_text: true,
       render: (data, type, row) => {
         let indent = false
@@ -56,6 +56,7 @@ export default class Column {
       data: "original_name",
       title: Render.icon("name") + "Nom d'origine",
       has_long_text: true,
+      tooltip: "Nom d'origine avant renommage",
       render: data => wrap_long_text(data),
     }
   }
@@ -65,6 +66,7 @@ export default class Column {
       name: "entity",
       title: Render.icon("entity") + "Entité",
       defaultContent: "",
+      tooltip: "Entité",
       filter_type: "select",
       render: (data, type, row) => {
         if (type === "sort" || type === "export" || type === "filter") {
@@ -92,6 +94,7 @@ export default class Column {
       title: Render.icon("folder") + "Dossier",
       defaultContent: "",
       has_long_text: true,
+      tooltip: "Dossier",
       render,
     }
   }
@@ -101,6 +104,7 @@ export default class Column {
       title: Render.icon("folder") + "Dossier",
       defaultContent: "",
       has_long_text: true,
+      tooltip: "Dossier",
       render: (data, _, row) => {
         if (!data) return ""
         return wrap_long_text(link("folder/" + data, row.folder_name))
@@ -113,7 +117,18 @@ export default class Column {
       data: "parents",
       title: Render.icon("folder_tree") + "Partie de",
       has_long_text: true,
+      tooltip: "Eléments parents",
       render,
+    }
+  }
+  static dataset_type() {
+    return {
+      data: "type_clean",
+      title: Render.icon("type") + "Type",
+      defaultContent: "",
+      name: "type",
+      filter_type: "select",
+      tooltip: "Type de dataset",
     }
   }
   static datatype() {
@@ -123,6 +138,7 @@ export default class Column {
       defaultContent: "",
       name: "type",
       filter_type: "select",
+      tooltip: "Type de données",
     }
   }
   static description() {
@@ -131,6 +147,7 @@ export default class Column {
       defaultContent: "",
       title: Render.icon("description") + "Description",
       has_long_text: true,
+      tooltip: "Description",
       render: data => wrap_long_text(data),
     }
   }
@@ -140,6 +157,7 @@ export default class Column {
       title: Render.icon("tag") + "Mots clés",
       defaultContent: "",
       has_long_text: true,
+      tooltip: "Mots clés directement associés",
       name: "tag",
       render: Render.tags,
     }
@@ -154,6 +172,7 @@ export default class Column {
       title: Render.icon("institution") + entity_names.owner,
       defaultContent: "",
       has_long_text: true,
+      tooltip: "Institution propriétaire",
       render,
     }
   }
@@ -167,6 +186,7 @@ export default class Column {
       title: Render.icon("institution") + entity_names.manager,
       defaultContent: "",
       has_long_text: true,
+      tooltip: "Institution gestionnaire",
       render,
     }
   }
@@ -175,6 +195,7 @@ export default class Column {
       data: "modalities",
       title: Render.icon("modality") + "Modalité",
       defaultContent: "",
+      tooltip: "Modalités",
       render: Render.modalities_name,
     }
   }
@@ -184,6 +205,7 @@ export default class Column {
       defaultContent: "",
       title: Render.icon("value") + "Valeur",
       has_long_text: true,
+      tooltip: "Valeur",
       render: data => wrap_long_text(data),
     }
   }
@@ -205,6 +227,7 @@ export default class Column {
       title: Render.icon("value") + "Valeurs",
       has_long_text: true,
       defaultContent: "",
+      tooltip: "Valeurs",
       render: Render.value,
     }
   }
@@ -214,6 +237,7 @@ export default class Column {
       defaultContent: "",
       filter_type: "input",
       title: Render.icon("duplicate") + "Doublons",
+      tooltip: "Nombre de valeurs dupliquées",
       render: Render.nb_duplicate,
     }
   }
@@ -223,6 +247,7 @@ export default class Column {
       defaultContent: "",
       filter_type: "input",
       title: Render.icon("missing") + "Manquant",
+      tooltip: "Nombre de valeurs manquantes",
       render: Render.nb_missing,
     }
   }
@@ -232,6 +257,7 @@ export default class Column {
       title: Render.icon("nb_row") + "Lignes",
       filter_type: "input",
       defaultContent: "",
+      tooltip: "Nombre de lignes",
       render: (data, type) => {
         if (type !== "display" ) {
           return data === "" || data === null ? 0 : parseInt(data)
@@ -250,6 +276,7 @@ export default class Column {
       filter_type: "select",
       title: Render.icon("frequency") + "Fréquence",
       has_long_text: true,
+      tooltip: "Fréquence de mise à jour",
       render: wrap_long_text,
     }
   }
@@ -261,6 +288,7 @@ export default class Column {
       title: Render.icon("date") + "Mis à jour",
       filter_type: "input",
       has_long_text: true,
+      tooltip: "Date de dernière mise à jour",
       render: data => {
         if (!data) return wrap_long_text()
         return wrap_long_text(`${data}, ${get_time_ago(data, true, true)}`)
@@ -274,6 +302,7 @@ export default class Column {
       defaultContent: "",
       filter_type: "input",
       has_long_text: true,
+      tooltip: "Date de la dernière mise à jour",
       render: data => {
         if (!data) return wrap_long_text()
         return wrap_long_text(`${get_datetime_sortable(data * 1000)}`)
@@ -287,6 +316,7 @@ export default class Column {
       defaultContent: "",
       filter_type: "input",
       has_long_text: true,
+      tooltip: "Moment de la dernière mise à jour",
       render: data => {
         if (!data) return wrap_long_text()
         return wrap_long_text(`${get_time_ago(data * 1000)}`)
@@ -323,6 +353,7 @@ export default class Column {
       title: Render.icon("localisation") + "Localisation",
       defaultContent: "",
       has_long_text: true,
+      tooltip: "Localisation géographique des données",
       render: wrap_long_text,
     }
   }
@@ -332,6 +363,7 @@ export default class Column {
       title: Render.icon("delivery_format") + "Format livraison",
       defaultContent: "",
       filter_type: "select",
+      tooltip: "Format de livraison des données",
     }
   }
   static period() {
@@ -340,6 +372,7 @@ export default class Column {
       title: Render.icon("date_range") + "Période",
       defaultContent: "",
       has_long_text: true,
+      tooltip: "Période couverte par les données",
       render: wrap_long_text,
     }
   }
@@ -350,6 +383,7 @@ export default class Column {
       defaultContent: "",
       date_type: "start",
       filter_type: "input",
+      tooltip: "Date de début de validité",
       render: (data, type) => {
         if (!["sort", "filter"].includes(type)) return data
         if (!data) data = 1000
@@ -364,6 +398,7 @@ export default class Column {
       defaultContent: "",
       date_type: "end",
       filter_type: "input",
+      tooltip: "Date de fin de validité",
       render: (data, type) => {
         if (!["sort", "filter"].includes(type)) return data
         if (!data) data = 9999
@@ -376,6 +411,7 @@ export default class Column {
       data: "dataset_name",
       title: Render.icon("dataset") + "Dataset",
       has_long_text: true,
+      tooltip: "Dataset",
       render: (data, type, row) =>
         wrap_long_text(
           link(parent_name + "/" + row[parent_name + "_id"], data)
@@ -385,9 +421,9 @@ export default class Column {
   static data_path() {
     return {
       data: "data_path",
-
       title: Render.icon("data_path") + "Emplacement",
       defaultContent: "",
+      tooltip: "Emplacement des données",
       render: Render.copy_cell,
     }
   }
@@ -398,6 +434,7 @@ export default class Column {
       title: Render.icon("link") + "Lien",
       defaultContent: "",
       has_long_text: true,
+      tooltip: "Emplacement du doc",
       render: data => {
         return wrap_long_text(`<a href="${data}" target="_blanck">${data}</a>`)
       },
@@ -412,6 +449,7 @@ export default class Column {
       filter_type: "input",
       defaultContent: "",
       from_length: true,
+      tooltip: "Nombre de docs",
       render: (data, type, row) => {
         if (!data.length) return ""
         const content = link(entity + "/" + row.id + "?tab=docs", data.length)
@@ -428,6 +466,7 @@ export default class Column {
       title:
         Render.icon(entity) + `<span class='hidden'>nb_${entity_plural}</span>`,
       filter_type: "input",
+      tooltip: "Nombre d'éléments de type " + entity,
       render: (data, type, row) => {
         if (!data) return ""
         const content = link(link_path + row.id + `?tab=${entity_plural}`, data)
@@ -441,6 +480,7 @@ export default class Column {
       data: "nb_folder_recursive",
       title: Render.icon("folder") + "<span class='hidden'>nb_folders</span>",
       filter_type: "input",
+      tooltip: "Nombre de dossiers",
       render: (data, type, row) => {
         if (!data) return ""
         const content = link(`${entity}/${row.id}?tab=folders`, data)
@@ -454,6 +494,7 @@ export default class Column {
       data: "nb_dataset_recursive",
       title: Render.icon("dataset") + "<span class='hidden'>nb_datasets</span>",
       filter_type: "input",
+      tooltip: "Nombre de datasets",
       render: (data, type, row) => {
         if (!data) return ""
         const content = link(entity + "/" + row.id + "?tab=datasets", data)
@@ -475,6 +516,7 @@ export default class Column {
       title: Render.icon("variable") + title,
       name: "variable",
       filter_type: "input",
+      tooltip: "Nombre de variables",
       render: (data, type, row) => {
         if (!data) return ""
         const content = link(
@@ -490,6 +532,7 @@ export default class Column {
     return {
       data: "metaFolder_id",
       title: Render.icon("folder") + "Dossier",
+      tooltip: "Dossier",
       render: data => link("metaFolder/" + data, data),
     }
   }
@@ -498,6 +541,7 @@ export default class Column {
       data: var_name,
       title: Render.icon("time_ago") + "Moment",
       defaultContent: "",
+      tooltip: "moment de l'ajout",
       render: (data, type) => {
         if (!data) return ""
         if (type === "sort" || type === "export") {
@@ -512,6 +556,7 @@ export default class Column {
       data: var_name,
       title: Render.icon("date") + "Date et heure",
       defaultContent: "",
+      tooltip: "Date et heure de l'ajout",
       render: data => (data ? get_datetime(data) : ""),
     }
   }

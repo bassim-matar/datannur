@@ -27,6 +27,7 @@
       title: Render.icon("name") + "Nom",
       defaultContent: "",
       name: "name",
+      tooltip: "Nom",
       render: (data, _, row) =>
         wrap_long_text(
           link(
@@ -39,6 +40,7 @@
       data: "description",
       title: Render.icon("description") + "Description",
       defaultContent: "",
+      tooltip: "Description",
       render: data => {
         if ([null, undefined].includes(data)) return wrap_long_text()
         return wrap_long_text(search_highlight(data, search_value))
@@ -48,6 +50,7 @@
       data: "folder_id",
       title: Render.icon("folder") + "Dossier",
       defaultContent: "",
+      tooltip: "Dossier",
       render: (data, _, row) => {
         if (!data) return wrap_long_text()
         return wrap_long_text(link("folder/" + data, row.folder_name))
