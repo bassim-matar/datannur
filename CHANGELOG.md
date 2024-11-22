@@ -4,6 +4,7 @@
 
 - added : stat popup shown from table column tooltip btn
 - added : tooltip description for all columns
+- added : metadataset relations in datasetInfo
 - changed : description info with correct padding and width on mobile
 
 ## 0.9.4 (2024-11-12)

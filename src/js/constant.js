@@ -80,4 +80,5 @@ export const entity_to_icon = {
   functionality: "screwdriver-wrench",
   preview: "eye",
   filter_info: "magnifying-glass-plus",
+  relation: "arrows-left-right",
 }

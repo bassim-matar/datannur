@@ -14,6 +14,7 @@
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
   import DataPathInfo from "@infoTable/DataPathInfo.svelte"
   import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
+  import MetaDatasetRelations from "@infoTable/MetaDatasetRelations.svelte"
 
   let { dataset_info } = $props()
 </script>
@@ -63,6 +64,9 @@
         </a>
       </td>
     </tr>
+  {/if}
+  {#if dataset_info.is_meta}
+    <MetaDatasetRelations dataset_id={dataset_info.id} />
   {/if}
 </TableWrapper>
 
