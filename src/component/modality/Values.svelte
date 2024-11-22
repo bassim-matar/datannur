@@ -4,16 +4,9 @@
 
   let { values } = $props()
 
-  const has = {}
-  for (const value of values) {
-    if (value.description) {
-      has.description = true
-      break
-    }
-  }
-
+  const has_description = values.some(value => value.description)
   const columns = [Column.value()]
-  if (has.description) columns.push(Column.description())
+  if (has_description) columns.push(Column.description())
 </script>
 
 {#if values.length > 0}
