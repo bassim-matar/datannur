@@ -13,7 +13,7 @@ const bundle_view = false
 
 const out_dir = "app"
 const mermaid_node_path = "node_modules/mermaid/dist/mermaid.min.js"
-const mermeid_public_path = "public/assets/external/mermaid.min.js"
+const mermaid_public_path = "public/assets/external/mermaid.min.js"
 const jsonjsdb_config = "public/data/jsonjsdb_config.html"
 const app_version = JSON.parse(await fs.readFile("package.json")).version
 
@@ -22,7 +22,7 @@ await Jsonjsdb_watcher.watch("public/data/db_source")
 await Jsonjsdb_watcher.update_preview("preview", "public/data/dataset")
 await Jsonjsdb_watcher.update_md_files("md_doc", "public/data/md")
 
-await fs.copyFile(mermaid_node_path, mermeid_public_path)
+await fs.copyFile(mermaid_node_path, mermaid_public_path)
 
 async function get_aliases(from) {
   const jsconfig = JSON.parse(await fs.readFile(from)).compilerOptions
