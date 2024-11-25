@@ -6,6 +6,7 @@
 - added : tooltip description for all columns
 - added : metadataset relations in datasetInfo
 - changed : description info with correct padding and width on mobile
+- changed : use arrow icon for metaDataset relations 
 
 ## 0.9.4 (2024-11-12)
 

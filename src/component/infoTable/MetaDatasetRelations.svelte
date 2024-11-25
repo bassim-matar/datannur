@@ -6,9 +6,9 @@
   let { dataset_id } = $props()
 
   const relation_types = [
-    { name: "one_to_one", symbol: "---", tooltip: "one to one" },
-    { name: "one_to_many", symbol: "-->", tooltip: "one to many" },
-    { name: "many_to_many", symbol: "<-->", tooltip: "many to many" },
+    { name: "one_to_one", symbol: "minus", tooltip: "one to one" },
+    { name: "one_to_many", symbol: "arrow-right-long", tooltip: "one to many" },
+    { name: "many_to_many", symbol: "arrows-left-right", tooltip: "many to many" },
   ]
 
   const aliases = []
@@ -74,7 +74,7 @@
                   >{relation[0]}</Link
                 >
                 <span class="use_tooltip" title={relation_type.type.tooltip}>
-                  {relation_type.type.symbol}
+                  <Icon type={relation_type.type.symbol} margin_right={false} />
                 </span>
                 <Link href={`metaDataset/${relation[1].split(" (")[0]}`}
                   >{relation[1]}</Link
