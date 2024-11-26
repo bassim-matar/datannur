@@ -6,7 +6,11 @@
   let { doc } = $props()
 </script>
 
-<div class="doc_content_wrapper" class:has_pdf_format={doc.type === "pdf"}>
+<div
+  class="doc_content_wrapper"
+  class:has_pdf_format={doc.type === "pdf"}
+  class:has_md_format={doc.type === "md"}
+>
   <div style="font-weight: bold;">
     <Icon type="search" /> Aperçu
   </div>
@@ -44,9 +48,13 @@
         }
       }
     }
-  }
 
-  
+    &.has_md_format {
+      .doc_content {
+        float: left;
+      }
+    }
+  }
 
   :global(html.rounded_design) {
     .doc_content_box {
@@ -58,6 +66,7 @@
     .doc_content_wrapper {
       display: block;
       width: 100%;
+      padding-top: 0;
     }
   }
   @media screen and (max-width: 600px) {

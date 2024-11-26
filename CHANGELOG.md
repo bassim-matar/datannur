@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- changed : improve md doc preview container alignment
+
 ## 0.9.5 (2024-11-26)
 
 - added : stat popup shown from table column tooltip btn
