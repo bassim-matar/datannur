@@ -82,7 +82,6 @@ export default defineConfig({
   base: "",
   server: { port: 8080, origin: "", open: true },
   test: { include: ["test/**/*.test.js"] },
-  css: { preprocessorOptions: { scss: { api: "modern-compiler" } } },
   build: {
     outDir: out_dir,
     chunkSizeWarningLimit: 1000,

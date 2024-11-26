@@ -1,12 +1,13 @@
 # datannur
 
-## unreleased
+## 0.9.5 (2024-11-26)
 
 - added : stat popup shown from table column tooltip btn
 - added : tooltip description for all columns
 - added : metadataset relations in datasetInfo
 - changed : description info with correct padding and width on mobile
-- changed : use arrow icon for metaDataset relations 
+- changed : use arrow icon for metaDataset relations
+- changed : upgrade to vite 6
 
 ## 0.9.4 (2024-11-12)
 
