@@ -1,5 +1,4 @@
 <script>
-  import db from "@db"
   import Link from "@layout/Link.svelte"
   import Icon from "@layout/Icon.svelte"
   import TableWrapper from "@infoTable/TableWrapper.svelte"
@@ -14,7 +13,6 @@
   let { variable_info } = $props()
 
   let parent_name = variable_info.is_meta ? "metaDataset" : "dataset"
-  let dataset = db.get(parent_name, variable_info[parent_name + "_id"])
 </script>
 
 <TableWrapper>
@@ -36,7 +34,9 @@
       Dataset
     </td>
     <td>
-      <Link href="{parent_name}/{dataset.id}">{dataset.name}</Link>
+      <Link href="{parent_name}/{variable_info.dataset_id}"
+        >{variable_info.dataset_name}</Link
+      >
     </td>
   </tr>
   <TagsInfo tags={variable_info.tags} />
@@ -51,7 +51,7 @@
     </td>
   </tr>
   <PeriodInfo period={variable_info.period} />
-  <RowInfo nb_row={dataset.nb_row} />
+  <RowInfo nb_row={variable_info.nb_row} />
   {#if variable_info.nb_missing > 0}
     <tr>
       <td>

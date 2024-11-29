@@ -1,5 +1,5 @@
 <script>
-  import db from "@db"
+  import { get_local_filter } from "@js/db"
   import Column from "@js/Column"
   import Datatable from "@datatable/Datatable.svelte"
 
@@ -9,38 +9,19 @@
   const tab_variables = is_meta ? "meta_dataset_variables" : "dataset_variables"
   const datasets_sorted = [...datasets]
 
-  function sort_dataset(to_sort) {
+  function sort_datasets(to_sort) {
     if (to_sort.length === 0) return
-
-    const by_name = (a, b) => a.name.localeCompare(b.name)
-    const by_folder = (a, b) =>
-      a.folder_name.localeCompare(b.folder_name) || by_name(a, b)
-
-    if (is_meta) {
-      const by_metaFolder = (a, b) =>
-        a.metaFolder_id.localeCompare(b.metaFolder_id) || by_name(a, b)
-      to_sort.sort(by_metaFolder)
-      return
-    }
-
-    if (!to_sort[0].hasOwnProperty("type")) {
-      to_sort.sort(db.use.folder ? by_folder : by_name)
-      return
-    }
-
-    const filters = db.get_all("filter")
+    const db_filters = get_local_filter()
     const filter_pos = {}
-    for (const i in filters) filter_pos[filters[i].id] = i
-    const by_type = (a, b) => filter_pos[a.type] - filter_pos[b.type]
-
-    if (db.use.folder) {
-      to_sort.sort((a, b) => by_type(a, b) || by_folder(a, b))
-    } else {
-      to_sort.sort((a, b) => by_type(a, b) || by_name(a, b))
-    }
+    for (const i in db_filters) filter_pos[db_filters[i].id] = i
+    to_sort.sort(
+      (a, b) =>
+        filter_pos[a.type] - filter_pos[b.type] ||
+        a.folder_name.localeCompare(b.folder_name) ||
+        a.name.localeCompare(b.name),
+    )
   }
-
-  sort_dataset(datasets_sorted)
+  sort_datasets(datasets_sorted)
 
   let nb_variable_max = 0
   let nb_row_max = 0
@@ -69,7 +50,6 @@
       }),
       Column.nb_row(nb_row_max),
     ]
-
     if (is_meta) {
       return [
         ...base,
@@ -78,7 +58,6 @@
         Column.last_update_timestamp(),
       ]
     }
-
     return [
       ...base,
       Column.nb_doc("dataset", nb_doc_max, true),
@@ -95,7 +74,6 @@
       Column.favorite(),
     ]
   }
-
   const columns = define_columns()
 </script>
 

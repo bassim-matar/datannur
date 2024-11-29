@@ -20,7 +20,8 @@
       Column.nb_values(nb_value_max),
       Column.values_preview()
     ]
-    return is_meta ? columns : columns.concat([
+    if (is_meta) return columns
+    return columns.concat([
       Column.dataset(),
       Column.folder(),
       Column.owner(),

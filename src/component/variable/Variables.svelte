@@ -1,75 +1,35 @@
 <script>
-  import db from "@db"
+  import { get_local_filter } from "@js/db"
   import Column from "@js/Column"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { variables, is_meta = false } = $props()
 
   const parent_name = is_meta ? "metaDataset" : "dataset"
-
-  let dataset_has_type = false
-  let nb_row_max = 0
-  let nb_value_max = 0
-
-  for (const variable of variables) {
-    variable.dataset_name = "[error not found]"
-    const dataset = db.get(parent_name, variable[parent_name + "_id"])
-    if (!dataset) {
-      console.error(
-        `dataset not found: ${variable[parent_name + "_id"]} for variable`,
-        variable,
-      )
-      continue
-    }
-    dataset_has_type = dataset.hasOwnProperty("type")
-    variable.dataset_name = dataset.name
-    variable.nb_row = dataset.nb_row
-    nb_row_max = Math.max(nb_row_max, dataset.nb_row)
-    nb_value_max = Math.max(nb_value_max, variable.nb_value)
-
-    if (is_meta) {
-      variable.metaFolder_id = dataset.metaFolder_id
-    } else {
-      if (db.use.owner) {
-        variable.owner_id = dataset.owner_id
-        variable.owner_name = dataset.owner_name
-      }
-      if (db.use.manager) {
-        variable.manager_id = dataset.manager_id
-        variable.manager_name = dataset.manager_name
-      }
-      variable.folder_id = dataset.folder_id
-      variable.folder_name = dataset.folder_name
-      variable.dataset_type = dataset.type
-    }
-  }
-
   const variables_sorted = [...variables]
-  if (!is_meta && variables.length > 0 && dataset_has_type) {
-    const filters = db.get_all("filter")
-    const filter_to_position = {}
-    for (const i in filters) {
-      filter_to_position[filters[i].id] = i
-    }
-    variables_sorted.sort(
+
+  function sort_variables(to_sort) {
+    if (to_sort.length === 0) return
+    const db_filters = get_local_filter()
+    const filter_pos = {}
+    for (const i in db_filters) filter_pos[db_filters[i].id] = i
+    to_sort.sort(
       (a, b) =>
-        filter_to_position[a.dataset_type] -
-          filter_to_position[b.dataset_type] ||
+        filter_pos[a.dataset_type] - filter_pos[b.dataset_type] ||
         a.folder_name.localeCompare(b.folder_name) ||
         a.dataset_name.localeCompare(b.dataset_name) ||
         a.num - b.num,
     )
   }
+  sort_variables(variables_sorted)
 
-  if (is_meta && variables.length > 0) {
-    variables_sorted.sort(
-      (a, b) =>
-        a.metaFolder_id.localeCompare(b.metaFolder_id) ||
-        a.dataset_name.localeCompare(b.dataset_name) ||
-        a.num - b.num,
-    )
+  let nb_row_max = 0
+  let nb_value_max = 0
+  for (const variable of variables) {
+    nb_row_max = Math.max(nb_row_max, variable.nb_row)
+    nb_value_max = Math.max(nb_value_max, variable.nb_value)
   }
-
+  
   function define_columns() {
     const base = [
       Column.name("variable", "Variable", { is_meta }),
@@ -98,7 +58,6 @@
       Column.favorite(),
     ]
   }
-
   const columns = define_columns()
 </script>
 

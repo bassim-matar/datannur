@@ -3,6 +3,7 @@
 ## unreleased
 
 - changed : improve md doc preview container alignment
+- fixed : datasets and variables order based on dataset type
 
 ## 0.9.5 (2024-11-26)
 

@@ -102,6 +102,25 @@ function add_docs(entity, item) {
   }
 }
 
+function variable_add_dataset_info(variable, dataset) {
+  if (!dataset) return
+  variable.nb_row = dataset.nb_row
+  variable.dataset_name = dataset.name
+  variable.dataset_type = dataset.type
+  if (db.use.folder) {
+    variable.folder_id = dataset.folder_id
+    variable.folder_name = dataset.folder_name
+  }
+  if (db.use.owner) {
+    variable.owner_id = dataset.owner_id
+    variable.owner_name = dataset.owner_name
+  }
+  if (db.use.manager) {
+    variable.manager_id = dataset.manager_id
+    variable.manager_name = dataset.manager_name
+  }
+}
+
 export function make_parents_relative(parent_id, items) {
   for (const item of items) {
     let position = 0
@@ -281,12 +300,7 @@ class Process {
       variable.values_preview = [...variable.values.slice(0, 10)]
       variable.type_clean = get_variable_type_clean(variable.type)
       const dataset = db.get("dataset", variable.dataset_id)
-      if (!dataset) return
-      if (db.use.folder) {
-        variable.folder_id = dataset.folder_id
-        variable.folder_name = dataset.folder_name
-      }
-      variable.nb_row = dataset.nb_row
+      variable_add_dataset_info(variable, dataset)
       const nb_values = get_nb_values(variable.values, variable)
       variable.nb_distinct = nb_values
       variable.nb_value = nb_values
@@ -330,6 +344,7 @@ class Process {
       metaDataset._entity = "metaDataset"
       metaDataset.is_meta = true
       metaDataset.folder = { id: metaDataset.metaFolder_id }
+      metaDataset.folder_name = metaDataset.metaFolder_id
       add_variable_num(metaDataset, "metaDataset", "metaVariable")
     })
   }
@@ -338,9 +353,14 @@ class Process {
       metaVariable._entity = "metaVariable"
       metaVariable.is_meta = true
       metaVariable.type_clean = get_variable_type_clean(metaVariable.type)
-      const metaDataset = db.get("metaDataset", metaVariable.metaDataset_id)
-      metaVariable.nb_row = metaDataset.nb_row
       metaVariable.nb_value = get_nb_values(metaVariable.values, metaVariable)
+
+      const metaDataset = db.get("metaDataset", metaVariable.metaDataset_id)
+      metaVariable.dataset_id = metaDataset.id
+      metaVariable.dataset_name = metaDataset.name
+      metaVariable.nb_row = metaDataset.nb_row
+      metaVariable.metaFolder_id = metaDataset.metaFolder_id
+      metaVariable.folder_name = metaDataset.metaFolder_id
     })
   }
 }
@@ -367,7 +387,7 @@ function add_doc_recursive() {
 }
 
 export function get_local_filter() {
-  let db_filters = []
+  const db_filters = []
   for (const config_row of db.get_all("config")) {
     if (config_row.id?.startsWith("filter_")) {
       db.use.filter = true
