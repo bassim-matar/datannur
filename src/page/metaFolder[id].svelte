@@ -8,18 +8,11 @@
 
   let metaDatasets = db.get_all("metaDataset", { metaFolder })
 
-  let metaVariables = []
-  for (const metaDataset of metaDatasets) {
-    metaVariables = metaVariables.concat(
-      db.get_all("metaVariable", { metaDataset }),
-    )
-  }
+  const metaVariables = metaDatasets.flatMap(metaDataset =>
+    db.get_all("metaVariable", { metaDataset }),
+  )
 
-  let tabs = tabs_helper({
-    folder_info: metaFolder,
-    metaDatasets,
-    metaVariables,
-  })
+  const tabs = tabs_helper({ folder: metaFolder, metaDatasets, metaVariables })
 </script>
 
 <section class="section">

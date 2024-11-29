@@ -10,21 +10,21 @@
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
   import TagsInfo from "@infoTable/TagsInfo.svelte"
 
-  let { variable_info } = $props()
+  let { variable } = $props()
 
-  let parent_name = variable_info.is_meta ? "metaDataset" : "dataset"
+  let parent_name = variable.is_meta ? "metaDataset" : "dataset"
 </script>
 
 <TableWrapper>
-  <IdInfo id={variable_info.id} />
-  {#if variable_info.original_name}
+  <IdInfo id={variable.id} />
+  {#if variable.original_name}
     <tr>
       <td>
         <Icon type="name" />
         Nom d'origine
       </td>
       <td>
-        {variable_info.original_name}
+        {variable.original_name}
       </td>
     </tr>
   {/if}
@@ -34,25 +34,25 @@
       Dataset
     </td>
     <td>
-      <Link href="{parent_name}/{variable_info.dataset_id}"
-        >{variable_info.dataset_name}</Link
+      <Link href="{parent_name}/{variable.dataset_id}"
+        >{variable.dataset_name}</Link
       >
     </td>
   </tr>
-  <TagsInfo tags={variable_info.tags} />
-  <TypeInfo type={variable_info.type_clean} />
+  <TagsInfo tags={variable.tags} />
+  <TypeInfo type={variable.type_clean} />
   <tr>
     <td>
       <Icon type="hashtag" />
       Position
     </td>
     <td>
-      {variable_info.num}
+      {variable.num}
     </td>
   </tr>
-  <PeriodInfo period={variable_info.period} />
-  <RowInfo nb_row={variable_info.nb_row} />
-  {#if variable_info.nb_missing > 0}
+  <PeriodInfo period={variable.period} />
+  <RowInfo nb_row={variable.nb_row} />
+  {#if variable.nb_missing > 0}
     <tr>
       <td>
         <Icon type="missing" />
@@ -61,13 +61,13 @@
       <td>
         <PercentBar
           type="missing"
-          value={variable_info.nb_missing}
-          nb_row={variable_info.nb_row}
+          value={variable.nb_missing}
+          nb_row={variable.nb_row}
         />
       </td>
     </tr>
   {/if}
-  {#if variable_info.nb_duplicate > 0}
+  {#if variable.nb_duplicate > 0}
     <tr>
       <td>
         <Icon type="duplicate" />
@@ -76,13 +76,13 @@
       <td>
         <PercentBar
           type="duplicate"
-          value={variable_info.nb_duplicate}
-          nb_row={variable_info.nb_row}
+          value={variable.nb_duplicate}
+          nb_row={variable.nb_row}
         />
       </td>
     </tr>
   {/if}
-  {#if variable_info.nb_distinct > 0}
+  {#if variable.nb_distinct > 0}
     <tr>
       <td>
         <Icon type="value" />
@@ -91,13 +91,13 @@
       <td>
         <PercentBar
           type="value"
-          value={variable_info.nb_distinct}
-          nb_row={variable_info.nb_row}
+          value={variable.nb_distinct}
+          nb_row={variable.nb_row}
         />
       </td>
     </tr>
   {/if}
-  {#if variable_info.modalities?.length > 0}
+  {#if variable.modalities?.length > 0}
     <tr>
       <td>
         <Icon type="modality" />
@@ -106,7 +106,7 @@
       <td>
         <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
           <ul>
-            {#each variable_info.modalities as modality}
+            {#each variable.modalities as modality}
               <li>
                 <Link href="modality/{modality.id}">
                   {modality.name}
@@ -119,7 +119,7 @@
     </tr>
   {/if}
 </TableWrapper>
-<DescriptionInfo description={variable_info.description} />
+<DescriptionInfo description={variable.description} />
 
 <style lang="scss">
   @use "../../main.scss" as *;

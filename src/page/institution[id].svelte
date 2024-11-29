@@ -18,24 +18,20 @@
 
   let key_tab = $state(1)
 
-  let institutions = db.get_all_childs("institution", institution.id)
+  const institutions = db.get_all_childs("institution", institution.id)
   make_parents_relative(institution.id, institutions)
   add_minimum_deep(institutions)
 
-  let folders = get_recursive("institution", institution.id, "folder")
+  const folders = get_recursive("institution", institution.id, "folder")
   make_parents_relative(false, folders)
   add_minimum_deep(folders)
 
-  let datasets = get_recursive("institution", institution.id, "dataset")
-  let variables = []
-  for (const dataset of datasets) {
-    variables = variables.concat(db.get_all("variable", { dataset }))
-  }
+  const datasets = get_recursive("institution", institution.id, "dataset")
+  const variables = datasets.flatMap(dataset =>
+    db.get_all("variable", { dataset }),
+  )
 
-  let modalities = []
-  for (const variable of variables) {
-    modalities = modalities.concat(variable.modalities)
-  }
+  let modalities = variables.flatMap(variable => variable.modalities)
   modalities = remove_duplicate_by_id(modalities)
 
   const tags = Tags.get_from_entities({ institutions, folders, datasets })
@@ -52,8 +48,8 @@
     { entity: "modality", items: modalities },
   ]
 
-  let tabs = tabs_helper({
-    institution_info: institution,
+  const tabs = tabs_helper({
+    institution,
     docs: institution.docs_recursive,
     institutions,
     folders,

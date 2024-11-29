@@ -207,13 +207,13 @@ export const all_tabs = {
 
 const info_items = {
   about_file: AboutFile,
-  institution_info: InstitutionInfo,
-  folder_info: FolderInfo,
-  tag_info: TagInfo,
-  doc_info: DocInfo,
-  dataset_info: DatasetInfo,
-  variable_info: VariableInfo,
-  modality_info: ModalityInfo,
+  institution: InstitutionInfo,
+  folder: FolderInfo,
+  tag: TagInfo,
+  doc: DocInfo,
+  dataset: DatasetInfo,
+  variable: VariableInfo,
+  modality: ModalityInfo,
 }
 for (const [key, value] of Object.entries(info_items)) {
   all_tabs[key] = {

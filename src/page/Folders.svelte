@@ -19,7 +19,7 @@
     add_minimum_deep(tags, true, true)
   }
 
-  let tabs = tabs_helper({
+  const tabs = tabs_helper({
     folders,
     tags,
     stat: [{ entity: "folder", items: folders }],

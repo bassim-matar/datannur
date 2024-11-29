@@ -16,58 +16,47 @@
   import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
   import MetaDatasetRelations from "@infoTable/MetaDatasetRelations.svelte"
 
-  let { dataset_info } = $props()
+  let { dataset } = $props()
 </script>
 
 <TableWrapper>
-  <IdInfo id={dataset_info.id} />
-  <InstitutionInfo type="owner" institution_id={dataset_info.owner_id} />
-  <InstitutionInfo type="manager" institution_id={dataset_info.manager_id} />
-  <FolderInfo
-    folder_id={dataset_info.folder?.id}
-    is_meta={dataset_info.is_meta}
-  />
-  <TagsInfo tags={dataset_info.tags} />
-  {#if dataset_info.type_clean}
+  <IdInfo id={dataset.id} />
+  <InstitutionInfo type="owner" institution_id={dataset.owner_id} />
+  <InstitutionInfo type="manager" institution_id={dataset.manager_id} />
+  <FolderInfo folder_id={dataset.folder?.id} is_meta={dataset.is_meta} />
+  <TagsInfo tags={dataset.tags} />
+  {#if dataset.type_clean}
     <tr>
-      <td>
-        <Icon type="type" />
-        Type
-      </td>
-      <td>
-        {dataset_info.type_clean}
-      </td>
+      <td><Icon type="type" /> Type</td>
+      <td>{dataset.type_clean}</td>
     </tr>
   {/if}
-  <RowInfo nb_row={dataset_info.nb_row} />
-  <LocalisationInfo localisation={dataset_info.localisation} />
-  <DeliveryFormatInfo delivery_format={dataset_info.delivery_format} />
-  <FrequencyInfo frequency={dataset_info.updating_each} />
-  {#if dataset_info.is_meta}
+  <RowInfo nb_row={dataset.nb_row} />
+  <LocalisationInfo localisation={dataset.localisation} />
+  <DeliveryFormatInfo delivery_format={dataset.delivery_format} />
+  <FrequencyInfo frequency={dataset.updating_each} />
+  {#if dataset.is_meta}
     <LastUpdateTimestampInfo
-      last_update_timestamp={dataset_info.last_update_timestamp}
+      last_update_timestamp={dataset.last_update_timestamp}
     />
   {:else}
-    <LastUpdateInfo last_update_date={dataset_info.last_update_date} />
+    <LastUpdateInfo last_update_date={dataset.last_update_date} />
   {/if}
-  <PeriodInfo period={dataset_info.period} />
-  <DataPathInfo data_path={dataset_info.data_path} />
-  {#if dataset_info.link}
+  <PeriodInfo period={dataset.period} />
+  <DataPathInfo data_path={dataset.data_path} />
+  {#if dataset.link}
     <tr>
+      <td><Icon type="download_file" /> Données</td>
       <td>
-        <Icon type="download_file" />
-        Données
-      </td>
-      <td>
-        <a href={dataset_info.link} target="_blanck" class="break_line">
-          {dataset_info.link}
+        <a href={dataset.link} target="_blanck" class="break_line">
+          {dataset.link}
         </a>
       </td>
     </tr>
   {/if}
-  {#if dataset_info.is_meta}
-    <MetaDatasetRelations dataset_id={dataset_info.id} />
+  {#if dataset.is_meta}
+    <MetaDatasetRelations dataset_id={dataset.id} />
   {/if}
 </TableWrapper>
 
-<DescriptionInfo description={dataset_info.description} />
+<DescriptionInfo description={dataset.description} />

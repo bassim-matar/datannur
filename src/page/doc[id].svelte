@@ -20,9 +20,8 @@
   add_minimum_deep(folders)
   add_minimum_deep(tags)
 
-
   let tabs = tabs_helper({
-    doc_info: doc,
+    doc,
     institutions,
     folders,
     tags,

@@ -6,13 +6,9 @@
 
   let { modality } = $props()
 
-  let variables = db.get_all("variable", { modality })
-  let values = modality.values
-  let tabs = tabs_helper({
-    modality_info: modality,
-    values,
-    variables,
-  })
+  const variables = db.get_all("variable", { modality })
+  const values = modality.values
+  const tabs = tabs_helper({ modality, values, variables })
 </script>
 
 <section class="section">

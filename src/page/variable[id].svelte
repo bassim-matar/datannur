@@ -15,7 +15,7 @@
     }
   }
   let tabs = tabs_helper({
-    variable_info: variable,
+    variable,
     variable_values: variable.values,
     variable_preview,
   })

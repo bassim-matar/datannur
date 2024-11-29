@@ -17,20 +17,16 @@
 
   let { folder } = $props()
 
-  let folders = db.get_all_childs("folder", folder.id)
+  const folders = db.get_all_childs("folder", folder.id)
   make_parents_relative(folder.id, folders)
   add_minimum_deep(folders)
 
-  let datasets = get_recursive("folder", folder.id, "dataset")
-  let variables = []
-  for (const dataset of datasets) {
-    variables = variables.concat(db.get_all("variable", { dataset }))
-  }
+  const datasets = get_recursive("folder", folder.id, "dataset")
+  const variables = datasets.flatMap(dataset =>
+    db.get_all("variable", { dataset }),
+  )
 
-  let modalities = []
-  for (const variable of variables) {
-    modalities = modalities.concat(variable.modalities)
-  }
+  let modalities = variables.flatMap(variable => variable.modalities)
   let direct_modalities = db.get_all("modality", { folder })
   modalities = modalities.concat(direct_modalities)
   modalities = remove_duplicate_by_id(modalities)
@@ -48,8 +44,8 @@
     { entity: "modality", items: modalities },
   ]
 
-  let tabs = tabs_helper({
-    folder_info: folder,
+  const tabs = tabs_helper({
+    folder,
     docs: folder.docs_recursive,
     folders,
     tags,

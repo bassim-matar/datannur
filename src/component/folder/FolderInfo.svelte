@@ -15,47 +15,47 @@
   import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
   import DeepLevelInfo from "@infoTable/DeepLevelInfo.svelte"
 
-  let { folder_info } = $props()
+  let { folder } = $props()
 </script>
 
 <TableWrapper>
-  <IdInfo id={folder_info.id} />
-  {#if !folder_info.is_meta}
-    <DeepLevelInfo level={folder_info.parents.length + 1} />
-    {#if folder_info.parent_id}
-      <FolderInfo folder_id={folder_info.id} is_self={true} />
+  <IdInfo id={folder.id} />
+  {#if !folder.is_meta}
+    <DeepLevelInfo level={folder.parents.length + 1} />
+    {#if folder.parent_id}
+      <FolderInfo folder_id={folder.id} is_self={true} />
     {/if}
-    <InstitutionInfo type="owner" institution_id={folder_info.owner_id} />
-    <InstitutionInfo type="manager" institution_id={folder_info.manager_id} />
-    <TagsInfo tags={folder_info.tags} />
-    <LocalisationInfo localisation={folder_info.localisation} />
-    {#if folder_info.survey_type}
+    <InstitutionInfo type="owner" institution_id={folder.owner_id} />
+    <InstitutionInfo type="manager" institution_id={folder.manager_id} />
+    <TagsInfo tags={folder.tags} />
+    <LocalisationInfo localisation={folder.localisation} />
+    {#if folder.survey_type}
       <tr>
         <td><Icon type="survey_type" /> Type d'enquête</td>
-        <td>{folder_info.survey_type}</td>
+        <td>{folder.survey_type}</td>
       </tr>
     {/if}
-    <DeliveryFormatInfo delivery_format={folder_info.delivery_format} />
-    <FrequencyInfo frequency={folder_info.updating_each} />
-    <LastUpdateInfo last_update_date={folder_info.last_update_date} />
-    <PeriodInfo period={folder_info.period} />
-    {#if folder_info.metadata_path}
+    <DeliveryFormatInfo delivery_format={folder.delivery_format} />
+    <FrequencyInfo frequency={folder.updating_each} />
+    <LastUpdateInfo last_update_date={folder.last_update_date} />
+    <PeriodInfo period={folder.period} />
+    {#if folder.metadata_path}
       <tr>
         <td><Icon type="metadata_path" /> Metadonnées</td>
-        <td><CopyText text={folder_info.metadata_path} /></td>
+        <td><CopyText text={folder.metadata_path} /></td>
       </tr>
     {/if}
-    <DataPathInfo data_path={folder_info.data_path} />
-    {#if folder_info.git_code}
+    <DataPathInfo data_path={folder.data_path} />
+    {#if folder.git_code}
       <tr>
         <td><Icon type="git_code" /> GIT code</td>
         <td>
-          <a href={folder_info.git_code} target="_blanck" class="break_line">
-            {folder_info.git_code}
+          <a href={folder.git_code} target="_blanck" class="break_line">
+            {folder.git_code}
           </a>
         </td>
       </tr>
     {/if}
   {/if}
 </TableWrapper>
-<DescriptionInfo description={folder_info.description} />
+<DescriptionInfo description={folder.description} />

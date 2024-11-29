@@ -18,7 +18,7 @@
   variable_preview = filter_keys(dataset_preview, [metaVariable.name])
 
   let tabs = tabs_helper({
-    variable_info: metaVariable,
+    variable: metaVariable,
     variable_metaValues: metaVariable.values,
     variable_preview,
   })

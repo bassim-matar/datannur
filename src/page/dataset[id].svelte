@@ -30,7 +30,7 @@
   ]
 
   let tabs = tabs_helper({
-    dataset_info: dataset,
+    dataset,
     docs: dataset.docs,
     dataset_variables,
     modalities,

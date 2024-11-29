@@ -7,41 +7,35 @@
   import TagsInfo from "@infoTable/TagsInfo.svelte"
   import DeepLevelInfo from "@infoTable/DeepLevelInfo.svelte"
 
-  let { institution_info } = $props()
+  let { institution } = $props()
 </script>
 
 <TableWrapper>
-  <IdInfo id={institution_info.id} />
-  <DeepLevelInfo level={institution_info.parents.length + 1} />
-  {#if institution_info.parent_id}
-    <InstitutionInfo institution_id={institution_info.id} is_self={true} />
+  <IdInfo id={institution.id} />
+  <DeepLevelInfo level={institution.parents.length + 1} />
+  {#if institution.parent_id}
+    <InstitutionInfo institution_id={institution.id} is_self={true} />
   {/if}
-  <TagsInfo tags={institution_info.tags} />
-  {#if institution_info.email}
+  <TagsInfo tags={institution.tags} />
+  {#if institution.email}
     <tr>
+      <td><Icon type="email" /> Email</td>
       <td>
-        <Icon type="email" />
-        Email
-      </td>
-      <td>
-        <a href="mailto:{institution_info.email}" target="_blanck">
-          {institution_info.email}
+        <a href="mailto:{institution.email}" target="_blanck">
+          {institution.email}
         </a>
       </td>
     </tr>
   {/if}
-  {#if institution_info.phone}
+  {#if institution.phone}
     <tr>
+      <td><Icon type="phone" /> Téléphone</td>
       <td>
-        <Icon type="phone" />
-        Téléphone
-      </td>
-      <td>
-        <a href="tel:{institution_info.phone}" target="_blanck">
-          {institution_info.phone}
+        <a href="tel:{institution.phone}" target="_blanck">
+          {institution.phone}
         </a>
       </td>
     </tr>
   {/if}
 </TableWrapper>
-<DescriptionInfo description={institution_info.description} />
+<DescriptionInfo description={institution.description} />

@@ -5,12 +5,12 @@
   import TypeInfo from "@infoTable/TypeInfo.svelte"
   import FolderInfo from "@infoTable/FolderInfo.svelte"
 
-  let { modality_info } = $props()
+  let { modality } = $props()
 </script>
 
 <TableWrapper>
-  <IdInfo id={modality_info.id} />
-  <TypeInfo type={modality_info.type_clean} />
-  <FolderInfo folder_id={modality_info.folder_id} />
+  <IdInfo id={modality.id} />
+  <TypeInfo type={modality.type_clean} />
+  <FolderInfo folder_id={modality.folder_id} />
 </TableWrapper>
-<DescriptionInfo description={modality_info.description} />
+<DescriptionInfo description={modality.description} />

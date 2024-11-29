@@ -6,29 +6,27 @@
   import LastUpdateInfo from "@infoTable/LastUpdateInfo.svelte"
   import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"
 
-  let { doc_info } = $props()
+  let { doc } = $props()
 </script>
 
 <TableWrapper>
-  <IdInfo id={doc_info.id} />
+  <IdInfo id={doc.id} />
   <tr>
     <td><Icon type="type" /> Type</td>
-    <td>{doc_info.type} <Icon type={doc_info.type} /></td>
+    <td>{doc.type} <Icon type={doc.type} /></td>
   </tr>
   <tr>
     <td><Icon type="link" /> Lien</td>
-    <td
-      ><a class="break_line" href={doc_info.path} target="_blanck"
-        >{doc_info.path}</a
-      ></td
-    >
+    <td>
+      <a class="break_line" href={doc.path} target="_blanck">{doc.path}</a>
+    </td>
   </tr>
   <LastUpdateInfo
-    last_update_date={doc_info.last_update}
+    last_update_date={doc.last_update}
     intraday={true}
     from_timestamp={true}
   />
-  <DescriptionInfo description={doc_info.description} inside_table={true} />
+  <DescriptionInfo description={doc.description} inside_table={true} />
 </TableWrapper>
 
-<DocPreview doc={doc_info} />
+<DocPreview {doc} />

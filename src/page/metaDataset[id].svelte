@@ -6,7 +6,7 @@
   import Title from "@layout/Title.svelte"
 
   let { metaDataset } = $props()
-  
+
   let meta_dataset_variables = db.get_all("metaVariable", { metaDataset })
 
   let dataset_preview = []
@@ -19,7 +19,7 @@
   }
 
   let tabs = tabs_helper({
-    dataset_info: metaDataset,
+    dataset: metaDataset,
     meta_dataset_variables,
     dataset_preview,
   })

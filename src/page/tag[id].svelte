@@ -76,7 +76,7 @@
     ]
 
     tabs = tabs_helper({
-      tag_info: tag,
+      tag,
       institutions,
       folders,
       tags,
