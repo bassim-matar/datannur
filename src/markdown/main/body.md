@@ -1,10 +1,10 @@
-# datannur, le catalogue de données portable
+# L'annuaire de données pour les centraliser, certifier, standardiser
 
-Permet de centraliser, rechercher et visualiser les informations sur une collection de jeux de données
+Recherchez rapidement et organisez efficacement l'information pour maximiser votre productivité
 
-Pour améliorer l’organisation des données et faciliter leur partage et leur documentation
+Garantissez la qualité, la conformité et la protection des données pour renforcer votre crédibilité
 
-Simple et flexible, s’intègre rapidement dans tous types d’environnements
+Améliorez l'interopérabilité et la réutilisation des données pour développer vos collaborations
 
 - **Facile** :
 Aucune installation ou configuration nécessaire. datannur est le catalogue le plus simple à implémenter et maintenir

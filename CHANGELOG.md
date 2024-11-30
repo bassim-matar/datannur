@@ -3,6 +3,7 @@
 ## unreleased
 
 - changed : improve md doc preview container alignment
+- changed : improve main page text content
 - fixed : datasets and variables order based on dataset type
 - refactor : remove suffix _info from all info files
 
