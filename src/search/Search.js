@@ -7,21 +7,37 @@ function removeDiacritics(str) {
   if (typeof str !== "string") return str
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 }
-export function search_highlight(value, search) {
-  if (!search) return value
-  if (search.trim() === "") return value
-  const normalizedSearch = removeDiacritics(search)
-    .replaceAll("e", "[eéèêë]")
-    .replaceAll("a", "[aâäà]")
-    .replaceAll("i", "[iîï]")
-    .replaceAll("o", "[oôö]")
-    .replaceAll("u", "[uûü]")
-    .replaceAll("c", "[cç]")
 
-  return escape_html_entities(value).replace(
-    new RegExp(`(${normalizedSearch})`, "gi"),
-    `<span class="search_highlight">$1</span>`
-  )
+const charMap = {
+  a: "[aâäà]",
+  e: "[eéèêë]",
+  i: "[iîï]",
+  o: "[oôö]",
+  u: "[uûü]",
+  c: "[cç]",
+}
+
+export function search_highlight(value, search) {
+  if (!search || search.trim() === "") return value
+
+  const normalizedSearch = removeDiacritics(search)
+    .split("")
+    .map(char => {
+      const lowerChar = char.toLowerCase()
+      if (charMap[lowerChar]) {
+        return charMap[lowerChar]
+      } else {
+        return char.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&")
+      }
+    })
+    .join("")
+
+  const pattern = `(^|[^\\p{L}])(${normalizedSearch})`
+  const regex = new RegExp(pattern, "giu")
+
+  return escape_html_entities(value).replace(regex, (match, p1, p2) => {
+    return `${p1}<span class="search_highlight">${p2}</span>`
+  })
 }
 
 export default class Search {

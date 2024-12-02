@@ -1,5 +1,4 @@
 <script>
-  import { tick } from "svelte"
   import db from "@db"
   import SearchBarResultRow from "./SearchBarResultRow.svelte"
 
@@ -16,17 +15,18 @@
   let height = $state(0)
   let has_scroll_bar = $state(false)
 
-  $effect(async () => {
+  const plural = $derived(nb_result > 1 ? "s" : "")
+
+  $effect(() => {
     if (nb_result !== "") {
-      await tick()
-      const real_height = table_wrapper.offsetHeight + 20
-      const window_height = window.innerHeight * 0.9
-      has_scroll_bar = real_height > window_height
-      height = Math.min(real_height, window_height)
+      setTimeout(() => {
+        const real_height = table_wrapper.offsetHeight + 20
+        const window_height = window.innerHeight * 0.9
+        has_scroll_bar = real_height > window_height
+        height = Math.min(real_height, window_height)
+      }, 1)
     }
   })
-
-  let plural = $derived(nb_result > 1 ? "s" : "")
 </script>
 
 <div id="search_bar_result_outer">

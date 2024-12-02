@@ -8,9 +8,10 @@
     mode = "normal",
   } = $props()
 
-  let fa_type = "fas"
-  let icon = entity_to_icon_name(type)
-  let class_names = icon.startsWith("fa-brands") ? icon : `${fa_type} fa-${icon}`
+  const icon = $derived(entity_to_icon_name(type))
+  const class_names = $derived(
+    icon.startsWith("fa-brands") ? icon : `fas fa-${icon}`,
+  )
 </script>
 
 {#if type}

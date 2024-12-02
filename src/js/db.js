@@ -397,10 +397,8 @@ export function get_local_filter() {
       })
     }
   }
-  if (db_filters.length === 0) {
-    db_filters = db.get_all("filter")
-  }
-  return db_filters
+  if (db_filters.length > 0) return db_filters
+  return db.get_all("filter")
 }
 
 export function db_add_processed_data() {

@@ -109,7 +109,6 @@
       item_num += 1
       callback(item, item_num, item.entity)
     }
-    all_search = all_search
   }
 
   function update_nav_position(move) {
@@ -120,7 +119,6 @@
     apply_to_all_search((item, item_num) => {
       item.nav_hover = item_num === nav_position
     })
-    all_search = all_search
   }
 
   function on_click() {
