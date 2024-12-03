@@ -1,6 +1,6 @@
-# L'annuaire de données pour les centraliser, certifier, standardiser
+# L'annuaire de données pour les centraliser, sécuriser, standardiser
 
-Recherchez rapidement et organisez efficacement l'information pour maximiser votre productivité
+Recherchez et organisez efficacement l'information pour maximiser votre productivité
 
 Garantissez la qualité, la conformité et la protection des données pour renforcer votre crédibilité
 
