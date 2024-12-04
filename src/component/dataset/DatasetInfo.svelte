@@ -32,9 +32,6 @@
     </tr>
   {/if}
   <RowInfo nb_row={dataset.nb_row} />
-  <LocalisationInfo localisation={dataset.localisation} />
-  <DeliveryFormatInfo delivery_format={dataset.delivery_format} />
-  <FrequencyInfo frequency={dataset.updating_each} />
   {#if dataset.is_meta}
     <LastUpdateTimestampInfo
       last_update_timestamp={dataset.last_update_timestamp}
@@ -42,7 +39,10 @@
   {:else}
     <LastUpdateInfo last_update_date={dataset.last_update_date} />
   {/if}
-  <PeriodInfo period={dataset.period} />
+  <FrequencyInfo frequency={dataset.updating_each} />
+  <PeriodInfo period={dataset.period} period_duration={dataset.period_duration} />
+  <LocalisationInfo localisation={dataset.localisation} />
+  <DeliveryFormatInfo delivery_format={dataset.delivery_format} />
   <DataPathInfo data_path={dataset.data_path} />
   {#if dataset.link}
     <tr>

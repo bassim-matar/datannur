@@ -13,6 +13,7 @@ import {
 } from "@js/Time"
 import { entity_names, entity_to_icon } from "@js/constant"
 import Render from "@js/Render"
+import { data } from "jquery"
 
 export default class Column {
   static id() {
@@ -259,7 +260,7 @@ export default class Column {
       defaultContent: "",
       tooltip: "Nombre de lignes",
       render: (data, type) => {
-        if (type !== "display" ) {
+        if (type !== "display") {
           return data === "" || data === null ? 0 : parseInt(data)
         }
         if (!data) return ""
@@ -275,9 +276,7 @@ export default class Column {
       defaultContent: "",
       filter_type: "select",
       title: Render.icon("frequency") + "Fréquence",
-      has_long_text: true,
       tooltip: "Fréquence de mise à jour",
-      render: wrap_long_text,
     }
   }
   static last_update() {
@@ -287,11 +286,11 @@ export default class Column {
       defaultContent: "",
       title: Render.icon("date") + "Mis à jour",
       filter_type: "input",
-      has_long_text: true,
       tooltip: "Date de dernière mise à jour",
-      render: data => {
-        if (!data) return wrap_long_text()
-        return wrap_long_text(`${data}, ${get_time_ago(data, true, true)}`)
+      render: (data, type) => {
+        if (!data) return ""
+        if (type !== "display") return data
+        return `${get_time_ago(data, true, true)}<br>${data}`
       },
     }
   }
@@ -301,29 +300,16 @@ export default class Column {
       title: Render.icon("date") + "Mis à jour",
       defaultContent: "",
       filter_type: "input",
-      has_long_text: true,
-      tooltip: "Date de la dernière mise à jour",
-      render: data => {
-        if (!data) return wrap_long_text()
-        return wrap_long_text(`${get_datetime_sortable(data * 1000)}`)
-      },
-    }
-  }
-  static last_update_time_ago() {
-    return {
-      data: "last_update_timestamp",
-      title: Render.icon("date") + "Moment",
-      defaultContent: "",
-      filter_type: "input",
-      has_long_text: true,
       tooltip: "Moment de la dernière mise à jour",
-      render: data => {
-        if (!data) return wrap_long_text()
-        return wrap_long_text(`${get_time_ago(data * 1000)}`)
+      render: (data, type) => {
+        if (!data) return ""
+        if (type !== "display") return data
+        return `${get_time_ago(data * 1000)}<br>${get_datetime_sortable(
+          data * 1000
+        )}`
       },
     }
   }
-
   static favorite() {
     return {
       data: "is_favorite",
@@ -352,9 +338,11 @@ export default class Column {
       data: "localisation",
       title: Render.icon("localisation") + "Localisation",
       defaultContent: "",
-      has_long_text: true,
       tooltip: "Localisation géographique des données",
-      render: wrap_long_text,
+      render: data => {
+        if (!data) return ""
+        return data
+      },
     }
   }
   static delivery_format() {
@@ -371,9 +359,14 @@ export default class Column {
       data: "period",
       title: Render.icon("date_range") + "Période",
       defaultContent: "",
-      has_long_text: true,
       tooltip: "Période couverte par les données",
-      render: wrap_long_text,
+      render: (data, type, row) => {
+        if (!data) return ""
+        if (type !== "display") return data
+        let text = data
+        if (row.period_duration) text += "<br>" + row.period_duration
+        return text
+      },
     }
   }
   static start_date() {
@@ -536,28 +529,17 @@ export default class Column {
       render: data => link("metaFolder/" + data, data),
     }
   }
-  static time_ago(var_name = "timestamp") {
+  static timestamp(var_name = "timestamp") {
     return {
       data: var_name,
-      title: Render.icon("time_ago") + "Moment",
+      title: Render.icon("date") + "Moment",
       defaultContent: "",
       tooltip: "moment de l'ajout",
       render: (data, type) => {
         if (!data) return ""
-        if (type === "sort" || type === "export") {
-          return data
-        }
-        return get_time_ago(data)
+        if (type !== "display") return get_datetime(data)
+        return `${get_time_ago(data)}<br>${get_datetime(data)}`
       },
-    }
-  }
-  static timestamp(var_name = "timestamp") {
-    return {
-      data: var_name,
-      title: Render.icon("date") + "Date et heure",
-      defaultContent: "",
-      tooltip: "Date et heure de l'ajout",
-      render: data => (data ? get_datetime(data) : ""),
     }
   }
 }

@@ -54,7 +54,6 @@
       return [
         ...base,
         Column.metaFolder(),
-        Column.last_update_time_ago(),
         Column.last_update_timestamp(),
       ]
     }
@@ -63,13 +62,13 @@
       Column.nb_doc("dataset", nb_doc_max, true),
       Column.folder(),
       Column.tag(),
+      Column.last_update(),
+      Column.frequency(),
+      Column.period(),
       Column.owner(),
       Column.manager(),
       Column.localisation(),
       Column.delivery_format(),
-      Column.frequency(),
-      Column.last_update(),
-      Column.period(),
       Column.data_path(),
       Column.favorite(),
     ]

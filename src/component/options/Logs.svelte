@@ -22,7 +22,6 @@
       tooltip: "Element impliqué",
       render: data => wrap_long_text(data ? data : ""),
     },
-    Column.time_ago(),
     Column.timestamp(),
   ]
 </script>

@@ -11,7 +11,6 @@
     Column.name(),
     Column.description(),
     Column.folder_simple(),
-    Column.time_ago("favorite_timestamp"),
     Column.timestamp("favorite_timestamp"),
     Column.favorite(),
   ]

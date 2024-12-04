@@ -88,8 +88,8 @@ function add_period(item) {
   if (item.start_date && item.start_date === item.end_date)
     item.period = item.start_date
   else if (item.start_date && item.end_date) {
-    const period = get_period(item.start_date, item.end_date, true)
-    item.period = `${item.start_date} - ${item.end_date} (${period})`
+    item.period_duration = get_period(item.start_date, item.end_date, true)
+    item.period = `${item.start_date} - ${item.end_date}`
   } else if (item.start_date) item.period = `dès ${item.start_date}`
   else if (item.end_date) item.period = `jusqu'à ${item.end_date}`
 }

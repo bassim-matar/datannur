@@ -28,6 +28,9 @@
     <InstitutionInfo type="owner" institution_id={folder.owner_id} />
     <InstitutionInfo type="manager" institution_id={folder.manager_id} />
     <TagsInfo tags={folder.tags} />
+    <LastUpdateInfo last_update_date={folder.last_update_date} />
+    <FrequencyInfo frequency={folder.updating_each} />
+    <PeriodInfo period={folder.period} period_duration={folder.period_duration} />
     <LocalisationInfo localisation={folder.localisation} />
     {#if folder.survey_type}
       <tr>
@@ -36,9 +39,6 @@
       </tr>
     {/if}
     <DeliveryFormatInfo delivery_format={folder.delivery_format} />
-    <FrequencyInfo frequency={folder.updating_each} />
-    <LastUpdateInfo last_update_date={folder.last_update_date} />
-    <PeriodInfo period={folder.period} />
     {#if folder.metadata_path}
       <tr>
         <td><Icon type="metadata_path" /> Metadonnées</td>
