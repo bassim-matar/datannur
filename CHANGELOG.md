@@ -6,6 +6,7 @@
 - changed : improve main page text content
 - fixed : datasets and variables order based on dataset type
 - fixed : search result icon reactivity and highlight only start of word
+- fixed : md doc preview max width 100%
 - refactor : remove suffix _info from all info files
 
 ## 0.9.5 (2024-11-26)

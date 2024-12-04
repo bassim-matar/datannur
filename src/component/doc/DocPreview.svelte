@@ -52,6 +52,7 @@
     &.has_md_format {
       .doc_content {
         float: left;
+        max-width: 100%;
       }
     }
   }
