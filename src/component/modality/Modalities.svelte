@@ -12,6 +12,7 @@
   }
 
   const columns = [
+    Column.favorite(),
     Column.name("modality", "Modalité"),
     Column.description(),
     Column.datatype(),
@@ -19,7 +20,6 @@
     Column.nb_values(nb_value_max),
     Column.values_preview(),
     Column.folder(),
-    Column.favorite(),
   ]
 </script>
 

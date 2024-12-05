@@ -58,6 +58,7 @@
       ]
     }
     return [
+      Column.favorite(),
       ...base,
       Column.nb_doc("dataset", nb_doc_max, true),
       Column.folder(),
@@ -70,7 +71,6 @@
       Column.localisation(),
       Column.delivery_format(),
       Column.data_path(),
-      Column.favorite(),
     ]
   }
   const columns = define_columns()

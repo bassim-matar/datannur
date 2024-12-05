@@ -21,6 +21,7 @@
   }
 
   const columns = [
+    Column.favorite(),
     Column.entity(),
     {
       data: "name",
@@ -56,7 +57,6 @@
         return wrap_long_text(link("folder/" + data, row.folder_name))
       },
     },
-    Column.favorite(),
     {
       data: "id",
       title: "<span class='hidden'>Recent search</span>",

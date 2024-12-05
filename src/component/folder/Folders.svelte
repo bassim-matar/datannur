@@ -67,6 +67,7 @@
     }
     
     return [
+      Column.favorite(),
       Column.name("folder", "Dossier", {
         with_indent: true,
         link_same_entity_tab: true,
@@ -109,7 +110,6 @@
           ),
       },
       Column.level(),
-      Column.favorite(),
     ]
   }
 

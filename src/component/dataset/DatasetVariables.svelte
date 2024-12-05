@@ -10,7 +10,7 @@
   }
 
   function define_columns() {
-    const columns = [
+    const base = [
       Column.name("variable", "Variable", { is_meta }),
       Column.original_name(),
       Column.description(),
@@ -18,10 +18,12 @@
       Column.nb_missing(),
       Column.nb_duplicates(),
       Column.nb_values(nb_value_max),
-      Column.values_preview()
+      Column.values_preview(),
     ]
-    if (is_meta) return columns
-    return columns.concat([
+    if (is_meta) return base
+    return [
+      Column.favorite(),
+      ...base,
       Column.dataset(),
       Column.folder(),
       Column.owner(),
@@ -29,8 +31,7 @@
       Column.tag(),
       Column.start_date(),
       Column.end_date(),
-      Column.favorite(),
-    ])
+    ]
   }
 
   const columns = define_columns()

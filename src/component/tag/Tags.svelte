@@ -37,7 +37,7 @@
   }
 
   function define_columns() {
-    let columns = []
+    let columns = [Column.favorite()]
     if (db.use.tag_recursive) {
       columns.push(
         Column.name("tag", "Mot clé", {
@@ -80,7 +80,6 @@
     if (db.use.tag_recursive) {
       columns.push(Column.level())
     }
-    columns.push(Column.favorite())
     return columns
   }
 

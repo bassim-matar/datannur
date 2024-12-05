@@ -46,6 +46,7 @@
       return [...base, Column.dataset(parent_name), Column.metaFolder()]
     }
     return [
+      Column.favorite(),
       ...base,
       Column.modality(),
       Column.dataset(parent_name),
@@ -55,7 +56,6 @@
       Column.tag(),
       Column.start_date(),
       Column.end_date(),
-      Column.favorite(),
     ]
   }
   const columns = define_columns()

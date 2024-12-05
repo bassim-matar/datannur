@@ -7,12 +7,12 @@
   all_fav.sort((a, b) => b.favorite_timestamp - a.favorite_timestamp)
 
   const columns = [
+    Column.favorite(),
     Column.entity(),
     Column.name(),
     Column.description(),
     Column.folder_simple(),
     Column.timestamp("favorite_timestamp"),
-    Column.favorite(),
   ]
 </script>
 
