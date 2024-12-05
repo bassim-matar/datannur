@@ -21,7 +21,7 @@
     word-wrap: break-word;
   }
 
-  div.main.classic {
+  div.classic {
     padding: 3.5rem 3.75rem;
   }
 
