@@ -5,6 +5,7 @@
 - changed : improve md doc preview container alignment
 - changed : improve main page text content
 - changed : move more in front and consolidate column date and time ago
+- changed : add main title on about page tab
 - fixed : datasets and variables order based on dataset type
 - fixed : search result icon reactivity and highlight only start of word
 - fixed : md doc preview max width 100%

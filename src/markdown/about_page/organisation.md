@@ -1,3 +1,5 @@
+## Organisation
+
 datannur contient 7 concepts principaux. On peut les diviser en deux catégories, partie intérieur et partie extérieur aux datasets. Le **dataset** représente une table de base de données ou un fichier de données (excel, csv, ...) sous forme de tableau (lignes et colonnes).
 
 mermaid( 
