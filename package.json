@@ -1,6 +1,6 @@
 {
   "name": "datannur",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "datannur is a portable data catalog that can run without a server",
   "type": "module",
   "private": true,
@@ -11,8 +11,7 @@
     "preview": "open-cli app/index.html",
     "test": "vitest",
     "static-make-js": "vite build && node app/static_make/js/make.js",
-    "static-make-py": "vite build && bash app/static_make/py/setup.sh && bash app/static_make/py/make.sh",
-    "ncu": "ncu"
+    "static-make-py": "vite build && bash app/static_make/py/setup.sh && bash app/static_make/py/make.sh"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",

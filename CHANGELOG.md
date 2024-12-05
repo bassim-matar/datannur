@@ -12,6 +12,7 @@
 - fixed : md doc preview max width 100%
 - fixed : md content content padding on mobile
 - refactor : remove suffix _info from all info files
+- refactor : remove some unused export in util.js
 
 ## 0.9.5 (2024-11-26)
 

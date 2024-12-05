@@ -5,15 +5,12 @@ export let app_mode = url_param.get_app_mode()
 
 export const is_http = window.location.protocol.startsWith("http")
 
-export const delay = ms => new Promise(res => setTimeout(res, ms))
-
 function get_sub_folder() {
   const url = new URL(window.location.href)
   const pathname = url.pathname.split("/").filter(Boolean)
   return pathname.length > 0 ? pathname[0] : ""
 }
-export const subfolder = get_sub_folder()
-
+const subfolder = get_sub_folder()
 export const url_prefix = (() => {
   if (app_mode === "static_render") return ""
   else if (is_http && subfolder) return "/" + subfolder + "/#"
@@ -27,16 +24,14 @@ export function get_base_link_url() {
 
 export const is_firefox = navigator.userAgent.toLowerCase().includes("firefox")
 
-export function get_document_width() {
+function get_document_width() {
   return (
     window.innerWidth ||
     document.documentElement.clientWidth ||
     document.body.clientWidth
   )
 }
-
 export const document_width = get_document_width()
-
 export function get_is_mobile() {
   return get_document_width() < 600
 }
