@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.9.6 (2024-12-05)
 
 - changed : improve md doc preview container alignment
 - changed : improve main page text content
