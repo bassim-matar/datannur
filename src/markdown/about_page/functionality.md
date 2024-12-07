@@ -4,7 +4,7 @@
 
 datannur permet de rechercher et naviguer dans les informations de vos collections de données de façon simple et puissante. Chaque élément (dossier, dataset, variable, …) possède un lien et une page dédiée. Chaque page contient plusieurs onglets, dont le contenu est généralement présenté sous forme de tableau.
 
-![datannur screen_shot](assets/about_page/dossier_sitg_tab_dataset_v3{dark_mode}.webp)
+![datannur screen_shot](assets/about_page/dossier_sitg_tab_dataset_v4{dark_mode}.webp)
 
 #### Recherche
 

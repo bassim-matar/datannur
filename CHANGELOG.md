@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- changed : updated first screenshot of about page fonctionality tab
+
 ## 0.9.6 (2024-12-05)
 
 - changed : improve md doc preview container alignment
