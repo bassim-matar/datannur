@@ -1,3 +1,2 @@
-assets/**/*.md linguist-vendored=false
-assets/**/*.js linguist-vendored=false
-assets/**/*.css linguist-vendored=false
+assets/**/*.js linguist-vendored=false linguist-generated=false
+assets/**/*.css linguist-vendored=false linguist-generated=false
