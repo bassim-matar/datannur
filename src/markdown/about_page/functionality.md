@@ -4,13 +4,13 @@
 
 datannur permet de rechercher et naviguer dans les informations de vos collections de données de façon simple et puissante. Chaque élément (dossier, dataset, variable, …) possède un lien et une page dédiée. Chaque page contient plusieurs onglets, dont le contenu est généralement présenté sous forme de tableau.
 
-![datannur screen_shot](assets/about_page/dossier_sitg_tab_dataset_v4{dark_mode}.webp)
+![datannur screen_shot](assets/about_page/dossier_sitg_tab_dataset{dark_mode}.webp?v=1)
 
 #### Recherche
 
 La barre de recherche et sa page consacrée affichent les éléments dont le nom ou la description contiennent l’expression recherchée. Les recherches les plus récentes s’affichent par défaut.
 
-![datannur screen_shot](assets/about_page/search_page_v3{dark_mode}.webp)
+![datannur screen_shot](assets/about_page/search_page{dark_mode}.webp?v=1)
 
 
 #### Filtre
@@ -37,7 +37,7 @@ Cette structure arborescente est parfaitement restituée dans le catalogue. Pour
 L’arborescence, le filtrage et le tri des tableaux sont utilisables conjointement pour offrir une expérience de recherche et de navigation simple et puissante.
 
 
-![datannur screen_shot](assets/about_page/about_page_diagramm{dark_mode}.webp)
+![datannur screen_shot](assets/about_page/about_page_diagramm{dark_mode}.webp?v=1)
 
 
 ### Information
@@ -45,7 +45,7 @@ L’arborescence, le filtrage et le tri des tableaux sont utilisables conjointem
 Sur chaque page dédiée à un élément du catalogue, l’onglet « A propos » affiche ses différents attributs. Par exemple la description (qui peut être formatée en markdown) et d’autres informations spécifiques, comme la date de mise à jour pour un dataset, ou l’email de contact pour une institution. C’est également dans cet onglet que l’on trouve les éléments contenants ou parents, comme les mots clés, le dossier ou encore le fournisseur et le gestionnaire (institution). Dans les autres onglets, les éléments contenus sont listés (dataset, variable, etc.).
 
 
-![datannur screen_shot](assets/about_page/dataset_list_histo{dark_mode}.webp)
+![datannur screen_shot](assets/about_page/dataset_list_histo{dark_mode}.webp?v=1)
 
 
 #### Doc
@@ -57,7 +57,7 @@ Un élément particulier est la doc (documentation). Il peut s’agir d’un fic
 Un onglet, « Stat », affiche les informations des autres onglets sous forme de résumé statistique au niveau de certains attributs. Par exemple le nombre de variable par dataset, ou encore les mots clés attachés aux dossiers. Pour chaque attribut, un graphique en bar avec totaux et pourcentages est affiché, avec une échelle logarithmique pour les éléments numériques.
 
 
-![datannur screen_shot](assets/about_page/stat_tab{dark_mode}.webp)
+![datannur screen_shot](assets/about_page/stat_tab{dark_mode}.webp?v=1)
 
 
 #### Aperçu des données
@@ -76,9 +76,9 @@ Les données d’utilisation sont stockées directement dans le navigateur. Par 
 
 Tous les éléments peuvent être mis en favoris en cliquant sur l’étoile. Une page permet ensuite de les lister. avec un onglet dédié à chaque type d’élément.
 
-![add_favorite](assets/tuto/add_favorite{dark_mode}.gif?v=1)
+![add_favorite](assets/tuto/add_favorite{dark_mode}.gif?v=2)
 
-![datannur screen_shot](assets/about_page/favorite_page{dark_mode}.webp)
+![datannur screen_shot](assets/about_page/favorite_page{dark_mode}.webp?v=1)
 
 
 #### Personnalisation

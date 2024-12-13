@@ -3,6 +3,7 @@
 ## unreleased
 
 - changed : updated first screenshot of about page fonctionality tab
+- changed : updated all sreenshots
 - fixed : github linguist stats with correct gitattributes
 
 ## 0.9.6 (2024-12-05)
