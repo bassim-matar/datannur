@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- added : markdown image caption 
 - changed : updated first screenshot of about page fonctionality tab
 - changed : updated all sreenshots
 - fixed : github linguist stats with correct gitattributes
