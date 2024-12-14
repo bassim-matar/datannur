@@ -8,6 +8,9 @@ renderer.link = ({ href, title, text }) => {
 
 renderer.image = function ({ href, text }) {
   if (!text) text = ""
+  if (text.includes("no_caption")) {
+    return `<img src="${href}" alt="${text}" />`
+  }
   return `<figure>
     <img src="${href}" alt="${text}" title="${text}" />
     <figcaption>${text}</figcaption>
