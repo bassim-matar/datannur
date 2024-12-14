@@ -7,15 +7,15 @@ Garantissez la qualité, la conformité et la protection des données pour renfo
 Améliorez l'interopérabilité et la réutilisation des données pour développer vos collaborations
 
 - **Facile** :
-Aucune installation ou configuration nécessaire. datannur est le catalogue le plus simple à implémenter et maintenir
+Pas d’installation, de configuration ni de dépendances : datannur est simple à déployer, à utiliser et à maintenir
 
-- **Portable** :
-Fonctionne partout (local, cloud, disque partagé), un dossier que l’on peut copier, déplacer, envoyer et ouvrir avec n’importe quel navigateur
+- **Universel** :
+Utilisable partout - local, cloud ou stockage partagé : un dossier à copier, déplacer et ouvrir dans n’importe quel navigateur
 
 - **Complet** :
-Flexible, complet et structuré autour de 7 concepts avec un niveau de détail important : Institution, Dossier, Mot clé, Doc, Dataset, Variable et Modalité
+Structuré et flexible, organisé autour de 7 concepts clés : Institution, Dossier, Mot clé, Doc, Dataset, Variable et Modalité
 
 - **Sécurisé** :
-Parce qu’elle est une simple interface HTML isolée dans le navigateur, l’application ne peut rien modifier sur la machine et ne pose ainsi aucun risque
+Isolé dans le navigateur, datannur ne peut pas modifier la machine ni ses fichiers, garantissant une utilisation sécurisée
 
 Pour en savoir plus : [datannur.com](https://datannur.com)

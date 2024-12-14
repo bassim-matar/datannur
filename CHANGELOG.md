@@ -5,6 +5,7 @@
 - added : markdown image caption 
 - changed : updated first screenshot of about page fonctionality tab
 - changed : updated all sreenshots
+- changed : updated main presentation text
 - fixed : github linguist stats with correct gitattributes
 
 ## 0.9.6 (2024-12-05)
