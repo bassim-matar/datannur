@@ -1,4 +1,7 @@
-datannur contient 7 concepts principaux. On peut les diviser en deux catégories, partie intérieur et partie extérieur aux datasets. Le **dataset** représente une table de base de données ou un fichier de données (excel, csv, ...) sous forme de tableau (lignes et colonnes).
+datannur repose sur 7 concepts principaux, qui se répartissent en deux catégories :
+
+- Intérieur du dataset : pour les éléments directement liés aux données elles-mêmes
+- Extérieur du dataset : pour les éléments qui structurent, organisent ou enrichissent les datasets
 
 mermaid( 
   $dataset -.-> intérieur
@@ -9,17 +12,20 @@ mermaid(
 ## Intérieur du dataset
 
 ### Dataset
-Un dataset contient des variables (colonnes du tableau ou attributs de la table). Une variable est une liste de valeurs qui varie en fonction des individus ou lignes du tableau.
+
+Un dataset représente une table de données, qu’il s’agisse d’une base de données ou d’un fichier (Excel, CSV, etc.), organisé sous forme de tableau. Ce tableau est composé de lignes, correspondant aux individus ou observations, et de colonnes, qui sont des variables ou attributs. Chaque variable regroupe une liste de valeurs, qui diffèrent d’un individu à l’autre.
 
 mermaid( $dataset --> $variable );
 
 ### Variable
-Certaines variables sont de type catégoriel et peuvent être liées à une modalité, c'est à dire un ensemble de valeurs possibles. Une même modalité peut être liée à plusieurs variables de différents datasets. Une même variable peut être liée à plusieurs modalités.
+
+Certaines variables sont de type catégoriel, avec des valeurs possibles définies par une modalité. Une variable peut être liée à plusieurs modalités, et inversement.
 
 mermaid( $variable <--> $modality );
 
 ### Modalité
-Une modalité contient des valeurs possibles. Une valeur comprend optionnellement une description. 
+
+Une modalité regroupe un ensemble de valeurs possibles pour une ou plusieurs variables catégorielles. Chaque valeur peut être accompagnée d’une description pour en préciser le sens.
 
 mermaid( $modality --> $value );
 
@@ -27,7 +33,8 @@ mermaid( $modality --> $value );
 ## Extérieur du dataset
 
 ### Dossier
-Un dataset ou une modalité peut être contenu dans un dossier. Un dossier peut lui aussi être contenu dans un autre dossier et ainsi de suite, formant ainsi une arborescence.
+
+Les datasets et les modalités peuvent être organisés dans des dossiers. Les dossiers peuvent s’imbriquer les uns dans les autres, formant une arborescence hiérarchique pour structurer vos données.
 
 mermaid(
   $folder $recursive
@@ -36,7 +43,13 @@ mermaid(
 );
 
 ### Institution
-Un dataset ou un dossier peut avoir un fournisseur et un gestionnaire. Il s'agit de deux rôles incarnés par une institution. Une institution peut être contenue dans une autre institution et ainsi de suite, de façon similaire aux dossiers.
+
+Un dossier ou un dataset peut être associé à deux types de rôles incarnés par une institution :
+
+- **Fournisseur** : l’entité qui produit ou partage les données
+- **Gestionnaire** : l’entité qui les maintient et en garantit la qualité
+
+Les institutions peuvent également s’organiser de manière hiérarchique, en étant contenues les unes dans les autres.
 
 mermaid(
   $institution $recursive
@@ -45,7 +58,8 @@ mermaid(
 );
 
 ### Mot clé
-Un dataset, un dossier ou une institution peuvent être liés à un ou plusieurs mots clés. Un mot clé peut être lié à une multitude de variables, de datasets, de dossiers et d'institutions. Un mot clé peut être contenu dans un autre mot clé et ainsi de suite, de façon similaire aux dossiers et aux institutions.
+
+Les mots clés servent à enrichir les institutions, dossiers, datasets ou variables avec des thématiques ou des catégories transversales. Un mot clé peut être lié à une multitude d’éléments et peut aussi être organisé en hiérarchie.
 
 mermaid(
   $tag $recursive
@@ -57,7 +71,8 @@ mermaid(
 );
 
 ### Doc
-Pour finir, certains concepts possèdent des docs (documentations de type markdown ou pdf). Une doc peut être liée à une multitude de datasets, de dossiers et d'institutions, et inversement.
+
+Certains concepts peuvent être associés à des documentations (docs) au format Markdown ou PDF. Ces docs permettent de décrire ou expliquer en détail des institutions, dossiers ou datasets. Il peuvent être liées à plusieurs concepts, et inversement.
 
 mermaid(
   $institution <--> $doc
@@ -66,10 +81,9 @@ mermaid(
   $dataset <--> $doc
 );
 
-
 ## Vision d'ensemble
 
-Voici les liens entre les 7 concepts, à l'intérieur et l'extérieur des datasets.
+Les concepts de datannur sont interconnectés, offrant une grande flexibilité pour organiser, enrichir et documenter vos données. Voici comment ils sont reliés :
 
 mermaid(
   $folder $recursive

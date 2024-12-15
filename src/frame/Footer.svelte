@@ -79,7 +79,7 @@
           pages={["meta", "metaFolder", "metaDataset", "metaVariable"]}
           className=""
         >
-          vue méta
+          vue interne
         </HeaderLink>
       </div>
       <div>

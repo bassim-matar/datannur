@@ -1,5 +1,5 @@
-La vue méta représente les méta-méta-données, c’est-à-dire l'information sur les datasets internes au catalogue. 
+La vue interne offre un aperçu des métadonnées du catalogue en explorant sa propre structure et organisation. Elle fournit une synthèse des datasets internes qui alimentent le fonctionnement de datannur.
 
-Cette vue apporte une synthèse générale sur le contenu du catalogue et permet de voir l'architecture de données de datannur.
+Cette fonctionnalité permet de visualiser l’architecture des données et de comprendre comment elles sont structurées au sein du catalogue. Elle est également utile pour vérifier l’intégrité de la base de données et s’assurer que tout fonctionne correctement.
 
 Pour vérifier l'intégrité de la base de données, cliquer sur ce [lien](?app_mode=check_db).

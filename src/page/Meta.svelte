@@ -25,7 +25,7 @@
   })
 </script>
 
-<Head title="Vue Meta" description="Page d'accueil de la vue Meta" />
+<Head title="Vue interne" description="Page d'accueil de la vue interne" />
 
 <section class="section">
   <Tabs {tabs} />
