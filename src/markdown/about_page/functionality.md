@@ -106,7 +106,7 @@ Un autre onglet est consacré aux logs d’utilisation, regroupant les actions e
 
 Les données d’utilisation, enregistrées dans le navigateur, peuvent être exportées ou importées à tout moment sous forme de fichier compressé (ZIP).
 
-Chaque tableau du catalogue peut également être téléchargé en cliquant sur l’icône de nuage située à droite du tableau. Vous avez le choix entre copier les données dans le presse-papier, les télécharger au format CSV ou au format Excel (XLSX)
+Chaque tableau du catalogue peut également être téléchargé en cliquant sur l’icône de nuage située à droite du tableau. Vous avez le choix entre copier les données dans le presse-papier, les télécharger au format CSV ou au format Excel (XLSX).
 
 ### Vue interne
 
