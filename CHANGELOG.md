@@ -1,9 +1,10 @@
 # datannur
 
-## unreleased
+## 0.9.7 (2024-12-19)
 
 - added : markdown image caption 
-- changed : updated all sreenshots
+- added : some screenshots for about page
+- changed : updated all screenshots
 - changed : updated main presentation text
 - changed : updated text for organisation and fonctionality tab, also renamed "vue méta" to "vue interne"
 - fixed : github linguist stats with correct gitattributes

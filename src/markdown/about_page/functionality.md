@@ -25,13 +25,19 @@ Par défaut, un filtre affiche les résultats contenant l’expression indiquée
 - ="" :	ne contient rien
 - !""	: ne contient pas rien
 
+![Onglet datasets avec deux filtres actifs](assets/about_page/datasets_tab_filter{dark_mode}.webp?v=1)
+
 Un filtre global est également disponible au niveau du catalogue. Il permet d’inclure ou d’exclure certains types de datasets, comme :
 - Open data et Closed data
 - Données brutes et données propres
 
+![Filtre global](assets/about_page/main_filter{dark_mode}.webp?v=1)
+
 ### Tri
 
 Les tableaux offrent la possibilité de trier les données en ordre ascendant ou descendant en cliquant simplement sur l’en-tête de la colonne souhaitée. Ce tri peut être combiné avec les options de filtrage des colonnes pour affiner encore davantage l’analyse des données.
+
+![Tri du tableau](assets/tuto/datasets_tab_sort{dark_mode}.gif?v=1)
 
 ### Arborescence
 
@@ -66,6 +72,8 @@ Dans les autres onglets de la page, vous retrouverez les éléments contenus par
 
 Un élément particulier du catalogue est la doc (documentation). Il peut s’agir d’un fichier au format PDF ou Markdown (comme un fichier README, par exemple). Les principaux éléments du catalogue peuvent être associés à une ou plusieurs docs, qui sont directement accessibles depuis leur page dédiée. Cela permet de fournir des informations complémentaires ou des explications détaillées sur ces éléments.
 
+![Doc tourisme en Markdown](assets/about_page/doc_tourisme{dark_mode}.webp?v=1)
+
 ### Résumé statistique
 
 L’onglet « Stat » propose un résumé statistique des informations issues des autres onglets. Il présente un aperçu des principaux attributs, tels que le nombre de variables par dataset ou les mots clés associés aux dossiers.
@@ -78,9 +86,13 @@ Pour chaque attribut, les données sont visualisées à l’aide de graphiques e
 
 Pour les jeux de données compatibles, un onglet dédié propose un aperçu sous forme de tableau. Cet aperçu permet d’explorer rapidement les données grâce aux fonctions intégrées de tri et de filtre.
 
+![Dataset Communes Suisses – Onglet aperçu](assets/about_page/dataset_histo_commune_preview{dark_mode}.webp?v=1)
+
 ### Modalités similaires
 
 L’harmonisation des modalités au sein d’une collection de jeux de données peut être complexe. Pour faciliter cette tâche, la page dédiée aux modalités propose un onglet qui liste les modalités en fonction de leur score de similarité. Cette fonctionnalité permet d’identifier rapidement les doublons ou les doublons partiels, aidant ainsi à uniformiser les données plus efficacement.
+
+![Page modalités - Onglet similitudes](assets/about_page/modality_compare{dark_mode}.webp?v=1)
 
 ## Utilisation
 
@@ -102,11 +114,15 @@ La page de configuration est divisée en plusieurs onglets. Le premier regroupe 
 
 Un autre onglet est consacré aux logs d’utilisation, regroupant les actions effectuées dans le catalogue (pages consultées, recherches, favoris) ainsi qu’un résumé statistique pour analyser ces données de manière synthétique.
 
+![Page options](assets/about_page/options{dark_mode}.webp?v=1)
+
 ### Téléchargement
 
 Les données d’utilisation, enregistrées dans le navigateur, peuvent être exportées ou importées à tout moment sous forme de fichier compressé (ZIP).
 
 Chaque tableau du catalogue peut également être téléchargé en cliquant sur l’icône de nuage située à droite du tableau. Vous avez le choix entre copier les données dans le presse-papier, les télécharger au format CSV ou au format Excel (XLSX).
+
+![Page datasets - téléchargement](assets/tuto/datasets_download{dark_mode}.gif?v=1)
 
 ### Vue interne
 
