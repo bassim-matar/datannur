@@ -208,7 +208,12 @@ class Process {
       add_institution_nb(institution, "folder")
       add_institution_nb(institution, "dataset")
       add_nb_recursive("institution", institution, "folder")
-      add_nb_recursive("institution", institution, "dataset")
+      const datasets = get_recursive("institution", institution.id, "dataset")
+      const variables = datasets.flatMap(dataset =>
+        db.get_all("variable", { dataset }),
+      ) 
+      institution.nb_dataset_recursive = datasets.length
+      institution.nb_variable_recursive = variables.length
     })
   }
   static folder() {
@@ -223,8 +228,13 @@ class Process {
       add_nb_child_recursive("folder", folder)
       if (db.use.owner) add_name(folder, "institution", "owner")
       if (db.use.manager) add_name(folder, "institution", "manager")
-      add_nb_recursive("folder", folder, "dataset")
       add_period(folder)
+      const datasets = get_recursive("folder", folder.id, "dataset")
+      const variables = datasets.flatMap(dataset =>
+        db.get_all("variable", { dataset }),
+      ) 
+      folder.nb_dataset_recursive = datasets.length
+      folder.nb_variable_recursive = variables.length
     })
   }
   static tag() {

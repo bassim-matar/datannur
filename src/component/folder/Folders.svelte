@@ -22,6 +22,9 @@
       if (folder.nb_dataset_recursive > dataset_max) {
         dataset_max = folder.nb_dataset_recursive
       }
+      if (folder.nb_variable_recursive > variable_max) {
+        variable_max = folder.nb_variable_recursive
+      }
       if (folder.nb_child_recursive > folder_max) {
         folder_max = folder.nb_child_recursive
       }
@@ -75,6 +78,9 @@
       Column.description(),
       Column.nb_child_recursive("folder", folder_max, folder_path),
       Column.nb_dataset_recursive("folder", dataset_max),
+      Column.nb_variable("folder", variable_max, {
+        recursive: true,
+      }),
       Column.nb_doc("folder", nb_doc_max),
       Column.tag(),
       Column.last_update(),

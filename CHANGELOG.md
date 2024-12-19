@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- added : column nb variable for institutions and folders
+
 ## 0.9.7 (2024-12-19)
 
 - added : markdown image caption 
