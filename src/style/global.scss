@@ -178,8 +178,8 @@ html.dark_mode img[alt$="special_main_color"] {
 }
 
 html.rounded_design {
-  p > img:not([alt$="not_rounded"]),
-  figure > img:not([alt$="not_rounded"]), 
+  p > img:not([alt*="not_rounded"]),
+  figure > img:not([alt*="not_rounded"]), 
   .button {
     border-radius: $rounded;
   }

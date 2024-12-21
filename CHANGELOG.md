@@ -3,6 +3,7 @@
 ## unreleased
 
 - added : column nb variable for institutions and folders
+- fixed : markdown image with alt not_rounded
 
 ## 0.9.7 (2024-12-19)
 
