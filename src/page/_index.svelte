@@ -18,6 +18,7 @@
   const variables = db.get_all("variable")
   const modalities = db.get_all("modality")
   const docs = db.get_all("doc")
+  const history = db.get_all("history")
 
   make_parents_relative(0, institutions)
   make_parents_relative(0, folders)
@@ -48,6 +49,7 @@
     datasets,
     variables,
     modalities,
+    history,
     stat,
   })
 

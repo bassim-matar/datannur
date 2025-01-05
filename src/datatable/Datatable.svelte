@@ -598,6 +598,9 @@
               }
             }
           }
+          td span.deleted {
+            color: $color-4;
+          }
           td div.long_text_empty {
             width: 250px;
           }

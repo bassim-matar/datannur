@@ -373,6 +373,20 @@ class Process {
       metaVariable.folder_name = metaDataset.metaFolder_id
     })
   }
+  static history() {
+    db.foreach("history", history => {
+      history.name = history.entity_id
+      history._deleted = true
+      history.id = history.entity_id
+      history._entity = history.entity
+      history.timestamp *= 1000
+      if (db.table_has_id(history.entity, history.entity_id)) {
+        const item = db.get(history.entity, history.entity_id)
+        history.name = item.name
+        history._deleted = false
+      }
+    })
+  }
 }
 
 function add_doc_recursive() {
@@ -423,5 +437,6 @@ export function db_add_processed_data() {
   Process.metaFolder()
   Process.metaDataset()
   Process.metaVariable()
+  Process.history()
   if (db.use.doc) add_doc_recursive()
 }

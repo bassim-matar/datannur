@@ -52,6 +52,7 @@ export function get_nb_sticky(columns) {
       if (column.name === "entity") nb_sticky += 1
       if (column.name === "is_favorite") nb_sticky += 1
       if (column.name === "name") nb_sticky += 1
+      if (column.name === "history_type") nb_sticky += 1
     }
   }
   return nb_sticky

@@ -13,7 +13,6 @@ import {
 } from "@js/Time"
 import { entity_names, entity_to_icon } from "@js/constant"
 import Render from "@js/Render"
-import { data } from "jquery"
 
 export default class Column {
   static id() {
@@ -48,6 +47,9 @@ export default class Column {
           )
         }
         text = `<strong class="var_main_col">${text}</strong>`
+        if (row._deleted) {
+          text = `<span class="deleted">${data}</span>`
+        }
         return wrap_long_text(text, indent)
       },
     }
@@ -529,9 +531,11 @@ export default class Column {
       render: data => link("metaFolder/" + data, data),
     }
   }
-  static timestamp(var_name = "timestamp") {
+  static timestamp(options) {
+    if (!options) options = {}
+    if (!("var_name" in options)) options.var_name = "timestamp"
     return {
-      data: var_name,
+      data: options.var_name,
       title: Render.icon("date") + "Moment",
       defaultContent: "",
       tooltip: "moment de l'ajout",

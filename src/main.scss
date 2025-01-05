@@ -87,10 +87,12 @@ $icon-colors: (
   "time_ago": #e0745c,
   "md": #579fbd,
   "relation": #579fbd,
+  "history": #579fbd,
   "log": #bd7c6c,
   "col_search": $color-2,
   "recent_search": $color-2,
   "functionality": #e0745c,
+  
 );
 
 @function color($name) {

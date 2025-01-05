@@ -81,4 +81,5 @@ export const entity_to_icon = {
   preview: "eye",
   filter_info: "magnifying-glass-plus",
   relation: "arrows-left-right",
+  history: "history",
 }

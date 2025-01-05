@@ -24,6 +24,7 @@ import Stat from "@stat/Stat.svelte"
 import AllFav from "@favorite/AllFav.svelte"
 import Options from "@component/options/Options.svelte"
 import Logs from "@component/options/Logs.svelte"
+import History from "@component/History.svelte"
 
 import { all_tabs_icon } from "@js/store"
 
@@ -88,6 +89,11 @@ export const all_tabs = {
     name: "Logs",
     icon: "log",
     component: Logs,
+  },
+  history: {
+    name: "Historique",
+    icon: "history",
+    component: History,
   },
   metaFolders: {
     name: "Dossiers",

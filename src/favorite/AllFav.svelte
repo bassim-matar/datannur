@@ -12,7 +12,7 @@
     Column.name(),
     Column.description(),
     Column.folder_simple(),
-    Column.timestamp("favorite_timestamp"),
+    Column.timestamp({ var_name: "favorite_timestamp" }),
   ]
 </script>
 
