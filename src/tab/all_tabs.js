@@ -9,7 +9,6 @@ import ModalitiesCompare from "@component/modality/ModalitiesCompare.svelte"
 import DatasetVariables from "@component/dataset/DatasetVariables.svelte"
 import Values from "@component/modality/Values.svelte"
 import VariableValues from "@component/variable/VariableValues.svelte"
-import Logs from "@component/options/Logs.svelte"
 import InstitutionInfo from "@component/institution/InstitutionInfo.svelte"
 import FolderInfo from "@component/folder/FolderInfo.svelte"
 import TagInfo from "@component/tag/TagInfo.svelte"
@@ -17,15 +16,14 @@ import DocInfo from "@component/doc/DocInfo.svelte"
 import DatasetInfo from "@component/dataset/DatasetInfo.svelte"
 import VariableInfo from "@component/variable/VariableInfo.svelte"
 import ModalityInfo from "@component/modality/ModalityInfo.svelte"
-import OptionsExport from "@component/options/OptionsExport.svelte"
-import OptionsImport from "@component/options/OptionsImport.svelte"
-import Options from "@component/options/Options.svelte"
 import MetaDiagramm from "@component/MetaDiagramm.svelte"
 import DatasetPreview from "@component/preview/DatasetPreview.svelte"
 import VariablePreview from "@component/preview/VariablePreview.svelte"
 import AboutFile from "@layout/AboutFile.svelte"
 import Stat from "@stat/Stat.svelte"
 import AllFav from "@favorite/AllFav.svelte"
+import Options from "@component/options/Options.svelte"
+import Logs from "@component/options/Logs.svelte"
 
 import { all_tabs_icon } from "@js/store"
 
@@ -138,24 +136,6 @@ export const all_tabs = {
     name: "Docs",
     icon: "doc",
     component: Docs,
-  },
-  options_export: {
-    name: "Exporter",
-    icon: "download",
-    component: OptionsExport,
-    without_num: true,
-    without_prop: true,
-    padding: true,
-    footer_visible: true,
-  },
-  options_import: {
-    name: "Importer",
-    icon: "upload",
-    component: OptionsImport,
-    without_num: true,
-    without_prop: true,
-    padding: true,
-    footer_visible: true,
   },
   options: {
     name: "Options",
