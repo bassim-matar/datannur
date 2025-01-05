@@ -5,8 +5,9 @@
 
   let { variables, is_meta = false } = $props()
 
-  const parent_name = is_meta ? "metaDataset" : "dataset"
   const variables_sorted = [...variables]
+  const parent_name = is_meta ? "metaDataset" : "dataset"
+  const meta_path = is_meta ? "metaVariable/" : false
 
   function sort_variables(to_sort) {
     if (to_sort.length === 0) return
@@ -29,7 +30,7 @@
     nb_row_max = Math.max(nb_row_max, variable.nb_row)
     nb_value_max = Math.max(nb_value_max, variable.nb_value)
   }
-  
+
   function define_columns() {
     const base = [
       Column.name("variable", "Variable", { is_meta }),
@@ -61,12 +62,4 @@
   const columns = define_columns()
 </script>
 
-{#if variables.length > 0}
-  <Datatable
-    entity="variable"
-    data={variables_sorted}
-    {columns}
-    sort_by_name={false}
-    meta_path={is_meta ? "metaVariable/" : false}
-  />
-{/if}
+<Datatable entity="variable" data={variables_sorted} {columns} {meta_path} />

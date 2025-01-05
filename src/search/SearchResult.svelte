@@ -85,13 +85,7 @@
 
 {#if search_result_data.length > 0}
   <div class="search_page_result_wrapper">
-    <Datatable
-      entity="search"
-      data={search_result_data}
-      sort_by_name={false}
-      {columns}
-      {initied}
-    />
+    <Datatable entity="search" data={search_result_data} {columns} {initied} />
   </div>
 {/if}
 

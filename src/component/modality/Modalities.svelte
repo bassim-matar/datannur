@@ -23,6 +23,4 @@
   ]
 </script>
 
-{#if modalities.length > 0}
-  <Datatable entity="modality" data={modalities} {columns} />
-{/if}
+<Datatable entity="modality" data={modalities} {columns} sort_by_name={true} />

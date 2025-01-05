@@ -16,4 +16,4 @@
   ]
 </script>
 
-<Datatable entity="favorite" data={all_fav} sort_by_name={false} {columns} />
+<Datatable entity="favorite" data={all_fav} {columns} />

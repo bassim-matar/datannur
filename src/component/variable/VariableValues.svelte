@@ -31,11 +31,10 @@
   const columns = define_columns()
 </script>
 
-{#if variable_values.length > 0}
-  <Datatable
-    entity="value"
-    data={variable_values}
-    {columns}
-    keep_all_cols={true}
-  />
-{/if}
+<Datatable
+  entity="value"
+  data={variable_values}
+  {columns}
+  keep_all_cols={true}
+  sort_by_name={true}
+/>

@@ -9,6 +9,10 @@
   if (has_description) columns.push(Column.description())
 </script>
 
-{#if values.length > 0}
-  <Datatable entity="value" data={values} {columns} keep_all_cols={true} />
-{/if}
+<Datatable
+  entity="value"
+  data={values}
+  {columns}
+  keep_all_cols={true}
+  sort_by_name={true}
+/>

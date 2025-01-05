@@ -32,7 +32,8 @@
     {
       data: "ratio",
       title: Render.icon("compare") + "Similitude",
-      tooltip: "Pourcentage de valeur de la modalité 1 présente dans la modalité 2",
+      tooltip:
+        "Pourcentage de valeur de la modalité 1 présente dans la modalité 2",
       render: data => `${data}%`,
     },
     {
@@ -91,7 +92,12 @@
 {#if loading && similitutes.length === 0}
   <Loading type="tab_body" color_entity="compare" />
 {:else if similitutes.length > 0}
-  <Datatable entity="compare" data={similitutes} {columns} />
+  <Datatable
+    entity="compare"
+    data={similitutes}
+    {columns}
+    sort_by_name={true}
+  />
 {:else}
   <div style="padding: 20px; text-align: center;">
     Aucune similitude trouvée

@@ -8,8 +8,8 @@
   let { folders, is_meta = false } = $props()
 
   const folders_sorted = [...folders]
-
-  let folder_path = is_meta ? "metaFolder/" : "folder/"
+  const folder_path = is_meta ? "metaFolder/" : "folder/"
+  const meta_path = is_meta ? "metaFolder" : false
 
   let variable_max = 0
   let dataset_max = 0
@@ -68,7 +68,7 @@
         }),
       ]
     }
-    
+
     return [
       Column.favorite(),
       Column.name("folder", "Dossier", {
@@ -122,13 +122,10 @@
   const columns = define_columns()
 </script>
 
-{#if folders && folders.length > 0}
-  <Datatable
-    entity="folder"
-    data={folders_sorted}
-    sort_by_name={false}
-    is_recursive={true}
-    {columns}
-    meta_path={is_meta ? folder_path : false}
-  />
-{/if}
+<Datatable
+  entity="folder"
+  data={folders_sorted}
+  is_recursive={true}
+  {columns}
+  {meta_path}
+/>

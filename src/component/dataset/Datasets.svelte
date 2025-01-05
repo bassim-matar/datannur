@@ -7,6 +7,7 @@
 
   const dataset_path = is_meta ? "metaDataset/" : "dataset/"
   const tab_variables = is_meta ? "meta_dataset_variables" : "dataset_variables"
+  const meta_path = is_meta ? "metaDataset" : false
   const datasets_sorted = [...datasets]
 
   function sort_datasets(to_sort) {
@@ -51,11 +52,7 @@
       Column.nb_row(nb_row_max),
     ]
     if (is_meta) {
-      return [
-        ...base,
-        Column.metaFolder(),
-        Column.last_update_timestamp(),
-      ]
+      return [...base, Column.metaFolder(), Column.last_update_timestamp()]
     }
     return [
       Column.favorite(),
@@ -76,12 +73,4 @@
   const columns = define_columns()
 </script>
 
-{#if datasets.length > 0}
-  <Datatable
-    entity="dataset"
-    data={datasets_sorted}
-    {columns}
-    sort_by_name={false}
-    meta_path={is_meta ? dataset_path : false}
-  />
-{/if}
+<Datatable entity="dataset" data={datasets_sorted} {columns} {meta_path} />

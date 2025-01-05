@@ -4,6 +4,8 @@
 
   let { dataset_variables, is_meta = false } = $props()
 
+  const meta_path = is_meta ? "metaVariable" : false
+
   let nb_value_max = 0
   for (const variable of dataset_variables) {
     nb_value_max = Math.max(nb_value_max, variable.nb_value)
@@ -37,12 +39,4 @@
   const columns = define_columns()
 </script>
 
-{#if dataset_variables.length > 0}
-  <Datatable
-    entity="variable"
-    data={dataset_variables}
-    sort_by_name={false}
-    {columns}
-    meta_path={is_meta ? "metaVariable/" : false}
-  />
-{/if}
+<Datatable entity="variable" data={dataset_variables} {columns} {meta_path} />

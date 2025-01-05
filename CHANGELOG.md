@@ -5,6 +5,7 @@
 - added : column nb variable for institutions and folders
 - added : processing of history changes in jsonjsdb_editor
 - fixed : markdown image with alt not_rounded
+- refactor : set default datatable sort_by_name to false and remove unnecessary check for empty datatable
 - removed : unused option page export and import tabs
 
 ## 0.9.7 (2024-12-19)

@@ -26,4 +26,4 @@
   ]
 </script>
 
-<Datatable entity="log" data={logs} sort_by_name={false} {columns} />
+<Datatable entity="log" data={logs} {columns} />

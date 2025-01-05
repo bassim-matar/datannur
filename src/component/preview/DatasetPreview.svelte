@@ -45,7 +45,6 @@
     <Datatable
       entity="preview"
       data={dataset_data}
-      sort_by_name={false}
       {columns}
       keep_all_cols={true}
     />

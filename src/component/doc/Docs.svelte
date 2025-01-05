@@ -107,6 +107,4 @@
   ]
 </script>
 
-{#if docs && docs.length > 0}
-  <Datatable entity="doc" data={docs} {columns}  />
-{/if}
+<Datatable entity="doc" data={docs} {columns} sort_by_name={true} />

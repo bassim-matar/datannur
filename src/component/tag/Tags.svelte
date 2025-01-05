@@ -95,11 +95,5 @@
 </script>
 
 {#if tags && tags.length > 0 && mounted}
-  <Datatable
-    entity="tag"
-    data={tags_sorted}
-    sort_by_name={false}
-    {is_recursive}
-    {columns}
-  />
+  <Datatable entity="tag" data={tags_sorted} {is_recursive} {columns} />
 {/if}

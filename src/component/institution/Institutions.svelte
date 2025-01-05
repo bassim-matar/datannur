@@ -7,6 +7,8 @@
 
   let { institutions } = $props()
 
+  const is_recursive = true
+
   let institution_max = 0
   let folder_max = 0
   let dataset_max = 0
@@ -73,12 +75,9 @@
   ]
 </script>
 
-{#if institutions && institutions.length > 0}
-  <Datatable
-    entity="institution"
-    data={institutions_sorted}
-    sort_by_name={false}
-    is_recursive={true}
-    {columns}
-  />
-{/if}
+<Datatable
+  entity="institution"
+  data={institutions_sorted}
+  {is_recursive}
+  {columns}
+/>
