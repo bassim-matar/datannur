@@ -2,6 +2,7 @@ import db from "@db"
 import { get_variable_type_clean, escape_html_entities } from "@js/util"
 import { get_period } from "@js/Time"
 import { get_nb_values } from "@js/Render"
+import { entity_names, history_types } from "@js/constant"
 
 function add_entities_used() {
   db.use = {}
@@ -121,6 +122,11 @@ function variable_add_dataset_info(variable, dataset) {
   }
 }
 
+function add_entity(item, entity) {
+  item._entity = entity
+  item._entity_clean = entity_names[entity]
+} 
+
 export function make_parents_relative(parent_id, items) {
   for (const item of items) {
     let position = 0
@@ -197,7 +203,7 @@ export function add_minimum_deep(items, no_deep = false, no_indent = false) {
 class Process {
   static institution() {
     db.foreach("institution", institution => {
-      institution._entity = "institution"
+      add_entity(institution, "institution")
       add_favorite(institution)
       add_tags("institution", institution)
       add_parents("institution", institution)
@@ -218,7 +224,7 @@ class Process {
   }
   static folder() {
     db.foreach("folder", folder => {
-      folder._entity = "folder"
+      add_entity(folder, "folder")
       add_favorite(folder)
       add_tags("folder", folder)
       add_parents("folder", folder)
@@ -239,7 +245,7 @@ class Process {
   }
   static tag() {
     db.foreach("tag", tag => {
-      tag._entity = "tag"
+      add_entity(tag, "tag")
       add_favorite(tag)
       add_nb("tag", tag, "institution")
       add_nb("tag", tag, "folder")
@@ -264,7 +270,7 @@ class Process {
       filter_to_name[filter.id] = filter.name
     }
     db.foreach("dataset", dataset => {
-      dataset._entity = "dataset"
+      add_entity(dataset, "dataset")
       add_favorite(dataset)
       add_tags("dataset", dataset)
       add_has_pdf(dataset)
@@ -283,7 +289,7 @@ class Process {
   }
   static doc() {
     db.foreach("doc", doc => {
-      doc._entity = "doc"
+      add_entity(doc, "doc")
       add_favorite(doc)
       add_nb("doc", doc, "institution")
       add_nb("doc", doc, "folder")
@@ -295,7 +301,7 @@ class Process {
   }
   static variable() {
     db.foreach("variable", variable => {
-      variable._entity = "variable"
+      add_entity(variable, "variable")
       add_favorite(variable)
       add_period(variable)
       add_tags("variable", variable)
@@ -321,7 +327,7 @@ class Process {
   }
   static modality() {
     db.foreach("modality", modality => {
-      modality._entity = "modality"
+      add_entity(modality, "modality")
       add_favorite(modality)
       add_nb("modality", modality, "variable")
       if (db.use.folder) add_name(modality, "folder")
@@ -345,13 +351,13 @@ class Process {
   }
   static metaFolder() {
     db.foreach("metaFolder", metaFolder => {
-      metaFolder._entity = "metaFolder"
+      add_entity(metaFolder, "metaFolder")
       metaFolder.is_meta = true
     })
   }
   static metaDataset() {
     db.foreach("metaDataset", metaDataset => {
-      metaDataset._entity = "metaDataset"
+      add_entity(metaDataset, "metaDataset")
       metaDataset.is_meta = true
       metaDataset.folder = { id: metaDataset.metaFolder_id }
       metaDataset.folder_name = metaDataset.metaFolder_id
@@ -360,7 +366,7 @@ class Process {
   }
   static metaVariable() {
     db.foreach("metaVariable", metaVariable => {
-      metaVariable._entity = "metaVariable"
+      add_entity(metaVariable, "metaVariable")
       metaVariable.is_meta = true
       metaVariable.type_clean = get_variable_type_clean(metaVariable.type)
       metaVariable.nb_value = get_nb_values(metaVariable.values, metaVariable)
@@ -379,6 +385,8 @@ class Process {
       history._deleted = true
       history.id = history.entity_id
       history._entity = history.entity
+      history._entity_clean = entity_names[history.entity]
+      history.type_clean = history_types[history.type]
       history.timestamp *= 1000
       if (db.table_has_id(history.entity, history.entity_id)) {
         const item = db.get(history.entity, history.entity_id)

@@ -1,4 +1,5 @@
 import db from "@db"
+import { entity_names } from "@js/constant"
 
 export default class SearchHistory {
   static db_key = "user_data/search_history"
@@ -76,6 +77,7 @@ export default class SearchHistory {
         folder_id: item_data.folder_id,
         folder_name: item_data.folder_name,
         _entity: item_data._entity,
+        _entity_clean: entity_names[item_data._entity],
       })
     }
     return result

@@ -65,7 +65,7 @@ export default class Column {
   }
   static entity() {
     return {
-      data: "_entity",
+      data: "_entity_clean",
       name: "entity",
       title: Render.icon("entity") + "Entité",
       defaultContent: "",
@@ -76,10 +76,10 @@ export default class Column {
           return data
         }
         return `
-          <span class="icon icon_${data}">
-            <i class="fas fa-${entity_to_icon[data] || data}"></i>
+          <span class="icon icon_${row._entity}">
+            <i class="fas fa-${entity_to_icon[row._entity] || row._entity}"></i>
           </span>
-          <span>${entity_names[data]}</span>`
+          <span>${data}</span>`
       },
     }
   }

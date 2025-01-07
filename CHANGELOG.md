@@ -6,6 +6,7 @@
 - added : processing of history changes in jsonjsdb_editor
 - added : basic history tab on homepage
 - fixed : markdown image with alt not_rounded
+- fixed : entity column select input search with clean name
 - refactor : set default datatable sort_by_name to false and remove unnecessary check for empty datatable
 - removed : unused option page export and import tabs
 

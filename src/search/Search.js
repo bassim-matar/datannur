@@ -90,6 +90,7 @@ export default class Search {
             folder_id: item.folder_id,
             folder_name: item.folder_name,
             _entity: item._entity,
+            _entity_clean: entity_names[item._entity]
           })
         }
       }

@@ -95,7 +95,7 @@ export function define_columns(
     for (const row of data.slice(0, nb_row_loading)) {
       let value = row[column.data]
       if (column.from_length) value = value.length
-      if (column.data === "_entity") value = "icon_ico," + value
+      if (column.data === "_entity_clean") value = "icon_ico," + value
       cells.push(value)
     }
     const cells_width =
