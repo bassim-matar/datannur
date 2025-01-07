@@ -125,7 +125,7 @@ function variable_add_dataset_info(variable, dataset) {
 function add_entity(item, entity) {
   item._entity = entity
   item._entity_clean = entity_names[entity]
-} 
+}
 
 export function make_parents_relative(parent_id, items) {
   for (const item of items) {
@@ -216,8 +216,8 @@ class Process {
       add_nb_recursive("institution", institution, "folder")
       const datasets = get_recursive("institution", institution.id, "dataset")
       const variables = datasets.flatMap(dataset =>
-        db.get_all("variable", { dataset }),
-      ) 
+        db.get_all("variable", { dataset })
+      )
       institution.nb_dataset_recursive = datasets.length
       institution.nb_variable_recursive = variables.length
     })
@@ -237,8 +237,8 @@ class Process {
       add_period(folder)
       const datasets = get_recursive("folder", folder.id, "dataset")
       const variables = datasets.flatMap(dataset =>
-        db.get_all("variable", { dataset }),
-      ) 
+        db.get_all("variable", { dataset })
+      )
       folder.nb_dataset_recursive = datasets.length
       folder.nb_variable_recursive = variables.length
     })
@@ -380,18 +380,33 @@ class Process {
     })
   }
   static history() {
+    const history_deleted = {}
     db.foreach("history", history => {
-      history.name = history.entity_id
+      if (history.type === "delete") {
+        if (!(history.entity in history_deleted)) {
+          history_deleted[history.entity] = {}
+        }
+        history_deleted[history.entity][history.entity_id] = history
+      }
+    })
+    db.foreach("history", history => {
       history._deleted = true
       history.id = history.entity_id
       history._entity = history.entity
       history._entity_clean = entity_names[history.entity]
       history.type_clean = history_types[history.type]
       history.timestamp *= 1000
+      const history_deleted_row =
+        history_deleted[history.entity][history.entity_id]
+
       if (db.table_has_id(history.entity, history.entity_id)) {
         const item = db.get(history.entity, history.entity_id)
         history.name = item.name
         history._deleted = false
+      } else if (history_deleted_row) {
+        history.name = history_deleted_row.name
+      } else {
+        history.name = history.entity_id
       }
     })
   }

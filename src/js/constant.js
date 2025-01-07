@@ -24,6 +24,12 @@ export const var_types = {
   other: "autre",
 }
 
+export const history_types = {
+  add: "Ajout",
+  update: "Modification",
+  delete: "Suppression",
+}
+
 export const entity_to_icon = {
   institution: "university",
   owner: "university",
@@ -82,4 +88,7 @@ export const entity_to_icon = {
   filter_info: "magnifying-glass-plus",
   relation: "arrows-left-right",
   history: "history",
+  add: "plus",
+  update: "pen",
+  delete: "trash",
 }

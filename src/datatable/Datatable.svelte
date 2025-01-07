@@ -505,6 +505,18 @@
           &.is-striped > tbody > tr:nth-child(2n) {
             background-color: $background-2;
           }
+          tbody > tr:has(span.icon_add) > .dtfc-fixed-left {
+            background-color: $background-green-filled;
+          }
+          tbody > tr:has(span.icon_delete) > .dtfc-fixed-left {
+            background-color: $background-red-filled;
+          }
+          tbody > tr:has(span.icon_add) {
+            background-color: $background-green-filled !important;
+          }
+          tbody > tr:has(span.icon_delete) {
+            background-color: $background-red-filled !important;
+          }
           thead td,
           thead th {
             border: none;
@@ -599,10 +611,18 @@
             }
           }
           td span.deleted {
-            color: $color-4;
+            color: $color-2;
+            font-style: italic;
+            font-size: 14px;
           }
           td div.long_text_empty {
             width: 250px;
+          }
+          td span.highlight_diff_add {
+            background: $background-green;
+          }
+          td span.highlight_diff_delete {
+            background: $background-red;
           }
           td div.long_text {
             padding: 1px auto;
@@ -652,6 +672,15 @@
           tbody > tr:hover > td.dtfc-fixed-left {
             background: $color-6;
           }
+          tbody > tr:hover:has(span.icon_delete) > td:not(.dt-empty),
+          tbody > tr:hover:has(span.icon_delete) > td.dtfc-fixed-left {
+            background: $background-red-filled;
+          }
+          tbody > tr:hover:has(span.icon_add) > td:not(.dt-empty),
+          tbody > tr:hover:has(span.icon_add) > td.dtfc-fixed-left{
+            background: $background-green-filled;
+          }
+
           tbody > tr:hover > td .var_main_col,
           tbody > tr:hover > td .long_text:has(.var_main_col) {
             color: $color-3;

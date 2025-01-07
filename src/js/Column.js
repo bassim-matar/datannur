@@ -538,6 +538,7 @@ export default class Column {
       data: options.var_name,
       title: Render.icon("date") + "Moment",
       defaultContent: "",
+      filter_type: "input",
       tooltip: "moment de l'ajout",
       render: (data, type) => {
         if (!data) return ""

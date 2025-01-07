@@ -1,12 +1,15 @@
-@use 'sass:map';
+@use "sass:map";
 
 // light mode
 $background-2-light: #fff; // header and footer
 $background-1-light: #f6f7f8; //#f0f2f5; // main background
 $background-3-light: #eceff1; // #f4f6f9; // button download table
+$background-green-light: rgba(18, 148, 50, 0.4); // green background
+$background-red-light: rgba(187, 38, 63, 0.4); // red background
+$background-green-filled-light: rgb(227, 247, 232); // green background
+$background-red-filled-light: rgb(251, 223, 228); // red background
 $color-1-light: #363636; // text inside table
 $color-2-light: #4a4a4a; // text color inside header and footer
-// $color-3-light: #485fc7; // highligth text and icon
 $color-3-light: #12999b;
 $color-4-light: #ccc; // datatables select
 $color-5-light: #dbdbdb; // tab border
@@ -16,9 +19,12 @@ $color-6-light: #e7e7e7; // row hovered
 $background-2-dark: #151515; // header, footer
 $background-1-dark: #0b0b0b; // main background
 $background-3-dark: #000; // #17181c; // button download table
+$background-green-dark: rgba(18, 148, 50, 0.4); // green background
+$background-red-dark: rgba(187, 38, 63, 0.4); // red background
+$background-green-filled-dark: rgb(0, 29, 7); // green background
+$background-red-filled-dark: rgb(35, 0, 6); // red background
 $color-1-dark: #dbdbdb; // text inside table
 $color-2-dark: #b5b5b5; // text color inside header and footer
-// $color-3-dark: #5ea3e4; // highligth text and icon
 $color-3-dark: #12999b;
 $color-4-dark: #555; // datatables select
 $color-5-dark: #363636; // tab border
@@ -28,6 +34,10 @@ $color-6-dark: #222222; // row hovered
 $background-1: var(--background-1);
 $background-2: var(--background-2);
 $background-3: var(--background-3);
+$background-green: var(--background-green);
+$background-red: var(--background-red);
+$background-green-filled: var(--background-green-filled);
+$background-red-filled: var(--background-red-filled);
 $color-1: var(--color-1);
 $color-2: var(--color-2);
 $color-3: var(--color-3);
@@ -53,6 +63,7 @@ $icon-colors: (
   "pdf": #ae667a,
   "missing": #ae667a,
   "localisation": #ae667a,
+  "delete": #ae667a,
   "stat": #9fb658,
   "entity": #9fb658,
   "nb_row": #9fb658,
@@ -77,6 +88,7 @@ $icon-colors: (
   "phone": #5e9381,
   "survey_type": #5e9381,
   "data_path": #5e9381,
+  "add": #5e9381,
   "preview": #c6695e,
   "date": #c6695e,
   "frequency": #c6695e,
@@ -88,11 +100,11 @@ $icon-colors: (
   "md": #579fbd,
   "relation": #579fbd,
   "history": #579fbd,
+  "update": #579fbd,
   "log": #bd7c6c,
   "col_search": $color-2,
   "recent_search": $color-2,
   "functionality": #e0745c,
-  
 );
 
 @function color($name) {

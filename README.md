@@ -64,6 +64,7 @@ SCSS are also used for style and a subset of Bulma CSS has been used for some co
 - Mermaid : MIT License - [https://github.com/mermaid-js/mermaid](https://github.com/mermaid-js/mermaid)
 - MiniMasonry.js : MIT License - [https://github.com/Spope/MiniMasonry.js](https://github.com/Spope/MiniMasonry.js)
 - Navigo : MIT License - [https://github.com/krasimir/navigo](https://github.com/krasimir/navigo)
+- jsdiff : BSD 3-Clause License - [https://github.com/kpdecker/jsdiff](https://github.com/kpdecker/jsdiff)
 
 ### Dev dependencies licences
 
