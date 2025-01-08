@@ -15,6 +15,17 @@ export const entity_names = {
   log: "Log",
 }
 
+export const parent_entities = {
+  institution: "parent",
+  folder: "parent",
+  tag: "parent",
+  doc: "parent",
+  dataset: "folder",
+  variable: "dataset",
+  modality: "folder",
+  value: "modality",
+}
+
 export const var_types = {
   integer: "nombre",
   float: "décimal",

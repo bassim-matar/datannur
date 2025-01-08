@@ -56,6 +56,7 @@
       },
       Column.entity(),
       Column.name(),
+      Column.parent_entity(),
       {
         data: "variable",
         title: Render.icon("variable") + "Variable",

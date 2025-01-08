@@ -6,6 +6,7 @@
 - added : processing of history changes in jsonjsdb_editor
 - added : basic history tab on homepage
 - added : history diff with highlight of delete and add on row and value
+- added : history parent entity column
 - fixed : markdown image with alt not_rounded
 - fixed : entity column select input search with clean name
 - refactor : set default datatable sort_by_name to false and remove unnecessary check for empty datatable

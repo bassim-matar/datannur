@@ -2,7 +2,7 @@ import db from "@db"
 import { get_variable_type_clean, escape_html_entities } from "@js/util"
 import { get_period } from "@js/Time"
 import { get_nb_values } from "@js/Render"
-import { entity_names, history_types } from "@js/constant"
+import { entity_names, history_types, parent_entities } from "@js/constant"
 
 function add_entities_used() {
   db.use = {}
@@ -380,6 +380,22 @@ class Process {
     })
   }
   static history() {
+
+    function get_item(entity, entity_id, history_deleted) {
+      if (db.table_has_id(entity, entity_id)) {
+        const item = db.get(entity, entity_id)
+        item._deleted = false
+        item.parent_entity_id = item[`${parent_entities[entity]}_id`]
+        return item
+      }
+      const item = history_deleted[entity]?.[entity_id]
+      if (item) {
+        item._deleted = true
+        return item
+      }
+      return null
+    }
+
     const history_deleted = {}
     db.foreach("history", history => {
       if (history.type === "delete") {
@@ -389,25 +405,39 @@ class Process {
         history_deleted[history.entity][history.entity_id] = history
       }
     })
+
     db.foreach("history", history => {
-      history._deleted = true
+      const item = get_item(history.entity, history.entity_id, history_deleted)
+      if (item && item.name) {
+        history.name = item.name
+        history.parent_entity_id = item.parent_entity_id
+        history._deleted = item._deleted
+      } else if (history.entity === "value") {
+        history._deleted = true
+        history.parent_entity_id = history.entity_id.split("---")[0]
+        history.name = history.entity_id
+        if (history.name.includes("---")) {
+          history.name = history.name.split("---")[1]
+        }
+      } else {
+        history.name = history.entity_id
+        history._deleted = true
+      }
       history.id = history.entity_id
       history._entity = history.entity
       history._entity_clean = entity_names[history.entity]
       history.type_clean = history_types[history.type]
+      history.parent_entity = parent_entities[history.entity]
+      history.parent_entity_clean = entity_names[history.parent_entity]
       history.timestamp *= 1000
-      const history_deleted_row =
-        history_deleted[history.entity][history.entity_id]
 
-      if (db.table_has_id(history.entity, history.entity_id)) {
-        const item = db.get(history.entity, history.entity_id)
-        history.name = item.name
-        history._deleted = false
-      } else if (history_deleted_row) {
-        history.name = history_deleted_row.name
-      } else {
-        history.name = history.entity_id
-      }
+      const parent_item = get_item(
+        history.parent_entity,
+        history.parent_entity_id,
+        history_deleted
+      )
+      history.parent_name = parent_item?.name
+      history.parent_deleted = parent_item?._deleted
     })
   }
 }

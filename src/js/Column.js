@@ -83,6 +83,28 @@ export default class Column {
       },
     }
   }
+  static parent_entity() {
+    return {
+      data: "parent_name",
+      name: "parent_entity",
+      title: Render.icon("entity") + "Partie de",
+      defaultContent: "",
+      has_long_text: true,
+      tooltip: "Partie de l'entité",
+      filter_type: "input",
+      render: (data, type, row) => {
+        if (type === "sort" || type === "export" || type === "filter") {
+          return `${row.parent_entity_clean} | ${row.parent_name}`
+        }
+        return wrap_long_text(`
+          <span class="icon icon_${row.parent_entity}">
+            <i class="fas fa-${entity_to_icon[row.parent_entity] || row.parent_entity}"></i>
+          </span>
+          <span>${link(`${row.parent_entity}/${row.parent_entity_id}`, row.parent_name)}</span>`
+        )
+      },
+    }
+  }
   static folder(folder_id_var = "folder_id", folder_name_var = "folder_name") {
     const render = (
       data,
