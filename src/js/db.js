@@ -130,17 +130,18 @@ function add_entity(item, entity) {
 function add_next_update(item) {
   if (!item.last_update_date || !item.updating_each) return
   let diff
-  if (item.updating_each === "quotidienne") diff = 24 * 3600
-  else if (item.updating_each === "hebdomadaire") diff = 7 * (24 * 3600)
-  else if (item.updating_each === "mensuelle") diff = 30 * (24 * 3600)
-  else if (item.updating_each === "trimestrielle") diff = 90 * (24 * 3600)
-  else if (item.updating_each === "semestrielle") diff = 180 * (24 * 3600)
-  else if (item.updating_each === "annuelle") diff = 365 * (24 * 3600)
-  else if (item.updating_each === "biennale") diff = 2 * (365 * 24 * 3600)
-  else if (item.updating_each === "triennale") diff = 3 * (365 * 24 * 3600)
-  else if (item.updating_each === "quadrimestrielle")
+  const updating_each = item.updating_each.toLowerCase()
+  if (updating_each === "quotidienne") diff = 24 * 3600
+  else if (updating_each === "hebdomadaire") diff = 7 * (24 * 3600)
+  else if (updating_each === "mensuelle") diff = 30 * (24 * 3600)
+  else if (updating_each === "trimestrielle") diff = 90 * (24 * 3600)
+  else if (updating_each === "semestrielle") diff = 180 * (24 * 3600)
+  else if (updating_each === "annuelle") diff = 365 * (24 * 3600)
+  else if (updating_each === "biennale") diff = 2 * (365 * 24 * 3600)
+  else if (updating_each === "triennale") diff = 3 * (365 * 24 * 3600)
+  else if (updating_each === "quadrimestrielle")
     diff = 4 * (365 * 24 * 3600)
-  else if (item.updating_each === "quinquennale") diff = 5 * (365 * 24 * 3600)
+  else if (updating_each === "quinquennale") diff = 5 * (365 * 24 * 3600)
 
   if (diff) {
     const last_update = date_to_timestamp(item.last_update_date)

@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fixed : history next update based on frequency lowercase
+
 ## 0.10.0 (2025-01-09)
 
 - added : column nb variable for institutions and folders
