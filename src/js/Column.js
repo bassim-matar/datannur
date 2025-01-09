@@ -93,15 +93,20 @@ export default class Column {
       tooltip: "Partie de l'entité",
       filter_type: "input",
       render: (data, type, row) => {
+        if (!data) return ""
         if (type === "sort" || type === "export" || type === "filter") {
           return `${row.parent_entity_clean} | ${row.parent_name}`
         }
         return wrap_long_text(`
           <span class="icon icon_${row.parent_entity}">
-            <i class="fas fa-${entity_to_icon[row.parent_entity] || row.parent_entity}"></i>
+            <i class="fas fa-${
+              entity_to_icon[row.parent_entity] || row.parent_entity
+            }"></i>
           </span>
-          <span>${link(`${row.parent_entity}/${row.parent_entity_id}`, row.parent_name)}</span>`
-        )
+          <span>${link(
+            `${row.parent_entity}/${row.parent_entity_id}`,
+            row.parent_name
+          )}</span>`)
       },
     }
   }
@@ -308,7 +313,7 @@ export default class Column {
       data: "last_update_date",
       name: "last_update",
       defaultContent: "",
-      title: Render.icon("date") + "Mis à jour",
+      title: Render.icon("date") + "Mise à jour",
       filter_type: "input",
       tooltip: "Date de dernière mise à jour",
       render: (data, type) => {
@@ -318,10 +323,29 @@ export default class Column {
       },
     }
   }
+  static next_update() {
+    return {
+      data: "next_update_date",
+      name: "next_update",
+      defaultContent: "",
+      title: Render.icon("date") + "Prochaine",
+      filter_type: "input",
+      tooltip: "Date de prochaine mise à jour estimée",
+      render: (data, type) => {
+        if (!data) return ""
+        if (type !== "display") return data
+        return `${get_time_ago(
+          data,
+          true,
+          true
+        )}<br>${data} <span style="font-size: 12px;">(estim.)</span>`
+      },
+    }
+  }
   static last_update_timestamp() {
     return {
       data: "last_update_timestamp",
-      title: Render.icon("date") + "Mis à jour",
+      title: Render.icon("date") + "Mise à jour",
       defaultContent: "",
       filter_type: "input",
       tooltip: "Moment de la dernière mise à jour",
@@ -565,7 +589,10 @@ export default class Column {
       render: (data, type) => {
         if (!data) return ""
         if (type !== "display") return get_datetime(data)
-        return `${get_time_ago(data)}<br>${get_datetime(data)}`
+        let datetime = get_datetime(data)
+        if (datetime.includes(" 00:00:00") || datetime.includes(" 01:00:00"))
+          datetime = datetime.split(" ")[0]
+        return `${get_time_ago(data)}<br>${datetime}`
       },
     }
   }

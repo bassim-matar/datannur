@@ -15,7 +15,7 @@
 
 {#if last_update_date}
   <tr>
-    <td><Icon type="date" /> Mis à jour</td>
+    <td><Icon type="date" /> Mise à jour</td>
     <td>{last_update_date_readable}, {time_ago}</td>
   </tr>
 {/if}

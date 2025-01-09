@@ -7,6 +7,7 @@
   import InstitutionInfo from "@infoTable/InstitutionInfo.svelte"
   import TagsInfo from "@infoTable/TagsInfo.svelte"
   import LastUpdateInfo from "@infoTable/LastUpdateInfo.svelte"
+  import NextUpdateInfo from "@infoTable/NextUpdateInfo.svelte"
   import FrequencyInfo from "@infoTable/FrequencyInfo.svelte"
   import LocalisationInfo from "@infoTable/LocalisationInfo.svelte"
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
@@ -29,6 +30,7 @@
     <InstitutionInfo type="manager" institution_id={folder.manager_id} />
     <TagsInfo tags={folder.tags} />
     <LastUpdateInfo last_update_date={folder.last_update_date} />
+    <NextUpdateInfo next_update_date={folder.next_update_date} />
     <FrequencyInfo frequency={folder.updating_each} />
     <PeriodInfo period={folder.period} period_duration={folder.period_duration} />
     <LocalisationInfo localisation={folder.localisation} />

@@ -14,6 +14,10 @@ export function date_to_timestamp(date, mode) {
   return Date.parse(complete_date)
 }
 
+export function timestamp_to_date (timestamp) {
+  return new Date(timestamp).toISOString().slice(0, 10).replaceAll("-", "/")
+}
+
 const formatter = new Intl.RelativeTimeFormat(locale, { numeric: "auto" })
 const divisions = [
   { amount: 60, name: "seconds", local_name: "seconde" },

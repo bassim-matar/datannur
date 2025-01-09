@@ -84,6 +84,7 @@
       Column.nb_doc("folder", nb_doc_max),
       Column.tag(),
       Column.last_update(),
+      Column.next_update(),
       Column.frequency(),
       Column.period(),
       Column.parents(),

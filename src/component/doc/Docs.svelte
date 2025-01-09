@@ -41,7 +41,7 @@
     {
       data: "last_update",
       name: "last_update_doc",
-      title: Render.icon("date") + "Mis à jour",
+      title: Render.icon("date") + "Mise à jour",
       defaultContent: "",
       filter_type: "input",
       has_long_text: true,

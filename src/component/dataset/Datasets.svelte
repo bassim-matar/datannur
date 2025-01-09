@@ -61,6 +61,7 @@
       Column.folder(),
       Column.tag(),
       Column.last_update(),
+      Column.next_update(),
       Column.frequency(),
       Column.period(),
       Column.owner(),

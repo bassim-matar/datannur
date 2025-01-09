@@ -9,6 +9,7 @@
   import RowInfo from "@infoTable/RowInfo.svelte"
   import FrequencyInfo from "@infoTable/FrequencyInfo.svelte"
   import LastUpdateInfo from "@infoTable/LastUpdateInfo.svelte"
+  import NextUpdateInfo from "@infoTable/NextUpdateInfo.svelte"
   import LastUpdateTimestampInfo from "@infoTable/LastUpdateTimestampInfo.svelte"
   import LocalisationInfo from "@infoTable/LocalisationInfo.svelte"
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
@@ -38,6 +39,7 @@
     />
   {:else}
     <LastUpdateInfo last_update_date={dataset.last_update_date} />
+    <NextUpdateInfo next_update_date={dataset.next_update_date} />
   {/if}
   <FrequencyInfo frequency={dataset.updating_each} />
   <PeriodInfo period={dataset.period} period_duration={dataset.period_duration} />

@@ -36,6 +36,7 @@
 
   function define_columns() {
     return [
+      Column.favorite(),
       {
         data: "type_clean",
         title: Render.icon("type"),
@@ -78,15 +79,18 @@
       },
       {
         data: "type",
-        title: Render.icon("update") + "Modification",
+        title: Render.icon("update") + "Valeur",
         defaultContent: "",
-        name: "Modification",
+        name: "value",
         filter_type: "input",
-        tooltip: "Etat après modification",
+        tooltip: "Valeur de la variable",
         render: (data, type, row) => {
           if (!row.old_value && !row.new_value) {
             return ""
           }
+          if (row.old_value === row.new_value)
+            return wrap_long_text(row.old_value)
+
           const diff = highlight_diff(row.old_value, row.new_value)
           if (type === "sort" || type === "export" || type === "filter") {
             return diff
@@ -95,6 +99,13 @@
         },
       },
       Column.timestamp(),
+      {
+        data: "time",
+        title: Render.icon("date") + "temps",
+        defaultContent: "",
+        filter_type: "select",
+        tooltip: "passé ou futur",
+      },
     ]
   }
   const columns = define_columns()

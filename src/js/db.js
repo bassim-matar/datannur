@@ -1,6 +1,6 @@
 import db from "@db"
 import { get_variable_type_clean, escape_html_entities } from "@js/util"
-import { get_period } from "@js/Time"
+import { get_period, date_to_timestamp, timestamp_to_date } from "@js/Time"
 import { get_nb_values } from "@js/Render"
 import { entity_names, history_types, parent_entities } from "@js/constant"
 
@@ -127,6 +127,27 @@ function add_entity(item, entity) {
   item._entity_clean = entity_names[entity]
 }
 
+function add_next_update(item) {
+  if (!item.last_update_date || !item.updating_each) return
+  let diff
+  if (item.updating_each === "quotidienne") diff = 24 * 3600
+  else if (item.updating_each === "hebdomadaire") diff = 7 * (24 * 3600)
+  else if (item.updating_each === "mensuelle") diff = 30 * (24 * 3600)
+  else if (item.updating_each === "trimestrielle") diff = 90 * (24 * 3600)
+  else if (item.updating_each === "semestrielle") diff = 180 * (24 * 3600)
+  else if (item.updating_each === "annuelle") diff = 365 * (24 * 3600)
+  else if (item.updating_each === "biennale") diff = 2 * (365 * 24 * 3600)
+  else if (item.updating_each === "triennale") diff = 3 * (365 * 24 * 3600)
+  else if (item.updating_each === "quadrimestrielle")
+    diff = 4 * (365 * 24 * 3600)
+  else if (item.updating_each === "quinquennale") diff = 5 * (365 * 24 * 3600)
+
+  if (diff) {
+    const last_update = date_to_timestamp(item.last_update_date)
+    item.next_update_date = timestamp_to_date(last_update + diff * 1000)
+  }
+}
+
 export function make_parents_relative(parent_id, items) {
   for (const item of items) {
     let position = 0
@@ -232,6 +253,7 @@ class Process {
       add_docs("folder", folder)
       add_nb_child("folder", folder)
       add_nb_child_recursive("folder", folder)
+      add_next_update(folder)
       if (db.use.owner) add_name(folder, "institution", "owner")
       if (db.use.manager) add_name(folder, "institution", "manager")
       add_period(folder)
@@ -281,6 +303,7 @@ class Process {
       add_variable_num(dataset, "dataset", "variable")
       add_nb("dataset", dataset, "variable")
       add_period(dataset)
+      add_next_update(dataset)
       dataset.type_clean = ""
       if (dataset.type) {
         dataset.type_clean = filter_to_name[dataset.type]
@@ -297,6 +320,13 @@ class Process {
       add_nb("doc", doc, "tag")
       add_entities(doc)
       if (doc.last_update) doc.last_update = doc.last_update * 1000
+      doc.last_update_date = ""
+      if (doc.last_update) {
+        doc.last_update_date = new Date(doc.last_update)
+          .toISOString()
+          .slice(0, 10)
+          .replaceAll("-", "/")
+      }
     })
   }
   static variable() {
@@ -380,7 +410,6 @@ class Process {
     })
   }
   static history() {
-
     function get_item(entity, entity_id, history_deleted) {
       if (db.table_has_id(entity, entity_id)) {
         const item = db.get(entity, entity_id)
@@ -412,6 +441,7 @@ class Process {
         history.name = item.name
         history.parent_entity_id = item.parent_entity_id
         history._deleted = item._deleted
+        history.id = item.id
       } else if (history.entity === "value") {
         history._deleted = true
         history.parent_entity_id = history.entity_id.split("---")[0]
@@ -423,13 +453,13 @@ class Process {
         history.name = history.entity_id
         history._deleted = true
       }
-      history.id = history.entity_id
       history._entity = history.entity
       history._entity_clean = entity_names[history.entity]
       history.type_clean = history_types[history.type]
       history.parent_entity = parent_entities[history.entity]
       history.parent_entity_clean = entity_names[history.parent_entity]
       history.timestamp *= 1000
+      history.time = history.timestamp > Date.now() ? "Futur" : "Passé"
 
       const parent_item = get_item(
         history.parent_entity,
@@ -438,7 +468,80 @@ class Process {
       )
       history.parent_name = parent_item?.name
       history.parent_deleted = parent_item?._deleted
+      history.is_favorite = false
     })
+
+    function add_validity(validities, type, entity, entity_data) {
+      const parent_entity =
+        parent_entities[entity] === "parent" ? entity : parent_entities[entity]
+      const parent_item = get_item(
+        parent_entity,
+        entity_data[`${parent_entities[entity]}_id`],
+        history_deleted
+      )
+
+      let type_clean = "Mise à jour"
+      if (type === "start_date") type_clean = "Validité début"
+      if (type === "end_date") type_clean = "Validité fin"
+
+      const timestamp = date_to_timestamp(
+        entity_data[type],
+        type === "start_date" ? "start" : "end"
+      )
+      const time = timestamp > Date.now() ? "Futur" : "Passé"
+
+      validities.push({
+        id: entity_data.id,
+        entity: entity,
+        _entity: entity,
+        _entity_clean: entity_names[entity],
+        entity_id: entity_data.id,
+        parent_entity: parent_entity,
+        parent_entity_clean: entity_names[parent_entity],
+        parent_entity_id: entity_data[`${parent_entities[entity]}_id`],
+        parent_name: parent_item?.name,
+        name: entity_data.name,
+        type,
+        old_value: entity_data[type],
+        new_value: entity_data[type],
+        variable: type,
+        type_clean,
+        timestamp,
+        time,
+        is_favorite: false,
+      })
+    }
+
+    const validities = []
+    const entities = Object.keys(parent_entities)
+    for (const entity of entities) {
+      if (
+        (db.tables[entity].length > 0 &&
+          (Object.keys(db.tables[entity][0]).includes("start_date") ||
+            Object.keys(db.tables[entity][0]).includes("end_date"))) ||
+        Object.keys(db.tables[entity][0]).includes("last_update_date")
+      ) {
+        db.foreach(entity, entity_data => {
+          if (entity_data.start_date) {
+            add_validity(validities, "start_date", entity, entity_data)
+          }
+          if (entity_data.end_date) {
+            add_validity(validities, "end_date", entity, entity_data)
+          }
+          if (entity_data.last_update_date) {
+            add_validity(validities, "last_update_date", entity, entity_data)
+          }
+          if (entity_data.next_update_date) {
+            add_validity(validities, "next_update_date", entity, entity_data)
+          }
+        })
+      }
+    }
+
+    if (!db.tables.history) db.tables.history = []
+    for (const validity of validities) {
+      db.tables.history.push(validity)
+    }
   }
 }
 

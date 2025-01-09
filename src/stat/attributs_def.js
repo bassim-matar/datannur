@@ -29,7 +29,7 @@ export default {
   },
   last_update: {
     icon: "time_ago",
-    name: "Mis à jour",
+    name: "Mise à jour",
     type: "numeric",
     variable: "last_update_date",
     range_type: "time_ago",
@@ -37,7 +37,7 @@ export default {
   },
   last_update_doc: {
     icon: "time_ago",
-    name: "Mis à jour",
+    name: "Mise à jour",
     type: "numeric",
     variable: "last_update",
     range_type: "time_ago",
