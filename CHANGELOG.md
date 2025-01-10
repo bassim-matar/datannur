@@ -3,6 +3,7 @@
 ## unreleased
 
 - added : history tab to all pages
+- changed : upgrade puppeteer to version 24.0
 - fixed : history next update based on frequency lowercase
 
 ## 0.10.0 (2025-01-09)
