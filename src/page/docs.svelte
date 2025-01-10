@@ -6,8 +6,14 @@
   import about_file from "@markdown/about_doc.md?raw"
 
   const docs = db.get_all("doc")
+
+  const history = db
+    .get_all("history")
+    .filter(history => history.entity === "doc")
+
   const tabs = tabs_helper({
     docs,
+    history,
     stat: [{ entity: "doc", items: docs }],
     about_file,
   })

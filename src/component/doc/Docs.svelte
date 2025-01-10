@@ -44,14 +44,11 @@
       title: Render.icon("date") + "Mise à jour",
       defaultContent: "",
       filter_type: "input",
-      has_long_text: true,
       tooltip: "Date de dernière mise à jour",
       render: (data, type) => {
-        if (!data) return wrap_long_text()
+        if (!data) return ""
         if (type === "export") return data
-        return wrap_long_text(
-          `${get_datetime_sortable(data, true)}, ${get_time_ago(data)}`,
-        )
+        return `${get_time_ago(data)}<br>${get_datetime_sortable(data, true)}`
       },
     },
     {

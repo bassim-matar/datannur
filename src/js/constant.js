@@ -41,6 +41,20 @@ export const history_types = {
   delete: "Suppression",
 }
 
+export const column_clean_names = {
+  start_date: "Validité début",
+  end_date: "Validité fin",
+  last_update_date: "Dernière<br>mise à jour",
+  next_update_date: "Prochaine<br>mise à jour",
+  name: "Nom",
+  description: "Description",
+  updating_each: "Fréquence<br>de mise à jour",
+}
+
+export const column_icons = {
+  updating_each: "frequency",
+}
+
 export const entity_to_icon = {
   institution: "university",
   owner: "university",

@@ -67,7 +67,13 @@ export function define_columns(
   if (!keep_all_cols) columns_copy = filter_empty_columns(columns_copy, data)
 
   let bold = ""
-  const mini_col = ["_row_num", "level", "is_favorite", "search_receht"]
+  const mini_col = [
+    "_row_num",
+    "level",
+    "is_favorite",
+    "search_receht",
+    "history_type",
+  ]
   for (const column of columns_copy) {
     const key = column.name ? column.name : column.data
     if (key !== "_row_num" && stat_exists(entity, key)) {

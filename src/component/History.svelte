@@ -4,7 +4,11 @@
   import Render from "@js/Render"
   import { wrap_long_text } from "@js/util"
   import Datatable from "@datatable/Datatable.svelte"
-  import { entity_to_icon } from "@js/constant"
+  import {
+    entity_to_icon,
+    column_clean_names,
+    column_icons,
+  } from "@js/constant"
 
   let { history } = $props()
 
@@ -42,6 +46,7 @@
         title: Render.icon("type"),
         defaultContent: "",
         name: "history_type",
+        width: "20px",
         filter_type: "select",
         tooltip: "Type de modification",
         render: (data, type, row) => {
@@ -67,20 +72,34 @@
         tooltip: "Nom de la variable",
         render: (data, type) => {
           if (!data) return ""
+
+          let column_clean_name = data
+          if (column_clean_names[data])
+            column_clean_name = column_clean_names[data]
+          else if (Column[data.toLowerCase()])
+            column_clean_name = Column[data.toLowerCase()]?.name
+
           if (type === "sort" || type === "export" || type === "filter") {
-            return data
+            return column_clean_name
           }
+
+          let icon = data
+          if (column_icons[data]) icon = column_icons[data]
+
           return `
-          <span class="icon icon_${data}" title="${data}">
-            <i class="fas fa-${entity_to_icon[data] || data}"></i>
-          </span>
-          <span>${data}</span>`
+          <div style="display: flex; align-items: center;">
+            <span class="icon icon_${icon}" title="${data}">
+              <i class="fas fa-${entity_to_icon[icon] || icon}"></i>
+            </span>
+            <span style="font-size: 13px;">${column_clean_name}</span>
+          </div>`
         },
       },
       {
         data: "type",
         title: Render.icon("update") + "Valeur",
         defaultContent: "",
+        has_long_text: true,
         name: "value",
         filter_type: "input",
         tooltip: "Valeur de la variable",

@@ -21,9 +21,14 @@
     add_minimum_deep(tags, true, true)
   }
 
+  const history = db
+    .get_all("history")
+    .filter(history => history.entity === "institution")
+
   const tabs = tabs_helper({
     institutions,
     tags,
+    history,
     stat: [{ entity: "institution", items: institutions }],
     about_file,
   })

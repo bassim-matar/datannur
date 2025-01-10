@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- added : history tab to all pages
 - fixed : history next update based on frequency lowercase
 
 ## 0.10.0 (2025-01-09)

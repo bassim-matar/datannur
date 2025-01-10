@@ -139,8 +139,7 @@ function add_next_update(item) {
   else if (updating_each === "annuelle") diff = 365 * (24 * 3600)
   else if (updating_each === "biennale") diff = 2 * (365 * 24 * 3600)
   else if (updating_each === "triennale") diff = 3 * (365 * 24 * 3600)
-  else if (updating_each === "quadrimestrielle")
-    diff = 4 * (365 * 24 * 3600)
+  else if (updating_each === "quadrimestrielle") diff = 4 * (365 * 24 * 3600)
   else if (updating_each === "quinquennale") diff = 5 * (365 * 24 * 3600)
 
   if (diff) {
@@ -454,11 +453,17 @@ class Process {
         history.name = history.entity_id
         history._deleted = true
       }
+
+      const parent_entity =
+        parent_entities[history.entity] === "parent"
+          ? history.entity
+          : parent_entities[history.entity]
+
       history._entity = history.entity
       history._entity_clean = entity_names[history.entity]
       history.type_clean = history_types[history.type]
-      history.parent_entity = parent_entities[history.entity]
-      history.parent_entity_clean = entity_names[history.parent_entity]
+      history.parent_entity = parent_entity
+      history.parent_entity_clean = entity_names[parent_entity]
       history.timestamp *= 1000
       history.time = history.timestamp > Date.now() ? "Futur" : "Passé"
 
@@ -517,10 +522,11 @@ class Process {
     const entities = Object.keys(parent_entities)
     for (const entity of entities) {
       if (
-        (db.tables[entity].length > 0 &&
-          (Object.keys(db.tables[entity][0]).includes("start_date") ||
-            Object.keys(db.tables[entity][0]).includes("end_date"))) ||
-        Object.keys(db.tables[entity][0]).includes("last_update_date")
+        db.tables[entity].length > 0 &&
+        (Object.keys(db.tables[entity][0]).includes("start_date") ||
+          Object.keys(db.tables[entity][0]).includes("end_date") ||
+          Object.keys(db.tables[entity][0]).includes("last_update_date") ||
+          Object.keys(db.tables[entity][0]).includes("next_update_date"))
       ) {
         db.foreach(entity, entity_data => {
           if (entity_data.start_date) {

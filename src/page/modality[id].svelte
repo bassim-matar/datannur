@@ -8,7 +8,17 @@
 
   const variables = db.get_all("variable", { modality })
   const values = modality.values
-  const tabs = tabs_helper({ modality, values, variables })
+
+  const history = db
+    .get_all("history")
+    .filter(
+      history =>
+        (history.entity === "modality" && history.id === modality.id) ||
+        (history.entity === "value" &&
+          history.parent_entity_id === modality.id),
+    )
+
+  const tabs = tabs_helper({ modality, values, variables, history })
 </script>
 
 <section class="section">

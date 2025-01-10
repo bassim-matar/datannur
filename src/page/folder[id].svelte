@@ -35,6 +35,10 @@
   make_parents_relative(false, tags)
   add_minimum_deep(tags)
 
+  const history = db
+    .get_all("history")
+    .filter(history => history.entity === "folder" && history.id === folder.id)
+
   const stat = [
     { entity: "folder", items: folders },
     { entity: "tag", items: tags },
@@ -52,6 +56,7 @@
     datasets,
     variables,
     modalities,
+    history,
     stat,
   })
 

@@ -14,10 +14,18 @@
       dataset_id: dataset.link ? dataset.id : false,
     }
   }
+
+  const history = db
+    .get_all("history")
+    .filter(
+      history => history.entity === "variable" && history.id === variable.id,
+    )
+
   let tabs = tabs_helper({
     variable,
     variable_values: variable.values,
     variable_preview,
+    history,
   })
 </script>
 

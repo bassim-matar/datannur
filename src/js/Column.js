@@ -72,6 +72,7 @@ export default class Column {
       tooltip: "Entité",
       filter_type: "select",
       render: (data, type, row) => {
+        if (!data) return ""
         if (type === "sort" || type === "export" || type === "filter") {
           return data
         }
@@ -592,6 +593,11 @@ export default class Column {
         let datetime = get_datetime(data)
         if (datetime.includes(" 00:00:00") || datetime.includes(" 01:00:00"))
           datetime = datetime.split(" ")[0]
+
+        if (datetime.length > 12) {
+          datetime = `<span style="font-size: 12px";>${datetime}</span>`
+        }
+
         return `${get_time_ago(data)}<br>${datetime}`
       },
     }

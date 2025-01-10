@@ -67,6 +67,10 @@
       add_minimum_deep(tags)
     }
 
+    const history = db
+      .get_all("history")
+      .filter(history => history.entity === "tag" && history.id === tag.id)
+
     const stat = [
       { entity: "institution", items: institutions },
       { entity: "folder", items: folders },
@@ -83,6 +87,7 @@
       docs,
       datasets,
       variables,
+      history,
       stat,
     })
   }

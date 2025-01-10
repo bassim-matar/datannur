@@ -2,6 +2,7 @@ import db from "@db"
 import { link } from "@js/util"
 import Render from "@js/Render"
 import { all_tabs_icon } from "@js/store"
+import { entity_to_icon } from "@js/constant"
 
 export default class Logs {
   static db_key = "user_data/log"
@@ -81,8 +82,9 @@ export default class Logs {
         log.action = readeable_action[log.action]
       }
       let icon_name = log.entity
-      if (icon_name in this.all_tabs_icon_value)
+      if (!(icon_name in entity_to_icon) && icon_name in this.all_tabs_icon_value)
         icon_name = this.all_tabs_icon_value[icon_name].icon
+   
       if (icon_name) log.element = Render.icon(icon_name) + log.element
       logs.push(log)
     }
