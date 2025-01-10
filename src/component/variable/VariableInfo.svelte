@@ -50,7 +50,10 @@
       {variable.num}
     </td>
   </tr>
-  <PeriodInfo period={variable.period} />
+  <PeriodInfo
+    period={variable.period}
+    period_duration={variable.period_duration}
+  />
   <RowInfo nb_row={variable.nb_row} />
   {#if variable.nb_missing > 0}
     <tr>

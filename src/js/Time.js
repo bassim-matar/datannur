@@ -1,5 +1,24 @@
 import { locale } from "@js/constant"
 
+function convert_quarter_to_full_date(complete_date, mode) {
+  const quarter = complete_date[5]
+  complete_date = complete_date.slice(0, 4)
+  if (mode === "start") {
+    if (quarter === "1") complete_date += "/01"
+    else if (quarter === "2") complete_date += "/04"
+    else if (quarter === "3") complete_date += "/07"
+    else if (quarter === "4") complete_date += "/10"
+    complete_date += "/01"
+  } else if (mode === "end") {
+    if (quarter === "1") complete_date += "/03"
+    else if (quarter === "2") complete_date += "/06"
+    else if (quarter === "3") complete_date += "/09"
+    else if (quarter === "4") complete_date += "/12"
+    complete_date += "/30"
+  }
+  return complete_date
+}
+
 export function date_to_timestamp(date, mode) {
   let complete_date = date
   if (!complete_date) return ""
@@ -11,10 +30,14 @@ export function date_to_timestamp(date, mode) {
     if (mode === "start") complete_date += "/01"
     if (mode === "end") complete_date += "/30"
   }
+
+  if (complete_date.length === 6 && complete_date[4] === "t") {
+    complete_date = convert_quarter_to_full_date(complete_date, mode)
+  }
   return Date.parse(complete_date)
 }
 
-export function timestamp_to_date (timestamp) {
+export function timestamp_to_date(timestamp) {
   return new Date(timestamp).toISOString().slice(0, 10).replaceAll("-", "/")
 }
 
@@ -80,6 +103,12 @@ export function get_period(start, end, parse = false) {
     if (start.length === 7) start += "/01"
     if (end.length === 4) end += "/12"
     if (end.length === 7) end += "/30"
+    if (start.length === 6 && start[4] === "t") {
+      start = convert_quarter_to_full_date(start, "start")
+    }
+    if (end.length === 6 && end[4] === "t") {
+      end = convert_quarter_to_full_date(end, "end")
+    }
     start = Date.parse(start)
     end = Date.parse(end)
     if (end - start < 10 * 24 * 3600 * 1000) end += 1 * 24 * 3600 * 1000

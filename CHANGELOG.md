@@ -5,6 +5,7 @@
 - added : history tab to all pages
 - changed : upgrade puppeteer to version 24.0
 - fixed : history next update based on frequency lowercase
+- fixed : validity date with quarter notation
 
 ## 0.10.0 (2025-01-09)
 
