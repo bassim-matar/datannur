@@ -166,7 +166,6 @@ export const all_tabs = {
     name: "Stat",
     icon: "stat",
     component: Stat,
-    without_num: true,
     without_prop: true,
     footer_visible: true,
   },

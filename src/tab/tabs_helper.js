@@ -1,4 +1,14 @@
 import { all_tabs } from "@tab/all_tabs"
+import attributs from "@stat/attributs"
+
+function get_nb_stat(stat, attributs) {
+  return stat.reduce((acc, entity) => {
+    if (entity.items.length > 0) {
+      return acc + (attributs[entity.entity].length || 0)
+    }
+    return acc
+  }, 0)
+}
 
 function get_tab(key, value) {
   if (!(key in all_tabs)) {
@@ -37,6 +47,10 @@ function get_tab(key, value) {
 
   if (tab.use_about_file) {
     tab.props = {about_file: value}
+  }
+
+  if (key === "stat") {
+    tab.nb = get_nb_stat(value, attributs)
   }
   
   return tab

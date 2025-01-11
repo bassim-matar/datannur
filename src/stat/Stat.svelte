@@ -4,6 +4,7 @@
   import Icon from "@layout/Icon.svelte"
   import { document_width, get_color } from "@js/util"
   import { entity_names } from "@js/constant"
+  import { all_tabs } from "@js/store"
   import attributs from "./attributs"
   import { add_values } from "./stat"
   import StatBox from "./StatBox.svelte"
@@ -30,7 +31,18 @@
     masonry.destroy()
   })
 
+  function update_nb_item_visible(entities) {
+    let nb_item_visible = 0
+    for (const entity of entities) {
+      if (visible[entity.entity] || show_all) {
+        nb_item_visible += entity.attributs.length
+      }
+    }
+    $all_tabs.stat.nb = nb_item_visible
+  }
+
   function update_layout() {
+    update_nb_item_visible(entities)
     loading = true
     setTimeout(() => {
       masonry.layout()

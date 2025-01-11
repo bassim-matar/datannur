@@ -1,9 +1,10 @@
 # datannur
 
-## unreleased
+## 0.10.1 (2025-01-11)
 
 - added : history tab to all pages
 - added : no_more_update attribute to hide next_update_date
+- added : nb total item in stat tab
 - changed : upgrade puppeteer to version 24.0
 - fixed : history next update based on frequency lowercase
 - fixed : validity date with quarter notation
