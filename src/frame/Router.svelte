@@ -1,17 +1,24 @@
 <script>
   import db from "@db"
-  import { router } from "@js/router"
+  import { router } from "@js/router.svelte.js"
   import { app_mode } from "@js/util"
   import Logs from "@js/Logs"
-  import { page_hash, page_content_loaded, search_value } from "@js/store"
+  import {
+    page_hash,
+    page_content_loaded,
+    search_value,
+    reload_increment,
+  } from "@js/store"
   import { url_hash } from "@js/url_hash"
   import router_index from "@src/.generated/router_index"
 
-  let entity = ""
+  let entity_global = $state("")
   let route = $state(router_index._loading.component)
   let params = $state({})
   let entity_id = $state("")
-  let page_key = $derived(`${entity}___${entity_id}`)
+  let page_key = $derived(
+    `${entity_global}___${entity_id}___${$reload_increment}`,
+  )
 
   function is_spa_homepage() {
     return (
@@ -56,14 +63,14 @@
   if ("_index" in router_index) {
     router.on("/", set_route("_index"))
   }
-  for (const [entity, { param }] of Object.entries(router_index)) {
+  for (const [entity_global, { param }] of Object.entries(router_index)) {
     let route_url = false
-    if (["_index", "_error", "_loading"].includes(entity)) continue
-    else if (param) route_url = `/${entity}/:${param}`
-    else route_url = `/${entity}`
+    if (["_index", "_error", "_loading"].includes(entity_global)) continue
+    else if (param) route_url = `/${entity_global}/:${param}`
+    else route_url = `/${entity_global}`
 
     if (route_url) {
-      router.on(route_url, set_route(entity))
+      router.on(route_url, set_route(entity_global))
     }
   }
   if ("_error" in router_index) {
