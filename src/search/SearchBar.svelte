@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte"
   import db from "@db"
-  import { router } from "@js/router"
+  import { router } from "@js/router.svelte.js"
   import { search_value, page_name } from "@js/store"
   import { clickOutside, debounce, is_mobile } from "@js/util"
   import Logs from "@js/Logs"

@@ -1,9 +1,19 @@
 import { marked } from "marked"
+import { get_base_link_url } from "@js/util"
 
 const renderer = new marked.Renderer()
 renderer.link = ({ href, title, text }) => {
   if (!title) title = ""
-  return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="basic_link" title="${title}">${text}</a>`
+
+  let target = ""
+  if (href.includes("http") || href.includes("mailto")) {
+    target = 'target="_blank" rel="noopener"'
+    return `<a href="${href}" ${target} class="basic_link" title="${title}">${text}</a>`
+  }
+
+  const base = get_base_link_url()
+  const onclick = `window.go_to_href(event, '${href}')`
+  return `<a href="${base}${href}" onclick="${onclick}" class="basic_link" title="${title}">${text}</a>`
 }
 
 renderer.image = function ({ href, text }) {

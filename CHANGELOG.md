@@ -6,6 +6,7 @@
 - changed : upgrade puppeteer to version 24.0
 - fixed : history next update based on frequency lowercase
 - fixed : validity date with quarter notation
+- fixed : internal link changing param but same page
 
 ## 0.10.0 (2025-01-09)
 

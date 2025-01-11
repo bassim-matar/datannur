@@ -1,5 +1,5 @@
 <script>
-  import { router } from "@js/router"
+  import { router } from "@js/router.svelte.js"
   import { get_base_link_url } from "@js/util"
 
   let {

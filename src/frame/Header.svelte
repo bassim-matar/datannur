@@ -1,7 +1,7 @@
 <script>
   import db from "@db"
   import { nb_favorite, header_open, page_name } from "@js/store"
-  import { router } from "@js/router"
+  import { router } from "@js/router.svelte.js"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import { get_is_mobile } from "@js/util"
   import logo from "@img/logo.png"
