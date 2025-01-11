@@ -128,7 +128,7 @@ function add_entity(item, entity) {
 }
 
 function add_next_update(item) {
-  if (!item.last_update_date || !item.updating_each) return
+  if (!item.last_update_date || !item.updating_each || item.no_more_update) return
   let diff
   const updating_each = item.updating_each.toLowerCase()
   if (updating_each === "quotidienne") diff = 24 * 3600
