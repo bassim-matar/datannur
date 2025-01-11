@@ -117,14 +117,20 @@
           return wrap_long_text(diff)
         },
       },
-      Column.timestamp(),
       {
         data: "time",
-        title: Render.icon("date") + "temps",
+        title: Render.icon("date"),
         defaultContent: "",
         filter_type: "select",
         tooltip: "passé ou futur",
+        render: (data, type) => {
+          if (type === "sort" || type === "export" || type === "filter") {
+            return data
+          }
+          return `<span style="display: none;">${data}</span>`
+        },
       },
+      Column.timestamp(),
     ]
   }
   const columns = define_columns()

@@ -48,6 +48,7 @@ export function define_columns(
       name: "_row_num",
       title: "#",
       tooltip: "Numéro de ligne",
+      filter_type: "input",
       width: "20px",
     }
     if (entity in entity_names) {
@@ -85,7 +86,7 @@ export function define_columns(
       else column.tooltip = column_stat_btn
     }
 
-    if (["is_favorite", "type"].includes(column.name))
+    if(column.filter_type === "select")
       column.search_modality = true
     if (mini_col.includes(column.name)) {
       column.loading_max_width = 20

@@ -28,6 +28,7 @@ export default class Column {
       title: Render.icon(icon) + title_name,
       name: "name",
       tooltip: "Nom",
+      filter_type: "input",
       has_long_text: true,
       render: (data, type, row) => {
         let indent = false
@@ -59,6 +60,7 @@ export default class Column {
       data: "original_name",
       title: Render.icon("name") + "Nom d'origine",
       has_long_text: true,
+      filter_type: "input",
       tooltip: "Nom d'origine avant renommage",
       render: data => wrap_long_text(data),
     }
@@ -178,6 +180,7 @@ export default class Column {
       defaultContent: "",
       title: Render.icon("description") + "Description",
       has_long_text: true,
+      filter_type: "input",
       tooltip: "Description",
       render: data => wrap_long_text(data),
     }
@@ -598,7 +601,19 @@ export default class Column {
           datetime = `<span style="font-size: 12px";>${datetime}</span>`
         }
 
-        return `${get_time_ago(data)}<br>${datetime}`
+        let time_ago = get_time_ago(data)
+
+        if (time_ago.length > 18) {
+          time_ago = `<span style="font-size: 12px";>${time_ago}</span>`
+        }
+
+        const percent = get_percent(
+          (new Date().getTime() - data) / 31536000000
+        )
+        const entity = percent < 0 ? "value" : "doc"
+        const percent_abs_inversed = 100 - Math.abs(percent)
+        const content = `${time_ago}<br>${datetime}`
+        return `${Render.num_percent(content, percent_abs_inversed, entity, type)}` 
       },
     }
   }
