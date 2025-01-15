@@ -42,7 +42,9 @@
     .get_all("history")
     .filter(
       history =>
-        history.entity === "institution" && history.id === institution.id,
+        (history.entity === "institution" && history.id === institution.id) ||
+        (history.parent_entity === "institution" &&
+          history.parent_entity_id === institution.id),
     )
 
   const stat = [

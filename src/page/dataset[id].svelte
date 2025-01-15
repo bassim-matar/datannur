@@ -26,7 +26,10 @@
   const history = db
     .get_all("history")
     .filter(
-      history => history.entity === "dataset" && history.id === dataset.id,
+      history =>
+        (history.entity === "dataset" && history.id === dataset.id) ||
+        (history.parent_entity === "dataset" &&
+          history.parent_entity_id === dataset.id),
     )
 
   const stat = [

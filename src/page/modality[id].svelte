@@ -14,7 +14,7 @@
     .filter(
       history =>
         (history.entity === "modality" && history.id === modality.id) ||
-        (history.entity === "value" &&
+        (history.parent_entity === "modality" &&
           history.parent_entity_id === modality.id),
     )
 

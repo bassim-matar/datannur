@@ -37,7 +37,12 @@
 
   const history = db
     .get_all("history")
-    .filter(history => history.entity === "folder" && history.id === folder.id)
+    .filter(
+      history =>
+        (history.entity === "folder" && history.id === folder.id) ||
+        (history.parent_entity === "folder" &&
+          history.parent_entity_id === folder.id),
+    )
 
   const stat = [
     { entity: "folder", items: folders },

@@ -1,5 +1,12 @@
 # datannur
 
+## unreleased
+
+- added : parent entity to history on entity page
+- added : markdown link title attribute to open internal link in new tab
+- added : percent color past and futur for column next_update
+- fixed : sort column moment by numeric value
+
 ## 0.10.1 (2025-01-11)
 
 - added : history tab to all pages

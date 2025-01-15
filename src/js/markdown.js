@@ -6,7 +6,7 @@ renderer.link = ({ href, title, text }) => {
   if (!title) title = ""
 
   let target = ""
-  if (href.includes("http") || href.includes("mailto")) {
+  if (href.includes("http") || href.includes("mailto") || title.includes("new_tab")) {
     target = 'target="_blank" rel="noopener"'
     return `<a href="${href}" ${target} class="basic_link" title="${title}">${text}</a>`
   }

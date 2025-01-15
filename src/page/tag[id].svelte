@@ -69,7 +69,12 @@
 
     const history = db
       .get_all("history")
-      .filter(history => history.entity === "tag" && history.id === tag.id)
+      .filter(
+        history =>
+          (history.entity === "tag" && history.id === tag.id) ||
+          (history.parent_entity === "tag" &&
+            history.parent_entity_id === tag.id),
+      )
 
     const stat = [
       { entity: "institution", items: institutions },

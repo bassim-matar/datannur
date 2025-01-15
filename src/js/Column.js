@@ -338,11 +338,19 @@ export default class Column {
       render: (data, type) => {
         if (!data) return ""
         if (type !== "display") return data
-        return `${get_time_ago(
+        const time_ago = get_time_ago(
           data,
           true,
           true
-        )}<br>${data} <span style="font-size: 12px;">(estim.)</span>`
+        )
+        const timestamp = date_to_timestamp(data, "start")
+        const content = `${time_ago}<br>${data} <span style="font-size: 12px;">(estim.)</span>`
+        const percent = get_percent(
+          (new Date().getTime() - timestamp) / 31536000000
+        )
+        const entity = percent < 0 ? "value" : "doc"
+        const percent_abs_inversed = 100 - Math.abs(percent)
+        return `${Render.num_percent(content, percent_abs_inversed, entity, type)}` 
       },
     }
   }
@@ -588,10 +596,12 @@ export default class Column {
       data: options.var_name,
       title: Render.icon("date") + "Moment",
       defaultContent: "",
+      type: "num",
       filter_type: "input",
       tooltip: "moment de l'ajout",
       render: (data, type) => {
         if (!data) return ""
+        if (type === "sort") return data
         if (type !== "display") return get_datetime(data)
         let datetime = get_datetime(data)
         if (datetime.includes(" 00:00:00") || datetime.includes(" 01:00:00"))
