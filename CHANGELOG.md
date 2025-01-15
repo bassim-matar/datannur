@@ -6,6 +6,7 @@
 - added : markdown link title attribute to open internal link in new tab
 - added : percent color past and futur for column next_update
 - fixed : sort column moment by numeric value
+- fixed : jsonjsdb_editor prevent adding entry when old and new value are both null or empty
 
 ## 0.10.1 (2025-01-11)
 
