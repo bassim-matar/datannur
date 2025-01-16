@@ -39,6 +39,10 @@ export const history_types = {
   add: "Ajout",
   update: "Modification",
   delete: "Suppression",
+  start_date: "Validité début",
+  end_date: "Validité fin",
+  last_update_date: "Dernière mise à jour",
+  next_update_date: "Prochaine mise à jour",
 }
 
 export const column_clean_names = {

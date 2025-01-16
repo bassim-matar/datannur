@@ -128,7 +128,8 @@ function add_entity(item, entity) {
 }
 
 function add_next_update(item) {
-  if (!item.last_update_date || !item.updating_each || item.no_more_update) return
+  if (!item.last_update_date || !item.updating_each || item.no_more_update)
+    return
   let diff
   const updating_each = item.updating_each.toLowerCase()
   if (updating_each === "quotidienne") diff = 24 * 3600
@@ -486,16 +487,16 @@ class Process {
         history_deleted
       )
 
-      let type_clean = "Mise à jour"
-      if (type === "start_date") type_clean = "Validité début"
-      if (type === "end_date") type_clean = "Validité fin"
-
       const timestamp = date_to_timestamp(
         entity_data[type],
         type === "start_date" ? "start" : "end"
       )
+
       const time = timestamp > Date.now() ? "Futur" : "Passé"
 
+      let type_clean = "Autre"
+      if (type in history_types) type_clean = history_types[type]
+    
       validities.push({
         id: entity_data.id,
         entity: entity,
