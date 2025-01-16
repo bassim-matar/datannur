@@ -320,11 +320,7 @@ export default class Column {
       title: Render.icon("date") + "Mise à jour",
       filter_type: "input",
       tooltip: "Date de dernière mise à jour",
-      render: (data, type) => {
-        if (!data) return ""
-        if (type !== "display") return data
-        return `${get_time_ago(data, true, true)}<br>${data}`
-      },
+      render: (data, type, row) => Render.datetime(data, type, row),
     }
   }
   static next_update() {
@@ -335,23 +331,8 @@ export default class Column {
       title: Render.icon("date") + "Prochaine",
       filter_type: "input",
       tooltip: "Date de prochaine mise à jour estimée",
-      render: (data, type) => {
-        if (!data) return ""
-        if (type !== "display") return data
-        const time_ago = get_time_ago(
-          data,
-          true,
-          true
-        )
-        const timestamp = date_to_timestamp(data, "start")
-        const content = `${time_ago}<br>${data} <span style="font-size: 12px;">(estim.)</span>`
-        const percent = get_percent(
-          (new Date().getTime() - timestamp) / 31536000000
-        )
-        const entity = percent < 0 ? "value" : "doc"
-        const percent_abs_inversed = 100 - Math.abs(percent)
-        return `${Render.num_percent(content, percent_abs_inversed, entity, type)}` 
-      },
+      render: (data, type, row) =>
+        Render.datetime(data, type, row, { estimation: true }),
     }
   }
   static last_update_timestamp() {
@@ -617,13 +598,16 @@ export default class Column {
           time_ago = `<span style="font-size: 12px";>${time_ago}</span>`
         }
 
-        const percent = get_percent(
-          (new Date().getTime() - data) / 31536000000
-        )
+        const percent = get_percent((new Date().getTime() - data) / 31536000000)
         const entity = percent < 0 ? "value" : "doc"
         const percent_abs_inversed = 100 - Math.abs(percent)
         const content = `${time_ago}<br>${datetime}`
-        return `${Render.num_percent(content, percent_abs_inversed, entity, type)}` 
+        return `${Render.num_percent(
+          content,
+          percent_abs_inversed,
+          entity,
+          type
+        )}`
       },
     }
   }

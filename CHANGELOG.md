@@ -4,7 +4,7 @@
 
 - added : parent entity to history on entity page
 - added : markdown link title attribute to open internal link in new tab
-- added : percent color past and futur for column next_update
+- added : percent color past and futur for column last_update and next_update
 - changed : history green and red background color more visible
 - fixed : sort column moment by numeric value
 - fixed : jsonjsdb_editor prevent adding entry when old and new value are both null or empty

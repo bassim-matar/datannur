@@ -1,6 +1,7 @@
 import db from "@db"
 import { locale } from "@js/constant"
 import { copy_text_classes, copy_text_msg } from "@js/copy_text"
+import { get_time_ago, date_to_timestamp } from "@js/Time"
 import {
   link,
   wrap_long_text,
@@ -50,7 +51,7 @@ export default class Render {
     const nb_values = row.values.length
     let entity = "dataset_id" in row ? "variable" : "modality"
     let tab = entity === "variable" ? "variable_values" : "values"
-    if (row._entity === "metaVariable" ) {
+    if (row._entity === "metaVariable") {
       entity = "metaVariable"
       tab = "variable_metaValues"
     }
@@ -123,7 +124,7 @@ export default class Render {
     const nb_values = data
     let entity = "dataset_id" in row ? "variable" : "modality"
     let tab = entity === "variable" ? "variable_values" : "values"
-    if (row._entity === "metaVariable" ) {
+    if (row._entity === "metaVariable") {
       entity = "metaVariable"
       tab = "variable_metaValues"
     }
@@ -175,5 +176,23 @@ export default class Render {
     return wrap_long_text(
       `<span class="${copy_text_classes}" title="${copy_text_msg}">${data}</span>`
     )
+  }
+  static datetime(data, type, row, option) {
+    if (!data) return ""
+    if (type !== "display") return data
+
+    let content_after = ""
+    if (option?.estimation) {
+      content_after = ` <span style="font-size: 12px;">(estim.)</span>`
+    }
+    const time_ago = get_time_ago(data, true, true)
+    const timestamp = date_to_timestamp(data, "start")
+    const content = `${time_ago}<br>${data}${content_after}`
+    const percent = get_percent(
+      (new Date().getTime() - timestamp) / 31536000000
+    )
+    const entity = percent < 0 ? "value" : "doc"
+    const percent_abs_inversed = 100 - Math.abs(percent)
+    return `${Render.num_percent(content, percent_abs_inversed, entity, type)}`
   }
 }
