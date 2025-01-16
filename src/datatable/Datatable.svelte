@@ -473,12 +473,15 @@
         div > ._datatables {
           text-align: left;
         }
+        .dt-scroll-head ._datatables {
+          border-bottom: 2px $background-1 solid;
+        }
         ._datatables {
           width: auto !important;
           text-align: left;
           margin: auto;
-          margin-top: 0 !important;
-          margin-bottom: 0 !important;
+          margin-top: 0px !important;
+          margin-bottom: 0px !important;
           background: $background-2;
           &.short_table {
             position: relative !important;
