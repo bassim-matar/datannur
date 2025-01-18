@@ -9,16 +9,16 @@
   const variables = db.get_all("variable", { modality })
   const values = modality.values
 
-  const history = db
-    .get_all("history")
+  const evolutions = db
+    .get_all("evolution")
     .filter(
-      history =>
-        (history.entity === "modality" && history.id === modality.id) ||
-        (history.parent_entity === "modality" &&
-          history.parent_entity_id === modality.id),
+      evo =>
+        (evo.entity === "modality" && evo.id === modality.id) ||
+        (evo.parent_entity === "modality" &&
+        evo.parent_entity_id === modality.id),
     )
 
-  const tabs = tabs_helper({ modality, values, variables, history })
+  const tabs = tabs_helper({ modality, values, variables, evolutions })
 </script>
 
 <section class="section">

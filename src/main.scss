@@ -103,7 +103,7 @@ $icon-colors: (
   "time_ago": #e0745c,
   "md": #579fbd,
   "relation": #579fbd,
-  "history": #579fbd,
+  "evolution": #579fbd,
   "update": #579fbd,
   "log": #bd7c6c,
   "col_search": $color-2,
@@ -153,4 +153,4 @@ $menu_mobile_limit: 1023px;
 
 $entities: "institution", "folder", "tag", "dataset", "variable", "modality",
   "value", "log", "entity", "option", "search", "favorite", "about", "diagram",
-  "compare", "stat", "doc", "history", "functionality", "preview";
+  "compare", "stat", "doc", "evolution", "functionality", "preview";

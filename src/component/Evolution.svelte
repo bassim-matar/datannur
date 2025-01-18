@@ -10,15 +10,15 @@
     column_icons,
   } from "@js/constant"
 
-  let { history } = $props()
+  let { evolutions } = $props()
 
-  const history_sorted = [...history]
+  const evolutions_sorted = [...evolutions]
 
-  function sort_history(to_sort) {
+  function sort_evolutions(to_sort) {
     if (to_sort.length === 0) return
     to_sort.sort((a, b) => b.timestamp - a.timestamp)
   }
-  sort_history(history_sorted)
+  sort_evolutions(evolutions_sorted)
 
   function highlight_diff(a, b) {
     if (!a && !b) return ""
@@ -45,7 +45,7 @@
         data: "type_clean",
         title: Render.icon("type"),
         defaultContent: "",
-        name: "history_type",
+        name: "evolution_type",
         width: "20px",
         filter_type: "select",
         tooltip: "Type de modification",
@@ -136,4 +136,4 @@
   const columns = define_columns()
 </script>
 
-<Datatable entity="history" data={history_sorted} {columns} />
+<Datatable entity="evolution" data={evolutions_sorted} {columns} />

@@ -9,11 +9,9 @@
   const raw_tabs = { modalities }
   if (modalities.length > 1) raw_tabs.modalities_compare = false
 
-  raw_tabs.history = db
-    .get_all("history")
-    .filter(
-      history => history.entity === "modality" || history.entity === "value",
-    )
+  raw_tabs.evolutions = db
+    .get_all("evolution")
+    .filter(evo => evo.entity === "modality" || evo.entity === "value")
 
   raw_tabs.stat = [{ entity: "modality", items: modalities }]
   raw_tabs.about_file = about_file

@@ -73,7 +73,7 @@ export function define_columns(
     "level",
     "is_favorite",
     "search_receht",
-    "history_type",
+    "evolution_type",
   ]
   for (const column of columns_copy) {
     const key = column.name ? column.name : column.data

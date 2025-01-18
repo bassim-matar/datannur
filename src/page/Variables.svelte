@@ -13,14 +13,14 @@
     add_minimum_deep(tags, true, true)
   }
 
-  const history = db
-    .get_all("history")
-    .filter(history => history.entity === "variable")
+  const evolutions = db
+    .get_all("evolution")
+    .filter(evo => evo.entity === "variable")
 
   const tabs = tabs_helper({
     variables,
     tags,
-    history,
+    evolutions,
     stat: [{ entity: "variable", items: variables }],
     about_file,
   })

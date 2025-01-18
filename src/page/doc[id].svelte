@@ -20,9 +20,9 @@
   add_minimum_deep(folders)
   add_minimum_deep(tags)
 
-  const history = db
-    .get_all("history")
-    .filter(history => history.entity === "doc" && history.id === doc.id)
+  const evolutions = db
+    .get_all("evolution")
+    .filter(evo => evo.entity === "doc" && evo.id === doc.id)
 
   let tabs = tabs_helper({
     doc,
@@ -30,7 +30,7 @@
     folders,
     tags,
     datasets,
-    history,
+    evolutions,
   })
 </script>
 

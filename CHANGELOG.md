@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- changed : rename history to evolution
 - fixed : favorite page about tab image caption
 
 ## 0.10.2 (2025-01-18)

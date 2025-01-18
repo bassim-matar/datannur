@@ -67,13 +67,12 @@
       add_minimum_deep(tags)
     }
 
-    const history = db
-      .get_all("history")
+    const evolutions = db
+      .get_all("evolution")
       .filter(
-        history =>
-          (history.entity === "tag" && history.id === tag.id) ||
-          (history.parent_entity === "tag" &&
-            history.parent_entity_id === tag.id),
+        evo =>
+          (evo.entity === "tag" && evo.id === tag.id) ||
+          (evo.parent_entity === "tag" && evo.parent_entity_id === tag.id),
       )
 
     const stat = [
@@ -92,7 +91,7 @@
       docs,
       datasets,
       variables,
-      history,
+      evolutions,
       stat,
     })
   }

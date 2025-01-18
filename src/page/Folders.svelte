@@ -19,14 +19,14 @@
     add_minimum_deep(tags, true, true)
   }
 
-  const history = db
-    .get_all("history")
-    .filter(history => history.entity === "folder")
+  const evolutions = db
+    .get_all("evolution")
+    .filter(evo => evo.entity === "folder")
 
   const tabs = tabs_helper({
     folders,
     tags,
-    history,
+    evolutions,
     stat: [{ entity: "folder", items: folders }],
     about_file,
   })

@@ -16,7 +16,7 @@
   const datasets = db.get_all("dataset").filter(item => item.is_favorite)
   const variables = db.get_all("variable").filter(item => item.is_favorite)
   const modalities = db.get_all("modality").filter(item => item.is_favorite)
-  const history = db.get_all("history").filter(item => item.is_favorite)
+  const evolutions = db.get_all("evolution").filter(item => item.is_favorite)
 
   const all_fav = [
     ...institutions,
@@ -58,7 +58,7 @@
     datasets,
     variables,
     modalities,
-    history,
+    evolutions,
     stat,
     about_file,
   })

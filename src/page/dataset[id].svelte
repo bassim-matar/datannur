@@ -23,13 +23,13 @@
 
   let dataset_preview = dataset.link ? dataset.id : false
 
-  const history = db
-    .get_all("history")
+  const evolutions = db
+    .get_all("evolution")
     .filter(
-      history =>
-        (history.entity === "dataset" && history.id === dataset.id) ||
-        (history.parent_entity === "dataset" &&
-          history.parent_entity_id === dataset.id),
+      evo =>
+        (evo.entity === "dataset" && evo.id === dataset.id) ||
+        (evo.parent_entity === "dataset" &&
+          evo.parent_entity_id === dataset.id),
     )
 
   const stat = [
@@ -44,7 +44,7 @@
     dataset_variables,
     modalities,
     dataset_preview,
-    history,
+    evolutions,
     stat,
   })
 </script>

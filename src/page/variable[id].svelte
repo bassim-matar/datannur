@@ -15,17 +15,15 @@
     }
   }
 
-  const history = db
-    .get_all("history")
-    .filter(
-      history => history.entity === "variable" && history.id === variable.id,
-    )
+  const evolutions = db
+    .get_all("evolution")
+    .filter(evo => evo.entity === "variable" && evo.id === variable.id)
 
   let tabs = tabs_helper({
     variable,
     variable_values: variable.values,
     variable_preview,
-    history,
+    evolutions,
   })
 </script>
 

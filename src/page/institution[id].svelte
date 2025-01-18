@@ -38,13 +38,13 @@
   make_parents_relative(false, tags)
   add_minimum_deep(tags)
 
-  const history = db
-    .get_all("history")
+  const evolutions = db
+    .get_all("evolution")
     .filter(
-      history =>
-        (history.entity === "institution" && history.id === institution.id) ||
-        (history.parent_entity === "institution" &&
-          history.parent_entity_id === institution.id),
+      evo =>
+        (evo.entity === "institution" && evo.id === institution.id) ||
+        (evo.parent_entity === "institution" &&
+          evo.parent_entity_id === institution.id),
     )
 
   const stat = [
@@ -66,7 +66,7 @@
     datasets,
     variables,
     modalities,
-    history,
+    evolutions,
     stat,
   })
 

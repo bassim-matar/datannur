@@ -7,13 +7,11 @@
 
   const docs = db.get_all("doc")
 
-  const history = db
-    .get_all("history")
-    .filter(history => history.entity === "doc")
+  const evolutions = db.get_all("evolution").filter(evo => evo.entity === "doc")
 
   const tabs = tabs_helper({
     docs,
-    history,
+    evolutions,
     stat: [{ entity: "doc", items: docs }],
     about_file,
   })

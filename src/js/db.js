@@ -2,7 +2,7 @@ import db from "@db"
 import { get_variable_type_clean, escape_html_entities } from "@js/util"
 import { get_period, date_to_timestamp, timestamp_to_date } from "@js/Time"
 import { get_nb_values } from "@js/Render"
-import { entity_names, history_types, parent_entities } from "@js/constant"
+import { entity_names, evolution_types, parent_entities } from "@js/constant"
 
 function add_entities_used() {
   db.use = {}
@@ -410,15 +410,15 @@ class Process {
       metaVariable.folder_name = metaDataset.metaFolder_id
     })
   }
-  static history() {
-    function get_item(entity, entity_id, history_deleted) {
+  static evolution() {
+    function get_item(entity, entity_id, evo_deleted) {
       if (db.table_has_id(entity, entity_id)) {
         const item = db.get(entity, entity_id)
         item._deleted = false
         item.parent_entity_id = item[`${parent_entities[entity]}_id`]
         return item
       }
-      const item = history_deleted[entity]?.[entity_id]
+      const item = evo_deleted[entity]?.[entity_id]
       if (item) {
         item._deleted = true
         return item
@@ -426,56 +426,56 @@ class Process {
       return null
     }
 
-    const history_deleted = {}
-    db.foreach("history", history => {
-      if (history.type === "delete") {
-        if (!(history.entity in history_deleted)) {
-          history_deleted[history.entity] = {}
+    const evo_deleted = {}
+    db.foreach("evolution", evo => {
+      if (evo.type === "delete") {
+        if (!(evo.entity in evo_deleted)) {
+          evo_deleted[evo.entity] = {}
         }
-        history_deleted[history.entity][history.entity_id] = history
+        evo_deleted[evo.entity][evo.entity_id] = evo
       }
     })
 
-    db.foreach("history", history => {
-      const item = get_item(history.entity, history.entity_id, history_deleted)
+    db.foreach("evolution", evo => {
+      const item = get_item(evo.entity, evo.entity_id, evo_deleted)
       if (item && item.name) {
-        history.name = item.name
-        history.parent_entity_id = item.parent_entity_id
-        history._deleted = item._deleted
-        history.id = item.id
-      } else if (history.entity === "value") {
-        history._deleted = true
-        history.parent_entity_id = history.entity_id.split("---")[0]
-        history.name = history.entity_id
-        if (history.name.includes("---")) {
-          history.name = history.name.split("---")[1]
+        evo.name = item.name
+        evo.parent_entity_id = item.parent_entity_id
+        evo._deleted = item._deleted
+        evo.id = item.id
+      } else if (evo.entity === "value") {
+        evo._deleted = true
+        evo.parent_entity_id = evo.entity_id.split("---")[0]
+        evo.name = evo.entity_id
+        if (evo.name.includes("---")) {
+          evo.name = evo.name.split("---")[1]
         }
       } else {
-        history.name = history.entity_id
-        history._deleted = true
+        evo.name = evo.entity_id
+        evo._deleted = true
       }
 
       const parent_entity =
-        parent_entities[history.entity] === "parent"
-          ? history.entity
-          : parent_entities[history.entity]
+        parent_entities[evo.entity] === "parent"
+          ? evo.entity
+          : parent_entities[evo.entity]
 
-      history._entity = history.entity
-      history._entity_clean = entity_names[history.entity]
-      history.type_clean = history_types[history.type]
-      history.parent_entity = parent_entity
-      history.parent_entity_clean = entity_names[parent_entity]
-      history.timestamp *= 1000
-      history.time = history.timestamp > Date.now() ? "Futur" : "Passé"
+          evo._entity = evo.entity
+          evo._entity_clean = entity_names[evo.entity]
+          evo.type_clean = evolution_types[evo.type]
+          evo.parent_entity = parent_entity
+          evo.parent_entity_clean = entity_names[parent_entity]
+          evo.timestamp *= 1000
+          evo.time = evo.timestamp > Date.now() ? "Futur" : "Passé"
 
       const parent_item = get_item(
-        history.parent_entity,
-        history.parent_entity_id,
-        history_deleted
+        evo.parent_entity,
+        evo.parent_entity_id,
+        evo_deleted
       )
-      history.parent_name = parent_item?.name
-      history.parent_deleted = parent_item?._deleted
-      history.is_favorite = false
+      evo.parent_name = parent_item?.name
+      evo.parent_deleted = parent_item?._deleted
+      evo.is_favorite = false
     })
 
     function add_validity(validities, type, entity, entity_data) {
@@ -484,7 +484,7 @@ class Process {
       const parent_item = get_item(
         parent_entity,
         entity_data[`${parent_entities[entity]}_id`],
-        history_deleted
+        evo_deleted
       )
 
       const timestamp = date_to_timestamp(
@@ -495,7 +495,7 @@ class Process {
       const time = timestamp > Date.now() ? "Futur" : "Passé"
 
       let type_clean = "Autre"
-      if (type in history_types) type_clean = history_types[type]
+      if (type in evolution_types) type_clean = evolution_types[type]
     
       validities.push({
         id: entity_data.id,
@@ -546,9 +546,9 @@ class Process {
       }
     }
 
-    if (!db.tables.history) db.tables.history = []
+    if (!db.tables.evolution) db.tables.evolution = []
     for (const validity of validities) {
-      db.tables.history.push(validity)
+      db.tables.evolution.push(validity)
     }
   }
 }
@@ -601,6 +601,6 @@ export function db_add_processed_data() {
   Process.metaFolder()
   Process.metaDataset()
   Process.metaVariable()
-  Process.history()
+  Process.evolution()
   if (db.use.doc) add_doc_recursive()
 }

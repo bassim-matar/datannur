@@ -16,10 +16,10 @@ export default class Favorites {
         item.favorite_timestamp = fav.timestamp
         count_nb_favorite += 1
       }
-      db.foreach("history", history => {
-        if (!db.table_has_id(history.entity, history.entity_id)) return
-        const item = db.get(history.entity, history.entity_id)
-        if (item && item.is_favorite) history.is_favorite = true
+      db.foreach("evolution", evo => {
+        if (!db.table_has_id(evo.entity, evo.entity_id)) return
+        const item = db.get(evo.entity, evo.entity_id)
+        if (item && item.is_favorite) evo.is_favorite = true
       })
     }
     nb_favorite.update(n => count_nb_favorite)
