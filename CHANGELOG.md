@@ -3,6 +3,7 @@
 ## unreleased
 
 - changed : rename history to evolution
+- changed : make jsonjsdb_editor use xlsx state for evolution
 - fixed : favorite page about tab image caption
 
 ## 0.10.2 (2025-01-18)
