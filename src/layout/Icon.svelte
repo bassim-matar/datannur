@@ -47,7 +47,6 @@
 
   :global(.active) .icon,
   :global(.navbar-item .is-active) .icon,
-  :global(.tabs .is-active) .icon,
   :global(a.is-active) .icon {
     text-shadow: 0 0 10px;
   }

@@ -32,6 +32,7 @@ html {
   --color-modality: #{color("modality")};
   --color-log: #{color("log")};
   --color-entity: #{color("entity")};
+  --color-history: #{color("history")};
 }
 html.dark_mode {
   --background-1: #{$background-1-dark};

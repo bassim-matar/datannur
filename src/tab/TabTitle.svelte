@@ -58,7 +58,7 @@
       (tab_nb?.length > 0 && tab_nb !== "...")}
   >
     <span class="tab_visible icon_wrapper">
-      <Icon type={tab.icon} />
+      <Icon type={tab.icon} margin_right={false} />
     </span>
     <span>
       <span class="tab_visible tab_name">
@@ -94,15 +94,12 @@
   li {
     border: 1px solid transparent;
     border-bottom: 0;
-    height: 40px;
+    height: 38px;
     &.is-active {
       border-color: $color-5;
       a.tab_select_btn {
         background: $background-2;
         z-index: 2;
-        .icon_wrapper {
-          height: 24px;
-        }
         .percent_wrapper {
           position: absolute;
           top: 0;
@@ -126,11 +123,41 @@
     border: 0;
     justify-content: left;
     padding-left: 0;
-    padding-right: 1em;
+    padding-right: 5px;
+    font-size: 13px;
+    .num_style {
+      font-size: 13px;
+    }
+    .icon_wrapper {
+      height: 24px;
+      :global(.icon) {
+        margin-left: 3px;
+        margin-right: 0;
+      }
+    }
     &:hover,
     .is-active & {
       color: $color-3;
       background: transparent;
+    }
+  }
+
+  li {
+    @each $entity in $entities {
+      &.tab_entity_#{$entity} {
+        a.tab_select_btn:hover {
+          color: #{color($entity)} !important;
+        }
+      }
+    }
+  }
+  li.is-active {
+    @each $entity in $entities {
+      &.tab_entity_#{$entity} {
+        a.tab_select_btn {
+          color: #{color($entity)} !important;
+        }
+      }
     }
   }
 
@@ -227,15 +254,6 @@
   @media screen and (max-width: 600px) {
     .tab_name {
       display: none;
-    }
-    .icon_wrapper {
-      :global(.icon) {
-        margin-left: 3px;
-        margin-right: 0;
-      }
-    }
-    a.tab_select_btn {
-      padding-right: 5px;
     }
   }
 </style>
