@@ -2,4 +2,4 @@ Les éléments du catalogue peuvent être mis en favoris en cliquant sur l'étoi
 
 C'est sur cette page qu'ils sont rassemblés.
 
-![add_favorite](assets/tuto/add_favorite{dark_mode}.gif?v=2)
+![Onglet dossier – ajout d’un élément en favoris](assets/tuto/add_favorite{dark_mode}.gif?v=2)

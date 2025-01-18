@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fixed : favorite page about tab image caption
+
 ## 0.10.2 (2025-01-18)
 
 - added : parent entity to history on entity page
