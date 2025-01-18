@@ -79,6 +79,7 @@
           pages={["meta", "metaFolder", "metaDataset", "metaVariable"]}
           className=""
         >
+          <Icon type="internal_view" margin_right={false} />
           vue interne
         </HeaderLink>
       </div>

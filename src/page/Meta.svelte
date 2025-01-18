@@ -1,9 +1,10 @@
 <script>
   import db from "@db"
-  import Head from "@frame/Head.svelte"
-  import Tabs from "@tab/Tabs.svelte"
+
   import { tabs_helper } from "@tab/tabs_helper"
   import about_file from "@markdown/about_main_meta.md?raw"
+  import Title from "@layout/Title.svelte"
+  import Tabs from "@tab/Tabs.svelte"
 
   const metaFolders = db.get_all("metaFolder")
   const metaDatasets = db.get_all("metaDataset")
@@ -25,14 +26,7 @@
   })
 </script>
 
-<Head title="Vue interne" description="Page d'accueil de la vue interne" />
-
 <section class="section">
+  <Title type="internal_view" name="Vue interne" mode="main_title" />
   <Tabs {tabs} />
 </section>
-
-<style lang="scss">
-  .section {
-    margin-top: 80px;
-  }
-</style>

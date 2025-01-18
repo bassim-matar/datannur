@@ -124,4 +124,5 @@ export const entity_to_icon = {
   add: "plus",
   update: "pen",
   delete: "trash",
+  internal_view: "box-open",
 }

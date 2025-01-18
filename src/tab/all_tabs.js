@@ -184,7 +184,7 @@ export const all_tabs = {
     use_about_file: true,
   },
   homepage: { icon: "home" },
-  meta: { icon: "house-laptop" },
+  meta: { icon: "internal_view" },
   metaFolder: { icon: "folder" },
   metaDataset: { icon: "dataset" },
   metaVariable: { icon: "variable" },
