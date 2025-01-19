@@ -23,13 +23,18 @@
 
   let dataset_preview = dataset.link ? dataset.id : false
 
+  const modalities_id = new Set(modalities.map(item => item.id))
+
   const evolutions = db
     .get_all("evolution")
     .filter(
       evo =>
         (evo.entity === "dataset" && evo.id === dataset.id) ||
         (evo.parent_entity === "dataset" &&
-          evo.parent_entity_id === dataset.id),
+          evo.parent_entity_id === dataset.id) ||
+        (evo.parent_entity === "modality" &&
+          modalities_id.has(evo.parent_entity_id)) ||
+        (evo.entity === "modality" && modalities_id.has(evo.id)),
     )
 
   const stat = [

@@ -35,13 +35,22 @@
   make_parents_relative(false, tags)
   add_minimum_deep(tags)
 
+  const modalities_id = new Set(modalities.map(item => item.id))
+  const variables_id = new Set(variables.map(item => item.id))
+  const datasets_id = new Set(datasets.map(item => item.id))
+  const folders_id = new Set(folders.map(item => item.id))
+
   const evolutions = db
     .get_all("evolution")
     .filter(
       evo =>
-        (evo.entity === "folder" && evo.id === folder.id) ||
-        (evo.parent_entity === "folder" &&
-        evo.parent_entity_id === folder.id),
+        (evo.parent_entity === "modality" &&
+          modalities_id.has(evo.parent_entity_id)) ||
+        (evo.entity === "modality" && modalities_id.has(evo.id)) ||
+        (evo.entity === "variable" && variables_id.has(evo.id)) ||
+        (evo.entity === "dataset" && datasets_id.has(evo.id)) ||
+        (evo.entity === "folder" &&
+          (evo.id === folder.id || folders_id.has(evo.id))),
     )
 
   const stat = [
