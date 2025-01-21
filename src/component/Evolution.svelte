@@ -3,12 +3,13 @@
   import Column from "@js/Column"
   import Render from "@js/Render"
   import { wrap_long_text } from "@js/util"
-  import Datatable from "@datatable/Datatable.svelte"
+  import { get_period } from "@js/Time"
   import {
     entity_to_icon,
     column_clean_names,
     column_icons,
   } from "@js/constant"
+  import Datatable from "@datatable/Datatable.svelte"
 
   let { evolutions } = $props()
 
@@ -20,8 +21,50 @@
   }
   sort_evolutions(evolutions_sorted)
 
+  function parse_date(dateString) {
+    const parts = dateString.split("/")
+    if (parts.length !== 3) return null
+    const [year, month, day] = parts.map(Number)
+    if (year > 0 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+      return new Date(year, month - 1, day)
+    }
+    return null
+  }
+
   function highlight_diff(a, b) {
     if (!a && !b) return ""
+
+    if (!isNaN(a) && !isNaN(b)) {
+      const oldVal = parseFloat(a)
+      const newVal = parseFloat(b)
+      const diff = newVal - oldVal
+      const percentageChange =
+        oldVal !== 0 ? ((diff / oldVal) * 100).toFixed(1) : "∞"
+      const diffClass =
+        diff > 0 ? "highlight_diff_add" : "highlight_diff_delete"
+
+      return `${newVal.toLocaleString()} 
+        <br><span class="${diffClass}">${diff > 0 ? "+" : ""}${diff.toLocaleString()} | 
+        ${diff > 0 ? "+" : ""}${percentageChange}%</span>
+    `
+    }
+
+    const oldDate = parse_date(a)
+    const newDate = parse_date(b)
+
+    if (oldDate && newDate) {
+      const diffDays = Math.ceil((newDate - oldDate) / (1000 * 60 * 60 * 24))
+      const diffClass =
+        diffDays > 0 ? "highlight_diff_add" : "highlight_diff_delete"
+
+      const diff_relative = get_period(a, b, true)
+
+      return `
+        ${b} <span class="${diffClass}">${diffDays > 0 ? "+" : ""}${diff_relative}</span>
+        <br>${a}
+    `
+    }
+
     a = a ? a.toString() : ""
     b = b ? b.toString() : ""
     const diff = diffWords(a, b)

@@ -17,17 +17,17 @@
     "@rollup/plugin-alias": "^5.1.1",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "autoprefixer": "^10.4.20",
-    "jsonjsdb_editor": "^0.2.7",
+    "jsonjsdb_editor": "^0.2.8",
     "open-cli": "^8.0.0",
     "puppeteer": "^24.1.0",
     "rollup-plugin-visualizer": "^5.14.0",
     "sass": "^1.83.4",
     "sitemap": "^8.0.0",
-    "svelte": "^5.19.0",
+    "svelte": "^5.19.1",
     "svelte-preprocess": "^6.0.3",
-    "vite": "^6.0.10",
+    "vite": "^6.0.11",
     "vite-plugin-full-reload": "^1.2.0",
-    "vitest": "^3.0.2"
+    "vitest": "^3.0.3"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
