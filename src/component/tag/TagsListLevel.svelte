@@ -9,7 +9,7 @@
 
 <div class="main_tag_list_wrapper">
   {#if tag.id}
-    <span><Link href="tag/{tag.id}">{tag.name}</Link></span>
+    <span><Link href="tag/{tag.id}" entity="tag">{tag.name}</Link></span>
   {/if}
   {#if tag_children_data && tag_children_data.length > 0}
     <div class="tags_list_level_wrapper" class:with_indent={tag.id}>

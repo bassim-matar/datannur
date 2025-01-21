@@ -36,15 +36,16 @@ export default class Column {
         if (!option.with_link) {
           text = data
         } else if (option.with_indent && !row.no_indent) {
-          text = link(row._entity + "/" + row.id, data)
+          text = link(row._entity + "/" + row.id, data, row._entity)
           indent = row?.parents_relative?.length - row?.minimum_deep
         } else {
-          text = link(row._entity + "/" + row.id, data)
+          text = link(row._entity + "/" + row.id, data, row._entity)
         }
         if (option.link_same_entity_tab && row.nb_child > 0) {
           text = link(
             row._entity + "/" + row.id + "?tab=" + row._entity + "s",
-            data
+            data,
+            row._entity
           )
         }
         text = `<strong class="var_main_col">${text}</strong>`
@@ -108,7 +109,8 @@ export default class Column {
           </span>
           <span>${link(
             `${row.parent_entity}/${row.parent_entity_id}`,
-            row.parent_name
+            row.parent_name,
+            row.parent_entity
           )}</span>`)
       },
     }
@@ -573,13 +575,15 @@ export default class Column {
   static timestamp(options) {
     if (!options) options = {}
     if (!("var_name" in options)) options.var_name = "timestamp"
+    if (!("title" in options)) options.title = "Moment"
+    if (!("tooltip" in options)) options.tooltip = "moment de l'ajout"
     return {
       data: options.var_name,
-      title: Render.icon("date") + "Moment",
+      title: Render.icon("date") + options.title,
       defaultContent: "",
       type: "num",
       filter_type: "input",
-      tooltip: "moment de l'ajout",
+      tooltip: options.tooltip,
       render: (data, type) => {
         if (!data) return ""
         if (type === "sort") return data

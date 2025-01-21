@@ -31,10 +31,13 @@
       tooltip: "Nom",
       render: (data, _, row) =>
         wrap_long_text(
-          link(
-            row._entity + "/" + row.id + "?from_search=true",
-            `<strong class="var_main_col">${search_highlight(data, search_value)}</strong>`,
-          ),
+          `<strong class="var_main_col">` +
+            link(
+              row._entity + "/" + row.id + "?from_search=true",
+              `${search_highlight(data, search_value)}`,
+              row._entity,
+            ) +
+            `</strong>`,
         ),
     },
     {

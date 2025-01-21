@@ -8,6 +8,7 @@
     click = () => false,
     isActive = () => false,
     alternative_action = false,
+    entity = false,
     children,
   } = $props()
 
@@ -26,6 +27,10 @@
   function on_click_event(event) {
     click(event)
     go_to_href(event)
+  }
+
+  if (entity) {
+    className += ` color_entity_${entity}`
   }
 </script>
 
@@ -49,6 +54,14 @@
     &.is-active {
       color: $color-3 !important;
       background: initial !important;
+    }
+  }
+
+  @each $entity in $entities {
+    a.color_entity_#{$entity}:hover,
+    a.color_entity_#{$entity}.is-active,
+    a.color_entity_#{$entity}:focus-within {
+      color: #{color($entity)} !important;
     }
   }
 </style>

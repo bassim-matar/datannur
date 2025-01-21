@@ -41,7 +41,13 @@
 </script>
 
 {#if !if_use || (!loading && db.use[if_use])}
-  <Link {href} {click} {className} isActive={() => pages.includes($page_name)}>
+  <Link
+    {href}
+    {click}
+    {className}
+    isActive={() => pages.includes($page_name)}
+    entity={icon}
+  >
     {#if icon}
       {#if info}
         <span class="break_line use_tooltip fix_on_mobile" title={info}>

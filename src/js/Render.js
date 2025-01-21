@@ -29,7 +29,7 @@ export default class Render {
       if (!element) continue
       let name = element.name
       if (level > 0 && type === "export") name = separator + name
-      content += link(entity + "/" + element.id, add_indend(name, level))
+      content += link(entity + "/" + element.id, add_indend(name, level), entity)
       level += 1
     }
     return wrap_long_text(`<div class="tree">${content}</div>`)
@@ -166,7 +166,7 @@ export default class Render {
     if (!tags || tags.length === 0) return wrap_long_text()
     let tags_name = []
     for (const tag of tags) {
-      tags_name.push(link("tag/" + tag.id, tag.name))
+      tags_name.push(link("tag/" + tag.id, tag.name, "tag"))
     }
     return wrap_long_text(tags_name.join(" | "))
   }

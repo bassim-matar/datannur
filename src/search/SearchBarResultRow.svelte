@@ -44,6 +44,7 @@
     <Link
       href="{item.entity}/{item.id}"
       click={() => click_link(item.entity, item.id)}
+      entity={item.entity}
     >
       <div class="long_text">
         {#if search_value === ""}

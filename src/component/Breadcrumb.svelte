@@ -18,7 +18,7 @@
 {#if elems && elems.length > 0}
   <div class="tree">
     {#each elems as elem, i}
-      <Link href="{type}/{elem.id}">
+      <Link href="{type}/{elem.id}" entity={type}>
         {@html add_indend(elem.name, i)}
       </Link>
     {/each}

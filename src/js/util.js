@@ -75,10 +75,14 @@ export function escape_html_entities(str) {
   return String(str).replace(/[&<>"']/g, char => to_replace[char])
 }
 
-export function link(href, content) {
+export function link(href, content, entity=false) {
   const base = get_base_link_url()
   const onclick = `window.go_to_href(event, '${href}')`
-  return `<a href="${base}${href}" onclick="${onclick}">${content}</a>`
+  let special_class = ""
+  if (entity) {
+    special_class = `class="color_entity_${entity}"`
+  }
+  return `<a href="${base}${href}" onclick="${onclick}" ${special_class}>${content}</a>`
 }
 
 export function add_indend(text, indent) {

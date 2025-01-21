@@ -564,6 +564,13 @@
           }
           td {
             position: relative;
+            @each $entity in $entities {
+              a.color_entity_#{$entity}:hover,
+              a.color_entity_#{$entity}.is-active,
+              a.color_entity_#{$entity}:focus-within {
+                color: #{color($entity)} !important;
+              }
+            }
             .num_percent_value {
               position: absolute;
               top: 0;
@@ -680,7 +687,7 @@
             background: $background-red-filled;
           }
           tbody > tr:hover:has(span.icon_add) > td:not(.dt-empty),
-          tbody > tr:hover:has(span.icon_add) > td.dtfc-fixed-left{
+          tbody > tr:hover:has(span.icon_add) > td.dtfc-fixed-left {
             background: $background-green-filled;
           }
 
@@ -688,7 +695,17 @@
           tbody > tr:hover > td .long_text:has(.var_main_col) {
             color: $color-3;
           }
+
+          tbody > tr:hover > td .var_main_col,
+          tbody > tr:hover > td .long_text:has(.var_main_col) {
+            @each $entity in $entities {
+              a.color_entity_#{$entity} {
+                color: #{color($entity)} !important;
+              }
+            }
+          }
         }
+
         @media screen and (max-width: 600px) {
           div.dt-buttons .search_option {
             position: fixed;
