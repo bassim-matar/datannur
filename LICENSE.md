@@ -21,7 +21,7 @@ Le Logiciel inclut l'ensemble des fichiers, codes sources, documentations associ
 
 ## 2. Accès et utilisation du code source sous la Licence *"Source Available"*
 
-Le Logiciel est distribué sous une licence *"Source available"* (source disponible) avant l'activation de la clause convertible détaillée dans la Section 6 des présentes conditions de licence. Dans le cadre de cette licence, le code source est mis à disposition gratuitement pour les usages suivants, à l’exclusion de toute autre usage et sous réserve des restrictions énoncées ci-après :
+Le Logiciel est distribué sous une licence *"Source available"* (source disponible) avant l'activation de la clause convertible détaillée dans la Section 6 des présentes conditions de licence. Dans le cadre de cette licence, le code source est mis à disposition gratuitement pour les usages suivants, à l’exclusion de tout autre usage et sous réserve des restrictions énoncées ci-après :
 
 - **Usage personnel non professionnel** : L'usage personnel non professionnel désigne l'utilisation du Logiciel par une personne à titre bénévole, sur son temps libre, sans but lucratif et en dehors de tout cadre commercial ou professionnel. Cela inclut les activités suivantes :
 
