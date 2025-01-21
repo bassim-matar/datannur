@@ -1,11 +1,14 @@
 # datannur
 
-## unreleased
+## 0.10.3 (2025-01-21)
 
 - added : icon and title for page internal view
 - added : recursive child element to evolution tab
+- added : entity color on links hover or active
+- added : evolution diff for number and date relative
 - changed : rename history to evolution
 - changed : make jsonjsdb_editor use xlsx state for evolution
+- changed : doc last update date use Column.timestamp()
 - fixed : favorite page about tab image caption
 - fixed : little typo in the license 
 

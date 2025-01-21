@@ -1,8 +1,7 @@
 <script>
   import Column from "@js/Column"
   import Render from "@js/Render"
-  import { link, get_percent, wrap_long_text } from "@js/util"
-  import { get_datetime_sortable, get_time_ago } from "@js/Time"
+  import { link, get_percent } from "@js/util"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { docs } = $props()
@@ -38,19 +37,11 @@
       },
     },
     Column.doc_path(),
-    {
-      data: "last_update",
-      name: "last_update_doc",
-      title: Render.icon("date") + "Mise à jour",
-      defaultContent: "",
-      filter_type: "input",
+    Column.timestamp({
+      var_name: "last_update",
+      title: "Mise à jour",
       tooltip: "Date de dernière mise à jour",
-      render: (data, type) => {
-        if (!data) return ""
-        if (type === "export") return data
-        return `${get_time_ago(data)}<br>${get_datetime_sortable(data, true)}`
-      },
-    },
+    }),
     {
       data: "nb_institution",
       title:
