@@ -52,6 +52,7 @@ function add_history(evo_deleted) {
     } else {
       evo.name = evo.entity_id
       evo._deleted = true
+      evo._to_hide = true
     }
 
     const parent_entity =
@@ -76,6 +77,8 @@ function add_history(evo_deleted) {
     evo.parent_deleted = parent_item?._deleted
     evo.is_favorite = false
   })
+
+  db.tables.evolution = db.tables.evolution.filter(evo => !evo._to_hide)
 }
 
 function add_validity(validities, type, entity, entity_data, evo_deleted) {
