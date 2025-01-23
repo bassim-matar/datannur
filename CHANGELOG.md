@@ -3,6 +3,7 @@
 ## unreleased
 
 - added : evolution diff date format YYYY, YYYYtQ and YYYY/MM
+- added : link color entity for dataset name
 - changed : doc tab in the correct order for institution and folder
 
 ## 0.10.3 (2025-01-21)

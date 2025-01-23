@@ -34,7 +34,7 @@
       Dataset
     </td>
     <td>
-      <Link href="{parent_name}/{variable.dataset_id}"
+      <Link href="{parent_name}/{variable.dataset_id}" entity="dataset"
         >{variable.dataset_name}</Link
       >
     </td>

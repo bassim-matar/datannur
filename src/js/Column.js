@@ -450,7 +450,7 @@ export default class Column {
       tooltip: "Dataset",
       render: (data, type, row) =>
         wrap_long_text(
-          link(parent_name + "/" + row[parent_name + "_id"], data)
+          link(parent_name + "/" + row[parent_name + "_id"], data, "dataset")
         ),
     }
   }
