@@ -17,6 +17,8 @@
 
   let { folder } = $props()
 
+  const docs = folder.docs_recursive
+
   const folders = db.get_all_childs("folder", folder.id)
   make_parents_relative(folder.id, folders)
   add_minimum_deep(folders)
@@ -56,7 +58,7 @@
   const stat = [
     { entity: "folder", items: folders },
     { entity: "tag", items: tags },
-    { entity: "doc", items: folder.docs_recursive },
+    { entity: "doc", items: docs },
     { entity: "dataset", items: datasets },
     { entity: "variable", items: variables },
     { entity: "modality", items: modalities },
@@ -64,9 +66,9 @@
 
   const tabs = tabs_helper({
     folder,
-    docs: folder.docs_recursive,
     folders,
     tags,
+    docs,
     datasets,
     variables,
     modalities,

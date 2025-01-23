@@ -18,6 +18,8 @@
 
   let key_tab = $state(1)
 
+  const docs = institution.docs_recursive
+
   const institutions = db.get_all_childs("institution", institution.id)
   make_parents_relative(institution.id, institutions)
   add_minimum_deep(institutions)
@@ -62,7 +64,7 @@
     { entity: "institution", items: institutions },
     { entity: "folder", items: folders },
     { entity: "tag", items: tags },
-    { entity: "doc", items: institution.docs_recursive },
+    { entity: "doc", items: docs },
     { entity: "dataset", items: datasets },
     { entity: "variable", items: variables },
     { entity: "modality", items: modalities },
@@ -70,10 +72,10 @@
 
   const tabs = tabs_helper({
     institution,
-    docs: institution.docs_recursive,
     institutions,
     folders,
     tags,
+    docs,
     datasets,
     variables,
     modalities,
