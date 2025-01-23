@@ -2,7 +2,8 @@ import db from "@db"
 import { get_variable_type_clean, escape_html_entities } from "@js/util"
 import { get_period, date_to_timestamp, timestamp_to_date } from "@js/Time"
 import { get_nb_values } from "@js/Render"
-import { entity_names, evolution_types, parent_entities } from "@js/constant"
+import { entity_names } from "@js/constant"
+import { evolution_initial_setup } from "@js/Evolution"
 
 function add_entities_used() {
   db.use = {}
@@ -411,145 +412,7 @@ class Process {
     })
   }
   static evolution() {
-    function get_item(entity, entity_id, evo_deleted) {
-      if (db.table_has_id(entity, entity_id)) {
-        const item = db.get(entity, entity_id)
-        item._deleted = false
-        item.parent_entity_id = item[`${parent_entities[entity]}_id`]
-        return item
-      }
-      const item = evo_deleted[entity]?.[entity_id]
-      if (item) {
-        item._deleted = true
-        return item
-      }
-      return null
-    }
-
-    const evo_deleted = {}
-    db.foreach("evolution", evo => {
-      if (evo.type === "delete") {
-        if (!(evo.entity in evo_deleted)) {
-          evo_deleted[evo.entity] = {}
-        }
-        evo_deleted[evo.entity][evo.entity_id] = evo
-      }
-    })
-
-    db.foreach("evolution", evo => {
-      const item = get_item(evo.entity, evo.entity_id, evo_deleted)
-      if (item && item.name) {
-        evo.name = item.name
-        evo.parent_entity_id = item.parent_entity_id
-        evo._deleted = item._deleted
-        evo.id = item.id
-      } else if (evo.entity === "value") {
-        evo._deleted = true
-        evo.parent_entity_id = evo.entity_id.split("---")[0]
-        evo.name = evo.entity_id
-        if (evo.name.includes("---")) {
-          evo.name = evo.name.split("---")[1]
-        }
-      } else {
-        evo.name = evo.entity_id
-        evo._deleted = true
-      }
-
-      const parent_entity =
-        parent_entities[evo.entity] === "parent"
-          ? evo.entity
-          : parent_entities[evo.entity]
-
-          evo._entity = evo.entity
-          evo._entity_clean = entity_names[evo.entity]
-          evo.type_clean = evolution_types[evo.type]
-          evo.parent_entity = parent_entity
-          evo.parent_entity_clean = entity_names[parent_entity]
-          evo.timestamp *= 1000
-          evo.time = evo.timestamp > Date.now() ? "Futur" : "Passé"
-
-      const parent_item = get_item(
-        evo.parent_entity,
-        evo.parent_entity_id,
-        evo_deleted
-      )
-      evo.parent_name = parent_item?.name
-      evo.parent_deleted = parent_item?._deleted
-      evo.is_favorite = false
-    })
-
-    function add_validity(validities, type, entity, entity_data) {
-      const parent_entity =
-        parent_entities[entity] === "parent" ? entity : parent_entities[entity]
-      const parent_item = get_item(
-        parent_entity,
-        entity_data[`${parent_entities[entity]}_id`],
-        evo_deleted
-      )
-
-      const timestamp = date_to_timestamp(
-        entity_data[type],
-        type === "start_date" ? "start" : "end"
-      )
-
-      const time = timestamp > Date.now() ? "Futur" : "Passé"
-
-      let type_clean = "Autre"
-      if (type in evolution_types) type_clean = evolution_types[type]
-    
-      validities.push({
-        id: entity_data.id,
-        entity: entity,
-        _entity: entity,
-        _entity_clean: entity_names[entity],
-        entity_id: entity_data.id,
-        parent_entity: parent_entity,
-        parent_entity_clean: entity_names[parent_entity],
-        parent_entity_id: entity_data[`${parent_entities[entity]}_id`],
-        parent_name: parent_item?.name,
-        name: entity_data.name,
-        type,
-        old_value: entity_data[type],
-        new_value: entity_data[type],
-        variable: type,
-        type_clean,
-        timestamp,
-        time,
-        is_favorite: false,
-      })
-    }
-
-    const validities = []
-    const entities = Object.keys(parent_entities)
-    for (const entity of entities) {
-      if (
-        db.tables[entity].length > 0 &&
-        (Object.keys(db.tables[entity][0]).includes("start_date") ||
-          Object.keys(db.tables[entity][0]).includes("end_date") ||
-          Object.keys(db.tables[entity][0]).includes("last_update_date") ||
-          Object.keys(db.tables[entity][0]).includes("next_update_date"))
-      ) {
-        db.foreach(entity, entity_data => {
-          if (entity_data.start_date) {
-            add_validity(validities, "start_date", entity, entity_data)
-          }
-          if (entity_data.end_date) {
-            add_validity(validities, "end_date", entity, entity_data)
-          }
-          if (entity_data.last_update_date) {
-            add_validity(validities, "last_update_date", entity, entity_data)
-          }
-          if (entity_data.next_update_date) {
-            add_validity(validities, "next_update_date", entity, entity_data)
-          }
-        })
-      }
-    }
-
-    if (!db.tables.evolution) db.tables.evolution = []
-    for (const validity of validities) {
-      db.tables.evolution.push(validity)
-    }
+    evolution_initial_setup()
   }
 }
 

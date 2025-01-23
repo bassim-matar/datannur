@@ -1,6 +1,6 @@
 import { locale } from "@js/constant"
 
-function convert_quarter_to_full_date(complete_date, mode) {
+export function convert_quarter_to_full_date(complete_date, mode) {
   const quarter = complete_date[5]
   complete_date = complete_date.slice(0, 4)
   if (mode === "start") {
