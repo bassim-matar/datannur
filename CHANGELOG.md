@@ -4,6 +4,7 @@
 
 - added : evolution diff date format YYYY, YYYYtQ and YYYY/MM
 - added : link color entity for dataset name
+- added : include linked evolution to tag page
 - changed : doc tab in the correct order for institution and folder
 - fixed : hide evolution where element not found, likely due to dataset type filter
 - fixed : evolution filter allow no error if empty

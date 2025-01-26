@@ -67,12 +67,21 @@
       add_minimum_deep(tags)
     }
 
+    const variables_id = new Set(variables.map(item => item.id))
+    const datasets_id = new Set(datasets.map(item => item.id))
+    const folders_id = new Set(folders.map(item => item.id))
+    const institutions_id = new Set(institutions.map(item => item.id))
+
     const evolutions = db
       .get_all("evolution")
       .filter(
         evo =>
           (evo.entity === "tag" && evo.id === tag.id) ||
-          (evo.parent_entity === "tag" && evo.parent_entity_id === tag.id),
+          (evo.parent_entity === "tag" && evo.parent_entity_id === tag.id) ||
+          (evo.entity === "variable" && variables_id.has(evo.id)) ||
+          (evo.entity === "dataset" && datasets_id.has(evo.id)) ||
+          (evo.entity === "folder" && folders_id.has(evo.id)) ||
+          (evo.entity === "institution" && institutions_id.has(evo.id)),
       )
 
     const stat = [
