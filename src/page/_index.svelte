@@ -8,6 +8,7 @@
   import Head from "@frame/Head.svelte"
   import Tabs from "@tab/Tabs.svelte"
   import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
+  import EvolutionSummarySwitch from "@layout/EvolutionSummarySwitch.svelte"
 
   let key_tab = $state(1)
 
@@ -72,6 +73,10 @@
       ($tab_selected.key === "folders" && nb_folder > is_big_limit) ||
       ($tab_selected.key === "tags" && nb_tag > is_big_limit),
   )
+
+  let show_evolution_summary_switch = $derived(
+    $tab_selected.key === "evolutions" && evolutions.length > is_big_limit,
+  )
 </script>
 
 <Head title="datannur | Accueil" description="Page d'accueil de datannur" />
@@ -83,6 +88,9 @@
   {:else}
     {#if show_open_all_switch}
       <OpenAllSwitch on_change={value => (key_tab = value)} />
+    {/if}
+    {#if show_evolution_summary_switch}
+      <EvolutionSummarySwitch on_change={value => (key_tab = value)} />
     {/if}
     {#key key_tab}
       <Tabs {tabs} />

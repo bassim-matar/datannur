@@ -50,6 +50,11 @@
     Options.set("open_all_recursive", open_all_recursive)
   }
 
+  let evolution_summary = $state(Options.get("evolution_summary"))
+  function update_evolution_summary() {
+    Options.set("evolution_summary", evolution_summary)
+  }
+
   let open_all_tab = $state(Options.get("open_all_tab"))
   function update_open_all_tab() {
     Options.set("open_all_tab", open_all_tab)
@@ -99,6 +104,14 @@
       tree_switch={true}
     >
       Afficher les éléments imbriqués (institutions et dossiers)
+    </Switch>
+    <Switch
+      bind:value={evolution_summary}
+      change={update_evolution_summary}
+      tree_switch={true}
+      minimize={true}
+    >
+      Afficher les évolultions de façon résumée
     </Switch>
     <Switch bind:value={open_all_tab} change={update_open_all_tab}>
       Charger tous les onglets automatiquement

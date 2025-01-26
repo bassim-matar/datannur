@@ -63,6 +63,7 @@
     await Options.init()
     set_option_default("rounded_design")
     set_option_default("open_all_recursive")
+    set_option_default("evolution_summary")
     set_option_default("page_shadow_colored", false)
     console.log("init option", Math.round(performance.now() - timer) + " ms")
   })()

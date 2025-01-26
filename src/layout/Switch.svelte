@@ -4,6 +4,7 @@
     change,
     slot_position = "right",
     tree_switch = false,
+    minimize = false,
     size = "medium",
     children,
   } = $props()
@@ -17,6 +18,7 @@
     type="checkbox"
     class="switch is-rounded is-outlined {size}"
     class:tree_switch
+    class:minimize
     bind:checked={value}
     onchange={change}
   />
@@ -121,13 +123,20 @@
   /* special tree_switch */
 
   .switch[type="checkbox"].tree_switch + label::after,
-  .switch[type="checkbox"].tree_switch + label:after {
+  .switch[type="checkbox"].tree_switch + label:after,
+  .switch[type="checkbox"].tree_switch.minimize + label::after,
+  .switch[type="checkbox"].tree_switch.minimize + label:after {
     background: transparent;
     content: "\f802";
     font-family: "Font Awesome 6 Free";
     top: 8px;
     left: 0.5rem;
   }
+  .switch[type="checkbox"].tree_switch.minimize + label::after,
+  .switch[type="checkbox"].tree_switch.minimize + label:after {
+    content: "\f78c";
+  }
+
   .switch[type="checkbox"].tree_switch:checked + label::after,
   .switch[type="checkbox"].tree_switch:checked + label:after {
     left: 1.4rem;

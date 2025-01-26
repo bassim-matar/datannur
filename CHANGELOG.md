@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- added : evolution summary switch to toggle evolution mode
+
 ## 0.10.4 (2025-01-26)
 
 - added : evolution diff date format YYYY, YYYYtQ and YYYY/MM

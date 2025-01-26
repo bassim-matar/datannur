@@ -13,6 +13,7 @@
   import Tabs from "@tab/Tabs.svelte"
   import Title from "@layout/Title.svelte"
   import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
+  import EvolutionSummarySwitch from "@layout/EvolutionSummarySwitch.svelte"
 
   let { institution } = $props()
 
@@ -89,12 +90,18 @@
     ($tab_selected.key === "institutions" && nb_institution > is_big_limit) ||
       ($tab_selected.key === "folders" && nb_folder > is_big_limit),
   )
+  let show_evolution_summary_switch = $derived(
+    $tab_selected.key === "evolutions" && evolutions.length > is_big_limit,
+  )
 </script>
 
 <section class="section">
   <Title type="institution" name={institution.name} id={institution.id} />
   {#if show_open_all_switch}
     <OpenAllSwitch on_change={value => (key_tab = value)} />
+  {/if}
+  {#if show_evolution_summary_switch}
+    <EvolutionSummarySwitch on_change={value => (key_tab = value)} />
   {/if}
   {#key key_tab}
     <Tabs {tabs} />
