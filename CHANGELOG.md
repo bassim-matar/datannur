@@ -6,6 +6,8 @@
 - added : link color entity for dataset name
 - changed : doc tab in the correct order for institution and folder
 - fixed : hide evolution where element not found, likely due to dataset type filter
+- fixed : evolution filter allow no error if empty
+- fixed : error page default element value and add doc case
 
 ## 0.10.3 (2025-01-21)
 

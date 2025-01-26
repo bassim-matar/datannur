@@ -78,7 +78,7 @@ function add_history(evo_deleted) {
     evo.is_favorite = false
   })
 
-  db.tables.evolution = db.tables.evolution.filter(evo => !evo._to_hide)
+  db.tables.evolution = db.tables.evolution?.filter(evo => !evo._to_hide)
 }
 
 function add_validity(validities, type, entity, entity_data, evo_deleted) {
