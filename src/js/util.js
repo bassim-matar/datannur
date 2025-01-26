@@ -75,7 +75,14 @@ export function escape_html_entities(str) {
   return String(str).replace(/[&<>"']/g, char => to_replace[char])
 }
 
-export function link(href, content, entity=false) {
+export function split_on_last_separator(str, separator) {
+  const last_index = str.lastIndexOf(separator)
+  return last_index === -1
+    ? [str, ""]
+    : [str.slice(0, last_index), str.slice(last_index + separator.length)]
+}
+
+export function link(href, content, entity = false) {
   const base = get_base_link_url()
   const onclick = `window.go_to_href(event, '${href}')`
   let special_class = ""

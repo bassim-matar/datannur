@@ -3,6 +3,7 @@ import { entity_names, evolution_types, parent_entities } from "@js/constant"
 import { date_to_timestamp, convert_quarter_to_full_date } from "@js/Time"
 import { diffWords } from "diff"
 import { get_period } from "@js/Time"
+import { split_on_last_separator } from "@js/util"
 
 const arrow_right = `<i class="fas fa-arrow-right"></i>`
 
@@ -43,12 +44,10 @@ function add_history(evo_deleted) {
       evo._deleted = item._deleted
       evo.id = item.id
     } else if (evo.entity === "value") {
+      const [id, value] = split_on_last_separator(evo.entity_id, "---")
       evo._deleted = true
-      evo.parent_entity_id = evo.entity_id.split("---")[0]
-      evo.name = evo.entity_id
-      if (evo.name.includes("---")) {
-        evo.name = evo.name.split("---")[1]
-      }
+      evo.parent_entity_id = id
+      evo.name = value ? value : evo.entity_id
     } else {
       evo.name = evo.entity_id
       evo._deleted = true

@@ -8,6 +8,7 @@
 - fixed : hide evolution where element not found, likely due to dataset type filter
 - fixed : evolution filter allow no error if empty
 - fixed : error page default element value and add doc case
+- fixed : add_history modality value split parent id and name on last separator occurrence
 
 ## 0.10.3 (2025-01-21)
 
