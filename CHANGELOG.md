@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.10.4 (2025-01-26)
 
 - added : evolution diff date format YYYY, YYYYtQ and YYYY/MM
 - added : link color entity for dataset name
@@ -10,6 +10,7 @@
 - fixed : evolution filter allow no error if empty
 - fixed : error page default element value and add doc case
 - fixed : add_history modality value split parent id and name on last separator occurrence
+- fixed : jsonjsdb_editor dont update main file if no change
 
 ## 0.10.3 (2025-01-21)
 

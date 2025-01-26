@@ -1,6 +1,6 @@
 {
   "name": "datannur",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "datannur is a portable data catalog that can run without a server",
   "type": "module",
   "private": true,
@@ -17,7 +17,7 @@
     "@rollup/plugin-alias": "^5.1.1",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "autoprefixer": "^10.4.20",
-    "jsonjsdb_editor": "^0.2.8",
+    "jsonjsdb_editor": "^0.2.9",
     "open-cli": "^8.0.0",
     "puppeteer": "^24.1.1",
     "rollup-plugin-visualizer": "^5.14.0",
