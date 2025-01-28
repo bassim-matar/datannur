@@ -3,6 +3,7 @@
 ## unreleased
 
 - added : evolution summary switch to toggle evolution mode
+- added : evolution summary filter main entity
 - changed : icon "partie de" use entity color
 - changed : evolution update date use futur and past color for variable icon
 

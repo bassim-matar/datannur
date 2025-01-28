@@ -1,4 +1,5 @@
 <script>
+  import { page_name } from "@js/store"
   import Column from "@js/Column"
   import Render from "@js/Render"
   import { wrap_long_text } from "@js/util"
@@ -7,17 +8,45 @@
     entity_to_icon,
     column_clean_names,
     column_icons,
+    is_big_limit,
   } from "@js/constant"
+  import Options from "@js/Options"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { evolutions } = $props()
 
-  const evolutions_sorted = [...evolutions]
+  let evolution_summary = $state(Options.get("evolution_summary"))
 
   function sort_evolutions(to_sort) {
     if (to_sort.length === 0) return
     to_sort.sort((a, b) => b.timestamp - a.timestamp)
   }
+
+  function filter_evolutions(to_filter) {
+    if (to_filter.length === 0) return
+    return to_filter.filter(
+      evo => !["dataset", "variable", "modality", "value"].includes(evo.entity),
+    )
+  }
+
+  const detail_pages = [
+    "dataset",
+    "datasets",
+    "variable",
+    "variables",
+    "modality",
+    "modalities",
+    "favorite"
+  ]
+  const filter_evolution =
+    evolution_summary &&
+    !detail_pages.includes($page_name) &&
+    evolutions.length > is_big_limit
+
+  const evolutions_sorted = filter_evolution
+    ? filter_evolutions([...evolutions])
+    : [...evolutions]
+
   sort_evolutions(evolutions_sorted)
 
   function define_columns() {

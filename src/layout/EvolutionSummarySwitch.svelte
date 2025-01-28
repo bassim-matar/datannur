@@ -8,7 +8,7 @@
 
   function update_evolution_summary() {
     Options.set("evolution_summary", evolution_summary, () => {
-      on_change(evolution_summary)
+      on_change("evolution_summary" + String(evolution_summary))
     })
   }
 </script>
