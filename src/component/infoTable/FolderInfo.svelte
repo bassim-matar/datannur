@@ -7,7 +7,7 @@
   let { folder_id, is_self = false, is_meta = false } = $props()
 
   const name = is_self ? "Partie de" : "Dossier"
-  const icon = is_self ? "folder_tree" : "folder"
+  const icon = is_self ? "folder_tree_folder" : "folder"
 </script>
 
 {#if folder_id}

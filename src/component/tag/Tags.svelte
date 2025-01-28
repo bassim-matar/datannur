@@ -52,7 +52,7 @@
     columns.push(Column.description())
 
     if (db.use.tag_recursive) {
-      columns.push(Column.parents())
+      columns.push(Column.parents("tag"))
     }
 
     columns = columns.concat([

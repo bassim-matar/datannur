@@ -14,7 +14,7 @@
   {#if db.use.tag_recursive}
     <DeepLevelInfo level={tag.parents.length + 1} />
     {#if tag.parents.length}
-      <TagInfo tag_id={tag.id} is_self={true} />
+      <TagInfo tag_id={tag.id} />
     {/if}
   {/if}
 </TableWrapper>

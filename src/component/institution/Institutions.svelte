@@ -51,7 +51,7 @@
     }),
     Column.nb_doc("institution", nb_doc_max),
     Column.tag(),
-    Column.parents(),
+    Column.parents("institution"),
     {
       data: "email",
       defaultContent: "",

@@ -7,7 +7,7 @@
   let { institution_id, type = "institution", is_self = false } = $props()
 
   const name = is_self ? "Partie de" : entity_names[type]
-  const icon = is_self ? "folder_tree" : "institution"
+  const icon = is_self ? "folder_tree_institution" : "institution"
 </script>
 
 {#if institution_id}

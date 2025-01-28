@@ -146,11 +146,11 @@ export default class Column {
       },
     }
   }
-  static parents() {
+  static parents(entity) {
     const render = is_mobile ? Render.first_parent : Render.parents_indent
     return {
       data: "parents",
-      title: Render.icon("folder_tree") + "Partie de",
+      title: Render.icon(`folder_tree_${entity}`) + "Partie de",
       has_long_text: true,
       tooltip: "Eléments parents",
       render,

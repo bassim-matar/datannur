@@ -87,7 +87,7 @@
       Column.next_update(),
       Column.frequency(),
       Column.period(),
-      Column.parents(),
+      Column.parents("folder"),
       Column.owner(),
       Column.manager(),
       Column.localisation(),

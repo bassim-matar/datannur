@@ -3,6 +3,8 @@
 ## unreleased
 
 - added : evolution summary switch to toggle evolution mode
+- changed : icon "partie de" use entity color
+- changed : evolution update date use futur and past color for variable icon
 
 ## 0.10.4 (2025-01-26)
 
