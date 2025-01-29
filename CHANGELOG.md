@@ -6,6 +6,7 @@
 - added : evolution summary filter main entity
 - changed : icon "partie de" use entity color
 - changed : evolution update date use futur and past color for variable icon
+- fixed : jsonjsdv_editor evolution dont stringify null value
 
 ## 0.10.4 (2025-01-26)
 
