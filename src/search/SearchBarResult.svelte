@@ -45,7 +45,7 @@
             {#if search_value === "" && nb_result > 0}
               <tr>
                 <td colspan="3">
-                  <div style="width: 100%;">
+                  <div class="nb_result">
                     {nb_result} recherche{plural} récente{plural}
                   </div>
                 </td>
@@ -55,7 +55,7 @@
             {#if search_value !== ""}
               <tr>
                 <td colspan="3">
-                  <div style="width: 100%;">
+                  <div class="nb_result">
                     {nb_result} résultat{plural}
                   </div>
                 </td>
@@ -103,6 +103,11 @@
         border: 0;
       }
     }
+  }
+
+  .nb_result {
+    width: 100%;
+    font-size: 14px;
   }
 
   @media screen and (max-width: 1023px) {

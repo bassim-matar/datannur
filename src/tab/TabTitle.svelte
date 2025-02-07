@@ -11,7 +11,8 @@
   let min_width = $state(0)
 
   function to_percent(value) {
-    const splited = value.split("-")
+    const separator = "|"
+    const splited = value.split(separator)
     if (splited.length === 1) return false
     return splited[1].split("%")[0]
   }
@@ -57,13 +58,7 @@
       tab_nb === "?" ||
       (tab_nb?.length > 0 && tab_nb !== "...")}
   >
-    <span class="tab_visible icon_wrapper">
-      <Icon type={tab.icon} margin_right={false} />
-    </span>
-    <span>
-      <span class="tab_visible tab_name">
-        {tab.name}
-      </span>
+    <div>
       {#if tab_nb !== undefined}
         {#if tab_nb === "..."}
           <Loading type="tab" color_entity={tab.icon} />
@@ -73,13 +68,26 @@
           </span>
         {:else}
           <span class="num_style tab_visible">{tab_nb}</span>
+        {/if}
+      {/if}
+    </div>
+
+    <div>
+      <span class="tab_visible icon_wrapper">
+        <Icon type={tab.icon} margin_right={false} />
+      </span>
+      <span>
+        {#if tab_nb !== undefined && tab_nb !== "..." && tab_nb !== parseInt(tab_nb)}
           <span class="percent_wrapper">
             <span class="percent" style="width: {100 - to_percent(tab_nb)}%"
             ></span>
           </span>
         {/if}
-      {/if}
-    </span>
+        <span class="tab_visible tab_name">
+          {tab.name}
+        </span>
+      </span>
+    </div>
   </a>
 </li>
 
@@ -123,10 +131,17 @@
     border: 0;
     justify-content: left;
     padding-left: 0;
-    padding-right: 5px;
-    font-size: 13px;
+    padding-right: 8px;
+    padding-top: 10px;
+    font-size: 14px;
+    flex-direction: column;
     .num_style {
-      font-size: 13px;
+      font-size: 12px;
+      display: block;
+      line-height: 0px;
+      margin-top: -2px;
+      padding-left: 8px;
+      text-align: center;
     }
     .icon_wrapper {
       height: 24px;
@@ -254,6 +269,12 @@
   @media screen and (max-width: 600px) {
     .tab_name {
       display: none;
+    }
+    a.tab_select_btn {
+      padding-right: 3px;
+      .num_style {
+        padding-left: 3px;
+      }
     }
   }
 </style>
