@@ -43,6 +43,9 @@
     &.main_title {
       width: 30px;
     }
+    &.compact {
+      min-width: auto;
+    }
   }
 
   :global(.active) .icon,

@@ -74,7 +74,7 @@
 
     <div>
       <span class="tab_visible icon_wrapper">
-        <Icon type={tab.icon} margin_right={false} />
+        <Icon type={tab.icon} margin_right={false} mode="compact" />
       </span>
       <span>
         {#if tab_nb !== undefined && tab_nb !== "..." && tab_nb !== parseInt(tab_nb)}
@@ -146,7 +146,7 @@
     .icon_wrapper {
       height: 24px;
       :global(.icon) {
-        margin-left: 3px;
+        margin-left: 8px;
         margin-right: 0;
       }
     }
@@ -269,12 +269,6 @@
   @media screen and (max-width: 600px) {
     .tab_name {
       display: none;
-    }
-    a.tab_select_btn {
-      padding-right: 3px;
-      .num_style {
-        padding-left: 3px;
-      }
     }
   }
 </style>
