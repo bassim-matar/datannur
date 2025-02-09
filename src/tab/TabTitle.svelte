@@ -114,6 +114,7 @@
           left: 0;
           right: 0;
           height: 100%;
+          opacity: 0.2;
           overflow: hidden;
         }
         .percent {
@@ -175,6 +176,14 @@
       }
     }
   }
+
+  @each $entity in $entities {
+      .tab_entity_#{$entity} {
+        .percent_wrapper {
+          background: #{color($entity)};
+        }
+      }
+    }
 
   :global(html.rounded_design) {
     a.tab_select_btn {
