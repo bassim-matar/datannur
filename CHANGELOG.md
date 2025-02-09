@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.10.5 (2025-02-09)
 
 - added : evolution summary switch to toggle evolution mode
 - added : evolution summary filter main entity
