@@ -24,9 +24,22 @@
 
   function filter_evolutions(to_filter) {
     if (to_filter.length === 0) return
-    return to_filter.filter(
-      evo => !["dataset", "variable", "modality", "value"].includes(evo.entity),
+
+    const detail_entities = [
+      "dataset",
+      "variable",
+      "modality",
+      "value",
+    ]
+
+    const detail_rows = to_filter.filter(
+      evo => detail_entities.includes(evo.entity),
     )
+    const main_rows = to_filter.filter(
+      evo => !detail_entities.includes(evo.entity),
+    )
+         
+    return main_rows
   }
 
   const detail_pages = [

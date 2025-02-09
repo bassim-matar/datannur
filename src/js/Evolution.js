@@ -1,6 +1,10 @@
 import db from "@db"
 import { entity_names, evolution_types, parent_entities } from "@js/constant"
-import { date_to_timestamp, convert_quarter_to_full_date } from "@js/Time"
+import {
+  date_to_timestamp,
+  timestamp_to_date,
+  convert_quarter_to_full_date,
+} from "@js/Time"
 import { diffWords } from "diff"
 import { get_period } from "@js/Time"
 import { split_on_last_separator } from "@js/util"
@@ -75,9 +79,27 @@ function add_history(evo_deleted) {
     evo.parent_name = parent_item?.name
     evo.parent_deleted = parent_item?._deleted
     evo.is_favorite = false
+
+    evo.date = timestamp_to_date(evo.timestamp)
+    evo.folder_id = get_folder_id(evo.entity, item, parent_item)
   })
 
   db.tables.evolution = db.tables.evolution?.filter(evo => !evo._to_hide)
+}
+
+function get_folder_id(entity, entity_data, parent_item) {
+  if (entity === "folder") {
+    return entity_data.id
+  } else if (entity === "dataset") {
+    return entity_data.folder_id
+  } else if (entity === "variable") {
+    return parent_item?.folder_id
+  } else if (entity === "modality") {
+    return entity_data.folder_id
+  } else if (entity === "value") {
+    return parent_item?.folder_id
+  }
+  return null
 }
 
 function add_validity(validities, type, entity, entity_data, evo_deleted) {
@@ -99,6 +121,9 @@ function add_validity(validities, type, entity, entity_data, evo_deleted) {
   let type_clean = "Autre"
   if (type in evolution_types) type_clean = evolution_types[type]
 
+ 
+  const folder_id = get_folder_id(entity, entity_data, parent_item)
+
   validities.push({
     id: entity_data.id,
     entity: entity,
@@ -117,6 +142,8 @@ function add_validity(validities, type, entity, entity_data, evo_deleted) {
     type_clean,
     timestamp,
     time,
+    date: timestamp_to_date(timestamp),
+    folder_id,
     is_favorite: false,
   })
 }
