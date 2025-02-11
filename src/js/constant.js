@@ -48,6 +48,7 @@ export const evolution_types = {
 export const column_clean_names = {
   start_date: "Validité début",
   end_date: "Validité fin",
+  last_update: "Dernière<br>mise à jour",
   last_update_date: "Dernière<br>mise à jour",
   next_update_date: "Prochaine<br>mise à jour",
   name: "Nom",
@@ -57,6 +58,7 @@ export const column_clean_names = {
 
 export const column_icons = {
   updating_each: "frequency",
+  last_update: "last_update_date",
 }
 
 export const entity_to_icon = {

@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fixed : evolution get_folder_id with null value and doc last_update
+
 ## 0.10.5 (2025-02-09)
 
 - added : evolution summary switch to toggle evolution mode

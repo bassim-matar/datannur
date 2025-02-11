@@ -89,13 +89,13 @@ function add_history(evo_deleted) {
 
 function get_folder_id(entity, entity_data, parent_item) {
   if (entity === "folder") {
-    return entity_data.id
+    return entity_data?.id
   } else if (entity === "dataset") {
-    return entity_data.folder_id
+    return entity_data?.folder_id
   } else if (entity === "variable") {
     return parent_item?.folder_id
   } else if (entity === "modality") {
-    return entity_data.folder_id
+    return entity_data?.folder_id
   } else if (entity === "value") {
     return parent_item?.folder_id
   }
@@ -226,7 +226,7 @@ function output_diff_number(oldVal, newVal) {
     oldVal !== 0 ? ((diff / oldVal) * 100).toFixed(1) : "∞"
   const diffClass = diff > 0 ? "highlight_diff_add" : "highlight_diff_delete"
 
-  return `${oldVal.toLocaleString()} --> ${newVal.toLocaleString()} 
+  return `${oldVal.toLocaleString()} ${arrow_right} ${newVal.toLocaleString()} 
       <br><span class="${diffClass}">${
     diff > 0 ? "+" : ""
   }${diff.toLocaleString()} | 
@@ -263,8 +263,13 @@ function output_diff_string(oldVal, newVal) {
     .join("")
 }
 
-export function highlight_diff(a, b) {
+export function highlight_diff(a, b, variable = false) {
   if (!a && !b) return ""
+
+  if (variable === "last_update") {
+    a = timestamp_to_date(a * 1000)
+    b = timestamp_to_date(b * 1000)
+  }
 
   a = a ? a.toString() : ""
   b = b ? b.toString() : ""

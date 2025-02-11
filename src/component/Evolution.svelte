@@ -134,7 +134,7 @@
           if (row.old_value === row.new_value)
             return wrap_long_text(row.old_value)
 
-          const diff = highlight_diff(row.old_value, row.new_value)
+          const diff = highlight_diff(row.old_value, row.new_value, row.variable)
           if (type === "sort" || type === "export" || type === "filter") {
             return diff
           }
