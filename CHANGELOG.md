@@ -1,9 +1,10 @@
 # datannur
 
-## unreleased
+## 0.10.6 (2025-04-30)
 
 - fixed : evolution get_folder_id with null value and doc last_update
 - fixed : evolution diff from emptpy value show NaN
+- changed : update to flexsearch 0.8 and load it as external script
 
 ## 0.10.5 (2025-02-09)
 

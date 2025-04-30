@@ -1,7 +1,19 @@
-import Index from "flexsearch/dist/module/index.js"
 import db from "@db"
 import { entity_names } from "@js/constant"
 import { escape_html_entities } from "@js/util"
+
+function ensure_flexsearch_loaded() {
+  return new Promise(resolve => {
+    const flexsearch_src = "assets/external/flexsearch.js?v=0.8.158"
+    if (document.querySelector(`script[src="${flexsearch_src}"]`)) {
+      resolve()
+      return
+    }
+    const script = document.createElement("script")
+    const script_attributes = { src: flexsearch_src, onload: resolve }
+    document.head.appendChild(Object.assign(script, script_attributes))
+  })
+}
 
 function removeDiacritics(str) {
   if (typeof str !== "string") return str
@@ -43,33 +55,39 @@ export function search_highlight(value, search) {
 export default class Search {
   constructor() {
     this.all_search = []
-    const variables = ["name", "description"]
-    for (const variable of variables) {
-      const entities_data = []
-      for (const entity in entity_names) {
-        entities_data.push({
-          name: entity,
-          items: new Index({ tokenize: "forward" }),
-          data: [],
-        })
-      }
-      this.all_search.push({ name: variable, entities: entities_data })
-    }
+    this.loading = null
   }
   async init() {
-    if (db.loaded) await db.loaded
-    for (const variable of this.all_search) {
-      for (const entity of variable.entities) {
-        db.foreach(entity.name, item => {
-          let name = item[variable.name]
-          if (item.original_name && variable.name === "name")
-            name += ` (${item.original_name})`
-          entity.items.add(item.id, removeDiacritics(name))
-        })
+    this.loading = (async () => {
+      await ensure_flexsearch_loaded()
+      if (db.loaded) await db.loaded
+      const { Index } = window.FlexSearch
+      const variables = ["name", "description"]
+      for (const variable of variables) {
+        const entities_data = []
+        for (const entity in entity_names) {
+          entities_data.push({
+            name: entity,
+            items: new Index({ tokenize: "forward" }),
+            data: [],
+          })
+        }
+        this.all_search.push({ name: variable, entities: entities_data })
       }
-    }
+      for (const variable of this.all_search) {
+        for (const entity of variable.entities) {
+          db.foreach(entity.name, item => {
+            let name = item[variable.name]
+            if (item.original_name && variable.name === "name")
+              name += ` (${item.original_name})`
+            entity.items.add(item.id, removeDiacritics(name))
+          })
+        }
+      }
+    })()
   }
   async search(to_search) {
+    if (this.loading) await this.loading
     const result = []
     const ids_found = {}
     for (const entity in entity_names) ids_found[entity] = []
