@@ -111,7 +111,7 @@
           <ul>
             {#each variable.modalities as modality}
               <li>
-                <Link href="modality/{modality.id}">
+                <Link href="modality/{modality.id}" entity="modality">
                   {modality.name}
                 </Link>
               </li>

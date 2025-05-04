@@ -1,5 +1,8 @@
 # datannur
 
+## unreleased
+- added : modality link color on hover for variable table and info
+
 ## 0.10.6 (2025-04-30)
 
 - fixed : evolution get_folder_id with null value and doc last_update

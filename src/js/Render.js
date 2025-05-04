@@ -116,7 +116,7 @@ export default class Render {
     if (!modalities || modalities.length === 0) return wrap_long_text()
     let modalities_name = []
     for (const modality of modalities) {
-      modalities_name.push(link("modality/" + modality.id, modality.name))
+      modalities_name.push(link("modality/" + modality.id, modality.name, "modality"))
     }
     return wrap_long_text(modalities_name.join(" | "))
   }
