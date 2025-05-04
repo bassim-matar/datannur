@@ -2,6 +2,7 @@
 
 ## unreleased
 - added : modality link color on hover for variable table and info
+- changed : on dataset variables, dont show columns dataset, folder and institution
 
 ## 0.10.6 (2025-04-30)
 

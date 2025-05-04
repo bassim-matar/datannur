@@ -26,10 +26,6 @@
     return [
       Column.favorite(),
       ...base,
-      Column.dataset(),
-      Column.folder(),
-      Column.owner(),
-      Column.manager(),
       Column.tag(),
       Column.start_date(),
       Column.end_date(),
