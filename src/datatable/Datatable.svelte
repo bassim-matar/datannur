@@ -239,7 +239,7 @@
             {#each Array(nb_row_loading) as _, i}
               <tr>
                 {#each columns_copy as column, j}
-                  <td class:first_col={j === 0}>
+                  <td class:first_col={j === 0} class:first_row={i === 0} >
                     {#if column.data === "_row_num"}
                       {i + 1}
                     {:else if column.data === "is_favorite"}
@@ -326,11 +326,15 @@
 
       th {
         position: relative;
-        padding-right: 30px;
+        padding-right: 28px;
       }
       td {
         height: 65px;
         vertical-align: middle;
+        &.first_row {
+          height: 67px;
+          padding-top: 10px;
+        }
       }
       .loading_filter_wrapper {
         position: sticky;
@@ -420,6 +424,8 @@
         border-bottom: 0;
       }
       .dt-container {
+        position: initial;
+
         table.dataTable.dtfc-scrolling-left tr > .dtfc-fixed-left::after {
           box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.2);
           :global(html.dark_mode) & {
@@ -459,6 +465,10 @@
         table.dataTable thead > tr > td.dt-orderable-asc:hover,
         table.dataTable thead > tr > td.dt-orderable-desc:hover {
           outline: none;
+        }
+
+        th.dt-type-numeric div.dt-column-header {
+          flex-direction: row;
         }
 
         .dt-column-order {
@@ -531,7 +541,7 @@
           th {
             white-space: nowrap;
             &.first_col {
-              min-width: 20px;
+              min-width: 50px;
             }
           }
           tbody > tr > td {
