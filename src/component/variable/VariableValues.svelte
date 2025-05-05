@@ -21,7 +21,7 @@
         data: "modality_name",
         title: Render.icon("modality") + "modalité",
         tooltip: "Modalité",
-        render: (data, _, row) => link("modality/" + row.modality_id, data),
+        render: (data, _, row) => link("modality/" + row.modality_id, data, "modality"),
       })
     }
     columns.push(Column.value())

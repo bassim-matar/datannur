@@ -71,7 +71,8 @@ export default class Render {
       const s = nb_other_values > 1 ? "s" : ""
       const text = link(
         `${entity}/${row.id}?tab=${tab}`,
-        `... ${nb_other_values} autre${s} valeur${s}`
+        `... ${nb_other_values} autre${s} valeur${s}`,
+        "value"
       )
       if (type === "export") content += separator
       content += `<li><i>${text}</i></li>`

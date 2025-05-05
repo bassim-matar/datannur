@@ -41,7 +41,7 @@
       title: Render.icon("modality") + "Modalité",
       tooltip: "Nom de la modalité 1",
       render: (data, type, row) =>
-        link("modality/" + data, row.modality_1_name),
+        link("modality/" + data, row.modality_1_name, "modality"),
     },
     Column.folder("modality_1_folder_id", "modality_1_folder_name"),
     {
@@ -66,7 +66,7 @@
       title: Render.icon("modality") + "Similaire à",
       tooltip: "Nom de la modalité 2",
       render: (data, type, row) =>
-        link("modality/" + data, row.modality_2_name),
+        link("modality/" + data, row.modality_2_name, "modality"),
     },
     Column.folder("modality_2_folder_id", "modality_2_folder_name"),
     {

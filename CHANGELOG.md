@@ -2,6 +2,7 @@
 
 ## unreleased
 - added : modality link color on hover for variable table and info
+- added : value link color on hover
 - changed : on dataset variables, dont show columns dataset, folder and institution
 - changed : upgrade to datatables 2.3
 
