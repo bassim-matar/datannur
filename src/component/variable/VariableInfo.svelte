@@ -41,6 +41,17 @@
   </tr>
   <TagsInfo tags={variable.tags} />
   <TypeInfo type={variable.type_clean} />
+  {#if variable.key}
+  <tr>
+    <td>
+      <Icon type="key" />
+      Clé
+    </td>
+    <td>
+      {variable.key}
+    </td>
+  </tr>
+  {/if}
   <tr>
     <td>
       <Icon type="hashtag" />

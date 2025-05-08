@@ -17,6 +17,7 @@
       Column.original_name(),
       Column.description(),
       Column.datatype(),
+      Column.is_key(),
       Column.nb_missing(),
       Column.nb_duplicates(),
       Column.nb_values(nb_value_max),

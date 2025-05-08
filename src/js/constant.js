@@ -130,4 +130,5 @@ export const entity_to_icon = {
   update: "pen",
   delete: "trash",
   internal_view: "box-open",
+  internal_id: "fingerprint",
 }

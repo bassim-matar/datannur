@@ -37,6 +37,7 @@
       Column.original_name(),
       Column.description(),
       Column.datatype(),
+      Column.is_key(),
       Column.nb_row(nb_row_max),
       Column.nb_missing(),
       Column.nb_duplicates(),

@@ -352,6 +352,7 @@ class Process {
       const nb_values = get_nb_values(variable.values, variable)
       variable.nb_distinct = nb_values
       variable.nb_value = nb_values
+      if (variable.key) variable.key = "oui"
       if (!nb_values || !variable.nb_duplicate) return
       variable.nb_duplicate = Math.max(variable.nb_row - nb_values, 0)
       if (variable.nb_missing) variable.nb_duplicate -= variable.nb_missing
@@ -402,6 +403,7 @@ class Process {
       metaVariable.is_meta = true
       metaVariable.type_clean = get_variable_type_clean(metaVariable.type)
       metaVariable.nb_value = get_nb_values(metaVariable.values, metaVariable)
+      if (metaVariable.name === "id") metaVariable.key = "oui"
 
       const metaDataset = db.get("metaDataset", metaVariable.metaDataset_id)
       metaVariable.dataset_id = metaDataset.id

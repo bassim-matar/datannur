@@ -1,8 +1,9 @@
 # datannur
 
-## unreleased
+## 0.10.7 (2025-05-08)
 - added : modality link color on hover for variable table and info
 - added : value link color on hover
+- added : variable is key info
 - changed : on dataset variables, dont show columns dataset, folder and institution
 - changed : upgrade to datatables 2.3
 - fixed : catch error without crash for wrong start or end date format

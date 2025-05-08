@@ -5,6 +5,6 @@
 </script>
 
 <tr>
-  <td><Icon type="key" /> Identifiant</td>
+  <td><Icon type="internal_id" /> Identifiant</td>
   <td>{id}</td>
 </tr>

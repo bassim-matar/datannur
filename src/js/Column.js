@@ -615,4 +615,18 @@ export default class Column {
       },
     }
   }
+  static is_key() {
+    return {
+      data: "key",
+      title: Render.icon("key") + "Clé",
+      defaultContent: "",
+      filter_type: "select",
+      tooltip: "Clé primaire ou partie de clé primaire",
+      render: (data, type) => {
+        if (!data) return ""
+        if (type === "filter" || type === "sort") return data
+        return `<i class="fas fa-key"></i>`
+      }
+    }
+  }
 }
