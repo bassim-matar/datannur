@@ -116,12 +116,18 @@ function add_validity(validities, type, entity, entity_data, evo_deleted) {
     type === "start_date" ? "start" : "end"
   )
 
+  if (!timestamp) {
+    console.error(
+      `Invalid date format for ${type} in ${entity} with id ${entity_data.id}, value = ${entity_data[type]}`
+    )
+    return
+  }
+
   const time = timestamp > Date.now() ? "Futur" : "Passé"
 
   let type_clean = "Autre"
   if (type in evolution_types) type_clean = evolution_types[type]
 
- 
   const folder_id = get_folder_id(entity, entity_data, parent_item)
 
   validities.push({
@@ -278,7 +284,7 @@ export function highlight_diff(a, b, variable = false) {
   let newDate = null
   let is_a_number = !isNaN(a) && a !== ""
   let is_b_number = !isNaN(b) && b !== ""
-  
+
   if (!is_a_number) {
     oldDate = parse_date_standard(a)
   } else {

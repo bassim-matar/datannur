@@ -5,6 +5,7 @@
 - added : value link color on hover
 - changed : on dataset variables, dont show columns dataset, folder and institution
 - changed : upgrade to datatables 2.3
+- fixed : catch error without crash for wrong start or end date format
 
 ## 0.10.6 (2025-04-30)
 

@@ -38,7 +38,12 @@ export function date_to_timestamp(date, mode) {
 }
 
 export function timestamp_to_date(timestamp) {
-  return new Date(timestamp).toISOString().slice(0, 10).replaceAll("-", "/")
+  const date = new Date(timestamp)
+  if(isNaN(date)) {
+    console.error("Invalid timestamp:", timestamp)
+    return ""
+  }
+  return date.toISOString().slice(0, 10).replaceAll("-", "/")
 }
 
 const formatter = new Intl.RelativeTimeFormat(locale, { numeric: "auto" })
