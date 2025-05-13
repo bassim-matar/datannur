@@ -45,7 +45,12 @@
       Column.values_preview(),
     ]
     if (is_meta) {
-      return [...base, Column.dataset(parent_name), Column.metaFolder()]
+      return [
+        ...base,
+        Column.meta_localisation(),
+        Column.dataset(parent_name),
+        Column.metaFolder(),
+      ]
     }
     return [
       Column.favorite(),

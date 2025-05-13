@@ -382,21 +382,6 @@ class Process {
       modality.type_clean = get_variable_type_clean(modality.type)
     })
   }
-  static metaFolder() {
-    db.foreach("metaFolder", metaFolder => {
-      add_entity(metaFolder, "metaFolder")
-      metaFolder.is_meta = true
-    })
-  }
-  static metaDataset() {
-    db.foreach("metaDataset", metaDataset => {
-      add_entity(metaDataset, "metaDataset")
-      metaDataset.is_meta = true
-      metaDataset.folder = { id: metaDataset.metaFolder_id }
-      metaDataset.folder_name = metaDataset.metaFolder_id
-      add_variable_num(metaDataset, "metaDataset", "metaVariable")
-    })
-  }
   static metaVariable() {
     db.foreach("metaVariable", metaVariable => {
       add_entity(metaVariable, "metaVariable")
@@ -411,8 +396,41 @@ class Process {
       metaVariable.nb_row = metaDataset.nb_row
       metaVariable.metaFolder_id = metaDataset.metaFolder_id
       metaVariable.folder_name = metaDataset.metaFolder_id
+      metaVariable.meta_localisation = ""
+      if (metaVariable.is_in_meta && !metaVariable.is_in_data)
+        metaVariable.meta_localisation = "schéma"
+      if (!metaVariable.is_in_meta && metaVariable.is_in_data)
+        metaVariable.meta_localisation = "données"
     })
   }
+  static metaDataset() {
+    db.foreach("metaDataset", metaDataset => {
+      add_entity(metaDataset, "metaDataset")
+      metaDataset.is_meta = true
+      metaDataset.folder = { id: metaDataset.metaFolder_id }
+      metaDataset.folder_name = metaDataset.metaFolder_id
+      add_variable_num(metaDataset, "metaDataset", "metaVariable")
+      const metaVariables = db.get_all("metaVariable", { metaDataset })
+      metaDataset.nb_variable = metaVariables.length
+      metaDataset.meta_localisation = ""
+      if (metaDataset.is_in_meta && !metaDataset.is_in_data)
+        metaDataset.meta_localisation = "schéma"
+      if (!metaDataset.is_in_meta && metaDataset.is_in_data)
+        metaDataset.meta_localisation = "données"
+    })
+  }
+  static metaFolder() {
+    db.foreach("metaFolder", metaFolder => {
+      add_entity(metaFolder, "metaFolder")
+      metaFolder.is_meta = true
+      const metaDatasets = db.get_all("metaDataset", { metaFolder })
+      metaFolder.nb_dataset = metaDatasets.length
+      metaFolder.nb_variable = 0
+      for (const metaDataset of metaDatasets)
+        metaFolder.nb_variable += metaDataset.nb_variable
+    })
+  }
+
   static evolution() {
     evolution_initial_setup()
   }
@@ -463,9 +481,9 @@ export function db_add_processed_data() {
   Process.doc()
   Process.variable()
   Process.modality()
-  Process.metaFolder()
-  Process.metaDataset()
   Process.metaVariable()
+  Process.metaDataset()
+  Process.metaFolder()
   Process.evolution()
   if (db.use.doc) add_doc_recursive()
 }

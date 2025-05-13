@@ -1,5 +1,8 @@
 # datannur
 
+## unreleased
+- added : metadata only in schema but not in data
+
 ## 0.10.7 (2025-05-08)
 - added : modality link color on hover for variable table and info
 - added : value link color on hover

@@ -16,6 +16,7 @@
   import DataPathInfo from "@infoTable/DataPathInfo.svelte"
   import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
   import MetaDatasetRelations from "@infoTable/MetaDatasetRelations.svelte"
+  import MetaLocalisationInfo from "@infoTable/MetaLocalisationInfo.svelte"
 
   let { dataset } = $props()
 </script>
@@ -42,7 +43,10 @@
     <NextUpdateInfo next_update_date={dataset.next_update_date} />
   {/if}
   <FrequencyInfo frequency={dataset.updating_each} />
-  <PeriodInfo period={dataset.period} period_duration={dataset.period_duration} />
+  <PeriodInfo
+    period={dataset.period}
+    period_duration={dataset.period_duration}
+  />
   <LocalisationInfo localisation={dataset.localisation} />
   <DeliveryFormatInfo delivery_format={dataset.delivery_format} />
   <DataPathInfo data_path={dataset.data_path} />
@@ -58,6 +62,7 @@
   {/if}
   {#if dataset.is_meta}
     <MetaDatasetRelations dataset_id={dataset.id} />
+    <MetaLocalisationInfo meta_localisation={dataset.meta_localisation} />
   {/if}
 </TableWrapper>
 

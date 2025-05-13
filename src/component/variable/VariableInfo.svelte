@@ -9,6 +9,7 @@
   import PercentBar from "@infoTable/PercentBar.svelte"
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
   import TagsInfo from "@infoTable/TagsInfo.svelte"
+  import MetaLocalisationInfo from "@infoTable/MetaLocalisationInfo.svelte"
 
   let { variable } = $props()
 
@@ -42,15 +43,15 @@
   <TagsInfo tags={variable.tags} />
   <TypeInfo type={variable.type_clean} />
   {#if variable.key}
-  <tr>
-    <td>
-      <Icon type="key" />
-      Clé
-    </td>
-    <td>
-      {variable.key}
-    </td>
-  </tr>
+    <tr>
+      <td>
+        <Icon type="key" />
+        Clé
+      </td>
+      <td>
+        {variable.key}
+      </td>
+    </tr>
   {/if}
   <tr>
     <td>
@@ -131,6 +132,9 @@
         </nav>
       </td>
     </tr>
+  {/if}
+  {#if variable.is_meta}
+    <MetaLocalisationInfo meta_localisation={variable.meta_localisation} />
   {/if}
 </TableWrapper>
 <DescriptionInfo description={variable.description} />

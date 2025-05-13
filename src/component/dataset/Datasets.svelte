@@ -52,7 +52,12 @@
       Column.nb_row(nb_row_max),
     ]
     if (is_meta) {
-      return [...base, Column.metaFolder(), Column.last_update_timestamp()]
+      return [
+        ...base,
+        Column.meta_localisation(),
+        Column.metaFolder(),
+        Column.last_update_timestamp(),
+      ]
     }
     return [
       Column.favorite(),

@@ -629,4 +629,16 @@ export default class Column {
       }
     }
   }
+  static meta_localisation() {
+    return {
+      data: "meta_localisation",
+      title: Render.icon("localisation") + "Localisation",
+      defaultContent: "",
+      tooltip: "Localisation (dans les données ou dans le schéma",
+      render: data => {
+        if (!data) return ""
+        return data
+      },
+    }
+  }
 }

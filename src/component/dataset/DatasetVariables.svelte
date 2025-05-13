@@ -23,7 +23,7 @@
       Column.nb_values(nb_value_max),
       Column.values_preview(),
     ]
-    if (is_meta) return base
+    if (is_meta) return [...base, Column.meta_localisation()]
     return [
       Column.favorite(),
       ...base,
