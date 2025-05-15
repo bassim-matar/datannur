@@ -94,6 +94,12 @@ L’harmonisation des modalités au sein d’une collection de jeux de données 
 
 ![Page modalités - Onglet similitudes](assets/about_page/modality_compare{dark_mode}.webp?v=1)
 
+### Évolution
+
+L’onglet « Évolution » présente l’historique des modifications apportées. Il affiche les ajouts, suppressions et modifications effectués sur les éléments du catalogue. Chaque action est accompagnée d’un horodatage et permet de suivre l’évolution des données au fil du temps.
+
+![Onglet évolution](assets/about_page/evolution_tab{dark_mode}.webp?v=1)
+
 ## Utilisation
 
 Les données d’utilisation sont stockées directement dans le navigateur. Par conséquent, le catalogue est pleinement fonctionnel sans connexion internet. Les éléments mis en favoris, les recherches, les logs et les préférences peuvent être exportées et importées à tout moment.
