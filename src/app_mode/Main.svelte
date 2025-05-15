@@ -32,6 +32,7 @@
   import Popup from "@layout/Popup.svelte"
   import Loading from "@page/_loading.svelte"
   import StatBox from "@stat/StatBox.svelte"
+  import db_schema from "@src/db_schema.json" 
 
   let error_loading_db = $state(false)
   let page_loaded_route = $state()
@@ -88,7 +89,7 @@
 
       timer = performance.now()
       const user_data = await get_user_data()
-      db.add_meta(user_data)
+      db.add_meta(user_data, db_schema)
       db_add_processed_data()
       console.log("process db", Math.round(performance.now() - timer) + " ms")
 
