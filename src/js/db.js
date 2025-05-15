@@ -225,6 +225,7 @@ class Process {
     db.foreach("institution", institution => {
       add_entity(institution, "institution")
       add_favorite(institution)
+      add_period(institution)
       add_tags("institution", institution)
       add_parents("institution", institution)
       add_docs("institution", institution)

@@ -70,6 +70,8 @@
   ["data", "institution", "description", "description de l'institution"],
   ["data", "institution", "email", "email de l'institution"],
   ["data", "institution", "phone", "numéro de téléphone de l'institution"],
+  ["data", "institution", "start_date", "début de la période couverte par l'institution"],
+  ["data", "institution", "end_date", "fin de la période couverte par l'institution"],
   ["data", "modality", null, "Modalité"],
   ["data", "modality", "id", "clé primaire de la modalité"],
   ["data", "modality", "folder_id", "id du dossier"],

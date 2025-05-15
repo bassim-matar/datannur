@@ -6,6 +6,7 @@
   import InstitutionInfo from "@infoTable/InstitutionInfo.svelte"
   import TagsInfo from "@infoTable/TagsInfo.svelte"
   import DeepLevelInfo from "@infoTable/DeepLevelInfo.svelte"
+  import PeriodInfo from "@infoTable/PeriodInfo.svelte"
 
   let { institution } = $props()
 </script>
@@ -37,5 +38,9 @@
       </td>
     </tr>
   {/if}
+  <PeriodInfo
+    period={institution.period}
+    period_duration={institution.period_duration}
+  />
 </TableWrapper>
 <DescriptionInfo description={institution.description} />
