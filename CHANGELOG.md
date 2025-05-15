@@ -1,9 +1,10 @@
 # datannur
 
-## unreleased
+## 0.10.8 (2025-05-15)
 - added : metadata only in schema but not in data
 - added : evolution screenshot and description in page fonctionnality
 - changed : make db_schema an internal file
+- changed : clean up db_schema and remove pdf and use_pdf db fields
 
 ## 0.10.7 (2025-05-08)
 - added : modality link color on hover for variable table and info

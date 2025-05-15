@@ -41,9 +41,6 @@ function add_tags(entity, item) {
 function add_parents(entity, item) {
   item.parents = db.get_parents(entity, item.id)
 }
-function add_has_pdf(item) {
-  item.has_pdf = item.pdf ? "pdf" : ""
-}
 function add_favorite(item) {
   item.is_favorite = false
 }
@@ -230,7 +227,6 @@ class Process {
       add_favorite(institution)
       add_tags("institution", institution)
       add_parents("institution", institution)
-      add_has_pdf(institution)
       add_docs("institution", institution)
       add_nb_child("institution", institution)
       add_nb_child_recursive("institution", institution)
@@ -251,7 +247,6 @@ class Process {
       add_favorite(folder)
       add_tags("folder", folder)
       add_parents("folder", folder)
-      add_has_pdf(folder)
       add_docs("folder", folder)
       add_nb_child("folder", folder)
       add_nb_child_recursive("folder", folder)
@@ -297,7 +292,6 @@ class Process {
       add_entity(dataset, "dataset")
       add_favorite(dataset)
       add_tags("dataset", dataset)
-      add_has_pdf(dataset)
       add_docs("dataset", dataset)
       if (db.use.owner) add_name(dataset, "institution", "owner")
       if (db.use.manager) add_name(dataset, "institution", "manager")

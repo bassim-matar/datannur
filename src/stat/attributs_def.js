@@ -11,12 +11,6 @@ export default {
     nb_range: 5,
     get_value: x => x.description?.length,
   },
-  pdf: {
-    name: "Pdf",
-    type: "string",
-    nb_range: 1,
-    get_value: x => x.pdf?.length,
-  },
   tag: {
     name: "Mots clés",
     type: "category",
