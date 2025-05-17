@@ -4,6 +4,7 @@
 - add : institution valididy start and end date
 - change : use present time in change log and commit message
 - change : use start and end date for validity instead of period for institution, folder and dataset
+- change : make timestamp column sortable and filterable by using format YYYY/MM/DD HH:mm instead of DD/MM/YYYY HH:mm:ss
 
 ## 0.10.8 (2025-05-15)
 - add : metadata only in schema but not in data

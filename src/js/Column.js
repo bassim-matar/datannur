@@ -5,12 +5,7 @@ import {
   get_percent,
   pluralize,
 } from "@js/util"
-import {
-  get_time_ago,
-  get_datetime,
-  date_to_timestamp,
-  get_datetime_sortable,
-} from "@js/Time"
+import { get_time_ago, get_datetime, date_to_timestamp } from "@js/Time"
 import { entity_names, entity_to_icon } from "@js/constant"
 import Render from "@js/Render"
 
@@ -337,22 +332,6 @@ export default class Column {
         Render.datetime(data, type, row, { estimation: true }),
     }
   }
-  static last_update_timestamp() {
-    return {
-      data: "last_update_timestamp",
-      title: Render.icon("date") + "Mise à jour",
-      defaultContent: "",
-      filter_type: "input",
-      tooltip: "Moment de la dernière mise à jour",
-      render: (data, type) => {
-        if (!data) return ""
-        if (type !== "display") return data
-        return `${get_time_ago(data * 1000)}<br>${get_datetime_sortable(
-          data * 1000
-        )}`
-      },
-    }
-  }
   static favorite() {
     return {
       data: "is_favorite",
@@ -626,7 +605,7 @@ export default class Column {
         if (!data) return ""
         if (type === "filter" || type === "sort") return data
         return `<i class="fas fa-key"></i>`
-      }
+      },
     }
   }
   static meta_localisation() {

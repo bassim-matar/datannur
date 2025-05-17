@@ -56,7 +56,11 @@
         ...base,
         Column.meta_localisation(),
         Column.metaFolder(),
-        Column.last_update_timestamp(),
+        Column.timestamp({
+          var_name: "last_update_timestamp",
+          title: "Mise à jour",
+          tooltip: "Moment de la dernière mise à jour",
+        }),
       ]
     }
     return [

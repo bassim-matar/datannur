@@ -57,14 +57,7 @@ const divisions = [
   { amount: Number.POSITIVE_INFINITY, name: "years", local_name: "an" },
 ]
 
-export function get_datetime(timestamp, short_time = false) {
-  return new Intl.DateTimeFormat(locale, {
-    dateStyle: "short",
-    timeStyle: short_time ? "short" : "medium",
-  }).format(timestamp)
-}
-
-export function get_datetime_sortable(timestamp, short_time = false) {
+export function get_datetime(timestamp, with_second = false) {
   const date = new Date(timestamp)
 
   const year = date.getFullYear()
@@ -74,12 +67,11 @@ export function get_datetime_sortable(timestamp, short_time = false) {
   const hours = String(date.getHours()).padStart(2, "0")
   const minutes = String(date.getMinutes()).padStart(2, "0")
 
-  if (short_time) {
-    return `${year}/${month}/${day} ${hours}:${minutes}`
-  } else {
+  if (with_second) {
     const seconds = String(date.getSeconds()).padStart(2, "0")
     return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`
   }
+  return `${year}/${month}/${day} ${hours}:${minutes}`
 }
 
 export function get_time_ago(

@@ -10,7 +10,6 @@
   import FrequencyInfo from "@infoTable/FrequencyInfo.svelte"
   import LastUpdateInfo from "@infoTable/LastUpdateInfo.svelte"
   import NextUpdateInfo from "@infoTable/NextUpdateInfo.svelte"
-  import LastUpdateTimestampInfo from "@infoTable/LastUpdateTimestampInfo.svelte"
   import LocalisationInfo from "@infoTable/LocalisationInfo.svelte"
   import PeriodInfo from "@infoTable/PeriodInfo.svelte"
   import DataPathInfo from "@infoTable/DataPathInfo.svelte"
@@ -35,8 +34,10 @@
   {/if}
   <RowInfo nb_row={dataset.nb_row} />
   {#if dataset.is_meta}
-    <LastUpdateTimestampInfo
-      last_update_timestamp={dataset.last_update_timestamp}
+    <LastUpdateInfo
+      last_update_date={dataset.last_update_timestamp}
+      intraday={true}
+      from_timestamp={true}
     />
   {:else}
     <LastUpdateInfo last_update_date={dataset.last_update_date} />

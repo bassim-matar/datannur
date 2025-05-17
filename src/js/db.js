@@ -316,7 +316,7 @@ class Process {
       add_nb("doc", doc, "dataset")
       add_nb("doc", doc, "tag")
       add_entities(doc)
-      if (doc.last_update) doc.last_update = doc.last_update * 1000
+      if (doc.last_update) doc.last_update *= 1000
       doc.last_update_date = ""
       if (doc.last_update) {
         doc.last_update_date = new Date(doc.last_update)
@@ -407,6 +407,7 @@ class Process {
       add_variable_num(metaDataset, "metaDataset", "metaVariable")
       const metaVariables = db.get_all("metaVariable", { metaDataset })
       metaDataset.nb_variable = metaVariables.length
+      if(metaDataset.last_update_timestamp) metaDataset.last_update_timestamp *= 1000
       metaDataset.meta_localisation = ""
       if (metaDataset.is_in_meta && !metaDataset.is_in_data)
         metaDataset.meta_localisation = "schéma"
