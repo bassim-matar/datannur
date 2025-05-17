@@ -71,7 +71,8 @@
       render: data =>
         data ? `<a href="tel:${data}" target="_blanck" >${data}</a>` : "",
     },
-    Column.period(),
+    Column.start_date(),
+    Column.end_date(),
     Column.level(),
   ]
 </script>

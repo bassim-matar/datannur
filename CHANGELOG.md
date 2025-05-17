@@ -3,6 +3,7 @@
 ## unreleased
 - add : institution valididy start and end date
 - change : use present time in change log and commit message
+- change : use start and end date for validity instead of period for institution, folder and dataset
 
 ## 0.10.8 (2025-05-15)
 - add : metadata only in schema but not in data
