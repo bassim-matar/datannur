@@ -19,6 +19,18 @@
     if (doc.nb_tag > tag_max) tag_max = doc.nb_tag
   }
 
+  const docs_sorted = [...docs]
+
+  function sort_docs(to_sort) {
+    if (to_sort.length === 0) return
+    to_sort.sort(
+      (a, b) =>
+        b.inherited?.localeCompare(a.inherited) ||
+        a.name.localeCompare(b.name),
+    )
+  }
+  sort_docs(docs_sorted)
+
   let columns = [
     Column.favorite(),
     Column.name("doc", "Doc"),
@@ -42,6 +54,7 @@
       title: "Mise à jour",
       tooltip: "Date de dernière mise à jour",
     }),
+    Column.inherited(),
     {
       data: "nb_institution",
       title:
@@ -95,4 +108,4 @@
   ]
 </script>
 
-<Datatable entity="doc" data={docs} {columns} sort_by_name={true} />
+<Datatable entity="doc" data={docs_sorted} {columns} />

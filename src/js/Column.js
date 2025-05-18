@@ -620,4 +620,12 @@ export default class Column {
       },
     }
   }
+  static inherited() {
+    return {
+      data: "inherited",
+      title: Render.icon("diagram") + "Hérité",
+      defaultContent: "",
+      tooltip: "Element direct (vide) ou hérité d'un sous-élément (hérité)",
+    }
+  }
 }

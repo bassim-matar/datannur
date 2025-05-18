@@ -435,8 +435,8 @@ class Process {
 function add_doc_recursive() {
   for (const entity of ["institution", "folder", "dataset", "tag"]) {
     db.foreach(entity, item => {
+      item.docs_recursive = []
       let docs = []
-      if (item.docs) docs = [...item.docs]
       if (entity === "institution") {
         const childs = get_recursive(entity, item.id, entity)
         for (const child of childs) docs = docs.concat(child.docs)
@@ -448,7 +448,10 @@ function add_doc_recursive() {
         for (const dataset of datasets) docs = docs.concat(dataset.docs)
       }
       if (docs.length > 1) docs = remove_duplicate_by_id(docs)
-      item.docs_recursive = docs
+      for (const doc of docs) {
+        item.docs_recursive.push({...doc, inherited: "hérité"})
+      }
+      if (item.docs) item.docs_recursive = item.docs_recursive.concat(item.docs)
     })
   }
 }
