@@ -25,6 +25,30 @@
 
   const modalities_id = new Set(modalities.map(item => item.id))
 
+  function get_dataset_lineage(variables, type) {
+    const dataset_ids = new Set()
+    for (const variable of variables) {
+      const lineage_ids = variable[`${type}_ids`]
+      if (!lineage_ids) continue
+      for (const variable_id of lineage_ids) {
+        const variable = db.get("variable", variable_id)
+        if (variable && variable.dataset_id !== dataset.id)
+          dataset_ids.add(variable.dataset_id)
+      }
+    }
+    const lineage = []
+    for (const dataset_id of dataset_ids) {
+      const item = db.get("dataset", dataset_id)
+      if (item) lineage.push({ ...item, lineage_type: type })
+    }
+    return lineage
+  }
+
+  const datasets = [
+    ...get_dataset_lineage(dataset_variables, "source"),
+    ...get_dataset_lineage(dataset_variables, "derived"),
+  ]
+
   const evolutions = db
     .get_all("evolution")
     .filter(
@@ -46,6 +70,7 @@
   let tabs = tabs_helper({
     dataset,
     docs: dataset.docs,
+    datasets,
     dataset_variables,
     modalities,
     dataset_preview,

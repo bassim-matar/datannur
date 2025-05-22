@@ -1,8 +1,9 @@
 # datannur
 
-## unreleased
+## 0.10.9 (2025-05-22)
 - add : institution valididy start and end date
 - add : doc tab column inherited to distinct if the doc is inherited from a child element
+- add : data lineage at the variable level and infered for the dataset level
 - change : use present time in change log and commit message
 - change : use start and end date for validity instead of period for institution, folder and dataset
 - change : make timestamp column sortable and filterable by using format YYYY/MM/DD HH:mm instead of DD/MM/YYYY HH:mm:ss

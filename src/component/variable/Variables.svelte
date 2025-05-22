@@ -16,6 +16,7 @@
     for (const i in db_filters) filter_pos[db_filters[i].id] = i
     to_sort.sort(
       (a, b) =>
+        b.lineage_type?.localeCompare(a.lineage_type) ||
         filter_pos[a.dataset_type] - filter_pos[b.dataset_type] ||
         a.folder_name.localeCompare(b.folder_name) ||
         a.dataset_name.localeCompare(b.dataset_name) ||
@@ -38,6 +39,7 @@
       Column.description(),
       Column.datatype(),
       Column.is_key(),
+      Column.lineage_type(),
       Column.nb_row(nb_row_max),
       Column.nb_missing(),
       Column.nb_duplicates(),

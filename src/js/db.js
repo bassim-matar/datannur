@@ -125,6 +125,19 @@ function add_entity(item, entity) {
   item._entity_clean = entity_names[entity]
 }
 
+function add_source_var(variable) {
+  if (!variable.sourceVar_ids) return false
+  variable.source_ids = []
+  for (const sourceVar_id_raw of variable.sourceVar_ids.split(",")) {
+    const sourceVar_id = sourceVar_id_raw.trim()
+    const sourceVar = db.get("variable", sourceVar_id.trim())
+    if (!sourceVar) continue
+    variable.source_ids.push(sourceVar_id)
+    if (!sourceVar.derived_ids) sourceVar.derived_ids = []
+    sourceVar.derived_ids.push(variable.id)
+  }
+}
+
 function add_next_update(item) {
   if (!item.last_update_date || !item.updating_each || item.no_more_update)
     return
@@ -347,6 +360,7 @@ class Process {
       const nb_values = get_nb_values(variable.values, variable)
       variable.nb_distinct = nb_values
       variable.nb_value = nb_values
+      add_source_var(variable)
       if (variable.key) variable.key = "oui"
       if (!nb_values || !variable.nb_duplicate) return
       variable.nb_duplicate = Math.max(variable.nb_row - nb_values, 0)

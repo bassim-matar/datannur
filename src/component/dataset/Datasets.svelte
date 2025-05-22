@@ -17,6 +17,7 @@
     for (const i in db_filters) filter_pos[db_filters[i].id] = i
     to_sort.sort(
       (a, b) =>
+        b.lineage_type?.localeCompare(a.lineage_type) ||
         filter_pos[a.type] - filter_pos[b.type] ||
         a.folder_name.localeCompare(b.folder_name) ||
         a.name.localeCompare(b.name),
@@ -43,6 +44,7 @@
     const base = [
       Column.name("dataset", "Dataset", { is_meta }),
       Column.description(),
+      Column.lineage_type(),
       Column.dataset_type(),
       Column.nb_variable("dataset", nb_variable_max, {
         tab: tab_variables,

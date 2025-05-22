@@ -628,4 +628,18 @@ export default class Column {
       tooltip: "Element direct (vide) ou hérité d'un sous-élément (hérité)",
     }
   }
+  static lineage_type() {
+    return {
+      data: "lineage_type",
+      title: Render.icon("diagram") + "Relation",
+      defaultContent: "",
+      filter_type: "select",
+      tooltip: "Source (parent) ou dérivé (enfant)",
+      render: (data, type) => {
+        if (!data) return ""
+        if (data === "derived") return "Dérivé"
+        if (data === "source") return "Source"
+      },
+    }
+  }
 }
