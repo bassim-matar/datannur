@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+- add : data lineage nb source and nb derived
+- add : description for data lineage on page functionality
+
 ## 0.10.9 (2025-05-22)
 - add : institution valididy start and end date
 - add : doc tab column inherited to distinct if the doc is inherited from a child element

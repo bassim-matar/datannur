@@ -28,6 +28,8 @@
   let nb_variable_max = 0
   let nb_row_max = 0
   let nb_doc_max = 0
+  let nb_sources_max = 0
+  let nb_derived_max = 0
   for (const dataset of datasets) {
     if (dataset.nb_variable > nb_variable_max) {
       nb_variable_max = dataset.nb_variable
@@ -38,13 +40,23 @@
     if (dataset.docs_recursive?.length > nb_doc_max) {
       nb_doc_max = dataset.docs_recursive?.length
     }
+    if (dataset.source_ids?.size > nb_sources_max) {
+      nb_sources_max = dataset.source_ids.size
+    }
+    if (dataset.derived_ids?.size > nb_derived_max) {
+      nb_derived_max = dataset.derived_ids.size
+    }
   }
+
+  console.log(datasets_sorted)
 
   function define_columns() {
     const base = [
       Column.name("dataset", "Dataset", { is_meta }),
       Column.description(),
       Column.lineage_type(),
+      Column.nb_sources(nb_sources_max, "dataset"),
+      Column.nb_derived(nb_derived_max, "dataset"),
       Column.dataset_type(),
       Column.nb_variable("dataset", nb_variable_max, {
         tab: tab_variables,

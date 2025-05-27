@@ -74,6 +74,17 @@ Un élément particulier du catalogue est la doc (documentation). Il peut s’ag
 
 ![Doc tourisme en Markdown](assets/about_page/doc_tourisme{dark_mode}.webp?v=1)
 
+### Dépendances (lineage)
+
+Pour chaque variable, un tableau dédié affiche ses liens de dépendance avec d’autres variables du catalogue. Deux types de relations sont distingués :  
+- Sources (↑) : variables utilisées pour calculer la variable affichée.  
+- Dérivées (↓) : variables qui utilisent la variable affichée comme entrée.
+
+Le nombre de sources et de dérivées est indiqué, et chaque lien donne accès à la variable correspondante.  
+Ces liens permettent également d’inférer automatiquement les dépendances entre jeux de données : chaque dataset affiche ainsi les autres jeux de données dont ses variables dépendent ou qu’il alimente.
+
+![Page variable - Onglet dépendances](assets/about_page/variable_page_lineage_tab{dark_mode}.webp?v=1)
+
 ### Résumé statistique
 
 L’onglet « Stat » propose un résumé statistique des informations issues des autres onglets. Il présente un aperçu des principaux attributs, tels que le nombre de variables par dataset ou les mots clés associés aux dossiers.

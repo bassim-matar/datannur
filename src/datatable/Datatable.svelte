@@ -628,6 +628,12 @@
               &.color_value {
                 background: color("value");
               }
+              &.color_nb_source{
+                background: color("nb_source");
+              }
+              &.color_nb_derived {
+                background: color("nb_derived");
+              }
             }
           }
           td span.deleted {

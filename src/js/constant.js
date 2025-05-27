@@ -131,4 +131,6 @@ export const entity_to_icon = {
   delete: "trash",
   internal_view: "box-open",
   internal_id: "fingerprint",
+  nb_source: "arrow-up",
+  nb_derived: "arrow-down",
 }

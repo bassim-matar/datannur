@@ -27,9 +27,13 @@
 
   let nb_row_max = 0
   let nb_value_max = 0
+  let nb_sources_max = 0
+  let nb_derived_max = 0
   for (const variable of variables) {
     nb_row_max = Math.max(nb_row_max, variable.nb_row)
     nb_value_max = Math.max(nb_value_max, variable.nb_value)
+    nb_sources_max = Math.max(nb_sources_max, variable.source_ids?.length || 0)
+    nb_derived_max = Math.max(nb_derived_max, variable.derived_ids?.length || 0)
   }
 
   function define_columns() {
@@ -40,6 +44,8 @@
       Column.datatype(),
       Column.is_key(),
       Column.lineage_type(),
+      Column.nb_sources(nb_sources_max, "variable"),
+      Column.nb_derived(nb_derived_max, "variable"),
       Column.nb_row(nb_row_max),
       Column.nb_missing(),
       Column.nb_duplicates(),

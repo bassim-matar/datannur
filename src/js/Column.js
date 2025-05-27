@@ -299,6 +299,40 @@ export default class Column {
       },
     }
   }
+  static nb_sources(nb_sources_max, entity) {
+    return {
+      data: "source_ids",
+      title: Render.icon("nb_source") + "In",
+      filter_type: "input",
+      defaultContent: "",
+      tooltip: `Nombre de ${entity}s sources (en amont)`,
+      render: (data, type, row) => {
+        if (!data || (!data.length && !data.size)) return ""
+        const nb = data.length || data.size
+        if (type !== "display") return nb
+        const percent = get_percent(nb / nb_sources_max)
+        const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
+        return `${Render.num_percent(content, percent, "nb_source", type)}`
+      },
+    }
+  }
+  static nb_derived(nb_derived_max, entity) {
+    return {
+      data: "derived_ids",
+      title: Render.icon("nb_derived") + "Out",
+      filter_type: "input",
+      defaultContent: "",
+      tooltip: `Nombre de ${entity}s dérivées (en aval)`,
+      render: (data, type, row) => {
+        if (!data || (!data.length && !data.size)) return ""
+        const nb = data.length || data.size
+        if (type !== "display") return nb
+        const percent = get_percent(nb / nb_derived_max)
+        const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
+        return `${Render.num_percent(content, percent, "nb_derived", type)}`
+      },
+    }
+  }
   static frequency() {
     return {
       data: "updating_each",

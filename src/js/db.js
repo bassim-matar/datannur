@@ -101,7 +101,8 @@ function add_docs(entity, item) {
   }
 }
 
-function variable_add_dataset_info(variable, dataset) {
+function variable_add_dataset_info(variable) {
+  const dataset = db.get("dataset", variable.dataset_id)
   if (!dataset) return
   variable.nb_row = dataset.nb_row
   variable.dataset_name = dataset.name
@@ -128,6 +129,7 @@ function add_entity(item, entity) {
 function add_source_var(variable) {
   if (!variable.sourceVar_ids) return false
   variable.source_ids = []
+  const dataset = db.get("dataset", variable.dataset_id)
   for (const sourceVar_id_raw of variable.sourceVar_ids.split(",")) {
     const sourceVar_id = sourceVar_id_raw.trim()
     const sourceVar = db.get("variable", sourceVar_id.trim())
@@ -135,6 +137,20 @@ function add_source_var(variable) {
     variable.source_ids.push(sourceVar_id)
     if (!sourceVar.derived_ids) sourceVar.derived_ids = []
     sourceVar.derived_ids.push(variable.id)
+
+    if (dataset) {
+      if (!dataset.source_ids) dataset.source_ids = new Set()
+      if (dataset.id !== sourceVar.dataset_id) {
+        dataset.source_ids.add(sourceVar.dataset_id)
+      }
+    }
+    const source_dataset = db.get("dataset", sourceVar.dataset_id)
+    if (source_dataset) {
+      if (!source_dataset.derived_ids) source_dataset.derived_ids = new Set()
+      if (source_dataset.id !== dataset.id) {
+        source_dataset.derived_ids.add(dataset.id)
+      }
+    }
   }
 }
 
@@ -231,6 +247,18 @@ export function add_minimum_deep(items, no_deep = false, no_indent = false) {
     item.no_indent = no_indent
     if (no_indent) item.minimum_deep = 0
   }
+}
+
+export function get_lineage(entity, elem, lineage_type) {
+  const lineage = []
+  const lineage_ids = elem[`${lineage_type}_ids`]
+  if (!lineage_ids) return lineage
+  for (const id of lineage_ids) {
+    const item = db.get(entity, id)
+    if (!item) continue
+    lineage.push({ ...item, lineage_type })
+  }
+  return lineage
 }
 
 class Process {
@@ -355,8 +383,7 @@ class Process {
       }
       variable.values_preview = [...variable.values.slice(0, 10)]
       variable.type_clean = get_variable_type_clean(variable.type)
-      const dataset = db.get("dataset", variable.dataset_id)
-      variable_add_dataset_info(variable, dataset)
+      variable_add_dataset_info(variable)
       const nb_values = get_nb_values(variable.values, variable)
       variable.nb_distinct = nb_values
       variable.nb_value = nb_values
@@ -421,7 +448,8 @@ class Process {
       add_variable_num(metaDataset, "metaDataset", "metaVariable")
       const metaVariables = db.get_all("metaVariable", { metaDataset })
       metaDataset.nb_variable = metaVariables.length
-      if(metaDataset.last_update_timestamp) metaDataset.last_update_timestamp *= 1000
+      if (metaDataset.last_update_timestamp)
+        metaDataset.last_update_timestamp *= 1000
       metaDataset.meta_localisation = ""
       if (metaDataset.is_in_meta && !metaDataset.is_in_data)
         metaDataset.meta_localisation = "schéma"
@@ -463,7 +491,7 @@ function add_doc_recursive() {
       }
       if (docs.length > 1) docs = remove_duplicate_by_id(docs)
       for (const doc of docs) {
-        item.docs_recursive.push({...doc, inherited: "hérité"})
+        item.docs_recursive.push({ ...doc, inherited: "hérité" })
       }
       if (item.docs) item.docs_recursive = item.docs_recursive.concat(item.docs)
     })
