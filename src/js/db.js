@@ -319,6 +319,7 @@ class Process {
       add_nb_child_recursive("tag", tag)
       add_nb_recursive("tag", tag, "institution")
       add_nb_recursive("tag", tag, "folder")
+      add_nb_recursive("tag", tag, "doc")
       add_nb_recursive("tag", tag, "dataset")
       add_nb_recursive("tag", tag, "variable")
     })

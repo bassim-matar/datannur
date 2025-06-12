@@ -507,6 +507,21 @@ export default class Column {
       },
     }
   }
+  static nb_doc_recursive(entity, total) {
+    return {
+      data: "nb_doc_recursive",
+      title:
+        Render.icon("doc") + "<span class='hidden'>nb_docs</span>",
+      filter_type: "input",
+      tooltip: "Nombre de docs",
+      render: (data, type, row) => {
+        if (!data) return ""
+        const content = link(entity + "/" + row.id + "?tab=docs", data)
+        const percent = get_percent(data / total)
+        return `${Render.num_percent(content, percent, "doc", type)}`
+      },
+    }
+  }
   static nb_child_recursive(entity, total, link_path = false) {
     if (!link_path) link_path = entity + "/"
     const entity_plural = pluralize(entity)

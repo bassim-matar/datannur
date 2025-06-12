@@ -47,9 +47,7 @@
       nb_derived_max = dataset.derived_ids.size
     }
   }
-
-  console.log(datasets_sorted)
-
+  
   function define_columns() {
     const base = [
       Column.name("dataset", "Dataset", { is_meta }),

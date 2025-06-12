@@ -16,19 +16,21 @@
   let tag_max = 0
   let institution_max = 0
   let folder_max = 0
-  let dataset_max = 0
   let doc_max = 0
+  let dataset_max = 0
   let variable_max = 0
   for (const tag of tags) {
     if (db.use.tag_recursive) tag.path_string = get_parent_path(tag)
     if (tag.nb_child_recursive > tag_max) tag_max = tag.nb_child_recursive
-    if (tag.nb_institution > institution_max)
-      institution_max = tag.nb_institution
-    if (tag.nb_folder > folder_max) folder_max = tag.nb_folder
-    if (tag.nb_dataset > dataset_max) dataset_max = tag.nb_dataset
-    if (tag.nb_variable > variable_max) variable_max = tag.nb_variable
-    if (tag.docs_recursive?.length > doc_max)
-      doc_max = tag.docs_recursive?.length
+    if (tag.nb_institution_recursive > institution_max)
+      institution_max = tag.nb_institution_recursive
+    if (tag.nb_folder_recursive > folder_max)
+      folder_max = tag.nb_folder_recursive
+    if (tag.nb_doc_recursive > doc_max) doc_max = tag.nb_doc_recursive
+    if (tag.nb_dataset_recursive > dataset_max)
+      dataset_max = tag.nb_dataset_recursive
+    if (tag.nb_variable_recursive > variable_max)
+      variable_max = tag.nb_variable_recursive
   }
 
   const tags_sorted = [...tags]
@@ -72,9 +74,9 @@
         },
       },
       Column.nb_folder_recursive("tag", folder_max),
-      Column.nb_doc("tag", doc_max),
+      Column.nb_doc_recursive("tag", doc_max),
       Column.nb_dataset_recursive("tag", dataset_max),
-      Column.nb_variable("tag", variable_max),
+      Column.nb_variable("tag", variable_max, { recursive: true }),
     ])
 
     if (db.use.tag_recursive) {

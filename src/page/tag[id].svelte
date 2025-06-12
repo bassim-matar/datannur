@@ -1,6 +1,10 @@
 <script>
   import db from "@db"
-  import { make_parents_relative, add_minimum_deep } from "@js/db"
+  import {
+    make_parents_relative,
+    add_minimum_deep,
+    remove_duplicate_by_id,
+  } from "@js/db"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
   import Title from "@layout/Title.svelte"
@@ -17,12 +21,31 @@
   let variables
   let tags
 
-  const with_institutions = db.get_all("institution", { tag })
-  const with_folders = db.get_all("folder", { tag })
-  const with_datasets = db.get_all("dataset", { tag })
-  const with_variables = db.get_all("variable", { tag })
-  const with_docs = db.get_all("doc", { tag })
+  let with_institutions = db.get_all("institution", { tag })
+  let with_folders = db.get_all("folder", { tag })
+  let with_datasets = db.get_all("dataset", { tag })
+  let with_variables = db.get_all("variable", { tag })
+  let with_docs = db.get_all("doc", { tag })
+
   const with_tags = db.get_all_childs("tag", tag.id)
+
+  for (const child_tag of with_tags) {
+    const child_institutions = db.get_all("institution", { tag: child_tag })
+    const child_folders = db.get_all("folder", { tag: child_tag })
+    const child_datasets = db.get_all("dataset", { tag: child_tag })
+    const child_variables = db.get_all("variable", { tag: child_tag })
+    const child_docs = db.get_all("doc", { tag: child_tag })
+    with_institutions = with_institutions.concat(child_institutions)
+    with_folders = with_folders.concat(child_folders)
+    with_datasets = with_datasets.concat(child_datasets)
+    with_variables = with_variables.concat(child_variables)
+    with_docs = with_docs.concat(child_docs)
+  }
+  with_institutions = remove_duplicate_by_id(with_institutions)
+  with_folders = remove_duplicate_by_id(with_folders)
+  with_datasets = remove_duplicate_by_id(with_datasets)
+  with_variables = remove_duplicate_by_id(with_variables)
+  with_docs = remove_duplicate_by_id(with_docs)
 
   function get_opposite(entity, with_tag_items, self_id = false) {
     if (with_tag_items.length === 0) return []
