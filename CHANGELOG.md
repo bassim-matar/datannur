@@ -4,6 +4,7 @@
 - add : data lineage nb source and nb derived
 - add : description for data lineage on page functionality
 - add : items from child tags to parent tags
+- add : switch show tree on tag item page
 
 ## 0.10.9 (2025-05-22)
 - add : institution valididy start and end date

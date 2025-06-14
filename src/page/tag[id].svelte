@@ -1,5 +1,7 @@
 <script>
   import db from "@db"
+  import { tab_selected } from "@js/store"
+  import { is_big_limit } from "@js/constant"
   import {
     make_parents_relative,
     add_minimum_deep,
@@ -8,11 +10,13 @@
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
   import Title from "@layout/Title.svelte"
+  import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
 
   let { tag } = $props()
 
   let opposite = $state(false)
   let tabs = $state()
+  let key_tab = $state(-1)
 
   let institutions
   let folders
@@ -136,6 +140,10 @@
   }
 
   load_tabs()
+
+  let show_open_all_switch = $derived(
+    $tab_selected.key === "tags" && tags.length > is_big_limit,
+  )
 </script>
 
 <section class="section">
@@ -146,7 +154,10 @@
     {info}
     toggle_info={toggle_opposite}
   />
-  {#key opposite}
+  {#if show_open_all_switch}
+    <OpenAllSwitch on_change={value => (key_tab = value)} />
+  {/if}
+  {#key opposite + key_tab}
     <Tabs {tabs} />
   {/key}
 </section>
