@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.10.10 (2025-06-14)
 - add : data lineage nb source and nb derived
 - add : description for data lineage on page functionality
 - add : items from child tags to parent tags
