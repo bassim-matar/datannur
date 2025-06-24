@@ -33,6 +33,7 @@
     return [
       Column.favorite(),
       ...base,
+      Column.modality(),
       Column.tag(),
       Column.start_date(),
       Column.end_date(),

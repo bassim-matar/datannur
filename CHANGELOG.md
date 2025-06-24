@@ -1,12 +1,19 @@
 # datannur
 
+# unreleased
+
+- add : variable modality on dataset_variables
+- fix : typo in schema
+
 ## 0.10.10 (2025-06-14)
+
 - add : data lineage nb source and nb derived
 - add : description for data lineage on page functionality
 - add : items from child tags to parent tags
 - add : switch show tree on tag item page
 
 ## 0.10.9 (2025-05-22)
+
 - add : institution valididy start and end date
 - add : doc tab column inherited to distinct if the doc is inherited from a child element
 - add : data lineage at the variable level and infered for the dataset level
@@ -15,12 +22,14 @@
 - change : make timestamp column sortable and filterable by using format YYYY/MM/DD HH:mm instead of DD/MM/YYYY HH:mm:ss
 
 ## 0.10.8 (2025-05-15)
+
 - add : metadata only in schema but not in data
 - add : evolution screenshot and description in page fonctionnality
 - change : make db_schema an internal file
 - change : clean up db_schema and remove pdf and use_pdf db fields
 
 ## 0.10.7 (2025-05-08)
+
 - add : modality link color on hover for variable table and info
 - add : value link color on hover
 - add : variable is key info
