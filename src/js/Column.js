@@ -11,7 +11,15 @@ import Render from "@js/Render"
 
 export default class Column {
   static id() {
-    return { data: "id", visible: false, title: "id" }
+    return {
+      data: "id",
+      title: Render.icon("key") + "Identifiant",
+      name: "id",
+      tooltip: "Identifiant unique",
+      filter_type: "input",
+      has_long_text: true,
+      render: Render.copy_cell,
+    }
   }
   static name(entity, name, option) {
     const icon = entity || "name"

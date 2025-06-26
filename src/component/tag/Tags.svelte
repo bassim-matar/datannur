@@ -51,6 +51,7 @@
       columns.push(Column.name("tag", "Mot clé"))
     }
 
+    columns.push(Column.id())
     columns.push(Column.description())
 
     if (db.use.tag_recursive) {

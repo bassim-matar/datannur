@@ -3,6 +3,7 @@
 # unreleased
 
 - add : variable modality on dataset_variables
+- add : column id for tag table
 - fix : typo in schema
 
 ## 0.10.10 (2025-06-14)
