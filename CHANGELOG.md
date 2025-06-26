@@ -4,6 +4,8 @@
 
 - add : variable modality on dataset_variables
 - add : column id for tag table
+- change : icon for tag id to use internal_id icon
+- change : copy id on click on info page
 - fix : typo in schema
 
 ## 0.10.10 (2025-06-14)

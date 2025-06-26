@@ -13,7 +13,7 @@ export default class Column {
   static id() {
     return {
       data: "id",
-      title: Render.icon("key") + "Identifiant",
+      title: Render.icon("internal_id") + "Identifiant",
       name: "id",
       tooltip: "Identifiant unique",
       filter_type: "input",
