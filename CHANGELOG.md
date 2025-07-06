@@ -7,6 +7,8 @@
 - change : icon for tag id to use internal_id icon
 - change : copy id on click on info page
 - fix : typo in schema
+- fix : column date last and next update sort icon position
+- fix : search bar with dash
 
 ## 0.10.10 (2025-06-14)
 

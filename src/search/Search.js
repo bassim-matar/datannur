@@ -39,13 +39,13 @@ export function search_highlight(value, search) {
       if (charMap[lowerChar]) {
         return charMap[lowerChar]
       } else {
-        return char.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&")
+        return char.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&")
       }
     })
     .join("")
 
-  const pattern = `(^|[^\\p{L}])(${normalizedSearch})`
-  const regex = new RegExp(pattern, "giu")
+  const pattern = `(^|[^a-zA-Z])(${normalizedSearch})`
+  const regex = new RegExp(pattern, "gi")
 
   return escape_html_entities(value).replace(regex, (match, p1, p2) => {
     return `${p1}<span class="search_highlight">${p2}</span>`
@@ -108,7 +108,7 @@ export default class Search {
             folder_id: item.folder_id,
             folder_name: item.folder_name,
             _entity: item._entity,
-            _entity_clean: entity_names[item._entity]
+            _entity_clean: entity_names[item._entity],
           })
         }
       }

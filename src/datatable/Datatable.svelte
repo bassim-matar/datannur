@@ -239,7 +239,7 @@
             {#each Array(nb_row_loading) as _, i}
               <tr>
                 {#each columns_copy as column, j}
-                  <td class:first_col={j === 0} class:first_row={i === 0} >
+                  <td class:first_col={j === 0} class:first_row={i === 0}>
                     {#if column.data === "_row_num"}
                       {i + 1}
                     {:else if column.data === "is_favorite"}
@@ -467,7 +467,8 @@
           outline: none;
         }
 
-        th.dt-type-numeric div.dt-column-header {
+        th.dt-type-numeric div.dt-column-header,
+        th.dt-type-date div.dt-column-header {
           flex-direction: row;
         }
 
@@ -628,7 +629,7 @@
               &.color_value {
                 background: color("value");
               }
-              &.color_nb_source{
+              &.color_nb_source {
                 background: color("nb_source");
               }
               &.color_nb_derived {
