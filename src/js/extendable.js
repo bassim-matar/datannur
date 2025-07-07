@@ -1,8 +1,9 @@
 import jQuery from "jquery"
 
 const max_height = 200
-const open_duration = 500
-const close_duration = 2000
+const delay_before_open = 200
+const open_duration = 300
+const close_duration = 600
 
 export const extendable = {
   open() {
@@ -13,7 +14,7 @@ export const extendable = {
       elem.stop().animate({ maxHeight: max_height }, open_duration, () => {
         elem.addClass("open_full")
       })
-    }, 300)
+    }, delay_before_open)
   },
   close(elem_ref, min_height = 25) {
     clearTimeout(elem_ref.mouse_enter_timeout)
