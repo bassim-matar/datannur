@@ -36,8 +36,6 @@
       level_max = tag.parents?.length + 1
   }
 
-  console.log(tags)
-
   const tags_sorted = [...tags]
   if (db.use.tag_recursive) {
     tags_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))

@@ -386,7 +386,6 @@ export default class Column {
     }
   }
   static level(level_max = false) {
-    console.log(level_max)
     let render = (data, type, row) => row.parents?.length + 1
     if (level_max) {
       render = (data, type, row) => {
