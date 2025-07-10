@@ -14,6 +14,7 @@
   let dataset_max = 0
   let nb_doc_max = 0
   let variable_max = 0
+  let level_max = 0
   for (const institution of institutions) {
     institution.path_string = get_parent_path(institution)
     if (institution.nb_child_recursive > institution_max) {
@@ -30,6 +31,9 @@
     }
     if (institution.nb_variable_recursive > variable_max) {
       variable_max = institution.nb_variable_recursive
+    }
+    if (institution.parents?.length + 1 > level_max) {
+      level_max = institution.parents?.length + 1
     }
   }
 
@@ -73,7 +77,7 @@
     },
     Column.start_date(),
     Column.end_date(),
-    Column.level(),
+    Column.level(level_max),
   ]
 </script>
 

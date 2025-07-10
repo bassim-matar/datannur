@@ -19,6 +19,7 @@
   let doc_max = 0
   let dataset_max = 0
   let variable_max = 0
+  let level_max = 0
   for (const tag of tags) {
     if (db.use.tag_recursive) tag.path_string = get_parent_path(tag)
     if (tag.nb_child_recursive > tag_max) tag_max = tag.nb_child_recursive
@@ -31,7 +32,11 @@
       dataset_max = tag.nb_dataset_recursive
     if (tag.nb_variable_recursive > variable_max)
       variable_max = tag.nb_variable_recursive
+    if (tag.parents?.length + 1 > level_max)
+      level_max = tag.parents?.length + 1
   }
+
+  console.log(tags)
 
   const tags_sorted = [...tags]
   if (db.use.tag_recursive) {
@@ -59,7 +64,6 @@
     }
 
     columns = columns.concat([
-      Column.nb_child_recursive("tag", tag_max),
       {
         data: "nb_institution_recursive",
         title:
@@ -75,13 +79,14 @@
         },
       },
       Column.nb_folder_recursive("tag", folder_max),
+      Column.nb_child_recursive("tag", tag_max),
       Column.nb_doc_recursive("tag", doc_max),
       Column.nb_dataset_recursive("tag", dataset_max),
       Column.nb_variable("tag", variable_max, { recursive: true }),
     ])
 
     if (db.use.tag_recursive) {
-      columns.push(Column.level())
+      columns.push(Column.level(level_max))
     }
     return columns
   }

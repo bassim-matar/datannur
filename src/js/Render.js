@@ -158,10 +158,14 @@ export default class Render {
   }
   static num_percent(data, percent, color_type, type, with_percent = false) {
     let display_value = Render.num(data, type)
+    if (!display_value) return ""
     if (type === "display" && with_percent) display_value += ` (${percent}%)`
     return `
-      <span>${display_value}</span>
-      <span class="num_percent color_${color_type}" style="width: ${percent}%"></span>`
+    <div class="num_percent_container">
+      <span class="num_percent color_${color_type} placeholder" style="width: 100%"></span>
+      <span class="num_percent color_${color_type}" style="width: ${percent}%"></span>
+    </div>
+    <span class="num_percent_value">${display_value}</span>`
   }
   static tags(tags) {
     if (!tags || tags.length === 0) return wrap_long_text()

@@ -40,12 +40,13 @@
     width: 100%;
     text-align: right;
     .percent_background {
-      height: 100%;
       position: absolute;
-      top: 0;
+      top: 10px;
       left: 0;
+      bottom: 10px;
       z-index: 0;
-      opacity: 0.3;
+      opacity: 0.5;
+      border-radius: $rounded;
       pointer-events: none;
     }
     .value_text {

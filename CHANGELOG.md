@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- change : use rounded percent bar
 - fix : evolution add_validities with table not found
 - fix : tabs_helper get_nb_stat() with items not found
 

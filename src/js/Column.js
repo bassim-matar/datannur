@@ -385,7 +385,17 @@ export default class Column {
       render: Render.favorite,
     }
   }
-  static level() {
+  static level(level_max = false) {
+    console.log(level_max)
+    let render = (data, type, row) => row.parents?.length + 1
+    if (level_max) {
+      render = (data, type, row) => {
+        const value = row.parents?.length + 1
+        if (!value) return ""
+        const percent = get_percent(value / level_max)
+        return `${Render.num_percent(value, percent, "key", type)}`
+      }
+    }
     return {
       data: "id",
       title: Render.icon("level") + "<span class='hidden'>level</span>",
@@ -394,7 +404,7 @@ export default class Column {
       filter_type: "input",
       width: "20px",
       tooltip: "Niveau de profondeur de l'arborecence",
-      render: (data, type, row) => row.parents?.length + 1,
+      render,
     }
   }
   static localisation() {
@@ -518,8 +528,7 @@ export default class Column {
   static nb_doc_recursive(entity, total) {
     return {
       data: "nb_doc_recursive",
-      title:
-        Render.icon("doc") + "<span class='hidden'>nb_docs</span>",
+      title: Render.icon("doc") + "<span class='hidden'>nb_docs</span>",
       filter_type: "input",
       tooltip: "Nombre de docs",
       render: (data, type, row) => {

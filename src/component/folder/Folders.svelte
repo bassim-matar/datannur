@@ -15,6 +15,7 @@
   let dataset_max = 0
   let folder_max = 0
   let nb_doc_max = 0
+  let level_max = 0
 
   if (!is_meta) {
     for (const folder of folders) {
@@ -30,6 +31,9 @@
       }
       if (folder.docs_recursive?.length > nb_doc_max) {
         nb_doc_max = folder.docs_recursive?.length
+      }
+      if (folder.parents?.length + 1 > level_max) {
+        level_max = folder.parents?.length + 1
       }
     }
     folders_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
@@ -117,7 +121,7 @@
             data ? `<a href="${data}" target="_blanck">${data}</a>` : "",
           ),
       },
-      Column.level(),
+      Column.level(level_max),
     ]
   }
 

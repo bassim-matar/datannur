@@ -582,20 +582,36 @@
                 color: #{color($entity)} !important;
               }
             }
+
+            .num_percent_container {
+              position: absolute;
+              border-radius: $rounded;
+              overflow: hidden;
+              top: 10px;
+              left: 5px;
+              bottom: 10px;
+              right: 5px;
+            }
             .num_percent_value {
               position: absolute;
               top: 0;
               left: 0;
               right: 0;
-              z-index: 1;
+              top: 50%;
+              transform: translateY(-50%);
+              text-align: center;
             }
             .num_percent {
               position: absolute;
-              top: 0;
+              top: 0px;
               left: 0;
-              bottom: 0;
-              opacity: 0.15;
+              bottom: 0px;
+              border-radius: $rounded;
+              opacity: 0.3;
               pointer-events: none;
+              &.placeholder {
+                opacity: 0.1;
+              }
               &.color_missing {
                 background: color("missing");
               }
@@ -634,6 +650,9 @@
               }
               &.color_nb_derived {
                 background: color("nb_derived");
+              }
+              &.color_key {
+                background: color("key");
               }
             }
           }

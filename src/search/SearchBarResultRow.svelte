@@ -83,6 +83,7 @@
     word-break: break-word;
     width: 100%;
     :global(.search_highlight) {
+      border-radius: $rounded;
       background: rgba(255, 255, 0, 0.5);
     }
   }
