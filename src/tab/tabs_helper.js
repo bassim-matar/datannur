@@ -3,7 +3,7 @@ import attributs from "@stat/attributs"
 
 function get_nb_stat(stat, attributs) {
   return stat.reduce((acc, entity) => {
-    if (entity.items.length > 0) {
+    if (entity.items?.length > 0) {
       return acc + (attributs[entity.entity].length || 0)
     }
     return acc

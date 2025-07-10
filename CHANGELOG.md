@@ -3,6 +3,7 @@
 ## unreleased
 
 - fix : evolution add_validities with table not found
+- fix : tabs_helper get_nb_stat() with items not found
 
 ## 0.10.11 (2025-07-07)
 
