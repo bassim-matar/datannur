@@ -159,7 +159,7 @@ function add_validities(evo_deleted) {
   const entities = Object.keys(parent_entities)
   for (const entity of entities) {
     if (
-      db.tables[entity].length > 0 &&
+      db.tables[entity]?.length > 0 &&
       (Object.keys(db.tables[entity][0]).includes("start_date") ||
         Object.keys(db.tables[entity][0]).includes("end_date") ||
         Object.keys(db.tables[entity][0]).includes("last_update_date") ||

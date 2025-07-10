@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fix : evolution add_validities with table not found
+
 ## 0.10.11 (2025-07-07)
 
 - add : variable modality on dataset_variables
