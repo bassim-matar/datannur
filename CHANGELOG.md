@@ -2,9 +2,11 @@
 
 ## unreleased
 
+- add : git release and tag for source code repo
 - change : use rounded percent bar
 - fix : evolution add_validities with table not found
 - fix : tabs_helper get_nb_stat() with items not found
+- fix : static_make.js wait before server ready
 
 ## 0.10.11 (2025-07-07)
 

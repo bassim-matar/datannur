@@ -1,15 +1,26 @@
 import fs, { writeFileSync, createWriteStream } from "fs"
 import http from "http"
 import path from "path"
-import { parse, fileURLToPath } from "url"
-import { resolve, sep } from "path"
+import { fileURLToPath } from "url"
 import puppeteer from "puppeteer"
 import { SitemapStream, streamToPromise } from "sitemap"
+import handler from "serve-handler"
 
 const config_file = "../config.json"
 const config_user_file = "../../data/static_make_config.json"
 const index_file = "./index.html"
 const entry_point = "./index_static_make.html"
+
+async function wait_until_ready(url, max_attempts = 30, delay_ms = 200) {
+  for (let i = 0; i < max_attempts; i++) {
+    try {
+      const res = await fetch(url)
+      if (res.ok) return
+    } catch (_) {}
+    await new Promise(resolve => setTimeout(resolve, delay_ms))
+  }
+  throw new Error(`Timeout: server not ready at ${url}`)
+}
 
 async function generate_sitemap(routes, domain, change_frequency = "monthly") {
   function calculate_priority(url) {
@@ -93,7 +104,10 @@ async function create_index_file() {
       .replace(`<base href=""`, `<base href="/"`)
       .replace("<head>", `<head><meta app_mode="static" />`)
     if (config.index_seo) {
-      index = index.replace(`<meta name="robots" content="noindex"`, `<meta name="robots" `)
+      index = index.replace(
+        `<meta name="robots" content="noindex"`,
+        `<meta name="robots" `
+      )
     }
     await fs.promises.writeFile(entry_point, index)
   } catch (error) {
@@ -129,50 +143,17 @@ async function waitForTimeout(page, timeout) {
   }, timeout)
 }
 
-async function fileExists(path) {
-  try {
-    const stats = await fs.promises.stat(path)
-    return stats.isFile()
-  } catch (e) {
-    return false
-  }
-}
-
-const start_server = async (index_file, port) => {
-  return new Promise((resolvePromise, rejectPromise) => {
-    const server = http.createServer(async (req, res) => {
-      if (req.method !== "GET") {
-        res.writeHead(405, { "Content-Type": "text/plain" })
-        res.end("Method Not Allowed")
-        return
-      }
-
-      const { pathname } = parse(req.url)
-      const sanitizedPath = pathname
-        .replace(/^(\.)+/, "")
-        .split("/")
-        .join(sep)
-      const path = resolve(`${process.cwd()}${sanitizedPath}`)
-
-      try {
-        if (await fileExists(path)) {
-          res.writeHead(200, { "Content-Type": "text/html" })
-          fs.createReadStream(path).pipe(res)
-          return
-        }
-        res.writeHead(200, { "Content-Type": "text/html" })
-        fs.createReadStream(index_file).pipe(res)
-      } catch (error) {
-        res.writeHead(500, { "Content-Type": "text/plain" })
-        res.end("Internal Server Error")
-        rejectPromise(error)
-      }
+function start_server(entry_file, port = 3000) {
+  return new Promise(resolve => {
+    const server = http.createServer((req, res) => {
+      return handler(req, res, {
+        public: ".",
+        rewrites: [{ source: "**", destination: entry_file }],
+      })
     })
-
-    server.listen(port, "localhost", async () => {
-      console.log(`Server running at http://localhost:${port}/`)
-      await new Promise(resolve => setTimeout(resolve, config.wait_load * 1000))
-      resolvePromise(server)
+    server.listen(port, async () => {
+      console.log(`⚡ Static server on http://localhost:${port}`)
+      resolve(server)
     })
   })
 }
@@ -192,10 +173,10 @@ function stop_server(server) {
 
 async function init_page(browser) {
   const page_url = `http://localhost:${config.port}`
+  await wait_until_ready(page_url)
   const page = await browser.newPage()
-  page.setDefaultTimeout(600000)
-  await page.goto(page_url, { waitUntil: "networkidle0" })
-  await waitForTimeout(page, config.wait_load * 1000)
+  page.setDefaultTimeout(10000)
+  await page.goto(page_url, { waitUntil: "domcontentloaded" })
   return page
 }
 
