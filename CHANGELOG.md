@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fix : allow dataset without folder
+
 ## 0.11.0 (2025-07-14)
 
 - add : git release and tag for source code repo

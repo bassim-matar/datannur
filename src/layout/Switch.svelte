@@ -128,7 +128,7 @@
   .switch[type="checkbox"].tree_switch.minimize + label:after {
     background: transparent;
     content: "\f802";
-    font-family: "Font Awesome 6 Free";
+    font-family: "Font Awesome 7 Free";
     top: 8px;
     left: 0.5rem;
   }

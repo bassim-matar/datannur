@@ -67,8 +67,9 @@ function add_name(item, entity, alias = false) {
   if (!alias) alias = entity
   const item_id = item[`${alias}_id`]
   let item_name = ""
-  if (item_id !== null) item_name = db.get(entity, item_id)?.name
-  item[`${alias}_name`] = item_name
+  if (item_id !== null && item_id !== undefined)
+    item_name = db.get(entity, item_id)?.name
+  item[`${alias}_name`] = item_name || ""
 }
 function add_variable_num(dataset, entity, variable_entity) {
   const variables = db.get_all(variable_entity, { [entity]: dataset.id })
@@ -338,7 +339,9 @@ class Process {
       add_docs("dataset", dataset)
       if (db.use.owner) add_name(dataset, "institution", "owner")
       if (db.use.manager) add_name(dataset, "institution", "manager")
-      if (db.use.folder) add_name(dataset, "folder")
+      if (db.use.folder) {
+        add_name(dataset, "folder")
+      } else dataset.folder_name = ""
       add_variable_num(dataset, "dataset", "variable")
       add_nb("dataset", dataset, "variable")
       add_period(dataset)
