@@ -108,6 +108,7 @@ function variable_add_dataset_info(variable) {
   variable.nb_row = dataset.nb_row
   variable.dataset_name = dataset.name
   variable.dataset_type = dataset.type
+  variable.folder_name = ""
   if (db.use.folder) {
     variable.folder_id = dataset.folder_id
     variable.folder_name = dataset.folder_name
