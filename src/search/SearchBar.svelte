@@ -234,7 +234,8 @@
       border-color: $background-3;
       transition:
         border-color $transition-basic-1,
-        box-shadow $transition-basic-1;
+        box-shadow $transition-basic-1,
+        top $transition-basic-1;
       &.focus {
         border-color: $color-5;
       }
@@ -252,13 +253,14 @@
       background: transparent;
       border: none;
       box-shadow: none;
+      transition: $transition-basic-1;
       &::placeholder {
         color: $color-4;
       }
     }
     .search_bar_container.homepage #header_search_input {
       width: calc(100vw - 98px);
-      max-width: none;
+      max-width: 100vw;
       padding: 10px 20px;
       padding-left: 3.3rem;
     }
