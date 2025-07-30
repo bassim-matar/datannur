@@ -4,7 +4,7 @@
   import Icon from "@layout/Icon.svelte"
   import { document_width, get_color } from "@js/util"
   import { entity_names } from "@js/constant"
-  import { all_tabs } from "@js/store"
+  import { all_tabs, page_name } from "@js/store"
   import attributs from "./attributs"
   import { add_values } from "./stat"
   import StatBox from "./StatBox.svelte"
@@ -14,6 +14,8 @@
   let show_all = $state(true)
   let visible = $state({})
   let loading = $state(false)
+
+  let on_page_homepage = $derived($page_name === "homepage")
 
   let masonry
 
@@ -107,7 +109,7 @@
   </div>
 {/if}
 
-<div class="main_wrapper">
+<div class="main_wrapper" class:homepage={on_page_homepage}>
   <div class="all_stat_container_wrappper" class:no_btns class:has_btns>
     <div class="all_stat_container" class:loading>
       {#each entities as { entity, attributs, with_html }}
@@ -124,11 +126,15 @@
 <style lang="scss">
   @use "../main.scss" as *;
 
+  .main_wrapper.homepage .all_stat_container_wrappper {
+    max-height: max(calc(100vh - 270px), 80px);
+  }
+
   .all_stat_container_wrappper {
     position: relative;
     width: 100%;
     height: auto;
-    overflow: hidden;
+    overflow: scroll;
     background: $background-2;
     @include scrollbar_light();
 

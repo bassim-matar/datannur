@@ -1,5 +1,6 @@
 <script>
   import db from "@db"
+  import { page_name } from "@js/store"
   import SearchBarResultRow from "./SearchBarResultRow.svelte"
 
   let {
@@ -21,7 +22,8 @@
     if (nb_result !== "") {
       setTimeout(() => {
         const real_height = table_wrapper.offsetHeight + 20
-        const window_height = window.innerHeight * 0.9
+        const percent_height = $page_name === "homepage" ? 0.8 : 0.9
+        const window_height = window.innerHeight * percent_height
         has_scroll_bar = real_height > window_height
         height = Math.min(real_height, window_height)
       }, 1)

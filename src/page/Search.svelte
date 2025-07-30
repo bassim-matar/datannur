@@ -148,7 +148,7 @@
         <i class="fas fa-magnifying-glass"></i>
       </button>
       <input
-        class="search_page_input box_shadow_color shadow_search"
+        class="input search_page_input box_shadow_color shadow_search"
         class:box_shadow={is_focus_in}
         class:is_focus_in
         type="text"
@@ -183,7 +183,7 @@
   @use "../main.scss" as *;
 
   .section {
-    margin-top: 30px;
+    margin-top: 13px;
   }
 
   .section :global(.search_highlight) {
@@ -192,13 +192,13 @@
   }
 
   p.control {
-    margin-bottom: 9px;
+    margin-bottom: 25px;
     .search_page_input {
       width: 100%;
       margin: auto;
       outline: none;
       background: $background-2;
-      padding: 10px 20px;
+      padding: 20px;
       padding-left: 3.3rem;
       box-sizing: border-box;
       border-color: $background-3;
@@ -220,7 +220,8 @@
     }
     .icon {
       color: $color-2;
-      left: 10px;
+      left: 11px;
+      top: 1px;
       transition: color $transition-basic-1;
       &.active {
         color: color("search");

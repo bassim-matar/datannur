@@ -118,6 +118,7 @@ export default class Search {
   async get_items_id(to_search, entity, ids_found) {
     entity.data = []
     const normalizedSearch = removeDiacritics(to_search)
+    if (!normalizedSearch) return []
     const result = await entity.items.search(normalizedSearch, { limit: 99999 })
     const items_id = result.filter(x => !ids_found[entity.name].includes(x))
     ids_found[entity.name] = ids_found[entity.name].concat(items_id)

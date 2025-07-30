@@ -3,6 +3,7 @@
 ## unreleased
 
 - add : freq tab and column for variables with visual frequency distribution
+- change : put search bar on the middle on homepage
 - fix : allow dataset without folder
 - fix : documentation mermaid relationship freq to value removed as incorrect
 

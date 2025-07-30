@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte"
   import MdContent from "@layout/MdContent.svelte"
-  import { page_content_loaded } from "@js/store"
+  import { page_content_loaded, page_name } from "@js/store"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import Loading from "@frame/Loading.svelte"
   import { ensure_mermaid_loaded, md_with_mermaid_to_html } from "@js/mermaid"
@@ -10,6 +10,7 @@
 
   let html_content = $state("")
   let html_content_loaded = $state(false)
+  let on_page_homepage = $derived($page_name === "homepage")
 
   let md_content = $derived(
     about_file.replaceAll(
@@ -36,7 +37,10 @@
   })
 </script>
 
-<div class="about_file_wrapper">
+<div
+  class="about_file_wrapper"
+  class:homepage={on_page_homepage}
+>
   {#if use_mermaid}
     <div class="content">
       {@html html_content}
@@ -54,10 +58,14 @@
   @use "../style/icon.scss" as *;
 
   .about_file_wrapper {
+    
     :global {
       p img {
         width: 100%;
       }
+    }
+    &.homepage {
+      max-height: max(calc(100vh - 225px), 80px)
     }
   }
 

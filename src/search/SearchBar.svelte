@@ -167,6 +167,7 @@
     class="search_bar_container box_shadow_color shadow_search"
     class:box_shadow={is_focus_in}
     class:focus={is_focus_in}
+    class:homepage={on_page_homepage}
   >
     <p class="control has-icons-right">
       <button
@@ -237,6 +238,9 @@
       &.focus {
         border-color: $color-5;
       }
+      &.homepage {
+        top: 65px;
+      }
     }
 
     #header_search_input {
@@ -251,6 +255,12 @@
       &::placeholder {
         color: $color-4;
       }
+    }
+    .search_bar_container.homepage #header_search_input {
+      width: calc(100vw - 98px);
+      max-width: none;
+      padding: 10px 20px;
+      padding-left: 3.3rem;
     }
     .btn_clear_input_wrapper {
       position: absolute;
