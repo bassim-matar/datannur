@@ -19,9 +19,18 @@ mermaid( $dataset --> $variable );
 
 ### Variable
 
-Certaines variables sont de type catégoriel, avec des valeurs possibles définies par une modalité. Une variable peut être liée à plusieurs modalités, et inversement.
+Certaines variables sont de type catégoriel, avec des valeurs possibles définies par une modalité. Une variable peut être liée à plusieurs modalités, et inversement. Chaque variable peut également avoir des données de fréquence associées.
 
-mermaid( $variable <--> $modality );
+mermaid( 
+  $variable <--> $modality
+  $variable --> $freq
+);
+
+### Fréquence
+
+Les fréquences permettent de comptabiliser le nombre d'occurrences de chaque valeur spécifique au sein d'une variable. Cela offre une vue statistique de la distribution des données et aide à identifier les valeurs les plus communes ou rares.
+
+mermaid( $freq --> $value );
 
 ### Modalité
 
@@ -103,5 +112,6 @@ mermaid(
   $dataset <--> $doc
   $variable <--> $modality
   $variable <--> $tag
+  $variable --> $freq
   $modality --> $value
 );

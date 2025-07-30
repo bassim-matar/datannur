@@ -12,6 +12,7 @@ export const entity_names = {
   variable: "Variable",
   modality: "Modalité",
   value: "Valeur",
+  freq: "Fréquence",
   log: "Log",
 }
 
@@ -24,6 +25,7 @@ export const parent_entities = {
   variable: "dataset",
   modality: "folder",
   value: "modality",
+  freq: "variable",
 }
 
 export const var_types = {
@@ -133,4 +135,5 @@ export const entity_to_icon = {
   internal_id: "fingerprint",
   nb_source: "arrow-up",
   nb_derived: "arrow-down",
+  freq: "chart-bar",
 }

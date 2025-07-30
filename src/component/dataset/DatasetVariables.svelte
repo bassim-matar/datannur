@@ -26,6 +26,7 @@
       Column.nb_derived(nb_derived_max, "variable"),
       Column.nb_missing(),
       Column.nb_duplicates(),
+      Column.freq(),
       Column.nb_values(nb_value_max),
       Column.values_preview(),
     ]

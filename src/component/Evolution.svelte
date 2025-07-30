@@ -30,6 +30,7 @@
       "variable",
       "modality",
       "value",
+      "freq",
     ]
 
     const detail_rows = to_filter.filter(

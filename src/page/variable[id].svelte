@@ -25,10 +25,14 @@
     .get_all("evolution")
     .filter(evo => evo.entity === "variable" && evo.id === variable.id)
 
+  // Récupérer les données de fréquence pour cette variable
+  const freq_data = db.get_all("freq").filter(item => item.variable_id === variable.id)
+
   let tabs = tabs_helper({
     variable,
     variables,
     variable_values: variable.values,
+    freq: freq_data,
     variable_preview,
     evolutions,
   })

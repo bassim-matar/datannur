@@ -290,6 +290,16 @@ export default class Column {
       render: Render.nb_missing,
     }
   }
+  static freq() {
+    return {
+      data: "freq_preview",
+      title: Render.icon("freq") + "Fréquence",
+      defaultContent: "",
+      has_long_text: true,
+      tooltip: "Aperçu des données de fréquence",
+      render: Render.freq_preview,
+    }
+  }
   static nb_row(nb_row_max) {
     return {
       data: "nb_row",

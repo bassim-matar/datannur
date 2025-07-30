@@ -137,7 +137,9 @@
         },
       })
       datatable.on("search.dt", () => {
-        $all_tabs[entity].nb = get_nb_item(datatable, clean_data)
+        if ($all_tabs[entity]) {
+          $all_tabs[entity].nb = get_nb_item(datatable, clean_data)
+        }
         short_table = is_short_table(datatable)
       })
       datatable.on("draw.dt", () => {
@@ -169,7 +171,9 @@
       datatable.columns.adjust()
       datatable_update_draw += 1
       fix_columns_width(datatable)
-      $all_tabs[entity].nb = get_nb_item(datatable, clean_data)
+      if ($all_tabs[entity]) {
+        $all_tabs[entity].nb = get_nb_item(datatable, clean_data)
+      }
       short_table = is_short_table(datatable)
       loading = false
       Datatables_timer.end()
@@ -612,11 +616,60 @@
               &.placeholder {
                 opacity: 0.1;
               }
+            }
+            .freq_item_container {
+              position: relative;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 2px 8px;
+              margin: 1px 0;
+              border-radius: $rounded;
+              overflow: hidden;
+              
+              .freq_background {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                border-radius: $rounded;
+                opacity: 0.2;
+                pointer-events: none;
+                &.color_freq {
+                  background: color("freq");
+                }
+              }
+              
+              .freq_value, .freq_number {
+                position: relative;
+                z-index: 1;
+              }
+              
+              .freq_percent {
+                position: relative;
+                z-index: 1;
+                margin-left: auto;
+              }
+            }
+            .num_percent {
+              position: absolute;
+              top: 0px;
+              left: 0;
+              bottom: 0px;
+              border-radius: $rounded;
+              opacity: 0.3;
+              pointer-events: none;
+              &.placeholder {
+                opacity: 0.1;
+              }
               &.color_missing {
                 background: color("missing");
               }
               &.color_duplicate {
                 background: color("duplicate");
+              }
+              &.color_freq {
+                background: color("freq");
               }
               &.color_value {
                 background: color("value");

@@ -85,6 +85,10 @@ Ces liens permettent également d’inférer automatiquement les dépendances en
 
 ![Page variable - Onglet dépendances](assets/about_page/variable_page_lineage_tab{dark_mode}.webp?v=1)
 
+### Fréquences
+
+Pour les variables disposant de données de fréquence, un onglet dédié présente la distribution des valeurs sous forme de tableau. Chaque valeur est accompagnée de son nombre d'occurrences et de son pourcentage relatif, avec une visualisation graphique des proportions. Cette fonctionnalité permet d'analyser rapidement la répartition des données et d'identifier les valeurs les plus communes ou les plus rares au sein d'une variable.
+
 ### Résumé statistique
 
 L’onglet « Stat » propose un résumé statistique des informations issues des autres onglets. Il présente un aperçu des principaux attributs, tels que le nombre de variables par dataset ou les mots clés associés aux dossiers.

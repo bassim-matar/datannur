@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- add : freq tab and column for variables with visual frequency distribution
 - fix : allow dataset without folder
 
 ## 0.11.0 (2025-07-14)

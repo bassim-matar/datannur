@@ -9,6 +9,7 @@ import ModalitiesCompare from "@component/modality/ModalitiesCompare.svelte"
 import DatasetVariables from "@component/dataset/DatasetVariables.svelte"
 import Values from "@component/modality/Values.svelte"
 import VariableValues from "@component/variable/VariableValues.svelte"
+import Freq from "@component/variable/Freq.svelte"
 import InstitutionInfo from "@component/institution/InstitutionInfo.svelte"
 import FolderInfo from "@component/folder/FolderInfo.svelte"
 import TagInfo from "@component/tag/TagInfo.svelte"
@@ -79,6 +80,11 @@ export const all_tabs = {
     name: "Valeur",
     icon: "value",
     component: VariableValues,
+  },
+  freq: {
+    name: "Fréquence",
+    icon: "freq",
+    component: Freq,
   },
   all_fav: {
     name: "Favori",

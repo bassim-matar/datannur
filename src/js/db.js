@@ -394,6 +394,25 @@ class Process {
       variable.nb_value = nb_values
       add_source_var(variable)
       if (variable.key) variable.key = "oui"
+      
+      // Vérifier si cette variable a des données de fréquence
+      const freq_data = db.get_all("freq", { variable })
+      variable.has_freq = freq_data.length > 0
+      
+      // Ajouter un aperçu des fréquences (max 10, triées par fréquence décroissante)
+      if (freq_data.length > 0) {
+        const freq_sorted = [...freq_data].sort((a, b) => (b.freq || 0) - (a.freq || 0))
+        const totalFreq = freq_data.reduce((sum, item) => sum + (item.freq || 0), 0)
+        const maxFreq = freq_sorted[0].freq || 1  // Fréquence maximale pour le background
+        variable.freq_preview = freq_sorted.slice(0, 10).map(item => ({
+          ...item,
+          total: totalFreq,
+          max: maxFreq
+        }))
+      } else {
+        variable.freq_preview = []
+      }
+      
       if (!nb_values || !variable.nb_duplicate) return
       variable.nb_duplicate = Math.max(variable.nb_row - nb_values, 0)
       if (variable.nb_missing) variable.nb_duplicate -= variable.nb_missing

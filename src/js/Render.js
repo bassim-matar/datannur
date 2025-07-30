@@ -80,6 +80,53 @@ export default class Render {
     content += "</ul>"
     return wrap_long_text(content)
   }
+  static freq_preview(freq_data, type, row) {
+    if (!freq_data || freq_data.length === 0) return ""
+    
+    let content = '<ul class="ul_value">'
+    let i = 0
+    
+    for (const freq_item of freq_data) {
+      const percent_display = get_percent(freq_item.freq / freq_item.total)  // Pour l'affichage du texte
+      const percent_background = get_percent(freq_item.freq / freq_item.max) // Pour la largeur du background
+      const freq_num = Render.num(freq_item.freq, type)
+      const percent_text = type === "display" ? ` (${percent_display}%)` : ""
+      
+      let freq_content
+      if (type === "display") {
+        // Nouveau layout : valeur à gauche, nombre à droite, background sur toute la largeur
+        const freq_display = `
+        <div class="freq_item_container">
+          <div class="freq_background color_freq" style="width: ${percent_background}%"></div>
+          <span class="freq_value">${freq_item.value}</span>
+          <span class="freq_number">${freq_num}</span>
+        </div>`
+        freq_content = freq_display
+      } else {
+        freq_content = `${freq_item.value}: ${freq_num}${percent_text}`
+      }
+      
+      if (i > 0 && type === "export") freq_content = separator + freq_content
+      content += "<li>" + freq_content + "</li>"
+      i += 1
+    }
+    
+    // Si il y a plus de fréquences que celles affichées
+    const total_freq_count = db.get_all("freq", { variable: row }).length
+    if (total_freq_count > freq_data.length) {
+      const nb_other_freq = total_freq_count - freq_data.length
+      const s = nb_other_freq > 1 ? "s" : ""
+      const text = link(
+        `variable/${row.id}?tab=freq`,
+        `... ${nb_other_freq} autre${s} fréquence${s}`,
+        "freq"
+      )
+      if (type === "export") content += separator
+      content += `<li><i>${text}</i></li>`
+    }
+    content += "</ul>"
+    return wrap_long_text(content)
+  }
   static num(data, type = "normal") {
     if (data === false || data === undefined || data === null) return ""
     if (["filter", "sort", "export"].includes(type)) return data
