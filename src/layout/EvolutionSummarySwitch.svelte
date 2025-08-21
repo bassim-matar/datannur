@@ -36,7 +36,7 @@
   }
   @media screen and (max-width: 600px) {
     .evolution_summary_wrapper {
-      top: 51px;
+      top: 40px;
       left: 5px;
       right: auto;
     }

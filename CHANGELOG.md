@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fix : evolution summary switch position on mobile
+
 ## 0.11.1 (2025-08-21)
 
 - add : freq tab and column for variables with visual frequency distribution
