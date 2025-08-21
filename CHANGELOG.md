@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- change : evolution summary option default value to false
 - fix : evolution summary switch position on mobile
 - fix : dt-buttons z-index on mobile
 
