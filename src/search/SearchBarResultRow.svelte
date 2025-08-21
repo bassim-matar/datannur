@@ -106,7 +106,6 @@
     }
     .close {
       opacity: 0;
-      padding-left: 3px;
     }
     tr:hover & {
       opacity: 1;

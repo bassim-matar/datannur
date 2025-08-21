@@ -116,7 +116,7 @@
     }
     :global(.remove_search_item > .close) {
       opacity: 0;
-      padding-left: 3px;
+      padding-right: 1px;
     }
     :global(tr:hover .remove_search_item > .recent) {
       opacity: 0;

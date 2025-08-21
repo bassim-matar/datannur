@@ -253,7 +253,7 @@
       &.page_search {
         top: 65px;
         width: 100%;
-        max-width: calc(100vw - 100px);
+        max-width: calc(100vw - 96px);
         z-index: 20;
       }
     }
@@ -285,7 +285,7 @@
       bottom: 0;
       width: 40px;
       padding-right: 0.75em;
-      margin-right: 10px;
+      margin-right: 2px;
     }
     .icon {
       color: $color-2;

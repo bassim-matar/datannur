@@ -5,6 +5,7 @@
 - change : evolution summary option default value to false
 - fix : evolution summary switch position on mobile
 - fix : dt-buttons z-index on mobile
+- fix : adjust padding of search bar and search bar close btn
 
 ## 0.11.1 (2025-08-21)
 
