@@ -3,6 +3,7 @@
 ## unreleased
 
 - fix : evolution summary switch position on mobile
+- fix : dt-buttons z-index on mobile
 
 ## 0.11.1 (2025-08-21)
 
