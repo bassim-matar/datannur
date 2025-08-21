@@ -7,13 +7,12 @@
     page_hash,
     footer_visible,
     page_content_loaded,
-    search_value,
   } from "@js/store"
   import Options from "@js/Options"
   import Logs from "@js/Logs"
   import Favorites from "@favorite/Favorites"
   import Main_filter from "@js/Main_filter"
-  import { is_http, has_touch_screen, get_is_mobile } from "@js/util"
+  import { is_http, has_touch_screen, get_is_small_menu } from "@js/util"
   import { url_param } from "@js/url_param"
   import { url_hash } from "@js/url_hash"
   import { db_add_processed_data, get_user_data } from "@js/db"
@@ -36,7 +35,7 @@
 
   let error_loading_db = $state(false)
   let page_loaded_route = $state()
-  let is_mobile = $state(get_is_mobile())
+  let is_small_menu = $state(get_is_small_menu())
   let is_popup_column_stat_open = $state(false)
   let column_stat_entity = $state()
   let column_stat_attribut = $state()
@@ -44,7 +43,7 @@
   const timer = performance.now()
 
   function on_resize() {
-    is_mobile = get_is_mobile()
+    is_small_menu = get_is_small_menu()
   }
 
   function set_option_default(key, value = true) {
@@ -114,7 +113,6 @@
       const entity_id = url_hash.get_level_2()
       SearchHistory.add(entity, entity_id)
       Logs.add("search_bar", { entity, entity_id })
-      $search_value = ""
       url_param.delete("from_search")
       url_param.delete("search")
     }
@@ -223,7 +221,7 @@
       {/await}
     {/if}
   </div>
-  {#if !is_mobile}
+  {#if !is_small_menu}
     <Footer />
   {/if}
 {/await}

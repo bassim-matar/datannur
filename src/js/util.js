@@ -38,6 +38,10 @@ export function get_is_mobile() {
 
 export const is_mobile = get_is_mobile()
 
+export function get_is_small_menu() {
+  return get_document_width() < 1023
+}
+
 export const has_touch_screen =
   "ontouchstart" in window ||
   navigator.maxTouchPoints > 0 ||

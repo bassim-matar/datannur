@@ -54,6 +54,7 @@
 </div>
 
 <style lang="scss">
+  @use "../main.scss" as *;
   @use "../style/mermaid.scss" as *;
   @use "../style/icon.scss" as *;
 
@@ -88,6 +89,12 @@
           }
         }
       }
+    }
+  }
+
+  @media screen and (max-width: $menu_mobile_limit) {
+    .about_file_wrapper.homepage {
+      max-height: max(calc(100vh - 175px), 80px)
     }
   }
 

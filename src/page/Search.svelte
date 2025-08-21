@@ -2,11 +2,9 @@
   import { onMount } from "svelte"
   import db from "@db"
   import { search_value, page_content_loaded } from "@js/store"
-  import { clickOutside, debounce } from "@js/util"
   import { url_param } from "@js/url_param"
   import Head from "@frame/Head.svelte"
   import Loading from "@frame/Loading.svelte"
-  import BtnClearInput from "@layout/BtnClearInput.svelte"
   import Tabs from "@tab/Tabs.svelte"
   import SearchResult from "@search/SearchResult.svelte"
   import SearchHistory from "@search/SearchHistory"
@@ -16,10 +14,8 @@
   import no_recent_search from "@markdown/search/no_recent_search.md?raw"
 
   let is_loading = $state(true)
-  let input_element = $state()
   let search_result_data = $state([])
   let tabs = $state([])
-  let is_focus_in = $state(false)
   let tab_key = $state()
 
   let recent_search_change = false
@@ -48,12 +44,6 @@
   function set_tab_key() {
     recent_search_change = !recent_search_change
     tab_key = recent_search_change
-  }
-
-  function clear_input() {
-    $search_value = ""
-    input_element.focus()
-    search_input_change()
   }
 
   function init_search_recent() {
@@ -103,21 +93,6 @@
     tabs.push(about_tab)
   }
 
-  function focusin() {
-    is_focus_in = true
-  }
-
-  function focusout() {
-    is_focus_in = false
-  }
-
-  function window_keydown(e) {
-    if (e.key === "/" && !is_focus_in) {
-      e.preventDefault()
-      input_element.focus()
-    }
-  }
-
   let is_empty_input = $derived(["", undefined, null].includes($search_value))
 
   const url_search_value = url_param.get("search")
@@ -127,47 +102,33 @@
   set_tab_key()
 
   onMount(() => {
-    input_element.focus()
-    search_input_change()
     $page_content_loaded = true
   })
-</script>
 
-<svelte:window onkeydown={window_keydown} />
+  let search_timeout
+  
+  $effect(() => {
+    $search_value
+    if (search_timeout) clearTimeout(search_timeout)
+    search_timeout = setTimeout(() => {
+      search_input_change()
+    }, 200)
+  })
+</script>
 
 <Head title="Recherche" description="Page de recherche" />
 
 <section class="section">
   <div>
     <p class="control has-icons-right">
-      <button
-        class="icon is-small is-left"
-        class:active={!is_empty_input && search_result_data.length > 0}
-        aria-label="Rechercher"
-      >
-        <i class="fas fa-magnifying-glass"></i>
-      </button>
       <input
-        class="input search_page_input box_shadow_color shadow_search"
-        class:box_shadow={is_focus_in}
-        class:is_focus_in
+        class="input"
         type="text"
-        placeholder="Rechercher..."
         name="search_page_input"
         bind:value={$search_value}
-        oninput={debounce(search_input_change, 300)}
-        onfocusin={focusin}
-        bind:this={input_element}
         autocomplete="off"
         enterkeyhint="search"
-        use:clickOutside
-        onclick_outside={focusout}
       />
-      {#if !is_empty_input}
-        <span class="btn_clear_input_wrapper">
-          <BtnClearInput click={clear_input} />
-        </span>
-      {/if}
     </p>
   </div>
   {#if is_loading}
@@ -193,54 +154,13 @@
 
   p.control {
     margin-bottom: 25px;
-    .search_page_input {
+    opacity: 0;
+    .input {
       width: 100%;
       margin: auto;
-      outline: none;
-      background: $background-2;
       padding: 20px;
       padding-left: 3.3rem;
       box-sizing: border-box;
-      border-color: $background-3;
-      &.is_focus_in {
-        border-color: $color-5;
-      }
-      &::placeholder {
-        color: $color-4;
-      }
-    }
-    .btn_clear_input_wrapper {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 40px;
-      padding-right: 0.75em;
-      margin-right: 10px;
-    }
-    .icon {
-      color: $color-2;
-      left: 11px;
-      top: 1px;
-      transition: color $transition-basic-1;
-      &.active {
-        color: color("search");
-        text-shadow: 0 0 10px;
-      }
-    }
-  }
-
-  :global(html.rounded_design) {
-    .search_page_input {
-      border-radius: $rounded;
-    }
-  }
-
-  :global(html.page_shadow_colored) {
-    p.control {
-      .search_page_input.is_focus_in {
-        border-color: color("search");
-      }
     }
   }
 </style>

@@ -1,6 +1,7 @@
 <script>
   import db from "@db"
   import { page_name } from "@js/store"
+  import { debounce } from "@js/util"
   import SearchBarResultRow from "./SearchBarResultRow.svelte"
 
   let {
@@ -16,18 +17,35 @@
   let height = $state(0)
   let has_scroll_bar = $state(false)
 
+  let on_page_homepage = $derived($page_name === "homepage")
   const plural = $derived(nb_result > 1 ? "s" : "")
 
+  function update_height() {
+    if (!table_wrapper) return
+    const real_height = table_wrapper.offsetHeight + 20
+    const percent_height = $page_name === "homepage" ? 0.8 : 0.9
+    const window_height = window.innerHeight * percent_height
+    has_scroll_bar = real_height > window_height
+    height = Math.min(real_height, window_height)
+  }
+
+  const debounced_update_height = debounce(update_height, 150)
+
   $effect(() => {
-    if (nb_result !== "") {
-      setTimeout(() => {
-        const real_height = table_wrapper.offsetHeight + 20
-        const percent_height = $page_name === "homepage" ? 0.8 : 0.9
-        const window_height = window.innerHeight * percent_height
-        has_scroll_bar = real_height > window_height
-        height = Math.min(real_height, window_height)
-      }, 1)
+    if (nb_result !== undefined) {
+      debounced_update_height()
+      setTimeout(() => debounced_update_height(), 500)
     }
+  })
+
+  $effect(() => {
+    if (on_page_homepage !== undefined) debounced_update_height()
+  })
+
+  $effect(() => {
+    const handle_resize = () => table_wrapper && debounced_update_height()
+    window.addEventListener("resize", handle_resize)
+    return () => window.removeEventListener("resize", handle_resize)
   })
 </script>
 
@@ -110,11 +128,5 @@
   .nb_result {
     width: 100%;
     font-size: 14px;
-  }
-
-  @media screen and (max-width: 1023px) {
-    #search_bar_result_outer {
-      display: none;
-    }
   }
 </style>

@@ -202,6 +202,12 @@
     }
   }
 
+  @media screen and (max-width: $menu_mobile_limit) {
+    .main_wrapper.homepage .all_stat_container_wrappper {
+      max-height: max(calc(100vh - 250px), 80px);
+    }
+  }
+
   @media screen and (max-width: 600px) {
     .btns {
       padding-left: 10px;

@@ -110,7 +110,7 @@ $icon-colors: (
   "next_update_date": #579fbd,
   "nb_derived": #579fbd,
   "log": #bd7c6c,
-  "freq": #9886be,
+  "freq": #12999b,
   "col_search": $color-2,
   "recent_search": $color-2,
   "functionality": #e0745c,
@@ -159,4 +159,4 @@ $menu_mobile_limit: 1023px;
 
 $entities: "institution", "folder", "tag", "dataset", "variable", "modality",
   "value", "log", "entity", "option", "search", "favorite", "about", "diagram",
-  "compare", "stat", "doc", "evolution", "functionality", "preview";
+  "compare", "stat", "doc", "evolution", "functionality", "preview", "freq";

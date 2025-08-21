@@ -3,7 +3,7 @@
   import { nb_favorite, header_open, page_name } from "@js/store"
   import { router } from "@js/router.svelte.js"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
-  import { get_is_mobile } from "@js/util"
+  import { get_is_small_menu } from "@js/util"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"
   import Loading from "@frame/Loading.svelte"
@@ -16,14 +16,17 @@
 
   let scroll_y = $state(0)
   let loading = $state(true)
-  let is_mobile = $state(get_is_mobile())
+  let is_small_menu = $state(get_is_small_menu())
 
   let on_page_search = $derived($page_name === "search")
+  let on_homepage = $derived($page_name === "homepage")
   let logo_src = $derived($dark_mode_theme === "dark" ? logo_dark : logo)
 
   const toggle_header = () => ($header_open = !$header_open)
   const close_menu = () => ($header_open = false)
-  const on_resize = () => (is_mobile = get_is_mobile())
+  const on_resize = () => {
+    is_small_menu = get_is_small_menu()
+  }
 
   function click_on_main_logo() {
     close_menu()
@@ -58,7 +61,7 @@
     </Link>
 
     <div class="mobile_right_btn">
-      {#if !on_page_search}
+      {#if !on_page_search && !on_homepage}
         <div class="search_bar_btn_wrapper">
           <HeaderLink href="search" pages={["search"]}>
             <i class="fas fa-magnifying-glass"></i>
@@ -155,17 +158,16 @@
     </div>
 
     <div class="navbar-end">
-      {#if !on_page_search}
-        <div class="navbar-item search_bar_input_wrapper">
-          <SearchBar {close_menu} />
-        </div>
-      {/if}
-      {#if is_mobile}
+      {#if is_small_menu}
         <Footer menu_mobile={true} />
       {/if}
     </div>
   </div>
 </nav>
+
+{#if (is_small_menu && (on_page_search || on_homepage)) || !is_small_menu}
+  <SearchBar {close_menu} {is_small_menu} />
+{/if}
 
 <style lang="scss">
   @use "../main.scss" as *;
@@ -222,10 +224,6 @@
     }
   }
 
-  .search_bar_input_wrapper {
-    display: block;
-    padding: 0;
-  }
   .search_bar_btn_wrapper {
     display: none;
     width: 20px;
@@ -235,10 +233,8 @@
       text-shadow: 0 0 10px;
     }
   }
+  
   @media screen and (max-width: $menu_mobile_limit) {
-    .search_bar_input_wrapper {
-      display: none;
-    }
     .search_bar_btn_wrapper {
       display: block;
     }

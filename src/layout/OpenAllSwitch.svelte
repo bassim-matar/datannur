@@ -35,7 +35,7 @@
   }
   @media screen and (max-width: 600px) {
     .open_all_wrapper {
-      top: 51px;
+      top: 40px;
       left: 5px;
       right: auto;
     }

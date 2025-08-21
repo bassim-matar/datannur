@@ -2,14 +2,14 @@
   import { onMount } from "svelte"
   import db from "@db"
   import { router } from "@js/router.svelte.js"
-  import { search_value, page_name } from "@js/store"
+  import { search_value, page_name, header_open } from "@js/store"
   import { clickOutside, debounce, is_mobile } from "@js/util"
   import Logs from "@js/Logs"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
   import SearchHistory from "./SearchHistory"
   import SearchBarResult from "./SearchBarResult.svelte"
 
-  let { close_menu } = $props()
+  let { close_menu, is_small_menu } = $props()
 
   let is_focus_in = $state(false)
   let input_element = $state()
@@ -23,6 +23,7 @@
   let is_open = $derived(
     is_focus_in && ($search_value !== "" || nb_result > 0 || !db_initied),
   )
+  let is_hidden_by_mobile_menu = $derived(is_small_menu && $header_open)
 
   const max_search_result = 100
   let nav_position = 0
@@ -35,6 +36,7 @@
   }
 
   async function search_input_change() {
+    if (on_page_search) return false
     search_value_debounced = $search_value
     nav_position = 0
     if ($search_value === "") {
@@ -64,8 +66,9 @@
   }
 
   function go_to_page_search() {
+    if (on_page_search) return false
     router.navigate(`/search?search=${$search_value}`)
-    is_focus_in = false
+    select_input()
     close_menu()
   }
 
@@ -78,8 +81,6 @@
     } else {
       apply_to_all_search((item, item_num, entity) => {
         if (item_num === nav_position) {
-          $search_value = ""
-          search_value_debounced = $search_value
           router.navigate(`/${entity}/${item.id}`)
           SearchHistory.add(entity, item.id)
           is_focus_in = false
@@ -143,7 +144,7 @@
   }
 
   onMount(() => {
-    if (on_page_homepage && !is_mobile) select_input()
+    if (on_page_search) select_input()
   })
 
   db.loaded.then(() => {
@@ -160,6 +161,7 @@
 
 <div
   class="navbar-item header_search_item"
+  class:hidden_by_mobile_menu={is_hidden_by_mobile_menu}
   use:clickOutside
   onclick_outside={focusout}
 >
@@ -168,6 +170,7 @@
     class:box_shadow={is_focus_in}
     class:focus={is_focus_in}
     class:homepage={on_page_homepage}
+    class:page_search={on_page_search}
   >
     <p class="control has-icons-right">
       <button
@@ -204,14 +207,16 @@
       {/if}
     </p>
 
-    <SearchBarResult
-      {is_open}
-      {nb_result}
-      {all_search}
-      search_value={search_value_debounced}
-      {select_input}
-      bind:is_focus_in
-    />
+    {#if !on_page_search}
+      <SearchBarResult
+        {is_open}
+        {nb_result}
+        {all_search}
+        search_value={search_value_debounced}
+        {select_input}
+        bind:is_focus_in
+      />
+    {/if}
   </div>
 </div>
 
@@ -224,7 +229,10 @@
     position: initial;
 
     .search_bar_container {
-      position: absolute;
+      position: fixed;
+      width: calc(100vw - 720px);
+      max-width: 500px;
+      z-index: 40;
       top: 2.5px;
       right: 3em;
       margin-right: 0px;
@@ -235,19 +243,24 @@
       transition:
         border-color $transition-basic-1,
         box-shadow $transition-basic-1,
+        max-width $transition-basic-1,
+        width $transition-basic-1,
         top $transition-basic-1;
       &.focus {
         border-color: $color-5;
       }
-      &.homepage {
+      &.homepage,
+      &.page_search {
         top: 65px;
+        width: 100%;
+        max-width: calc(100vw - 100px);
+        z-index: 20;
       }
     }
 
     #header_search_input {
       position: relative;
       width: calc(100vw - 730px);
-      max-width: 500px;
       margin: 0;
       padding-left: 3.3rem;
       background: transparent;
@@ -258,9 +271,10 @@
         color: $color-4;
       }
     }
-    .search_bar_container.homepage #header_search_input {
-      width: calc(100vw - 98px);
-      max-width: 100vw;
+    .search_bar_container.homepage #header_search_input,
+    .search_bar_container.page_search #header_search_input {
+      width: 100%;
+      max-width: 100%;
       padding: 10px 20px;
       padding-left: 3.3rem;
     }
@@ -301,5 +315,27 @@
         border-color: color("search");
       }
     }
+  }
+
+  @media screen and (max-width: 1023px) {
+    .header_search_item .search_bar_container.homepage {
+      left: 50px;
+    }
+  }
+
+   @media screen and (max-width: 600px) {
+    .header_search_item .search_bar_container.homepage,
+    .header_search_item .search_bar_container.page_search {
+      left: 0px;
+      right: 0px;
+      top: 80px;
+      max-width: 100vw;
+    }
+  }
+
+  .header_search_item.hidden_by_mobile_menu {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity $transition-basic-1;
   }
 </style>

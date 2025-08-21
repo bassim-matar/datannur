@@ -31,10 +31,11 @@
     fill: main.$color-2 !important;
   }
 
-  .flowchart-link {
+  .node.clickable {
     @each $entity in main.$entities {
-      &[id^="L_#{$entity}_"] {
+      &[id^="flowchart-#{$entity}-"] path {
         stroke: main.color($entity) !important;
+        fill: #{main.color($entity)}44 !important;
       }
     }
   }

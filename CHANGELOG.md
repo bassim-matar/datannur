@@ -1,10 +1,11 @@
 # datannur
 
-## unreleased
+## 0.11.1 (2025-08-21)
 
 - add : freq tab and column for variables with visual frequency distribution
 - add : search bar transition between homepage and other page
 - change : put search bar on the middle on homepage
+- change : keep value in search bar when switching pages and keep search bar on mobile homepage
 - fix : allow dataset without folder
 - fix : documentation mermaid relationship freq to value removed as incorrect
 

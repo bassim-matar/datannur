@@ -6,7 +6,6 @@
   import {
     page_hash,
     page_content_loaded,
-    search_value,
     reload_increment,
   } from "@js/store"
   import { url_hash } from "@js/url_hash"
@@ -31,7 +30,6 @@
     if (new_params) params = new_params
     $page_content_loaded = false
     route = router_index[entity].component
-    $search_value = ""
     setTimeout(() => ($page_hash = url_hash.get_level_1()), 1)
   }
 
