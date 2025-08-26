@@ -5,7 +5,6 @@
 
 datannur is a portable data catalog that can run without a server.
 
-This repository contains proprietary code with the source available. Before using or contributing, please review the full [License](LICENSE.md).
 If you're looking for the built version of the app, you can find it in this repository: [datannur-app](https://github.com/bassim-matar/datannur-app).
 
 For more information check the [website](https://datannur.com).

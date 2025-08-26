@@ -10,8 +10,6 @@ If you're looking for the source code, you can find it in this repository: [data
 
 To run the app just open the index.html file in a browser.
 
-Before using please review the full [License](LICENSE.md).
-
 For more information check the [website](https://datannur.com).
 
 ## Update

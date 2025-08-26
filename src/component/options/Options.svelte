@@ -15,6 +15,7 @@
   import Switch from "@layout/Switch.svelte"
   import DarkModeSwitch from "@dark_mode/DarkModeSwitch.svelte"
   import BtnImport from "@layout/BtnImport.svelte"
+  import Button from "@layout/Button.svelte"
 
   async function import_user_data(zip_file) {
     const jszip = new JSZip()
@@ -132,26 +133,26 @@
 
   <div class="flex_col">
     <h5 class="title is-5">Réinitialiser</h5>
-    <button class="button" onclick={clear_logs}>
+    <Button onclick={clear_logs}>
       Logs <Icon type="log" margin_left={true} />
-    </button>
-    <button class="button" onclick={clear_favorite}>
+    </Button>
+    <Button onclick={clear_favorite}>
       Favoris <Icon type="favorite" margin_left={true} />
-    </button>
-    <button class="button" onclick={reset_cols_search_cache}>
+    </Button>
+    <Button onclick={reset_cols_search_cache}>
       Filtres de colonne <Icon type="col_search" margin_left={true} />
-    </button>
-    <button class="button" onclick={clear_history_search}>
+    </Button>
+    <Button onclick={clear_history_search}>
       Recherches récentes <Icon type="recent_search" margin_left={true} />
-    </button>
-    <button class="button" onclick={clear_all}> Tout </button>
+    </Button>
+    <Button onclick={clear_all}> Tout </Button>
   </div>
 
   <div class="flex_col">
     <h5 class="title is-5">Mes données utilisateur</h5>
-    <button class="button" onclick={download_user_data}>
+    <Button onclick={download_user_data}>
       Exporter <Icon type="download" margin_left={true} />
-    </button>
+    </Button>
     <BtnImport on_import={import_user_data}>
       Importer <Icon type="upload" margin_left={true} />
     </BtnImport>

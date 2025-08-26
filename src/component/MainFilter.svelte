@@ -1,7 +1,8 @@
 <script>
   import { get_local_filter } from "@js/db"
-  import Switch from "@layout/Switch.svelte"
   import Main_filter from "@js/Main_filter"
+  import Switch from "@layout/Switch.svelte"
+  import Button from "@layout/Button.svelte"
 
   let filters = $state([])
 
@@ -19,7 +20,7 @@
       }
     }
   }
- 
+
   function update_filter_state() {
     Main_filter.save(filters)
   }
@@ -34,17 +35,12 @@
 {/each}
 
 <div class="navbar-item">
-  <button class="button" onclick={() => window.location.reload()}
-    >Appliquer</button
-  >
+  <Button onclick={() => window.location.reload()}>Appliquer</Button>
 </div>
 
 <style lang="scss">
   @use "../main.scss" as *;
 
-  button {
-    margin: auto;
-  }
   .navbar-item {
     :global(.switch[type="checkbox"] + label) {
       font-size: 0.875rem;

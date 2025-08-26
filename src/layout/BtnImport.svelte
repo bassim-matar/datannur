@@ -1,4 +1,6 @@
 <script>
+  import Button from "@layout/Button.svelte"
+
   let { on_import, children } = $props()
 
   let fileinput = $state()
@@ -10,9 +12,9 @@
   }
 </script>
 
-<button class="button" onclick={() => fileinput.click()}>
+<Button onclick={() => fileinput.click()}>
   {@render children?.()}
-</button>
+</Button>
 
 <input
   style="display:none"

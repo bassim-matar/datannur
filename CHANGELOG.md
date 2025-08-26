@@ -1,8 +1,10 @@
 # datannur
 
-## unreleased
+## 0.12.0 (2025-08-26)
 
 - change : evolution summary option default value to false
+- change : use Button component with press effect
+- change : switch to MIT license
 - fix : evolution summary switch position on mobile
 - fix : dt-buttons z-index on mobile
 - fix : adjust padding of search bar and search bar close btn
