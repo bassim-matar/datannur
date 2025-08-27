@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fix : search bar transition z-index and left position
+
 ## 0.12.0 (2025-08-26)
 
 - change : evolution summary option default value to false

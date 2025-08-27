@@ -230,10 +230,9 @@
 
     .search_bar_container {
       position: fixed;
-      width: calc(100vw - 720px);
-      max-width: 500px;
       z-index: 40;
       top: 2.5px;
+      left: 680px;
       right: 3em;
       margin-right: 0px;
       overflow: hidden;
@@ -243,18 +242,22 @@
       transition:
         border-color $transition-basic-1,
         box-shadow $transition-basic-1,
-        max-width $transition-basic-1,
-        width $transition-basic-1,
-        top $transition-basic-1;
+        top $transition-basic-1,
+        left $transition-basic-1;
       &.focus {
         border-color: $color-5;
       }
       &.homepage,
       &.page_search {
         top: 65px;
-        width: 100%;
-        max-width: calc(100vw - 96px);
+        left: 3em;
         z-index: 20;
+        transition:
+          border-color $transition-basic-1,
+          box-shadow $transition-basic-1,
+          top $transition-basic-1,
+          left $transition-basic-1,
+          z-index 0s $transition-basic-1;
       }
     }
 
