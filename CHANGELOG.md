@@ -3,6 +3,7 @@
 ## unreleased
 
 - fix : search bar transition z-index and left position
+- fix : page transition and search bar state management
 
 ## 0.12.0 (2025-08-26)
 

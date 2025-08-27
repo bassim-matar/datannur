@@ -14,6 +14,8 @@
 
   const base = href === "/" ? "" : get_base_link_url()
 
+  const entity_class = $derived(entity ? `color_entity_${entity}` : "")
+
   function go_to_href(event) {
     if (event.ctrlKey || event.metaKey) return
     event.preventDefault()
@@ -28,15 +30,11 @@
     click(event)
     go_to_href(event)
   }
-
-  if (entity) {
-    className += ` color_entity_${entity}`
-  }
 </script>
 
 <a
   href="{base}{href}"
-  class={className}
+  class="{className} {entity_class}"
   class:is-active={isActive()}
   onclick={on_click_event}
 >

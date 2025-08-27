@@ -1,8 +1,11 @@
 import { writable, derived } from "svelte/store"
 
+export const page = writable("")
+export const on_page_homepage = derived(page, p => p === "_index")
+export const on_page_search = derived(page, p => p === "search")
 export const page_hash = writable("")
-export const page_name = derived(page_hash, hash => hash.split("?")[0])
 export const header_open = writable(false)
+export const is_small_menu = writable(false)
 export const footer_visible = writable(true)
 export const page_content_loaded = writable(false)
 export const modalities_similitutes = writable(0)

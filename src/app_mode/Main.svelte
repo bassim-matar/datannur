@@ -6,7 +6,10 @@
   import {
     page_hash,
     footer_visible,
+    is_small_menu,
     page_content_loaded,
+    on_page_homepage,
+    on_page_search,
   } from "@js/store"
   import Options from "@js/Options"
   import Logs from "@js/Logs"
@@ -31,19 +34,21 @@
   import Popup from "@layout/Popup.svelte"
   import Loading from "@page/_loading.svelte"
   import StatBox from "@stat/StatBox.svelte"
-  import db_schema from "@src/db_schema.json" 
+  import SearchBar from "@search/SearchBar.svelte"
+  import db_schema from "@src/db_schema.json"
 
   let error_loading_db = $state(false)
   let page_loaded_route = $state()
-  let is_small_menu = $state(get_is_small_menu())
+
   let is_popup_column_stat_open = $state(false)
   let column_stat_entity = $state()
   let column_stat_attribut = $state()
 
   const timer = performance.now()
 
+  $is_small_menu = get_is_small_menu()
   function on_resize() {
-    is_small_menu = get_is_small_menu()
+    $is_small_menu = get_is_small_menu()
   }
 
   function set_option_default(key, value = true) {
@@ -147,7 +152,6 @@
     column_stat_attribut = add_values_to_attribut(window._current_tab_data, {
       key: attribut_name,
       ...definition[attribut_name],
-
     })
     if (column_stat_attribut) is_popup_column_stat_open = true
   })
@@ -212,6 +216,9 @@
       {#await db.loaded}
         <Loading />
       {:then}
+        {#if ($is_small_menu && ($on_page_search || $on_page_homepage)) || !$is_small_menu}
+          <SearchBar />
+        {/if}
         <Router />
         <div id="db_loaded" style="display: none;"></div>
         <div
@@ -221,7 +228,7 @@
       {/await}
     {/if}
   </div>
-  {#if !is_small_menu}
+  {#if !$is_small_menu}
     <Footer />
   {/if}
 {/await}

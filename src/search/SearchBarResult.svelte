@@ -1,6 +1,6 @@
 <script>
   import db from "@db"
-  import { page_name } from "@js/store"
+  import { on_page_homepage } from "@js/store"
   import { debounce } from "@js/util"
   import SearchBarResultRow from "./SearchBarResultRow.svelte"
 
@@ -17,13 +17,12 @@
   let height = $state(0)
   let has_scroll_bar = $state(false)
 
-  let on_page_homepage = $derived($page_name === "homepage")
   const plural = $derived(nb_result > 1 ? "s" : "")
 
   function update_height() {
     if (!table_wrapper) return
     const real_height = table_wrapper.offsetHeight + 20
-    const percent_height = $page_name === "homepage" ? 0.8 : 0.9
+    const percent_height = $on_page_homepage ? 0.8 : 0.9
     const window_height = window.innerHeight * percent_height
     has_scroll_bar = real_height > window_height
     height = Math.min(real_height, window_height)
@@ -39,7 +38,7 @@
   })
 
   $effect(() => {
-    if (on_page_homepage !== undefined) debounced_update_height()
+    if ($on_page_homepage !== undefined) debounced_update_height()
   })
 
   $effect(() => {

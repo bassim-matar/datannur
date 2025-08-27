@@ -2,14 +2,19 @@
   import { onMount } from "svelte"
   import db from "@db"
   import { router } from "@js/router.svelte.js"
-  import { search_value, page_name, header_open } from "@js/store"
-  import { clickOutside, debounce, is_mobile } from "@js/util"
+  import {
+    search_value,
+    header_open,
+    on_page_search,
+    on_page_homepage,
+    is_small_menu,
+    page
+  } from "@js/store"
+  import { clickOutside, debounce } from "@js/util"
   import Logs from "@js/Logs"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
   import SearchHistory from "./SearchHistory"
   import SearchBarResult from "./SearchBarResult.svelte"
-
-  let { close_menu, is_small_menu } = $props()
 
   let is_focus_in = $state(false)
   let input_element = $state()
@@ -18,12 +23,10 @@
   let db_initied = $state(false)
   let search_value_debounced = $state($search_value)
 
-  let on_page_search = $derived($page_name === "search")
-  let on_page_homepage = $derived($page_name === "homepage")
   let is_open = $derived(
     is_focus_in && ($search_value !== "" || nb_result > 0 || !db_initied),
   )
-  let is_hidden_by_mobile_menu = $derived(is_small_menu && $header_open)
+  let is_hidden_by_mobile_menu = $derived($is_small_menu && $header_open)
 
   const max_search_result = 100
   let nav_position = 0
@@ -36,7 +39,7 @@
   }
 
   async function search_input_change() {
-    if (on_page_search) return false
+    if ($on_page_search) return false
     search_value_debounced = $search_value
     nav_position = 0
     if ($search_value === "") {
@@ -66,10 +69,9 @@
   }
 
   function go_to_page_search() {
-    if (on_page_search) return false
+    if ($on_page_search) return false
     router.navigate(`/search?search=${$search_value}`)
     select_input()
-    close_menu()
   }
 
   function keyup(e) {
@@ -137,14 +139,14 @@
       focused_element.tagName === "INPUT" ||
       focused_element.tagName === "TEXTAREA" ||
       focused_element.tagName === "SELECT"
-    if (e.key === "/" && !is_focus_in && !is_input_focused && !on_page_search) {
+    if (e.key === "/" && !is_focus_in && !is_input_focused && !$on_page_search) {
       e.preventDefault()
       select_input()
     }
   }
 
   onMount(() => {
-    if (on_page_search) select_input()
+    if ($on_page_search) select_input()
   })
 
   db.loaded.then(() => {
@@ -154,6 +156,10 @@
 
   SearchHistory.on_clear(() => {
     init_search_recent()
+  })
+
+  $effect(() => {
+    console.log("Current page:", $page)
   })
 </script>
 
@@ -169,8 +175,8 @@
     class="search_bar_container box_shadow_color shadow_search"
     class:box_shadow={is_focus_in}
     class:focus={is_focus_in}
-    class:homepage={on_page_homepage}
-    class:page_search={on_page_search}
+    class:homepage={$on_page_homepage}
+    class:page_search={$on_page_search}
   >
     <p class="control has-icons-right">
       <button
@@ -207,7 +213,7 @@
       {/if}
     </p>
 
-    {#if !on_page_search}
+    {#if !$on_page_search}
       <SearchBarResult
         {is_open}
         {nb_result}
@@ -326,7 +332,7 @@
     }
   }
 
-   @media screen and (max-width: 600px) {
+  @media screen and (max-width: 600px) {
     .header_search_item .search_bar_container.homepage,
     .header_search_item .search_bar_container.page_search {
       left: 0px;

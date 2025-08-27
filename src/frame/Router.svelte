@@ -4,6 +4,7 @@
   import { app_mode } from "@js/util"
   import Logs from "@js/Logs"
   import {
+    page,
     page_hash,
     page_content_loaded,
     reload_increment,
@@ -30,6 +31,7 @@
     if (new_params) params = new_params
     $page_content_loaded = false
     route = router_index[entity].component
+    $page = entity
     setTimeout(() => ($page_hash = url_hash.get_level_1()), 1)
   }
 

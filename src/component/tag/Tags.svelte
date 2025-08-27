@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte"
   import db from "@db"
-  import { page_name } from "@js/store"
+  import { page } from "@js/store"
   import { get_parent_path } from "@js/db"
   import { link, get_percent } from "@js/util"
   import Column from "@js/Column"
@@ -32,8 +32,7 @@
       dataset_max = tag.nb_dataset_recursive
     if (tag.nb_variable_recursive > variable_max)
       variable_max = tag.nb_variable_recursive
-    if (tag.parents?.length + 1 > level_max)
-      level_max = tag.parents?.length + 1
+    if (tag.parents?.length + 1 > level_max) level_max = tag.parents?.length + 1
   }
 
   const tags_sorted = [...tags]
@@ -92,11 +91,9 @@
   const columns = define_columns()
 
   onMount(() => {
-    setTimeout(() => {
-      is_recursive =
-        db.use.tag_recursive && ["homepage", "tag", "tags"].includes($page_name)
-      mounted = true
-    }, 1)
+    is_recursive =
+      db.use.tag_recursive && ["_index", "tag", "tags"].includes($page)
+    mounted = true
   })
 </script>
 

@@ -1,11 +1,11 @@
 import Navigo from "navigo"
 import { app_mode } from "@js/util"
-import { page_name, reload_increment } from "@js/store"
+import { page, reload_increment } from "@js/store"
 
 export const router = new Navigo("/", { hash: app_mode !== "static_render" })
 
 let page_value = ""
-page_name.subscribe(value => (page_value = value))
+page.subscribe(value => (page_value = value))
 
 window.go_to_href = (event, href) => {
   if (event.ctrlKey || event.metaKey) return

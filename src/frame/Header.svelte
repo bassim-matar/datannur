@@ -1,13 +1,17 @@
 <script>
   import db from "@db"
-  import { nb_favorite, header_open, page_name } from "@js/store"
+  import {
+    nb_favorite,
+    header_open,
+    is_small_menu,
+    on_page_homepage,
+    on_page_search,
+  } from "@js/store"
   import { router } from "@js/router.svelte.js"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
-  import { get_is_small_menu } from "@js/util"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"
   import Loading from "@frame/Loading.svelte"
-  import SearchBar from "@search/SearchBar.svelte"
   import MainFilter from "@component/MainFilter.svelte"
   import HeaderDropdown from "./HeaderDropdown.svelte"
   import HeaderLink from "./HeaderLink.svelte"
@@ -16,21 +20,15 @@
 
   let scroll_y = $state(0)
   let loading = $state(true)
-  let is_small_menu = $state(get_is_small_menu())
-
-  let on_page_search = $derived($page_name === "search")
-  let on_homepage = $derived($page_name === "homepage")
+  
   let logo_src = $derived($dark_mode_theme === "dark" ? logo_dark : logo)
 
   const toggle_header = () => ($header_open = !$header_open)
   const close_menu = () => ($header_open = false)
-  const on_resize = () => {
-    is_small_menu = get_is_small_menu()
-  }
 
   function click_on_main_logo() {
     close_menu()
-    if ($page_name !== "homepage") {
+    if (!$on_page_homepage) {
       router.navigate("/")
       return
     }
@@ -42,7 +40,7 @@
   db.loaded.then(() => (loading = false))
 </script>
 
-<svelte:window bind:scrollY={scroll_y} onresize={on_resize} />
+<svelte:window bind:scrollY={scroll_y} />
 
 <nav
   class="navbar is-fixed-top"
@@ -61,7 +59,7 @@
     </Link>
 
     <div class="mobile_right_btn">
-      {#if !on_page_search && !on_homepage}
+      {#if !$on_page_search && !$on_page_homepage && !loading}
         <div class="search_bar_btn_wrapper">
           <HeaderLink href="search" pages={["search"]}>
             <i class="fas fa-magnifying-glass"></i>
@@ -158,16 +156,12 @@
     </div>
 
     <div class="navbar-end">
-      {#if is_small_menu}
+      {#if $is_small_menu}
         <Footer menu_mobile={true} />
       {/if}
     </div>
   </div>
 </nav>
-
-{#if (is_small_menu && (on_page_search || on_homepage)) || !is_small_menu}
-  <SearchBar {close_menu} {is_small_menu} />
-{/if}
 
 <style lang="scss">
   @use "../main.scss" as *;
@@ -233,7 +227,7 @@
       text-shadow: 0 0 10px;
     }
   }
-  
+
   @media screen and (max-width: $menu_mobile_limit) {
     .search_bar_btn_wrapper {
       display: block;

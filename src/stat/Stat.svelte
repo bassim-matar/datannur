@@ -4,7 +4,7 @@
   import Icon from "@layout/Icon.svelte"
   import { document_width, get_color } from "@js/util"
   import { entity_names } from "@js/constant"
-  import { all_tabs, page_name } from "@js/store"
+  import { all_tabs, on_page_homepage } from "@js/store"
   import attributs from "./attributs"
   import { add_values } from "./stat"
   import StatBox from "./StatBox.svelte"
@@ -14,8 +14,6 @@
   let show_all = $state(true)
   let visible = $state({})
   let loading = $state(false)
-
-  let on_page_homepage = $derived($page_name === "homepage")
 
   let masonry
 
@@ -109,7 +107,7 @@
   </div>
 {/if}
 
-<div class="main_wrapper" class:homepage={on_page_homepage}>
+<div class="main_wrapper" class:homepage={$on_page_homepage}>
   <div class="all_stat_container_wrappper" class:no_btns class:has_btns>
     <div class="all_stat_container" class:loading>
       {#each entities as { entity, attributs, with_html }}

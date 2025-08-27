@@ -1,5 +1,5 @@
 <script>
-  import { page_name } from "@js/store"
+  import { page } from "@js/store"
   import Column from "@js/Column"
   import Render from "@js/Render"
   import { wrap_long_text } from "@js/util"
@@ -54,7 +54,7 @@
   ]
   const filter_evolution =
     evolution_summary &&
-    !detail_pages.includes($page_name) &&
+    !detail_pages.includes($page) &&
     evolutions.length > is_big_limit
 
   const evolutions_sorted = filter_evolution

@@ -1,6 +1,6 @@
 <script>
   import db from "@db"
-  import { page_name } from "@js/store"
+  import { page } from "@js/store"
 
   let { title, pages = [], if_use = false, children } = $props()
 
@@ -18,7 +18,7 @@
 
 {#if visible}
   <div class="navbar-item has-dropdown is-hoverable">
-    <div class="navbar-link" class:is-active={pages.includes($page_name)}>
+    <div class="navbar-link" class:is-active={pages.includes($page)}>
       <span>{title}</span>
     </div>
     <div class="navbar-dropdown box_shadow">

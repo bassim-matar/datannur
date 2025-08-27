@@ -1,6 +1,6 @@
 <script>
   import db from "@db"
-  import { page_name, header_open } from "@js/store"
+  import { page, header_open } from "@js/store"
   import { pluralize } from "@js/util"
   import { entity_names } from "@js/constant"
   import Link from "@layout/Link.svelte"
@@ -45,7 +45,7 @@
     {href}
     {click}
     {className}
-    isActive={() => pages.includes($page_name)}
+    isActive={() => pages.includes($page)}
     entity={icon}
   >
     {#if icon}
