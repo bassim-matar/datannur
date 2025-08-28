@@ -4,6 +4,7 @@
 
 - fix : search bar transition z-index and left position
 - fix : page transition and search bar state management
+- fix : flash footer in header on page load with static rendering
 
 ## 0.12.0 (2025-08-26)
 

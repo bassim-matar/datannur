@@ -157,10 +157,6 @@
   SearchHistory.on_clear(() => {
     init_search_recent()
   })
-
-  $effect(() => {
-    console.log("Current page:", $page)
-  })
 </script>
 
 <svelte:window onkeydown={window_keydown} />

@@ -7,8 +7,9 @@
     on_page_homepage,
     on_page_search,
   } from "@js/store"
-  import { router } from "@js/router.svelte.js"
+  import { app_mode } from "@js/util"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
+  import { router } from "@js/router.svelte.js"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"
   import Loading from "@frame/Loading.svelte"
@@ -156,7 +157,7 @@
     </div>
 
     <div class="navbar-end">
-      {#if $is_small_menu}
+      {#if $is_small_menu && app_mode !== "static_render"}
         <Footer menu_mobile={true} />
       {/if}
     </div>

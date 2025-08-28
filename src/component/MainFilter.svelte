@@ -49,6 +49,7 @@
     :global(.button) {
       font-size: 0.875rem;
       color: $color-2;
+      margin: auto;
     }
   }
 </style>
