@@ -22,7 +22,7 @@
     "autoprefixer": "^10.4.21",
     "jsonjsdb_editor": "^0.2.10",
     "open-cli": "^8.0.0",
-    "puppeteer": "^24.17.0",
+    "puppeteer": "^24.17.1",
     "rollup-plugin-visualizer": "^6.0.3",
     "sass": "^1.91.0",
     "serve-handler": "^6.1.6",

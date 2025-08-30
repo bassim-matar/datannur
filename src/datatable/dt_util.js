@@ -40,7 +40,7 @@ export function get_nb_item(dt, clean_data) {
   const nb_item_display = dt?.page?.info()?.recordsDisplay
   if (nb_item_display !== nb_total) {
     const percent = get_percent(nb_item_display / nb_total)
-    return `${nb_item_display}/${nb_total} ${separator} ${percent}%`
+    return `${nb_item_display} / ${nb_total} ${separator} ${percent}%`
   } else {
     return nb_item_display
   }
