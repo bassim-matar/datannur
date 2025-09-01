@@ -3,81 +3,168 @@
 
 # datannur
 
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub release](https://img.shields.io/github/v/release/bassim-matar/datannur?color=blue)](https://github.com/bassim-matar/datannur/releases)
+
 datannur is a portable data catalog that can run without a server.
 
 If you're looking for the built version of the app, you can find it in this repository: [datannur-app](https://github.com/bassim-matar/datannur-app).
 
-For more information check the [website](https://datannur.com).
+For more information check [datannur.com](https://datannur.com).
 
-## Why
+## Table of Contents
 
-datannur, the portable data catalog
+- [Overview](#overview)
+- [Demo](#demo)
+- [Architecture](#architecture)
+  - [Data Model](#data-model)
+  - [Project Structure](#project-structure)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Usage](#usage)
+  - [Scripts](#scripts)
+  - [Code Style & Conventions](#code-style--conventions)
+  - [Release Process](#release-process)
+  - [Contributing](#contributing)
+- [License](#license)
 
-Allows you to **centralize**, **search** and **visualize** information across a collection of datasets
+## Overview
 
-Aims to improve data organization and to ease their **sharing** and **documentation**
+datannur is a client-side data catalog designed to organize and explore datasets without requiring server infrastructure.
 
-**Simple** and **flexible**, quickly integrates into all types of environments
+**Key features:**
+- **Zero-config deployment** - Single entry point (index.html) that runs in any browser
+- **Portable** - Works locally, on shared drives, or cloud storage
+- **Comprehensive metadata** - Structured around 7 core concepts: Institution, Folder, Tag, Doc, Dataset, Variable, and Modality
+- **Browser-isolated** - No system access, inherently secure
 
-- **Easy** :
-  No installation or configuration required. datanur is the easiest catalog to implement and maintain
+## Demo
 
-- **Portable** :
-  Works anywhere (local, cloud, shared drive), one folder that can be copied, moved, sent and opened with any browser
+🚀 **[Try the live demo](https://bassim-matar.github.io/datannur-app/)**
 
-- **Complete** :
-  Flexible, complete and structured around 7 concepts with a high level of detail: Institution, Folder, Keyword, Doc, Dataset, Variable, and Modality
+![datannur interface](./public/assets/about_page/dossier_sitg_tab_dataset_dark.webp#gh-dark-mode-only)
+![datannur interface](./public/assets/about_page/dossier_sitg_tab_dataset.webp#gh-light-mode-only)
 
-- **Secure** :
-  Because it is a simple HTML interface isolated in the browser, the application cannot modify anything on the machine and thus poses no risk
+## Architecture
+
+### Data Model
+The catalog is built around 7 core concepts organized in two categories:
+
+**Inside the dataset:**
+- **Dataset** - Data tables (database, Excel, CSV) with rows (observations) and columns (variables)
+- **Variable** - Individual data fields within datasets, can be categorical with defined modalities
+- **Modality** - Set of possible values for categorical variables, with descriptions for each value
+
+**Outside the dataset:**
+- **Folder** - Hierarchical organization of datasets and modalities in nested folder structures
+- **Institution** - Organizations with two roles: Provider (data producer) and Manager (data maintainer)
+- **Tag** - Keywords for cross-cutting themes and categories, can be hierarchically organized
+- **Doc** - Markdown or PDF documentation that can be associated with multiple concepts
+
+These concepts are highly interconnected, providing flexible data organization, enrichment, and documentation capabilities.
+
+### Project Structure
+```
+src/
+├── App.svelte           # Main application component
+├── main.js              # Application entry point
+├── main.scss            # Main stylesheet with color themes and variables
+├── db.js                # Database instance (Jsonjsdb wrapper)
+├── db_schema.json       # Complete schema documentation for all database tables
+├── .generated/          # Auto-generated files (router, etc.)
+├── app_mode/            # Application mode components
+├── component/           # Reusable Svelte components
+│   ├── dataset/         # Dataset-specific components
+│   ├── folder/          # Folder management components
+│   └── ...
+├── dark_mode/           # Dark mode functionality
+├── datatable/           # DataTables integration and utilities
+├── favorite/            # Bookmark/favorites system
+├── frame/               # UI framework components (Header, Footer, etc.)
+├── img/                 # Image assets
+├── js/                  # JavaScript utilities
+├── layout/              # Layout components
+├── markdown/            # Markdown content files
+├── page/                # Main application pages
+├── search/              # Search functionality
+├── stat/                # Statistics at the column level
+├── style/               # Additional stylesheets
+└── tab/                 # Tab components
+```
 
 ## Tech stack
 
-The app is a SPA 100% client-side using [Svelte](https://github.com/sveltejs/svelte) as the main framework
-and [Vite](https://github.com/vitejs/vite) for developpement and bundling.
-The app depends heavily on [Datatables](https://datatables.net) and his plugins.
-SCSS are also used for style and a subset of Bulma CSS has been used for some components. You can check the package.json to see all dependencies.
+**Frontend Framework:**
+- [Svelte](https://github.com/sveltejs/svelte) - Main UI framework
+- [Vite](https://github.com/vitejs/vite) - Build tool and development server
 
-## Usage
+**Core Libraries:**
+- [Jsonjsdb](https://github.com/bassim-matar/jsonjsdb) - Client-side JSON database
+- [DataTables](https://datatables.net) - Interactive data tables with jQuery
+- [FlexSearch](https://github.com/nextapps-de/flexsearch) - Full-text search engine
+- [Navigo](https://github.com/krasimir/navigo) - Client-side router
+
+**UI & Styling:**
+- SCSS - CSS preprocessor
+- [Bulma](https://github.com/jgthms/bulma) (subset) - CSS framework components
+- [Font Awesome](https://fontawesome.com) - Icon library
+
+**Documentation & Content:**
+- [Marked](https://github.com/markedjs/marked) - Markdown parser
+- [Mermaid](https://github.com/mermaid-js/mermaid) - Diagram generation
+
+**Utilities:**
+- [JSZip](https://github.com/Stuk/jszip) - ZIP file handling
+- [FileSaver.js](https://github.com/eligrey/FileSaver.js) - File download functionality
+
+## Getting Started
+
+### Usage
 
 1. Download the repo
 2. Run `npm install`
+3. Run `npm run dev` to start developing
 
-- Run `npm run dev` to start the dev server
-- Run `npm run build` to build the production app
-- Run `npm run preview` to view the production app
+For more commands, see the Development section below.
 
-## Dependencies licences
+### Scripts
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Open built app with file:// protocol
+- `npm run serve` - Serve built app on localhost
+- `npm run test` - Run test suite with Vitest
+- `npm run release` - Create and publish release
+- `npm run static-make-js` - Build + generate static pages for SEO (JS version)
+- `npm run static-make-py` - Build + generate static pages for SEO (Python version)
 
-- Font Awesome Free : Icons CC BY 4.0 License, Fonts SIL OFL 1.1 License, Code MIT License - [https://fontawesome.com/license/free](https://fontawesome.com/license/free)
-- Bulma : MIT License - [https://github.com/jgthms/bulma](https://github.com/jgthms/bulma)
-- DataTables : MIT License - [https://github.com/DataTables/DataTablesSrc](https://github.com/DataTables/DataTablesSrc)
-- FileSaver.js : MIT License - [https://github.com/eligrey/FileSaver.js](https://github.com/eligrey/FileSaver.js)
-- Fitty : MIT License - [https://github.com/rikschennink/fitty](https://github.com/rikschennink/fitty)
-- FlexSearch : Apache 2.0 License - [https://github.com/nextapps-de/flexsearch](https://github.com/nextapps-de/flexsearch)
-- jQuery : MIT License - [https://github.com/jquery/jquery](https://github.com/jquery/jquery)
-- PowerTip : MIT License - [https://github.com/stevenbenner/jquery-powertip](https://github.com/stevenbenner/jquery-powertip)
-- Jsonjsdb : MIT License - [https://github.com/bassim-matar/jsonjsdb/tree/main/jsonjsdb](https://github.com/bassim-matar/jsonjsdb/tree/main/jsonjsdb)
-- JSZip : MIT License - [https://github.com/Stuk/jszip](https://github.com/Stuk/jszip)
-- Marked : MIT License - [https://github.com/markedjs/marked](https://github.com/markedjs/marked)
-- Mermaid : MIT License - [https://github.com/mermaid-js/mermaid](https://github.com/mermaid-js/mermaid)
-- MiniMasonry.js : MIT License - [https://github.com/Spope/MiniMasonry.js](https://github.com/Spope/MiniMasonry.js)
-- Navigo : MIT License - [https://github.com/krasimir/navigo](https://github.com/krasimir/navigo)
-- jsdiff : BSD 3-Clause License - [https://github.com/kpdecker/jsdiff](https://github.com/kpdecker/jsdiff)
+### Code Style & Conventions
 
-### Dev dependencies licences
+- **Variables & functions:** `snake_case`
+- **Components:** `PascalCase` for Svelte files
+- **Import aliases:** Use path shortcuts - `@js/`, `@component/`, `@db`, `@layout/` (see `jsconfig.json`)
+- **Svelte 5 patterns:** Use `$props()`, `$state()`, `$derived()` for reactivity
+- **Database access:** Import `db` from `@db` for all data operations
+- **Minimal comments** - Self-documenting code with clear naming
 
-- rollup/plugin-alias : MIT License - [https://github.com/rollup/plugins/tree/master/packages/alias#readme](https://github.com/rollup/plugins/tree/master/packages/alias#readme)
-- sveltejs/vite-plugin-svelte : MIT License - [https://github.com/sveltejs/vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte)
-- Autoprefixer : MIT License - [https://github.com/postcss/autoprefixer](https://github.com/postcss/autoprefixer)
-- Jsonjsdb_editor : MIT License - [https://github.com/bassim-matar/jsonjsdb/tree/main/jsonjsdb_editor](https://github.com/bassim-matar/jsonjsdb/tree/main/jsonjsdb_editor)
-- open-cli : MIT License - [https://github.com/sindresorhus/open-cli](https://github.com/sindresorhus/open-cli)
-- Puppeteer: Apache 2.0 License - [https://github.com/puppeteer/puppeteer](https://github.com/puppeteer/puppeteer)
-- Rollup Plugin Visualizer : MIT License - [https://github.com/btd/rollup-plugin-visualizer](https://github.com/btd/rollup-plugin-visualizer)
-- Sass : MIT License - [https://github.com/sass/sass](https://github.com/sass/sass)
-- sitemap : MIT License - [https://github.com/ekalinin/sitemap.js](https://github.com/ekalinin/sitemap.js)
-- Svelte : MIT License - [https://github.com/sveltejs/svelte](https://github.com/sveltejs/svelte)
-- Svelte Preprocess : MIT License - [https://github.com/sveltejs/svelte-preprocess](https://github.com/sveltejs/svelte-preprocess)
-- Vite : MIT License - [https://github.com/vitejs/vite](https://github.com/vitejs/vite)
-- vite-plugin-full-reload : MIT License - [https://github.com/ElMassimo/vite-plugin-full-reload](https://github.com/ElMassimo/vite-plugin-full-reload)
-- Vitest : MIT License - [https://github.com/vitest-dev/vitest](https://github.com/vitest-dev/vitest)
+### Release Process
+```bash
+npm run release
+```
+
+The release script automatically:
+- Extracts changelog from `CHANGELOG.md`
+- Creates a git tag with the version from `package.json`
+- Pushes the tag to GitHub
+- Creates GitHub releases for both development and app repositories
+
+### Contributing
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes and test them
+4. Update `CHANGELOG.md` with your changes
+5. Commit using clear, descriptive messages
+6. Push to your fork and submit a pull request
+
+## License
+
+MIT - see [LICENSE](LICENSE). All dependencies are MIT/Apache 2.0/BSD compatible.
