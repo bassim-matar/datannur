@@ -4,6 +4,7 @@
 
 - change : add space around separator in tab filtered column
 - change : improve readme documentation
+- change : move github action (for github pages) to root
 - fix : search bar transition z-index and left position
 - fix : page transition and search bar state management
 - fix : flash footer in header on page load with static rendering

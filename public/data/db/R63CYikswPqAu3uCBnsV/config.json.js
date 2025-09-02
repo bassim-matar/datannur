@@ -1,0 +1,2 @@
+jsonjs.data['config'] = 
+[["id","value"],["contact_email","contact@datannur.com"],["alias_1","institution : owner"],["alias_2","institution : manager"],["filter_1","open_data : Open Data"],["filter_2","closed_data : Closed Data"]]

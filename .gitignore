@@ -1,11 +1,9 @@
 .DS_Store
 ~$*
-package-lock.json
 bundle-visualizer.html
 .vscode/
 /node_modules/
 /app/
 /static/
-/public/data/db/**/*.json.js
 /public/assets/external/*.js
 /src/.generated/*.js

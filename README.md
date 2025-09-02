@@ -40,7 +40,7 @@ datannur is a client-side data catalog designed to organize and explore datasets
 
 ## Demo
 
-🚀 **[Try the live demo](https://bassim-matar.github.io/datannur-app/)**
+🚀 **[Try the live demo](https://bassim-matar.github.io/datannur/)**
 
 ![datannur interface](./public/assets/about_page/dossier_sitg_tab_dataset_dark.webp#gh-dark-mode-only)
 ![datannur interface](./public/assets/about_page/dossier_sitg_tab_dataset.webp#gh-light-mode-only)
@@ -125,7 +125,7 @@ src/
 2. Run `npm install`
 3. Run `npm run dev` to start developing
 
-For more commands, see the Development section below.
+For more commands, see the Scripts section below.
 
 ### Scripts
 - `npm run dev` - Start development server

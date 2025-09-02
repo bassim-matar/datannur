@@ -1,0 +1,2 @@
+jsonjs.data['accident_route'] = 
+[["variable_1","variable_2","variable_3","variable_4","variable_5","variable_6","variable_7","variable_8","variable_9","variable_10","variable_11","variable_12"],[1,"a",1,"a",1,"a",1,"a",1,"a",1,"a"],[2,"b",2,"b",2,"b",2,"b",2,"b",2,"b"],[3,"a",3,"a",3,"a",3,"a",3,"a",3,"a"],[4,"b",4,"b",4,"b",4,"b",4,"b",4,"b"],[5,"a",5,"a",5,"a",5,"a",5,"a",5,"a"],[6,"b",6,"b",6,"b",6,"b",6,"b",6,"b"],[7,"a",7,"a",7,"a",7,"a",7,"a",7,"a"],[8,"b",8,"b",8,"b",8,"b",8,"b",8,"b"],[9,"a",9,"a",9,"a",9,"a",9,"a",9,"a"],[10,"b",10,"b",10,"b",10,"b",10,"b",10,"b"]]
