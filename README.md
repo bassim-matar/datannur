@@ -158,6 +158,9 @@ The release script automatically:
 - Creates GitHub releases for both development and app repositories
 
 ### Contributing
+
+Contributions to datannur are always welcome. Whether it's a bug report, new feature, or improvement to existing features, your input is highly appreciated.
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature-name`
 3. Make your changes and test them

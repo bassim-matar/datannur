@@ -34,25 +34,25 @@ For more information check [datannur.com](https://datannur.com).
 
 ## Project Structure
 
-Voici la structure de premier niveau :
+Here is the top-level structure:
 
 ```
-├── .htaccess             # Configuration Apache (URLs propres, cache)
-├── .nojekyll             # Désactive Jekyll sur GitHub Pages
-├── CHANGELOG.md          # Historique des changements
-├── LICENSE.md            # Licence du projet
-├── README.md             # Cette documentation
-├── index.html            # Point d'entrée de l'application
-├── manifest.json         # Configuration PWA
-├── update_app.json       # Configuration des mises à jour
-├── update_app.py         # Script de mise à jour automatique
-├── assets/               # Assets statiques (CSS, JS, images)
-├── data/                 # ⚠️ VOS DONNÉES - Seul dossier à modifier
-├── static_make/          # Outils de génération statique
-└── sync_db/              # Synchronisation base de données
+├── .htaccess             # Apache configuration (clean URLs, cache)
+├── .nojekyll             # Disables Jekyll on GitHub Pages
+├── CHANGELOG.md          # Change history
+├── LICENSE.md            # Project license
+├── README.md             # This documentation
+├── index.html            # Application entry point
+├── manifest.json         # PWA configuration
+├── update_app.json       # Update configuration
+├── update_app.py         # Automatic update script
+├── assets/               # Static assets (CSS, JS, images)
+├── data/                 # ⚠️ YOUR DATA - Only folder to modify
+├── static_make/          # Static generation tools
+└── sync_db/              # Database synchronization
 ```
 
-> **⚠️ Important :** Seul le dossier `/data/` doit être modifié par l'utilisateur (ajout/modification de vos métadonnées). Tous les autres fichiers constituent l'application et ne doivent pas être édités, sauf cas exceptionnel ou configuration avancée.
+> **⚠️ Important:** Only the `/data/` folder should be modified by the user (adding/modifying your metadata). All other files constitute the application and should not be edited, except in exceptional cases or for advanced configuration.
 
 ## Configuration
 

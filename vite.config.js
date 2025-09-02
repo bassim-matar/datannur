@@ -95,7 +95,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    FullReload(Jsonjsdb_watcher.get_db_meta_file_path()),
+    FullReload(Jsonjsdb_watcher.get_table_index_file_path()),
     jsonjsdb_add_config(jsonjsdb_config),
     update_router_index("src/.generated/router_index.js", "../page"),
     alias({ entries: await get_aliases("jsconfig.json") }),

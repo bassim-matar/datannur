@@ -1,4 +1,4 @@
-jsonjs.data['__meta__'] = 
+jsonjs.data['__table__'] = 
 [
   {
     "name": "config",
@@ -45,7 +45,7 @@ jsonjs.data['__meta__'] =
     "last_modif": 1747921769
   },
   {
-    "name": "__meta__",
-    "last_modif": 1753879819
+    "name": "__table__",
+    "last_modif": 1756838546
   }
 ]
