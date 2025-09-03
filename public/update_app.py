@@ -11,7 +11,7 @@ github_repo = "datannur-app"
 proxy_url = "127.0.0.1:9000"  # to bypass firewall if needed, in case of ssl error: pip install pip_system_certs
 repo_path = Path(__file__).parent
 temp_dir = repo_path / "_temp_update_app"
-config_file = repo_path / "update_app.json"
+config_file = repo_path / "data" / "update_app.json"
 
 
 def get_config(config_file):

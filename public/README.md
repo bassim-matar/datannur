@@ -44,7 +44,6 @@ Here is the top-level structure:
 ├── README.md             # This documentation
 ├── index.html            # Application entry point
 ├── manifest.json         # PWA configuration
-├── update_app.json       # Update configuration
 ├── update_app.py         # Automatic update script
 ├── assets/               # Static assets (CSS, JS, images)
 ├── data/                 # ⚠️ YOUR DATA - Only folder to modify
@@ -84,7 +83,7 @@ If you have Python installed, you can update automatically:
 python3 update_app.py
 ```
 
-**Configuration options** in `update_app.json`:
+**Configuration options** in `data/update_app.json`:
 - **target_version**: Choose `"latest"` (stable), `"pre-release"` (newest), or specific version `"x.x.x"`
 - **include**: List of files/folders to update
 

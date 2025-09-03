@@ -6,6 +6,7 @@
 - change : improve readme documentation
 - change : move github action (for github pages) to root
 - change : jsonjsdb use `__table__.json.js` instead of `__meta_.json.js`
+- change : move update_app.json to data folder
 - fix : search bar transition z-index and left position
 - fix : page transition and search bar state management
 - fix : flash footer in header on page load with static rendering
