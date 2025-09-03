@@ -6,14 +6,16 @@
 </script>
 
 <span class="num_percent color_{type} placeholder" style="width: 100%"></span>
-<span class="num_percent color_{type}" style="width: {percent}%"></span>
+<div class="filled_container">
+  <div class="num_percent_filled color_{type}" style="width: {percent}%"></div>
+</div>
 <span class="value">{Render.num(value)} ({percent}%)</span>
 
 <style lang="scss">
   @use "../../main.scss" as *;
 
   .value {
-    position: relative
+    position: relative;
   }
 
   .num_percent_value {
@@ -23,12 +25,18 @@
     right: 0;
     z-index: 1;
   }
-  .num_percent {
+  .filled_container {
     position: absolute;
     top: 10px;
     left: 0;
     bottom: 10px;
+    width: 100%;
     border-radius: $rounded;
+    overflow: hidden;
+  }
+
+  .num_percent,
+  .num_percent_filled {
     opacity: 0.3;
     &.color_missing {
       background: color("missing");
@@ -39,8 +47,20 @@
     &.color_value {
       background: color("value");
     }
+  }
+
+  .num_percent {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    bottom: 10px;
+    border-radius: $rounded;
     &.placeholder {
       opacity: 0.1;
     }
+  }
+
+  .num_percent_filled {
+    height: 100%;
   }
 </style>

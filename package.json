@@ -24,7 +24,7 @@
     "open-cli": "^8.0.0",
     "puppeteer": "^24.18.0",
     "rollup-plugin-visualizer": "^6.0.3",
-    "sass": "^1.91.0",
+    "sass": "^1.92.0",
     "serve-handler": "^6.1.6",
     "sitemap": "^8.0.0",
     "svelte": "^5.38.6",
