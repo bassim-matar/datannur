@@ -1,7 +1,7 @@
 <script lang="ts">
   import db from "@db"
   import { tabs_helper } from "@tab/tabs_helper"
-  import { get_lineage } from "@js/db"
+  import { get_lineage } from "@lib/db"
   import Title from "@layout/Title.svelte"
   import Tabs from "@tab/Tabs.svelte"
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { get_percent } from "@js/util"
-  import Render from "@js/Render"
+  import { get_percent } from "@lib/util"
+  import Render from "@lib/Render"
 
   let { value, nb_row, type, percent = get_percent(value / nb_row) } = $props()
 </script>

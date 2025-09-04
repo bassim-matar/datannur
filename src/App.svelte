@@ -16,7 +16,7 @@
   import "@src/style/global.scss"
   import CheckDb from "@src/app_mode/CheckDb.svelte"
   import Main from "@src/app_mode/Main.svelte"
-  import { app_mode } from "@js/util"
+  import { app_mode } from "@lib/util"
 </script>
 
 {#if app_mode === "check_db"}

@@ -4,10 +4,10 @@ import {
   wrap_long_text,
   get_percent,
   pluralize,
-} from "@js/util"
-import { get_time_ago, get_datetime, date_to_timestamp } from "@js/Time"
-import { entity_names, entity_to_icon } from "@js/constant"
-import Render from "@js/Render"
+} from "@lib/util"
+import { get_time_ago, get_datetime, date_to_timestamp } from "@lib/Time"
+import { entity_names, entity_to_icon } from "@lib/constant"
+import Render from "@lib/Render"
 
 export default class Column {
   static id() {

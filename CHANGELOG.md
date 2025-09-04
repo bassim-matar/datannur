@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- change : rename js folder to lib
+
 ## 0.12.1 (2025-09-04)
 
 - change : add space around separator in tab filtered column

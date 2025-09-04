@@ -1,6 +1,6 @@
 import db from "@db"
-import Logs from "@js/Logs"
-import { nb_favorite } from "@js/store"
+import Logs from "@lib/Logs"
+import { nb_favorite } from "@lib/store"
 
 export default class Favorites {
   static db_key = "user_data/favorite"

@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import MdContent from "@layout/MdContent.svelte"
-  import { page_content_loaded, on_page_homepage } from "@js/store"
+  import { page_content_loaded, on_page_homepage } from "@lib/store"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import Loading from "@frame/Loading.svelte"
-  import { ensure_mermaid_loaded, md_with_mermaid_to_html } from "@js/mermaid"
+  import { ensure_mermaid_loaded, md_with_mermaid_to_html } from "@lib/mermaid"
 
   let { about_file } = $props()
 

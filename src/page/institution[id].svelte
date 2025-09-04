@@ -1,14 +1,14 @@
 <script lang="ts">
   import db from "@db"
-  import { tab_selected } from "@js/store"
+  import { tab_selected } from "@lib/store"
   import {
     make_parents_relative,
     get_recursive,
     remove_duplicate_by_id,
     add_minimum_deep,
-  } from "@js/db"
-  import { is_big_limit } from "@js/constant"
-  import Tags from "@js/Tags"
+  } from "@lib/db"
+  import { is_big_limit } from "@lib/constant"
+  import Tags from "@lib/Tags"
   import { tabs_helper } from "@tab/tabs_helper"
   import Tabs from "@tab/Tabs.svelte"
   import Title from "@layout/Title.svelte"

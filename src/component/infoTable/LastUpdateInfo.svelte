@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from "@layout/Icon.svelte"
-  import { get_time_ago, get_datetime } from "@js/Time"
+  import { get_time_ago, get_datetime } from "@lib/Time"
 
   let { last_update_date, intraday = false, from_timestamp = false } = $props()
 

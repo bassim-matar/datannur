@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { locale } from "@js/constant"
+  import { locale } from "@lib/constant"
 
   let { number } = $props()
 

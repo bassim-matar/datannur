@@ -1,12 +1,12 @@
 <script lang="ts">
   import db from "@db"
-  import { tab_selected } from "@js/store"
-  import { is_big_limit } from "@js/constant"
+  import { tab_selected } from "@lib/store"
+  import { is_big_limit } from "@lib/constant"
   import {
     make_parents_relative,
     add_minimum_deep,
     remove_duplicate_by_id,
-  } from "@js/db"
+  } from "@lib/db"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
   import Title from "@layout/Title.svelte"

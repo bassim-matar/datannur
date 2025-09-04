@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { wrap_long_text } from "@js/util"
+  import { wrap_long_text } from "@lib/util"
   import Datatable from "@datatable/Datatable.svelte"
-  import Render from "@js/Render"
-  import Column from "@js/Column"
-  import { entity_names } from "@js/constant"
+  import Render from "@lib/Render"
+  import Column from "@lib/Column"
+  import { entity_names } from "@lib/constant"
 
   let { logs } = $props()
 

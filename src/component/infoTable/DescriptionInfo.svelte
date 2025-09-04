@@ -1,5 +1,5 @@
 <script lang="ts">
-  import markdown_render from "@js/markdown"
+  import markdown_render from "@lib/markdown"
   import Icon from "@layout/Icon.svelte"
 
   let { description, inside_table = false } = $props()

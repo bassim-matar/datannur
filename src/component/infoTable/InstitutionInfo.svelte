@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { entity_names } from "@js/constant"
+  import { entity_names } from "@lib/constant"
   import Icon from "@layout/Icon.svelte"
   import Breadcrumb from "@component/Breadcrumb.svelte"
   import ExtendableText from "@layout/ExtendableText.svelte"

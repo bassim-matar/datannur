@@ -6,10 +6,10 @@
     is_small_menu,
     on_page_homepage,
     on_page_search,
-  } from "@js/store"
-  import { app_mode } from "@js/util"
+  } from "@lib/store"
+  import { app_mode } from "@lib/util"
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
-  import { router } from "@js/router.svelte.js"
+  import { router } from "@lib/router.svelte.js"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"
   import Loading from "@frame/Loading.svelte"

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Render from "@js/Render"
+  import Render from "@lib/Render"
   import Datatable from "@datatable/Datatable.svelte"
-  import { get_percent, wrap_long_text } from "@js/util"
+  import { get_percent, wrap_long_text } from "@lib/util"
 
   let { freq } = $props()
 

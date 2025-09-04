@@ -1,13 +1,13 @@
 import db from "@db"
-import { entity_names, evolution_types, parent_entities } from "@js/constant"
+import { entity_names, evolution_types, parent_entities } from "@lib/constant"
 import {
   date_to_timestamp,
   timestamp_to_date,
   convert_quarter_to_full_date,
-} from "@js/Time"
+} from "@lib/Time"
 import { diffWords } from "diff"
-import { get_period } from "@js/Time"
-import { split_on_last_separator } from "@js/util"
+import { get_period } from "@lib/Time"
+import { split_on_last_separator } from "@lib/util"
 
 const arrow_right = `<i class="fas fa-arrow-right"></i>`
 

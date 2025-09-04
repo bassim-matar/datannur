@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import db from "@db"
-  import { search_value, page_content_loaded } from "@js/store"
-  import { url_param } from "@js/url_param"
+  import { search_value, page_content_loaded } from "@lib/store"
+  import { url_param } from "@lib/url_param"
   import Head from "@frame/Head.svelte"
   import Loading from "@frame/Loading.svelte"
   import Tabs from "@tab/Tabs.svelte"

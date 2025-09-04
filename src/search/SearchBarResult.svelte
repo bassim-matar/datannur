@@ -1,7 +1,7 @@
 <script lang="ts">
   import db from "@db"
-  import { on_page_homepage } from "@js/store"
-  import { debounce } from "@js/util"
+  import { on_page_homepage } from "@lib/store"
+  import { debounce } from "@lib/util"
   import SearchBarResultRow from "./SearchBarResultRow.svelte"
 
   let {

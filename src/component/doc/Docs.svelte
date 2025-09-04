@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Column from "@js/Column"
-  import Render from "@js/Render"
-  import { link, get_percent } from "@js/util"
+  import Column from "@lib/Column"
+  import Render from "@lib/Render"
+  import { link, get_percent } from "@lib/util"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { docs } = $props()

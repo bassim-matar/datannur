@@ -1,4 +1,4 @@
-import { app_mode } from "@js/util"
+import { app_mode } from "@lib/util"
 
 export class url_hash {
   static default = "homepage"

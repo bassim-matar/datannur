@@ -1,6 +1,6 @@
 import jQuery from "jquery"
-import { url_param } from "@js/url_param"
-import { date_to_timestamp } from "@js/Time"
+import { url_param } from "@lib/url_param"
+import { date_to_timestamp } from "@lib/Time"
 
 export default class Filter_helper {
   table_id: string

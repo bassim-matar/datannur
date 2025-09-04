@@ -1,5 +1,5 @@
 <script lang="ts">
-  import markdown_render from "@js/markdown"
+  import markdown_render from "@lib/markdown"
 
   let { content, mode = "classic" } = $props()
 

@@ -1,6 +1,6 @@
 import Navigo from "navigo"
-import { app_mode } from "@js/util"
-import { page, reload_increment } from "@js/store"
+import { app_mode } from "@lib/util"
+import { page, reload_increment } from "@lib/store"
 
 export const router = new Navigo("/", { hash: app_mode !== "static_render" })
 

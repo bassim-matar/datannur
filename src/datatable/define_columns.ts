@@ -1,5 +1,5 @@
-import { entity_names } from "@js/constant"
-import { link } from "@js/util"
+import { entity_names } from "@lib/constant"
+import { link } from "@lib/util"
 import { stat_exists } from "@stat/stat"
 
 function filter_empty_columns(columns, items) {

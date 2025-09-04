@@ -1,7 +1,7 @@
 <script lang="ts">
   import fitty from "fitty"
   import db from "@db"
-  import { entity_names } from "@js/constant"
+  import { entity_names } from "@lib/constant"
   import Head from "@frame/Head.svelte"
   import Icon from "@layout/Icon.svelte"
   import Favorite from "@favorite/Favorite.svelte"

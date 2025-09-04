@@ -1,7 +1,7 @@
-import { entity_to_icon, entity_names } from "@js/constant"
-import Render from "@js/Render"
-import { url_prefix } from "@js/util"
-import markdown_render from "@js/markdown"
+import { entity_to_icon, entity_names } from "@lib/constant"
+import Render from "@lib/Render"
+import { url_prefix } from "@lib/util"
+import markdown_render from "@lib/markdown"
 
 export function ensure_mermaid_loaded(callback) {
   const app_version = document

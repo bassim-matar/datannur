@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Column from "@js/Column"
+  import Column from "@lib/Column"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { values } = $props()

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Render from "@js/Render"
+  import Render from "@lib/Render"
   import Icon from "@layout/Icon.svelte"
 
   let { nb_row } = $props()

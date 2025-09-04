@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from "@db"
-  import { add_indend } from "@js/util"
+  import { add_indend } from "@lib/util"
   import Link from "@layout/Link.svelte"
 
   let { type, elem_id, is_self = false, className = "" } = $props()

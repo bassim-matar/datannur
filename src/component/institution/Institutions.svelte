@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { wrap_long_text } from "@js/util"
-  import { get_parent_path } from "@js/db"
-  import Column from "@js/Column"
-  import Render from "@js/Render"
+  import { wrap_long_text } from "@lib/util"
+  import { get_parent_path } from "@lib/db"
+  import Column from "@lib/Column"
+  import Render from "@lib/Render"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { institutions } = $props()

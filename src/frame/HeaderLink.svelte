@@ -1,8 +1,8 @@
 <script lang="ts">
   import db from "@db"
-  import { page, header_open } from "@js/store"
-  import { pluralize } from "@js/util"
-  import { entity_names } from "@js/constant"
+  import { page, header_open } from "@lib/store"
+  import { pluralize } from "@lib/util"
+  import { entity_names } from "@lib/constant"
   import Link from "@layout/Link.svelte"
   import Icon from "@layout/Icon.svelte"
 

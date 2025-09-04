@@ -1,4 +1,4 @@
-import { locale } from "@js/constant"
+import { locale } from "@lib/constant"
 
 export function convert_quarter_to_full_date(complete_date, mode = "start") {
   const quarter = complete_date[5]

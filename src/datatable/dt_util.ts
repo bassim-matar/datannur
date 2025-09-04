@@ -1,7 +1,7 @@
-import { url_hash } from "@js/url_hash"
-import Options from "@js/Options"
-import { get_sort_by_name } from "@js/db"
-import { get_percent } from "@js/util"
+import { url_hash } from "@lib/url_hash"
+import Options from "@lib/Options"
+import { get_sort_by_name } from "@lib/db"
+import { get_percent } from "@lib/util"
 
 export function is_short_table(dt) {
   return (

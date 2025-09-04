@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { router } from "@js/router.svelte.js"
-  import { get_base_link_url } from "@js/util"
+  import { router } from "@lib/router.svelte.js"
+  import { get_base_link_url } from "@lib/util"
 
   let {
     href,

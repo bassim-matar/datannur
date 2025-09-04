@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Render from "@js/Render"
-  import Column from "@js/Column"
+  import Render from "@lib/Render"
+  import Column from "@lib/Column"
   import Datatable from "@datatable/Datatable.svelte"
-  import { link } from "@js/util"
+  import { link } from "@lib/util"
 
   let { variable_values, is_meta = false } = $props()
 

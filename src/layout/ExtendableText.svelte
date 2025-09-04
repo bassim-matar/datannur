@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { extendable } from "@js/extendable"
+  import { extendable } from "@lib/extendable"
 
   let { ...props } = $props()
 </script>

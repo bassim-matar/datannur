@@ -1,8 +1,8 @@
 <script lang="ts">
   import db from "@db"
-  import { tab_selected } from "@js/store"
-  import { make_parents_relative, add_minimum_deep } from "@js/db"
-  import { is_big_limit } from "@js/constant"
+  import { tab_selected } from "@lib/store"
+  import { make_parents_relative, add_minimum_deep } from "@lib/db"
+  import { is_big_limit } from "@lib/constant"
   import Title from "@layout/Title.svelte"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"

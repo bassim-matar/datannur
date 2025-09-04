@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from "@db"
-  import { make_parents_relative, add_minimum_deep } from "@js/db"
+  import { make_parents_relative, add_minimum_deep } from "@lib/db"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"
   import Title from "@layout/Title.svelte"

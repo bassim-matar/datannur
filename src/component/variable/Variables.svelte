@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { get_local_filter } from "@js/db"
-  import Column from "@js/Column"
+  import { get_local_filter } from "@lib/db"
+  import Column from "@lib/Column"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { variables, is_meta = false } = $props()

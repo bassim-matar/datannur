@@ -17,7 +17,7 @@
       "@frame/*": ["src/frame/*"],
       "@infoTable/*": ["src/component/infoTable/*"],
       "@img/*": ["src/img/*"],
-      "@js/*": ["src/js/*"],
+      "@lib/*": ["src/lib/*"],
       "@layout/*": ["src/layout/*"],
       "@markdown/*": ["src/markdown/*"],
       "@page/*": ["src/page/*"],

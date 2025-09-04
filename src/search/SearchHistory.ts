@@ -1,5 +1,5 @@
 import db from "@db"
-import { entity_names } from "@js/constant"
+import { entity_names } from "@lib/constant"
 
 export default class SearchHistory {
   static limit = 100

@@ -1,8 +1,8 @@
 import db from "@db"
-import { link } from "@js/util"
-import Render from "@js/Render"
-import { all_tabs_icon } from "@js/store"
-import { entity_to_icon } from "@js/constant"
+import { link } from "@lib/util"
+import Render from "@lib/Render"
+import { all_tabs_icon } from "@lib/store"
+import { entity_to_icon } from "@lib/constant"
 
 export default class Logs {
   static db_key = "user_data/log"

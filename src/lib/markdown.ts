@@ -1,5 +1,5 @@
 import { marked } from "marked"
-import { get_base_link_url } from "@js/util"
+import { get_base_link_url } from "@lib/util"
 
 const renderer = new marked.Renderer()
 renderer.link = ({ href, title, text }) => {

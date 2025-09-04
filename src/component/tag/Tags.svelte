@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import db from "@db"
-  import { page } from "@js/store"
-  import { get_parent_path } from "@js/db"
-  import { link, get_percent } from "@js/util"
-  import Column from "@js/Column"
-  import Render from "@js/Render"
+  import { page } from "@lib/store"
+  import { get_parent_path } from "@lib/db"
+  import { link, get_percent } from "@lib/util"
+  import Column from "@lib/Column"
+  import Render from "@lib/Render"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { tags } = $props()

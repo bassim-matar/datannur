@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { clickOutside } from "@js/util"
+  import { clickOutside } from "@lib/util"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
 
   let { is_open = $bindable(false), on_close = () => {}, children } = $props()

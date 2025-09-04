@@ -1,6 +1,6 @@
 <script lang="ts">
   import Switch from "@layout/Switch.svelte"
-  import Options from "@js/Options"
+  import Options from "@lib/Options"
 
   let { on_change = value => {} } = $props()
 

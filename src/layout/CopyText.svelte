@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { copy_text_classes, copy_text_msg } from "@js/copy_text"
+  import { copy_text_classes, copy_text_msg } from "@lib/copy_text"
 
   let { text } = $props()
 </script>

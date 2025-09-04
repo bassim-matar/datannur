@@ -1,4 +1,4 @@
-import { var_types, entity_to_icon } from "@js/constant"
+import { var_types, entity_to_icon } from "@lib/constant"
 import { url_param } from "./url_param"
 
 export let app_mode = url_param.get_app_mode()

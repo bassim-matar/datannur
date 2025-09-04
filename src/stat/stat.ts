@@ -1,5 +1,5 @@
-import Render from "@js/Render"
-import { get_time_ago } from "@js/Time"
+import Render from "@lib/Render"
+import { get_time_ago } from "@lib/Time"
 import Histogram from "./Histogram"
 import { attributs } from "./attributs"
 

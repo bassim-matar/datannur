@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { all_tabs, tab_selected } from "@js/store"
+  import { all_tabs, tab_selected } from "@lib/store"
   import Icon from "@layout/Icon.svelte"
   import Loading from "@frame/Loading.svelte"
   import Number from "@layout/Number.svelte"

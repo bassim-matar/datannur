@@ -1,6 +1,6 @@
 import db from "@db"
-import { entity_names } from "@js/constant"
-import { escape_html_entities } from "@js/util"
+import { entity_names } from "@lib/constant"
+import { escape_html_entities } from "@lib/util"
 
 function ensure_flexsearch_loaded() {
   return new Promise<void>(resolve => {

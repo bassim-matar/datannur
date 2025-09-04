@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from "@layout/Icon.svelte"
   import Link from "@layout/Link.svelte"
-  import Logs from "@js/Logs"
+  import Logs from "@lib/Logs"
   import SearchHistory from "./SearchHistory"
   import { search_highlight } from "./Search"
   import Favorite from "@favorite/Favorite.svelte"

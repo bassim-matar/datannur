@@ -1,6 +1,6 @@
 import db from "@db"
-import { wrap_long_text } from "@js/util"
-import Render from "@js/Render"
+import { wrap_long_text } from "@lib/util"
+import Render from "@lib/Render"
 
 export default class Preview_manager {
   static clean_keys(data) {

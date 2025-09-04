@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Options from "@js/Options"
+  import Options from "@lib/Options"
   import Loading from "@frame/Loading.svelte"
-  import { tab_selected } from "@js/store"
+  import { tab_selected } from "@lib/store"
 
   let { tabs, no_first_tab, is_last_tab, active_tab_body, tabs_loaded } =
     $props()

@@ -1,4 +1,4 @@
-import Logs from "@js/Logs"
+import Logs from "@lib/Logs"
 
 function apply_to_elements(selector, apply) {
   document.querySelectorAll(selector).forEach(apply)

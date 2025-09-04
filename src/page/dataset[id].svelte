@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from "@db"
-  import { remove_duplicate_by_id, get_lineage } from "@js/db"
+  import { remove_duplicate_by_id, get_lineage } from "@lib/db"
   import { tabs_helper } from "@tab/tabs_helper"
   import Tabs from "@tab/Tabs.svelte"
   import Title from "@layout/Title.svelte"

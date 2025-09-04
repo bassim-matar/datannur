@@ -1,6 +1,6 @@
 <script lang="ts">
   import Datatable from "@datatable/Datatable.svelte"
-  import Column from "@js/Column"
+  import Column from "@lib/Column"
 
   let { all_fav } = $props()
 

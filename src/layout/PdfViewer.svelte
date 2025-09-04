@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { has_touch_screen } from "@js/util"
+  import { has_touch_screen } from "@lib/util"
   import Loading from "@frame/Loading.svelte"
 
   let { pdf } = $props()

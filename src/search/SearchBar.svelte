@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import db from "@db"
-  import { router } from "@js/router.svelte.js"
+  import { router } from "@lib/router.svelte.js"
   import {
     search_value,
     header_open,
@@ -9,9 +9,9 @@
     on_page_homepage,
     is_small_menu,
     page
-  } from "@js/store"
-  import { clickOutside, debounce } from "@js/util"
-  import Logs from "@js/Logs"
+  } from "@lib/store"
+  import { clickOutside, debounce } from "@lib/util"
+  import Logs from "@lib/Logs"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
   import SearchHistory from "./SearchHistory"
   import SearchBarResult from "./SearchBarResult.svelte"

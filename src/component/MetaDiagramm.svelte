@@ -1,9 +1,9 @@
 <script lang="ts">
   import db from "@db"
-  import { is_mobile, url_prefix } from "@js/util"
-  import { entity_names } from "@js/constant"
-  import Render from "@js/Render"
-  import { ensure_mermaid_loaded } from "@js/mermaid"
+  import { is_mobile, url_prefix } from "@lib/util"
+  import { entity_names } from "@lib/constant"
+  import Render from "@lib/Render"
+  import { ensure_mermaid_loaded } from "@lib/mermaid"
   import Loading from "@frame/Loading.svelte"
 
   let svg_diagramm = $state(false)

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { link, wrap_long_text, get_percent } from "@js/util"
-  import { get_parent_path } from "@js/db"
-  import Column from "@js/Column"
-  import Render from "@js/Render"
+  import { link, wrap_long_text, get_percent } from "@lib/util"
+  import { get_parent_path } from "@lib/db"
+  import Column from "@lib/Column"
+  import Render from "@lib/Render"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { folders, is_meta = false } = $props()

@@ -27,7 +27,7 @@ import Options from "@component/options/Options.svelte"
 import Logs from "@component/options/Logs.svelte"
 import Evolution from "@component/Evolution.svelte"
 
-import { all_tabs_icon } from "@js/store"
+import { all_tabs_icon } from "@lib/store"
 
 export const all_tabs = {
   institutions: {

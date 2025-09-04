@@ -1,15 +1,15 @@
 <script lang="ts">
   import db from "@db"
-  import { router } from "@js/router.svelte.js"
-  import { app_mode } from "@js/util"
-  import Logs from "@js/Logs"
+  import { router } from "@lib/router.svelte.js"
+  import { app_mode } from "@lib/util"
+  import Logs from "@lib/Logs"
   import {
     page,
     page_hash,
     page_content_loaded,
     reload_increment,
-  } from "@js/store"
-  import { url_hash } from "@js/url_hash"
+  } from "@lib/store"
+  import { url_hash } from "@lib/url_hash"
   import router_index from "@src/.generated/router_index"
 
   let entity_global = $state("")

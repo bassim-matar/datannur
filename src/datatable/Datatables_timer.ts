@@ -1,4 +1,4 @@
-import { page_content_loaded } from "@js/store"
+import { page_content_loaded } from "@lib/store"
 
 export default class Datatables_timer {
   static nb_loading = 0

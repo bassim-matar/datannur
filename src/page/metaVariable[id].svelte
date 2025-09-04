@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from "@db"
-  import { filter_keys } from "@js/db"
+  import { filter_keys } from "@lib/db"
   import Title from "@layout/Title.svelte"
   import Tabs from "@tab/Tabs.svelte"
   import { tabs_helper } from "@tab/tabs_helper"

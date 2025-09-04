@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { get_percent } from "@js/util"
-  import { extendable } from "@js/extendable"
-  import { locale } from "@js/constant"
+  import { get_percent } from "@lib/util"
+  import { extendable } from "@lib/extendable"
+  import { locale } from "@lib/constant"
 
   let { value, total_value, main_color, with_html = false } = $props()
 

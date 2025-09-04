@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from "@db"
-  import { page } from "@js/store"
+  import { page } from "@lib/store"
 
   let { title, pages = [], if_use = null, children } = $props()
 

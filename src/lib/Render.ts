@@ -1,14 +1,14 @@
 import db from "@db"
-import { locale } from "@js/constant"
-import { copy_text_classes, copy_text_msg } from "@js/copy_text"
-import { get_time_ago, date_to_timestamp } from "@js/Time"
+import { locale } from "@lib/constant"
+import { copy_text_classes, copy_text_msg } from "@lib/copy_text"
+import { get_time_ago, date_to_timestamp } from "@lib/Time"
 import {
   link,
   wrap_long_text,
   add_indend,
   entity_to_icon_name,
   get_percent,
-} from "@js/util"
+} from "@lib/util"
 
 export function get_nb_values(values, row) {
   if (values && values.length) return values.length

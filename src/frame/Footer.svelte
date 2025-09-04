@@ -1,7 +1,7 @@
 <script lang="ts">
   import db from "@db"
-  import { footer_visible } from "@js/store"
-  import { get_datetime, get_time_ago } from "@js/Time"
+  import { footer_visible } from "@lib/store"
+  import { get_datetime, get_time_ago } from "@lib/Time"
   import Loading from "@frame/Loading.svelte"
   import Icon from "@layout/Icon.svelte"
   import DarkModeSwitch from "@dark_mode/DarkModeSwitch.svelte"

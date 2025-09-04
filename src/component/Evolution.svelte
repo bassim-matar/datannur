@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { page } from "@js/store"
-  import Column from "@js/Column"
-  import Render from "@js/Render"
-  import { wrap_long_text } from "@js/util"
-  import { highlight_diff } from "@js/Evolution"
+  import { page } from "@lib/store"
+  import Column from "@lib/Column"
+  import Render from "@lib/Render"
+  import { wrap_long_text } from "@lib/util"
+  import { highlight_diff } from "@lib/Evolution"
   import {
     entity_to_icon,
     column_clean_names,
     column_icons,
     is_big_limit,
-  } from "@js/constant"
-  import Options from "@js/Options"
+  } from "@lib/constant"
+  import Options from "@lib/Options"
   import Datatable from "@datatable/Datatable.svelte"
 
   let { evolutions } = $props()

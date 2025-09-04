@@ -1,11 +1,11 @@
 <script lang="ts">
   import jQuery from "jquery"
-  import { wrap_long_text, link } from "@js/util"
-  import Render from "@js/Render"
+  import { wrap_long_text, link } from "@lib/util"
+  import Render from "@lib/Render"
   import SearchHistory from "./SearchHistory"
   import { search_highlight } from "./Search"
   import Datatable from "@datatable/Datatable.svelte"
-  import Column from "@js/Column"
+  import Column from "@lib/Column"
 
   let { search_result_data, search_value } = $props()
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from "@layout/Icon.svelte"
-  import { get_color } from "@js/util"
-  import { entity_names } from "@js/constant"
+  import { get_color } from "@lib/util"
+  import { entity_names } from "@lib/constant"
   import StatValue from "./StatValue.svelte"
 
   let { entity, attribut, with_html = false, from_popup = false } = $props()
