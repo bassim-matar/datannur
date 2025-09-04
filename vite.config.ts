@@ -1,12 +1,11 @@
 import path from "path"
 import fs from "fs/promises"
 import autoprefixer from "autoprefixer"
-import autoPreprocess from "svelte-preprocess"
 import alias from "@rollup/plugin-alias"
 import FullReload from "vite-plugin-full-reload"
 import { defineConfig } from "vitest/config"
 import { visualizer } from "rollup-plugin-visualizer"
-import { svelte } from "@sveltejs/vite-plugin-svelte"
+import { svelte, vitePreprocess } from "@sveltejs/vite-plugin-svelte"
 import { Jsonjsdb_watcher, jsonjsdb_add_config } from "jsonjsdb_editor"
 
 const bundle_view = false
@@ -17,7 +16,7 @@ const mermaid_public_path = "public/assets/external/mermaid.min.js"
 const flexsearch_node_path = "node_modules/flexsearch/dist/flexsearch.bundle.min.js"
 const flexsearch_public_path = "public/assets/external/flexsearch.js"
 const jsonjsdb_config = "public/data/jsonjsdb_config.html"
-const app_version = JSON.parse(await fs.readFile("package.json")).version
+const app_version = JSON.parse(await fs.readFile("package.json", "utf8")).version
 
 await Jsonjsdb_watcher.set_db("public/data/db")
 await Jsonjsdb_watcher.watch("public/data/db_source")
@@ -28,9 +27,10 @@ await fs.copyFile(mermaid_node_path, mermaid_public_path)
 await fs.copyFile(flexsearch_node_path, flexsearch_public_path)
 
 async function get_aliases(from) {
-  const jsconfig = JSON.parse(await fs.readFile(from)).compilerOptions
+  const tsconfig = JSON.parse(await fs.readFile(from, "utf8")).compilerOptions
+  const paths = tsconfig.paths as Record<string, string[]>
   return Object.fromEntries(
-    Object.entries(jsconfig.paths).map(([find, [replacement]]) => [
+    Object.entries(paths).map(([find, [replacement]]) => [
       find.replace("/*", ""),
       path.resolve(replacement.replace("/*", "")),
     ])
@@ -52,7 +52,7 @@ function html_replace(replacements) {
 }
 
 function after_build(callback) {
-  return { name: "after_build", apply: "build", closeBundle: callback }
+  return { name: "after_build", apply: "build" as const, closeBundle: callback }
 }
 
 function update_router_index(file, page_dir_from_router_index) {
@@ -68,7 +68,7 @@ function update_router_index(file, page_dir_from_router_index) {
         const module_name = filename.split("[")[0]
         const route_name =
           module_name.charAt(0).toLowerCase() + module_name.slice(1)
-        let param = false
+        let param: string | false = false
         if (filename.includes("["))
           param = `"${filename.split("[")[1].split("]")[0]}"`
         const module_path = `${page_dir_from_router_index}/${filename}.svelte`
@@ -85,6 +85,16 @@ export default defineConfig({
   base: "",
   server: { port: 8080, origin: "", open: true },
   test: { include: ["test/**/*.test.js"] },
+  css: {
+    postcss: {
+      plugins: [autoprefixer]
+    },
+    preprocessorOptions: {
+      scss: {
+        loadPaths: ["src"]
+      }
+    }
+  },
   build: {
     outDir: out_dir,
     chunkSizeWarningLimit: 1000,
@@ -96,11 +106,11 @@ export default defineConfig({
   },
   plugins: [
     FullReload(Jsonjsdb_watcher.get_table_index_file_path()),
-    jsonjsdb_add_config(jsonjsdb_config),
+    jsonjsdb_add_config(jsonjsdb_config) as any,
     update_router_index("src/.generated/router_index.js", "../page"),
-    alias({ entries: await get_aliases("jsconfig.json") }),
+    alias({ entries: await get_aliases("tsconfig.json") }),
     svelte({
-      preprocess: autoPreprocess({ postcss: { plugins: [autoprefixer] } }),
+      preprocess: vitePreprocess(),
     }),
     html_replace([
       ["{{app_version}}", app_version],

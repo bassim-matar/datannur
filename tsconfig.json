@@ -1,14 +1,18 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "node",
+    "verbatimModuleSyntax": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
       "@component/*": ["src/component/*"],
       "@dark_mode/*": ["src/dark_mode/*"],
       "@datatable/*": ["src/datatable/*"],
-      "@db": ["src/db.js"],
+      "@db": ["src/db.ts"],
       "@favorite/*": ["src/favorite/*"],
       "@frame/*": ["src/frame/*"],
       "@infoTable/*": ["src/component/infoTable/*"],

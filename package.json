@@ -10,9 +10,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "open-cli app/index.html",
-    "serve" : "vite preview",
+    "serve": "vite preview",
     "test": "vitest",
-    "release": "node make_release.js",
+    "release": "node --experimental-strip-types make_release.ts",
     "static-make-js": "vite build && node app/static_make/js/make.js",
     "static-make-py": "vite build && bash app/static_make/py/setup.sh && bash app/static_make/py/make.sh"
   },
@@ -28,7 +28,7 @@
     "serve-handler": "^6.1.6",
     "sitemap": "^8.0.0",
     "svelte": "^5.38.6",
-    "svelte-preprocess": "^6.0.3",
+    "typescript": "^5.9.2",
     "vite": "^7.1.4",
     "vite-plugin-full-reload": "^1.2.0",
     "vitest": "^3.2.4"

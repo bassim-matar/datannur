@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import "@src/style/from_bulma/minireset.scss"
   import "@src/style/from_bulma/generic.scss"
   import "@src/style/from_bulma/navbar.scss"
