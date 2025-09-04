@@ -3,6 +3,7 @@
 ## unreleased
 
 - change : rename js folder to lib
+- change : jsonjs db data default to non compact mode
 
 ## 0.12.1 (2025-09-04)
 
