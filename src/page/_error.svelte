@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte"
   import { footer_visible, page_content_loaded } from "@js/store"
   import Error from "@frame/Error.svelte"

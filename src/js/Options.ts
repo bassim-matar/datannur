@@ -1,8 +1,12 @@
 import db from "@db"
 
 export default class Options {
+  static loaded: Promise<void>
+  static db_key: string
+  static options: Array<{id: string, value: any}>
+
   static init() {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       this.db_key = "user_data/option"
       this.options = []
       db.browser.get(this.db_key).then(options => {

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { all_tabs, tab_selected } from "@js/store"
   import Icon from "@layout/Icon.svelte"
   import Loading from "@frame/Loading.svelte"
@@ -19,7 +19,8 @@
 
   onMount(() => {
     const selector = `.tab_li_${tab.key}`
-    min_width = document.querySelector(selector).offsetWidth
+    const elem = document.querySelector(selector) as HTMLLIElement
+    min_width = elem.offsetWidth
     if (min_width > 500) min_width = 0
   })
 

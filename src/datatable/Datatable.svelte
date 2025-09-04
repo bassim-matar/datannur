@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import jQuery from "jquery"
   import JSZip from "jszip"
   import DataTable from "datatables.net-bm"
@@ -39,7 +39,7 @@
     columns,
     sort_by_name = false,
     keep_all_cols = false,
-    meta_path = false,
+    meta_path = null,
     is_recursive = false,
     initied = () => {},
   } = $props()
@@ -54,8 +54,8 @@
   Datatables_loading.start()
   DataTable.Buttons.jszip(JSZip)
 
-  let datatable = false
-  let dom_table = false
+  let datatable = null
+  let dom_table = null
 
   const is_big = data.length > is_big_limit
   const max_height_value = 275
@@ -88,7 +88,7 @@
     "log",
   ].includes(entity)
 
-  $all_tables_loaded = 0
+  $all_tables_loaded = false
   all_tables_loaded.subscribe(value => {
     if (value) {
       setTimeout(() => {
@@ -126,7 +126,7 @@
         dom: '<"toolbar">ftB',
         order: [[0, "asc"]],
         buttons,
-        bDestroy: true,
+        destroy: true,
         language: {
           zeroRecords: '<span class="no_result">Aucun résultat</span>',
           buttons: exporter.get_language(),
@@ -203,7 +203,7 @@
     tab_selected_unsubscribe()
     filter.destroy()
     jQuery("table#" + table_id + "._datatables *")?.off()
-    dom_table = false
+    dom_table = null
   })
 </script>
 

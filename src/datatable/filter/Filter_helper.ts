@@ -3,6 +3,12 @@ import { url_param } from "@js/url_param"
 import { date_to_timestamp } from "@js/Time"
 
 export default class Filter_helper {
+  table_id: string
+  filters: any
+  filter_table_id: string
+  on_update_filter_count: (count: number) => void
+  datatable: any
+  history_search: any
   constructor(table_id, entity, on_update_filter_count) {
     this.table_id = table_id
     this.filters = {}
@@ -33,9 +39,9 @@ export default class Filter_helper {
       filter_type === "select" ||
       (filter_type !== "input" &&
         unique_values.length < 10 &&
-        typeof unique_values[0] !== "Array" &&
+        Array.isArray(unique_values[0]) &&
         typeof unique_values[0] !== "object" &&
-        typeof unique_values[1] !== "Array" &&
+        Array.isArray(unique_values[1]) &&
         typeof unique_values[1] !== "object")
     ) {
       let options = '<option value="">- - -</option>'
@@ -271,6 +277,6 @@ export default class Filter_helper {
       action,
       className: "search_option",
       footer: false,
-    }
+    } as any
   }
 }

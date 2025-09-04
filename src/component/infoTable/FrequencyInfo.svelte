@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "@layout/Icon.svelte"
 
   let { frequency } = $props()

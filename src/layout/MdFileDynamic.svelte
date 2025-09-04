@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte"
   import db from "@db"
   import MdContent from "@layout/MdContent.svelte"

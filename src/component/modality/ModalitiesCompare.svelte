@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { modalities_similitutes, tab_selected } from "@js/store"
   import Column from "@js/Column"
@@ -14,15 +14,16 @@
   let loading = $state(true)
 
   ;(async () => {
-    if ($modalities_similitutes) {
+    if ($modalities_similitutes.length > 0) {
       similitutes = $modalities_similitutes
-      return false
+      loading = false
+      return
     }
     modalities_compare = db.get_all("modality")
     similitutes = await worker(
       { modalities_compare, limit: 50000 },
       modality_compare_worker,
-    )
+    ) as any[]
     $modalities_similitutes = similitutes
     loading = false
     if (similitutes.length === 0) $tab_selected.nb = 0

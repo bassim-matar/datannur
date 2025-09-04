@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Options from "@js/Options"
   import Loading from "@frame/Loading.svelte"
   import { tab_selected } from "@js/store"

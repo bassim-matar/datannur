@@ -21,10 +21,10 @@ export default class Column {
       render: Render.copy_cell,
     }
   }
-  static name(entity, name, option) {
+  static name(entity = null, name = null, option = null) {
     const icon = entity || "name"
     const title_name = name || "Nom"
-    if (option === undefined) option = {}
+    if (option === null) option = {}
     if (!("with_link" in option)) option.with_link = true
     return {
       data: "name",
@@ -34,7 +34,7 @@ export default class Column {
       filter_type: "input",
       has_long_text: true,
       render: (data, type, row) => {
-        let indent = false
+        let indent = null
         let text
         if (!option.with_link) {
           text = data
@@ -120,13 +120,16 @@ export default class Column {
   }
   static folder(folder_id_var = "folder_id", folder_name_var = "folder_name") {
     const render = (
-      data,
-      type,
-      { [folder_id_var]: folder_id, [folder_name_var]: folder_name }
-    ) =>
-      is_mobile
+      data: any,
+      type: any,
+      row: any
+    ) => {
+      const folder_id = row[folder_id_var]
+      const folder_name = row[folder_name_var]
+      return is_mobile
         ? wrap_long_text(link("folder/" + folder_id, folder_name))
         : Render.with_parents_from_id("folder", folder_id, type)
+    }
     return {
       data: folder_name_var,
       title: Render.icon("folder") + "Dossier",
@@ -395,7 +398,7 @@ export default class Column {
       render: Render.favorite,
     }
   }
-  static level(level_max = false) {
+  static level(level_max = null) {
     let render = (data, type, row) => row.parents?.length + 1
     if (level_max) {
       render = (data, type, row) => {
@@ -548,7 +551,7 @@ export default class Column {
       },
     }
   }
-  static nb_child_recursive(entity, total, link_path = false) {
+  static nb_child_recursive(entity, total, link_path = null) {
     if (!link_path) link_path = entity + "/"
     const entity_plural = pluralize(entity)
     return {
@@ -626,7 +629,7 @@ export default class Column {
       render: data => link("metaFolder/" + data, data),
     }
   }
-  static timestamp(options) {
+  static timestamp(options = null) {
     if (!options) options = {}
     if (!("var_name" in options)) options.var_name = "timestamp"
     if (!("title" in options)) options.title = "Moment"

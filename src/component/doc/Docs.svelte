@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Column from "@js/Column"
   import Render from "@js/Render"
   import { link, get_percent } from "@js/util"

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import about_organisation from "@markdown/about_page/organisation.md?raw"
   import about_functionality from "@markdown/about_page/functionality.md?raw"
   import { get_about_main } from "@js/get_about_main"

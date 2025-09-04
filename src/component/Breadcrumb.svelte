@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { add_indend } from "@js/util"
   import Link from "@layout/Link.svelte"

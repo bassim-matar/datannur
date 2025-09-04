@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { page } from "@js/store"
   import Column from "@js/Column"
   import Render from "@js/Render"

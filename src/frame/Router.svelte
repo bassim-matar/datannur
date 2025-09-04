@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { router } from "@js/router.svelte.js"
   import { app_mode } from "@js/util"
@@ -27,7 +27,7 @@
     )
   }
 
-  function update_route(entity, new_params = false) {
+  function update_route(entity: string, new_params: Record<string, any> | false = false) {
     if (new_params) params = new_params
     $page_content_loaded = false
     route = router_index[entity].component
@@ -64,7 +64,7 @@
     router.on("/", set_route("_index"))
   }
   for (const [entity_global, { param }] of Object.entries(router_index)) {
-    let route_url = false
+    let route_url: string | false = false
     if (["_index", "_error", "_loading"].includes(entity_global)) continue
     else if (param) route_url = `/${entity_global}/:${param}`
     else route_url = `/${entity_global}`

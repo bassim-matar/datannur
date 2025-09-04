@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import jQuery from "jquery"
   import { wrap_long_text, link } from "@js/util"
   import Render from "@js/Render"

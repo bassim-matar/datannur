@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Logs from "@js/Logs"
   import Title from "@layout/Title.svelte"
   import Tabs from "@tab/Tabs.svelte"

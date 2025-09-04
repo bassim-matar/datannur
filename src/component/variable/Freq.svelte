@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Render from "@js/Render"
   import Datatable from "@datatable/Datatable.svelte"
   import { get_percent, wrap_long_text } from "@js/util"

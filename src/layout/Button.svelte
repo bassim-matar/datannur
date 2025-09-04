@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   let { onclick = () => {}, children } = $props()
 </script>
 

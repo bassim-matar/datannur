@@ -1,2 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+public/data/**/*.json.js linguist-vendored=false linguist-generated=false

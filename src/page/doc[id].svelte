@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { make_parents_relative, add_minimum_deep } from "@js/db"
   import Tabs from "@tab/Tabs.svelte"

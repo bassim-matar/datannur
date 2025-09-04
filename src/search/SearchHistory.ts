@@ -2,7 +2,12 @@ import db from "@db"
 import { entity_names } from "@js/constant"
 
 export default class SearchHistory {
+  static limit = 100
+  static search_history = []
   static db_key = "user_data/search_history"
+  static on_change_callbacks: Record<string, () => void> = {}
+  static on_clear_callback = null
+
   static init(search_history, option) {
     this.limit = option.limit || 100
     this.search_history = search_history || []
@@ -107,7 +112,7 @@ export default class SearchHistory {
     result = result.filter(item => !(`${item.entity}-${item.id}` in recent_ids))
     return [...recent_search.name, ...recent_search.description, ...result]
   }
-  static on_change(key, callback) {
+  static on_change(key: string, callback: () => void) {
     if (this.on_change_callbacks === undefined) this.on_change_callbacks = {}
     this.on_change_callbacks[key] = callback
   }

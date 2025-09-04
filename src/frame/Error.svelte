@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Head from "@frame/Head.svelte"
   import Link from "@layout/Link.svelte"
 

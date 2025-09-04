@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import {
     nb_favorite,
@@ -33,9 +33,9 @@
       router.navigate("/")
       return
     }
-    document
+    const elem: HTMLElement | null = document
       .querySelector(".tabs_container_ul .tab_entity_about a.tab_select_btn")
-      ?.click()
+    elem?.click()
   }
 
   db.loaded.then(() => (loading = false))

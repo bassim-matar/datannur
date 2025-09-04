@@ -104,7 +104,6 @@ export const entity_to_icon = {
   delivery_format: "laptop-file",
   survey_type: "database",
   metadata_path: "sitemap",
-  entity: "object-group",
   level: "layer-group",
   folder_tree: "folder-tree",
   folder_tree_institution: "folder-tree",

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { tab_selected } from "@js/store"
   import Preview_manager from "@js/Preview_manager"
@@ -7,7 +7,7 @@
 
   let { dataset_preview } = $props()
 
-  let dataset_data = $state(false)
+  let dataset_data = $state([])
   let columns = $state([])
 
   async function get_load_preview() {

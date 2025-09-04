@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { tab_selected } from "@js/store"
   import { is_big_limit } from "@js/constant"
@@ -157,7 +157,7 @@
   {#if show_open_all_switch}
     <OpenAllSwitch on_change={value => (key_tab = value)} />
   {/if}
-  {#key opposite + key_tab}
+  {#key Number(opposite) + key_tab}
     <Tabs {tabs} />
   {/key}
 </section>

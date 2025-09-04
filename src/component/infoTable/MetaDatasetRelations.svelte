@@ -1,19 +1,25 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import Icon from "@layout/Icon.svelte"
   import Link from "@layout/Link.svelte"
 
   let { dataset_id } = $props()
 
+  const schema = structuredClone(db.tables.__schema__)
+
   const relation_types = [
     { name: "one_to_one", symbol: "minus", tooltip: "one to one" },
     { name: "one_to_many", symbol: "arrow-right-long", tooltip: "one to many" },
-    { name: "many_to_many", symbol: "arrows-left-right", tooltip: "many to many" },
+    {
+      name: "many_to_many",
+      symbol: "arrows-left-right",
+      tooltip: "many to many",
+    },
   ]
 
   const aliases = []
-  for (const relation of db.tables.__schema__.one_to_one) {
-    for (const alias of db.tables.__schema__.aliases) {
+  for (const relation of schema.one_to_one) {
+    for (const alias of schema.aliases) {
       if (relation[0] === alias) {
         aliases.push({
           alias: relation[0],
@@ -28,7 +34,7 @@
 
   const relations = relation_types.map(type => ({
     type,
-    relations: db.tables.__schema__[type.name].filter(relation => {
+    relations: schema[type.name].filter(relation => {
       if (dataset_has_alias) {
         if (type.name === "one_to_one" && relation.includes(dataset_id))
           return false

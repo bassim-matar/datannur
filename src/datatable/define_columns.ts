@@ -43,7 +43,7 @@ export function define_columns(
   let columns_copy = columns.map(obj => ({ ...obj }))
 
   if (columns_copy[0]?.title !== "#") {
-    const col_numerotation = {
+    const col_numerotation: any = {
       data: "_row_num",
       name: "_row_num",
       title: "#",

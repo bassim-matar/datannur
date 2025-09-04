@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import markdown_render from "@js/markdown"
   import Icon from "@layout/Icon.svelte"
 

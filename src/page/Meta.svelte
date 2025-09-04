@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
 
   import { tabs_helper } from "@tab/tabs_helper"

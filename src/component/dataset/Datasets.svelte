@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { get_local_filter } from "@js/db"
   import Column from "@js/Column"
   import Datatable from "@datatable/Datatable.svelte"
@@ -7,7 +7,7 @@
 
   const dataset_path = is_meta ? "metaDataset/" : "dataset/"
   const tab_variables = is_meta ? "meta_dataset_variables" : "dataset_variables"
-  const meta_path = is_meta ? "metaDataset" : false
+  const meta_path = is_meta ? "metaDataset" : null
   const datasets_sorted = [...datasets]
 
   function sort_datasets(to_sort) {

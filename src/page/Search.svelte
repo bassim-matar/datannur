@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte"
   import db from "@db"
   import { search_value, page_content_loaded } from "@js/store"

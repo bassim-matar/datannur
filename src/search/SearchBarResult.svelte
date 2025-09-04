@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { on_page_homepage } from "@js/store"
   import { debounce } from "@js/util"
@@ -13,7 +13,7 @@
     select_input,
   } = $props()
 
-  let table_wrapper = $state()
+  let table_wrapper: HTMLDivElement = $state()
   let height = $state(0)
   let has_scroll_bar = $state(false)
 

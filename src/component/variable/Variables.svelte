@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { get_local_filter } from "@js/db"
   import Column from "@js/Column"
   import Datatable from "@datatable/Datatable.svelte"

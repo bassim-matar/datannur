@@ -5,6 +5,13 @@ import { get_nb_values } from "@js/Render"
 import { entity_names } from "@js/constant"
 import { evolution_initial_setup } from "@js/Evolution"
 
+interface UserData {
+  log?: any[]
+  favorite?: any[]
+  search_history?: any[]
+  [key: string]: any
+}
+
 function add_entities_used() {
   db.use = {}
   for (const entity of [
@@ -207,9 +214,9 @@ export function get_recursive(entity, item_id, target) {
   return remove_duplicate_by_id(items)
 }
 
-export async function get_user_data() {
+export async function get_user_data(): Promise<UserData> {
   return new Promise(resolve => {
-    db.browser.getAll("user_data/", items => resolve(items))
+    db.browser.getAll("user_data/", items => resolve(items as unknown as UserData))
   })
 }
 

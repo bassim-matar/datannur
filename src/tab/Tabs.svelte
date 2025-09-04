@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte"
   import { tab_selected, footer_visible, all_tabs } from "@js/store"
   import { url_param } from "@js/url_param"
@@ -18,7 +18,7 @@
   let active_tab_body = $state(tabs[0]?.key)
   let tabs_loaded = $state({ active_tab: 1 })
   let tabs_title_key = $state(is_mobile)
-  let ul = $state()
+  let ul: HTMLDivElement | null = $state()
   let is_last_tab = $state()
 
   let no_first_tab = $derived(active_tab !== tabs[0]?.key)
@@ -80,7 +80,7 @@
   function center_active_tab() {
     setTimeout(() => {
       const li_active = "#tabs_container ul.tabs_container_ul li.is-active"
-      const li = document.querySelector(li_active)
+      const li: HTMLLIElement | null = document.querySelector(li_active)
       if (!li || !ul) return
       const position = ul.offsetWidth / 2 - li.offsetWidth / 2
       ul.scrollLeft = 0 - (position - li.offsetLeft)

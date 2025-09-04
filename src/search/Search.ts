@@ -3,7 +3,7 @@ import { entity_names } from "@js/constant"
 import { escape_html_entities } from "@js/util"
 
 function ensure_flexsearch_loaded() {
-  return new Promise(resolve => {
+  return new Promise<void>(resolve => {
     const flexsearch_src = "assets/external/flexsearch.js?v=0.8.158"
     if (document.querySelector(`script[src="${flexsearch_src}"]`)) {
       resolve()
@@ -53,6 +53,9 @@ export function search_highlight(value, search) {
 }
 
 export default class Search {
+  all_search: any[]
+  loading: Promise<void> | null
+
   constructor() {
     this.all_search = []
     this.loading = null

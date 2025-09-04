@@ -3,6 +3,11 @@ import { get_time_ago } from "@js/Time"
 import Histogram from "./Histogram"
 import { attributs } from "./attributs"
 
+interface ValueEntry {
+  count: number
+  start?: any
+}
+
 function get_value_readable(start, end) {
   if (start === 0 || start === end) return Render.num(start)
   return `${Render.num(start)} - ${Render.num(end)}`
@@ -26,7 +31,7 @@ function add_readable_values(values, type) {
   return values
 }
 
-function get_values_sorted(values, sort_by = "count") {
+function get_values_sorted(values: Record<string, ValueEntry>, sort_by = "count") {
   const list = Object.entries(values)
   const sorted = list.map(([start, { count }]) => ({ start, count }))
   sorted.sort((a, b) => {

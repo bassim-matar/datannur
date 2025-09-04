@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onDestroy } from "svelte"
   import jQuery from "jquery"
   import "jquery-powertip"
@@ -38,7 +38,7 @@
   import db_schema from "@src/db_schema.json"
 
   let error_loading_db = $state(false)
-  let page_loaded_route = $state()
+  let page_loaded_route = $state("")
 
   let is_popup_column_stat_open = $state(false)
   let column_stat_entity = $state()
@@ -75,7 +75,7 @@
 
   Dark_mode.init(Options)
 
-  db.search = async () => {}
+  db.search = async (searchTerm: string) => []
   db.loaded = (async () => {
     try {
       let timer = performance.now()
@@ -161,7 +161,7 @@
   db.loaded.then(() => {
     const main_banner = new Image()
     let banner_src = db.table_has_id("config", "banner")
-      ? db.get_config("banner")
+      ? db.get_config("banner") as string
       : default_banner
     banner_src = banner_src?.split("(")[1]?.split(")")[0]
     main_banner.src = banner_src?.replaceAll(
@@ -170,8 +170,8 @@
     )
     main_banner.onload = () => {
       const css_var_style = document.documentElement.style
-      css_var_style.setProperty("--main_banner_width", main_banner.width)
-      css_var_style.setProperty("--main_banner_height", main_banner.height)
+      css_var_style.setProperty("--main_banner_width", main_banner.width.toString())
+      css_var_style.setProperty("--main_banner_height", main_banner.height.toString())
     }
 
     console.log("init total", Math.round(performance.now() - timer) + " ms")

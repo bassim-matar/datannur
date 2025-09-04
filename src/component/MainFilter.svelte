@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { get_local_filter } from "@js/db"
   import Main_filter from "@js/Main_filter"
   import Switch from "@layout/Switch.svelte"

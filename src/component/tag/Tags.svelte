@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte"
   import db from "@db"
   import { page } from "@js/store"
@@ -41,7 +41,8 @@
   }
 
   function define_columns() {
-    let columns = [Column.favorite()]
+    let columns = []
+    columns.push(Column.favorite())
     if (db.use.tag_recursive) {
       columns.push(
         Column.name("tag", "Mot clé", {

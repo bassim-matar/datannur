@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "@layout/Icon.svelte"
   import TagsList from "@component/tag/TagsList.svelte"
 

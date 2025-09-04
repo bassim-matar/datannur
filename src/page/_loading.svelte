@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { dark_mode_theme } from "@dark_mode/Dark_mode"
   import logo from "@img/logo.png"
   import logo_dark from "@img/logo_dark.png"

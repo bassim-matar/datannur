@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { is_mobile, url_prefix } from "@js/util"
   import { entity_names } from "@js/constant"
@@ -22,7 +22,7 @@
   }
 
   schema.one_to_many = schema.one_to_many.map(relation => {
-    let other_one = false
+    let other_one = null
     if (relation.includes("manager")) other_one = "owner"
     else if (relation.includes("owner")) other_one = "manager"
     if (other_one) {

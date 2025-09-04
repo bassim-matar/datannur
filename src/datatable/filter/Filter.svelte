@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import FilterInput from "./FilterInput.svelte"
 
   let {
@@ -6,7 +6,7 @@
     table_id = "",
     loading = true,
     nb_sticky = 1,
-    datatable_update_draw = false,
+    datatable_update_draw = 0,
   } = $props()
 
   let loaded = $state(false)

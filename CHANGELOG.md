@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.12.1 (2025-09-04)
 
 - change : add space around separator in tab filtered column
 - change : improve readme documentation
@@ -9,6 +9,7 @@
 - change : move update_app.json to data folder
 - change : configure project to work with typescript
 - change : use absolute path for main.scss import
+- change : convert all svelte and js files to ts files
 - fix : search bar transition z-index and left position
 - fix : page transition and search bar state management
 - fix : flash footer in header on page load with static rendering

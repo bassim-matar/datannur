@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { has_touch_screen } from "@js/util"
   import Loading from "@frame/Loading.svelte"
 
@@ -20,14 +20,13 @@
   <object
     data={url}
     type="application/pdf"
-    frameborder="0"
     class="frame"
     class:loaded={!loading}
     title="pdf viewer"
     onload={() => (loading = false)}
   >
     {#if has_touch_screen}
-      <embed src={url_mobile} frameborder="0" class="frame" />
+      <embed src={url_mobile} class="frame" />
     {/if}
   </object>
 </div>
@@ -46,6 +45,7 @@
   .frame {
     height: 0;
     width: 100%;
+    border: none;
     &.loaded {
       height: 100%;
     }

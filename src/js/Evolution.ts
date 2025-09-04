@@ -269,7 +269,7 @@ function output_diff_string(oldVal, newVal) {
     .join("")
 }
 
-export function highlight_diff(a, b, variable = false) {
+export function highlight_diff(a, b, variable = null) {
   if (!a && !b) return ""
 
   if (variable === "last_update") {

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   let { nb_active_filter = 0, click = () => {} } = $props()
 </script>
 

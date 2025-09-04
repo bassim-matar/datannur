@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { filter_keys } from "@js/db"
   import Tabs from "@tab/Tabs.svelte"

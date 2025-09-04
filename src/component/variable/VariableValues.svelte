@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Render from "@js/Render"
   import Column from "@js/Column"
   import Datatable from "@datatable/Datatable.svelte"

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "@layout/Icon.svelte"
   import PdfViewer from "@layout/PdfViewer.svelte"
   import MdFileDynamic from "@layout/MdFileDynamic.svelte"

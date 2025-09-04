@@ -4,6 +4,8 @@ import { nb_favorite } from "@js/store"
 
 export default class Favorites {
   static db_key = "user_data/favorite"
+  static favorites = []
+
   static init(favorites) {
     this.favorites = []
     let count_nb_favorite = 0

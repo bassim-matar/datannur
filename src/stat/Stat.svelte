@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import MiniMasonry from "minimasonry"
   import { onMount, onDestroy } from "svelte"
   import Icon from "@layout/Icon.svelte"

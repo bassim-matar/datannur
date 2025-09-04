@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "@layout/Icon.svelte"
   import Link from "@layout/Link.svelte"
   import Logs from "@js/Logs"

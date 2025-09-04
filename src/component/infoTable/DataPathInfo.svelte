@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "@layout/Icon.svelte"
   import CopyText from "@layout/CopyText.svelte"
 

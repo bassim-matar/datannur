@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   let {
     value = $bindable(),
     change,
@@ -6,7 +6,7 @@
     tree_switch = false,
     minimize = false,
     size = "medium",
-    children,
+    children = undefined,
   } = $props()
 
   let id = window.crypto.randomUUID()

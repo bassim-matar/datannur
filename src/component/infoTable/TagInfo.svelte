@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "@layout/Icon.svelte"
   import Breadcrumb from "@component/Breadcrumb.svelte"
   import ExtendableText from "@layout/ExtendableText.svelte"

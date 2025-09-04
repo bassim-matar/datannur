@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import jQuery from "jquery"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
 

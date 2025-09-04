@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "@layout/Icon.svelte"
   import TableWrapper from "@infoTable/TableWrapper.svelte"
   import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"

@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
   import TagsListLevel from "@component/tag/TagsListLevel.svelte"
   import Link from "@layout/Link.svelte"
 
-  let { tag } = $props()
+  let { tag }: { tag: any } = $props()
   
-  const tag_children_data = Object.values(tag.children)
+  const tag_children_data = Object.values(tag.children || {})
 </script>
 
 <div class="main_tag_list_wrapper">
@@ -13,13 +13,13 @@
   {/if}
   {#if tag_children_data && tag_children_data.length > 0}
     <div class="tags_list_level_wrapper" class:with_indent={tag.id}>
-      {#each tag_children_data as tag}
-        {#if tag.children && Object.values(tag.children).length > 0}
+      {#each tag_children_data as childTag}
+        {#if (childTag as any).children && Object.values((childTag as any).children).length > 0}
           <div class="tag_list_level_wrapper">
-            <TagsListLevel {tag} />
+            <TagsListLevel tag={childTag} />
           </div>
         {:else}
-          <span class="tag_last_level"><TagsListLevel {tag} /></span>
+          <span class="tag_last_level"><TagsListLevel tag={childTag} /></span>
         {/if}
       {/each}
     </div>

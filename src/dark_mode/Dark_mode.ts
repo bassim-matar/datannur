@@ -6,6 +6,8 @@ const default_theme = is_system_dark ? "dark" : "light"
 export const dark_mode_theme = writable(default_theme)
 
 export class Dark_mode {
+  static Options: any
+
   static init(Options) {
     this.Options = Options
     this.Options.loaded.then(() => {

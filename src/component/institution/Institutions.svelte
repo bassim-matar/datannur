@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { wrap_long_text } from "@js/util"
   import { get_parent_path } from "@js/db"
   import Column from "@js/Column"

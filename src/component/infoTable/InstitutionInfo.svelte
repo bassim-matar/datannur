@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { entity_names } from "@js/constant"
   import Icon from "@layout/Icon.svelte"
   import Breadcrumb from "@component/Breadcrumb.svelte"

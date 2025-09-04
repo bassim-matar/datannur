@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { link, wrap_long_text, get_percent } from "@js/util"
   import { get_parent_path } from "@js/db"
   import Column from "@js/Column"

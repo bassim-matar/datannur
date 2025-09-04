@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
   import Logs from "@js/Logs"
   import { Dark_mode, dark_mode_theme } from "@dark_mode/Dark_mode"
 
-  let { label = false } = $props()
+  let { label = null } = $props()
 
   let id = window.crypto.randomUUID()
 

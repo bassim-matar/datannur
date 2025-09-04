@@ -43,9 +43,7 @@ export function get_is_small_menu() {
 }
 
 export const has_touch_screen =
-  "ontouchstart" in window ||
-  navigator.maxTouchPoints > 0 ||
-  navigator.msMaxTouchPoints > 0
+  "ontouchstart" in window || navigator.maxTouchPoints > 0
 
 export function get_percent(value) {
   return Math.min(Math.round(value * 1000) / 10, 100)
@@ -86,7 +84,7 @@ export function split_on_last_separator(str, separator) {
     : [str.slice(0, last_index), str.slice(last_index + separator.length)]
 }
 
-export function link(href, content, entity = false) {
+export function link(href, content, entity = null) {
   const base = get_base_link_url()
   const onclick = `window.go_to_href(event, '${href}')`
   let special_class = ""
@@ -122,10 +120,14 @@ export function reset_cols_search_cache() {
     .forEach(x => localStorage.removeItem(x))
 }
 
-export function clickOutside(node) {
+export function clickOutside(node, callback) {
   const handleClick = event => {
     if (node && !node.contains(event.target) && !event.defaultPrevented) {
-      node.dispatchEvent(new CustomEvent("click_outside", node))
+      if (callback) {
+        callback(event)
+      } else {
+        node.dispatchEvent(new CustomEvent("click_outside", node))
+      }
     }
   }
   document.addEventListener("click", handleClick, true)

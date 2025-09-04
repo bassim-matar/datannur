@@ -31,7 +31,7 @@ function get_tab(key, value) {
 
   tab.key = key
   tab.nb = undefined
-  if (typeof value === "Array" || typeof value === "object")
+  if (Array.isArray(value) || typeof value === "object")
     tab.nb = value.length
   tab.props = {}
   if (tab.is_meta) {

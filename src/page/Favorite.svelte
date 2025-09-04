@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { nb_favorite } from "@js/store"
   import { make_parents_relative, add_minimum_deep } from "@js/db"

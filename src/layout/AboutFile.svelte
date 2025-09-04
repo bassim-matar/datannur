@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte"
   import MdContent from "@layout/MdContent.svelte"
   import { page_content_loaded, on_page_homepage } from "@js/store"

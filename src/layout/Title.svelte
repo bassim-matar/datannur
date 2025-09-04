@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import fitty from "fitty"
   import db from "@db"
   import { entity_names } from "@js/constant"
@@ -6,14 +6,15 @@
   import Icon from "@layout/Icon.svelte"
   import Favorite from "@favorite/Favorite.svelte"
   import { onMount } from "svelte"
+  import type { MouseEventHandler } from "svelte/elements"
 
   let {
     type,
     name,
     mode = "normal",
-    id = false,
-    info = false,
-    toggle_info = false,
+    id = null,
+    info = "",
+    toggle_info = (() => {}) as MouseEventHandler<HTMLButtonElement>,
     name_sup = "",
   } = $props()
 

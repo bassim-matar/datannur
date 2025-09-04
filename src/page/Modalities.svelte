@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import Title from "@layout/Title.svelte"
   import Tabs from "@tab/Tabs.svelte"
@@ -6,7 +6,7 @@
   import about_file from "@markdown/about_modality.md?raw"
 
   const modalities = db.get_all("modality")
-  const raw_tabs = { modalities }
+  const raw_tabs: any = { modalities }
   if (modalities.length > 1) raw_tabs.modalities_compare = false
 
   raw_tabs.evolutions = db

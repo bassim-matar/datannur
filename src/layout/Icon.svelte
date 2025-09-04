@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { entity_to_icon_name } from "@js/util"
 
   let {

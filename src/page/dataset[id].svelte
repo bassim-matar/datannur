@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { remove_duplicate_by_id, get_lineage } from "@js/db"
   import { tabs_helper } from "@tab/tabs_helper"

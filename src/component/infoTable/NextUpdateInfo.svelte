@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "@layout/Icon.svelte"
   import { get_time_ago, get_datetime } from "@js/Time"
 

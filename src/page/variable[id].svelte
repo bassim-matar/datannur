@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { tabs_helper } from "@tab/tabs_helper"
   import { get_lineage } from "@js/db"
@@ -8,7 +8,7 @@
   let { variable } = $props()
 
   const dataset = db.get("dataset", variable.dataset_id)
-  let variable_preview = false
+  let variable_preview: false | {} = false
   if (dataset.link) {
     variable_preview = {
       variable: variable.name,
@@ -25,8 +25,7 @@
     .get_all("evolution")
     .filter(evo => evo.entity === "variable" && evo.id === variable.id)
 
-  // Récupérer les données de fréquence pour cette variable
-  const freq_data = db.get_all("freq").filter(item => item.variable_id === variable.id)
+  const freq_data = db.get_all("freq", { variable })
 
   let tabs = tabs_helper({
     variable,

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Render from "@js/Render"
   import Icon from "@layout/Icon.svelte"
 

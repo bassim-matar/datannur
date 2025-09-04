@@ -1,8 +1,11 @@
 import db from "@db"
 
 export default class Main_filter {
+  static db_key
+  static filters
+
   static init() {
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       this.db_key = "user_data/filter_active"
       this.filters = []
       db.browser.get(this.db_key).then(filters => {

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import TagsListLevel from "@component/tag/TagsListLevel.svelte"
 

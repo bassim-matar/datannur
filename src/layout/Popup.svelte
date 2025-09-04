@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { clickOutside } from "@js/util"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
 
@@ -12,7 +12,7 @@
 
 {#if is_open}
   <div class="popup">
-    <div class="popup-content" use:clickOutside onclick_outside={close_popup}>
+    <div class="popup-content" use:clickOutside={close_popup}>
       <div class="close-btn">
         <BtnClearInput click={close_popup} mode="normal" />
       </div>

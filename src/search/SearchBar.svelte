@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte"
   import db from "@db"
   import { router } from "@js/router.svelte.js"
@@ -17,8 +17,8 @@
   import SearchBarResult from "./SearchBarResult.svelte"
 
   let is_focus_in = $state(false)
-  let input_element = $state()
-  let nb_result = $state("")
+  let input_element: HTMLInputElement = $state()
+  let nb_result = $state(0)
   let all_search = $state([])
   let db_initied = $state(false)
   let search_value_debounced = $state($search_value)
@@ -164,8 +164,7 @@
 <div
   class="navbar-item header_search_item"
   class:hidden_by_mobile_menu={is_hidden_by_mobile_menu}
-  use:clickOutside
-  onclick_outside={focusout}
+  use:clickOutside={focusout}
 >
   <div
     class="search_bar_container box_shadow_color shadow_search"

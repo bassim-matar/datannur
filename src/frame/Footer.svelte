@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { footer_visible } from "@js/store"
   import { get_datetime, get_time_ago } from "@js/Time"
@@ -9,7 +9,12 @@
 
   let { menu_mobile = false } = $props()
   let contact_email = $state("loading")
-  const last_update = $state({ state: "loading", value: false })
+  const last_update = $state({
+    state: "loading",
+    value: 0,
+    relative: "",
+    absolute: "",
+  })
   const year = new Date().getFullYear()
 
   const app_version = document
@@ -32,7 +37,7 @@
   }
 
   db.loaded.then(() => {
-    contact_email = db.get_config("contact_email")
+    contact_email = db.get_config("contact_email") as string
     last_update.state = "loaded"
     if (db.use.info) {
       last_update.value = db.get("info", "last_update")?.value

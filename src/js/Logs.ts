@@ -6,6 +6,10 @@ import { entity_to_icon } from "@js/constant"
 
 export default class Logs {
   static db_key = "user_data/log"
+  static logs = []
+  static on_change_callback = () => {}
+  static all_tabs_icon_value = {}
+
   static init(logs) {
     this.logs = []
     if (logs) this.logs = logs
@@ -29,7 +33,7 @@ export default class Logs {
     this.logs = []
     this.save()
   }
-  static add(action, log) {
+  static add(action, log = null) {
     this.logs.unshift({
       id: this.logs.length + 1,
       action,

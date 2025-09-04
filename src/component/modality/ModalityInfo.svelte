@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import TableWrapper from "@infoTable/TableWrapper.svelte"
   import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"
   import IdInfo from "@infoTable/IdInfo.svelte"

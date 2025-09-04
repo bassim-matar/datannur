@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { get_percent } from "@js/util"
   import Render from "@js/Render"
 

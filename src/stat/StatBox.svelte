@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Icon from "@layout/Icon.svelte"
   import { get_color } from "@js/util"
   import { entity_names } from "@js/constant"

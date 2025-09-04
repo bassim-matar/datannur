@@ -4,7 +4,10 @@ import { url_prefix } from "@js/util"
 import markdown_render from "@js/markdown"
 
 export function ensure_mermaid_loaded(callback) {
-  const mermaid_src = "assets/external/mermaid.min.js?v=11.2.1"
+  const app_version = document
+    .querySelector('meta[name="app_version"]')
+    ?.getAttribute("content")
+  const mermaid_src = `assets/external/mermaid.min.js?v=${app_version}`
   if (document.querySelector(`script[src="${mermaid_src}"]`)) {
     callback()
     return
@@ -15,7 +18,7 @@ export function ensure_mermaid_loaded(callback) {
 }
 
 function mermaid_add_entities(code) {
-  let code_prefix = false
+  let code_prefix = null
   let code_prefixes_search = ["flowchart LR", "flowchart TB"]
   for (const code_prefix_search of code_prefixes_search) {
     if (

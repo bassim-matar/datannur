@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { page } from "@js/store"
 
-  let { title, pages = [], if_use = false, children } = $props()
+  let { title, pages = [], if_use = null, children } = $props()
 
   let visible = $state(!if_use)
   let loading = true

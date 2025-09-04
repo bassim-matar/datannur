@@ -1,11 +1,12 @@
-import Logs from "@js/Logs.js"
+import Logs from "@js/Logs"
 
 function apply_to_elements(selector, apply) {
   document.querySelectorAll(selector).forEach(apply)
 }
 
 export default class Exporter {
-  constructor(id) {
+  id: string
+  constructor(id: string) {
     this.id = id
   }
   get_language() {
@@ -62,11 +63,11 @@ export default class Exporter {
     const is_open = main_btn.getAttribute("is_open")
     if (is_open === "true") {
       apply_to_elements(btns, element => element.classList.remove("open"))
-      main_btn.setAttribute("is_open", false)
+      main_btn.setAttribute("is_open", "false")
       Logs.add("close_table_download")
     } else {
       apply_to_elements(btns, element => element.classList.add("open"))
-      main_btn.setAttribute("is_open", true)
+      main_btn.setAttribute("is_open", "true")
       Logs.add("open_table_download")
     }
   }

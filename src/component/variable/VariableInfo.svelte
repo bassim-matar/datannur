@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Link from "@layout/Link.svelte"
   import Icon from "@layout/Icon.svelte"
   import TableWrapper from "@infoTable/TableWrapper.svelte"

@@ -4,7 +4,7 @@ const copy_text_msg_copied = "copié dans le presse-papier !"
 
 export function copy_text_listen_click() {
   document.addEventListener("click", async ({ target }) => {
-    if (!target.classList.contains("copyclip")) return false
+    if (!(target instanceof HTMLElement) || !target.classList.contains("copyclip")) return false
     const text = target.textContent.trim()
     await navigator.clipboard.writeText(text)
     const tooltip = document.getElementById("powerTip")

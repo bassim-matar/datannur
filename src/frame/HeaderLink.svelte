@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import db from "@db"
   import { page, header_open } from "@js/store"
   import { pluralize } from "@js/util"
@@ -8,16 +8,16 @@
 
   let {
     href = $bindable(""),
-    icon = $bindable(false),
+    icon = $bindable(""),
     className = "navbar-item",
     pages = $bindable([]),
-    if_use = $bindable(false),
-    standard = false,
-    info = false,
-    children,
+    if_use = $bindable(null),
+    standard = "",
+    info = "",
+    children = null,
   } = $props()
 
-  let standard_readable = $state(false)
+  let standard_readable = $state("")
   let loading = $state(true)
 
   if (standard) {
@@ -33,7 +33,8 @@
   function click() {
     close_menu()
     if (!href) {
-      document.getElementsByClassName("tab_select_btn")[0]?.click()
+      const elem = document.getElementsByClassName("tab_select_btn")[0] as HTMLElement | null
+      elem?.click()
     }
   }
 

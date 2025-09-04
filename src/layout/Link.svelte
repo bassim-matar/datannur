@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { router } from "@js/router.svelte.js"
   import { get_base_link_url } from "@js/util"
 
@@ -7,8 +7,8 @@
     className = "",
     click = () => false,
     isActive = () => false,
-    alternative_action = false,
-    entity = false,
+    alternative_action = null,
+    entity = "",
     children,
   } = $props()
 

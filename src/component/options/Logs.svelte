@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { wrap_long_text } from "@js/util"
   import Datatable from "@datatable/Datatable.svelte"
   import Render from "@js/Render"

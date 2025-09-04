@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onDestroy } from "svelte"
 
   let {
@@ -10,12 +10,9 @@
 
   let with_height = $state(false)
   let with_timer = $state(true)
-  let timer = $state("")
-  
-  let loading_timer = setInterval(() => {
-    if (timer === "") timer = 0
-    timer += 1
-  }, 1000)
+  let timer = $state(0)
+
+  let loading_timer = setInterval(() => timer += 1, 1000)
 
   onDestroy(() => clearInterval(loading_timer))
 
