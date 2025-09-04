@@ -1,6 +1,6 @@
 import { locale } from "@js/constant"
 
-export function convert_quarter_to_full_date(complete_date, mode) {
+export function convert_quarter_to_full_date(complete_date, mode = "start") {
   const quarter = complete_date[5]
   complete_date = complete_date.slice(0, 4)
   if (mode === "start") {
@@ -19,9 +19,9 @@ export function convert_quarter_to_full_date(complete_date, mode) {
   return complete_date
 }
 
-export function date_to_timestamp(date, mode) {
+export function date_to_timestamp(date, mode = "start") {
   let complete_date = date
-  if (!complete_date) return ""
+  if (!complete_date) return 0
   if (complete_date.length === 4) {
     if (mode === "start") complete_date += "/01"
     if (mode === "end") complete_date += "/12"
@@ -39,15 +39,15 @@ export function date_to_timestamp(date, mode) {
 
 export function timestamp_to_date(timestamp) {
   const date = new Date(timestamp)
-  if(isNaN(date)) {
-    console.error("Invalid timestamp:", timestamp)
-    return ""
-  }
   return date.toISOString().slice(0, 10).replaceAll("-", "/")
 }
 
 const formatter = new Intl.RelativeTimeFormat(locale, { numeric: "auto" })
-const divisions = [
+const divisions: {
+  amount: number
+  name: Intl.RelativeTimeFormatUnit
+  local_name: string
+}[] = [
   { amount: 60, name: "seconds", local_name: "seconde" },
   { amount: 60, name: "minutes", local_name: "minute" },
   { amount: 24, name: "hours", local_name: "heure" },
@@ -83,7 +83,7 @@ export function get_time_ago(
   if (!date) return ""
   if (parse) date = Date.parse(date)
   if (day) date_now.setHours(0, 0, 0, 0)
-  let duration = (date - date_now) / 1000
+  let duration = (Number(date) - Number(date_now)) / 1000
   if (day && duration === 0) return "aujourd'hui"
   for (const division of divisions) {
     if (Math.abs(duration) < division.amount) {

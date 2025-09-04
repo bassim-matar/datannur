@@ -26,5 +26,5 @@
       "@tab/*": ["src/tab/*"]
     }
   },
-  "exclude": ["test", "app", "public", "node_modules"]
+  "exclude": ["app", "public", "node_modules"]
 }

@@ -84,7 +84,10 @@ function update_router_index(file, page_dir_from_router_index) {
 export default defineConfig({
   base: "",
   server: { port: 8080, origin: "", open: true },
-  test: { include: ["test/**/*.test.js"] },
+  test: { 
+    include: ["test/**/*.test.ts"],
+    alias: await get_aliases("tsconfig.json")
+  },
   css: {
     postcss: {
       plugins: [autoprefixer]
@@ -107,7 +110,7 @@ export default defineConfig({
   plugins: [
     FullReload(Jsonjsdb_watcher.get_table_index_file_path()),
     jsonjsdb_add_config(jsonjsdb_config) as any,
-    update_router_index("src/.generated/router_index.js", "../page"),
+    update_router_index("src/.generated/router_index.ts", "../page"),
     alias({ entries: await get_aliases("tsconfig.json") }),
     svelte({
       preprocess: vitePreprocess(),

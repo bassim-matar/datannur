@@ -1,17 +1,17 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import path from "path"
 import { pathToFileURL, fileURLToPath } from "url"
-import puppeteer from "puppeteer"
+import puppeteer, { Browser, Page } from "puppeteer"
 
 const this_folder = path.dirname(fileURLToPath(import.meta.url))
 let base_url = pathToFileURL(path.resolve(this_folder, "..")).href
 base_url += "/app/index.html"
 
-let browser
-let page
+let browser: Browser
+let page: Page
 
 beforeAll(async () => {
-  browser = await puppeteer.launch({ headless: "new" })
+  browser = await puppeteer.launch({ headless: true })
   page = await browser.newPage()
 })
 

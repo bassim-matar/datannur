@@ -6,4 +6,4 @@ bundle-visualizer.html
 /app/
 /static/
 /public/assets/external/*.js
-/src/.generated/*.js
+/src/.generated/*.ts

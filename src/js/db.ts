@@ -63,7 +63,7 @@ function add_nb_child_recursive(entity, item) {
   const childs = db.get_all_childs(entity, item.id)
   item.nb_child_recursive = childs.length
 }
-function add_name(item, entity, alias = false) {
+function add_name(item, entity, alias = "") {
   if (!alias) alias = entity
   const item_id = item[`${alias}_id`]
   let item_name = ""
