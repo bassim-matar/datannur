@@ -1,4 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-public/data/**/*.json.js linguist-vendored=false linguist-generated=false
+*.json.js linguist-vendored=true linguist-generated=true
+public/data/**/*.json.js linguist-vendored=true linguist-generated=true
+public/assets/external/**/*.js linguist-vendored=true linguist-generated=true
