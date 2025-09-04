@@ -119,7 +119,7 @@
 {/if}
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
   @use "../style/mermaid.scss" as *;
   @use "../style/icon.scss" as *;
 

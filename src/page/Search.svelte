@@ -141,7 +141,7 @@
 </section>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .section {
     margin-top: 13px;

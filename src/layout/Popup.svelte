@@ -24,7 +24,7 @@
 {/if}
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
   .popup {
     position: fixed;
     top: 0;

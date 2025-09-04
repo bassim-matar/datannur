@@ -36,7 +36,7 @@
 </div>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .tabs_body {
     position: relative;

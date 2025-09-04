@@ -67,7 +67,7 @@
 {/if}
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .fix_on_mobile {
     @media screen and (max-width: $menu_mobile_limit) {

@@ -11,7 +11,7 @@
 {/if}
 
 <style lang="scss">
-  @use "../../main.scss" as *;
+  @use "main.scss" as *;
 
   .filter_info_box {
     position: absolute;

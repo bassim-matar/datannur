@@ -223,7 +223,7 @@
 </div>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .header_search_item {
     padding: 0;

@@ -93,7 +93,7 @@
 {/if}
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .search_page_result_wrapper {
     :global(.remove_search_item) {

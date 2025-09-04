@@ -27,7 +27,7 @@
 </div>
 
 <style lang="scss">
-  @use "../../main.scss" as *;
+  @use "main.scss" as *;
 
   .doc_content_wrapper {
     width: calc(50% - 3px);

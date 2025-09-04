@@ -47,7 +47,7 @@
 </div>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .loading {
     --loader-color: #{$color-3};

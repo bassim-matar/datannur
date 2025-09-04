@@ -42,7 +42,7 @@
 </div>
 
 <style lang="scss">
-  @use "../../main.scss" as *;
+  @use "main.scss" as *;
 
   .header_input_wrapper {
     position: relative;

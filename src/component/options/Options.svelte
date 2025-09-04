@@ -160,7 +160,7 @@
 </div>
 
 <style lang="scss">
-  @use "../../main.scss" as *;
+  @use "main.scss" as *;
 
   .flex_cols {
     justify-content: center;

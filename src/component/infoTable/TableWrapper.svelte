@@ -18,7 +18,7 @@
 </div>
 
 <style lang="scss">
-  @use "../../main.scss" as *;
+  @use "main.scss" as *;
 
   .table_wrapper {
     display: inline-block;

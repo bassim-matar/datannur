@@ -243,7 +243,7 @@
 </Popup>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .error_loading_db {
     position: absolute;

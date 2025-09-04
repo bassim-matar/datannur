@@ -7,7 +7,7 @@
 </button>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   button {
     position: absolute;

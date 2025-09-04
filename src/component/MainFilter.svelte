@@ -39,7 +39,7 @@
 </div>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .navbar-item {
     :global(.switch[type="checkbox"] + label) {

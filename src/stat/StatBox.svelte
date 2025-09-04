@@ -32,7 +32,7 @@
 </div>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
   @use "../style/icon.scss" as *;
 
   .stat_box {

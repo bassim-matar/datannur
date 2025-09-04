@@ -1,4 +1,4 @@
-@use "../main.scss";
+@use "main.scss";
 
 @mixin icon_color {
   @each $name, $color in main.$icon-colors {

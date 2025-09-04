@@ -145,7 +145,7 @@
 <TabsBody {tabs} {no_first_tab} {is_last_tab} {active_tab_body} {tabs_loaded} />
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .tabs {
     margin-bottom: -1px;

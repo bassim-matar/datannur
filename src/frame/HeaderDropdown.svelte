@@ -28,7 +28,7 @@
 {/if}
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .navbar-link::after {
     border-color: $color-3;

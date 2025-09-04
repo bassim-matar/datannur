@@ -92,7 +92,7 @@
 </li>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .tab_visible {
     position: relative;

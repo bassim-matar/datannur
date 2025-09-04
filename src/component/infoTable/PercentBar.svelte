@@ -12,7 +12,7 @@
 <span class="value">{Render.num(value)} ({percent}%)</span>
 
 <style lang="scss">
-  @use "../../main.scss" as *;
+  @use "main.scss" as *;
 
   .value {
     position: relative;

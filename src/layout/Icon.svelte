@@ -25,7 +25,7 @@
 {/if}
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
   @use "../style/icon.scss" as *;
 
   @include icon-color;

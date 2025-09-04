@@ -140,7 +140,7 @@
 <DescriptionInfo description={variable.description} />
 
 <style lang="scss">
-  @use "../../main.scss" as *;
+  @use "main.scss" as *;
 
   .breadcrumb {
     :global(a) {

@@ -303,7 +303,7 @@
 </div>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
   @use "./exporter/exporter_popup.scss" as *;
   @use "./exporter/exporter.scss" as *;
   @use "../style/icon.scss" as *;

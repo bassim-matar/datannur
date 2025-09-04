@@ -8,6 +8,7 @@
 - change : jsonjsdb use `__table__.json.js` instead of `__meta_.json.js`
 - change : move update_app.json to data folder
 - change : configure project to work with typescript
+- change : use absolute path for main.scss import
 - fix : search bar transition z-index and left position
 - fix : page transition and search bar state management
 - fix : flash footer in header on page load with static rendering

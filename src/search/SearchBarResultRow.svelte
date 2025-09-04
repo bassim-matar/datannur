@@ -69,7 +69,7 @@
 </tr>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   tr.nav_hover,
   tr:hover {

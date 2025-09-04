@@ -122,7 +122,7 @@
 </div>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .main_wrapper.homepage .all_stat_container_wrappper {
     max-height: max(calc(100vh - 270px), 80px);

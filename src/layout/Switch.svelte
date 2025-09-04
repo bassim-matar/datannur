@@ -30,7 +30,7 @@
 </div>
 
 <style lang="scss">
-  @use "../main.scss" as *;
+  @use "main.scss" as *;
 
   .field.left {
     .slot_wrapper {
