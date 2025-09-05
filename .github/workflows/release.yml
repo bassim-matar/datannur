@@ -6,6 +6,9 @@ on:
     tags: ['v*']
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -24,32 +27,32 @@ jobs:
       id: release
       run: |
         if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-          echo "type=stable" >> $GITHUB_OUTPUT
-          echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          echo "asset=datannur-app-latest.zip" >> $GITHUB_OUTPUT
+          echo "type=stable" >> "$GITHUB_OUTPUT"
+          echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          echo "asset=datannur-app-latest.zip" >> "$GITHUB_OUTPUT"
         else
-          echo "type=prerelease" >> $GITHUB_OUTPUT
-          echo "tag=pre-latest" >> $GITHUB_OUTPUT
-          echo "asset=datannur-app-pre-latest.zip" >> $GITHUB_OUTPUT
+          echo "type=prerelease" >> "$GITHUB_OUTPUT"
+          echo "tag=pre-latest" >> "$GITHUB_OUTPUT"
+          echo "asset=datannur-app-pre-latest.zip" >> "$GITHUB_OUTPUT"
         fi
     
     - name: Create package
-      run: cd app && zip -r ../${{ steps.release.outputs.asset }} .
+      run: cd app && zip -r "../${{ steps.release.outputs.asset }}" .
     
     - name: Delete existing pre-release
       if: steps.release.outputs.type == 'prerelease'
       run: |
         gh release delete pre-latest --yes || true
-        git push origin :pre-latest || true
+        git push origin :refs/tags/pre-latest || true
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Create release
       run: |
-        gh release create ${{ steps.release.outputs.tag }} \
+        gh release create "${{ steps.release.outputs.tag }}" \
           --title "datannur ${{ steps.release.outputs.tag }}" \
           --generate-notes \
           ${{ steps.release.outputs.type == 'prerelease' && '--prerelease' || '' }} \
-          ${{ steps.release.outputs.asset }}
+          "${{ steps.release.outputs.asset }}"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
