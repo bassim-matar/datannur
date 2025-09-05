@@ -56,7 +56,7 @@ jobs:
         
         # Extract changelog section for this version
         awk "
-        /^## ${VERSION}$/ { found=1; next }
+        /^## ${VERSION} / { found=1; next }
         /^## / && found { exit }
         found { print }
         " CHANGELOG.md > changelog_section.md
