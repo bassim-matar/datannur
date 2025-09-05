@@ -41,7 +41,7 @@ function get_branch() {
 
 function tag_exists(version) {
   const tags = execSync("git tag").toString().split("\n")
-  return tags.includes(version)
+  return tags.includes(`v${version}`)
 }
 
 const version = get_version()
@@ -57,7 +57,7 @@ if (branch !== "main") {
 }
 
 if (tag_exists(version)) {
-  console.error(`❌ Le tag '${version}' existe déjà`)
+  console.error(`❌ Le tag 'v${version}' existe déjà`)
   process.exit(1)
 }
 
@@ -65,10 +65,10 @@ console.log(`📝 Changelog pour ${version}:`)
 console.log(changelog)
 console.log()
 
-console.log(`🔖 Création du tag '${version}'`)
-run_command(`git tag -a ${version} -m "Release ${version}"`)
+console.log(`🔖 Création du tag 'v${version}'`)
+run_command(`git tag -a v${version} -m "Release v${version}"`)
 
 console.log(`🚀 Push du tag (GitHub Actions créera automatiquement la release)`)
-run_command(`git push origin ${version}`)
+run_command(`git push origin v${version}`)
 
-console.log(`\n✅ Tag ${version} créé avec succès !`)
+console.log(`\n✅ Tag v${version} créé avec succès !`)
