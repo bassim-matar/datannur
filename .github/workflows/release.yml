@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        
+    - run: npm ci
+    - run: npm run build
+    
+    - name: Determine release type
+      id: release
+      run: |
+        if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          echo "type=stable" >> $GITHUB_OUTPUT
+          echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "asset=datannur-app-latest.zip" >> $GITHUB_OUTPUT
+        else
+          echo "type=prerelease" >> $GITHUB_OUTPUT
+          echo "tag=pre-latest" >> $GITHUB_OUTPUT
+          echo "asset=datannur-app-pre-latest.zip" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Create package
+      run: cd app && zip -r ../${{ steps.release.outputs.asset }} .
+    
+    - name: Delete existing pre-release
+      if: steps.release.outputs.type == 'prerelease'
+      run: |
+        gh release delete pre-latest --yes || true
+        git push origin :pre-latest || true
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Create release
+      run: |
+        gh release create ${{ steps.release.outputs.tag }} \
+          --title "datannur ${{ steps.release.outputs.tag }}" \
+          --generate-notes \
+          ${{ steps.release.outputs.type == 'prerelease' && '--prerelease' || '' }} \
+          ${{ steps.release.outputs.asset }}
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

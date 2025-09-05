@@ -44,41 +44,31 @@ function tag_exists(version) {
   return tags.includes(version)
 }
 
-function tag_and_release(path, label, version, notes) {
-  const initial_cwd = process.cwd()
-  process.chdir(path)
-
-  const branch = get_branch()
-  if (branch !== "main") {
-    console.error(
-      `❌ ${label} : pas sur la branche 'main' (actuel : '${branch}')`
-    )
-    process.exit(1)
-  }
-
-  if (tag_exists(version)) {
-    console.error(`❌ ${label} : le tag '${version}' existe déjà`)
-    process.exit(1)
-  }
-
-  console.log(`\n🔖 ${label} : création du tag '${version}'`)
-  run_command(`git tag -a ${version} -m "${label} ${version}"`)
-  run_command(`git push origin ${version}`)
-
-  console.log(`🚀 ${label} : création de la release GitHub`)
-  run_command(
-    `gh release create ${version} --title "${label} ${version}" --notes "${notes}" --target main`
-  )
-
-  process.chdir(initial_cwd)
-}
-
 const version = get_version()
 const changelog = extract_changelog(version)
 
-console.log(`📦 Lancement de la release ${version}\n`)
+console.log(`📦 Lancement de la release ${version}`)
 
-tag_and_release(".", "datannur source", version, changelog)
-tag_and_release("app", "datannur app", version, changelog)
+// Vérifications préalables
+const branch = get_branch()
+if (branch !== "main") {
+  console.error(`❌ Pas sur la branche 'main' (actuel : '${branch}')`)
+  process.exit(1)
+}
 
-console.log(`\n✅ Release ${version} terminée avec succès.`)
+if (tag_exists(version)) {
+  console.error(`❌ Le tag '${version}' existe déjà`)
+  process.exit(1)
+}
+
+console.log(`📝 Changelog pour ${version}:`)
+console.log(changelog)
+console.log()
+
+console.log(`🔖 Création du tag '${version}'`)
+run_command(`git tag -a ${version} -m "Release ${version}"`)
+
+console.log(`🚀 Push du tag (GitHub Actions créera automatiquement la release)`)
+run_command(`git push origin ${version}`)
+
+console.log(`\n✅ Tag ${version} créé avec succès !`)

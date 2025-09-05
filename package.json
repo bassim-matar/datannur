@@ -27,7 +27,7 @@
     "sass": "^1.92.0",
     "serve-handler": "^6.1.6",
     "sitemap": "^8.0.0",
-    "svelte": "^5.38.6",
+    "svelte": "^5.38.7",
     "typescript": "^5.9.2",
     "vite": "^7.1.4",
     "vite-plugin-full-reload": "^1.2.0",
