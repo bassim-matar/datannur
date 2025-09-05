@@ -35,8 +35,8 @@ def get_config():
 def get_asset_url(target_version):
     """Get download URL for the app asset from GitHub releases."""
     if target_version == "pre-release":
-        url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/tags/pre-latest"
-        asset_name = "datannur-app-pre-latest.zip"
+        url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/tags/pre-release"
+        asset_name = "datannur-app-pre-release.zip"
     elif target_version == "latest":
         url = f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
         asset_name = "datannur-app-latest.zip"

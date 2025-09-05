@@ -32,8 +32,8 @@ jobs:
           echo "asset=datannur-app-latest.zip" >> "$GITHUB_OUTPUT"
         else
           echo "type=prerelease" >> "$GITHUB_OUTPUT"
-          echo "tag=pre-latest" >> "$GITHUB_OUTPUT"
-          echo "asset=datannur-app-pre-latest.zip" >> "$GITHUB_OUTPUT"
+          echo "tag=pre-release" >> "$GITHUB_OUTPUT"
+          echo "asset=datannur-app-pre-release.zip" >> "$GITHUB_OUTPUT"
         fi
     
     - name: Create package
@@ -42,8 +42,8 @@ jobs:
     - name: Delete existing pre-release
       if: steps.release.outputs.type == 'prerelease'
       run: |
-        gh release delete pre-latest --yes || true
-        git push origin :refs/tags/pre-latest || true
+        gh release delete pre-release --yes || true
+        git push origin :refs/tags/pre-release || true
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
