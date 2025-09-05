@@ -47,12 +47,49 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
+    - name: Extract changelog
+      id: changelog
+      if: steps.release.outputs.type == 'stable'
+      run: |
+        VERSION="${{ steps.release.outputs.tag }}"
+        VERSION="${VERSION#v}"  # Remove 'v' prefix
+        
+        # Extract changelog section for this version
+        awk "
+        /^## ${VERSION}$/ { found=1; next }
+        /^## / && found { exit }
+        found { print }
+        " CHANGELOG.md > changelog_section.md
+        
+        # Check if changelog was found
+        if [ ! -s changelog_section.md ]; then
+          echo "No changelog found for version ${VERSION}"
+          echo "notes=" >> "$GITHUB_OUTPUT"
+        else
+          echo "Changelog found for version ${VERSION}"
+          # Use multiline output format
+          {
+            echo "notes<<EOF"
+            cat changelog_section.md
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+        fi
+
     - name: Create release
       run: |
-        gh release create "${{ steps.release.outputs.tag }}" \
-          --title "datannur ${{ steps.release.outputs.tag }}" \
-          --generate-notes \
-          ${{ steps.release.outputs.type == 'prerelease' && '--prerelease' || '' }} \
-          "${{ steps.release.outputs.asset }}"
+        if [[ "${{ steps.release.outputs.type }}" == "stable" && "${{ steps.changelog.outputs.notes }}" != "" ]]; then
+          # Use extracted changelog for stable releases
+          gh release create "${{ steps.release.outputs.tag }}" \
+            --title "datannur ${{ steps.release.outputs.tag }}" \
+            --notes "${{ steps.changelog.outputs.notes }}" \
+            "${{ steps.release.outputs.asset }}"
+        else
+          # Use auto-generated notes for prereleases or when no changelog found
+          gh release create "${{ steps.release.outputs.tag }}" \
+            --title "datannur ${{ steps.release.outputs.tag }}" \
+            --generate-notes \
+            ${{ steps.release.outputs.type == 'prerelease' && '--prerelease' || '' }} \
+            "${{ steps.release.outputs.asset }}"
+        fi
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
