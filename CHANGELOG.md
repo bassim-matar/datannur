@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.12.2 (2025-09-05)
 
 - change : rename js folder to lib
 - change : jsonjs db data default to non compact mode
