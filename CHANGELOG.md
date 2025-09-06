@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- fix : release url
 - remove : datannur-app repo with the built app and adapt readme accordingly
 
 ## 0.12.2 (2025-09-05)

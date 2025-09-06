@@ -42,7 +42,7 @@ def get_asset_url(target_version):
         asset_name = "datannur-app-latest.zip"
     else:
         url = (
-            f"https://api.github.com/repos/{GITHUB_REPO}/releases/tags/{target_version}"
+            f"https://api.github.com/repos/{GITHUB_REPO}/releases/tags/v{target_version}"
         )
         asset_name = "datannur-app-latest.zip"
 

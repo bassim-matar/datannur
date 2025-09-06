@@ -66,7 +66,7 @@
       {#if app_version}
         <div>
           <a
-            href="https://github.com/bassim-matar/datannur-app/releases/tag/{app_version}"
+            href="https://github.com/bassim-matar/datannur/releases/tag/v{app_version}"
             target="_blanck"
           >
             v{app_version}

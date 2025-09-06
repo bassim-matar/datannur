@@ -4,7 +4,7 @@
 # datannur
 
 [![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub release](https://img.shields.io/github/v/release/bassim-matar/datannur-app?color=blue)](https://github.com/bassim-matar/datannur-app/releases)
+[![GitHub release](https://img.shields.io/github/v/release/bassim-matar/datannur?color=blue)](https://github.com/bassim-matar/datannur/releases)
 
 datannur is a portable data catalog that can run without a server.
 
@@ -91,7 +91,7 @@ python3 update_app.py
 ### Manual Update
 
 If you don't have Python, you can:
-1. Download the latest version from [datannur-app releases](https://github.com/bassim-matar/datannur-app/releases)
+1. Download the latest version from [Latest release](https://github.com/bassim-matar/datannur/releases/latest)
 2. Replace the old files with new ones
 3. Keep your `/data/` folder to preserve your data
 
