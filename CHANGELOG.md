@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- remove : datannur-app repo with the built app and adapt readme accordingly
+
 ## 0.12.2 (2025-09-05)
 
 - change : rename js folder to lib
