@@ -3,6 +3,7 @@
 ## unreleased
 
 - fix : release url
+- fix : release process to avoid warning multiple tag for same commit
 - remove : datannur-app repo with the built app and adapt readme accordingly
 
 ## 0.12.2 (2025-09-05)

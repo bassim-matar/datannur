@@ -6,7 +6,7 @@ function get_version() {
   return JSON.parse(content).version
 }
 
-function run_command(command) {
+function run_command(command: string) {
   execSync(command, { stdio: "inherit" })
 }
 
@@ -14,9 +14,22 @@ function get_branch() {
   return execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
 }
 
-function tag_exists(version) {
-  const tags = execSync("git tag").toString().split("\n")
-  return tags.includes(`v${version}`)
+function tag_exists(version: string) {
+  try {
+    execSync(`git rev-parse v${version}`, { stdio: 'ignore' })
+    return true
+  } catch {
+    return false
+  }
+}
+
+function has_uncommitted_changes() {
+  try {
+    const status = execSync("git status --porcelain").toString().trim()
+    return status.length > 0
+  } catch {
+    return false
+  }
 }
 
 const version = get_version()
@@ -26,6 +39,11 @@ console.log(`📦 Starting release ${version}`)
 const branch = get_branch()
 if (branch !== "main") {
   console.error(`❌ Not on 'main' branch (current: '${branch}')`)
+  process.exit(1)
+}
+
+if (has_uncommitted_changes()) {
+  console.error(`❌ You have uncommitted changes. Please commit or stash them first.`)
   process.exit(1)
 }
 

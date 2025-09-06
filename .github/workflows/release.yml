@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
     tags: ['v*']
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -27,10 +26,17 @@ jobs:
       id: release
       run: |
         if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          # Stable release triggered by tag push
           echo "type=stable" >> "$GITHUB_OUTPUT"
           echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
           echo "asset=datannur-app-latest.zip" >> "$GITHUB_OUTPUT"
+          
+          # Extract version from tag (remove 'v' prefix)
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
         else
+          # Automatic pre-release on push to main
           echo "type=prerelease" >> "$GITHUB_OUTPUT"
           echo "tag=pre-release" >> "$GITHUB_OUTPUT"
           echo "asset=datannur-app-pre-release.zip" >> "$GITHUB_OUTPUT"
@@ -43,7 +49,24 @@ jobs:
       if: steps.release.outputs.type == 'prerelease'
       run: |
         gh release delete pre-release --yes || true
-        git push origin :refs/tags/pre-release || true
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Update pre-release for stable releases  
+      if: steps.release.outputs.type == 'stable'
+      run: |
+        echo "Updating pre-release to point to latest stable release"
+        gh release delete pre-release --yes || true
+        
+        # Create pre-release package (copy from stable package)
+        cp "${{ steps.release.outputs.asset }}" "datannur-app-pre-release.zip"
+        
+        # Create new pre-release pointing to same commit as stable
+        gh release create pre-release \
+          --title "datannur pre-release" \
+          --notes "Latest development version (currently same as ${{ steps.release.outputs.tag }})" \
+          --prerelease \
+          "datannur-app-pre-release.zip"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
@@ -51,8 +74,7 @@ jobs:
       id: changelog
       if: steps.release.outputs.type == 'stable'
       run: |
-        VERSION="${{ steps.release.outputs.tag }}"
-        VERSION="${VERSION#v}"  # Remove 'v' prefix
+        VERSION="${{ steps.release.outputs.version }}"
         
         # Extract changelog section for this version
         awk "
@@ -77,18 +99,27 @@ jobs:
 
     - name: Create release
       run: |
-        if [[ "${{ steps.release.outputs.type }}" == "stable" && "${{ steps.changelog.outputs.notes }}" != "" ]]; then
-          # Use extracted changelog for stable releases
-          gh release create "${{ steps.release.outputs.tag }}" \
-            --title "datannur ${{ steps.release.outputs.tag }}" \
-            --notes "${{ steps.changelog.outputs.notes }}" \
-            "${{ steps.release.outputs.asset }}"
+        if [[ "${{ steps.release.outputs.type }}" == "stable" ]]; then
+          # Create stable release
+          if [[ "${{ steps.changelog.outputs.notes }}" != "" ]]; then
+            # Use extracted changelog for stable releases
+            gh release create "${{ steps.release.outputs.tag }}" \
+              --title "datannur ${{ steps.release.outputs.tag }}" \
+              --notes "${{ steps.changelog.outputs.notes }}" \
+              "${{ steps.release.outputs.asset }}"
+          else
+            # Stable release without changelog
+            gh release create "${{ steps.release.outputs.tag }}" \
+              --title "datannur ${{ steps.release.outputs.tag }}" \
+              --generate-notes \
+              "${{ steps.release.outputs.asset }}"
+          fi
         else
-          # Use auto-generated notes for prereleases or when no changelog found
-          gh release create "${{ steps.release.outputs.tag }}" \
-            --title "datannur ${{ steps.release.outputs.tag }}" \
+          # Create pre-release
+          gh release create pre-release \
+            --title "datannur pre-release" \
             --generate-notes \
-            ${{ steps.release.outputs.type == 'prerelease' && '--prerelease' || '' }} \
+            --prerelease \
             "${{ steps.release.outputs.asset }}"
         fi
       env:
