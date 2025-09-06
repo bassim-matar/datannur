@@ -3,6 +3,7 @@
 ## unreleased
 
 - change : just a test for new release process
+- change : just another test for new release process
 
 ## 0.12.3 (2025-09-06)
 
