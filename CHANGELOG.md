@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.12.3 (2025-09-06)
 
 - fix : release url
 - fix : release process to avoid warning multiple tag for same commit
