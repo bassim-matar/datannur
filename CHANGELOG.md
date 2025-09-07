@@ -6,6 +6,7 @@
 - change : just another test for new release process
 - change : improve update_app.py script
 - remove : gitignore and gitattributes from public folder
+- remove : svelte.config.js and move its content to vite.config.js
 
 ## 0.12.3 (2025-09-06)
 

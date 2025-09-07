@@ -113,7 +113,11 @@ export default defineConfig({
     update_router_index("src/.generated/router_index.ts", "../page"),
     alias({ entries: await get_aliases("tsconfig.json") }),
     svelte({
+      configFile: false,
       preprocess: vitePreprocess(),
+      compilerOptions: {
+        runes: true,
+      },
     }),
     html_replace([
       ["{{app_version}}", app_version],
