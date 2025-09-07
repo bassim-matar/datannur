@@ -5,6 +5,7 @@
 - change : just a test for new release process
 - change : just another test for new release process
 - change : improve update_app.py script
+- change : refactor get_config() and  use some early return in update_app.py
 - remove : gitignore and gitattributes from public folder
 - remove : svelte.config.js and move its content to vite.config.js
 
