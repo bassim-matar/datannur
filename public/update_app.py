@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 import shutil
 import sys
 import tempfile
@@ -30,34 +31,50 @@ class AssetInfo(TypedDict):
     sha256: str
 
 
+def _use_emojis() -> bool:
+    """Check if emojis should be used based on environment."""
+    if os.name == "nt":
+        return False
+    term = os.environ.get("TERM", "").lower()
+    if "xterm" in term or "screen" in term or "tmux" in term:
+        return True
+    return False
+
+
+USE_EMOJIS = _use_emojis()
+SUCCESS = "✅" if USE_EMOJIS else "[OK]"
+ERROR = "❌" if USE_EMOJIS else "[ERROR]"
+WARNING = "⚠️" if USE_EMOJIS else "[WARNING]"
+
+
 def validate_config_value(
     config: dict, key: str, expected_type: type, required: bool = True
 ) -> None:
     """Validate a configuration value."""
     if required and key not in config:
-        print(f"❌ Error: Missing '{key}' in config file.")
+        print(f"{ERROR} Missing '{key}' in config file.")
         sys.exit(1)
     value = config.get(key)
     if value is not None and not isinstance(value, expected_type):
-        print(f"❌ Error: '{key}' must be a {expected_type.__name__}.")
+        print(f"{ERROR} '{key}' must be a {expected_type.__name__}.")
         sys.exit(1)
 
 
 def validate_list_items(config: dict, key: str, item_type: type) -> None:
     """Validate that all items in a list have the expected type."""
     if not all(isinstance(item, item_type) for item in config.get(key, [])):
-        print(f"❌ Error: All items in '{key}' must be {item_type.__name__}s.")
+        print(f"{ERROR} All items in '{key}' must be {item_type.__name__}s.")
         sys.exit(1)
 
 
 def get_config() -> Config:
     if not CONFIG_FILE.exists():
-        print(f"❌ Error: Config file '{CONFIG_FILE}' does not exist.")
+        print(f"{ERROR} Config file '{CONFIG_FILE}' does not exist.")
         sys.exit(1)
     try:
         config = json.loads(CONFIG_FILE.read_text())
     except json.JSONDecodeError:
-        print(f"❌ Error: '{CONFIG_FILE}' is not valid JSON.")
+        print(f"{ERROR} '{CONFIG_FILE}' is not valid JSON.")
         sys.exit(1)
     validate_config_value(config, "target_version", str)
     validate_config_value(config, "include", list)
@@ -72,17 +89,16 @@ def make_request(url: str, proxy_url: str | None = None) -> bytes:
     def read_with_limit(response: addinfourl) -> bytes:
         content_size = response.headers.get("Content-Length")
         if content_size and int(content_size) > MAX_DOWNLOAD_SIZE:
-            msg = f"❌ File too large: {content_size} bytes (max: {MAX_DOWNLOAD_SIZE})"
+            msg = f"{ERROR} File too large: {content_size} bytes (max: {MAX_DOWNLOAD_SIZE})"
             raise ValueError(msg)
 
         data = response.read(MAX_DOWNLOAD_SIZE + 1)
         if len(data) > MAX_DOWNLOAD_SIZE:
-            msg = f"❌ Downloaded file exceeds size limit: {len(data)} bytes (max: {MAX_DOWNLOAD_SIZE})"
+            msg = f"{ERROR} Downloaded file exceeds size limit: {len(data)} bytes (max: {MAX_DOWNLOAD_SIZE})"
             raise ValueError(msg)
         return data
 
     if proxy_url:
-        print(f"Using proxy {proxy_url}")
         proxy_values = {"http": proxy_url, "https": proxy_url}
         proxy_handler = urllib.request.ProxyHandler(proxy_values)
         opener = urllib.request.build_opener(proxy_handler)
@@ -99,12 +115,12 @@ def verify_file_integrity(file_path: Path, expected_sha256: str) -> bool:
         file_hash = hashlib.sha256(f.read()).hexdigest()
 
     if file_hash != expected_sha256:
-        print(f"❌ Security Warning: File integrity check failed!")
+        print(f"{ERROR} File integrity check failed!")
         print(f"Expected: {expected_sha256}")
         print(f"Got:      {file_hash}")
         return False
 
-    print("✅ File integrity verified")
+    print(f"{SUCCESS} File integrity verified")
     return True
 
 
@@ -123,10 +139,10 @@ def get_asset_url(target_version: str, proxy_url: str | None = None) -> AssetInf
         response_data = make_request(url, proxy_url)
         release_data = json.loads(response_data.decode())
     except urllib.error.URLError as e:
-        print(f"❌ Failed to fetch release data: {e}")
+        print(f"{ERROR} Failed to fetch release data: {e}")
         sys.exit(1)
     except ValueError as e:
-        print(f"❌ API response size error: {e}")
+        print(f"{ERROR} API response size error: {e}")
         sys.exit(1)
 
     for asset in release_data.get("assets", []):
@@ -149,28 +165,28 @@ def download_and_extract(
     zip_file_path = temp_dir / filename
 
     if not expected_sha256:
-        print("❌ No SHA256 available for verification. Aborting for security.")
+        print(f"{ERROR} No SHA256 available for verification. Aborting for security.")
         return False
 
     try:
         file_data = make_request(zip_url, proxy_url)
     except urllib.error.URLError as e:
-        print(f"❌ Failed to download {filename}: {e}")
+        print(f"{ERROR} Failed to download {filename}: {e}")
         return False
     except ValueError as e:
-        print(f"❌ Download size error: {e}")
+        print(f"{ERROR} Download size error: {e}")
         return False
 
     zip_file_path.write_bytes(file_data)
-    print(f"✅ Downloaded {filename}")
+    print(f"{SUCCESS} Downloaded {filename}")
 
     if not verify_file_integrity(zip_file_path, expected_sha256):
-        print("❌ Download integrity check failed. Aborting update.")
+        print(f"{ERROR} Download integrity check failed. Aborting update.")
         return False
 
     with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
         zip_ref.extractall(temp_dir)
-    print(f"✅ Extracted to {temp_dir}")
+    print(f"{SUCCESS} Extracted to {temp_dir}")
     return True
 
 
@@ -183,18 +199,18 @@ def copy_files(source_dir: Path, files_to_copy: list[str]) -> None:
         try:
             destination_item.resolve().relative_to(REPO_PATH.resolve())
         except ValueError:
-            print(f"❌ Security error: {item} would write outside repository scope")
+            print(f"{ERROR} {item} would write outside repository scope")
             continue
 
         if not source_item.exists():
-            print(f"⚠️  Item {item} not found in source")
+            print(f"{WARNING} Item {item} not found in source")
             continue
 
         try:
             if source_item.is_file():
                 destination_item.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source_item, destination_item)
-                print(f"✅ Copied file {item}")
+                print(f"{SUCCESS} Copied file {item}")
                 continue
 
             if source_item.is_dir():
@@ -204,11 +220,11 @@ def copy_files(source_dir: Path, files_to_copy: list[str]) -> None:
                     else:
                         destination_item.unlink()
                 shutil.copytree(source_item, destination_item)
-                print(f"✅ Copied directory {item}")
+                print(f"{SUCCESS} Copied directory {item}")
                 continue
 
         except OSError as e:
-            print(f"❌ Failed to copy {item}: {e}")
+            print(f"{ERROR} Failed to copy {item}: {e}")
 
 
 def add_jsonjsdb_config() -> None:
@@ -217,11 +233,11 @@ def add_jsonjsdb_config() -> None:
     index_file = REPO_PATH / "index.html"
 
     if not config_file.exists():
-        print(f"⚠️ Warning: jsonjsdb_config file '{config_file}' not found, no config")
+        print(f"{WARNING} jsonjsdb_config file '{config_file}' not found, no config")
         return
 
     if not index_file.exists():
-        print(f"⚠️ Warning: index file '{index_file}' not found, no config")
+        print(f"{WARNING} index file '{index_file}' not found, no config")
         return
 
     try:
@@ -230,9 +246,9 @@ def add_jsonjsdb_config() -> None:
         index_without_config = original_index.split('<div id="jsonjsdb_config"')[0]
         index_with_new_config = index_without_config + jdb_config
         index_file.write_text(index_with_new_config, encoding="utf-8")
-        print("✅ JSON JS DB config added to index.html")
+        print(f"{SUCCESS} jsonjsdb config added to index.html")
     except OSError as e:
-        print(f"❌ Error updating index.html: {e}")
+        print(f"{ERROR} Error updating index.html: {e}")
 
 
 def main() -> None:
@@ -243,11 +259,11 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="datannur_update_") as temp_dir:
         temp_path = Path(temp_dir)
         if not download_and_extract(asset_info, temp_path, proxy_url):
-            print("❌ Update failed")
+            print(f"{ERROR} Update failed")
             return
         copy_files(temp_path, config["include"])
         add_jsonjsdb_config()
-        print("✅ Update completed successfully")
+        print(f"{SUCCESS} Update completed successfully")
 
 
 if __name__ == "__main__":
