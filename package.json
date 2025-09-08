@@ -29,7 +29,7 @@
     "sitemap": "^8.0.0",
     "svelte": "^5.38.7",
     "typescript": "^5.9.2",
-    "vite": "^7.1.4",
+    "vite": "^7.1.5",
     "vite-plugin-full-reload": "^1.2.0",
     "vitest": "^3.2.4"
   },

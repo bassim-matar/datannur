@@ -10,7 +10,7 @@ datannur is a portable data catalog that can run without a server.
 
 > 💡 **Tip:** This is the ready-to-use application. For source code, development documentation, and contributing guidelines, see the [main repository](https://github.com/bassim-matar/datannur).
 
-**📦 Download the app:** [Latest release](https://github.com/bassim-matar/datannur/releases/latest)
+**📦 Download the app:** [Latest release](https://github.com/bassim-matar/datannur/releases/latest/download/datannur-app-latest.zip)
 
 **🌐 More info:** [datannur.com](https://datannur.com)
 
@@ -91,7 +91,7 @@ python3 update_app.py
 ### Manual Update
 
 If you don't have Python, you can:
-1. Download the latest version from [Latest release](https://github.com/bassim-matar/datannur/releases/latest)
+1. Download the latest version from [Latest release](https://github.com/bassim-matar/datannur/releases/latest/download/datannur-app-latest.zip)
 2. Replace the old files with new ones
 3. Keep your `/data/` folder to preserve your data
 
