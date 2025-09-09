@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.12.5 (2025-09-09)
 
 - add : proxy_url config option and no python dependencies in public readme
 - change : readme link to download app and refactor contributing section
