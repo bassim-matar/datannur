@@ -52,6 +52,8 @@
 
   Datatables_timer.start()
   Datatables_loading.start()
+  
+  // @ts-ignore - DataTable.Buttons exists after importing buttons extension
   DataTable.Buttons.jszip(JSZip)
 
   let datatable = null
@@ -130,12 +132,12 @@
         language: {
           zeroRecords: '<span class="no_result">Aucun résultat</span>',
           buttons: exporter.get_language(),
-        },
+        } as any,
         initComplete: function () {
           if (!is_big) return false
           filter.init(this.api())
         },
-      })
+      } as any)
       datatable.on("search.dt", () => {
         if ($all_tabs[entity]) {
           $all_tabs[entity].nb = get_nb_item(datatable, clean_data)

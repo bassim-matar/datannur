@@ -4,6 +4,7 @@
 
 - change : readme link to download app and refactor contributing section
 - change : update_app.py use emojis only if terminal support it
+- change : updgrade Datatables version and fix related typescript error
 
 ## 0.12.4 (2025-09-07)
 
