@@ -48,7 +48,7 @@ Here is the top-level structure:
 ├── update_app.py         # Automatic update script
 ├── assets/               # Static assets (CSS, JS, images)
 ├── data/                 # ⚠️ YOUR DATA - Only folder to modify
-├── static_make/          # Static generation tools
+├── static_make/          # Static generation tool
 └── sync_db/              # Database synchronization
 ```
 
@@ -84,8 +84,11 @@ If you have Python installed, you can update automatically:
 python3 update_app.py
 ```
 
+> **💡 Note:** The update script uses only Python's standard library - no additional dependencies required! Just run it directly with any Python 3.10+ installation.
+
 **Configuration options** in `data/update_app.json`:
 - **target_version**: Choose `"latest"` (stable), `"pre-release"` (newest), or specific version `"x.x.x"`
+- **proxy_url**: Optional proxy for downloading files
 - **include**: List of files/folders to update
 
 ### Manual Update
