@@ -112,8 +112,7 @@ The included `.htaccess` file enables:
 Generate SEO-friendly static pages:
 
 ```bash
-node static_make/js/make.js      # JavaScript version
-python3 static_make/py/make.py   # Python version
+node --experimental-strip-types static_make/make.ts
 ```
 
 **Configuration** in `data/static_make_config.json`:

@@ -1,7 +1,7 @@
 {
   "domain": "https://example.com",
   "index_seo": false,
-  "app_path": "../..",
+  "app_path": "..",
   "out_dir": "static",
   "db_meta_path": "data/db",
   "id_loaded": "db_loaded",

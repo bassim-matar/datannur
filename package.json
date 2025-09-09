@@ -13,12 +13,11 @@
     "serve": "vite preview",
     "test": "vitest",
     "release": "node --experimental-strip-types make_release.ts",
-    "static-make-js": "vite build && node app/static_make/js/make.js",
-    "static-make-py": "vite build && bash app/static_make/py/setup.sh && bash app/static_make/py/make.sh"
+    "static-make": "vite build && node --experimental-strip-types --disable-warning=ExperimentalWarning app/static_make/make.ts"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
-    "@sveltejs/vite-plugin-svelte": "^6.1.4",
+    "@sveltejs/vite-plugin-svelte": "^6.2.0",
     "autoprefixer": "^10.4.21",
     "jsonjsdb_editor": "^0.3.2",
     "open-cli": "^8.0.0",
@@ -27,7 +26,7 @@
     "sass": "^1.92.1",
     "serve-handler": "^6.1.6",
     "sitemap": "^8.0.0",
-    "svelte": "^5.38.7",
+    "svelte": "^5.38.8",
     "typescript": "^5.9.2",
     "vite": "^7.1.5",
     "vite-plugin-full-reload": "^1.2.0",

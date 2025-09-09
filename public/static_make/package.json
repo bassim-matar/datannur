@@ -1,0 +1,14 @@
+{
+  "name": "datannur-static-make",
+  "version": "0.0.2",
+  "type": "module",
+  "description": "Generate SEO-friendly static pages",
+  "scripts": {
+    "make": "node --experimental-strip-types --disable-warning=ExperimentalWarning make.ts"
+  },
+  "dependencies": {
+    "puppeteer": "^24.19.0",
+    "sitemap": "^8.0.0",
+    "serve-handler": "^6.1.6"
+  }
+}

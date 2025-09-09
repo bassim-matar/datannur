@@ -6,8 +6,8 @@ import puppeteer from "puppeteer"
 import { SitemapStream, streamToPromise } from "sitemap"
 import handler from "serve-handler"
 
-const config_file = "../config.json"
-const config_user_file = "../../data/static_make_config.json"
+const config_file = "./config.json"
+const config_user_file = "../data/static_make_config.json"
 const index_file = "./index.html"
 const entry_point = "./index_static_make.html"
 
@@ -40,13 +40,13 @@ async function generate_sitemap(routes, domain, change_frequency = "monthly") {
   })
   streamToPromise(sitemap_stream)
   sitemap_stream.end()
-  return new Promise(resolve => {
+  return new Promise<void>(resolve => {
     write_stream.on("finish", () => resolve())
   })
 }
 
 async function get_entities_routes(db_meta_path) {
-  const routes = []
+  const routes: string[] = []
   for (const entity of config.entities) {
     const filePath = `${db_meta_path}/${entity}.json.js`
     const data = await fs.promises.readFile(filePath, "utf8")
@@ -58,9 +58,9 @@ async function get_entities_routes(db_meta_path) {
       json = array_to_object(json)
     }
 
-    json.forEach(row => {
+    for (const row of json) {
       routes.push(`${entity}/${row.id}`)
-    })
+    }
   }
   return routes
 }
@@ -91,7 +91,7 @@ async function load_config() {
     }
     return config_content
   } catch (error) {
-    console.error("Failed to read or parse", file, error)
+    console.error("Failed to read or parse", config_file, error)
     return null
   }
 }
@@ -111,7 +111,7 @@ async function create_index_file() {
     }
     await fs.promises.writeFile(entry_point, index)
   } catch (error) {
-    console.error("Failed to read or parse", file, error)
+    console.error("Failed to read or parse", index_file, error)
     return null
   }
 }
@@ -135,14 +135,6 @@ function array_to_object(data) {
   return data
 }
 
-async function waitForTimeout(page, timeout) {
-  await page.evaluate(timeout => {
-    return new Promise(resolve => {
-      setTimeout(resolve, timeout)
-    })
-  }, timeout)
-}
-
 function start_server(entry_file, port = 3000) {
   return new Promise(resolve => {
     const server = http.createServer((req, res) => {
@@ -159,7 +151,7 @@ function start_server(entry_file, port = 3000) {
 }
 
 function stop_server(server) {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     server.close(err => {
       if (err) {
         console.error("Failed to close server:", err)
@@ -225,7 +217,7 @@ async function generate_static_site(routes) {
     return
   }
   try {
-    const batches = []
+    const batches: string[][] = []
     const batch_size = Math.ceil(routes.length / config.concurrency)
     for (let i = 0; i < routes.length; i += batch_size) {
       const batch = routes.slice(i, i + batch_size)
@@ -237,7 +229,7 @@ async function generate_static_site(routes) {
   } finally {
     await Promise.all([browser.close(), stop_server(server)])
     await delete_index_file()
-    const time_taken = ((new Date() - start_time) / 1000).toFixed(2)
+    const time_taken = ((+new Date() - +start_time) / 1000).toFixed(2)
     console.log(
       `Static site created ${routes.length} pages in ${time_taken} seconds`
     )
