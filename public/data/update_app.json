@@ -9,10 +9,7 @@
     ".htaccess",
     "manifest.json",
     "static_make/config.json",
-    "static_make/js/make.js",
-    "static_make/js/package.json",
-    "static_make/py/make.py",
-    "static_make/py/make.sh",
-    "static_make/py/setup.sh"
+    "static_make/make.ts",
+    "static_make/package.json"
   ]
 }

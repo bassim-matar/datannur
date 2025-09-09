@@ -6,6 +6,7 @@
 - change : update_app.py use emojis only if terminal support it
 - change : updgrade Datatables version and fix related typescript error
 - change : convert static_make.js to typescript
+- change : update_app.json with static_make ts and no more python version
 - remove : static_make python version
 
 ## 0.12.4 (2025-09-07)
