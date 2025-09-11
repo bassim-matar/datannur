@@ -4,6 +4,7 @@
 
 - add : filter_type "select" to column meta_localisation
 - change : increase update_app.py compatibility to python 3.8+
+- fix : datetime and wrap_long_text function with optional param null
 
 ## 0.12.5 (2025-09-09)
 

@@ -229,7 +229,7 @@ export default class Render {
       `<span class="${copy_text_classes}" title="${copy_text_msg}">${data}</span>`
     )
   }
-  static datetime(data, type, row, option) {
+  static datetime(data, type, row, option = null) {
     if (!data) return ""
     if (type !== "display") return data
 
