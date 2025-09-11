@@ -17,21 +17,157 @@ datannur is a portable data catalog that can run without a server.
 ## Table of Contents
 
 - [Quick Start](#quick-start)
+- [Data Integration](#data-integration)
+  - [Database Structure](#database-structure)
+  - [File Format Specifications](#file-format-specifications)
+  - [Data Schema Overview](#data-schema-overview)
+  - [Conversion Tools](#conversion-tools)
 - [Project Structure](#project-structure)
-- [Configuration](#configuration)
 - [Updates](#updates)
   - [Automatic Update (Recommended)](#automatic-update-recommended)
   - [Manual Update](#manual-update)
 - [Web Deployment](#web-deployment)
   - [URL Rewriting](#url-rewriting)
   - [Static Page Generation](#static-page-generation)
+- [Advanced Configuration](#advanced-configuration)
+  - [DB Configuration](#db-configuration)
+    - [app_name](#app_name)
+    - [path](#path)
+    - [db_key (Optional)](#db_key-optional)
+  - [Compact File Format](#compact-file-format)
 
 ## Quick Start
 
-1. **Download** this folder to your computer
+1. **Download** the app to your computer - [download here](https://github.com/bassim-matar/datannur/releases/latest/download/datannur-app-latest.zip)
 2. **Open** the `index.html` file in your browser
 3. **Explore** the demo metadata to understand how it works
 4. **Replace** the demo metadata in `/data/db/` with your own
+
+## Data Integration
+
+### Database Structure
+
+datannur uses a client-side relational database powered by [jsonjsdb](https://github.com/bassim-matar/jsonjsdb). Your metadata must be structured as a relational database with specific requirements:
+
+- **Database location**: By default in `/data/db/` folder (see [path](#path) for customization options)
+- **Tables**: Represented by `.json.js` files (one file per table)
+- **Table registry**: `__table__.json.js` file lists all available tables
+- **Primary keys**: Must be a column named `id`
+- **Foreign keys**: Columns named after the foreign table with `_id` suffix (e.g., `dataset_id`)
+- **Many-to-many relationships**: Two approaches available:
+  - **Array of IDs** (recommended): Use `_ids` suffix with comma-separated values (e.g., `tag_ids: "1,3,7"`)
+  - **Junction tables**: Use underscore notation (e.g., `dataset_tag` table)
+
+### File Format Specifications
+
+Each `.json.js` file contains standard JSON data (array of objects) preceded by a JavaScript assignment line:
+
+```javascript
+jsonjs.data["dataset"] = [
+  {
+    id: 1,
+    name: "Example item",
+    description: "Item description",
+  },
+  {
+    id: 2,
+    name: "Another item",
+    description: "Another description",
+  },
+]
+```
+
+The format combines:
+
+- **JavaScript assignment**: `jsonjs.data["table_name"] = `
+- **Standard JSON**: Array of objects with your data
+
+#### Table Registry
+
+The `__table__.json.js` file serves as a registry of all available tables in your database:
+
+```javascript
+jsonjs.data["__table__"] = [
+  {
+    name: "dataset",
+    last_modif: 1753608552,
+  },
+  {
+    name: "folder",
+    last_modif: 1757018090,
+  },
+  {
+    name: "__table__",
+    last_modif: 1757018100,
+  },
+]
+```
+
+**Key features:**
+
+- **name**: Table name (must match the corresponding `.json.js` filename)
+- **last_modif**: Unix timestamp of last modification, used for caching optimization
+- **Special entry**: The `"__table__"` entry tracks the overall metadata update time, displayed in the catalog interface
+
+### Data Schema Overview
+
+The catalog supports several entities with flexible relationships. All tables are optional - use only what you need:
+
+> **📋 Schema Reference:** For complete schema details, see the metadata page at `index.html#/meta` in your catalog, which displays all tables and variables based on the current data structure. The "localisation" column indicates whether each table/variable exists only in schema, only in data, or both (when empty).
+>
+> **🔗 Entity Organization:** For information about entities and their relationships, see the about page at `index.html#/about?tab=about_organisation` in your catalog.
+
+#### Configuration Options
+
+The `config.json.js` file allows you to customize various application settings:
+
+```javascript
+jsonjs.data["config"] = [
+  {
+    id: "contact_email",
+    value: "contact@yourdomain.com",
+  },
+  {
+    id: "filter_1",
+    value: "open_data : Open Data",
+  },
+  {
+    id: "filter_2",
+    value: "closed_data : Closed Data",
+  },
+  {
+    id: "banner",
+    value: "![main_banner no_caption](data/img/main_banner.png)",
+  },
+]
+```
+
+**Available options:**
+
+- **contact_email**: Contact email displayed in the catalog interface
+- **filter_1, filter_2, ...**: Custom filter options for datasets type (format: `"key : Display Name"`)
+
+**About page/tab customization:**
+
+The "About" content (both homepage tab and dedicated page) is composed of three sections: `banner` + `body` + `more_info`. Each can be customized independently using Markdown.
+
+- **banner**: Custom main banner image
+  - Add `no_caption` to hide image caption
+  - Add `{dark_mode}` in the filename (`main_banner{dark_mode}`). This will show `main_banner.png` in light mode and `main_banner_dark.png` in dark mode
+- **body**: Custom main content
+- **more_info**: Custom additional information
+
+### Conversion Tools
+
+**Excel to jsonjsdb format:**
+
+- Use the [jsonjsdb_editor](https://github.com/bassim-matar/jsonjsdb/blob/main/jsonjsdb_editor/README.md) Node.js library
+- Converts Excel files to the required `.json.js` format
+- Handles relational structure and foreign key relationships
+
+**Upcoming tools:**
+
+- **R and Python packages** (in development): Functions for metadata extraction and export to `.json.js` format
 
 ## Project Structure
 
@@ -54,26 +190,6 @@ Here is the top-level structure:
 
 > **⚠️ Important:** Only the `/data/` folder should be modified by the user (adding/modifying your metadata). All other files constitute the application and should not be edited, except in exceptional cases or for advanced configuration.
 
-## Configuration
-
-The app uses a configuration automatically embedded in `index.html`:
-
-```html
-<div id="jsonjsdb_config" style="display:none;"
-  data-app_name="dtnr"
-  data-path="data/db"
-  data-db_key="R63CYikswPqAu3uCBnsV"
-  >
-</div>
-```
-
-**Parameters:**
-- **data-app_name**: Application identifier (keep as `"dtnr"`)
-- **data-path**: Path to your database folder (usually `"data/db"`)
-- **data-db_key**: Unique key for your data instance (generate new one if needed)
-
-> **Note:** When using the automatic update script, this configuration is automatically preserved. For manual updates, ensure this configuration block remains in `index.html`.
-
 ## Updates
 
 ### Automatic Update (Recommended)
@@ -84,9 +200,10 @@ If you have Python installed, you can update automatically:
 python3 update_app.py
 ```
 
-> **💡 Note:** The update script uses only Python's standard library - no additional dependencies required! Just run it directly with any Python 3.10+ installation.
+> **💡 Note:** The update script uses only Python's standard library - no additional dependencies required! Just run it directly with any Python 3.8+ installation.
 
 **Configuration options** in `data/update_app.json`:
+
 - **target_version**: Choose `"latest"` (stable), `"pre-release"` (newest), or specific version `"x.x.x"`
 - **proxy_url**: Optional proxy for downloading files
 - **include**: List of files/folders to update
@@ -94,6 +211,7 @@ python3 update_app.py
 ### Manual Update
 
 If you don't have Python, you can:
+
 1. Download the latest version from [Latest release](https://github.com/bassim-matar/datannur/releases/latest/download/datannur-app-latest.zip)
 2. Replace the old files with new ones
 3. Keep your `/data/` folder to preserve your data
@@ -105,6 +223,7 @@ For public web deployment with SEO optimization and clean URLs:
 ### URL Rewriting
 
 The included `.htaccess` file enables:
+
 - **Clean URLs**: `/dataset/123` instead of `#/dataset/123`
 - **Static page fallback**: Serves pre-generated HTML when available
 - **HTTPS redirect**: Automatic redirect to secure connection
@@ -119,9 +238,75 @@ node --experimental-strip-types static_make/make.ts
 ```
 
 **Configuration** in `data/static_make_config.json`:
+
 - **domain**: Your public domain (e.g., `"https://yourdomain.com"`) - required for sitemap generation when `index_seo: true`
 - **index_seo**: `true` to allow search engine indexing, `false` to add `noindex` meta tag (default: `false`)
 - **entities**: Which entity types to generate static pages for
 - **routes**: Which routes to pre-generate
 
 > **Note:** This setup requires an Apache server with mod_rewrite enabled. Static generation creates SEO-optimized HTML files while maintaining the full SPA functionality.
+
+## Advanced Configuration
+
+### DB Configuration
+
+The app uses a configuration automatically embedded in `index.html`:
+
+```html
+<div
+  id="jsonjsdb_config"
+  style="display:none;"
+  data-app_name="datannur-app"
+  data-path="data/db"
+></div>
+```
+
+> **💡 Best Practice:** Instead of editing `index.html` directly, modify the configuration in `/data/jsonjsdb_config.html` and then:
+>
+> - Run `python3 update_app.py` to automatically apply the configuration, OR
+> - Manually copy the configuration block from `/data/jsonjsdb_config.html` to `index.html`
+>
+> This approach ensures your configuration is preserved during application updates.
+
+#### app_name
+
+The `data-app_name` parameter is an application identifier used as a namespace for user data stored in the browser (favorites, search history, settings).
+
+**Default value:** `"datannur-app"`
+
+**Use case:** Change this value when running multiple catalog instances from the same location to keep user data separate. For example, use `"catalog-dev"` and `"catalog-prod"` to isolate development and production environments.
+
+#### path
+
+The `data-path` parameter defines the path to your database folder (default: `"data/db"`).
+
+- Can be a relative path from the `index.html` location
+- Examples: `"data/db"`, `"my_catalog/database"`, `"../shared_data/db"`
+
+#### db_key (Optional)
+
+The `data-db_key` parameter provides security enhancement against data exfiltration by malicious scripts running in the browser on `file://`.
+
+```html
+<div
+  id="jsonjsdb_config"
+  style="display:none;"
+  data-app_name="datannur-app"
+  data-path="data/db"
+  data-db_key="R63CYikswPqAu3uCBnsV"
+></div>
+```
+
+This configuration expects your data files to be in `/data/db/{key}/`, making file paths unpredictable to malicious scripts.
+
+### Compact File Format
+
+For large datasets, you can use a more compact file format (list of lists) to reduce file size and improve loading performance. It can also be minified.
+
+```javascript
+jsonjs.data["table_name"] = [
+  ["id", "name", "description"],
+  [1, "Example item", "Item description"],
+  [2, "Another item", "Another description"],
+]
+```
