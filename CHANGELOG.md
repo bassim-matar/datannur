@@ -7,6 +7,7 @@
 - change : increase update_app.py compatibility to python 3.8+
 - change : internalize alias for institution
 - fix : datetime and wrap_long_text function with optional param null
+- fix : test Time import path alias
 - remove : optional db_key param in default config jsonjsdb_config.html
 
 ## 0.12.5 (2025-09-09)
