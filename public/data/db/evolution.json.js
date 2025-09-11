@@ -1011,5 +1011,27 @@ jsonjs.data['evolution'] =
     "old_value": "2021/04",
     "new_value": "2021/05",
     "name": null
+  },
+  {
+    "timestamp": 1757605298,
+    "type": "delete",
+    "entity": "config",
+    "entity_id": "alias_1",
+    "parent_entity_id": null,
+    "variable": null,
+    "old_value": null,
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1757605298,
+    "type": "delete",
+    "entity": "config",
+    "entity_id": "alias_2",
+    "parent_entity_id": null,
+    "variable": null,
+    "old_value": null,
+    "new_value": null,
+    "name": null
   }
 ]
