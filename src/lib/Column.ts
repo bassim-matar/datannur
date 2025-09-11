@@ -690,6 +690,7 @@ export default class Column {
     return {
       data: "meta_localisation",
       title: Render.icon("localisation") + "Localisation",
+      filter_type: "select",
       defaultContent: "",
       tooltip: "Localisation (dans les données ou dans le schéma",
       render: data => {

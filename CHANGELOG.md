@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- add : filter_type "select" to column meta_localisation
+
 ## 0.12.5 (2025-09-09)
 
 - add : proxy_url config option and no python dependencies in public readme
@@ -12,8 +16,6 @@
 
 ## 0.12.4 (2025-09-07)
 
-- change : just a test for new release process
-- change : just another test for new release process
 - change : improve update_app.py script
 - change : refactor get_config() and  use some early return in update_app.py
 - change : refactor vite.config.ts
