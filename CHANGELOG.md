@@ -3,6 +3,7 @@
 ## unreleased
 
 - add : filter_type "select" to column meta_localisation
+- change : increase update_app.py compatibility to python 3.8+
 
 ## 0.12.5 (2025-09-09)
 

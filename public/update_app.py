@@ -8,7 +8,7 @@ import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
-from typing import TypedDict
+from typing import TypedDict, Optional, List
 from urllib.response import addinfourl
 
 REPO_PATH = Path(__file__).parent
@@ -22,8 +22,8 @@ REQUEST_TIMEOUT = 30  # seconds
 
 class Config(TypedDict):
     target_version: str
-    include: list[str]
-    proxy_url: str | None
+    include: List[str]
+    proxy_url: Optional[str]
 
 
 class AssetInfo(TypedDict):
@@ -83,7 +83,7 @@ def get_config() -> Config:
     return config
 
 
-def make_request(url: str, proxy_url: str | None = None) -> bytes:
+def make_request(url: str, proxy_url: Optional[str] = None) -> bytes:
     """Make HTTP request with optional proxy and size limit."""
 
     def read_with_limit(response: addinfourl) -> bytes:
@@ -124,7 +124,7 @@ def verify_file_integrity(file_path: Path, expected_sha256: str) -> bool:
     return True
 
 
-def get_asset_url(target_version: str, proxy_url: str | None = None) -> AssetInfo:
+def get_asset_url(target_version: str, proxy_url: Optional[str] = None) -> AssetInfo:
     """Get download URL and SHA256 for the app asset from GitHub releases."""
     if target_version == "pre-release":
         url = f"{GITHUB_REPO_API}/tags/pre-release"
@@ -156,7 +156,7 @@ def get_asset_url(target_version: str, proxy_url: str | None = None) -> AssetInf
 
 
 def download_and_extract(
-    asset_info: AssetInfo, temp_dir: Path, proxy_url: str | None = None
+    asset_info: AssetInfo, temp_dir: Path, proxy_url: Optional[str] = None
 ) -> bool:
     """Download and extract app package with integrity verification."""
     zip_url = asset_info["url"]
@@ -190,7 +190,7 @@ def download_and_extract(
     return True
 
 
-def copy_files(source_dir: Path, files_to_copy: list[str]) -> None:
+def copy_files(source_dir: Path, files_to_copy: List[str]) -> None:
     """Copy specified files from source to repo directory."""
     for item in files_to_copy:
         source_item = source_dir / item
