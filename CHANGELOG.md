@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.12.6 (2025-09-11)
 
 - add : filter_type "select" to column meta_localisation
 - add : doc for data integration
