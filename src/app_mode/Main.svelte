@@ -88,7 +88,14 @@
       console.log("init filter", Math.round(performance.now() - timer) + " ms")
 
       timer = performance.now()
-      await db.init({ filter })
+      const db_option = {
+        filter,
+        aliases: [
+          { table: "institution", alias: "owner" },
+          { table: "institution", alias: "manager" },
+        ],
+      }
+      await db.init(db_option)
       console.log("load db", Math.round(performance.now() - timer) + " ms")
 
       timer = performance.now()
@@ -161,7 +168,7 @@
   db.loaded.then(() => {
     const main_banner = new Image()
     let banner_src = db.table_has_id("config", "banner")
-      ? db.get_config("banner") as string
+      ? (db.get_config("banner") as string)
       : default_banner
     banner_src = banner_src?.split("(")[1]?.split(")")[0]
     main_banner.src = banner_src?.replaceAll(
@@ -170,8 +177,14 @@
     )
     main_banner.onload = () => {
       const css_var_style = document.documentElement.style
-      css_var_style.setProperty("--main_banner_width", main_banner.width.toString())
-      css_var_style.setProperty("--main_banner_height", main_banner.height.toString())
+      css_var_style.setProperty(
+        "--main_banner_width",
+        main_banner.width.toString(),
+      )
+      css_var_style.setProperty(
+        "--main_banner_height",
+        main_banner.height.toString(),
+      )
     }
 
     console.log("init total", Math.round(performance.now() - timer) + " ms")

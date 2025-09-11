@@ -5,6 +5,7 @@
 - add : filter_type "select" to column meta_localisation
 - add : doc for data integration
 - change : increase update_app.py compatibility to python 3.8+
+- change : internalize alias for institution
 - fix : datetime and wrap_long_text function with optional param null
 - remove : optional db_key param in default config jsonjsdb_config.html
 
