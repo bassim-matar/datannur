@@ -4,9 +4,7 @@
   "app_path": "..",
   "out_dir": "static",
   "db_meta_path": "data/db",
-  "id_loaded": "db_loaded",
   "port": 8080,
-  "concurrency": 1,
   "entities": ["institution", "folder", "tag", "doc", "dataset"],
   "routes": [
     "",

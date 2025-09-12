@@ -7,7 +7,8 @@
     "make": "node --experimental-strip-types --disable-warning=ExperimentalWarning make.ts"
   },
   "dependencies": {
-    "puppeteer": "^24.19.0",
+    "@types/serve-handler": "^6.1.4",
+    "playwright": "^1.55.0",
     "sitemap": "^8.0.0",
     "serve-handler": "^6.1.6"
   }
