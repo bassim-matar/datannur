@@ -9,6 +9,7 @@
 - fix: update main entry point to TypeScript and correct release script filename
 - fix: standardize formatting with `: ` in CHANGELOG.md
 - fix: update_app.py to correctly remove existing jsonjsdb_config div using regex
+- fix: missing dependencie in write-excel-file used by jsonjsdb_editor
 
 ## 0.12.6 (2025-09-11)
 

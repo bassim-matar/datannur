@@ -1,4 +1,4 @@
-import path, { dirname, join } from "path"
+import { dirname, join } from "path"
 import { fileURLToPath } from "url"
 import { Jsonjsdb_watcher } from "jsonjsdb_editor"
 
