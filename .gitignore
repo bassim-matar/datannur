@@ -4,5 +4,6 @@ bundle-visualizer.html
 .vscode/
 /node_modules/
 /app/
+/deploy.config.json
 /public/assets/external/*.js
 /src/.generated/*.ts

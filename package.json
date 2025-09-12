@@ -12,8 +12,11 @@
     "preview": "open-cli app/index.html",
     "serve": "vite preview",
     "test": "vitest run",
-    "release": "node --experimental-strip-types release.ts",
-    "static-make": "vite build && node --experimental-strip-types --disable-warning=ExperimentalWarning app/static_make/make.ts"
+    "node:ts": "node --experimental-strip-types --disable-warning=ExperimentalWarning",
+    "release": "npm run node:ts release.ts",
+    "static-make": "vite build && npm run node:ts app/static_make/make.ts",
+    "deploy": "npm run node:ts app/deploy.ts",
+    "static-deploy": "npm run static-make && npm run deploy"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",

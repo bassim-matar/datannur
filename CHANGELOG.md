@@ -2,7 +2,8 @@
 
 ## unreleased
 
-- fix: update main entry point to TypeScript and correct release script filename
+- add : deployment configuration and script for server deployment
+- fix : update main entry point to TypeScript and correct release script filename
 
 ## 0.12.6 (2025-09-11)
 

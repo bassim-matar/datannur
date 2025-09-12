@@ -1,0 +1,26 @@
+{
+  "_comment": "Copy this file to data/deploy.config.json and fill in your server details",
+  "name": "your-server-name",
+  "host": "your-server-host",
+  "port": 22,
+  "username": "your-username", 
+  "remotePath": "/path/to/your/web/directory",
+  "privateKeyPath": "~/.ssh/id_rsa",
+  "ignore": [
+    "static_make",
+    "sync_db",
+    ".DS_Store",
+    "~$*",
+    "update_app.json",
+    "update_app.py",
+    "jsonjsdb_config.html",
+    "static_make_config.json",
+    ".nojekyll",
+    "deploy.ts",
+    "deploy.config.template.json",
+    "data/deploy.config.json"
+  ],
+  "syncOption": {
+    "delete": true
+  }
+}
