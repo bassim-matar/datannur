@@ -17,18 +17,21 @@ datannur is a portable data catalog that can run without a server.
 ## Table of Contents
 
 - [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
 - [Data Integration](#data-integration)
   - [Database Structure](#database-structure)
   - [File Format Specifications](#file-format-specifications)
+    - [Table Registry](#table-registry)
   - [Data Schema Overview](#data-schema-overview)
-  - [Conversion Tools](#conversion-tools)
-- [Project Structure](#project-structure)
+    - [Configuration Options](#configuration-options)
+  - [Excel to jsonjsdb format](#excel-to-jsonjsdb-format)
 - [Updates](#updates)
   - [Automatic Update (Recommended)](#automatic-update-recommended)
   - [Manual Update](#manual-update)
 - [Web Deployment](#web-deployment)
-  - [URL Rewriting](#url-rewriting)
   - [Static Page Generation](#static-page-generation)
+  - [Deployment](#deployment)
+  - [URL Rewriting](#url-rewriting)
 - [Advanced Configuration](#advanced-configuration)
   - [DB Configuration](#db-configuration)
     - [app_name](#app_name)
@@ -42,6 +45,27 @@ datannur is a portable data catalog that can run without a server.
 2. **Open** the `index.html` file in your browser
 3. **Explore** the demo metadata to understand how it works
 4. **Replace** the demo metadata in `/data/db/` with your own
+
+## Project Structure
+
+Here is the top-level structure:
+
+```
+├── assets/                     # Static assets (JS, images, etc.)
+├── data/                       # ⚠️ YOUR DATA - Only folder to modify
+├── node_scripts/               # Node.js scripts (deploy, static generation, sync db)
+├── .htaccess                   # Apache configuration (clean URLs, cache)
+├── .nojekyll                   # Disables Jekyll on GitHub Pages
+├── README.md                   # This documentation
+├── index.html                  # Application entry point
+├── manifest.json               # PWA configuration
+├── deploy.config.template.json # Deployment config template
+├── package.json                # Node.js package manifest
+├── tsconfig.json               # TypeScript configuration
+├── update_app.py               # Automatic update script
+```
+
+> **⚠️ Important:** Only the `/data/` folder should be modified by the user (adding/modifying your metadata). All other files constitute the application and should not be edited, except in exceptional cases or for advanced configuration.
 
 ## Data Integration
 
@@ -157,38 +181,14 @@ The "About" content (both homepage tab and dedicated page) is composed of three 
 - **body**: Custom main content
 - **more_info**: Custom additional information
 
-### Conversion Tools
+### Excel to jsonjsdb format
 
-**Excel to jsonjsdb format:**
-
-- Use the [jsonjsdb_editor](https://github.com/bassim-matar/jsonjsdb/blob/main/jsonjsdb_editor/README.md) Node.js library
-- Converts Excel files to the required `.json.js` format
-- Handles relational structure and foreign key relationships
-
-**Upcoming tools:**
-
-- **R and Python packages** (in development): Functions for metadata extraction and export to `.json.js` format
-
-## Project Structure
-
-Here is the top-level structure:
-
-```
-├── .htaccess             # Apache configuration (clean URLs, cache)
-├── .nojekyll             # Disables Jekyll on GitHub Pages
-├── CHANGELOG.md          # Change history
-├── LICENSE.md            # Project license
-├── README.md             # This documentation
-├── index.html            # Application entry point
-├── manifest.json         # PWA configuration
-├── update_app.py         # Automatic update script
-├── assets/               # Static assets (CSS, JS, images)
-├── data/                 # ⚠️ YOUR DATA - Only folder to modify
-├── static_make/          # Static generation tool
-└── sync_db/              # Database synchronization
-```
-
-> **⚠️ Important:** Only the `/data/` folder should be modified by the user (adding/modifying your metadata). All other files constitute the application and should not be edited, except in exceptional cases or for advanced configuration.
+- Use the script `node_scripts/sync_db.ts` to convert Excel files to the required `.json.js` format.
+- Run with:
+  ```bash
+  npm run sync_db
+  ```
+- The script supports a watch mode: any changes to your Excel files are automatically detected and converted to `.json.js`, keeping your metadata up to date in real time.
 
 ## Updates
 
@@ -220,6 +220,49 @@ If you don't have Python, you can:
 
 For public web deployment with SEO optimization and clean URLs:
 
+### Static Page Generation
+
+Generate SEO-friendly static pages:
+
+```bash
+npm run static_make
+```
+
+**Configuration** in `data/static_make.config.json`:
+
+- **domain**: Your public domain (e.g., `"https://yourdomain.com"`) - required for sitemap generation when `index_seo: true`
+- **index_seo**: `true` to allow search engine indexing, `false` to add `noindex` meta tag (default: `false`)
+- **entities**: Which entity types to generate static pages for
+- **routes**: Which routes to pre-generate
+
+> **Note:** This setup requires an Apache server with mod_rewrite enabled. Static generation creates SEO-optimized HTML files while maintaining the full SPA functionality.
+
+### Deployment
+
+The deployment script `node_scripts/deploy.ts` automates the process of publishing your app to a remote server using `rsync` over SSH.
+
+**Usage:**
+
+```bash
+npm run deploy
+```
+
+**How it works:**
+
+- Reads deployment settings from `deploy.config.json` (see `deploy.config.template.json` for an example).
+- Uses `rsync` to synchronize your local files to the remote server, with options for excluding files and deleting removed files.
+- Supports SSH key authentication and custom port configuration.
+- Shows progress and errors directly in the terminal.
+
+**Configuration options:**
+
+- `host`, `port`, `username`, `privateKeyPath`: SSH connection details
+- `remotePath`: Destination folder on the server
+- `ignore`: Array of file/folder patterns to exclude
+- `syncOption.delete`: If true, files deleted locally are also deleted remotely
+
+> If no config is found, the script will prompt you to create one from the template (`deploy.config.template.json`).
+
 ### URL Rewriting
 
 The included `.htaccess` file enables:
@@ -228,23 +271,6 @@ The included `.htaccess` file enables:
 - **Static page fallback**: Serves pre-generated HTML when available
 - **HTTPS redirect**: Automatic redirect to secure connection
 - **Caching**: Optimized cache headers for assets
-
-### Static Page Generation
-
-Generate SEO-friendly static pages:
-
-```bash
-node --experimental-strip-types static_make/make.ts
-```
-
-**Configuration** in `data/static_make_config.json`:
-
-- **domain**: Your public domain (e.g., `"https://yourdomain.com"`) - required for sitemap generation when `index_seo: true`
-- **index_seo**: `true` to allow search engine indexing, `false` to add `noindex` meta tag (default: `false`)
-- **entities**: Which entity types to generate static pages for
-- **routes**: Which routes to pre-generate
-
-> **Note:** This setup requires an Apache server with mod_rewrite enabled. Static generation creates SEO-optimized HTML files while maintaining the full SPA functionality.
 
 ## Advanced Configuration
 

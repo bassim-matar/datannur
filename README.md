@@ -148,8 +148,8 @@ For more commands, see the Scripts section below.
 - `npm run serve` - Serve built app on localhost
 - `npm run test` - Run test suite with Vitest
 - `npm run release` - Create and publish release
-- `npm run static-make-js` - Build + generate static pages for SEO (JS version)
-- `npm run static-make-py` - Build + generate static pages for SEO (Python version)
+- `npm run static-make` - Build + generate static pages for SEO
+- `npm run deploy` - Deploy to server
 
 ## Contributing
 
