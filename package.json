@@ -14,8 +14,8 @@
     "test": "vitest run",
     "node:ts": "node --experimental-strip-types --disable-warning=ExperimentalWarning",
     "release": "npm run node:ts release.ts",
-    "static-make": "vite build && npm run node:ts app/static_make/make.ts",
-    "deploy": "npm run node:ts app/deploy.ts",
+    "static-make": "vite build && npm run node:ts app/node_scripts/static_make.ts",
+    "deploy": "npm run node:ts app/node_scripts/deploy.ts",
     "static-deploy": "npm run static-make && npm run deploy"
   },
   "devDependencies": {

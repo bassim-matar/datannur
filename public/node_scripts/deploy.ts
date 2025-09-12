@@ -1,14 +1,14 @@
-import { execSync } from "node:child_process"
-import { readFileSync, existsSync } from "node:fs"
-import { dirname, join } from "node:path"
-import { fileURLToPath } from "node:url"
+import { execSync } from "child_process"
+import { readFileSync, existsSync } from "fs"
+import { dirname, join } from "path"
+import { fileURLToPath } from "url"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-process.chdir(__dirname)
+process.chdir(join(__dirname, ".."))
 
 const configPaths = [
-  join(__dirname, "data", "deploy.config.json"),
-  join(__dirname, "..", "deploy.config.json")
+  join(__dirname, "..", "data", "deploy.config.json"),
+  join(__dirname, "..", "..", "deploy.config.json"),
 ]
 
 let configPath: string | null = null

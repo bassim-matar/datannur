@@ -2,16 +2,15 @@
   "target_version": "latest",
   "include": [
     "assets",
+    "node_scripts",
     "index.html",
     "LICENSE.md",
     "README.md",
     "CHANGELOG.md",
     ".htaccess",
+    "package.json",
     "manifest.json",
-    "deploy.ts",
     "deploy.config.template.json",
-    "static_make/config.json",
-    "static_make/make.ts",
-    "static_make/package.json"
+    "tsconfig.json"
   ]
 }

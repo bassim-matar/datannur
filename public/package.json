@@ -1,0 +1,19 @@
+{
+  "name": "datannur-app",
+  "version": "0.0.3",
+  "type": "module",
+  "description": "datannur app",
+  "scripts": {
+    "node:ts": "node --experimental-strip-types --disable-warning=ExperimentalWarning",
+    "static-make": "npm run node:ts node_scripts/static_make.ts",
+    "deploy": "npm run node:ts node_scripts/deploy.ts",
+    "sync_db": "npm run node:ts node_scripts/sync_db.ts"
+  },
+  "dependencies": {
+    "@types/serve-handler": "^6.1.4",
+    "playwright": "^1.55.0",
+    "sitemap": "^8.0.0",
+    "serve-handler": "^6.1.6",
+    "jsonjsdb_editor": "^0.1.14"
+  }
+}

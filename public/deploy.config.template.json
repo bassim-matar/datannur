@@ -7,18 +7,20 @@
   "remotePath": "/path/to/your/web/directory",
   "privateKeyPath": "~/.ssh/id_rsa",
   "ignore": [
-    "static_make",
-    "sync_db",
+    "node_scripts",
+    "node_modules",
     ".DS_Store",
     "~$*",
-    "update_app.json",
     "update_app.py",
-    "jsonjsdb_config.html",
-    "static_make_config.json",
+    "package.json",
+    "package-lock.json",
     ".nojekyll",
-    "deploy.ts",
     "deploy.config.template.json",
-    "data/deploy.config.json"
+    "data/jsonjsdb_config.html",
+    "data/deploy.config.json",
+    "data/static_make.config.json",
+    "data/update_app.json",
+    "tsconfig.json"
   ],
   "syncOption": {
     "delete": true

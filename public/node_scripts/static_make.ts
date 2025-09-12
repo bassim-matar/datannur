@@ -1,6 +1,6 @@
 import fs, { writeFileSync, createWriteStream } from "fs"
 import http from "http"
-import path from "path"
+import path, { dirname, join } from "path"
 import { fileURLToPath } from "url"
 import { chromium, type Browser, type Page } from "playwright"
 import { SitemapStream, streamToPromise } from "sitemap"
@@ -19,8 +19,7 @@ interface Config {
 
 let config: Config
 
-const config_file = "./config.json"
-const config_user_file = "../data/static_make_config.json"
+const config_file = "./data/static_make.config.json"
 const index_file = "./index.html"
 const entry_point = "./index_static_make.html"
 
@@ -94,14 +93,6 @@ async function load_config(): Promise<Config | null> {
     const config_content = JSON.parse(
       await fs.promises.readFile(config_file, "utf-8")
     )
-    if (fs.existsSync(config_user_file)) {
-      const config_user = JSON.parse(
-        await fs.promises.readFile(config_user_file, "utf-8")
-      )
-      for (const key in config_user) {
-        config_content[key] = config_user[key]
-      }
-    }
     return config_content as Config
   } catch (error) {
     console.error("Failed to read or parse", config_file, error)
@@ -252,7 +243,8 @@ async function generate_static_site(routes: string[], start_time: Date) {
   }
 }
 
-process.chdir(path.dirname(fileURLToPath(import.meta.url)))
+const __dirname = dirname(fileURLToPath(import.meta.url))
+process.chdir(join(__dirname, ".."))
 const start_time = new Date()
 const loadedConfig = await load_config()
 

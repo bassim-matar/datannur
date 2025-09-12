@@ -5,6 +5,7 @@
 - add: deployment configuration and script for server deployment
 - change: migrate static_make from Puppeteer to Playwright
 - change: migrate live_browser test from Puppeteer to Playwright
+- change: refactor node scripts in public folder
 - fix: update main entry point to TypeScript and correct release script filename
 - fix: standardize formatting with `: ` in CHANGELOG.md
 
