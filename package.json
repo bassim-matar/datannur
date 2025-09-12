@@ -5,14 +5,14 @@
   "license": "MIT",
   "type": "module",
   "private": true,
-  "main": "src/main.js",
+  "main": "src/main.ts",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "open-cli app/index.html",
     "serve": "vite preview",
     "test": "vitest run",
-    "release": "node --experimental-strip-types make_release.ts",
+    "release": "node --experimental-strip-types release.ts",
     "static-make": "vite build && node --experimental-strip-types --disable-warning=ExperimentalWarning app/static_make/make.ts"
   },
   "devDependencies": {

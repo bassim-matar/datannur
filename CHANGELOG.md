@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fix: update main entry point to TypeScript and correct release script filename
+
 ## 0.12.6 (2025-09-11)
 
 - add : filter_type "select" to column meta_localisation
