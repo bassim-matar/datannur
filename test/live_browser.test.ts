@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { chromium } from 'playwright'
+import type { Browser, Page } from 'playwright'
 import path from "path"
 import { pathToFileURL, fileURLToPath } from "url"
-import puppeteer, { Browser, Page } from "puppeteer"
 
 const this_folder = path.dirname(fileURLToPath(import.meta.url))
 let base_url = pathToFileURL(path.resolve(this_folder, "..")).href
@@ -11,7 +12,7 @@ let browser: Browser
 let page: Page
 
 beforeAll(async () => {
-  browser = await puppeteer.launch({ headless: true })
+  browser = await chromium.launch({ headless: true })
   page = await browser.newPage()
 })
 
@@ -50,9 +51,7 @@ describe("UI tests", () => {
   page_names.forEach(page_name => {
     it(`should display the main section for page: ${page_name}`, async () => {
       await page.goto(`${base_url}#/${page_name}`)
-      const section = await page.waitForSelector(
-        "div#wrapper > section.section"
-      )
+      const section = await page.waitForSelector("div#wrapper > section.section")
       expect(section).toBeTruthy()
     })
   })
