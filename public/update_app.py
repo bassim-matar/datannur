@@ -1,6 +1,7 @@
 import hashlib
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -243,7 +244,10 @@ def add_jsonjsdb_config() -> None:
     try:
         jdb_config = config_file.read_text(encoding="utf-8")
         original_index = index_file.read_text(encoding="utf-8")
-        index_without_config = original_index.split('<div id="jsonjsdb_config"')[0]
+        pattern = r'<div\s+id="jsonjsdb_config"[^>]*>.*?</div>'
+        index_without_config = re.sub(
+            pattern, "", original_index, flags=re.DOTALL | re.IGNORECASE
+        )
         index_with_new_config = index_without_config + jdb_config
         index_file.write_text(index_with_new_config, encoding="utf-8")
         print(f"{SUCCESS} jsonjsdb config added to index.html")
