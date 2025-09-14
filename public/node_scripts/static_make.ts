@@ -1,73 +1,78 @@
-import fs, { writeFileSync, createWriteStream } from "fs"
-import http from "http"
-import path, { dirname, join } from "path"
-import { fileURLToPath } from "url"
-import { chromium, type Browser, type Page } from "playwright"
-import { SitemapStream, streamToPromise } from "sitemap"
-import handler from "serve-handler"
+import fs, { writeFileSync, createWriteStream } from 'fs'
+import http from 'http'
+import path, { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
+import { chromium, type Browser, type Page } from 'playwright'
+import { SitemapStream, streamToPromise } from 'sitemap'
+import handler from 'serve-handler'
+import camelcaseKeys from 'camelcase-keys'
 
 interface Config {
   domain: string
-  index_seo: boolean
-  app_path: string
-  out_dir: string
-  db_meta_path: string
+  indexSeo: boolean
+  appPath: string
+  outDir: string
+  dbMetaPath: string
   port: number
   entities: string[]
   routes: string[]
 }
 
-let config: Config
+const configFile = './data/static_make.config.json'
+const indexFile = './index.html'
+const entryPoint = './index_static_make.html'
 
-const config_file = "./data/static_make.config.json"
-const index_file = "./index.html"
-const entry_point = "./index_static_make.html"
-
-async function wait_until_ready(url: string, max_attempts = 30, delay_ms = 200) {
-  for (let i = 0; i < max_attempts; i++) {
+async function waitUntilReady(url: string, maxAttempts = 30, delayMs = 200) {
+  for (let i = 0; i < maxAttempts; i++) {
     try {
       const res = await fetch(url)
       if (res.ok) return
-    } catch (_) {}
-    await new Promise(resolve => setTimeout(resolve, delay_ms))
+    } catch {
+      // ignore errors
+    }
+    await new Promise(resolve => setTimeout(resolve, delayMs))
   }
   throw new Error(`Timeout: server not ready at ${url}`)
 }
 
-async function generate_sitemap(routes: string[], domain: string, change_frequency = "monthly") {
-  function calculate_priority(url: string) {
-    if (url === "") return 1.0
-    const depth = url.split("/").filter(Boolean).length
+async function generateSitemap(
+  routes: string[],
+  domain: string,
+  changeFrequency = 'monthly'
+) {
+  function calculatePriority(url: string) {
+    if (url === '') return 1.0
+    const depth = url.split('/').filter(Boolean).length
     return Math.max(0.3, 1.0 - depth * 0.2)
   }
-  const sitemap_stream = new SitemapStream({ hostname: domain })
-  const write_stream = createWriteStream("sitemap.xml")
-  sitemap_stream.pipe(write_stream)
+  const sitemapStream = new SitemapStream({ hostname: domain })
+  const writeStream = createWriteStream('sitemap.xml')
+  sitemapStream.pipe(writeStream)
   routes.forEach((route: string) => {
-    sitemap_stream.write({
+    sitemapStream.write({
       url: `/${route}`,
-      changefreq: change_frequency,
-      priority: calculate_priority(route),
+      changefreq: changeFrequency,
+      priority: calculatePriority(route),
     })
   })
-  streamToPromise(sitemap_stream)
-  sitemap_stream.end()
+  streamToPromise(sitemapStream)
+  sitemapStream.end()
   return new Promise<void>(resolve => {
-    write_stream.on("finish", () => resolve())
+    writeStream.on('finish', () => resolve())
   })
 }
 
-async function get_entities_routes(db_meta_path: string) {
+async function getEntitiesRoutes(dbMetaPath: string) {
   const routes: string[] = []
   for (const entity of config.entities) {
-    const filePath = `${db_meta_path}/${entity}.json.js`
-    const data = await fs.promises.readFile(filePath, "utf8")
-    const index = data.indexOf("=")
-    const jsonPart = index !== -1 ? data.substring(index + 1).trim() : ""
+    const filePath = `${dbMetaPath}/${entity}.json.js`
+    const data = await fs.promises.readFile(filePath, 'utf8')
+    const index = data.indexOf('=')
+    const jsonPart = index !== -1 ? data.substring(index + 1).trim() : ''
     let json = JSON.parse(jsonPart)
 
     if (json.length > 0 && Array.isArray(json[0])) {
-      json = array_to_object(json)
+      json = arrayToObject(json)
     }
 
     for (const row of json) {
@@ -77,74 +82,78 @@ async function get_entities_routes(db_meta_path: string) {
   return routes
 }
 
-async function get_db_meta_path(output_db: string) {
-  const items = await fs.promises.readdir(output_db, { withFileTypes: true })
+async function getDbMetaPath(outputDb: string) {
+  const items = await fs.promises.readdir(outputDb, { withFileTypes: true })
   const files = items.filter(
-    item => item.isFile() && item.name.endsWith(".json.js")
+    item => item.isFile() && item.name.endsWith('.json.js')
   ).length
-  if (files > 0) return output_db
+  if (files > 0) return outputDb
   const folders = items.filter(item => item.isDirectory())
-  if (folders.length !== 1) return output_db
-  return (output_db = path.join(output_db, folders[0].name))
+  if (folders.length !== 1) return outputDb
+  return (outputDb = path.join(outputDb, folders[0].name))
 }
 
-async function load_config(): Promise<Config | null> {
+async function loadConfig(): Promise<Config | null> {
   try {
-    const config_content = JSON.parse(
-      await fs.promises.readFile(config_file, "utf-8")
+    const rawConfig = JSON.parse(
+      await fs.promises.readFile(configFile, 'utf-8')
     )
-    return config_content as Config
+
+    return camelcaseKeys(rawConfig) as Config
   } catch (error) {
-    console.error("Failed to read or parse", config_file, error)
+    console.error('Failed to read or parse', configFile, error)
     return null
   }
 }
 
-async function create_index_file() {
+async function createIndexFile() {
   try {
-    let index = await fs.promises.readFile(index_file, "utf8")
+    let index = await fs.promises.readFile(indexFile, 'utf8')
     index = index
       .toString()
       .replace(`<base href=""`, `<base href="/"`)
-      .replace("<head>", `<head><meta app_mode="static" />`)
-    if (config.index_seo) {
+      .replace('<head>', `<head><meta app_mode="static" />`)
+    if (config.indexSeo) {
       index = index.replace(
         `<meta name="robots" content="noindex"`,
         `<meta name="robots" `
       )
     }
-    await fs.promises.writeFile(entry_point, index)
+    await fs.promises.writeFile(entryPoint, index)
   } catch (error) {
-    console.error("Failed to read or parse", index_file, error)
+    console.error('Failed to read or parse', indexFile, error)
     return null
   }
 }
 
-async function delete_index_file() {
+async function deleteIndexFile() {
   try {
-    await fs.promises.unlink(entry_point)
+    await fs.promises.unlink(entryPoint)
   } catch (error) {
-    console.error("Failed to delete", entry_point, error)
+    console.error('Failed to delete', entryPoint, error)
   }
 }
 
-function array_to_object(data: any[]) {
-  data = data.map((row: any) => {
-    return row.reduce((acc: any, item: any, index: number) => {
-      const key = data[0][index]
-      return { ...acc, [key]: item }
-    }, {})
-  })
-  data.shift()
-  return data
+function arrayToObject(data: unknown[][]): Record<string, unknown>[] {
+  const [headers, ...rows] = data
+  const result: Record<string, unknown>[] = []
+  for (const row of rows) {
+    const obj: Record<string, unknown> = {}
+    for (let i = 0; i < row.length; i++) {
+      const key = headers[i] as string
+      obj[key] = row[i]
+    }
+    result.push(obj)
+  }
+  return result
 }
 
-function start_server(entry_file: string, port = 3000) {
+function startServer(entryFile: string, port = 3000): Promise<http.Server> {
   return new Promise(resolve => {
     const server = http.createServer((req, res) => {
       return handler(req, res, {
-        public: ".",
-        rewrites: [{ source: "**", destination: entry_file }],
+        public: '.',
+        rewrites: [{ source: '**', destination: entryFile }],
       })
     })
     server.listen(port, async () => {
@@ -154,11 +163,11 @@ function start_server(entry_file: string, port = 3000) {
   })
 }
 
-function stop_server(server: any) {
+function stopServer(server: http.Server) {
   return new Promise<void>((resolve, reject) => {
-    server.close((err: any) => {
+    server.close((err?: Error) => {
       if (err) {
-        console.error("Failed to close server:", err)
+        console.error('Failed to close server:', err)
         reject(err)
       } else {
         resolve()
@@ -167,107 +176,108 @@ function stop_server(server: any) {
   })
 }
 
-async function init_page(browser: Browser) {
-  const page_url = `http://localhost:${config.port}`
-  await wait_until_ready(page_url)
+async function initPage(browser: Browser) {
+  const pageUrl = `http://localhost:${config.port}`
+  await waitUntilReady(pageUrl)
   const page = await browser.newPage()
   page.setDefaultTimeout(10000)
-  await page.goto(page_url)
+  await page.goto(pageUrl)
   return page
 }
 
-async function capture_page(page: Page, route: string, level: number) {
-  let output_path = route === "" ? "index.html" : `${route}.html`
+async function capturePage(page: Page, route: string, level: number) {
+  const outputPath = route === '' ? 'index.html' : `${route}.html`
   await page.evaluate((route: string) => {
-    window.history.pushState({ path: route }, "", route)
-    window.dispatchEvent(new PopStateEvent("popstate"))
+    window.history.pushState({ path: route }, '', route)
+    window.dispatchEvent(new PopStateEvent('popstate'))
   }, route)
   try {
     await page.waitForSelector(
-      `#page_loaded_route_${route.replaceAll("/", "___")}`,
+      `#page_loaded_route_${route.replaceAll('/', '___')}`,
       { timeout: 10000, state: 'attached' }
     )
-    
+
     const content = await page.content()
-    writeFileSync(`./${config.out_dir}/${output_path}`, content)
-    console.log(`create page: ${route || "index"}`)
+    writeFileSync(`./${config.outDir}/${outputPath}`, content)
+    console.log(`create page: ${route || 'index'}`)
   } catch (error) {
-    let error_message =
-      ((error as Error).message = `Failed to capture page : ${output_path}`)
-    if (level > 1) error_message += ` (retry ${level})`
-    console.error(error_message)
+    let errorMessage = ((
+      error as Error
+    ).message = `Failed to capture page : ${outputPath}`)
+    if (level > 1) errorMessage += ` (retry ${level})`
+    console.error(errorMessage)
   }
 }
 
-async function generate_static_site(routes: string[], start_time: Date) {
-  let server: any, browser: Browser | undefined
-  await create_index_file()
+async function generateStaticSite(routes: string[], startTime: Date) {
+  let server: http.Server | undefined, browser: Browser | undefined
+  await createIndexFile()
   try {
-    server = await start_server(entry_point, config.port)
+    server = await startServer(entryPoint, config.port)
   } catch (error) {
-    console.error("Failed to start server", error)
+    console.error('Failed to start server', error)
     return
   }
   try {
     browser = await chromium.launch({
       headless: true,
-      args: ['--disable-dev-shm-usage', '--no-sandbox']
+      args: ['--disable-dev-shm-usage', '--no-sandbox'],
     })
   } catch (error) {
-    console.error("Failed to start browser", error)
+    console.error('Failed to start browser', error)
     return
   }
   try {
-    const page = await init_page(browser)
+    const page = await initPage(browser)
     for (const route of routes) {
-      await capture_page(page, route, 1)
+      await capturePage(page, route, 1)
     }
   } catch (error) {
-    console.error("Failed to process routes", error)
+    console.error('Failed to process routes', error)
   } finally {
     const cleanupPromises = []
     if (browser) cleanupPromises.push(browser.close())
-    if (server) cleanupPromises.push(stop_server(server))
-    
+    if (server) cleanupPromises.push(stopServer(server))
+
     await Promise.all(cleanupPromises)
-    await delete_index_file()
-    const time_taken = ((+new Date() - +start_time) / 1000).toFixed(2)
+    await deleteIndexFile()
+    const timeTaken = ((+new Date() - +startTime) / 1000).toFixed(2)
     console.log(
-      `Static site created ${routes.length} pages in ${time_taken} seconds`
+      `Static site created ${routes.length} pages in ${timeTaken} seconds`
     )
 
-    if (config.index_seo) {
-      await generate_sitemap(routes, config.domain)
-      console.log("Sitemap has been successfully created!")
+    if (config.indexSeo) {
+      await generateSitemap(routes, config.domain)
+      console.log('Sitemap has been successfully created!')
     }
   }
 }
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-process.chdir(join(__dirname, ".."))
-const start_time = new Date()
-const loadedConfig = await load_config()
+const thisDirname = dirname(fileURLToPath(import.meta.url))
+process.chdir(join(thisDirname, '..'))
+const startTime = new Date()
+const loadedConfig = await loadConfig()
 
 if (!loadedConfig) {
-  console.error("Failed to load configuration")
+  console.error('Failed to load configuration')
   process.exit(1)
 }
 
-config = loadedConfig
+const config: Config = loadedConfig
 const routes = config.routes
 
-process.chdir(path.join(process.cwd(), config.app_path))
+process.chdir(path.join(process.cwd(), config.appPath))
 
-await fs.promises.rm(config.out_dir, { recursive: true, force: true })
-await fs.promises.mkdir(config.out_dir, { recursive: true })
+await fs.promises.rm(config.outDir, { recursive: true, force: true })
+await fs.promises.mkdir(config.outDir, { recursive: true })
 for (const entity of config.entities) {
-  await fs.promises.mkdir(path.join(config.out_dir, entity), {
+  await fs.promises.mkdir(path.join(config.outDir, entity), {
     recursive: true,
   })
 }
 
-const db_meta_path = await get_db_meta_path(config.db_meta_path)
-const new_routes = await get_entities_routes(db_meta_path)
-routes.push(...new_routes)
+const dbMetaPath = await getDbMetaPath(config.dbMetaPath)
+const newRoutes = await getEntitiesRoutes(dbMetaPath)
+routes.push(...newRoutes)
 
-await generate_static_site(routes, start_time)
+await generateStaticSite(routes, startTime)

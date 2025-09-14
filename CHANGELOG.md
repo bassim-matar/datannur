@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- add: eslint and change prettier config and start apply new coding style to root, test and public ts files
+
 ## 0.12.7 (2025-09-12)
 
 - add: deployment configuration and script for server deployment
@@ -35,7 +39,7 @@
 ## 0.12.4 (2025-09-07)
 
 - change: improve update_app.py script
-- change: refactor get_config() and  use some early return in update_app.py
+- change: refactor get_config() and use some early return in update_app.py
 - change: refactor vite.config.ts
 - remove: gitignore and gitattributes from public folder
 - remove: svelte.config.js and move its content to vite.config.js
@@ -177,7 +181,7 @@
 - change: make jsonjsdb_editor use xlsx state for evolution
 - change: doc last update date use Column.timestamp()
 - fix: favorite page about tab image caption
-- fix: little typo in the license 
+- fix: little typo in the license
 
 ## 0.10.2 (2025-01-18)
 
@@ -216,7 +220,7 @@
 
 ## 0.9.7 (2024-12-19)
 
-- add: markdown image caption 
+- add: markdown image caption
 - add: some screenshots for about page
 - change: updated all screenshots
 - change: updated main presentation text
@@ -234,7 +238,7 @@
 - fix: search result icon reactivity and highlight only start of word
 - fix: md doc preview max width 100%
 - fix: md content content padding on mobile
-- refactor: remove suffix _info from all info files
+- refactor: remove suffix \_info from all info files
 - refactor: remove some unused export in util.js
 
 ## 0.9.5 (2024-11-26)
@@ -310,7 +314,7 @@
 
 ## 0.8.17 (2024-10-20)
 
-- add: more console log duration during init process 
+- add: more console log duration during init process
 - add: special error page for when error during init process
 - add: deep level info on entity page
 - change: put footer inside menu in mobile version
@@ -342,8 +346,8 @@
 - add: footer last update info live updated
 - add: about functionality tab
 - change: make datatables not stretch to 100% width and remove header border
-- change: use __meta_schema__ instead of other meta files
-- change: complete __meta_schema__ variable and remove virtual table
+- change: use **meta_schema** instead of other meta files
+- change: complete **meta_schema** variable and remove virtual table
 - change: center option tab section
 - change: make tab body max height dynamic and always apply
 - fix: update jsonjsdb with little fix for empty ids
@@ -386,7 +390,7 @@
 ## 0.8.11 (2024-09-26)
 
 - add: link to release on github when clicking on app version in footer
-- add: github links to the source code in footer 
+- add: github links to the source code in footer
 - change: remove some config files and integrate them in package.json and vite.config.js
 - change: remove pdf version of the license in the root and move it in public/assets
 - fix: enable again shortcut that open link in new tab and fix go back to homepage

@@ -11,9 +11,10 @@
   },
   "dependencies": {
     "@types/serve-handler": "^6.1.4",
+    "camelcase-keys": "^10.0.0",
+    "jsonjsdb_editor": "^0.3.3",
     "playwright": "^1.55.0",
-    "sitemap": "^8.0.0",
     "serve-handler": "^6.1.6",
-    "jsonjsdb_editor": "^0.3.3"
+    "sitemap": "^8.0.0"
   }
 }

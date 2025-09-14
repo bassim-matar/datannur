@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { chromium } from 'playwright'
 import type { Browser, Page } from 'playwright'
-import path from "path"
-import { pathToFileURL, fileURLToPath } from "url"
+import path from 'path'
+import { pathToFileURL, fileURLToPath } from 'url'
 
-const this_folder = path.dirname(fileURLToPath(import.meta.url))
-let base_url = pathToFileURL(path.resolve(this_folder, "..")).href
-base_url += "/app/index.html"
+const thisFolder = path.dirname(fileURLToPath(import.meta.url))
+let baseUrl = pathToFileURL(path.resolve(thisFolder, '..')).href
+baseUrl += '/app/index.html'
 
 let browser: Browser
 let page: Page
@@ -20,38 +20,40 @@ afterAll(async () => {
   await browser.close()
 })
 
-const page_names = [
-  "",
-  "institutions",
-  "folders",
-  "tags",
-  "datasets",
-  "variables",
-  "modalities",
-  "favorite",
-  "options",
-  "about",
-  "search/?search=folder",
-  "meta",
-  "metaFolder/data",
-  "metaDataset/institution",
-  "institution/dff",
-  "institution/vd-ojv",
-  "folder/bevnat",
-  "folder/04-economie",
-  "tag/population",
-  "dataset/accident_route",
-  "dataset/dep_sante",
-  "variable/dep_sante___variable_4",
-  "variable/ser_pub_loc___variable_3",
-  "modality/canton_sigle",
+const pageNames = [
+  '',
+  'institutions',
+  'folders',
+  'tags',
+  'datasets',
+  'variables',
+  'modalities',
+  'favorite',
+  'options',
+  'about',
+  'search/?search=folder',
+  'meta',
+  'metaFolder/data',
+  'metaDataset/institution',
+  'institution/dff',
+  'institution/vd-ojv',
+  'folder/bevnat',
+  'folder/04-economie',
+  'tag/population',
+  'dataset/accident_route',
+  'dataset/dep_sante',
+  'variable/dep_sante___variable_4',
+  'variable/ser_pub_loc___variable_3',
+  'modality/canton_sigle',
 ]
 
-describe("UI tests", () => {
-  page_names.forEach(page_name => {
-    it(`should display the main section for page: ${page_name}`, async () => {
-      await page.goto(`${base_url}#/${page_name}`)
-      const section = await page.waitForSelector("div#wrapper > section.section")
+describe('UI tests', () => {
+  pageNames.forEach(pageName => {
+    it(`should display the main section for page: ${pageName}`, async () => {
+      await page.goto(`${baseUrl}#/${pageName}`)
+      const section = await page.waitForSelector(
+        'div#wrapper > section.section'
+      )
       expect(section).toBeTruthy()
     })
   })

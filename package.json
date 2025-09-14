@@ -16,14 +16,22 @@
     "release": "npm run node:ts release.ts",
     "static-make": "vite build && npm run node:ts app/node_scripts/static_make.ts",
     "deploy": "npm run node:ts app/node_scripts/deploy.ts",
-    "static-deploy": "npm run static-make && npm run deploy"
+    "static-deploy": "npm run static-make && npm run deploy",
+    "lint": "eslint **/*.{ts,svelte}",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@eslint/js": "^9.35.0",
     "@rollup/plugin-alias": "^5.1.1",
     "@sveltejs/vite-plugin-svelte": "^6.2.0",
     "@types/serve-handler": "^6.1.4",
     "autoprefixer": "^10.4.21",
-    "jsonjsdb_editor": "^0.3.3",
+    "camelcase-keys": "^10.0.0",
+    "eslint": "^9.35.0",
+    "eslint-plugin-svelte": "^3.12.3",
+    "jiti": "^2.5.1",
+    "jsonjsdb_editor": "^0.3.4",
     "open-cli": "^8.0.0",
     "playwright": "^1.55.0",
     "rollup-plugin-visualizer": "^6.0.3",
@@ -31,7 +39,9 @@
     "serve-handler": "^6.1.6",
     "sitemap": "^8.0.0",
     "svelte": "^5.38.10",
+    "svelte-eslint-parser": "^1.3.2",
     "typescript": "^5.9.2",
+    "typescript-eslint": "^8.43.0",
     "vite": "^7.1.5",
     "vite-plugin-full-reload": "^1.2.0",
     "vitest": "^3.2.4"
@@ -56,16 +66,14 @@
     "jquery-powertip": "^1.3.2",
     "jsonjsdb": "^0.5.0",
     "jszip": "^3.10.1",
-    "marked": "^16.2.1",
+    "marked": "^16.3.0",
     "mermaid": "^11.11.0",
     "minimasonry": "^1.3.2",
     "navigo": "^8.11.1"
   },
   "prettier": {
-    "tabWidth": 2,
-    "useTabs": false,
-    "editor.formatOnSave": true,
     "semi": false,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "singleQuote": true
   }
 }
