@@ -7,6 +7,9 @@ export default [
   ...tseslint.configs.recommended,
   ...svelte.configs['flat/recommended'],
   {
+    ignores: ['**/*.json.js'],
+  },
+  {
     files: ['**/*.{ts,tsx}'],
     ignores: ['eslint.config.ts'],
     rules: {

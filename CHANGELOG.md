@@ -3,7 +3,8 @@
 ## unreleased
 
 - add: eslint and change prettier config and start apply new coding style to root, test and public ts files
-- change : update_app.py to always use emojis
+- change: update_app.py to always use emojis
+- remove: eslint on .json.js files
 
 ## 0.12.7 (2025-09-12)
 
