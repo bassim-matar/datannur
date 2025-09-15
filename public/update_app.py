@@ -1,6 +1,5 @@
 import hashlib
 import json
-import os
 import re
 import shutil
 import sys
@@ -32,20 +31,9 @@ class AssetInfo(TypedDict):
     sha256: str
 
 
-def _use_emojis() -> bool:
-    """Check if emojis should be used based on environment."""
-    if os.name == "nt":
-        return False
-    term = os.environ.get("TERM", "").lower()
-    if "xterm" in term or "screen" in term or "tmux" in term:
-        return True
-    return False
-
-
-USE_EMOJIS = _use_emojis()
-SUCCESS = "✅" if USE_EMOJIS else "[OK]"
-ERROR = "❌" if USE_EMOJIS else "[ERROR]"
-WARNING = "⚠️" if USE_EMOJIS else "[WARNING]"
+SUCCESS = "✅"
+ERROR = "❌"
+WARNING = "⚠️"
 
 
 def validate_config_value(
