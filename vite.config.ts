@@ -6,7 +6,7 @@ import FullReload from 'vite-plugin-full-reload'
 import { defineConfig } from 'vitest/config'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte'
-import { Jsonjsdb_watcher, jsonjsdbAddConfig } from 'jsonjsdb_editor'
+import { jsonjsdbWatcher, jsonjsdbAddConfig } from 'jsonjsdb-builder'
 
 const config = {
   bundleView: process.env.BUNDLE_VIEW === 'true' || false,
@@ -104,11 +104,11 @@ await Promise.all([
   fs.copyFile(config.paths.flexsearchNode, config.paths.flexsearchPublic),
 ])
 
-await Jsonjsdb_watcher.set_db(config.paths.dbPath)
+await jsonjsdbWatcher.setDb(config.paths.dbPath)
 await Promise.all([
-  Jsonjsdb_watcher.watch(config.paths.dbSourcePath),
-  Jsonjsdb_watcher.update_preview('preview', config.paths.previewPath),
-  Jsonjsdb_watcher.update_md_files('md_doc', config.paths.mdPath),
+  jsonjsdbWatcher.watch(config.paths.dbSourcePath),
+  jsonjsdbWatcher.updatePreview('preview', config.paths.previewPath),
+  jsonjsdbWatcher.updateMdFiles('md_doc', config.paths.mdPath),
 ])
 
 export default defineConfig({
@@ -130,7 +130,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    FullReload(Jsonjsdb_watcher.get_table_index_file_path()),
+    FullReload(jsonjsdbWatcher.getTableIndexFilePath()),
     jsonjsdbAddConfig(config.paths.jsonjsdbConfig),
     updateRouterIndex(config.paths.routerIndex, '../page'),
     alias({ entries: aliases }),
