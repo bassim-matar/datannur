@@ -1,9 +1,9 @@
 <script lang="ts">
-  import db from "@db"
+  import db from '@db'
 
-  let result = $state("Loading...")
+  let result = $state('Loading...')
 
-  db.check_integrity().then(res => {
+  db.checkIntegrity().then(res => {
     console.log(db.db)
     result = JSON.stringify(res, null, 2)
   })
@@ -17,7 +17,7 @@
 </section>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   section .title {
     color: $color-3;

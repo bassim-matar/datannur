@@ -1,46 +1,46 @@
 <script lang="ts">
-  import db from "@db"
-  import { tab_selected } from "@lib/store"
-  import { make_parents_relative, add_minimum_deep } from "@lib/db"
-  import { is_big_limit } from "@lib/constant"
-  import Title from "@layout/Title.svelte"
-  import Tabs from "@tab/Tabs.svelte"
-  import { tabs_helper } from "@tab/tabs_helper"
-  import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
-  import EvolutionSummarySwitch from "@layout/EvolutionSummarySwitch.svelte"
-  import about_file from "@markdown/about_institution.md?raw"
+  import db from '@db'
+  import { tab_selected } from '@lib/store'
+  import { make_parents_relative, add_minimum_deep } from '@lib/db'
+  import { is_big_limit } from '@lib/constant'
+  import Title from '@layout/Title.svelte'
+  import Tabs from '@tab/Tabs.svelte'
+  import { tabsHelper } from '@tab/tabs_helper'
+  import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
+  import EvolutionSummarySwitch from '@layout/EvolutionSummarySwitch.svelte'
+  import about_file from '@markdown/about_institution.md?raw'
 
   let key_tab = $state(1)
 
-  const institutions = db.get_all("institution")
+  const institutions = db.getAll('institution')
   make_parents_relative(0, institutions)
   add_minimum_deep(institutions)
 
-  const tags = db.get_all("tag").filter(tag => tag.nb_institution > 0)
+  const tags = db.getAll('tag').filter(tag => tag.nb_institution > 0)
   if (db.use.tag_recursive) {
     make_parents_relative(false, tags)
     add_minimum_deep(tags, true, true)
   }
 
   const evolutions = db
-    .get_all("evolution")
-    .filter(evo => evo.entity === "institution")
+    .getAll('evolution')
+    .filter(evo => evo.entity === 'institution')
 
-  const tabs = tabs_helper({
+  const tabs = tabsHelper({
     institutions,
     tags,
     evolutions,
-    stat: [{ entity: "institution", items: institutions }],
+    stat: [{ entity: 'institution', items: institutions }],
     about_file,
   })
 
   const nb_institution = institutions.length
 
   let show_open_all_switch = $derived(
-    $tab_selected.key === "institutions" && nb_institution > is_big_limit,
+    $tab_selected.key === 'institutions' && nb_institution > is_big_limit,
   )
   let show_evolution_summary_switch = $derived(
-    $tab_selected.key === "evolutions" && evolutions.length > is_big_limit,
+    $tab_selected.key === 'evolutions' && evolutions.length > is_big_limit,
   )
 </script>
 

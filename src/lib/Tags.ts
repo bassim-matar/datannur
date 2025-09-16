@@ -1,8 +1,8 @@
-import db from "@db"
+import db from '@db'
 
 export default class Tags {
   static get_from_entities(entities) {
-    const tags_db = db.get_all("tag")
+    const tags_db = db.getAll('tag')
     let tags_by_id = {}
 
     let tags = JSON.parse(JSON.stringify(tags_db))
@@ -14,16 +14,16 @@ export default class Tags {
     }
 
     function increment_tag_item_nb(items, entity) {
-      if(!items) return
+      if (!items) return
       for (const item of items) {
         for (const tag of item.tags) {
-          tags_by_id[tag.id]["nb_" + entity]++
+          tags_by_id[tag.id]['nb_' + entity]++
         }
       }
     }
-    increment_tag_item_nb(entities.institutions, "institution")
-    increment_tag_item_nb(entities.folders, "folder")
-    increment_tag_item_nb(entities.datasets, "dataset")
+    increment_tag_item_nb(entities.institutions, 'institution')
+    increment_tag_item_nb(entities.folders, 'folder')
+    increment_tag_item_nb(entities.datasets, 'dataset')
 
     for (const tag of tags) {
       tag.nb_institution = tags_by_id[tag.id].nb_institution

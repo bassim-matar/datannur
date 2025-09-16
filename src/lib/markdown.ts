@@ -1,24 +1,28 @@
-import { marked } from "marked"
-import { get_base_link_url } from "@lib/util"
+import { marked } from 'marked'
+import { get_base_link_url } from '@lib/util'
 
 const renderer = new marked.Renderer()
 renderer.link = ({ href, title, text }) => {
-  if (!title) title = ""
+  if (!title) title = ''
 
-  let target = ""
-  if (href.includes("http") || href.includes("mailto") || title.includes("new_tab")) {
+  let target = ''
+  if (
+    href.includes('http') ||
+    href.includes('mailto') ||
+    title.includes('new_tab')
+  ) {
     target = 'target="_blank" rel="noopener"'
     return `<a href="${href}" ${target} class="basic_link" title="${title}">${text}</a>`
   }
 
   const base = get_base_link_url()
-  const onclick = `window.go_to_href(event, '${href}')`
+  const onclick = `window.goToHref(event, '${href}')`
   return `<a href="${base}${href}" onclick="${onclick}" class="basic_link" title="${title}">${text}</a>`
 }
 
 renderer.image = function ({ href, text }) {
-  if (!text) text = ""
-  if (text.includes("no_caption")) {
+  if (!text) text = ''
+  if (text.includes('no_caption')) {
     return `<img src="${href}" alt="${text}" />`
   }
   return `<figure>

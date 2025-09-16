@@ -6,5 +6,6 @@
   },
   "[svelte]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
-  }
+  },
+  "eslint.validate": ["typescript", "svelte"]
 }

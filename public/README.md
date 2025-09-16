@@ -87,16 +87,16 @@ datannur uses a client-side relational database powered by [jsonjsdb](https://gi
 Each `.json.js` file contains standard JSON data (array of objects) preceded by a JavaScript assignment line:
 
 ```javascript
-jsonjs.data["dataset"] = [
+jsonjs.data['dataset'] = [
   {
     id: 1,
-    name: "Example item",
-    description: "Item description",
+    name: 'Example item',
+    description: 'Item description',
   },
   {
     id: 2,
-    name: "Another item",
-    description: "Another description",
+    name: 'Another item',
+    description: 'Another description',
   },
 ]
 ```
@@ -111,17 +111,17 @@ The format combines:
 The `__table__.json.js` file serves as a registry of all available tables in your database:
 
 ```javascript
-jsonjs.data["__table__"] = [
+jsonjs.data['__table__'] = [
   {
-    name: "dataset",
+    name: 'dataset',
     last_modif: 1753608552,
   },
   {
-    name: "folder",
+    name: 'folder',
     last_modif: 1757018090,
   },
   {
-    name: "__table__",
+    name: '__table__',
     last_modif: 1757018100,
   },
 ]
@@ -146,22 +146,22 @@ The catalog supports several entities with flexible relationships. All tables ar
 The `config.json.js` file allows you to customize various application settings:
 
 ```javascript
-jsonjs.data["config"] = [
+jsonjs.data['config'] = [
   {
-    id: "contact_email",
-    value: "contact@yourdomain.com",
+    id: 'contact_email',
+    value: 'contact@yourdomain.com',
   },
   {
-    id: "filter_1",
-    value: "open_data : Open Data",
+    id: 'filter_1',
+    value: 'open_data : Open Data',
   },
   {
-    id: "filter_2",
-    value: "closed_data : Closed Data",
+    id: 'filter_2',
+    value: 'closed_data : Closed Data',
   },
   {
-    id: "banner",
-    value: "![main_banner no_caption](data/img/main_banner.png)",
+    id: 'banner',
+    value: '![main_banner no_caption](data/img/main_banner.png)',
   },
 ]
 ```
@@ -280,23 +280,23 @@ The app uses a configuration automatically embedded in `index.html`:
 
 ```html
 <div
-  id="jsonjsdb_config"
+  id="jsonjsdb-config"
   style="display:none;"
-  data-app_name="datannur-app"
+  data-app-name="datannur-app"
   data-path="data/db"
 ></div>
 ```
 
-> **💡 Best Practice:** Instead of editing `index.html` directly, modify the configuration in `/data/jsonjsdb_config.html` and then:
+> **💡 Best Practice:** Instead of editing `index.html` directly, modify the configuration in `/data/jsonjsdb-config.html` and then:
 >
 > - Run `python3 update_app.py` to automatically apply the configuration, OR
-> - Manually copy the configuration block from `/data/jsonjsdb_config.html` to `index.html`
+> - Manually copy the configuration block from `/data/jsonjsdb-config.html` to `index.html`
 >
 > This approach ensures your configuration is preserved during application updates.
 
-#### app_name
+#### app-name
 
-The `data-app_name` parameter is an application identifier used as a namespace for user data stored in the browser (favorites, search history, settings).
+The `data-app-name` parameter is an application identifier used as a namespace for user data stored in the browser (favorites, search history, settings).
 
 **Default value:** `"datannur-app"`
 
@@ -309,17 +309,17 @@ The `data-path` parameter defines the path to your database folder (default: `"d
 - Can be a relative path from the `index.html` location
 - Examples: `"data/db"`, `"my_catalog/database"`, `"../shared_data/db"`
 
-#### db_key (Optional)
+#### db-key (Optional)
 
-The `data-db_key` parameter provides security enhancement against data exfiltration by malicious scripts running in the browser on `file://`.
+The `data-db-key` parameter provides security enhancement against data exfiltration by malicious scripts running in the browser on `file://`.
 
 ```html
 <div
-  id="jsonjsdb_config"
+  id="jsonjsdb-config"
   style="display:none;"
-  data-app_name="datannur-app"
+  data-app-name="datannur-app"
   data-path="data/db"
-  data-db_key="R63CYikswPqAu3uCBnsV"
+  data-db-key="R63CYikswPqAu3uCBnsV"
 ></div>
 ```
 
@@ -330,9 +330,9 @@ This configuration expects your data files to be in `/data/db/{key}/`, making fi
 For large datasets, you can use a more compact file format (list of lists) to reduce file size and improve loading performance. It can also be minified.
 
 ```javascript
-jsonjs.data["table_name"] = [
-  ["id", "name", "description"],
-  [1, "Example item", "Item description"],
-  [2, "Another item", "Another description"],
+jsonjs.data['table_name'] = [
+  ['id', 'name', 'description'],
+  [1, 'Example item', 'Item description'],
+  [2, 'Another item', 'Another description'],
 ]
 ```

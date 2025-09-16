@@ -3,7 +3,7 @@
   "name": "your-server-name",
   "host": "your-server-host",
   "port": 22,
-  "username": "your-username", 
+  "username": "your-username",
   "remotePath": "/path/to/your/web/directory",
   "privateKeyPath": "~/.ssh/id_rsa",
   "ignore": [
@@ -16,7 +16,7 @@
     "package-lock.json",
     ".nojekyll",
     "deploy.config.template.json",
-    "data/jsonjsdb_config.html",
+    "data/jsonjsdb-config.html",
     "data/deploy.config.json",
     "data/static_make.config.json",
     "data/update_app.json",

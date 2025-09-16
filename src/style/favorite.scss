@@ -1,4 +1,4 @@
-@use "main.scss" as *;
+@use 'main.scss' as *;
 
 @mixin favorite_style {
   .favorite {
@@ -8,10 +8,10 @@
       position: relative;
     }
     &.is-active {
-      color: color("favorite");
+      color: color('favorite');
     }
     &.clicked i::after {
-      content: "\f005";
+      content: '\f005';
       pointer-events: none;
       position: absolute;
       top: 0;

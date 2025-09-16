@@ -1,18 +1,18 @@
 <script lang="ts">
-  import db from "@db"
-  import Title from "@layout/Title.svelte"
-  import Tabs from "@tab/Tabs.svelte"
-  import { tabs_helper } from "@tab/tabs_helper"
-  import about_file from "@markdown/about_doc.md?raw"
+  import db from '@db'
+  import Title from '@layout/Title.svelte'
+  import Tabs from '@tab/Tabs.svelte'
+  import { tabsHelper } from '@tab/tabs_helper'
+  import about_file from '@markdown/about_doc.md?raw'
 
-  const docs = db.get_all("doc")
+  const docs = db.getAll('doc')
 
-  const evolutions = db.get_all("evolution").filter(evo => evo.entity === "doc")
+  const evolutions = db.getAll('evolution').filter(evo => evo.entity === 'doc')
 
-  const tabs = tabs_helper({
+  const tabs = tabsHelper({
     docs,
     evolutions,
-    stat: [{ entity: "doc", items: docs }],
+    stat: [{ entity: 'doc', items: docs }],
     about_file,
   })
 </script>

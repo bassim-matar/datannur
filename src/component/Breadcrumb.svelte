@@ -1,11 +1,11 @@
 <script lang="ts">
-  import db from "@db"
-  import { add_indend } from "@lib/util"
-  import Link from "@layout/Link.svelte"
+  import db from '@db'
+  import { add_indend } from '@lib/util'
+  import Link from '@layout/Link.svelte'
 
-  let { type, elem_id, is_self = false, className = "" } = $props()
+  let { type, elem_id, is_self = false, className = '' } = $props()
 
-  const elems = db.get_parents(type, elem_id)
+  const elems = db.getParents(type, elem_id)
 
   if (!is_self) {
     const current = db.get(type, elem_id)

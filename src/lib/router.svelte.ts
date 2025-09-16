@@ -1,20 +1,20 @@
-import Navigo from "navigo"
-import { app_mode } from "@lib/util"
-import { page, reload_increment } from "@lib/store"
+import Navigo from 'navigo'
+import { app_mode } from '@lib/util'
+import { page, reload_increment } from '@lib/store'
 
-export const router = new Navigo("/", { hash: app_mode !== "static_render" })
+export const router = new Navigo('/', { hash: app_mode !== 'static_render' })
 
-let page_value = ""
-page.subscribe(value => (page_value = value))
+let pageValue = ''
+page.subscribe(value => (pageValue = value))
 
-window.go_to_href = (event, href) => {
+window.goToHref = (event, href) => {
   if (event.ctrlKey || event.metaKey) return
   event.preventDefault()
 
   if (
-    !href.startsWith("http") &&
-    !href.startsWith("mailto") &&
-    page_value === href.split("?")[0]
+    !href.startsWith('http') &&
+    !href.startsWith('mailto') &&
+    pageValue === href.split('?')[0]
   ) {
     router.navigate(href)
     reload_increment.update(value => value + 1)

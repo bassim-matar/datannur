@@ -1,38 +1,38 @@
 <script lang="ts">
-  import db from "@db"
-  import { tab_selected } from "@lib/store"
-  import { make_parents_relative, add_minimum_deep } from "@lib/db"
-  import { is_big_limit } from "@lib/constant"
-  import Title from "@layout/Title.svelte"
-  import Tabs from "@tab/Tabs.svelte"
-  import { tabs_helper } from "@tab/tabs_helper"
-  import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
-  import EvolutionSummarySwitch from "@layout/EvolutionSummarySwitch.svelte"
-  import about_file from "@markdown/about_tag.md?raw"
+  import db from '@db'
+  import { tab_selected } from '@lib/store'
+  import { make_parents_relative, add_minimum_deep } from '@lib/db'
+  import { is_big_limit } from '@lib/constant'
+  import Title from '@layout/Title.svelte'
+  import Tabs from '@tab/Tabs.svelte'
+  import { tabsHelper } from '@tab/tabs_helper'
+  import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
+  import EvolutionSummarySwitch from '@layout/EvolutionSummarySwitch.svelte'
+  import about_file from '@markdown/about_tag.md?raw'
 
   let key_tab = $state(1)
 
-  const tags = db.get_all("tag")
+  const tags = db.getAll('tag')
   if (db.use.tag_recursive) {
     make_parents_relative(0, tags)
     add_minimum_deep(tags)
   }
 
-  const evolutions = db.get_all("evolution").filter(evo => evo.entity === "tag")
+  const evolutions = db.getAll('evolution').filter(evo => evo.entity === 'tag')
 
-  const tabs = tabs_helper({
+  const tabs = tabsHelper({
     tags,
     evolutions,
-    stat: [{ entity: "tag", items: tags }],
+    stat: [{ entity: 'tag', items: tags }],
     about_file,
   })
 
   const nb_tags = tags.length
   let show_open_all_switch = $derived(
-    $tab_selected.key === "tags" && nb_tags > is_big_limit,
+    $tab_selected.key === 'tags' && nb_tags > is_big_limit,
   )
   let show_evolution_summary_switch = $derived(
-    $tab_selected.key === "evolutions" && evolutions.length > is_big_limit,
+    $tab_selected.key === 'evolutions' && evolutions.length > is_big_limit,
   )
 </script>
 

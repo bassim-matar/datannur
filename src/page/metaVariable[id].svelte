@@ -1,15 +1,15 @@
 <script lang="ts">
-  import db from "@db"
-  import { filter_keys } from "@lib/db"
-  import Title from "@layout/Title.svelte"
-  import Tabs from "@tab/Tabs.svelte"
-  import { tabs_helper } from "@tab/tabs_helper"
+  import db from '@db'
+  import { filter_keys } from '@lib/db'
+  import Title from '@layout/Title.svelte'
+  import Tabs from '@tab/Tabs.svelte'
+  import { tabsHelper } from '@tab/tabs_helper'
 
   let { metaVariable } = $props()
 
   let variable_preview = []
   let dataset_preview = []
-  let metaDataset = db.get("metaDataset", metaVariable.metaDataset_id)
+  let metaDataset = db.get('metaDataset', metaVariable.metaDataset_id)
   if (metaDataset.name in db.tables) {
     dataset_preview = db.tables[metaDataset.name]
   } else if (metaDataset.name in db.tables.__user_data__) {
@@ -17,7 +17,7 @@
   }
   variable_preview = filter_keys(dataset_preview, [metaVariable.name])
 
-  let tabs = tabs_helper({
+  let tabs = tabsHelper({
     variable: metaVariable,
     variable_metaValues: metaVariable.values,
     variable_preview,

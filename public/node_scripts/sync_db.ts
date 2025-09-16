@@ -1,12 +1,17 @@
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
-import { jsonjsdbWatcher } from 'jsonjsdb-builder'
+import { JsonjsdbBuilder } from 'jsonjsdb-builder'
 
 const thisDirname = dirname(fileURLToPath(import.meta.url))
 process.chdir(join(thisDirname, '..'))
 
 const root = './data/'
 
-await jsonjsdbWatcher.setDb(root + 'db')
-await jsonjsdbWatcher.watch(root + '/db_source', true)
-await jsonjsdbWatcher.updatePreview('preview', root + 'dataset')
+const builder = new JsonjsdbBuilder()
+await builder.setOutputDb(root + 'db')
+await Promise.all([
+  builder.updateDb(root + '/db_source'),
+  builder.updatePreview('preview', root + 'dataset'),
+  builder.updateMdDir('md_doc', root + 'md'),
+])
+builder.watchDb(root + '/db_source')

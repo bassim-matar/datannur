@@ -1,4 +1,4 @@
-import Jsonjsdb from "jsonjsdb"
+import Jsonjsdb from 'jsonjsdb'
 
 interface SearchResult {
   id: string | number
@@ -14,10 +14,10 @@ interface SearchResult {
 }
 
 interface ExtendedJsonjsdb extends Jsonjsdb {
-  db: {},
-  loaded: Promise<void>,
-  preview: {},
-  search: (searchTerm: string) => Promise<SearchResult[]>,
+  db: Record<string, unknown>
+  loaded: Promise<void>
+  preview: Record<string, unknown>
+  search: (searchTerm: string) => Promise<SearchResult[]>
   use: {
     institution?: boolean
     folder?: boolean
@@ -35,6 +35,6 @@ interface ExtendedJsonjsdb extends Jsonjsdb {
   }
 }
 
-const db = new Jsonjsdb("#jsonjsdb_config") as ExtendedJsonjsdb
+const db = new Jsonjsdb('#jsonjsdb-config') as ExtendedJsonjsdb
 
 export default db

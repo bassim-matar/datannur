@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { onMount } from "svelte"
-  import { tab_selected, footer_visible, all_tabs } from "@lib/store"
-  import { url_param } from "@lib/url_param"
-  import { is_firefox, get_is_mobile } from "@lib/util"
-  import { is_big_limit } from "@lib/constant"
-  import Logs from "@lib/Logs"
-  import TabsBody from "@tab/TabsBody.svelte"
-  import TabTitle from "@tab/TabTitle.svelte"
+  import { onMount } from 'svelte'
+  import { tab_selected, footer_visible, all_tabs } from '@lib/store'
+  import { url_param } from '@lib/url_param'
+  import { is_firefox, get_is_mobile } from '@lib/util'
+  import { is_big_limit } from '@lib/constant'
+  import Logs from '@lib/Logs'
+  import TabsBody from '@tab/TabsBody.svelte'
+  import TabTitle from '@tab/TabTitle.svelte'
 
   let { tabs } = $props()
 
@@ -26,7 +26,7 @@
   const get_width = selector => document.querySelector(selector)?.offsetWidth
 
   function is_tabs_overflow() {
-    return get_width(".tabs_container_ul") + 30 > get_width("#tabs_container")
+    return get_width('.tabs_container_ul') + 30 > get_width('#tabs_container')
   }
 
   function check_if_last_tab() {
@@ -61,11 +61,11 @@
     set_footer(tab)
     $tab_selected = tab
     center_active_tab()
-    Logs.add("select_tab", { entity: tab_key })
+    Logs.add('select_tab', { entity: tab_key })
     if (tabs[0].key === tab_key) {
-      url_param.delete("tab")
+      url_param.delete('tab')
     } else {
-      url_param.set("tab", tab_key)
+      url_param.set('tab', tab_key)
     }
   }
 
@@ -79,7 +79,7 @@
 
   function center_active_tab() {
     setTimeout(() => {
-      const li_active = "#tabs_container ul.tabs_container_ul li.is-active"
+      const li_active = '#tabs_container ul.tabs_container_ul li.is-active'
       const li: HTMLLIElement | null = document.querySelector(li_active)
       if (!li || !ul) return
       const position = ul.offsetWidth / 2 - li.offsetWidth / 2
@@ -95,7 +95,7 @@
   }
 
   function load_tab_from_url_param() {
-    const url_param_tab = url_param.get("tab")
+    const url_param_tab = url_param.get('tab')
     if (url_param_tab) {
       load_tab(url_param_tab)
     }
@@ -145,7 +145,7 @@
 <TabsBody {tabs} {no_first_tab} {is_last_tab} {active_tab_body} {tabs_loaded} />
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .tabs {
     margin-bottom: -1px;

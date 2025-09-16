@@ -1,7 +1,7 @@
-import { url_hash } from "@lib/url_hash"
-import Options from "@lib/Options"
-import { get_sort_by_name } from "@lib/db"
-import { get_percent } from "@lib/util"
+import { url_hash } from '@lib/url_hash'
+import Options from '@lib/Options'
+import { get_sort_by_name } from '@lib/db'
+import { get_percent } from '@lib/util'
 
 export function is_short_table(dt) {
   return (
@@ -29,13 +29,13 @@ export function elem_has_clickable(target, container, selector) {
 }
 
 export function get_table_id(entity) {
-  const hash = url_hash.get_all()
-  const table_id = hash.replaceAll("/", "___").replace(/[^a-z0-9_\-,. ]/gi, "")
-  return table_id + "___" + entity
+  const hash = url_hash.getAll()
+  const table_id = hash.replaceAll('/', '___').replace(/[^a-z0-9_\-,. ]/gi, '')
+  return table_id + '___' + entity
 }
 
 export function get_nb_item(dt, clean_data) {
-  const separator = "|"
+  const separator = '|'
   const nb_total = clean_data.length
   const nb_item_display = dt?.page?.info()?.recordsDisplay
   if (nb_item_display !== nb_total) {
@@ -50,25 +50,25 @@ export function get_nb_sticky(columns) {
   let nb_sticky = 1
   if (window.innerWidth > 1023) {
     for (const column of columns) {
-      if (column.name === "entity") nb_sticky += 1
-      if (column.name === "id") nb_sticky += 1
-      if (column.name === "is_favorite") nb_sticky += 1
-      if (column.name === "name") nb_sticky += 1
-      if (column.name === "evolution_type") nb_sticky += 1
+      if (column.name === 'entity') nb_sticky += 1
+      if (column.name === 'id') nb_sticky += 1
+      if (column.name === 'is_favorite') nb_sticky += 1
+      if (column.name === 'name') nb_sticky += 1
+      if (column.name === 'evolution_type') nb_sticky += 1
     }
   }
   return nb_sticky
 }
 
 export function get_clean_data(data, sort_by_name, is_recursive, is_big) {
-
   function get_has_filter_recursive() {
-    const hash = url_hash.get_all()
-    const open_all_recursive = Options.get("open_all_recursive")
-    return hash !== "favorite" && !open_all_recursive
+    const hash = url_hash.getAll()
+    const open_all_recursive = Options.get('open_all_recursive')
+    return hash !== 'favorite' && !open_all_recursive
   }
 
-  const has_filter_recursive = is_recursive && is_big && get_has_filter_recursive()
+  const has_filter_recursive =
+    is_recursive && is_big && get_has_filter_recursive()
   const temp_data = [...data]
   const new_data = []
   if (sort_by_name) {

@@ -1,13 +1,13 @@
 <script lang="ts">
-  import db from "@db"
-  import { tabs_helper } from "@tab/tabs_helper"
-  import { get_lineage } from "@lib/db"
-  import Title from "@layout/Title.svelte"
-  import Tabs from "@tab/Tabs.svelte"
+  import db from '@db'
+  import { tabsHelper } from '@tab/tabs_helper'
+  import { get_lineage } from '@lib/db'
+  import Title from '@layout/Title.svelte'
+  import Tabs from '@tab/Tabs.svelte'
 
   let { variable } = $props()
 
-  const dataset = db.get("dataset", variable.dataset_id)
+  const dataset = db.get('dataset', variable.dataset_id)
   let variable_preview: false | {} = false
   if (dataset.link) {
     variable_preview = {
@@ -17,17 +17,17 @@
   }
 
   const variables = [
-    ...get_lineage("variable", variable, "source"),
-    ...get_lineage("variable", variable, "derived"),
+    ...get_lineage('variable', variable, 'source'),
+    ...get_lineage('variable', variable, 'derived'),
   ]
 
   const evolutions = db
-    .get_all("evolution")
-    .filter(evo => evo.entity === "variable" && evo.id === variable.id)
+    .getAll('evolution')
+    .filter(evo => evo.entity === 'variable' && evo.id === variable.id)
 
-  const freq_data = db.get_all("freq", { variable })
+  const freq_data = db.getAll('freq', { variable })
 
-  let tabs = tabs_helper({
+  let tabs = tabsHelper({
     variable,
     variables,
     variable_values: variable.values,

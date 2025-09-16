@@ -6,6 +6,8 @@
     "verbatimModuleSyntax": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "strict": true,
+    "lib": ["DOM", "ESNext"],
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
@@ -26,5 +28,5 @@
       "@tab/*": ["src/tab/*"]
     }
   },
-  "exclude": ["app", "public", "node_modules"]
+  "exclude": ["app", "node_modules"]
 }

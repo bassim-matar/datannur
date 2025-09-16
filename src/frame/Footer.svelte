@@ -1,25 +1,25 @@
 <script lang="ts">
-  import db from "@db"
-  import { footer_visible } from "@lib/store"
-  import { get_datetime, get_time_ago } from "@lib/Time"
-  import Loading from "@frame/Loading.svelte"
-  import Icon from "@layout/Icon.svelte"
-  import DarkModeSwitch from "@dark_mode/DarkModeSwitch.svelte"
-  import HeaderLink from "@frame/HeaderLink.svelte"
+  import db from '@db'
+  import { footer_visible } from '@lib/store'
+  import { get_datetime, get_time_ago } from '@lib/Time'
+  import Loading from '@frame/Loading.svelte'
+  import Icon from '@layout/Icon.svelte'
+  import DarkModeSwitch from '@dark_mode/DarkModeSwitch.svelte'
+  import HeaderLink from '@frame/HeaderLink.svelte'
 
   let { menu_mobile = false } = $props()
-  let contact_email = $state("loading")
+  let contact_email = $state('loading')
   const last_update = $state({
-    state: "loading",
+    state: 'loading',
     value: 0,
-    relative: "",
-    absolute: "",
+    relative: '',
+    absolute: '',
   })
   const year = new Date().getFullYear()
 
   const app_version = document
     .querySelector('meta[name="app_version"]')
-    ?.getAttribute("content")
+    ?.getAttribute('content')
 
   let current_interval
   let interval = 1000
@@ -27,8 +27,8 @@
     last_update.relative = get_time_ago(last_update.value * 1000)
     if (
       interval === 1000 &&
-      !last_update.relative.includes("seconde") &&
-      !last_update.relative.includes("maintenant")
+      !last_update.relative.includes('seconde') &&
+      !last_update.relative.includes('maintenant')
     ) {
       clearInterval(current_interval)
       interval = 60000
@@ -37,12 +37,12 @@
   }
 
   db.loaded.then(() => {
-    contact_email = db.get_config("contact_email") as string
-    last_update.state = "loaded"
+    contact_email = db.getConfig('contact_email') as string
+    last_update.state = 'loaded'
     if (db.use.info) {
-      last_update.value = db.get("info", "last_update")?.value
+      last_update.value = db.get('info', 'last_update')?.value
     }
-    const last_modif_timestamp = db.get_last_modif_timestamp()
+    const last_modif_timestamp = db.getLastModifTimestamp()
     if (last_modif_timestamp) last_update.value = last_modif_timestamp
     if (last_update.value) {
       const timestamp = last_update.value * 1000
@@ -50,7 +50,7 @@
       last_update.absolute = get_datetime(timestamp)
       current_interval = setInterval(update_last_modif, interval)
     } else {
-      last_update.state = "not_found"
+      last_update.state = 'not_found'
     }
   })
 </script>
@@ -81,7 +81,7 @@
       <div>
         <HeaderLink
           href="meta"
-          pages={["meta", "metaFolder", "metaDataset", "metaVariable"]}
+          pages={['meta', 'metaFolder', 'metaDataset', 'metaVariable']}
           className=""
         >
           <Icon type="internal_view" margin_right={false} />
@@ -91,11 +91,11 @@
       <div>
         <DarkModeSwitch />
       </div>
-      {#if last_update.state === "loading"}
+      {#if last_update.state === 'loading'}
         <div>
           <Loading type="mini" position="relative" />
         </div>
-      {:else if last_update.state === "loaded"}
+      {:else if last_update.state === 'loaded'}
         <div>
           <span
             class="break_line use_tooltip tooltip_top"
@@ -108,7 +108,7 @@
 
       {#if contact_email}
         <div>
-          {#if contact_email === "loading"}
+          {#if contact_email === 'loading'}
             <Loading type="mini" position="relative" />
           {:else}
             <a href="mailto:{contact_email}" target="_blanck">{contact_email}</a
@@ -121,7 +121,7 @@
 {/if}
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .footer {
     display: flex;

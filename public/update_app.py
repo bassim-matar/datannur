@@ -218,11 +218,11 @@ def copy_files(source_dir: Path, files_to_copy: List[str]) -> None:
 
 def add_jsonjsdb_config() -> None:
     """Add jsonjsdb config to index.html."""
-    config_file = REPO_PATH / "data/jsonjsdb_config.html"
+    config_file = REPO_PATH / "data/jsonjsdb-config.html"
     index_file = REPO_PATH / "index.html"
 
     if not config_file.exists():
-        print(f"{WARNING} jsonjsdb_config file '{config_file}' not found, no config")
+        print(f"{WARNING} jsonjsdb-config file '{config_file}' not found, no config")
         return
 
     if not index_file.exists():
@@ -232,13 +232,13 @@ def add_jsonjsdb_config() -> None:
     try:
         jdb_config = config_file.read_text(encoding="utf-8")
         original_index = index_file.read_text(encoding="utf-8")
-        pattern = r'<div\s+id="jsonjsdb_config"[^>]*>.*?</div>'
+        pattern = r'<div\s+id="jsonjsdb-config"[^>]*>.*?</div>'
         index_without_config = re.sub(
             pattern, "", original_index, flags=re.DOTALL | re.IGNORECASE
         )
         index_with_new_config = index_without_config + jdb_config
         index_file.write_text(index_with_new_config, encoding="utf-8")
-        print(f"{SUCCESS} jsonjsdb config added to index.html")
+        print(f"{SUCCESS} jsonjsdb-config added to index.html")
     except OSError as e:
         print(f"{ERROR} Error updating index.html: {e}")
 

@@ -1,22 +1,22 @@
 <script lang="ts">
-  import db from "@db"
-  import Title from "@layout/Title.svelte"
-  import Tabs from "@tab/Tabs.svelte"
-  import { tabs_helper } from "@tab/tabs_helper"
-  import about_file from "@markdown/about_modality.md?raw"
+  import db from '@db'
+  import Title from '@layout/Title.svelte'
+  import Tabs from '@tab/Tabs.svelte'
+  import { tabsHelper } from '@tab/tabs_helper'
+  import about_file from '@markdown/about_modality.md?raw'
 
-  const modalities = db.get_all("modality")
+  const modalities = db.getAll('modality')
   const raw_tabs: any = { modalities }
   if (modalities.length > 1) raw_tabs.modalities_compare = false
 
   raw_tabs.evolutions = db
-    .get_all("evolution")
-    .filter(evo => evo.entity === "modality" || evo.entity === "value")
+    .getAll('evolution')
+    .filter(evo => evo.entity === 'modality' || evo.entity === 'value')
 
-  raw_tabs.stat = [{ entity: "modality", items: modalities }]
+  raw_tabs.stat = [{ entity: 'modality', items: modalities }]
   raw_tabs.about_file = about_file
 
-  const tabs = tabs_helper(raw_tabs)
+  const tabs = tabsHelper(raw_tabs)
 </script>
 
 <section class="section">

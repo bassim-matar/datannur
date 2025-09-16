@@ -1,23 +1,19 @@
 <script lang="ts">
-  import Logs from "@lib/Logs"
-  import { Dark_mode, dark_mode_theme } from "@dark_mode/Dark_mode"
+  import Logs from '@lib/Logs'
+  import { Dark_mode, dark_mode_theme } from '@dark_mode/Dark_mode'
 
   let { label = null } = $props()
 
   let id = window.crypto.randomUUID()
 
   function toggle() {
-    if (document.startViewTransition) {
-      document.startViewTransition(() => Dark_mode.toggle())
-    } else {
-      Dark_mode.toggle()
-    }
-    if ($dark_mode_theme === "dark") Logs.add("toggle_dark_mode_btn_off")
-    else Logs.add("toggle_dark_mode_btn_on")
+    Dark_mode.toggle()
+    if ($dark_mode_theme === 'dark') Logs.add('toggle_dark_mode_btn_off')
+    else Logs.add('toggle_dark_mode_btn_on')
   }
 
-  let day = $derived($dark_mode_theme === "dark" ? "" : "day")
-  let sun = $derived($dark_mode_theme === "dark" ? "" : "sun")
+  let day = $derived($dark_mode_theme === 'dark' ? '' : 'day')
+  let sun = $derived($dark_mode_theme === 'dark' ? '' : 'sun')
 </script>
 
 <button
@@ -34,7 +30,7 @@
 {/if}
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .tdnn {
     --toggleHeight: 16em;

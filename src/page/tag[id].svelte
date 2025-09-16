@@ -1,16 +1,16 @@
 <script lang="ts">
-  import db from "@db"
-  import { tab_selected } from "@lib/store"
-  import { is_big_limit } from "@lib/constant"
+  import db from '@db'
+  import { tab_selected } from '@lib/store'
+  import { is_big_limit } from '@lib/constant'
   import {
     make_parents_relative,
     add_minimum_deep,
     remove_duplicate_by_id,
-  } from "@lib/db"
-  import Tabs from "@tab/Tabs.svelte"
-  import { tabs_helper } from "@tab/tabs_helper"
-  import Title from "@layout/Title.svelte"
-  import OpenAllSwitch from "@layout/OpenAllSwitch.svelte"
+  } from '@lib/db'
+  import Tabs from '@tab/Tabs.svelte'
+  import { tabsHelper } from '@tab/tabs_helper'
+  import Title from '@layout/Title.svelte'
+  import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
 
   let { tag } = $props()
 
@@ -25,20 +25,20 @@
   let variables
   let tags
 
-  let with_institutions = db.get_all("institution", { tag })
-  let with_folders = db.get_all("folder", { tag })
-  let with_datasets = db.get_all("dataset", { tag })
-  let with_variables = db.get_all("variable", { tag })
-  let with_docs = db.get_all("doc", { tag })
+  let with_institutions = db.getAll('institution', { tag })
+  let with_folders = db.getAll('folder', { tag })
+  let with_datasets = db.getAll('dataset', { tag })
+  let with_variables = db.getAll('variable', { tag })
+  let with_docs = db.getAll('doc', { tag })
 
-  const with_tags = db.get_all_childs("tag", tag.id)
+  const with_tags = db.getAllChilds('tag', tag.id)
 
   for (const child_tag of with_tags) {
-    const child_institutions = db.get_all("institution", { tag: child_tag })
-    const child_folders = db.get_all("folder", { tag: child_tag })
-    const child_datasets = db.get_all("dataset", { tag: child_tag })
-    const child_variables = db.get_all("variable", { tag: child_tag })
-    const child_docs = db.get_all("doc", { tag: child_tag })
+    const child_institutions = db.getAll('institution', { tag: child_tag })
+    const child_folders = db.getAll('folder', { tag: child_tag })
+    const child_datasets = db.getAll('dataset', { tag: child_tag })
+    const child_variables = db.getAll('variable', { tag: child_tag })
+    const child_docs = db.getAll('doc', { tag: child_tag })
     with_institutions = with_institutions.concat(child_institutions)
     with_folders = with_folders.concat(child_folders)
     with_datasets = with_datasets.concat(child_datasets)
@@ -58,7 +58,7 @@
     for (let item of with_tag_items) {
       ids.push(item.id)
     }
-    for (let item of db.get_all(entity)) {
+    for (let item of db.getAll(entity)) {
       if (ids.includes(item.id)) continue
       if (self_id && item.id === self_id) continue
       all.push(item)
@@ -68,12 +68,12 @@
 
   function load_tabs() {
     if (opposite) {
-      institutions = get_opposite("institution", with_institutions)
-      folders = get_opposite("folder", with_folders)
-      docs = get_opposite("doc", with_docs)
-      datasets = get_opposite("dataset", with_datasets)
-      variables = get_opposite("variable", with_variables)
-      tags = get_opposite("tag", with_tags, tag.id)
+      institutions = get_opposite('institution', with_institutions)
+      folders = get_opposite('folder', with_folders)
+      docs = get_opposite('doc', with_docs)
+      datasets = get_opposite('dataset', with_datasets)
+      variables = get_opposite('variable', with_variables)
+      tags = get_opposite('tag', with_tags, tag.id)
     } else {
       institutions = with_institutions
       folders = with_folders
@@ -100,26 +100,26 @@
     const institutions_id = new Set(institutions.map(item => item.id))
 
     const evolutions = db
-      .get_all("evolution")
+      .getAll('evolution')
       .filter(
         evo =>
-          (evo.entity === "tag" && evo.id === tag.id) ||
-          (evo.parent_entity === "tag" && evo.parent_entity_id === tag.id) ||
-          (evo.entity === "variable" && variables_id.has(evo.id)) ||
-          (evo.entity === "dataset" && datasets_id.has(evo.id)) ||
-          (evo.entity === "folder" && folders_id.has(evo.id)) ||
-          (evo.entity === "institution" && institutions_id.has(evo.id)),
+          (evo.entity === 'tag' && evo.id === tag.id) ||
+          (evo.parent_entity === 'tag' && evo.parent_entity_id === tag.id) ||
+          (evo.entity === 'variable' && variables_id.has(evo.id)) ||
+          (evo.entity === 'dataset' && datasets_id.has(evo.id)) ||
+          (evo.entity === 'folder' && folders_id.has(evo.id)) ||
+          (evo.entity === 'institution' && institutions_id.has(evo.id)),
       )
 
     const stat = [
-      { entity: "institution", items: institutions },
-      { entity: "folder", items: folders },
-      { entity: "doc", items: docs },
-      { entity: "dataset", items: datasets },
-      { entity: "variable", items: variables },
+      { entity: 'institution', items: institutions },
+      { entity: 'folder', items: folders },
+      { entity: 'doc', items: docs },
+      { entity: 'dataset', items: datasets },
+      { entity: 'variable', items: variables },
     ]
 
-    tabs = tabs_helper({
+    tabs = tabsHelper({
       tag,
       institutions,
       folders,
@@ -132,7 +132,7 @@
     })
   }
 
-  let info = $derived(opposite ? "(absent)" : "(présent)")
+  let info = $derived(opposite ? '(absent)' : '(présent)')
 
   function toggle_opposite() {
     opposite = !opposite
@@ -142,7 +142,7 @@
   load_tabs()
 
   let show_open_all_switch = $derived(
-    $tab_selected.key === "tags" && tags.length > is_big_limit,
+    $tab_selected.key === 'tags' && tags.length > is_big_limit,
   )
 </script>
 
