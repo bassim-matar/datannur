@@ -5,8 +5,9 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub release](https://img.shields.io/github/v/release/bassim-matar/datannur?color=blue)](https://github.com/bassim-matar/datannur/releases)
-[![CI Tests](https://github.com/bassim-matar/datannur/actions/workflows/test.yml/badge.svg)](https://github.com/bassim-matar/datannur/actions/workflows/test.yml)
-[![Pages Deploy](https://github.com/bassim-matar/datannur/actions/workflows/github_pages.yml/badge.svg)](https://bassim-matar.github.io/datannur/)
+[![CI Tests](https://github.com/bassim-matar/datannur/actions/workflows/ci.yml/badge.svg)](https://github.com/bassim-matar/datannur/actions/workflows/ci.yml)
+[![Deploy Status](https://github.com/bassim-matar/datannur/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/bassim-matar/datannur/actions/workflows/deploy-pages.yml)
+[![Demo](https://img.shields.io/badge/demo-live-success)](https://bassim-matar.github.io/datannur/)
 
 datannur is a portable data catalog that can run without a server.
 
