@@ -1,0 +1,70 @@
+name: CI Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '*.md'
+      - 'public/**/*.md'
+      - '.github/**/*.md'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '*.md'
+      - 'public/**/*.md'
+      - '.github/**/*.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Node 22 • Tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            pw-${{ runner.os }}-
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: Tests (unit + UI)
+        run: npm test
+
+      - name: Compute artifact name
+        if: failure()
+        id: artifact_name
+        run: |
+          SAFE_REF=${GITHUB_REF_NAME//\//-}
+          echo "value=test-artifacts-${SAFE_REF}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload test artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.artifact_name.outputs.value }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore

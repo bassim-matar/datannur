@@ -4,9 +4,14 @@
 
 - add: eslint and change prettier config and start apply new coding style to root, test and public ts files
 - add: build process before ui tests and catch console error in ui tests
+- add: CONTRIBUTING.md file and adapt readme contributing section
+- add: test.yml for ci
+- add: ci/cd badge to readme
+- add: reset-branch script to delete merged branch
 - change: update_app.py to always use emojis
 - change: ugrade to jsonjsdb-builder with correct naming convention
 - change: jsonjsdb refactor with standard naming convention
+- change: rename workflow files and make one badge for deploy status and one for github pages
 - fix: copilot-instructions.md location
 - remove: eslint on .json.js files
 
