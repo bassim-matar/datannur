@@ -1,12 +1,8 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { chromium } from 'playwright'
 import type { Browser, Page } from 'playwright'
-import path from 'path'
-import { pathToFileURL, fileURLToPath } from 'url'
 
-const thisFolder = path.dirname(fileURLToPath(import.meta.url))
-let baseUrl = pathToFileURL(path.resolve(thisFolder, '..')).href
-baseUrl += '/app/index.html'
+const baseUrl = new URL('../app/index.html', import.meta.url).href
 
 let browser: Browser
 let page: Page
@@ -14,6 +10,16 @@ let page: Page
 beforeAll(async () => {
   browser = await chromium.launch({ headless: true })
   page = await browser.newPage()
+
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      throw new Error(`Console error: ${msg.text()}`)
+    }
+  })
+
+  page.on('pageerror', error => {
+    throw new Error(`Page error: ${error.message}`)
+  })
 })
 
 afterAll(async () => {
