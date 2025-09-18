@@ -7,6 +7,7 @@
 - add: CONTRIBUTING.md file and adapt readme contributing section
 - add: test.yml for ci
 - add: ci/cd badge to readme
+- add: reset-branch script to delete merged branch
 - change: update_app.py to always use emojis
 - change: ugrade to jsonjsdb-builder with correct naming convention
 - change: jsonjsdb refactor with standard naming convention

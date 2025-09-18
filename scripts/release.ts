@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import { execSync } from 'child_process'
 
 function getVersion() {
-  const content = readFileSync('package.json', 'utf-8')
+  const content = readFileSync('../package.json', 'utf-8')
   return JSON.parse(content).version
 }
 

@@ -2,6 +2,29 @@
 
 Thank you for your interest in contributing. The goal of this project is to stay **simple**, **portable**, and **client-side only**.
 
+## Table of Contents
+
+- [Quick Start (Maintainers / Power Users)](#quick-start-maintainers--power-users)
+- [Standard Contribution Flow (External Contributors)](#standard-contribution-flow-external-contributors)
+- [Guidelines](#guidelines)
+  - [Scope of a Pull Request](#scope-of-a-pull-request)
+  - [Tests](#tests)
+  - [Build](#build)
+  - [Commit Messages](#commit-messages)
+  - [Linting](#linting)
+  - [Console Errors](#console-errors)
+  - [Performance / Footprint](#performance--footprint)
+  - [Documentation](#documentation)
+- [Releases](#releases)
+  - [Automated tagging via script](#automated-tagging-via-script)
+  - [Pre-releases](#pre-releases)
+  - [When to bump the version](#when-to-bump-the-version)
+  - [Suggested simple flow](#suggested-simple-flow)
+- [CI Overview](#ci-overview)
+- [Opening Issues](#opening-issues)
+- [Cleaning Up Local WIP Branches](#cleaning-up-local-wip-branches)
+  - [Automated Cleanup Script](#automated-cleanup-script)
+
 ## Quick Start (Maintainers / Power Users)
 
 If you want the fast workflow used in this repository:
@@ -134,7 +157,7 @@ Run:
 npm run release
 ```
 
-This runs `release.ts` which:
+This runs `scripts/release.ts` which:
 
 1. Verifies you are on `main`
 2. Checks for uncommitted changes
@@ -190,3 +213,29 @@ git push origin :wip-20250918-153012
 ```
 
 (Usually GitHub UI delete button is enough.)
+
+### Automated Cleanup Script
+
+You can automate the post-merge cleanup using the provided script:
+
+```bash
+npm run reset-branch
+```
+
+Behavior:
+
+- Detects current branch (if not `main`)
+- Fetches + prunes
+- Checks out `main` and fast-forwards it
+- Deletes the local branch if merged
+- Deletes the remote branch if it still exists
+
+Custom env vars:
+
+```bash
+BRANCH=feature/x npm run reset-branch   # target a specific branch
+DRY=1 npm run reset-branch              # show commands only
+DEFAULT_BRANCH=main npm run reset-branch # override default base (rare)
+```
+
+Dry run never executes git mutations (prints only). Use this if unsure before real cleanup.

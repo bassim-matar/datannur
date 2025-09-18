@@ -29,9 +29,6 @@ datannur is a portable data catalog that can run without a server.
   - [Usage](#usage)
   - [Scripts](#scripts)
 - [Contributing](#contributing)
-  - [Code Style & Conventions](#code-style--conventions)
-  - [Release Process](#release-process)
-  - [How to Contribute](#how-to-contribute)
 - [License](#license)
 
 ## Overview
@@ -156,38 +153,25 @@ For more commands, see the Scripts section below.
 
 ## Contributing
 
-Contributions to datannur are always welcome. Whether it's a bug report, new feature, or improvement to existing features, your input is highly appreciated.
+See the full guide in [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
-### Code Style & Conventions
+Common maintainer tasks:
 
-- **Import aliases:** Use path shortcuts - `@js/`, `@component/`, `@db`, `@layout/` (see `jsconfig.json`)
-- **Svelte 5 patterns:** Use `$props()`, `$state()`, `$derived()` for reactivity
-- **Database access:** Import `db` from `@db` for all data operations
+| Task                     | Command                 |
+| ------------------------ | ----------------------- |
+| Run tests                | `npm test`              |
+| Release new version      | `npm run release`       |
+| Generate static pages    | `npm run static-make`   |
+| Deploy (static + deploy) | `npm run static-deploy` |
+| Cleanup merged branch    | `npm run reset-branch`  |
 
-### Release Process
+Small PR flow:
 
-```bash
-npm run release
-```
-
-The release script automatically:
-
-- Extracts changelog from `CHANGELOG.md`
-- Creates a git tag with the version from `package.json`
-- Pushes the tag to GitHub
-- Creates GitHub releases
-
-### How to Contribute
-
-Please see [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the full guidelines (environment setup, branch naming, commit format, release flow).
-
-Quick workflow recap:
-
-1. Create a feature branch: `git checkout -b feature/short-topic`
-2. Implement & add/update tests
-3. Update `CHANGELOG.md`
-4. Commit with a clear message
-5. Open a pull request
+1. `git checkout -b feature/short-topic`
+2. Code + tests
+3. Update `CHANGELOG.md` if user-visible
+4. Commit & push
+5. Open PR (CI must pass)
 
 ## License
 
