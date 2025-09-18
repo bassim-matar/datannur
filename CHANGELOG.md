@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.12.8 (2025-09-18)
 
 - add: eslint and change prettier config and start apply new coding style to root, test and public ts files
 - add: build process before ui tests and catch console error in ui tests
