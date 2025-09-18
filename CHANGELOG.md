@@ -12,6 +12,7 @@
 - change: ugrade to jsonjsdb-builder with correct naming convention
 - change: jsonjsdb refactor with standard naming convention
 - change: rename workflow files and make one badge for deploy status and one for github pages
+- change: use only one root readme for users and contributing.md for developers
 - fix: copilot-instructions.md location
 - remove: eslint on .json.js files
 

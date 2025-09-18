@@ -1,241 +1,166 @@
 # Contributing to datannur
 
-Thank you for your interest in contributing. The goal of this project is to stay **simple**, **portable**, and **client-side only**.
-
-## Table of Contents
-
-- [Quick Start (Maintainers / Power Users)](#quick-start-maintainers--power-users)
-- [Standard Contribution Flow (External Contributors)](#standard-contribution-flow-external-contributors)
+- [Getting Started](#getting-started)
+  - [Standard Workflow](#standard-workflow)
+  - [Quick Workflow (WIP branches)](#quick-workflow-wip-branches)
+- [Development Scripts](#development-scripts)
 - [Guidelines](#guidelines)
-  - [Scope of a Pull Request](#scope-of-a-pull-request)
-  - [Tests](#tests)
-  - [Build](#build)
-  - [Commit Messages](#commit-messages)
-  - [Linting](#linting)
-  - [Console Errors](#console-errors)
-  - [Performance / Footprint](#performance--footprint)
+  - [Pull Requests](#pull-requests)
+  - [Tests & Quality](#tests--quality)
   - [Documentation](#documentation)
-- [Releases](#releases)
-  - [Automated tagging via script](#automated-tagging-via-script)
-  - [Pre-releases](#pre-releases)
-  - [When to bump the version](#when-to-bump-the-version)
-  - [Suggested simple flow](#suggested-simple-flow)
-- [CI Overview](#ci-overview)
-- [Opening Issues](#opening-issues)
-- [Cleaning Up Local WIP Branches](#cleaning-up-local-wip-branches)
-  - [Automated Cleanup Script](#automated-cleanup-script)
+- [Project Architecture](#project-architecture)
+  - [Tech Stack](#tech-stack)
+  - [Key Directories](#key-directories)
+- [Releases & Maintenance](#releases--maintenance)
+  - [Release Process](#release-process)
+  - [Maintainer Commands](#maintainer-commands)
+  - [Branch Cleanup](#branch-cleanup)
+- [Support](#support)
 
-## Quick Start (Maintainers / Power Users)
+## Getting Started
 
-If you want the fast workflow used in this repository:
+### Standard Workflow
 
-```bash
-# One-time setup (install the 'wip' alias globally)
-git config --global alias.wip '!f(){ n=${1:-wip-$(date +%Y%m%d-%H%M%S)}; git switch -c "$n"; }; f'
-```
+1. Fork the repository and create a branch:
 
-Usage for each new change batch:
-
-```bash
-git checkout main
-git pull
-git wip                  # creates e.g. wip-20250918-153012
-# ... commits ...
-git push -u origin HEAD
-# Open PR → wait for CI → squash merge → delete branch
-```
-
-You can also pass a custom name:
-
-```bash
-git wip search-ui
-```
-
-## Standard Contribution Flow (External Contributors)
-
-1. Fork the repository
-2. Create a branch (name freely):
    ```bash
    git checkout -b add-feature-x
-   ```
-3. Install dependencies:
-   ```bash
    npm ci
    ```
-4. Run tests locally before pushing:
+
+2. Develop and test:
+
    ```bash
-   npm run test
+   npm run dev    # Start development server
+   npm run test   # Run tests before pushing
    ```
-5. Commit changes (clear messages preferred):
+
+3. Submit your changes:
+
    ```bash
    git add .
    git commit -m "add dataset filter logic"
    git push origin add-feature-x
    ```
-6. Open a Pull Request to `main`
-7. Ensure CI (unit + UI tests) passes
-8. Respond to review comments if any
-9. Maintainer will squash merge
+
+4. Open a Pull Request to `main` - ensure CI passes
+
+### Quick Workflow (WIP branches)
+
+For faster iterations, you can optionally install the WIP alias:
+
+```bash
+# Optional one-time setup
+git config --global alias.wip '!f(){ n=${1:-wip-$(date +%Y%m%d-%H%M%S)}; git switch -c "$n"; }; f'
+```
+
+Then for each change:
+
+```bash
+git checkout main
+git pull
+git wip add-feature-x       # creates branch add-feature-x
+# ... commits ...
+git push -u origin HEAD
+# Open PR → CI → squash merge → delete branch
+```
+
+Without the alias, simply use: `git checkout -b add-feature-x`
+
+## Development Scripts
+
+| Command           | Purpose                     |
+| ----------------- | --------------------------- |
+| `npm run dev`     | Development server          |
+| `npm run build`   | Build for production        |
+| `npm run test`    | Run test suite              |
+| `npm run preview` | Open built app (file://)    |
+| `npm run serve`   | Serve built app (localhost) |
 
 ## Guidelines
 
-### Scope of a Pull Request
+### Pull Requests
 
-Keep PRs focused. A good PR:
+Keep PRs focused - one feature, one bug fix, or one refactor. Avoid mixing stylistic changes with functional ones.
 
-- Implements one feature OR fixes one bug OR refactors one logical area
-- Does not mix stylistic rewrites with functional changes
-- Avoids adding unused dependencies
+### Tests & Quality
 
-### Tests
-
-We run two layers:
-
-- `test:unit` (logic / helpers)
-- `test:ui` (Playwright UI smoke tests against built app)
-
-Run everything locally:
-
-```bash
-npm run test
-```
-
-If a console error appears during UI tests, the test suite fails.
-
-### Build
-
-The production build is generated with:
-
-```bash
-npm run build
-```
-
-The deployed content is the `app/` directory after `vite build`.
-
-### Commit Messages
-
-No strict format enforced. Just be descriptive:
-
-```
-add tag search
-fix crash when variable has no metadata
-cleanup favorites store
-```
-
-(Conventional commits welcome but optional.)
-
-### Linting
-
-ESLint exists but may not be fully enforced yet. Feel free to fix lint issues incrementally. Do not introduce new obvious warnings.
-
-### Console Errors
-
-UI must render with **zero** browser console errors. Treat any console error as a bug.
-
-### Performance / Footprint
-
-- Avoid large dependencies
-- Prefer small, local utilities
-- Keep client bundle size reasonable
+- Run `npm run test` locally (includes unit + UI tests)
+- **Zero console errors** in browser - automatically verified by `ui.test.ts`
+- Build must pass: `npm run build`
 
 ### Documentation
 
-If you add a new visible feature, update `README.md` if needed.
+Update `README.md` for new visible features.
 
-## Releases
+## Project Architecture
 
-### Automated tagging via script
+### Tech Stack
 
-Prerequisites:
+- **Frontend**: Svelte 5 + TypeScript + Vite
+- **Database**: [Jsonjsdb](https://github.com/bassim-matar/jsonjsdb) (client-side JSONJS)
+- **UI**: DataTables, Bulma (subset), Font Awesome
+- **Search**: FlexSearch
+- **Router**: Navigo
 
-- `package.json` version already bumped and `CHANGELOG.md` updated
-- You are on a clean `main` (no uncommitted changes)
+### Key Directories
 
-Run:
+- `src/page/` - Main application pages (auto-generates router)
+- `src/component/` - Reusable components by data type (dataset, folder, tag...)
+- `src/datatable/` - DataTables integration
+- `src/frame/` - UI framework (Header, Footer, Router)
+- `public/data/` - User data (only folder users modify)
+- `public/data/db/` - Database files (.json.js format)
 
-```bash
-npm run release
-```
+## Releases & Maintenance
 
-This runs `scripts/release.ts` which:
+### Release Process
 
-1. Verifies you are on `main`
-2. Checks for uncommitted changes
-3. Confirms the tag `v<version>` does not already exist
-4. Creates an annotated tag `v<version>`
-5. Pushes the tag (GitHub Actions `release.yml` handles the rest)
+1. Create a release branch:
 
-### Pre-releases
+   ```bash
+   git checkout main && git pull
+   git checkout -b release/v0.X.Y
+   ```
 
-Pushes to `main` without a new version tag still deploy the build (GitHub Pages) but do **not** create a GitHub Release. Only tags `v*` trigger the release workflow logic.
+2. Update version and changelog:
 
-### When to bump the version
+   ```bash
+   # Edit package.json and CHANGELOG.md
+   git add package.json CHANGELOG.md
+   git commit -m "chore: bump version to 0.X.Y"
+   git push -u origin release/v0.X.Y
+   ```
 
-- After merging a meaningful change you want to publish
-- Keep version in `package.json` aligned with last tagged version
+3. Open PR → merge → tag:
 
-### Suggested simple flow
+   ```bash
+   # After PR is merged:
+   git checkout main && git pull
+   npm run release
+   ```
 
-```bash
-# 1. Edit code / merge PRs
-# 2. Update version in package.json and CHANGELOG.md
-git add package.json CHANGELOG.md
-git commit -m "chore: bump version to 0.X.Y"
-git push
-# 3. Tag via script
-npm run release
-```
+### Maintainer Commands
 
-The release workflow will extract the changelog section (if present) and attach the packaged artifact.
+| Command                | Purpose                 |
+| ---------------------- | ----------------------- |
+| `npm run release`      | Tag and trigger release |
+| `npm run static-make`  | Generate SEO pages      |
+| `npm run deploy`       | Deploy to remote server |
+| `npm run reset-branch` | Clean up local branches |
 
-## CI Overview
+### Branch Cleanup
 
-- Pull Requests and pushes to `main` run tests.
-- GitHub Pages deploys automatically on successful push to `main`.
-- Release workflow activates on `v*` tags.
-
-## Opening Issues
-
-Provide:
-
-- Clear title
-- Steps to reproduce
-- Expected vs actual behavior
-- Screenshots if UI related
-
-## Cleaning Up Local WIP Branches
-
-After merge (squash), you can remove the branch locally and remotely:
+After PR merge:
 
 ```bash
-git branch -D wip-20250918-153012
-git push origin :wip-20250918-153012
+npm run reset-branch  # Switches to main, pulls, deletes merged branch
 ```
 
-(Usually GitHub UI delete button is enough.)
+## Support
 
-### Automated Cleanup Script
+- **CI**: Tests run on PRs and `main` pushes
+- **Deploy**: GitHub Pages auto-deploys on `main`
+- **Releases**: Only `v*` tags trigger release workflow
 
-You can automate the post-merge cleanup using the provided script:
-
-```bash
-npm run reset-branch
-```
-
-Behavior:
-
-- Detects current branch (if not `main`)
-- Fetches + prunes
-- Checks out `main` and fast-forwards it
-- Deletes the local branch if merged
-- Deletes the remote branch if it still exists
-
-Custom env vars:
-
-```bash
-BRANCH=feature/x npm run reset-branch   # target a specific branch
-DRY=1 npm run reset-branch              # show commands only
-DEFAULT_BRANCH=main npm run reset-branch # override default base (rare)
-```
-
-Dry run never executes git mutations (prints only). Use this if unsure before real cleanup.
+**Bug Reports**: Provide clear title, steps to reproduce, expected vs actual behavior, screenshots if UI-related.

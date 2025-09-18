@@ -64,6 +64,12 @@ function htmlReplace(replacements: [string, string][]) {
   }
 }
 
+function copyFilesToOutDir(files: string[]) {
+  return Promise.all(
+    files.map(file => fs.copyFile(file, `${config.outDir}/${file}`))
+  )
+}
+
 function afterBuild(callback: () => void) {
   return { name: 'after_build', apply: 'build' as const, closeBundle: callback }
 }
@@ -149,10 +155,7 @@ export default defineConfig({
       [` type="module" src="./`, ` defer src="./`],
     ]),
     afterBuild(async () => {
-      await Promise.all([
-        fs.copyFile('LICENSE.md', `${config.outDir}/LICENSE.md`),
-        fs.copyFile('CHANGELOG.md', `${config.outDir}/CHANGELOG.md`),
-      ])
+      await copyFilesToOutDir(['LICENSE.md', 'CHANGELOG.md', 'README.md'])
     }),
   ],
 })
