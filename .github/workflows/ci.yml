@@ -2,7 +2,8 @@ name: CI Tests
 
 on:
   push:
-    branches: ['**']
+    branches:
+      - main
     paths-ignore:
       - '*.md'
       - 'public/**/*.md'
@@ -16,6 +17,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
