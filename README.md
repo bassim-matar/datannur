@@ -176,12 +176,15 @@ The release script automatically:
 
 ### How to Contribute
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and test them
-4. Update `CHANGELOG.md` with your changes
-5. Commit using clear, descriptive messages
-6. Push to your fork and submit a pull request
+Please see [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the full guidelines (environment setup, branch naming, commit format, release flow).
+
+Quick workflow recap:
+
+1. Create a feature branch: `git checkout -b feature/short-topic`
+2. Implement & add/update tests
+3. Update `CHANGELOG.md`
+4. Commit with a clear message
+5. Open a pull request
 
 ## License
 
