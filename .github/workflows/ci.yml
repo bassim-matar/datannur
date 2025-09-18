@@ -47,11 +47,18 @@ jobs:
       - name: Tests (unit + UI)
         run: npm test
 
+      - name: Compute artifact name
+        if: failure()
+        id: artifact_name
+        run: |
+          SAFE_REF=${GITHUB_REF_NAME//\//-}
+          echo "value=test-artifacts-${SAFE_REF}" >> "$GITHUB_OUTPUT"
+
       - name: Upload test artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: test-artifacts-${{ github.ref_name }}
+          name: ${{ steps.artifact_name.outputs.value }}
           path: |
             test-results/
             playwright-report/
