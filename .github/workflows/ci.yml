@@ -25,7 +25,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Node 22 • Tests
+    name: All Tests
     steps:
       - name: Checkout
         uses: actions/checkout@v4
