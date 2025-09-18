@@ -5,6 +5,7 @@
 - add: eslint and change prettier config and start apply new coding style to root, test and public ts files
 - add: build process before ui tests and catch console error in ui tests
 - add: CONTRIBUTING.md file
+- add: test.yml for ci
 - change: update_app.py to always use emojis
 - change: ugrade to jsonjsdb-builder with correct naming convention
 - change: jsonjsdb refactor with standard naming convention

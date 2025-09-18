@@ -1,0 +1,50 @@
+name: CI Tests
+
+on:
+  push:
+    branches: ['**']
+    paths-ignore:
+      - '*.md'
+      - 'public/**/*.md'
+      - '.github/**/*.md'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '*.md'
+      - 'public/**/*.md'
+      - '.github/**/*.md'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Node 22 • Tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Tests (unit + UI)
+        run: npm test
+
+      - name: Upload test artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts-${{ github.ref_name }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
