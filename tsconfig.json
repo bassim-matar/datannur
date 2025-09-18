@@ -6,7 +6,7 @@
     "verbatimModuleSyntax": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "strict": false,
+    "strict": true,
     "lib": ["DOM", "ESNext"],
     "baseUrl": ".",
     "paths": {
