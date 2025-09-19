@@ -146,19 +146,20 @@ Update `README.md` for new visible features.
    git push -u origin release/v0.X.Y
    ```
 
-3. Open PR → merge → tag:
+3. Open PR → merge → automatic release:
 
    ```bash
-   # After PR is merged:
-   git checkout main && git pull
-   npm run release
+   # After PR is merged, GitHub Actions automatically:
+   # - Detects version change in package.json
+   # - Creates git tag (v0.X.Y)
+   # - Builds and packages the app
+   # - Creates GitHub release with changelog
    ```
 
 ### Maintainer Commands
 
 | Command               | Purpose                 |
 | --------------------- | ----------------------- |
-| `npm run release`     | Tag and trigger release |
 | `npm run static-make` | Generate SEO pages      |
 | `npm run deploy`      | Deploy to remote server |
 
@@ -174,6 +175,7 @@ git cleanup  # Switches to main, pulls, prunes remote, deletes merged branches
 
 - **CI**: Tests run on PRs and `main` pushes
 - **Deploy**: GitHub Pages auto-deploys on `main`
-- **Releases**: Only `v*` tags trigger release workflow
+- **Releases**: Auto-triggered on `main` pushes when version changes
+- **Pre-releases**: Auto-updated on every `main` push (for development testing)
 
 **Bug Reports**: Provide clear title, steps to reproduce, expected vs actual behavior, screenshots if UI-related.

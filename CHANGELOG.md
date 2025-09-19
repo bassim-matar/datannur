@@ -3,6 +3,7 @@
 ## unreleased
 
 - remove: reset-branch.ts script and use git cleanup alias instead
+- remove: release.ts script and use version change detection in release.yml instead
 
 ## 0.12.8 (2025-09-18)
 
