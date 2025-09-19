@@ -17,8 +17,9 @@ datannur is a client-side data catalog designed to organize and explore datasets
 - **Portable** - Works locally, on shared drives, or cloud storage
 - **Comprehensive metadata** - Structured around 7 core concepts: Institution, Folder, Tag, Doc, Dataset, Variable, and Modality
 - **Browser-isolated** - No system access, inherently secure
+- **French interface** - Currently available in French, with multilingual support planned for future releases
 
-> **Contributing:** For development documentation and contributing guidelines, see [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+> **Contributing:** For development documentation and contributing guidelines, see [`CONTRIBUTING.md`](https://github.com/bassim-matar/datannur?tab=contributing-ov-file).
 
 **🌐 More info:** [datannur.com](https://datannur.com)
 
@@ -65,6 +66,8 @@ datannur is a client-side data catalog designed to organize and explore datasets
 
 ## Project Structure
 
+> **📁 Context:** This structure represents the **distributed application** (inside the `app/` folder or downloaded package). For development structure, see the full repository.
+
 Here is the top-level structure:
 
 ```
@@ -73,6 +76,8 @@ Here is the top-level structure:
 ├── node_scripts/               # Node.js scripts (deploy, static generation, sync db)
 ├── .htaccess                   # Apache configuration (clean URLs, cache)
 ├── .nojekyll                   # Disables Jekyll on GitHub Pages
+├── CHANGELOG.md                # Application changelog
+├── LICENSE.md                  # License information
 ├── README.md                   # This documentation
 ├── index.html                  # Application entry point
 ├── manifest.json               # PWA configuration

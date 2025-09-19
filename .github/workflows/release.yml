@@ -3,7 +3,6 @@ name: Release
 on:
   push:
     branches: [main]
-    tags: ['v*']
 
 permissions:
   contents: write
@@ -22,53 +21,61 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      - name: Get current version
+        id: current_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Check if version changed
+        id: version_check
+        run: |
+          CURRENT_VERSION="${{ steps.current_version.outputs.version }}"
+
+          # Get the latest release tag using GitHub API (more efficient than git history)
+          LATEST_TAG=$(gh release list --limit 1 --exclude-pre-releases --json tagName --jq '.[0].tagName' 2>/dev/null || echo "")
+
+          if [[ -z "$LATEST_TAG" ]]; then
+            echo "No previous releases found, creating first release"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "is_first_release=true" >> "$GITHUB_OUTPUT"
+          else
+            # Extract version from latest tag (remove 'v' prefix)
+            LATEST_VERSION="${LATEST_TAG#v}"
+            
+            if [[ "$CURRENT_VERSION" != "$LATEST_VERSION" ]]; then
+              echo "Version changed from ${LATEST_VERSION} to ${CURRENT_VERSION}"
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              echo "is_first_release=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "Version unchanged (${CURRENT_VERSION})"
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo "is_first_release=false" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Determine release type
         id: release
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            # Stable release triggered by tag push
+          if [[ "${{ steps.version_check.outputs.changed }}" == "true" ]]; then
+            # Version bump detected - create stable release
             echo "type=stable" >> "$GITHUB_OUTPUT"
-            echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+            echo "tag=${{ steps.current_version.outputs.tag }}" >> "$GITHUB_OUTPUT"
             echo "asset=datannur-app-latest.zip" >> "$GITHUB_OUTPUT"
-            
-            # Extract version from tag (remove 'v' prefix)
-            VERSION="${{ github.ref_name }}"
-            VERSION="${VERSION#v}"
-            echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+            echo "version=${{ steps.current_version.outputs.version }}" >> "$GITHUB_OUTPUT"
           else
-            # Automatic pre-release on push to main
+            # No version change - create/update pre-release
             echo "type=prerelease" >> "$GITHUB_OUTPUT"
             echo "tag=pre-release" >> "$GITHUB_OUTPUT"
             echo "asset=datannur-app-pre-release.zip" >> "$GITHUB_OUTPUT"
+            echo "version=${{ steps.current_version.outputs.version }}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create package
         run: cd app && zip -r "../${{ steps.release.outputs.asset }}" .
-
-      - name: Delete existing pre-release
-        if: steps.release.outputs.type == 'prerelease'
-        run: |
-          gh release delete pre-release --yes || true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update pre-release for stable releases
-        if: steps.release.outputs.type == 'stable'
-        run: |
-          echo "Updating pre-release to point to latest stable release"
-          gh release delete pre-release --yes || true
-
-          # Create pre-release package (copy from stable package)
-          cp "${{ steps.release.outputs.asset }}" "datannur-app-pre-release.zip"
-
-          # Create new pre-release pointing to same commit as stable
-          gh release create pre-release \
-            --title "datannur pre-release" \
-            --notes "Latest development version (currently same as ${{ steps.release.outputs.tag }})" \
-            --prerelease \
-            "datannur-app-pre-release.zip"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract changelog
         id: changelog
@@ -96,6 +103,43 @@ jobs:
               echo "EOF"
             } >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Create git tag for stable release
+        if: steps.release.outputs.type == 'stable'
+        run: |
+          TAG="${{ steps.release.outputs.tag }}"
+          VERSION="${{ steps.release.outputs.version }}"
+
+          # Create and push the tag
+          git tag -a "${TAG}" -m "Release ${TAG}"
+          git push origin "${TAG}"
+
+          echo "Created and pushed tag: ${TAG}"
+
+      - name: Delete existing pre-release
+        if: steps.release.outputs.type == 'prerelease'
+        run: |
+          gh release delete pre-release --yes || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update pre-release for stable releases
+        if: steps.release.outputs.type == 'stable'
+        run: |
+          echo "Updating pre-release to point to latest stable release"
+          gh release delete pre-release --yes || true
+
+          # Create pre-release package (copy from stable package)
+          cp "${{ steps.release.outputs.asset }}" "datannur-app-pre-release.zip"
+
+          # Create new pre-release pointing to same commit as stable
+          gh release create pre-release \
+            --title "datannur pre-release" \
+            --notes "Latest development version (currently same as ${{ steps.release.outputs.tag }})" \
+            --prerelease \
+            "datannur-app-pre-release.zip"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create release
         run: |

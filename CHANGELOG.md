@@ -1,5 +1,10 @@
 # datannur
 
+## unreleased
+
+- remove: reset-branch.ts script and use git cleanup alias instead
+- remove: release.ts script and use version change detection in release.yml instead
+
 ## 0.12.8 (2025-09-18)
 
 - add: eslint and change prettier config and start apply new coding style to root, test and public ts files
