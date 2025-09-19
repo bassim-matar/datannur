@@ -67,6 +67,20 @@ git push -u origin HEAD
 
 Without the alias, simply use: `git checkout -b add-feature-x`
 
+### Git Setup (Optional)
+
+For better branch management, you can optionally configure these Git aliases:
+
+```bash
+# One-time setup for automatic branch pruning
+git config --global fetch.prune true
+
+# Add cleanup alias for merged branches
+git config --global alias.cleanup "!git checkout main && git pull --ff-only && git remote prune origin && git branch --merged | sed 's/^\* //' | grep -x -v -E 'main|master' | xargs -n 1 git branch -d"
+```
+
+Then use `git cleanup` to automatically clean up merged branches.
+
 ## Development Scripts
 
 | Command           | Purpose                     |
@@ -142,19 +156,18 @@ Update `README.md` for new visible features.
 
 ### Maintainer Commands
 
-| Command                | Purpose                 |
-| ---------------------- | ----------------------- |
-| `npm run release`      | Tag and trigger release |
-| `npm run static-make`  | Generate SEO pages      |
-| `npm run deploy`       | Deploy to remote server |
-| `npm run reset-branch` | Clean up local branches |
+| Command               | Purpose                 |
+| --------------------- | ----------------------- |
+| `npm run release`     | Tag and trigger release |
+| `npm run static-make` | Generate SEO pages      |
+| `npm run deploy`      | Deploy to remote server |
 
 ### Branch Cleanup
 
-After PR merge:
+After PR merge, use the Git cleanup alias (see [Git Configuration](#git-configuration-recommended)):
 
 ```bash
-npm run reset-branch  # Switches to main, pulls, deletes merged branch
+git cleanup  # Switches to main, pulls, prunes remote, deletes merged branches
 ```
 
 ## Support
