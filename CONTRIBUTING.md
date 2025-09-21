@@ -3,6 +3,7 @@
 - [Getting Started](#getting-started)
   - [Standard Workflow](#standard-workflow)
   - [Quick Workflow (WIP branches)](#quick-workflow-wip-branches)
+  - [Git Setup (Optional)](#git-setup-optional)
 - [Development Scripts](#development-scripts)
 - [Guidelines](#guidelines)
   - [Pull Requests](#pull-requests)
@@ -76,10 +77,11 @@ For better branch management, you can optionally configure these Git aliases:
 git config --global fetch.prune true
 
 # Add cleanup alias for merged branches
-git config --global alias.cleanup "!git checkout main && git pull --ff-only && git remote prune origin && git branch --merged | sed 's/^\* //' | grep -x -v -E 'main|master' | xargs -n 1 git branch -d"
+# Add cleanup alias for squash merged branches
+git config --global alias.cleanup '!f(){ current=$(git branch --show-current); if [ "$current" != "main" ] && [ "$current" != "master" ]; then git checkout main && git pull --ff-only && git branch -D "$current"; else git checkout main && git pull --ff-only; fi; }; f'
 ```
 
-Then use `git cleanup` to automatically clean up merged branches.
+Then use `git cleanup` to automatically switch to main, pull changes, and delete the current branch.
 
 ## Development Scripts
 
@@ -165,10 +167,10 @@ Update `README.md` for new visible features.
 
 ### Branch Cleanup
 
-After PR merge, use the Git cleanup alias (see [Git Configuration](#git-configuration-recommended)):
+After PR merge, use the Git cleanup alias (see [Git Setup](#git-setup-optional)):
 
 ```bash
-git cleanup  # Switches to main, pulls, prunes remote, deletes merged branches
+git cleanup  # Switches to main, pulls changes, deletes current branch
 ```
 
 ## Support
