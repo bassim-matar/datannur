@@ -37,7 +37,7 @@ export default [
   ...tseslint.configs.recommended,
   ...svelte.configs['flat/recommended'],
   {
-    ignores: ['**/*.json.js', 'app/'],
+    ignores: ['**/*.json.js', 'app/', 'src/.generated/'],
   },
   {
     files: ['**/*.ts', '**/*.svelte.ts'],

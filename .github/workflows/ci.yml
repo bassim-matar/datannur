@@ -4,16 +4,8 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '*.md'
-      - 'public/**/*.md'
-      - '.github/**/*.md'
   pull_request:
     branches: [main]
-    paths-ignore:
-      - '*.md'
-      - 'public/**/*.md'
-      - '.github/**/*.md'
 
 permissions:
   contents: read
