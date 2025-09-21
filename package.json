@@ -18,7 +18,7 @@
     "static-make": "vite build && npm run node:ts app/node_scripts/static_make.ts",
     "deploy": "npm run node:ts app/node_scripts/deploy.ts",
     "static-deploy": "npm run static-make && npm run deploy",
-    "lint": "eslint **/*.{ts,svelte}",
+    "lint": "eslint src/ test/ public/node_scripts/ --ext .ts,.svelte",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
