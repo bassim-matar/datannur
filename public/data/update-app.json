@@ -1,5 +1,5 @@
 {
-  "target_version": "latest",
+  "targetVersion": "latest",
   "include": [
     "assets",
     "node-scripts",

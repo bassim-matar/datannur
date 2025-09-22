@@ -226,8 +226,8 @@ python3 update_app.py
 
 **Configuration options** in `data/update_app.json`:
 
-- **target_version**: Choose `"latest"` (stable), `"pre-release"` (newest), or specific version `"x.x.x"`
-- **proxy_url**: Optional proxy for downloading files
+- **targetVersion**: Choose `"latest"` (stable), `"pre-release"` (newest), or specific version `"x.x.x"`
+- **proxyUrl**: Optional proxy for downloading files
 - **include**: List of files/folders to update
 
 ### Manual Update
@@ -252,8 +252,8 @@ npm run static-make
 
 **Configuration** in `data/static-make.config.json`:
 
-- **domain**: Your public domain (e.g., `"https://yourdomain.com"`) - required for sitemap generation when `index_seo: true`
-- **index_seo**: `true` to allow search engine indexing, `false` to add `noindex` meta tag (default: `false`)
+- **domain**: Your public domain (e.g., `"https://yourdomain.com"`) - required for sitemap generation when `indexSeo: true`
+- **indexSeo**: `true` to allow search engine indexing, `false` to add `noindex` meta tag (default: `false`)
 - **entities**: Which entity types to generate static pages for
 - **routes**: Which routes to pre-generate
 

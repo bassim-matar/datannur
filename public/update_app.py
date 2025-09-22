@@ -21,9 +21,9 @@ REQUEST_TIMEOUT = 30  # seconds
 
 
 class Config(TypedDict):
-    target_version: str
+    targetVersion: str
     include: List[str]
-    proxy_url: Optional[str]
+    proxyUrl: Optional[str]
 
 
 class AssetInfo(TypedDict):
@@ -65,9 +65,9 @@ def get_config() -> Config:
     except json.JSONDecodeError:
         print(f"{ERROR} '{CONFIG_FILE}' is not valid JSON.")
         sys.exit(1)
-    validate_config_value(config, "target_version", str)
+    validate_config_value(config, "targetVersion", str)
     validate_config_value(config, "include", list)
-    validate_config_value(config, "proxy_url", str, required=False)
+    validate_config_value(config, "proxyUrl", str, required=False)
     validate_list_items(config, "include", str)
     return config
 
@@ -245,9 +245,9 @@ def add_jsonjsdb_config() -> None:
 
 def main() -> None:
     config = get_config()
-    print("Start update to version:", config["target_version"])
-    proxy_url = config.get("proxy_url")
-    asset_info = get_asset_url(config["target_version"], proxy_url)
+    print("Start update to version:", config["targetVersion"])
+    proxy_url = config.get("proxyUrl")
+    asset_info = get_asset_url(config["targetVersion"], proxy_url)
     with tempfile.TemporaryDirectory(prefix="datannur_update_") as temp_dir:
         temp_path = Path(temp_dir)
         if not download_and_extract(asset_info, temp_path, proxy_url):

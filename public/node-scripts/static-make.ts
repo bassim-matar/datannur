@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url'
 import { chromium, type Browser, type Page } from 'playwright'
 import { SitemapStream, streamToPromise } from 'sitemap'
 import handler from 'serve-handler'
-import camelcaseKeys from 'camelcase-keys'
 
 interface Config {
   domain: string
@@ -98,8 +97,7 @@ async function loadConfig(): Promise<Config | null> {
     const rawConfig = JSON.parse(
       await fs.promises.readFile(configFile, 'utf-8')
     )
-
-    return camelcaseKeys(rawConfig) as Config
+    return rawConfig as Config
   } catch (error) {
     console.error('Failed to read or parse', configFile, error)
     return null
