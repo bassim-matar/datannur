@@ -13,8 +13,8 @@
 
   let md_content = $derived(
     about_file.replaceAll(
-      '{dark_mode}',
-      $dark_mode_theme === 'dark' ? '_dark' : '',
+      '{darkMode}',
+      $dark_mode_theme === 'dark' ? '-dark' : '',
     ),
   )
 

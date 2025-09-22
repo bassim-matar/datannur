@@ -1,5 +1,5 @@
-![datannur logo](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/main_banner_dark.png?raw=true#gh-dark-mode-only)
-![datannur logo](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/main_banner.png?raw=true#gh-light-mode-only)
+![datannur logo](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/main-banner-dark.png?raw=true#gh-dark-mode-only)
+![datannur logo](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/main-banner.png?raw=true#gh-light-mode-only)
 
 # datannur
 
@@ -54,8 +54,8 @@ datannur is a client-side data catalog designed to organize and explore datasets
 
 🚀 **[Try the live demo](https://bassim-matar.github.io/datannur/)**
 
-![datannur interface](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/about_page/dossier_sitg_tab_dataset_dark.webp#gh-dark-mode-only)
-![datannur interface](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/about_page/dossier_sitg_tab_dataset.webp#gh-light-mode-only)
+![datannur interface](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/about_page/dossier-sitg-tab-dataset-dark.webp#gh-dark-mode-only)
+![datannur interface](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/about_page/dossier-sitg-tab-dataset.webp#gh-light-mode-only)
 
 ## Quick Start
 
@@ -183,7 +183,7 @@ jsonjs.data['config'] = [
   },
   {
     id: 'banner',
-    value: '![main_banner no_caption](data/img/main_banner.png)',
+    value: '![main-banner no_caption](data/img/main-banner.png)',
   },
 ]
 ```
@@ -199,7 +199,7 @@ The "About" content (both homepage tab and dedicated page) is composed of three 
 
 - **banner**: Custom main banner image
   - Add `no_caption` to hide image caption
-  - Add `{dark_mode}` in the filename (`main-banner{dark_mode}`). This will show `main-banner.png` in light mode and `main-banner-dark.png` in dark mode
+  - Add `{darkMode}` in the filename (`main-banner{darkMode}`). This will show `main-banner.png` in light mode and `main-banner-dark.png` in dark mode
 - **body**: Custom main content
 - **more_info**: Custom additional information
 

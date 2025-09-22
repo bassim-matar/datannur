@@ -166,24 +166,24 @@
   copy_text_listen_click()
 
   db.loaded.then(() => {
-    const main_banner = new Image()
+    const mainBanner = new Image()
     let banner_src = db.tableHasId('config', 'banner')
       ? (db.getConfig('banner') as string)
       : default_banner
     banner_src = banner_src?.split('(')[1]?.split(')')[0]
-    main_banner.src = banner_src?.replaceAll(
-      '{dark_mode}',
-      is_dark ? '_dark' : '',
+    mainBanner.src = banner_src?.replaceAll(
+      '{darkMode}',
+      is_dark ? '-dark' : '',
     )
-    main_banner.onload = () => {
+    mainBanner.onload = () => {
       const css_var_style = document.documentElement.style
       css_var_style.setProperty(
-        '--main_banner_width',
-        main_banner.width.toString(),
+        '--main-banner-width',
+        mainBanner.width.toString(),
       )
       css_var_style.setProperty(
-        '--main_banner_height',
-        main_banner.height.toString(),
+        '--main-banner-height',
+        mainBanner.height.toString(),
       )
     }
 

@@ -2,7 +2,7 @@
 
 ## unreleased
 
-- change: rename all ts files and folder to be in kebab-case
+- change: rename all ts files, image and folder to be in kebab-case
 - change: json config files use camelCase instead of snake_case
 - fix: fix eslint path, ci ignore path and contributing.md
 - remove: reset-branch.ts script and use git cleanup alias instead

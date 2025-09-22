@@ -2,8 +2,8 @@
 @use 'main.scss' as *;
 
 :root {
-  --main_banner_width: 0;
-  --main_banner_height: 0;
+  --main-banner-width: 0;
+  --main-banner-height: 0;
 }
 
 // set light or dark mode
@@ -168,9 +168,9 @@ button {
   }
 }
 
-img[alt^='main_banner'] {
+img[alt^='main-banner'] {
   width: 100%;
-  aspect-ratio: var(--main_banner_width) / var(--main_banner_height);
+  aspect-ratio: var(--main-banner-width) / var(--main-banner-height);
 }
 img[alt$='special_main_color'] {
   filter: string.unquote('invert(32%)') sepia(59%) saturate(1382%)
