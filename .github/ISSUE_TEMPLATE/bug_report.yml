@@ -1,0 +1,62 @@
+---
+name: Bug Report
+description: Report a bug or unexpected behavior
+title: '[BUG] '
+labels: ['bug']
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? What did you expect to happen?
+      placeholder: Describe the bug clearly and concisely
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this issue?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: datannur Version
+      description: Which version are you using?
+      placeholder: 'e.g. v1.2.3 or latest'
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & OS
+      description: What browser and operating system are you using?
+      placeholder: 'e.g. Chrome 120 on macOS 14.2'
+    validations:
+      required: true
+
+  - type: textarea
+    id: data-context
+    attributes:
+      label: Data Context (if applicable)
+      description: Does this involve specific data or configuration?
+      placeholder: |
+        - Data format: JSON/Excel
+        - Number of records: ~1000
+        - Custom configuration: yes/no
+        - Deployment: local/file server/web server
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Screenshots, error messages, or anything else that might help
+      placeholder: Add any other context about the problem here
