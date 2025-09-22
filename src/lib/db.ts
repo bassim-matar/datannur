@@ -1,9 +1,9 @@
 import db from '@db'
 import { get_variable_type_clean, escape_html_entities } from '@lib/util'
-import { get_period, date_to_timestamp, timestamp_to_date } from '@lib/Time'
-import { get_nb_values } from '@lib/Render'
+import { get_period, date_to_timestamp, timestamp_to_date } from '@lib/time'
+import { get_nb_values } from '@lib/render'
 import { entity_names } from '@lib/constant'
-import { evolution_initial_setup } from '@lib/Evolution'
+import { evolution_initial_setup } from '@lib/evolution'
 
 interface UserData {
   log?: any[]

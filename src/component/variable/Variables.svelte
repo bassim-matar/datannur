@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { get_local_filter } from "@lib/db"
-  import Column from "@lib/Column"
-  import Datatable from "@datatable/Datatable.svelte"
+  import { get_local_filter } from '@lib/db'
+  import Column from '@lib/column'
+  import Datatable from '@datatable/Datatable.svelte'
 
   let { variables, is_meta = false } = $props()
 
   const variables_sorted = [...variables]
-  const parent_name = is_meta ? "metaDataset" : "dataset"
-  const meta_path = is_meta ? "metaVariable/" : false
+  const parent_name = is_meta ? 'metaDataset' : 'dataset'
+  const meta_path = is_meta ? 'metaVariable/' : false
 
   function sort_variables(to_sort) {
     if (to_sort.length === 0) return
@@ -38,14 +38,14 @@
 
   function define_columns() {
     const base = [
-      Column.name("variable", "Variable", { is_meta }),
+      Column.name('variable', 'Variable', { is_meta }),
       Column.original_name(),
       Column.description(),
       Column.datatype(),
       Column.is_key(),
       Column.lineage_type(),
-      Column.nb_sources(nb_sources_max, "variable"),
-      Column.nb_derived(nb_derived_max, "variable"),
+      Column.nb_sources(nb_sources_max, 'variable'),
+      Column.nb_derived(nb_derived_max, 'variable'),
       Column.nb_row(nb_row_max),
       Column.nb_missing(),
       Column.nb_duplicates(),

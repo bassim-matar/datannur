@@ -1,12 +1,12 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import { get_time_ago, get_datetime } from "@lib/Time"
+  import Icon from '@layout/Icon.svelte'
+  import { get_time_ago, get_datetime } from '@lib/time'
 
   let { last_update_date, intraday = false, from_timestamp = false } = $props()
 
   let last_update_date_readable = $state(last_update_date)
   let time_ago = $state(get_time_ago(last_update_date, true, !intraday))
-  
+
   if (from_timestamp) {
     last_update_date_readable = get_datetime(last_update_date)
     time_ago = get_time_ago(last_update_date, false, !intraday)

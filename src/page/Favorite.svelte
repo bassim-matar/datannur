@@ -4,8 +4,8 @@
   import { make_parents_relative, add_minimum_deep } from '@lib/db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
-  import { tabsHelper } from '@tab/tabs_helper'
-  import about_file from '@markdown/about_favorite.md?raw'
+  import { tabsHelper } from '@tab/tabs-helper'
+  import about_file from '@markdown/about-favorite.md?raw'
 
   const institutions = db.getAll('institution').filter(item => item.is_favorite)
   const folders = db.getAll('folder').filter(item => item.is_favorite)

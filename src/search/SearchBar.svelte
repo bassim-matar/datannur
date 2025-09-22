@@ -1,20 +1,20 @@
 <script lang="ts">
-  import { onMount } from "svelte"
-  import db from "@db"
-  import { router } from "@lib/router.svelte.js"
+  import { onMount } from 'svelte'
+  import db from '@db'
+  import { router } from '@lib/router.svelte.js'
   import {
     search_value,
     header_open,
     on_page_search,
     on_page_homepage,
     is_small_menu,
-    page
-  } from "@lib/store"
-  import { clickOutside, debounce } from "@lib/util"
-  import Logs from "@lib/Logs"
-  import BtnClearInput from "@layout/BtnClearInput.svelte"
-  import SearchHistory from "./SearchHistory"
-  import SearchBarResult from "./SearchBarResult.svelte"
+    page,
+  } from '@lib/store'
+  import { clickOutside, debounce } from '@lib/util'
+  import Logs from '@lib/logs'
+  import BtnClearInput from '@layout/BtnClearInput.svelte'
+  import SearchHistory from './search-history'
+  import SearchBarResult from './SearchBarResult.svelte'
 
   let is_focus_in = $state(false)
   let input_element: HTMLInputElement = $state()
@@ -24,14 +24,14 @@
   let search_value_debounced = $state($search_value)
 
   let is_open = $derived(
-    is_focus_in && ($search_value !== "" || nb_result > 0 || !db_initied),
+    is_focus_in && ($search_value !== '' || nb_result > 0 || !db_initied),
   )
   let is_hidden_by_mobile_menu = $derived($is_small_menu && $header_open)
 
   const max_search_result = 100
   let nav_position = 0
 
-  SearchHistory.on_change("search_bar", () => search_input_change())
+  SearchHistory.on_change('search_bar', () => search_input_change())
 
   function init_search_recent() {
     all_search = SearchHistory.get_recent_search()
@@ -42,19 +42,19 @@
     if ($on_page_search) return false
     search_value_debounced = $search_value
     nav_position = 0
-    if ($search_value === "") {
+    if ($search_value === '') {
       init_search_recent()
       return false
     }
     let all_search_raw = await db.search($search_value)
-    if ($search_value === "") return false
+    if ($search_value === '') return false
     all_search_raw = SearchHistory.put_recent_first(all_search_raw)
     nb_result = all_search_raw.length
     all_search = all_search_raw.slice(0, max_search_result)
   }
 
   function clear_input() {
-    $search_value = ""
+    $search_value = ''
     search_value_debounced = $search_value
     select_input()
     search_input_change()
@@ -86,7 +86,7 @@
           router.navigate(`/${entity}/${item.id}`)
           SearchHistory.add(entity, item.id)
           is_focus_in = false
-          Logs.add("search_bar", { entity, entity_id: item.id })
+          Logs.add('search_bar', { entity, entity_id: item.id })
         }
       })
     }
@@ -136,10 +136,15 @@
   function window_keydown(e) {
     const focused_element = window.document.activeElement
     const is_input_focused =
-      focused_element.tagName === "INPUT" ||
-      focused_element.tagName === "TEXTAREA" ||
-      focused_element.tagName === "SELECT"
-    if (e.key === "/" && !is_focus_in && !is_input_focused && !$on_page_search) {
+      focused_element.tagName === 'INPUT' ||
+      focused_element.tagName === 'TEXTAREA' ||
+      focused_element.tagName === 'SELECT'
+    if (
+      e.key === '/' &&
+      !is_focus_in &&
+      !is_input_focused &&
+      !$on_page_search
+    ) {
       e.preventDefault()
       select_input()
     }
@@ -176,7 +181,7 @@
     <p class="control has-icons-right">
       <button
         class="icon is-small is-left"
-        class:active={$search_value !== "" &&
+        class:active={$search_value !== '' &&
           $search_value !== undefined &&
           is_focus_in &&
           nb_result > 0}
@@ -201,7 +206,7 @@
         autocomplete="off"
         enterkeyhint="search"
       />
-      {#if $search_value !== ""}
+      {#if $search_value !== ''}
         <span class="btn_clear_input_wrapper">
           <BtnClearInput click={clear_input} />
         </span>
@@ -222,7 +227,7 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .header_search_item {
     padding: 0;
@@ -298,10 +303,10 @@
       cursor: pointer;
       transition: color $transition-basic-1;
       &:hover {
-        color: color("search");
+        color: color('search');
       }
       &.active {
-        color: color("search");
+        color: color('search');
         text-shadow: 0 0 10px;
       }
     }
@@ -316,7 +321,7 @@
   :global(html.page_shadow_colored) {
     .header_search_item {
       .search_bar_container.focus {
-        border-color: color("search");
+        border-color: color('search');
       }
     }
   }

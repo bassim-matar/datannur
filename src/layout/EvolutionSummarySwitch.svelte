@@ -1,14 +1,14 @@
 <script lang="ts">
-  import Switch from "@layout/Switch.svelte"
-  import Options from "@lib/Options"
+  import Switch from '@layout/Switch.svelte'
+  import Options from '@lib/options'
 
   let { on_change = value => {} } = $props()
 
-  let evolution_summary = $state(Options.get("evolution_summary"))
+  let evolution_summary = $state(Options.get('evolution_summary'))
 
   function update_evolution_summary() {
-    Options.set("evolution_summary", evolution_summary, () => {
-      on_change("evolution_summary" + String(evolution_summary))
+    Options.set('evolution_summary', evolution_summary, () => {
+      on_change('evolution_summary' + String(evolution_summary))
     })
   }
 </script>

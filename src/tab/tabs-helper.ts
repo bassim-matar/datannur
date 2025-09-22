@@ -1,4 +1,4 @@
-import { allTabs } from '@tab/all_tabs'
+import { allTabs } from '@tab/all-tabs'
 import attributs from '@stat/attributs'
 
 interface TabConfig {

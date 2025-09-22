@@ -5,13 +5,12 @@
   "description": "datannur app",
   "scripts": {
     "node:ts": "node --experimental-strip-types --disable-warning=ExperimentalWarning",
-    "static-make": "npm run node:ts node_scripts/static_make.ts",
-    "deploy": "npm run node:ts node_scripts/deploy.ts",
-    "sync_db": "npm run node:ts node_scripts/sync_db.ts"
+    "static-make": "npm run node:ts node-scripts/static-make.ts",
+    "deploy": "npm run node:ts node-scripts/deploy.ts",
+    "sync-db": "npm run node:ts node-scripts/sync-db.ts"
   },
   "dependencies": {
     "@types/serve-handler": "^6.1.4",
-    "camelcase-keys": "^10.0.0",
     "jsonjsdb-builder": "^0.5.0",
     "playwright": "^1.55.0",
     "serve-handler": "^6.1.6",

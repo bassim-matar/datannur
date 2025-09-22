@@ -1,16 +1,16 @@
-import db from "@db"
-import { wrap_long_text } from "@lib/util"
-import Render from "@lib/Render"
+import db from '@db'
+import { wrap_long_text } from '@lib/util'
+import Render from '@lib/render'
 
 export default class Preview_manager {
   static clean_keys(data) {
-    if (typeof data === "string") {
-      return data.replaceAll(".", "_")
+    if (typeof data === 'string') {
+      return data.replaceAll('.', '_')
     }
     for (const row of data) {
       for (const [key, value] of Object.entries(row)) {
-        if (key.includes(".")) {
-          const clean_key = key.replaceAll(".", "_")
+        if (key.includes('.')) {
+          const clean_key = key.replaceAll('.', '_')
           row[clean_key] = value
           delete row[key]
         }
@@ -22,7 +22,7 @@ export default class Preview_manager {
     let position = 0
     for (let row of data) {
       position += 1
-      new_data.push({ "#": position, ...row })
+      new_data.push({ '#': position, ...row })
     }
     return new_data
   }
@@ -30,12 +30,12 @@ export default class Preview_manager {
     const cols = []
     for (const [key, value] of Object.entries(data[0])) {
       let render
-      if (typeof value === "number") {
-        render = (data) => Render.num(data)
+      if (typeof value === 'number') {
+        render = data => Render.num(data)
       } else {
-        render = (data) => wrap_long_text(data)
+        render = data => wrap_long_text(data)
       }
-      cols.push({ data: key, title: key, defaultContent: "", render })
+      cols.push({ data: key, title: key, defaultContent: '', render })
     }
     return cols
   }
@@ -53,10 +53,10 @@ export default class Preview_manager {
     return variable_data
   }
   static async load(dataset_preview) {
-    let path = "preview"
-    let dataset_id_parts = dataset_preview.split("-")
+    let path = 'preview'
+    let dataset_id_parts = dataset_preview.split('-')
     if (dataset_id_parts.length > 1) {
-      path += "/" + dataset_id_parts[0]
+      path += '/' + dataset_id_parts[0]
     }
     return await db.load(path, dataset_preview)
   }

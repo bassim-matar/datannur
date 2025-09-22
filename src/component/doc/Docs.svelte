@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Column from "@lib/Column"
-  import Render from "@lib/Render"
-  import { link, get_percent } from "@lib/util"
-  import Datatable from "@datatable/Datatable.svelte"
+  import Column from '@lib/column'
+  import Render from '@lib/render'
+  import { link, get_percent } from '@lib/util'
+  import Datatable from '@datatable/Datatable.svelte'
 
   let { docs } = $props()
 
@@ -25,84 +25,83 @@
     if (to_sort.length === 0) return
     to_sort.sort(
       (a, b) =>
-        b.inherited?.localeCompare(a.inherited) ||
-        a.name.localeCompare(b.name),
+        b.inherited?.localeCompare(a.inherited) || a.name.localeCompare(b.name),
     )
   }
   sort_docs(docs_sorted)
 
   let columns = [
     Column.favorite(),
-    Column.name("doc", "Doc"),
+    Column.name('doc', 'Doc'),
     Column.description(),
     {
-      data: "type",
-      name: "doc_type",
-      title: Render.icon("type") + "Type",
-      defaultContent: "",
-      filter_type: "select",
-      tooltip: "Type de fichier (markdown ou pdf)",
+      data: 'type',
+      name: 'doc_type',
+      title: Render.icon('type') + 'Type',
+      defaultContent: '',
+      filter_type: 'select',
+      tooltip: 'Type de fichier (markdown ou pdf)',
       render: (data, type, row) => {
-        if (!data) return ""
-        if (["filter", "sort", "export"].includes(type)) return data
+        if (!data) return ''
+        if (['filter', 'sort', 'export'].includes(type)) return data
         return `${data} ${Render.icon(data)}`
       },
     },
     Column.doc_path(),
     Column.timestamp({
-      var_name: "last_update",
-      title: "Mise à jour",
-      tooltip: "Date de dernière mise à jour",
+      var_name: 'last_update',
+      title: 'Mise à jour',
+      tooltip: 'Date de dernière mise à jour',
     }),
     Column.inherited(),
     {
-      data: "nb_institution",
+      data: 'nb_institution',
       title:
-        Render.icon("institution") +
+        Render.icon('institution') +
         "<span class='hidden'>nb_institutions</span>",
-      filter_type: "input",
+      filter_type: 'input',
       tooltip: "Nombre d'institutions",
       render: (data, type, row) => {
-        if (!data) return ""
-        const content = link("doc/" + row.id + "?tab=institutions", data)
+        if (!data) return ''
+        const content = link('doc/' + row.id + '?tab=institutions', data)
         const percent = get_percent(data / institution_max)
-        return `${Render.num_percent(content, percent, "institution", type)}`
+        return `${Render.num_percent(content, percent, 'institution', type)}`
       },
     },
     {
-      data: "nb_folder",
-      title: Render.icon("folder") + "<span class='hidden'>nb_folder</span>",
-      filter_type: "input",
-      tooltip: "Nombre de dossiers",
+      data: 'nb_folder',
+      title: Render.icon('folder') + "<span class='hidden'>nb_folder</span>",
+      filter_type: 'input',
+      tooltip: 'Nombre de dossiers',
       render: (data, type, row) => {
-        if (!data) return ""
-        const content = link("doc/" + row.id + "?tab=folders", data)
+        if (!data) return ''
+        const content = link('doc/' + row.id + '?tab=folders', data)
         const percent = get_percent(data / folder_max)
-        return `${Render.num_percent(content, percent, "folder", type)}`
+        return `${Render.num_percent(content, percent, 'folder', type)}`
       },
     },
     {
-      data: "nb_tag",
-      title: Render.icon("tag") + "<span class='hidden'>nb_tag</span>",
-      filter_type: "input",
-      tooltip: "Nombre de mots clés",
+      data: 'nb_tag',
+      title: Render.icon('tag') + "<span class='hidden'>nb_tag</span>",
+      filter_type: 'input',
+      tooltip: 'Nombre de mots clés',
       render: (data, type, row) => {
-        if (!data) return ""
-        const content = link("doc/" + row.id + "?tab=tags", data)
+        if (!data) return ''
+        const content = link('doc/' + row.id + '?tab=tags', data)
         const percent = get_percent(data / tag_max)
-        return `${Render.num_percent(content, percent, "tag", type)}`
+        return `${Render.num_percent(content, percent, 'tag', type)}`
       },
     },
     {
-      data: "nb_dataset",
-      title: Render.icon("dataset") + "<span class='hidden'>nb_dataset</span>",
-      filter_type: "input",
-      tooltip: "Nombre de datasets",
+      data: 'nb_dataset',
+      title: Render.icon('dataset') + "<span class='hidden'>nb_dataset</span>",
+      filter_type: 'input',
+      tooltip: 'Nombre de datasets',
       render: (data, type, row) => {
-        if (!data) return ""
-        const content = link("doc/" + row.id + "?tab=datasets", data)
+        if (!data) return ''
+        const content = link('doc/' + row.id + '?tab=datasets', data)
         const percent = get_percent(data / dataset_max)
-        return `${Render.num_percent(content, percent, "dataset", type)}`
+        return `${Render.num_percent(content, percent, 'dataset', type)}`
       },
     },
   ]

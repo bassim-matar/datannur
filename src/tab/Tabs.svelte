@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { tab_selected, footer_visible, all_tabs } from '@lib/store'
-  import { url_param } from '@lib/url_param'
+  import { url_param } from '@lib/url-param'
   import { is_firefox, get_is_mobile } from '@lib/util'
   import { is_big_limit } from '@lib/constant'
-  import Logs from '@lib/Logs'
+  import Logs from '@lib/logs'
   import TabsBody from '@tab/TabsBody.svelte'
   import TabTitle from '@tab/TabTitle.svelte'
 

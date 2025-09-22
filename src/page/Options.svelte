@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Logs from '@lib/Logs'
+  import Logs from '@lib/logs'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
-  import { tabsHelper } from '@tab/tabs_helper'
-  import about_file from '@markdown/about_options.md?raw'
+  import { tabsHelper } from '@tab/tabs-helper'
+  import about_file from '@markdown/about-options.md?raw'
 
   let logs = Logs.getAll()
   let tabs = tabsHelper({

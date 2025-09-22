@@ -1,8 +1,8 @@
 {
-  "target_version": "latest",
+  "targetVersion": "latest",
   "include": [
     "assets",
-    "node_scripts",
+    "node-scripts",
     "index.html",
     "LICENSE.md",
     "README.md",

@@ -1,5 +1,5 @@
 import db from '@db'
-import Logs from '@lib/Logs'
+import Logs from '@lib/logs'
 import { nb_favorite } from '@lib/store'
 
 export default class Favorites {

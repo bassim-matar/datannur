@@ -1,13 +1,7 @@
 <script lang="ts">
-  import Favorites from "./Favorites"
+  import Favorites from './favorites'
 
-  let {
-    type,
-    id,
-    is_favorite,
-    is_meta = false,
-    no_margin = false,
-  } = $props()
+  let { type, id, is_favorite, is_meta = false, no_margin = false } = $props()
 
   let clicked = $state(false)
 
@@ -37,7 +31,7 @@
 {/if}
 
 <style lang="scss">
-  @use "../style/favorite.scss" as *;
+  @use '../style/favorite.scss' as *;
   @include favorite_style;
 
   .favorite {

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Column from "@lib/Column"
-  import Datatable from "@datatable/Datatable.svelte"
+  import Column from '@lib/column'
+  import Datatable from '@datatable/Datatable.svelte'
 
   let { values } = $props()
 

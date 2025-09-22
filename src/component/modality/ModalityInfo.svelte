@@ -1,9 +1,9 @@
 <script lang="ts">
-  import TableWrapper from "@infoTable/TableWrapper.svelte"
-  import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"
-  import IdInfo from "@infoTable/IdInfo.svelte"
-  import TypeInfo from "@infoTable/TypeInfo.svelte"
-  import FolderInfo from "@infoTable/FolderInfo.svelte"
+  import TableWrapper from '@info-table/TableWrapper.svelte'
+  import DescriptionInfo from '@info-table/DescriptionInfo.svelte'
+  import IdInfo from '@info-table/IdInfo.svelte'
+  import TypeInfo from '@info-table/TypeInfo.svelte'
+  import FolderInfo from '@info-table/FolderInfo.svelte'
 
   let { modality } = $props()
 </script>

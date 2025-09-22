@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Column from "@lib/Column"
-  import Datatable from "@datatable/Datatable.svelte"
+  import Column from '@lib/column'
+  import Datatable from '@datatable/Datatable.svelte'
 
   let { modalities } = $props()
 
@@ -13,10 +13,10 @@
 
   const columns = [
     Column.favorite(),
-    Column.name("modality", "Modalité"),
+    Column.name('modality', 'Modalité'),
     Column.description(),
     Column.datatype(),
-    Column.nb_variable("modality", nb_variable_max, { show_title: true }),
+    Column.nb_variable('modality', nb_variable_max, { show_title: true }),
     Column.nb_values(nb_value_max),
     Column.values_preview(),
     Column.folder(),

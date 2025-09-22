@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { get_local_filter } from "@lib/db"
-  import Column from "@lib/Column"
-  import Datatable from "@datatable/Datatable.svelte"
+  import { get_local_filter } from '@lib/db'
+  import Column from '@lib/column'
+  import Datatable from '@datatable/Datatable.svelte'
 
   let { datasets, is_meta = false } = $props()
 
-  const dataset_path = is_meta ? "metaDataset/" : "dataset/"
-  const tab_variables = is_meta ? "meta_dataset_variables" : "dataset_variables"
-  const meta_path = is_meta ? "metaDataset" : null
+  const dataset_path = is_meta ? 'metaDataset/' : 'dataset/'
+  const tab_variables = is_meta ? 'meta_dataset_variables' : 'dataset_variables'
+  const meta_path = is_meta ? 'metaDataset' : null
   const datasets_sorted = [...datasets]
 
   function sort_datasets(to_sort) {
@@ -47,16 +47,16 @@
       nb_derived_max = dataset.derived_ids.size
     }
   }
-  
+
   function define_columns() {
     const base = [
-      Column.name("dataset", "Dataset", { is_meta }),
+      Column.name('dataset', 'Dataset', { is_meta }),
       Column.description(),
       Column.lineage_type(),
-      Column.nb_sources(nb_sources_max, "dataset"),
-      Column.nb_derived(nb_derived_max, "dataset"),
+      Column.nb_sources(nb_sources_max, 'dataset'),
+      Column.nb_derived(nb_derived_max, 'dataset'),
       Column.dataset_type(),
-      Column.nb_variable("dataset", nb_variable_max, {
+      Column.nb_variable('dataset', nb_variable_max, {
         tab: tab_variables,
         link_path: dataset_path,
         show_title: true,
@@ -69,16 +69,16 @@
         Column.meta_localisation(),
         Column.metaFolder(),
         Column.timestamp({
-          var_name: "last_update_timestamp",
-          title: "Mise à jour",
-          tooltip: "Moment de la dernière mise à jour",
+          var_name: 'last_update_timestamp',
+          title: 'Mise à jour',
+          tooltip: 'Moment de la dernière mise à jour',
         }),
       ]
     }
     return [
       Column.favorite(),
       ...base,
-      Column.nb_doc("dataset", nb_doc_max, true),
+      Column.nb_doc('dataset', nb_doc_max, true),
       Column.folder(),
       Column.tag(),
       Column.last_update(),

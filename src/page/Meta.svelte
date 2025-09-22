@@ -1,8 +1,8 @@
 <script lang="ts">
   import db from '@db'
 
-  import { tabsHelper } from '@tab/tabs_helper'
-  import about_file from '@markdown/about_main_meta.md?raw'
+  import { tabsHelper } from '@tab/tabs-helper'
+  import about_file from '@markdown/about-main-meta.md?raw'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
 

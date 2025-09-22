@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url'
 import { chromium, type Browser, type Page } from 'playwright'
 import { SitemapStream, streamToPromise } from 'sitemap'
 import handler from 'serve-handler'
-import camelcaseKeys from 'camelcase-keys'
 
 interface Config {
   domain: string
@@ -18,9 +17,9 @@ interface Config {
   routes: string[]
 }
 
-const configFile = './data/static_make.config.json'
+const configFile = './data/static-make.config.json'
 const indexFile = './index.html'
-const entryPoint = './index_static_make.html'
+const entryPoint = './index_static-make.html'
 
 async function waitUntilReady(url: string, maxAttempts = 30, delayMs = 200) {
   for (let i = 0; i < maxAttempts; i++) {
@@ -98,8 +97,7 @@ async function loadConfig(): Promise<Config | null> {
     const rawConfig = JSON.parse(
       await fs.promises.readFile(configFile, 'utf-8')
     )
-
-    return camelcaseKeys(rawConfig) as Config
+    return rawConfig as Config
   } catch (error) {
     console.error('Failed to read or parse', configFile, error)
     return null

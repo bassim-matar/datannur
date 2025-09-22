@@ -1,21 +1,21 @@
 <script lang="ts">
-  import jQuery from "jquery"
-  import { wrap_long_text, link } from "@lib/util"
-  import Render from "@lib/Render"
-  import SearchHistory from "./SearchHistory"
-  import { search_highlight } from "./Search"
-  import Datatable from "@datatable/Datatable.svelte"
-  import Column from "@lib/Column"
+  import jQuery from 'jquery'
+  import { wrap_long_text, link } from '@lib/util'
+  import Render from '@lib/render'
+  import SearchHistory from './search-history'
+  import { search_highlight } from './search'
+  import Datatable from '@datatable/Datatable.svelte'
+  import Column from '@lib/column'
 
   let { search_result_data, search_value } = $props()
 
   function initied() {
-    const table_id = "search___search"
-    const datatable_search = jQuery("table#" + table_id + "._datatables")
-    datatable_search.on("click", ".remove_search_item", function () {
+    const table_id = 'search___search'
+    const datatable_search = jQuery('table#' + table_id + '._datatables')
+    datatable_search.on('click', '.remove_search_item', function () {
       const elem = jQuery(this)
-      const entity_name = elem.data("entity_name")
-      const item_id = elem.data("item_id")
+      const entity_name = elem.data('entity_name')
+      const item_id = elem.data('item_id')
       SearchHistory.remove(entity_name, item_id)
     })
   }
@@ -24,16 +24,16 @@
     Column.favorite(),
     Column.entity(),
     {
-      data: "name",
-      title: Render.icon("name") + "Nom",
-      defaultContent: "",
-      name: "name",
-      tooltip: "Nom",
+      data: 'name',
+      title: Render.icon('name') + 'Nom',
+      defaultContent: '',
+      name: 'name',
+      tooltip: 'Nom',
       render: (data, _, row) =>
         wrap_long_text(
           `<strong class="var_main_col">` +
             link(
-              row._entity + "/" + row.id + "?from_search=true",
+              row._entity + '/' + row.id + '?from_search=true',
               `${search_highlight(data, search_value)}`,
               row._entity,
             ) +
@@ -41,38 +41,38 @@
         ),
     },
     {
-      data: "description",
-      title: Render.icon("description") + "Description",
-      defaultContent: "",
-      tooltip: "Description",
+      data: 'description',
+      title: Render.icon('description') + 'Description',
+      defaultContent: '',
+      tooltip: 'Description',
       render: data => {
         if ([null, undefined].includes(data)) return wrap_long_text()
         return wrap_long_text(search_highlight(data, search_value))
       },
     },
     {
-      data: "folder_id",
-      title: Render.icon("folder") + "Dossier",
-      defaultContent: "",
-      tooltip: "Dossier",
+      data: 'folder_id',
+      title: Render.icon('folder') + 'Dossier',
+      defaultContent: '',
+      tooltip: 'Dossier',
       render: (data, _, row) => {
         if (!data) return wrap_long_text()
-        return wrap_long_text(link("folder/" + data, row.folder_name))
+        return wrap_long_text(link('folder/' + data, row.folder_name))
       },
     },
     {
-      data: "id",
+      data: 'id',
       title: "<span class='hidden'>Recent search</span>",
-      name: "search_receht",
-      defaultContent: "",
+      name: 'search_receht',
+      defaultContent: '',
       no_search: true,
-      width: "20px",
+      width: '20px',
       render: (data, type, row) => {
-        if (type === "sort" || type === "export") {
-          return row.is_recent ? "1" : "0"
+        if (type === 'sort' || type === 'export') {
+          return row.is_recent ? '1' : '0'
         }
         return !row.is_recent
-          ? ""
+          ? ''
           : `<button style="cursor: pointer; margin: 0;" 
               class="remove_search_item" 
               data-entity_name="${row._entity}"
@@ -93,7 +93,7 @@
 {/if}
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .search_page_result_wrapper {
     :global(.remove_search_item) {

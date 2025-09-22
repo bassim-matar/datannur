@@ -1,19 +1,19 @@
 <script lang="ts">
-  import Link from "@layout/Link.svelte"
-  import Icon from "@layout/Icon.svelte"
-  import TableWrapper from "@infoTable/TableWrapper.svelte"
-  import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"
-  import IdInfo from "@infoTable/IdInfo.svelte"
-  import RowInfo from "@infoTable/RowInfo.svelte"
-  import TypeInfo from "@infoTable/TypeInfo.svelte"
-  import PercentBar from "@infoTable/PercentBar.svelte"
-  import PeriodInfo from "@infoTable/PeriodInfo.svelte"
-  import TagsInfo from "@infoTable/TagsInfo.svelte"
-  import MetaLocalisationInfo from "@infoTable/MetaLocalisationInfo.svelte"
+  import Link from '@layout/Link.svelte'
+  import Icon from '@layout/Icon.svelte'
+  import TableWrapper from '@info-table/TableWrapper.svelte'
+  import DescriptionInfo from '@info-table/DescriptionInfo.svelte'
+  import IdInfo from '@info-table/IdInfo.svelte'
+  import RowInfo from '@info-table/RowInfo.svelte'
+  import TypeInfo from '@info-table/TypeInfo.svelte'
+  import PercentBar from '@info-table/PercentBar.svelte'
+  import PeriodInfo from '@info-table/PeriodInfo.svelte'
+  import TagsInfo from '@info-table/TagsInfo.svelte'
+  import MetaLocalisationInfo from '@info-table/MetaLocalisationInfo.svelte'
 
   let { variable } = $props()
 
-  let parent_name = variable.is_meta ? "metaDataset" : "dataset"
+  let parent_name = variable.is_meta ? 'metaDataset' : 'dataset'
 </script>
 
 <TableWrapper>
@@ -140,7 +140,7 @@
 <DescriptionInfo description={variable.description} />
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .breadcrumb {
     :global(a) {

@@ -1,10 +1,10 @@
 <script lang="ts">
   import db from '@db'
   import { footer_visible } from '@lib/store'
-  import { get_datetime, get_time_ago } from '@lib/Time'
+  import { get_datetime, get_time_ago } from '@lib/time'
   import Loading from '@frame/Loading.svelte'
   import Icon from '@layout/Icon.svelte'
-  import DarkModeSwitch from '@dark_mode/DarkModeSwitch.svelte'
+  import DarkModeSwitch from '@dark-mode/DarkModeSwitch.svelte'
   import HeaderLink from '@frame/HeaderLink.svelte'
 
   let { menu_mobile = false } = $props()

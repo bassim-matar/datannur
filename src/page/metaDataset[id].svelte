@@ -2,7 +2,7 @@
   import db from '@db'
   import { filter_keys } from '@lib/db'
   import Tabs from '@tab/Tabs.svelte'
-  import { tabsHelper } from '@tab/tabs_helper'
+  import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
 
   let { metaDataset } = $props()

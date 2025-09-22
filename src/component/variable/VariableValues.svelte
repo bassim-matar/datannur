@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Render from "@lib/Render"
-  import Column from "@lib/Column"
-  import Datatable from "@datatable/Datatable.svelte"
-  import { link } from "@lib/util"
+  import Render from '@lib/render'
+  import Column from '@lib/column'
+  import Datatable from '@datatable/Datatable.svelte'
+  import { link } from '@lib/util'
 
   let { variable_values, is_meta = false } = $props()
 
@@ -18,10 +18,11 @@
     const columns = []
     if (!is_meta) {
       columns.push({
-        data: "modality_name",
-        title: Render.icon("modality") + "modalité",
-        tooltip: "Modalité",
-        render: (data, _, row) => link("modality/" + row.modality_id, data, "modality"),
+        data: 'modality_name',
+        title: Render.icon('modality') + 'modalité',
+        tooltip: 'Modalité',
+        render: (data, _, row) =>
+          link('modality/' + row.modality_id, data, 'modality'),
       })
     }
     columns.push(Column.value())

@@ -1,21 +1,21 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import TableWrapper from "@infoTable/TableWrapper.svelte"
-  import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"
-  import IdInfo from "@infoTable/IdInfo.svelte"
-  import InstitutionInfo from "@infoTable/InstitutionInfo.svelte"
-  import FolderInfo from "@infoTable/FolderInfo.svelte"
-  import TagsInfo from "@infoTable/TagsInfo.svelte"
-  import RowInfo from "@infoTable/RowInfo.svelte"
-  import FrequencyInfo from "@infoTable/FrequencyInfo.svelte"
-  import LastUpdateInfo from "@infoTable/LastUpdateInfo.svelte"
-  import NextUpdateInfo from "@infoTable/NextUpdateInfo.svelte"
-  import LocalisationInfo from "@infoTable/LocalisationInfo.svelte"
-  import PeriodInfo from "@infoTable/PeriodInfo.svelte"
-  import DataPathInfo from "@infoTable/DataPathInfo.svelte"
-  import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
-  import MetaDatasetRelations from "@infoTable/MetaDatasetRelations.svelte"
-  import MetaLocalisationInfo from "@infoTable/MetaLocalisationInfo.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import TableWrapper from '@info-table/TableWrapper.svelte'
+  import DescriptionInfo from '@info-table/DescriptionInfo.svelte'
+  import IdInfo from '@info-table/IdInfo.svelte'
+  import InstitutionInfo from '@info-table/InstitutionInfo.svelte'
+  import FolderInfo from '@info-table/FolderInfo.svelte'
+  import TagsInfo from '@info-table/TagsInfo.svelte'
+  import RowInfo from '@info-table/RowInfo.svelte'
+  import FrequencyInfo from '@info-table/FrequencyInfo.svelte'
+  import LastUpdateInfo from '@info-table/LastUpdateInfo.svelte'
+  import NextUpdateInfo from '@info-table/NextUpdateInfo.svelte'
+  import LocalisationInfo from '@info-table/LocalisationInfo.svelte'
+  import PeriodInfo from '@info-table/PeriodInfo.svelte'
+  import DataPathInfo from '@info-table/DataPathInfo.svelte'
+  import DeliveryFormatInfo from '@info-table/DeliveryFormatInfo.svelte'
+  import MetaDatasetRelations from '@info-table/MetaDatasetRelations.svelte'
+  import MetaLocalisationInfo from '@info-table/MetaLocalisationInfo.svelte'
 
   let { dataset } = $props()
 </script>

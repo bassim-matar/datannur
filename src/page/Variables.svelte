@@ -3,8 +3,8 @@
   import { make_parents_relative, add_minimum_deep } from '@lib/db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
-  import { tabsHelper } from '@tab/tabs_helper'
-  import about_file from '@markdown/about_variable.md?raw'
+  import { tabsHelper } from '@tab/tabs-helper'
+  import about_file from '@markdown/about-variable.md?raw'
 
   const variables = db.getAll('variable')
   const tags = db.getAll('tag').filter(tag => tag.nb_variable > 0)

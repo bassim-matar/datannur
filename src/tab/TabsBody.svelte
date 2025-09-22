@@ -1,12 +1,12 @@
 <script lang="ts">
-  import Options from "@lib/Options"
-  import Loading from "@frame/Loading.svelte"
-  import { tab_selected } from "@lib/store"
+  import Options from '@lib/options'
+  import Loading from '@frame/Loading.svelte'
+  import { tab_selected } from '@lib/store'
 
   let { tabs, no_first_tab, is_last_tab, active_tab_body, tabs_loaded } =
     $props()
 
-  let open_all_tab = Options.get("open_all_tab")
+  let open_all_tab = Options.get('open_all_tab')
 </script>
 
 <div
@@ -14,7 +14,7 @@
   class:no_first_tab
   class:is_last_tab
 >
-  {#if active_tab_body === "loading"}
+  {#if active_tab_body === 'loading'}
     <div class="tabs_loading_wrapper">
       <Loading position="absolute" />
     </div>
@@ -36,7 +36,7 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .tabs_body {
     position: relative;

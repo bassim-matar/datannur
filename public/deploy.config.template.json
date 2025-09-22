@@ -7,7 +7,7 @@
   "remotePath": "/path/to/your/web/directory",
   "privateKeyPath": "~/.ssh/id_rsa",
   "ignore": [
-    "node_scripts",
+    "node-scripts",
     "node_modules",
     ".DS_Store",
     "~$*",
@@ -18,7 +18,7 @@
     "deploy.config.template.json",
     "data/jsonjsdb-config.html",
     "data/deploy.config.json",
-    "data/static_make.config.json",
+    "data/static-make.config.json",
     "data/update_app.json",
     "tsconfig.json"
   ],

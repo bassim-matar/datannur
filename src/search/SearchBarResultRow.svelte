@@ -1,17 +1,17 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import Link from "@layout/Link.svelte"
-  import Logs from "@lib/Logs"
-  import SearchHistory from "./SearchHistory"
-  import { search_highlight } from "./Search"
-  import Favorite from "@favorite/Favorite.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import Link from '@layout/Link.svelte'
+  import Logs from '@lib/logs'
+  import SearchHistory from './search-history'
+  import { search_highlight } from './search'
+  import Favorite from '@favorite/Favorite.svelte'
 
   let { item, search_value, is_focus_in = $bindable(), select_input } = $props()
 
   function click_link(entity_name, item_id) {
     setTimeout(() => {
       SearchHistory.add(entity_name, item_id)
-      Logs.add("search_bar", { entity: entity_name, entity_id: item_id })
+      Logs.add('search_bar', { entity: entity_name, entity_id: item_id })
       is_focus_in = false
     }, 10)
   }
@@ -45,7 +45,7 @@
       entity={item.entity}
     >
       <div class="long_text">
-        {#if search_value === ""}
+        {#if search_value === ''}
           {item.name}
         {:else}
           {@html search_highlight(item.name, search_value)}
@@ -53,7 +53,7 @@
       </div>
     </Link>
   </td>
-  {#if search_value === "" || item.is_recent}
+  {#if search_value === '' || item.is_recent}
     <td style="width: 20px;">
       <button
         class="btn_delete_item"
@@ -69,7 +69,7 @@
 </tr>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   tr.nav_hover,
   tr:hover {
