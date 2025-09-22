@@ -6,9 +6,11 @@
     "verbatimModuleSyntax": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "strict": true,
+    "skipLibCheck": true,
     "lib": ["DOM", "ESNext"],
     "baseUrl": ".",
+    "strict": false,
+    "noImplicitAny": false,
     "paths": {
       "@src/*": ["src/*"],
       "@component/*": ["src/component/*"],

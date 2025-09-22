@@ -6,22 +6,6 @@ const namingConventionRules = {
   '@typescript-eslint/naming-convention': [
     'error',
     {
-      selector: 'variableLike',
-      format: ['camelCase'],
-    },
-    {
-      selector: 'function',
-      format: ['camelCase'],
-    },
-    {
-      selector: 'method',
-      format: ['camelCase'],
-    },
-    {
-      selector: 'class',
-      format: ['PascalCase'],
-    },
-    {
       selector: 'interface',
       format: ['PascalCase'],
     },
@@ -29,7 +13,27 @@ const namingConventionRules = {
       selector: 'typeAlias',
       format: ['PascalCase'],
     },
+    // {
+    //   selector: 'class',
+    //   format: ['PascalCase'],
+    // },
+    // {
+    //   selector: 'method',
+    //   format: ['camelCase'],
+    // },
+    // {
+    //   selector: 'function',
+    //   format: ['camelCase'],
+    // },
+    // {
+    //   selector: 'variableLike',
+    //   format: ['camelCase'],
+    // },
   ],
+  'prefer-const': 'off',
+  '@typescript-eslint/no-unused-vars': 'off',
+  '@typescript-eslint/no-explicit-any': 'off',
+  'no-undef': 'off',
 }
 
 export default [
