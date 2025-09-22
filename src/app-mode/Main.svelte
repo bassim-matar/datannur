@@ -12,7 +12,7 @@
     on_page_search,
   } from '@lib/store'
   import Options from '@lib/options'
-  import Logs from '@lib/Logs'
+  import Logs from '@lib/logs'
   import Favorites from '@favorite/favorites'
   import Main_filter from '@lib/main-filter'
   import { is_http, has_touch_screen, get_is_small_menu } from '@lib/util'

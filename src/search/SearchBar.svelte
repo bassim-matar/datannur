@@ -11,7 +11,7 @@
     page,
   } from '@lib/store'
   import { clickOutside, debounce } from '@lib/util'
-  import Logs from '@lib/Logs'
+  import Logs from '@lib/logs'
   import BtnClearInput from '@layout/BtnClearInput.svelte'
   import SearchHistory from './search-history'
   import SearchBarResult from './SearchBarResult.svelte'

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Logs from '@lib/Logs'
+  import Logs from '@lib/logs'
   import { Dark_mode, dark_mode_theme } from '@dark-mode/dark-mode'
 
   let { label = null } = $props()

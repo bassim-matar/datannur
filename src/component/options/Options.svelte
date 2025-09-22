@@ -5,7 +5,7 @@
   import db from '@db'
   import { page_content_loaded } from '@lib/store'
   import Options from '@lib/options'
-  import Logs from '@lib/Logs'
+  import Logs from '@lib/logs'
   import Favorites from '@favorite/favorites'
   import SearchHistory from '@search/search-history'
   import Icon from '@layout/Icon.svelte'

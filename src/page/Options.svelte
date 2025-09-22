@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Logs from '@lib/Logs'
+  import Logs from '@lib/logs'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'

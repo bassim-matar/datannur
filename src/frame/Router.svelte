@@ -2,7 +2,7 @@
   import db from '@db'
   import { router } from '@lib/router.svelte.js'
   import { app_mode } from '@lib/util'
-  import Logs from '@lib/Logs'
+  import Logs from '@lib/logs'
   import {
     page,
     page_hash,
