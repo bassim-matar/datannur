@@ -1,13 +1,13 @@
 ![datannur logo](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/main-banner-dark.png?raw=true#gh-dark-mode-only)
 ![datannur logo](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/main-banner.png?raw=true#gh-light-mode-only)
 
-# datannur
-
 [![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub release](https://img.shields.io/github/v/release/bassim-matar/datannur?color=blue)](https://github.com/bassim-matar/datannur/releases)
 [![CI Tests](https://github.com/bassim-matar/datannur/actions/workflows/ci.yml/badge.svg)](https://github.com/bassim-matar/datannur/actions/workflows/ci.yml)
 [![Deploy Status](https://github.com/bassim-matar/datannur/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/bassim-matar/datannur/actions/workflows/deploy-pages.yml)
 [![Demo](https://img.shields.io/badge/demo-live-success)](https://bassim-matar.github.io/datannur/)
+
+# datannur
 
 datannur is a client-side data catalog designed to organize and explore datasets without requiring server and database infrastructure.
 
