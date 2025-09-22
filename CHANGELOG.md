@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- change: rename all ts files and folder to be in kebab-case
 - fix: fix eslint path, ci ignore path and contributing.md
 - remove: reset-branch.ts script and use git cleanup alias instead
 - remove: release.ts script and use version change detection in release.yml instead

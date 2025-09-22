@@ -23,7 +23,7 @@
 ### Key files:
 
 - `src/db.ts` - Database wrapper and schema definitions
-- `src/db_schema.json` - Complete database schema documentation
+- `src/db-schema.json` - Complete database schema documentation
 - `vite.config.ts` - Custom build configuration with auto-generation plugins
 
 ## Code Comments Policy

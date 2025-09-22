@@ -1,10 +1,10 @@
 <script lang="ts">
   import db from '@db'
   import { modalities_similitutes, tab_selected } from '@lib/store'
-  import Column from '@lib/Column'
-  import Render from '@lib/Render'
+  import Column from '@lib/column'
+  import Render from '@lib/render'
   import { link, worker } from '@lib/util'
-  import { modality_compare_worker } from '@lib/modality_compare_worker'
+  import { modality_compare_worker } from '@lib/modality-compare-worker'
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
 

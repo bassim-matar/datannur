@@ -14,7 +14,7 @@ const config = {
   serverPort: 8080,
   chunkSizeLimit: 1000,
   paths: {
-    routerIndex: 'src/.generated/router_index.ts',
+    routerIndex: 'src/.generated/router-index.ts',
     pageDir: 'src/page',
     mermaidNode: 'node_modules/mermaid/dist/mermaid.min.js',
     mermaidPublic: 'public/assets/external/mermaid.min.js',

@@ -1,5 +1,5 @@
-import { url_hash } from '@lib/url_hash'
-import Options from '@lib/Options'
+import { url_hash } from '@lib/url-hash'
+import Options from '@lib/options'
 import { get_sort_by_name } from '@lib/db'
 import { get_percent } from '@lib/util'
 

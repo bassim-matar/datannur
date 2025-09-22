@@ -3,7 +3,7 @@
   import { filter_keys } from '@lib/db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
-  import { tabsHelper } from '@tab/tabs_helper'
+  import { tabsHelper } from '@tab/tabs-helper'
 
   let { metaVariable } = $props()
 

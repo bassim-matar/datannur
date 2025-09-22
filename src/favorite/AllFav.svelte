@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Datatable from "@datatable/Datatable.svelte"
-  import Column from "@lib/Column"
+  import Datatable from '@datatable/Datatable.svelte'
+  import Column from '@lib/column'
 
   let { all_fav } = $props()
 
@@ -12,7 +12,7 @@
     Column.name(),
     Column.description(),
     Column.folder_simple(),
-    Column.timestamp({ var_name: "favorite_timestamp" }),
+    Column.timestamp({ var_name: 'favorite_timestamp' }),
   ]
 </script>
 

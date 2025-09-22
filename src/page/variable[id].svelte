@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { tabsHelper } from '@tab/tabs_helper'
+  import { tabsHelper } from '@tab/tabs-helper'
   import { get_lineage } from '@lib/db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'

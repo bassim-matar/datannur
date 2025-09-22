@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { get_local_filter } from "@lib/db"
-  import Main_filter from "@lib/Main_filter"
-  import Switch from "@layout/Switch.svelte"
-  import Button from "@layout/Button.svelte"
+  import { get_local_filter } from '@lib/db'
+  import Main_filter from '@lib/main-filter'
+  import Switch from '@layout/Switch.svelte'
+  import Button from '@layout/Button.svelte'
 
   let filters = $state([])
 
@@ -39,10 +39,10 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .navbar-item {
-    :global(.switch[type="checkbox"] + label) {
+    :global(.switch[type='checkbox'] + label) {
       font-size: 0.875rem;
       color: $color-2;
     }

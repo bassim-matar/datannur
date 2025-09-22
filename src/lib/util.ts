@@ -1,5 +1,5 @@
 import { var_types, entity_to_icon } from '@lib/constant'
-import { url_param } from './url_param'
+import { url_param } from './url-param'
 
 export const app_mode = url_param.get_app_mode()
 

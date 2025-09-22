@@ -1,28 +1,28 @@
 <script lang="ts">
-  import db from "@db"
+  import db from '@db'
   import {
     nb_favorite,
     header_open,
     is_small_menu,
     on_page_homepage,
     on_page_search,
-  } from "@lib/store"
-  import { app_mode } from "@lib/util"
-  import { dark_mode_theme } from "@dark_mode/Dark_mode"
-  import { router } from "@lib/router.svelte.js"
-  import logo from "@img/logo.png"
-  import logo_dark from "@img/logo_dark.png"
-  import Loading from "@frame/Loading.svelte"
-  import MainFilter from "@component/MainFilter.svelte"
-  import HeaderDropdown from "./HeaderDropdown.svelte"
-  import HeaderLink from "./HeaderLink.svelte"
-  import Link from "@layout/Link.svelte"
-  import Footer from "@frame/Footer.svelte"
+  } from '@lib/store'
+  import { app_mode } from '@lib/util'
+  import { dark_mode_theme } from '@dark-mode/dark-mode'
+  import { router } from '@lib/router.svelte.js'
+  import logo from '@img/logo.png'
+  import logo_dark from '@img/logo-dark.png'
+  import Loading from '@frame/Loading.svelte'
+  import MainFilter from '@component/MainFilter.svelte'
+  import HeaderDropdown from './HeaderDropdown.svelte'
+  import HeaderLink from './HeaderLink.svelte'
+  import Link from '@layout/Link.svelte'
+  import Footer from '@frame/Footer.svelte'
 
   let scroll_y = $state(0)
   let loading = $state(true)
-  
-  let logo_src = $derived($dark_mode_theme === "dark" ? logo_dark : logo)
+
+  let logo_src = $derived($dark_mode_theme === 'dark' ? logo_dark : logo)
 
   const toggle_header = () => ($header_open = !$header_open)
   const close_menu = () => ($header_open = false)
@@ -30,11 +30,12 @@
   function click_on_main_logo() {
     close_menu()
     if (!$on_page_homepage) {
-      router.navigate("/")
+      router.navigate('/')
       return
     }
-    const elem: HTMLElement | null = document
-      .querySelector(".tabs_container_ul .tab_entity_about a.tab_select_btn")
+    const elem: HTMLElement | null = document.querySelector(
+      '.tabs_container_ul .tab_entity_about a.tab_select_btn',
+    )
     elem?.click()
   }
 
@@ -62,7 +63,7 @@
     <div class="mobile_right_btn">
       {#if !$on_page_search && !$on_page_homepage && !loading}
         <div class="search_bar_btn_wrapper">
-          <HeaderLink href="search" pages={["search"]}>
+          <HeaderLink href="search" pages={['search']}>
             <i class="fas fa-magnifying-glass"></i>
           </HeaderLink>
         </div>
@@ -94,16 +95,16 @@
       <HeaderDropdown
         title="Organisation"
         pages={[
-          "institution",
-          "institutions",
-          "folder",
-          "folders",
-          "tag",
-          "tags",
-          "doc",
-          "docs",
+          'institution',
+          'institutions',
+          'folder',
+          'folders',
+          'tag',
+          'tags',
+          'doc',
+          'docs',
         ]}
-        if_use={["institution", "folder", "tag", "doc"]}
+        if_use={['institution', 'folder', 'tag', 'doc']}
       >
         <HeaderLink standard="institution" />
         <HeaderLink standard="folder" />
@@ -114,27 +115,27 @@
       <HeaderDropdown
         title="Datasets"
         pages={[
-          "dataset",
-          "datasets",
-          "variable",
-          "variables",
-          "modality",
-          "modalities",
+          'dataset',
+          'datasets',
+          'variable',
+          'variables',
+          'modality',
+          'modalities',
         ]}
-        if_use={["dataset", "variable", "modality"]}
+        if_use={['dataset', 'variable', 'modality']}
       >
         <HeaderLink standard="dataset" />
         <HeaderLink standard="variable" />
         <HeaderLink standard="modality" />
       </HeaderDropdown>
 
-      <HeaderDropdown title="Filtre" if_use={["filter"]}>
+      <HeaderDropdown title="Filtre" if_use={['filter']}>
         <MainFilter />
       </HeaderDropdown>
 
       <HeaderLink
         href="favorite"
-        pages={["favorite"]}
+        pages={['favorite']}
         icon="favorite"
         info="Favoris"
         ><span class="visible_on_mobile">Favoris</span><span
@@ -142,13 +143,13 @@
         ></HeaderLink
       >
 
-      <HeaderLink href="about" pages={["about"]} icon="about" info="A propos">
+      <HeaderLink href="about" pages={['about']} icon="about" info="A propos">
         <span class="visible_on_mobile">A propos</span>
       </HeaderLink>
 
       <HeaderLink
         href="options"
-        pages={["options"]}
+        pages={['options']}
         icon="option"
         info="Options"
       >
@@ -157,7 +158,7 @@
     </div>
 
     <div class="navbar-end">
-      {#if $is_small_menu && app_mode !== "static_render"}
+      {#if $is_small_menu && app_mode !== 'static_render'}
         <Footer menu_mobile={true} />
       {/if}
     </div>
@@ -165,7 +166,7 @@
 </nav>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .navbar {
     background: $background-1;
@@ -224,7 +225,7 @@
     width: 20px;
     z-index: 100;
     :global(a.is-active) {
-      color: color("search") !important;
+      color: color('search') !important;
       text-shadow: 0 0 10px;
     }
   }

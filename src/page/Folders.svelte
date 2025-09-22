@@ -5,10 +5,10 @@
   import { is_big_limit } from '@lib/constant'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
-  import { tabsHelper } from '@tab/tabs_helper'
+  import { tabsHelper } from '@tab/tabs-helper'
   import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
   import EvolutionSummarySwitch from '@layout/EvolutionSummarySwitch.svelte'
-  import about_file from '@markdown/about_folder.md?raw'
+  import about_file from '@markdown/about-folder.md?raw'
 
   const folders = db.getAll('folder')
   make_parents_relative(0, folders)

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import TableWrapper from "@infoTable/TableWrapper.svelte"
-  import IdInfo from "@infoTable/IdInfo.svelte"
-  import DocPreview from "./DocPreview.svelte"
-  import LastUpdateInfo from "@infoTable/LastUpdateInfo.svelte"
-  import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import TableWrapper from '@info-table/TableWrapper.svelte'
+  import IdInfo from '@info-table/IdInfo.svelte'
+  import DocPreview from './DocPreview.svelte'
+  import LastUpdateInfo from '@info-table/LastUpdateInfo.svelte'
+  import DescriptionInfo from '@info-table/DescriptionInfo.svelte'
 
   let { doc } = $props()
 </script>

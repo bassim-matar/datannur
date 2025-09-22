@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { onMount } from "svelte"
-  import db from "@db"
-  import { search_value, page_content_loaded } from "@lib/store"
-  import { url_param } from "@lib/url_param"
-  import Head from "@frame/Head.svelte"
-  import Loading from "@frame/Loading.svelte"
-  import Tabs from "@tab/Tabs.svelte"
-  import SearchResult from "@search/SearchResult.svelte"
-  import SearchHistory from "@search/SearchHistory"
-  import AboutFile from "@layout/AboutFile.svelte"
-  import about_search from "@markdown/search/about_search.md?raw"
-  import no_result from "@markdown/search/no_result.md?raw"
-  import no_recent_search from "@markdown/search/no_recent_search.md?raw"
+  import { onMount } from 'svelte'
+  import db from '@db'
+  import { search_value, page_content_loaded } from '@lib/store'
+  import { url_param } from '@lib/url-param'
+  import Head from '@frame/Head.svelte'
+  import Loading from '@frame/Loading.svelte'
+  import Tabs from '@tab/Tabs.svelte'
+  import SearchResult from '@search/SearchResult.svelte'
+  import SearchHistory from '@search/search-history'
+  import AboutFile from '@layout/AboutFile.svelte'
+  import about_search from '@markdown/search/about-search.md?raw'
+  import no_result from '@markdown/search/no-result.md?raw'
+  import no_recent_search from '@markdown/search/no-recent-search.md?raw'
 
   let is_loading = $state(true)
   let search_result_data = $state([])
@@ -30,16 +30,16 @@
       props: { about_file },
     }
   }
-  const about_tab = make_tab("A propos", "about", "about", about_search)
-  const no_result_tab = make_tab("Résultat", "search", "no_result", no_result)
+  const about_tab = make_tab('A propos', 'about', 'about', about_search)
+  const no_result_tab = make_tab('Résultat', 'search', 'no_result', no_result)
   const no_recent_search_tab = make_tab(
-    "Recherches récentes",
-    "search",
-    "no_recent_search",
+    'Recherches récentes',
+    'search',
+    'no_recent_search',
     no_recent_search,
   )
 
-  SearchHistory.on_change("search_page", () => search_input_change())
+  SearchHistory.on_change('search_page', () => search_input_change())
 
   function set_tab_key() {
     recent_search_change = !recent_search_change
@@ -48,18 +48,18 @@
 
   function init_search_recent() {
     search_result_data = SearchHistory.get_recent_search()
-    const tab_name = "Recherches récentes"
+    const tab_name = 'Recherches récentes'
     set_tabs(tab_name)
     is_loading = false
   }
 
   async function search_input_change() {
-    const url_search_value = url_param.get("search")
+    const url_search_value = url_param.get('search')
     if (url_search_value !== $search_value) {
-      url_param.set("search", $search_value)
+      url_param.set('search', $search_value)
     }
-    if ($search_value === "") {
-      url_param.delete("search")
+    if ($search_value === '') {
+      url_param.delete('search')
       init_search_recent()
       return false
     }
@@ -71,7 +71,7 @@
     set_tabs()
   }
 
-  function set_tabs(name = "Résultat") {
+  function set_tabs(name = 'Résultat') {
     set_tab_key()
     if (search_result_data.length === 0) {
       tabs = [is_empty_input ? no_recent_search_tab : no_result_tab]
@@ -79,8 +79,8 @@
       tabs = [
         {
           name,
-          icon: "search",
-          key: "search",
+          icon: 'search',
+          key: 'search',
           component: SearchResult,
           nb: search_result_data.length,
           props: {
@@ -93,10 +93,10 @@
     tabs.push(about_tab)
   }
 
-  let is_empty_input = $derived(["", undefined, null].includes($search_value))
+  let is_empty_input = $derived(['', undefined, null].includes($search_value))
 
-  const url_search_value = url_param.get("search")
-  if (url_search_value !== false && url_search_value !== "") {
+  const url_search_value = url_param.get('search')
+  if (url_search_value !== false && url_search_value !== '') {
     $search_value = url_search_value
   }
   set_tab_key()
@@ -106,7 +106,7 @@
   })
 
   let search_timeout
-  
+
   $effect(() => {
     $search_value
     if (search_timeout) clearTimeout(search_timeout)
@@ -141,7 +141,7 @@
 </section>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .section {
     margin-top: 13px;

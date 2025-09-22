@@ -1,9 +1,9 @@
 <script lang="ts">
-  import db from "@db"
-  import { tab_selected } from "@lib/store"
-  import Preview_manager from "@lib/Preview_manager"
-  import Datatable from "@datatable/Datatable.svelte"
-  import Loading from "@frame/Loading.svelte"
+  import db from '@db'
+  import { tab_selected } from '@lib/store'
+  import Preview_manager from '@lib/preview-manager'
+  import Datatable from '@datatable/Datatable.svelte'
+  import Loading from '@frame/Loading.svelte'
 
   let { dataset_preview } = $props()
 
@@ -12,7 +12,7 @@
 
   async function get_load_preview() {
     $tab_selected.nb = 0
-    if (typeof dataset_preview !== "string") {
+    if (typeof dataset_preview !== 'string') {
       dataset_data = dataset_preview
       dataset_data = Preview_manager.add_position(dataset_data)
       columns = Preview_manager.get_columns(dataset_data)

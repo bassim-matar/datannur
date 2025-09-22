@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { dark_mode_theme } from "@dark_mode/Dark_mode"
-  import logo from "@img/logo.png"
-  import logo_dark from "@img/logo_dark.png"
-  import Head from "@frame/Head.svelte"
+  import { dark_mode_theme } from '@dark-mode/dark-mode'
+  import logo from '@img/logo.png'
+  import logo_dark from '@img/logo-dark.png'
+  import Head from '@frame/Head.svelte'
 
   let { ...rest } = $props()
-  let title = "Chargement..."
-  let logo_src = $derived($dark_mode_theme === "dark" ? logo_dark : logo)
+  let title = 'Chargement...'
+  let logo_src = $derived($dark_mode_theme === 'dark' ? logo_dark : logo)
 </script>
 
 <Head {title} />

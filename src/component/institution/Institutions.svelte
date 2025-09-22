@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { wrap_long_text } from "@lib/util"
-  import { get_parent_path } from "@lib/db"
-  import Column from "@lib/Column"
-  import Render from "@lib/Render"
-  import Datatable from "@datatable/Datatable.svelte"
+  import { wrap_long_text } from '@lib/util'
+  import { get_parent_path } from '@lib/db'
+  import Column from '@lib/column'
+  import Render from '@lib/render'
+  import Datatable from '@datatable/Datatable.svelte'
 
   let { institutions } = $props()
 
@@ -42,38 +42,38 @@
 
   const columns = [
     Column.favorite(),
-    Column.name("institution", "Institution", {
+    Column.name('institution', 'Institution', {
       with_indent: true,
       link_same_entity_tab: true,
     }),
     Column.description(),
-    Column.nb_child_recursive("institution", institution_max),
-    Column.nb_folder_recursive("institution", folder_max),
-    Column.nb_dataset_recursive("institution", dataset_max),
-    Column.nb_variable("institution", variable_max, {
+    Column.nb_child_recursive('institution', institution_max),
+    Column.nb_folder_recursive('institution', folder_max),
+    Column.nb_dataset_recursive('institution', dataset_max),
+    Column.nb_variable('institution', variable_max, {
       recursive: true,
     }),
-    Column.nb_doc("institution", nb_doc_max),
+    Column.nb_doc('institution', nb_doc_max),
     Column.tag(),
-    Column.parents("institution"),
+    Column.parents('institution'),
     {
-      data: "email",
-      defaultContent: "",
-      title: Render.icon("email") + "Email",
-      tooltip: "Email de contact",
+      data: 'email',
+      defaultContent: '',
+      title: Render.icon('email') + 'Email',
+      tooltip: 'Email de contact',
       render: data => {
         return wrap_long_text(
-          data ? `<a href="mailto:${data}" target="_blanck" >${data}</a>` : "",
+          data ? `<a href="mailto:${data}" target="_blanck" >${data}</a>` : '',
         )
       },
     },
     {
-      data: "phone",
-      defaultContent: "",
-      title: Render.icon("phone") + "Téléphone",
-      tooltip: "Téléphone de contact",
+      data: 'phone',
+      defaultContent: '',
+      title: Render.icon('phone') + 'Téléphone',
+      tooltip: 'Téléphone de contact',
       render: data =>
-        data ? `<a href="tel:${data}" target="_blanck" >${data}</a>` : "",
+        data ? `<a href="tel:${data}" target="_blanck" >${data}</a>` : '',
     },
     Column.start_date(),
     Column.end_date(),

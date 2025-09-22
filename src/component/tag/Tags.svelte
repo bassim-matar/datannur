@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { onMount } from "svelte"
-  import db from "@db"
-  import { page } from "@lib/store"
-  import { get_parent_path } from "@lib/db"
-  import { link, get_percent } from "@lib/util"
-  import Column from "@lib/Column"
-  import Render from "@lib/Render"
-  import Datatable from "@datatable/Datatable.svelte"
+  import { onMount } from 'svelte'
+  import db from '@db'
+  import { page } from '@lib/store'
+  import { get_parent_path } from '@lib/db'
+  import { link, get_percent } from '@lib/util'
+  import Column from '@lib/column'
+  import Render from '@lib/render'
+  import Datatable from '@datatable/Datatable.svelte'
 
   let { tags } = $props()
 
@@ -45,42 +45,42 @@
     columns.push(Column.favorite())
     if (db.use.tag_recursive) {
       columns.push(
-        Column.name("tag", "Mot clé", {
+        Column.name('tag', 'Mot clé', {
           with_indent: true,
           link_same_entity_tab: true,
         }),
       )
     } else {
-      columns.push(Column.name("tag", "Mot clé"))
+      columns.push(Column.name('tag', 'Mot clé'))
     }
 
     columns.push(Column.id())
     columns.push(Column.description())
 
     if (db.use.tag_recursive) {
-      columns.push(Column.parents("tag"))
+      columns.push(Column.parents('tag'))
     }
 
     columns = columns.concat([
       {
-        data: "nb_institution_recursive",
+        data: 'nb_institution_recursive',
         title:
-          Render.icon("institution") +
+          Render.icon('institution') +
           "<span class='hidden'>nb_institution</span>",
-        filter_type: "input",
+        filter_type: 'input',
         tooltip: "Nombre d'institutions",
         render: (data, type, row) => {
-          if (!data) return ""
-          const content = link("tag/" + row.id + "?tab=institutions", data)
+          if (!data) return ''
+          const content = link('tag/' + row.id + '?tab=institutions', data)
           const percent = get_percent(data / institution_max)
-          return `${Render.num_percent(content, percent, "institution", type)}`
+          return `${Render.num_percent(content, percent, 'institution', type)}`
         },
       },
-      Column.nb_folder_recursive("tag", folder_max),
-      Column.nb_child_recursive("tag", tag_max),
-      Column.nb_doc_recursive("tag", doc_max),
-      Column.nb_dataset_recursive("tag", dataset_max),
-      Column.nb_variable("tag", variable_max, { recursive: true }),
+      Column.nb_folder_recursive('tag', folder_max),
+      Column.nb_child_recursive('tag', tag_max),
+      Column.nb_doc_recursive('tag', doc_max),
+      Column.nb_dataset_recursive('tag', dataset_max),
+      Column.nb_variable('tag', variable_max, { recursive: true }),
     ])
 
     if (db.use.tag_recursive) {
@@ -93,7 +93,7 @@
 
   onMount(() => {
     is_recursive =
-      db.use.tag_recursive && ["_index", "tag", "tags"].includes($page)
+      db.use.tag_recursive && ['_index', 'tag', 'tags'].includes($page)
     mounted = true
   })
 </script>

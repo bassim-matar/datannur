@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { get_percent } from "@lib/util"
-  import Render from "@lib/Render"
+  import { get_percent } from '@lib/util'
+  import Render from '@lib/render'
 
   let { value, nb_row, type, percent = get_percent(value / nb_row) } = $props()
 </script>
@@ -12,7 +12,7 @@
 <span class="value">{Render.num(value)} ({percent}%)</span>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .value {
     position: relative;
@@ -39,13 +39,13 @@
   .num_percent_filled {
     opacity: 0.3;
     &.color_missing {
-      background: color("missing");
+      background: color('missing');
     }
     &.color_duplicate {
-      background: color("duplicate");
+      background: color('duplicate');
     }
     &.color_value {
-      background: color("value");
+      background: color('value');
     }
   }
 

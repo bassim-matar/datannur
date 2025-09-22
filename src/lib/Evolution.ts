@@ -4,9 +4,9 @@ import {
   date_to_timestamp,
   timestamp_to_date,
   convert_quarter_to_full_date,
-} from '@lib/Time'
+} from '@lib/time'
 import { diffWords } from 'diff'
-import { get_period } from '@lib/Time'
+import { get_period } from '@lib/time'
 import { split_on_last_separator } from '@lib/util'
 
 const arrow_right = `<i class="fas fa-arrow-right"></i>`

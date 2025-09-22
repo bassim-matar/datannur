@@ -13,7 +13,7 @@ from urllib.response import addinfourl
 
 REPO_PATH = Path(__file__).parent
 GITHUB_REPO_API = "https://api.github.com/repos/bassim-matar/datannur/releases"
-CONFIG_FILE = REPO_PATH / "data" / "update_app.json"
+CONFIG_FILE = REPO_PATH / "data" / "update-app.json"
 ASSET_PRE_RELEASE = "datannur-app-pre-release.zip"
 ASSET_LATEST = "datannur-app-latest.zip"
 MAX_DOWNLOAD_SIZE = 100 * 1024 * 1024  # 100MB

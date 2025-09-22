@@ -1,6 +1,6 @@
 import db from '@db'
 import { link } from '@lib/util'
-import Render from '@lib/Render'
+import Render from '@lib/render'
 import { all_tabs_icon } from '@lib/store'
 import { entity_to_icon } from '@lib/constant'
 

@@ -73,7 +73,7 @@ Here is the top-level structure:
 ```
 ├── assets/                     # Static assets (JS, images, etc.)
 ├── data/                       # ⚠️ YOUR DATA - Only folder to modify
-├── node_scripts/               # Node.js scripts (deploy, static generation, sync db)
+├── node-scripts/               # Node.js scripts (deploy, static generation, sync db)
 ├── .htaccess                   # Apache configuration (clean URLs, cache)
 ├── .nojekyll                   # Disables Jekyll on GitHub Pages
 ├── CHANGELOG.md                # Application changelog
@@ -82,8 +82,8 @@ Here is the top-level structure:
 ├── index.html                  # Application entry point
 ├── manifest.json               # PWA configuration
 ├── deploy.config.template.json # Deployment config template
-├── package.json                # Node.js package manifest for node_scripts/
-├── tsconfig.json               # TypeScript configuration for node_scripts/
+├── package.json                # Node.js package manifest for node-scripts/
+├── tsconfig.json               # TypeScript configuration for node-scripts/
 ├── update_app.py               # Automatic update script
 ```
 
@@ -199,16 +199,16 @@ The "About" content (both homepage tab and dedicated page) is composed of three 
 
 - **banner**: Custom main banner image
   - Add `no_caption` to hide image caption
-  - Add `{dark_mode}` in the filename (`main_banner{dark_mode}`). This will show `main_banner.png` in light mode and `main_banner_dark.png` in dark mode
+  - Add `{dark_mode}` in the filename (`main-banner{dark_mode}`). This will show `main-banner.png` in light mode and `main-banner-dark.png` in dark mode
 - **body**: Custom main content
 - **more_info**: Custom additional information
 
 ### Excel to jsonjsdb format
 
-- Use the script `node_scripts/sync_db.ts` to convert Excel files to the required `.json.js` format.
+- Use the script `node-scripts/sync-db.ts` to convert Excel files to the required `.json.js` format.
 - Run with:
   ```bash
-  npm run sync_db
+  npm run sync-db
   ```
 - The script supports a watch mode: any changes to your Excel files are automatically detected and converted to `.json.js`, keeping your metadata up to date in real time.
 
@@ -247,10 +247,10 @@ For public web deployment with SEO optimization and clean URLs:
 Generate SEO-friendly static pages:
 
 ```bash
-npm run static_make
+npm run static-make
 ```
 
-**Configuration** in `data/static_make.config.json`:
+**Configuration** in `data/static-make.config.json`:
 
 - **domain**: Your public domain (e.g., `"https://yourdomain.com"`) - required for sitemap generation when `index_seo: true`
 - **index_seo**: `true` to allow search engine indexing, `false` to add `noindex` meta tag (default: `false`)
@@ -261,7 +261,7 @@ npm run static_make
 
 ### Deployment
 
-The deployment script `node_scripts/deploy.ts` automates the process of publishing your app to a remote server using `rsync` over SSH.
+The deployment script `node-scripts/deploy.ts` automates the process of publishing your app to a remote server using `rsync` over SSH.
 
 **Usage:**
 
@@ -329,7 +329,7 @@ The `data-app-name` parameter is an application identifier used as a namespace f
 The `data-path` parameter defines the path to your database folder (default: `"data/db"`).
 
 - Can be a relative path from the `index.html` location
-- Examples: `"data/db"`, `"my_catalog/database"`, `"../shared_data/db"`
+- Examples: `"data/db"`, `"my-catalog/database"`, `"../shared-data/db"`
 
 #### db-key (Optional)
 

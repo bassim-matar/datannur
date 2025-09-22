@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { link, wrap_long_text, get_percent } from "@lib/util"
-  import { get_parent_path } from "@lib/db"
-  import Column from "@lib/Column"
-  import Render from "@lib/Render"
-  import Datatable from "@datatable/Datatable.svelte"
+  import { link, wrap_long_text, get_percent } from '@lib/util'
+  import { get_parent_path } from '@lib/db'
+  import Column from '@lib/column'
+  import Render from '@lib/render'
+  import Datatable from '@datatable/Datatable.svelte'
 
   let { folders, is_meta = false } = $props()
 
   const folders_sorted = [...folders]
-  const folder_path = is_meta ? "metaFolder/" : "folder/"
-  const meta_path = is_meta ? "metaFolder" : false
+  const folder_path = is_meta ? 'metaFolder/' : 'folder/'
+  const meta_path = is_meta ? 'metaFolder' : false
 
   let variable_max = 0
   let dataset_max = 0
@@ -49,24 +49,24 @@
   function define_columns() {
     if (is_meta) {
       return [
-        Column.name("folder", "Dossiers"),
+        Column.name('folder', 'Dossiers'),
         Column.description(),
         {
-          data: "nb_dataset",
-          title: Render.icon("dataset") + "Datasets",
-          tooltip: "Nombre de datasets",
+          data: 'nb_dataset',
+          title: Render.icon('dataset') + 'Datasets',
+          tooltip: 'Nombre de datasets',
           render: (data, type, row) => {
-            if (!data) return ""
+            if (!data) return ''
             const content = link(
-              folder_path + row.id + "?tab=metaDatasets",
+              folder_path + row.id + '?tab=metaDatasets',
               data,
             )
             const percent = get_percent(data / dataset_max)
-            return `${Render.num_percent(content, percent, "dataset", type)}`
+            return `${Render.num_percent(content, percent, 'dataset', type)}`
           },
         },
-        Column.nb_variable("folder", variable_max, {
-          tab: "metaVariables",
+        Column.nb_variable('folder', variable_max, {
+          tab: 'metaVariables',
           link_path: folder_path,
           show_title: true,
         }),
@@ -75,50 +75,50 @@
 
     return [
       Column.favorite(),
-      Column.name("folder", "Dossier", {
+      Column.name('folder', 'Dossier', {
         with_indent: true,
         link_same_entity_tab: true,
       }),
       Column.description(),
-      Column.nb_child_recursive("folder", folder_max, folder_path),
-      Column.nb_dataset_recursive("folder", dataset_max),
-      Column.nb_variable("folder", variable_max, {
+      Column.nb_child_recursive('folder', folder_max, folder_path),
+      Column.nb_dataset_recursive('folder', dataset_max),
+      Column.nb_variable('folder', variable_max, {
         recursive: true,
       }),
-      Column.nb_doc("folder", nb_doc_max),
+      Column.nb_doc('folder', nb_doc_max),
       Column.tag(),
       Column.last_update(),
       Column.next_update(),
       Column.frequency(),
       Column.start_date(),
       Column.end_date(),
-      Column.parents("folder"),
+      Column.parents('folder'),
       Column.owner(),
       Column.manager(),
       Column.localisation(),
       {
-        data: "survey_type",
-        title: Render.icon("survey_type") + "Type d'enquête",
-        defaultContent: "",
+        data: 'survey_type',
+        title: Render.icon('survey_type') + "Type d'enquête",
+        defaultContent: '',
         tooltip: "Type d'enquête",
       },
       Column.delivery_format(),
       {
-        data: "metadata_path",
-        title: Render.icon("metadata_path") + "Metadonnées",
-        defaultContent: "",
-        tooltip: "Emplacement des métadonnées",
+        data: 'metadata_path',
+        title: Render.icon('metadata_path') + 'Metadonnées',
+        defaultContent: '',
+        tooltip: 'Emplacement des métadonnées',
         render: Render.copy_cell,
       },
       Column.data_path(),
       {
-        data: "git_code",
-        title: Render.icon("git_code") + "GIT code",
-        defaultContent: "",
-        tooltip: "Code source des traitements",
+        data: 'git_code',
+        title: Render.icon('git_code') + 'GIT code',
+        defaultContent: '',
+        tooltip: 'Code source des traitements',
         render: data =>
           wrap_long_text(
-            data ? `<a href="${data}" target="_blanck">${data}</a>` : "",
+            data ? `<a href="${data}" target="_blanck">${data}</a>` : '',
           ),
       },
       Column.level(level_max),

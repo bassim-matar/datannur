@@ -1,7 +1,7 @@
 import db from '@db'
 import { locale } from '@lib/constant'
-import { copy_text_classes, copy_text_msg } from '@lib/copy_text'
-import { get_time_ago, date_to_timestamp } from '@lib/Time'
+import { copy_text_classes, copy_text_msg } from '@lib/copy-text'
+import { get_time_ago, date_to_timestamp } from '@lib/time'
 import {
   link,
   wrap_long_text,

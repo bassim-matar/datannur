@@ -8,8 +8,8 @@
     add_minimum_deep,
   } from '@lib/db'
   import { is_big_limit } from '@lib/constant'
-  import { tabsHelper } from '@tab/tabs_helper'
-  import Tags from '@lib/Tags'
+  import { tabsHelper } from '@tab/tabs-helper'
+  import Tags from '@lib/tags'
   import Tabs from '@tab/Tabs.svelte'
 
   import Title from '@layout/Title.svelte'

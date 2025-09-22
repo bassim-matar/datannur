@@ -1,12 +1,12 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import TableWrapper from "@infoTable/TableWrapper.svelte"
-  import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"
-  import IdInfo from "@infoTable/IdInfo.svelte"
-  import InstitutionInfo from "@infoTable/InstitutionInfo.svelte"
-  import TagsInfo from "@infoTable/TagsInfo.svelte"
-  import DeepLevelInfo from "@infoTable/DeepLevelInfo.svelte"
-  import PeriodInfo from "@infoTable/PeriodInfo.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import TableWrapper from '@info-table/TableWrapper.svelte'
+  import DescriptionInfo from '@info-table/DescriptionInfo.svelte'
+  import IdInfo from '@info-table/IdInfo.svelte'
+  import InstitutionInfo from '@info-table/InstitutionInfo.svelte'
+  import TagsInfo from '@info-table/TagsInfo.svelte'
+  import DeepLevelInfo from '@info-table/DeepLevelInfo.svelte'
+  import PeriodInfo from '@info-table/PeriodInfo.svelte'
 
   let { institution } = $props()
 </script>

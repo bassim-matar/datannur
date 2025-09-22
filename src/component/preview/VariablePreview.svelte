@@ -1,9 +1,9 @@
 <script lang="ts">
-  import db from "@db"
-  import { tab_selected } from "@lib/store"
-  import Preview_manager from "@lib/Preview_manager"
-  import Datatable from "@datatable/Datatable.svelte"
-  import Loading from "@frame/Loading.svelte"
+  import db from '@db'
+  import { tab_selected } from '@lib/store'
+  import Preview_manager from '@lib/preview-manager'
+  import Datatable from '@datatable/Datatable.svelte'
+  import Loading from '@frame/Loading.svelte'
 
   let { variable_preview } = $props()
 
@@ -20,7 +20,7 @@
       variable = Preview_manager.clean_keys(variable)
       dataset_preview = variable_preview.dataset_id
       $tab_selected.nb = 0
-      if (typeof dataset_preview !== "string") {
+      if (typeof dataset_preview !== 'string') {
         let dataset_data = dataset_preview
         variable_data = Preview_manager.get_variable_data(
           dataset_data,

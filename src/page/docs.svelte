@@ -2,8 +2,8 @@
   import db from '@db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
-  import { tabsHelper } from '@tab/tabs_helper'
-  import about_file from '@markdown/about_doc.md?raw'
+  import { tabsHelper } from '@tab/tabs-helper'
+  import about_file from '@markdown/about-doc.md?raw'
 
   const docs = db.getAll('doc')
 

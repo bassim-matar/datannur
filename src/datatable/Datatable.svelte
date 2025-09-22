@@ -1,23 +1,23 @@
 <script lang="ts">
-  import jQuery from "jquery"
-  import JSZip from "jszip"
-  import DataTable from "datatables.net-bm"
-  import "datatables.net-buttons-bm"
-  import "datatables.net-buttons/js/buttons.html5.mjs"
-  import "datatables.net-fixedcolumns-bm"
-  import "datatables.net-fixedheader-bm"
-  import "datatables.net-scroller-bm"
-  import { onMount, onDestroy } from "svelte"
-  import { is_mobile } from "@lib/util"
-  import { is_big_limit } from "@lib/constant"
-  import { tab_selected, all_tables_loaded, all_tabs } from "@lib/store"
-  import { extendable } from "@lib/extendable"
-  import Exporter from "./exporter/Exporter"
-  import Filter_helper from "./filter/Filter_helper"
-  import init_favorite from "./favorite/init_favorite"
-  import Datatables_timer from "./Datatables_timer"
-  import Datatables_loading from "./Datatables_loading"
-  import { define_columns } from "./define_columns"
+  import jQuery from 'jquery'
+  import JSZip from 'jszip'
+  import DataTable from 'datatables.net-bm'
+  import 'datatables.net-buttons-bm'
+  import 'datatables.net-buttons/js/buttons.html5.mjs'
+  import 'datatables.net-fixedcolumns-bm'
+  import 'datatables.net-fixedheader-bm'
+  import 'datatables.net-scroller-bm'
+  import { onMount, onDestroy } from 'svelte'
+  import { is_mobile } from '@lib/util'
+  import { is_big_limit } from '@lib/constant'
+  import { tab_selected, all_tables_loaded, all_tabs } from '@lib/store'
+  import { extendable } from '@lib/extendable'
+  import Exporter from './exporter/exporter'
+  import Filter_helper from './filter/filter-helper'
+  import init_favorite from './favorite/init-favorite'
+  import Datatables_timer from './datatables-timer'
+  import Datatables_loading from './datatables-loading'
+  import { define_columns } from './define-columns'
   import {
     get_table_id,
     get_clean_data,
@@ -26,12 +26,12 @@
     get_nb_sticky,
     get_nb_item,
     fix_columns_width,
-  } from "./dt_util"
-  import Filter from "./filter/Filter.svelte"
-  import FilterInfoBox from "./filter/FilterInfoBox.svelte"
-  import Popup from "@layout/Popup.svelte"
-  import SearchOptionInfo from "./filter/SearchOptionInfo.svelte"
-  import LoadingDot from "@layout/LoadingDot.svelte"
+  } from './dt-util'
+  import Filter from './filter/Filter.svelte'
+  import FilterInfoBox from './filter/FilterInfoBox.svelte'
+  import Popup from '@layout/Popup.svelte'
+  import SearchOptionInfo from './filter/SearchOptionInfo.svelte'
+  import LoadingDot from '@layout/LoadingDot.svelte'
 
   let {
     entity,
@@ -52,7 +52,7 @@
 
   Datatables_timer.start()
   Datatables_loading.start()
-  
+
   // @ts-ignore - DataTable.Buttons exists after importing buttons extension
   DataTable.Buttons.jszip(JSZip)
 
@@ -83,11 +83,11 @@
   const nb_sticky = get_nb_sticky(columns_copy)
 
   const clickable_rows = ![
-    "value",
-    "dataset_preview",
-    "variable_preview",
-    "preview",
-    "log",
+    'value',
+    'dataset_preview',
+    'variable_preview',
+    'preview',
+    'log',
   ].includes(entity)
 
   $all_tables_loaded = false
@@ -110,7 +110,7 @@
 
   onMount(() => {
     setTimeout(() => {
-      datatable = new DataTable("table#" + table_id, {
+      datatable = new DataTable('table#' + table_id, {
         data: clean_data,
         columns: columns_copy,
         scrollY: max_height,
@@ -126,7 +126,7 @@
         stateSave: true,
         info: false,
         dom: '<"toolbar">ftB',
-        order: [[0, "asc"]],
+        order: [[0, 'asc']],
         buttons,
         destroy: true,
         language: {
@@ -138,23 +138,23 @@
           filter.init(this.api())
         },
       } as any)
-      datatable.on("search.dt", () => {
+      datatable.on('search.dt', () => {
         if ($all_tabs[entity]) {
           $all_tabs[entity].nb = get_nb_item(datatable, clean_data)
         }
         short_table = is_short_table(datatable)
       })
-      datatable.on("draw.dt", () => {
+      datatable.on('draw.dt', () => {
         datatable_update_draw += 1
       })
-      dom_table = jQuery("table#" + table_id + "._datatables")
-      dom_table.on("mouseenter", ".long_text", extendable.open)
-      dom_table.on("mouseleave", ".long_text", extendable.close_two_lines)
+      dom_table = jQuery('table#' + table_id + '._datatables')
+      dom_table.on('mouseenter', '.long_text', extendable.open)
+      dom_table.on('mouseleave', '.long_text', extendable.close_two_lines)
 
-      dom_table.on("click", "td", function (event) {
+      dom_table.on('click', 'td', function (event) {
         setTimeout(() => {
           const clickable_elems =
-            "a, button, input, select, .copyclip, .favorite"
+            'a, button, input, select, .copyclip, .favorite'
 
           if (
             is_mobile ||
@@ -163,8 +163,8 @@
           ) {
             return false
           }
-          jQuery(this).parent().find(".var_main_col")[0]?.click()
-          jQuery(this).parent().find(".var_main_col a")[0]?.click()
+          jQuery(this).parent().find('.var_main_col')[0]?.click()
+          jQuery(this).parent().find('.var_main_col a')[0]?.click()
         }, 1)
       })
 
@@ -204,7 +204,7 @@
     if (datatable) datatable?.destroy()
     tab_selected_unsubscribe()
     filter.destroy()
-    jQuery("table#" + table_id + "._datatables *")?.off()
+    jQuery('table#' + table_id + '._datatables *')?.off()
     dom_table = null
   })
 </script>
@@ -246,9 +246,9 @@
               <tr>
                 {#each columns_copy as column, j}
                   <td class:first_col={j === 0} class:first_row={i === 0}>
-                    {#if column.data === "_row_num"}
+                    {#if column.data === '_row_num'}
                       {i + 1}
-                    {:else if column.data === "is_favorite"}
+                    {:else if column.data === 'is_favorite'}
                       <span class="icon favorite">
                         <i class="fas fa-star"></i>
                       </span>
@@ -305,11 +305,11 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
-  @use "./exporter/exporter_popup.scss" as *;
-  @use "./exporter/exporter.scss" as *;
-  @use "../style/icon.scss" as *;
-  @use "../style/favorite.scss" as *;
+  @use 'main.scss' as *;
+  @use './exporter/exporter-popup.scss' as *;
+  @use './exporter/exporter.scss' as *;
+  @use '../style/icon.scss' as *;
+  @use '../style/favorite.scss' as *;
 
   .datatable_main_wrapper {
     text-align: left;
@@ -365,12 +365,12 @@
         }
         &::before {
           bottom: 52%;
-          content: "▲" / "";
+          content: '▲' / '';
         }
         &::after {
           top: 52%;
-          content: "▼";
-          content: "▼" / "";
+          content: '▼';
+          content: '▼' / '';
         }
       }
     }
@@ -628,7 +628,7 @@
               margin: 1px 0;
               border-radius: $rounded;
               overflow: hidden;
-              
+
               .freq_background {
                 position: absolute;
                 top: 0;
@@ -638,15 +638,16 @@
                 opacity: 0.2;
                 pointer-events: none;
                 &.color_freq {
-                  background: color("freq");
+                  background: color('freq');
                 }
               }
-              
-              .freq_value, .freq_number {
+
+              .freq_value,
+              .freq_number {
                 position: relative;
                 z-index: 1;
               }
-              
+
               .freq_percent {
                 position: relative;
                 z-index: 1;
@@ -665,49 +666,49 @@
                 opacity: 0.1;
               }
               &.color_missing {
-                background: color("missing");
+                background: color('missing');
               }
               &.color_duplicate {
-                background: color("duplicate");
+                background: color('duplicate');
               }
               &.color_freq {
-                background: color("freq");
+                background: color('freq');
               }
               &.color_value {
-                background: color("value");
+                background: color('value');
               }
               &.color_institution {
-                background: color("institution");
+                background: color('institution');
               }
               &.color_folder {
-                background: color("folder");
+                background: color('folder');
               }
               &.color_tag {
-                background: color("tag");
+                background: color('tag');
               }
               &.color_doc {
-                background: color("doc");
+                background: color('doc');
               }
               &.color_dataset {
-                background: color("dataset");
+                background: color('dataset');
               }
               &.color_variable {
-                background: color("variable");
+                background: color('variable');
               }
               &.color_nb_row {
-                background: color("nb_row");
+                background: color('nb_row');
               }
               &.color_value {
-                background: color("value");
+                background: color('value');
               }
               &.color_nb_source {
-                background: color("nb_source");
+                background: color('nb_source');
               }
               &.color_nb_derived {
-                background: color("nb_derived");
+                background: color('nb_derived');
               }
               &.color_key {
-                background: color("key");
+                background: color('key');
               }
             }
           }

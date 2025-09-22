@@ -1,20 +1,20 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import TableWrapper from "@infoTable/TableWrapper.svelte"
-  import DescriptionInfo from "@infoTable/DescriptionInfo.svelte"
-  import IdInfo from "@infoTable/IdInfo.svelte"
-  import FolderInfo from "@infoTable/FolderInfo.svelte"
-  import InstitutionInfo from "@infoTable/InstitutionInfo.svelte"
-  import TagsInfo from "@infoTable/TagsInfo.svelte"
-  import LastUpdateInfo from "@infoTable/LastUpdateInfo.svelte"
-  import NextUpdateInfo from "@infoTable/NextUpdateInfo.svelte"
-  import FrequencyInfo from "@infoTable/FrequencyInfo.svelte"
-  import LocalisationInfo from "@infoTable/LocalisationInfo.svelte"
-  import PeriodInfo from "@infoTable/PeriodInfo.svelte"
-  import DataPathInfo from "@infoTable/DataPathInfo.svelte"
-  import CopyText from "@layout/CopyText.svelte"
-  import DeliveryFormatInfo from "@infoTable/DeliveryFormatInfo.svelte"
-  import DeepLevelInfo from "@infoTable/DeepLevelInfo.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import TableWrapper from '@info-table/TableWrapper.svelte'
+  import DescriptionInfo from '@info-table/DescriptionInfo.svelte'
+  import IdInfo from '@info-table/IdInfo.svelte'
+  import FolderInfo from '@info-table/FolderInfo.svelte'
+  import InstitutionInfo from '@info-table/InstitutionInfo.svelte'
+  import TagsInfo from '@info-table/TagsInfo.svelte'
+  import LastUpdateInfo from '@info-table/LastUpdateInfo.svelte'
+  import NextUpdateInfo from '@info-table/NextUpdateInfo.svelte'
+  import FrequencyInfo from '@info-table/FrequencyInfo.svelte'
+  import LocalisationInfo from '@info-table/LocalisationInfo.svelte'
+  import PeriodInfo from '@info-table/PeriodInfo.svelte'
+  import DataPathInfo from '@info-table/DataPathInfo.svelte'
+  import CopyText from '@layout/CopyText.svelte'
+  import DeliveryFormatInfo from '@info-table/DeliveryFormatInfo.svelte'
+  import DeepLevelInfo from '@info-table/DeepLevelInfo.svelte'
 
   let { folder } = $props()
 </script>
@@ -32,7 +32,10 @@
     <LastUpdateInfo last_update_date={folder.last_update_date} />
     <NextUpdateInfo next_update_date={folder.next_update_date} />
     <FrequencyInfo frequency={folder.updating_each} />
-    <PeriodInfo period={folder.period} period_duration={folder.period_duration} />
+    <PeriodInfo
+      period={folder.period}
+      period_duration={folder.period_duration}
+    />
     <LocalisationInfo localisation={folder.localisation} />
     {#if folder.survey_type}
       <tr>

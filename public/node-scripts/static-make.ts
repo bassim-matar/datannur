@@ -18,9 +18,9 @@ interface Config {
   routes: string[]
 }
 
-const configFile = './data/static_make.config.json'
+const configFile = './data/static-make.config.json'
 const indexFile = './index.html'
-const entryPoint = './index_static_make.html'
+const entryPoint = './index_static-make.html'
 
 async function waitUntilReady(url: string, maxAttempts = 30, delayMs = 200) {
   for (let i = 0; i < maxAttempts; i++) {
