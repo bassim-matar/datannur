@@ -5,6 +5,8 @@
   - [Quick Workflow (WIP branches)](#quick-workflow-wip-branches)
   - [Git Setup (Optional)](#git-setup-optional)
 - [Development Scripts](#development-scripts)
+  - [Core Development](#core-development)
+  - [Quality Checks](#quality-checks)
 - [Guidelines](#guidelines)
   - [Pull Requests](#pull-requests)
   - [Tests & Quality](#tests--quality)
@@ -85,13 +87,25 @@ Then use `git cleanup` to automatically switch to main, pull changes, and delete
 
 ## Development Scripts
 
+### Core Development
+
 | Command           | Purpose                     |
 | ----------------- | --------------------------- |
 | `npm run dev`     | Development server          |
 | `npm run build`   | Build for production        |
-| `npm run test`    | Run test suite              |
 | `npm run preview` | Open built app (file://)    |
 | `npm run serve`   | Serve built app (localhost) |
+
+### Quality Checks
+
+| Command              | Purpose                              |
+| -------------------- | ------------------------------------ |
+| `npm run test`       | Run full test suite                  |
+| `npm run lint`       | ESLint code analysis                 |
+| `npm run type-check` | TypeScript type checking             |
+| `npm run format`     | Format code with Prettier            |
+| `npm run check`      | All quality checks (lint + types)    |
+| `npm run verify`     | Complete verification (check + test) |
 
 ## Guidelines
 
@@ -101,9 +115,18 @@ Keep PRs focused - one feature, one bug fix, or one refactor. Avoid mixing styli
 
 ### Tests & Quality
 
-- Run `npm run test` locally (includes unit + UI tests)
-- **Zero console errors** in browser - automatically verified by `ui.test.ts`
-- Build must pass: `npm run build`
+**Before submitting a PR:**
+
+- Run `npm run verify` (complete verification: formatting, linting, types, and tests)
+- Or run individual checks:
+  - `npm run check` (formatting, linting, type checking)
+  - `npm run test` (unit and UI tests)
+
+**Quality standards:**
+
+- **Zero console errors** in browser (verified by `ui.test.ts`)
+- **Clean build**: `npm run build` must pass
+- **Code formatting**: Use `npm run format` to auto-format
 
 ### Documentation
 
