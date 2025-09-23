@@ -104,18 +104,6 @@ jobs:
             } >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Create git tag for stable release
-        if: steps.release.outputs.type == 'stable'
-        run: |
-          TAG="${{ steps.release.outputs.tag }}"
-          VERSION="${{ steps.release.outputs.version }}"
-
-          # Create and push the tag
-          git tag -a "${TAG}" -m "Release ${TAG}"
-          git push origin "${TAG}"
-
-          echo "Created and pushed tag: ${TAG}"
-
       - name: Delete existing pre-release
         if: steps.release.outputs.type == 'prerelease'
         run: |
