@@ -29,6 +29,7 @@
    ```bash
    git checkout -b add-feature-x
    npm ci
+   npx playwright install  # Install browsers for UI tests
    ```
 
 2. Develop and test:
@@ -63,6 +64,7 @@ Then for each change:
 git checkout main
 git pull
 git wip add-feature-x       # creates branch add-feature-x
+# First time only: npm ci && npx playwright install
 # ... commits ...
 git push -u origin HEAD
 # Open PR → CI → squash merge → delete branch
