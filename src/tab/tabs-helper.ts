@@ -22,7 +22,7 @@ function getNbStat(stat: unknown[], attributs: Record<string, unknown[]>) {
       }
       return acc
     },
-    0
+    0,
   )
 }
 
@@ -45,7 +45,7 @@ function getTab(key: string, value: unknown) {
     const total = (value as Array<{ items?: unknown[] }>).reduce(
       (acc: number, stat: { items?: unknown[] }) =>
         acc + (stat.items?.length || 0),
-      0
+      0,
     )
     if (total === 0) return false
   }

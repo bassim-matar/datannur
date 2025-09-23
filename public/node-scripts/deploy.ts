@@ -38,7 +38,7 @@ try {
 
   execSync(
     `rsync -avz ${deleteFlag} ${excludes} -e "${sshCmd}" ./ ${config.username}@${config.host}:${config.remotePath}/`,
-    { stdio: 'inherit' }
+    { stdio: 'inherit' },
   )
   console.log('✅ Deploy complete')
 } catch {

@@ -8,7 +8,7 @@ Le **tourisme** désigne le fait de voyager à des fins de loisirs, de découver
 
 ### Histoire du tourisme
 
-Le tourisme moderne trouve ses origines au XVIIIe siècle avec le *Grand Tour* en Angleterre, qui était un voyage d’éducation pour les jeunes aristocrates européens. Ce phénomène s'est intensifié au XIXe siècle grâce à l'amélioration des infrastructures de transport, comme le développement des chemins de fer.
+Le tourisme moderne trouve ses origines au XVIIIe siècle avec le _Grand Tour_ en Angleterre, qui était un voyage d’éducation pour les jeunes aristocrates européens. Ce phénomène s'est intensifié au XIXe siècle grâce à l'amélioration des infrastructures de transport, comme le développement des chemins de fer.
 
 ### Expansion du tourisme
 

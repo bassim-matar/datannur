@@ -21,9 +21,10 @@
     "lint": "eslint src/ test/ public/node-scripts/ --ext .ts,.svelte",
     "type-check": "tsc --noEmit",
     "svelte-check": "svelte-check --workspace src",
-    "check": "npm run lint && npm run type-check && npm run svelte-check",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format": "prettier --write . '!**/*.json.js'",
+    "format:check": "prettier --check . '!**/*.json.js'",
+    "check": "npm run format:check && npm run lint && npm run type-check && npm run svelte-check",
+    "verify": "npm run check && npm run test"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
@@ -37,6 +38,7 @@
     "jsonjsdb-builder": "^0.5.2",
     "open-cli": "^8.0.0",
     "playwright": "^1.55.0",
+    "prettier": "^3.6.2",
     "rollup-plugin-visualizer": "^6.0.3",
     "sass": "^1.93.0",
     "serve-handler": "^6.1.6",

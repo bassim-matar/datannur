@@ -32,7 +32,7 @@ export default class Render {
       content += link(
         entity + '/' + element.id,
         add_indend(name, level),
-        entity
+        entity,
       )
       level += 1
     }
@@ -76,7 +76,7 @@ export default class Render {
       const text = link(
         `${entity}/${row.id}?tab=${tab}`,
         `... ${nb_other_values} autre${s} valeur${s}`,
-        'value'
+        'value',
       )
       if (type === 'export') content += separator
       content += `<li><i>${text}</i></li>`
@@ -123,7 +123,7 @@ export default class Render {
       const text = link(
         `variable/${row.id}?tab=freq`,
         `... ${nb_other_freq} autre${s} fréquence${s}`,
-        'freq'
+        'freq',
       )
       if (type === 'export') content += separator
       content += `<li><i>${text}</i></li>`
@@ -169,7 +169,7 @@ export default class Render {
     let modalities_name = []
     for (const modality of modalities) {
       modalities_name.push(
-        link('modality/' + modality.id, modality.name, 'modality')
+        link('modality/' + modality.id, modality.name, 'modality'),
       )
     }
     return wrap_long_text(modalities_name.join(' | '))
@@ -204,7 +204,7 @@ export default class Render {
       percent,
       'missing',
       type,
-      true
+      true,
     )
     if (stringify) return `${content}`
     return content
@@ -232,7 +232,7 @@ export default class Render {
     if (!data) return wrap_long_text()
     if (type !== 'display') return data
     return wrap_long_text(
-      `<span class="${copy_text_classes}" title="${copy_text_msg}">${data}</span>`
+      `<span class="${copy_text_classes}" title="${copy_text_msg}">${data}</span>`,
     )
   }
   static datetime(data, type, row, option = null) {
@@ -247,7 +247,7 @@ export default class Render {
     const timestamp = date_to_timestamp(data, 'start')
     const content = `${time_ago}<br>${data}${content_after}`
     const percent = get_percent(
-      (new Date().getTime() - timestamp) / 31536000000
+      (new Date().getTime() - timestamp) / 31536000000,
     )
     const entity = percent < 0 ? 'value' : 'doc'
     const percent_abs_inversed = 100 - Math.abs(percent)

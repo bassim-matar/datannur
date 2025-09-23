@@ -48,7 +48,7 @@ export default class Column {
           text = link(
             row._entity + '/' + row.id + '?tab=' + row._entity + 's',
             data,
-            row._entity
+            row._entity,
           )
         }
         text = `<strong class="var_main_col">${text}</strong>`
@@ -113,7 +113,7 @@ export default class Column {
           <span>${link(
             `${row.parent_entity}/${row.parent_entity_id}`,
             row.parent_name,
-            row.parent_entity
+            row.parent_entity,
           )}</span>`)
       },
     }
@@ -489,7 +489,7 @@ export default class Column {
       tooltip: 'Dataset',
       render: (data, type, row) =>
         wrap_long_text(
-          link(parent_name + '/' + row[parent_name + '_id'], data, 'dataset')
+          link(parent_name + '/' + row[parent_name + '_id'], data, 'dataset'),
         ),
     }
   }
@@ -610,7 +610,7 @@ export default class Column {
         if (!data) return ''
         const content = link(
           option.link_path + row.id + `?tab=${option.tab}`,
-          data
+          data,
         )
         const percent = get_percent(data / total)
         return `${Render.num_percent(content, percent, 'variable', type)}`
@@ -663,7 +663,7 @@ export default class Column {
           content,
           percent_abs_inversed,
           entity,
-          type
+          type,
         )}`
       },
     }

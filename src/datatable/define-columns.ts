@@ -1,12 +1,12 @@
-import { entity_names } from "@lib/constant"
-import { link } from "@lib/util"
-import { stat_exists } from "@stat/stat"
+import { entity_names } from '@lib/constant'
+import { link } from '@lib/util'
+import { stat_exists } from '@stat/stat'
 
 function filter_empty_columns(columns, items) {
   const has_prop = {}
   for (const item of items) {
     for (const [key, value] of Object.entries(item)) {
-      if (key === "id" || key === "is_favorite") {
+      if (key === 'id' || key === 'is_favorite') {
         has_prop[key] = true
         continue
       }
@@ -21,8 +21,8 @@ function filter_empty_columns(columns, items) {
 }
 
 function get_text_width(lines, font) {
-  const canvas = document.createElement("canvas")
-  const context = canvas.getContext("2d")
+  const canvas = document.createElement('canvas')
+  const context = canvas.getContext('2d')
   context.font = font
   let maxWidth = 0
   for (const line of lines) {
@@ -38,18 +38,18 @@ export function define_columns(
   entity,
   keep_all_cols,
   meta_path,
-  nb_row_loading
+  nb_row_loading,
 ) {
   let columns_copy = columns.map(obj => ({ ...obj }))
 
-  if (columns_copy[0]?.title !== "#") {
+  if (columns_copy[0]?.title !== '#') {
     const col_numerotation: any = {
-      data: "_row_num",
-      name: "_row_num",
-      title: "#",
-      tooltip: "Numéro de ligne",
-      filter_type: "input",
-      width: "20px",
+      data: '_row_num',
+      name: '_row_num',
+      title: '#',
+      tooltip: 'Numéro de ligne',
+      filter_type: 'input',
+      width: '20px',
     }
     if (entity in entity_names) {
       if (meta_path) {
@@ -58,7 +58,7 @@ export function define_columns(
         }
       } else {
         col_numerotation.render = (data, type, row) => {
-          return link(entity + "/" + row.id, data)
+          return link(entity + '/' + row.id, data)
         }
       }
     }
@@ -67,27 +67,26 @@ export function define_columns(
 
   if (!keep_all_cols) columns_copy = filter_empty_columns(columns_copy, data)
 
-  let bold = ""
+  let bold = ''
   const mini_col = [
-    "_row_num",
-    "level",
-    "is_favorite",
-    "search_receht",
-    "evolution_type",
+    '_row_num',
+    'level',
+    'is_favorite',
+    'search_receht',
+    'evolution_type',
   ]
   for (const column of columns_copy) {
     const key = column.name ? column.name : column.data
-    if (key !== "_row_num" && stat_exists(entity, key)) {
+    if (key !== '_row_num' && stat_exists(entity, key)) {
       const column_stat_btn = `
         <span class="column_stat_btn icon_stat" data-entity="${entity}" data-attribut="${key}">
           <i class="fa-solid fa-signal">
         </i></span>`
-      if (column.tooltip) column.tooltip += "&nbsp;&nbsp;" + column_stat_btn
+      if (column.tooltip) column.tooltip += '&nbsp;&nbsp;' + column_stat_btn
       else column.tooltip = column_stat_btn
     }
 
-    if(column.filter_type === "select")
-      column.search_modality = true
+    if (column.filter_type === 'select') column.search_modality = true
     if (mini_col.includes(column.name)) {
       column.loading_max_width = 20
       continue
@@ -97,12 +96,12 @@ export function define_columns(
       column.loading_max_width = 274
       continue
     }
-    if (column.name === "name") bold = "bold"
+    if (column.name === 'name') bold = 'bold'
     const cells = []
     for (const row of data.slice(0, nb_row_loading)) {
       let value = row[column.data]
       if (column.from_length) value = value.length
-      if (column.data === "_entity_clean") value = "icon_ico," + value
+      if (column.data === '_entity_clean') value = 'icon_ico,' + value
       cells.push(value)
     }
     const cells_width =

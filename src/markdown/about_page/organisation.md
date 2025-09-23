@@ -3,11 +3,10 @@ datannur repose sur 7 concepts principaux, qui se répartissent en deux catégor
 - Intérieur du dataset : pour les éléments directement liés aux données elles-mêmes
 - Extérieur du dataset : pour les éléments qui structurent, organisent ou enrichissent les datasets
 
-mermaid( 
-  $dataset -.-> intérieur
-  $dataset -.-> extérieur
+mermaid(
+$dataset -.-> intérieur
+$dataset -.-> extérieur
 );
-
 
 ## Intérieur du dataset
 
@@ -21,9 +20,9 @@ mermaid( $dataset --> $variable );
 
 Certaines variables sont de type catégoriel, avec des valeurs possibles définies par une modalité. Une variable peut être liée à plusieurs modalités, et inversement. Chaque variable peut également avoir des données de fréquence associées.
 
-mermaid( 
-  $variable <--> $modality
-  $variable --> $freq
+mermaid(
+$variable <--> $modality
+$variable --> $freq
 );
 
 ### Fréquence
@@ -36,7 +35,6 @@ Une modalité regroupe un ensemble de valeurs possibles pour une ou plusieurs va
 
 mermaid( $modality --> $value );
 
-
 ## Extérieur du dataset
 
 ### Dossier
@@ -44,9 +42,9 @@ mermaid( $modality --> $value );
 Les datasets et les modalités peuvent être organisés dans des dossiers. Les dossiers peuvent s’imbriquer les uns dans les autres, formant une arborescence hiérarchique pour structurer vos données.
 
 mermaid(
-  $folder $recursive
-  $folder --> $dataset
-  $folder --> $modality
+$folder $recursive
+$folder --> $dataset
+$folder --> $modality
 );
 
 ### Institution
@@ -59,9 +57,9 @@ Un dossier ou un dataset peut être associé à deux types de rôles incarnés p
 Les institutions peuvent également s’organiser de manière hiérarchique, en étant contenues les unes dans les autres.
 
 mermaid(
-  $institution $recursive
-  $institution -- manager - owner --> $folder
-  $institution -- manager - owner --> $dataset
+$institution $recursive
+$institution -- manager - owner --> $folder
+$institution -- manager - owner --> $dataset
 );
 
 ### Mot clé
@@ -69,12 +67,12 @@ mermaid(
 Les mots clés servent à enrichir les institutions, dossiers, datasets ou variables avec des thématiques ou des catégories transversales. Un mot clé peut être lié à une multitude d’éléments et peut aussi être organisé en hiérarchie.
 
 mermaid(
-  $tag $recursive
-  $institution <--> $tag
-  $folder <--> $tag
-  $dataset <--> $tag
-  $variable <--> $tag
-  $tag <--> $doc
+$tag $recursive
+$institution <--> $tag
+$folder <--> $tag
+$dataset <--> $tag
+$variable <--> $tag
+$tag <--> $doc
 );
 
 ### Doc
@@ -82,10 +80,10 @@ mermaid(
 Certains concepts peuvent être associés à des documentations (docs) au format Markdown ou PDF. Ces docs permettent de décrire ou expliquer en détail des institutions, dossiers ou datasets. Il peuvent être liées à plusieurs concepts, et inversement.
 
 mermaid(
-  $institution <--> $doc
-  $folder <--> $doc
-  $tag <--> $doc
-  $dataset <--> $doc
+$institution <--> $doc
+$folder <--> $doc
+$tag <--> $doc
+$dataset <--> $doc
 );
 
 ## Vision d'ensemble
@@ -93,23 +91,23 @@ mermaid(
 Les concepts de datannur sont interconnectés, offrant une grande flexibilité pour organiser, enrichir et documenter vos données. Voici comment ils sont reliés :
 
 mermaid(
-  $folder $recursive
-  $institution $recursive
-  $tag $recursive
-  $institution -- manager - owner --> $dataset
-  $institution -- manager - owner --> $folder
-  $institution <--> $tag
-  $institution <--> $doc
-  $folder --> $dataset
-  $folder --> $modality
-  $folder <--> $tag
-  $folder <--> $doc
-  $tag <--> $doc
-  $dataset --> $variable
-  $dataset <--> $tag
-  $dataset <--> $doc
-  $variable <--> $modality
-  $variable <--> $tag
-  $variable --> $freq
-  $modality --> $value
+$folder $recursive
+$institution $recursive
+$tag $recursive
+$institution -- manager - owner --> $dataset
+$institution -- manager - owner --> $folder
+$institution <--> $tag
+$institution <--> $doc
+$folder --> $dataset
+$folder --> $modality
+$folder <--> $tag
+$folder <--> $doc
+$tag <--> $doc
+$dataset --> $variable
+$dataset <--> $tag
+$dataset <--> $doc
+$variable <--> $modality
+$variable <--> $tag
+$variable --> $freq
+$modality --> $value
 );

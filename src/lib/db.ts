@@ -59,7 +59,7 @@ function add_nb_recursive(entity, item, target) {
 function add_institution_nb(institution, entity) {
   institution[`nb_${entity}`] = get_institution_items(
     institution.id,
-    entity
+    entity,
   ).length
 }
 function add_nb_child(entity, item) {
@@ -216,7 +216,7 @@ export function get_recursive(entity, item_id, target) {
 export async function get_user_data(): Promise<UserData> {
   return new Promise(resolve => {
     db.browser.getAll('user_data/', items =>
-      resolve(items as unknown as UserData)
+      resolve(items as unknown as UserData),
     )
   })
 }
@@ -287,7 +287,7 @@ class Process {
       add_nb_recursive('institution', institution, 'folder')
       const datasets = get_recursive('institution', institution.id, 'dataset')
       const variables = datasets.flatMap(dataset =>
-        db.getAll('variable', { dataset })
+        db.getAll('variable', { dataset }),
       )
       institution.nb_dataset_recursive = datasets.length
       institution.nb_variable_recursive = variables.length
@@ -308,7 +308,7 @@ class Process {
       add_period(folder)
       const datasets = get_recursive('folder', folder.id, 'dataset')
       const variables = datasets.flatMap(dataset =>
-        db.getAll('variable', { dataset })
+        db.getAll('variable', { dataset }),
       )
       folder.nb_dataset_recursive = datasets.length
       folder.nb_variable_recursive = variables.length
@@ -408,11 +408,11 @@ class Process {
 
       if (freq_data.length > 0) {
         const freq_sorted = [...freq_data].sort(
-          (a, b) => (b.freq || 0) - (a.freq || 0)
+          (a, b) => (b.freq || 0) - (a.freq || 0),
         )
         const totalFreq = freq_data.reduce(
           (sum, item) => sum + (item.freq || 0),
-          0
+          0,
         )
         const maxFreq = freq_sorted[0].freq || 1
         variable.freq_preview = freq_sorted.slice(0, 10).map(item => ({

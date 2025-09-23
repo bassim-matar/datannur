@@ -1,4 +1,4 @@
-import db from "@db"
+import db from '@db'
 
 export default class Main_filter {
   static db_key
@@ -6,7 +6,7 @@ export default class Main_filter {
 
   static init() {
     return new Promise<void>(resolve => {
-      this.db_key = "user_data/filter_active"
+      this.db_key = 'user_data/filter_active'
       this.filters = []
       db.browser.get(this.db_key).then(filters => {
         if (filters) {
@@ -27,7 +27,7 @@ export default class Main_filter {
   static save(filters) {
     db.browser.set(
       this.db_key,
-      filters.map(({ id, is_active }) => ({ id, is_active }))
+      filters.map(({ id, is_active }) => ({ id, is_active })),
     )
   }
 }

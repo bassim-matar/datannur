@@ -33,7 +33,7 @@ function add_readable_values(values, type) {
 
 function get_values_sorted(
   values: Record<string, ValueEntry>,
-  sort_by = 'count'
+  sort_by = 'count',
 ) {
   const list = Object.entries(values)
   const sorted = list.map(([start, { count }]) => ({ start, count }))

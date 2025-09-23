@@ -1,4 +1,4 @@
-Cette page regroupe les options et les logs d'utilisation du catalogue. 
+Cette page regroupe les options et les logs d'utilisation du catalogue.
 
 Les logs, tout comme les favoris et les autres informations de l'utilisateur, sont enregistrés dans le navigateur web et reste totalement privés (ils ne sont techniquement accessibles qu'à l'utilisateur lui-même).
 

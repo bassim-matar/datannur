@@ -30,6 +30,6 @@ describe('Time', () => {
         const result = get_time_ago(date, true, true, dateNow)
         expect(result).toBe(expected)
       })
-    }
+    },
   )
 })

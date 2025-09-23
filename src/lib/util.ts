@@ -147,8 +147,8 @@ export async function worker(params, callback) {
       URL.createObjectURL(
         new Blob([`(${worker_function.toString()})(${callback.toString()})`], {
           type: 'text/javascript',
-        })
-      )
+        }),
+      ),
     )
     worker_api.postMessage(params)
     worker_api.onmessage = e => resolve(e.data)

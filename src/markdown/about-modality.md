@@ -3,7 +3,7 @@ Elle est contenu dans un dossier et peut être liée par une multitude de variab
 Une variable peut également être liée à plusieurs modalités (contenant des valeurs différentes).
 
 mermaid(
-  $folder --> $modality
-  $variable <--> $modality
-  $modality --> $value
+$folder --> $modality
+$variable <--> $modality
+$modality --> $value
 );

@@ -37,7 +37,7 @@ async function waitUntilReady(url: string, maxAttempts = 30, delayMs = 200) {
 async function generateSitemap(
   routes: string[],
   domain: string,
-  changeFrequency = 'monthly'
+  changeFrequency = 'monthly',
 ) {
   function calculatePriority(url: string) {
     if (url === '') return 1.0
@@ -84,7 +84,7 @@ async function getEntitiesRoutes(dbMetaPath: string) {
 async function getDbMetaPath(outputDb: string) {
   const items = await fs.promises.readdir(outputDb, { withFileTypes: true })
   const files = items.filter(
-    item => item.isFile() && item.name.endsWith('.json.js')
+    item => item.isFile() && item.name.endsWith('.json.js'),
   ).length
   if (files > 0) return outputDb
   const folders = items.filter(item => item.isDirectory())
@@ -95,7 +95,7 @@ async function getDbMetaPath(outputDb: string) {
 async function loadConfig(): Promise<Config | null> {
   try {
     const rawConfig = JSON.parse(
-      await fs.promises.readFile(configFile, 'utf-8')
+      await fs.promises.readFile(configFile, 'utf-8'),
     )
     return rawConfig as Config
   } catch (error) {
@@ -114,7 +114,7 @@ async function createIndexFile() {
     if (config.indexSeo) {
       index = index.replace(
         `<meta name="robots" content="noindex"`,
-        `<meta name="robots" `
+        `<meta name="robots" `,
       )
     }
     await fs.promises.writeFile(entryPoint, index)
@@ -192,16 +192,15 @@ async function capturePage(page: Page, route: string, level: number) {
   try {
     await page.waitForSelector(
       `#page_loaded_route_${route.replaceAll('/', '___')}`,
-      { timeout: 10000, state: 'attached' }
+      { timeout: 10000, state: 'attached' },
     )
 
     const content = await page.content()
     writeFileSync(`./${config.outDir}/${outputPath}`, content)
     console.log(`create page: ${route || 'index'}`)
   } catch (error) {
-    let errorMessage = ((
-      error as Error
-    ).message = `Failed to capture page : ${outputPath}`)
+    let errorMessage = ((error as Error).message =
+      `Failed to capture page : ${outputPath}`)
     if (level > 1) errorMessage += ` (retry ${level})`
     console.error(errorMessage)
   }
@@ -241,7 +240,7 @@ async function generateStaticSite(routes: string[], startTime: Date) {
     await deleteIndexFile()
     const timeTaken = ((+new Date() - +startTime) / 1000).toFixed(2)
     console.log(
-      `Static site created ${routes.length} pages in ${timeTaken} seconds`
+      `Static site created ${routes.length} pages in ${timeTaken} seconds`,
     )
 
     if (config.indexSeo) {

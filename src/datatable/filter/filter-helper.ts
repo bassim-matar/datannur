@@ -47,7 +47,7 @@ export default class Filter_helper {
         }
       } else {
         unique_values = unique_values.map(val =>
-          [null, undefined].includes(val) ? '' : val
+          [null, undefined].includes(val) ? '' : val,
         )
         unique_values.sort().each(function (val, j) {
           if (val === '') {
@@ -62,7 +62,7 @@ export default class Filter_helper {
         })
       }
       const select = jQuery(
-        `<select required name="${id}" id="${id}">${options}</select>`
+        `<select required name="${id}" id="${id}">${options}</select>`,
       )
       filter_container.html('')
       const select_wrap = jQuery('<div class="select"></div>')
@@ -180,7 +180,7 @@ export default class Filter_helper {
         return this.clean_string(value) === this.clean_string(search_value)
       } else if (search.startsWith('!')) {
         return !this.clean_string(value).includes(
-          this.clean_string(search_value)
+          this.clean_string(search_value),
         )
       }
       return true
@@ -207,7 +207,7 @@ export default class Filter_helper {
   }
   get_history() {
     const json_str = localStorage.getItem(
-      'DataTables_history_search_' + this.table_id
+      'DataTables_history_search_' + this.table_id,
     )
     if (!json_str) return null
     return JSON.parse(json_str)
@@ -231,7 +231,7 @@ export default class Filter_helper {
     col_data.special_search = value
     localStorage.setItem(
       'DataTables_history_search_' + this.table_id,
-      JSON.stringify(this.history_search)
+      JSON.stringify(this.history_search),
     )
   }
   update_filter_url(col_num, value) {

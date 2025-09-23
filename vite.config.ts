@@ -41,7 +41,7 @@ async function getAliases(from: string): Promise<Record<string, string>> {
     Object.entries(paths).map(([find, [replacement]]) => [
       find.replace('/*', ''),
       path.resolve(replacement.replace('/*', '')),
-    ])
+    ]),
   )
 }
 
@@ -67,7 +67,7 @@ function htmlReplace(replacements: [string, string][]) {
 
 function copyFilesToOutDir(files: string[]) {
   return Promise.all(
-    files.map(file => fs.copyFile(file, `${config.outDir}/${file}`))
+    files.map(file => fs.copyFile(file, `${config.outDir}/${file}`)),
   )
 }
 

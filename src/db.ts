@@ -43,15 +43,15 @@ type ExtendedJsonjsdb = Omit<Jsonjsdb, 'get' | 'getAll' | 'foreach'> & {
   search: (searchTerm: string) => Promise<SearchResult[]>
   foreach<K extends EntityName>(
     table: K,
-    callback: (row: EntityTypeMap[K]) => void
+    callback: (row: EntityTypeMap[K]) => void,
   ): void
   get<K extends keyof EntityTypeMap>(
     entity: K,
-    id: string | number
+    id: string | number,
   ): EntityTypeMap[K] | undefined
   getAll<K extends EntityName>(
     entity: K,
-    filter?: Record<string, any>
+    filter?: Record<string, any>,
   ): EntityTypeMap[K][]
   tables: {
     config?: Config[]

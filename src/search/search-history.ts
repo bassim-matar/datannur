@@ -20,7 +20,7 @@ export default class SearchHistory {
     this.search_history = this.search_history
       .filter(
         search_item =>
-          search_item.entity !== entity || search_item.entity_id !== entity_id
+          search_item.entity !== entity || search_item.entity_id !== entity_id,
       )
       .map(search_item => {
         search_item.id = search_entity_id
@@ -51,7 +51,7 @@ export default class SearchHistory {
   static remove(entity, entity_id) {
     this.search_history = this.search_history.filter(
       search_item =>
-        search_item.entity !== entity || search_item.entity_id !== entity_id
+        search_item.entity !== entity || search_item.entity_id !== entity_id,
     )
     this.save()
     this.call_on_change()

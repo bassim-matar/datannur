@@ -58,7 +58,7 @@ describe('UI tests', () => {
     it(`should display the main section for page: ${pageName}`, async () => {
       await page.goto(`${baseUrl}#/${pageName}`)
       const section = await page.waitForSelector(
-        'div#wrapper > section.section'
+        'div#wrapper > section.section',
       )
       expect(section).toBeTruthy()
     })

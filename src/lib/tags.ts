@@ -31,7 +31,7 @@ export default class Tags {
       tag.nb_dataset = tags_by_id[tag.id].nb_dataset
     }
     tags = tags.filter(
-      tag => tag.nb_institution > 0 || tag.nb_folder > 0 || tag.nb_dataset > 0
+      tag => tag.nb_institution > 0 || tag.nb_folder > 0 || tag.nb_dataset > 0,
     )
     return tags
   }
