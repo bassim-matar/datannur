@@ -53,7 +53,6 @@
   Datatables_timer.start()
   Datatables_loading.start()
 
-  // @ts-ignore - DataTable.Buttons exists after importing buttons extension
   DataTable.Buttons.jszip(JSZip)
 
   let datatable = null
@@ -222,7 +221,7 @@
         <table class="_datatables table is-striped dataTable" class:short_table>
           <thead>
             <tr>
-              {#each columns_copy as column, i}
+              {#each columns_copy as column, i (`${column.data}/${column.title}`)}
                 <th
                   class="sorting"
                   class:sorting_asc={i === 0}
@@ -230,6 +229,7 @@
                   style="min-width: {column.loading_width}px; 
                     width: {column.loading_max_width}px;"
                 >
+                  <!-- eslint-disable svelte/no-at-html-tags -->
                   {@html column.title}
                   <span class="dt-column-order"></span>
                 </th>
@@ -242,9 +242,9 @@
             </thead>
           {/if}
           <tbody>
-            {#each Array(nb_row_loading) as _, i}
+            {#each Array(nb_row_loading) as _, i (i)}
               <tr>
-                {#each columns_copy as column, j}
+                {#each columns_copy as column, j (`${column.data}/${column.title}`)}
                   <td class:first_col={j === 0} class:first_row={i === 0}>
                     {#if column.data === '_row_num'}
                       {i + 1}
@@ -278,7 +278,7 @@
       >
         <thead>
           <tr>
-            {#each columns_copy as column, i}
+            {#each columns_copy as column, i (`${column.data}/${column.title}`)}
               <th
                 title={column.tooltip}
                 class:first_col={i === 0}

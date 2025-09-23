@@ -4,12 +4,12 @@ export default class Histogram {
       value =>
         value !== null &&
         value !== undefined &&
-        typeof value !== "string" &&
-        value !== 0
+        typeof value !== 'string' &&
+        value !== 0,
     )
 
     const ranges = [
-      { start: "__empty__", end: "__empty__" },
+      { start: '__empty__', end: '__empty__' },
       { start: 0, end: 0 },
     ]
 
@@ -79,10 +79,10 @@ export default class Histogram {
             foundMatch = true
             break
           }
-        } else if (value === null || value === undefined || value === "") {
+        } else if (value === null || value === undefined || value === '') {
           if (
-            histogramObj.start === "__empty__" &&
-            histogramObj.end === "__empty__"
+            histogramObj.start === '__empty__' &&
+            histogramObj.end === '__empty__'
           ) {
             histogramObj.count++
             foundMatch = true
@@ -102,8 +102,8 @@ export default class Histogram {
 
     histogram = histogram.filter(
       histogramObj =>
-        (histogramObj.start !== "__empty__" && histogramObj.start !== 0) ||
-        histogramObj.count > 0
+        (histogramObj.start !== '__empty__' && histogramObj.start !== 0) ||
+        histogramObj.count > 0,
     )
 
     return histogram

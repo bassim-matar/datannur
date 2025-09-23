@@ -1,13 +1,13 @@
 <script lang="ts">
-  import MiniMasonry from "minimasonry"
-  import { onMount, onDestroy } from "svelte"
-  import Icon from "@layout/Icon.svelte"
-  import { document_width, get_color } from "@lib/util"
-  import { entity_names } from "@lib/constant"
-  import { all_tabs, on_page_homepage } from "@lib/store"
-  import attributs from "./attributs"
-  import { add_values } from "./stat"
-  import StatBox from "./StatBox.svelte"
+  import MiniMasonry from 'minimasonry'
+  import { onMount, onDestroy } from 'svelte'
+  import Icon from '@layout/Icon.svelte'
+  import { document_width, get_color } from '@lib/util'
+  import { entity_names } from '@lib/constant'
+  import { all_tabs, on_page_homepage } from '@lib/store'
+  import attributs from './attributs'
+  import { add_values } from './stat'
+  import StatBox from './StatBox.svelte'
 
   let { stat } = $props()
 
@@ -19,7 +19,7 @@
 
   onMount(() => {
     masonry = new MiniMasonry({
-      container: ".all_stat_container",
+      container: '.all_stat_container',
       baseWidth: Math.min(document_width - 20, 300),
       gutter: 20,
       ultimateGutter: 20,
@@ -70,7 +70,7 @@
   const entities = stat.filter(x => x.items?.length > 0)
   entities.forEach(entity => {
     visible[entity.entity] = false
-    entity.with_html = entity.entity === "log"
+    entity.with_html = entity.entity === 'log'
     entity.attributs = add_values(entity.items, attributs[entity.entity])
   })
 
@@ -90,17 +90,17 @@
       <Icon type="entity" />
       <span class="btn_select_entity_name">Tout</span>
     </button>
-    {#each entities as { entity }}
+    {#each entities as entity (entity.entity)}
       <button
-        class="button shadow_{entity}"
-        class:active={visible[entity]}
-        class:box_shadow_color={visible[entity]}
-        style="color: {visible[entity] ? get_color(entity) : ''}"
-        onclick={() => show(entity)}
+        class="button shadow_{entity.entity}"
+        class:active={visible[entity.entity]}
+        class:box_shadow_color={visible[entity.entity]}
+        style="color: {visible[entity.entity] ? get_color(entity.entity) : ''}"
+        onclick={() => show(entity.entity)}
       >
-        <Icon type={entity} />
+        <Icon type={entity.entity} />
         <span class="btn_select_entity_name">
-          {entity_names[entity]}
+          {entity_names[entity.entity]}
         </span>
       </button>
     {/each}
@@ -110,10 +110,14 @@
 <div class="main_wrapper" class:homepage={$on_page_homepage}>
   <div class="all_stat_container_wrappper" class:no_btns class:has_btns>
     <div class="all_stat_container" class:loading>
-      {#each entities as { entity, attributs, with_html }}
-        {#if visible[entity] || show_all}
-          {#each attributs as attribut}
-            <StatBox {entity} {attribut} {with_html} />
+      {#each entities as entity (entity.entity)}
+        {#if visible[entity.entity] || show_all}
+          {#each entity.attributs as attribut (attribut.key)}
+            <StatBox
+              entity={entity.entity}
+              {attribut}
+              with_html={entity.with_html}
+            />
           {/each}
         {/if}
       {/each}
@@ -122,7 +126,7 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .main_wrapper.homepage .all_stat_container_wrappper {
     max-height: max(calc(100vh - 270px), 80px);

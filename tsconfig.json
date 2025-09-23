@@ -27,7 +27,8 @@
       "@page/*": ["src/page/*"],
       "@search/*": ["src/search/*"],
       "@stat/*": ["src/stat/*"],
-      "@tab/*": ["src/tab/*"]
+      "@tab/*": ["src/tab/*"],
+      "@type": ["src/type/index.ts"]
     }
   },
   "exclude": ["app", "node_modules"]

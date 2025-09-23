@@ -85,7 +85,8 @@
     })
   }
 
-  is_spa_homepage() ? router.resolve('/') : router.resolve()
+  if (is_spa_homepage()) router.resolve('/')
+  else router.resolve()
 
   console.log(
     'init global timer',

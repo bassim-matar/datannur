@@ -23,7 +23,6 @@ function add_entities_used() {
     'variable',
     'modality',
     'filter',
-    'info',
   ]) {
     db.use[entity] = is_db_using(entity)
   }
@@ -60,7 +59,7 @@ function add_nb_recursive(entity, item, target) {
 function add_institution_nb(institution, entity) {
   institution[`nb_${entity}`] = get_institution_items(
     institution.id,
-    entity
+    entity,
   ).length
 }
 function add_nb_child(entity, item) {
@@ -75,7 +74,7 @@ function add_name(item, entity, alias = '') {
   const item_id = item[`${alias}_id`]
   let item_name = ''
   if (item_id !== null && item_id !== undefined)
-    item_name = db.get(entity, item_id)?.name
+    item_name = db.get(entity, item_id)?.name as string
   item[`${alias}_name`] = item_name || ''
 }
 function add_variable_num(dataset, entity, variable_entity) {
@@ -217,7 +216,7 @@ export function get_recursive(entity, item_id, target) {
 export async function get_user_data(): Promise<UserData> {
   return new Promise(resolve => {
     db.browser.getAll('user_data/', items =>
-      resolve(items as unknown as UserData)
+      resolve(items as unknown as UserData),
     )
   })
 }
@@ -288,7 +287,7 @@ class Process {
       add_nb_recursive('institution', institution, 'folder')
       const datasets = get_recursive('institution', institution.id, 'dataset')
       const variables = datasets.flatMap(dataset =>
-        db.getAll('variable', { dataset })
+        db.getAll('variable', { dataset }),
       )
       institution.nb_dataset_recursive = datasets.length
       institution.nb_variable_recursive = variables.length
@@ -309,7 +308,7 @@ class Process {
       add_period(folder)
       const datasets = get_recursive('folder', folder.id, 'dataset')
       const variables = datasets.flatMap(dataset =>
-        db.getAll('variable', { dataset })
+        db.getAll('variable', { dataset }),
       )
       folder.nb_dataset_recursive = datasets.length
       folder.nb_variable_recursive = variables.length
@@ -404,20 +403,18 @@ class Process {
       add_source_var(variable)
       if (variable.key) variable.key = 'oui'
 
-      // Vérifier si cette variable a des données de fréquence
       const freq_data = db.getAll('freq', { variable })
       variable.has_freq = freq_data.length > 0
 
-      // Ajouter un aperçu des fréquences (max 10, triées par fréquence décroissante)
       if (freq_data.length > 0) {
         const freq_sorted = [...freq_data].sort(
-          (a, b) => (b.freq || 0) - (a.freq || 0)
+          (a, b) => (b.freq || 0) - (a.freq || 0),
         )
         const totalFreq = freq_data.reduce(
           (sum, item) => sum + (item.freq || 0),
-          0
+          0,
         )
-        const maxFreq = freq_sorted[0].freq || 1 // Fréquence maximale pour le background
+        const maxFreq = freq_sorted[0].freq || 1
         variable.freq_preview = freq_sorted.slice(0, 10).map(item => ({
           ...item,
           total: totalFreq,
@@ -469,7 +466,7 @@ class Process {
       metaVariable.dataset_name = metaDataset.name
       metaVariable.nb_row = metaDataset.nb_row
       metaVariable.metaFolder_id = metaDataset.metaFolder_id
-      metaVariable.folder_name = metaDataset.metaFolder_id
+      metaVariable.folder_name = metaDataset.metaFolder_id as string
       metaVariable.meta_localisation = ''
       if (metaVariable.is_in_meta && !metaVariable.is_in_data)
         metaVariable.meta_localisation = 'schéma'
@@ -482,7 +479,7 @@ class Process {
       add_entity(metaDataset, 'metaDataset')
       metaDataset.is_meta = true
       metaDataset.folder = { id: metaDataset.metaFolder_id }
-      metaDataset.folder_name = metaDataset.metaFolder_id
+      metaDataset.folder_name = metaDataset.metaFolder_id as string
       add_variable_num(metaDataset, 'metaDataset', 'metaVariable')
       const metaVariables = db.getAll('metaVariable', { metaDataset })
       metaDataset.nb_variable = metaVariables.length
@@ -513,7 +510,7 @@ class Process {
 }
 
 function add_doc_recursive() {
-  for (const entity of ['institution', 'folder', 'dataset', 'tag']) {
+  for (const entity of ['institution', 'folder', 'dataset', 'tag'] as const) {
     db.foreach(entity, item => {
       item.docs_recursive = []
       let docs = []

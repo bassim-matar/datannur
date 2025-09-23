@@ -1,17 +1,18 @@
 <script lang="ts">
-  import markdown_render from "@lib/markdown"
+  import markdown_render from '@lib/markdown'
 
-  let { content, mode = "classic" } = $props()
+  let { content, mode = 'classic' } = $props()
 
-  let md_content = $derived(content ? markdown_render(content) : "")
+  let md_content = $derived(content ? markdown_render(content) : '')
 </script>
 
-<div class="main content" class:classic={mode === "classic"}>
+<div class="main content" class:classic={mode === 'classic'}>
+  <!-- eslint-disable svelte/no-at-html-tags -->
   {@html md_content}
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   div.main {
     padding: 10px;

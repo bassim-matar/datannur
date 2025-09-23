@@ -6,9 +6,9 @@
   import { ensure_mermaid_loaded } from '@lib/mermaid'
   import Loading from '@frame/Loading.svelte'
 
-  let svg_diagramm = $state(false)
+  let svg_diagramm = $state(null)
 
-  const schema = { ...db.tables.__schema__ }
+  const schema = { ...db.tables.__schema__ } as any
 
   delete schema.one_to_one
 
@@ -114,6 +114,7 @@
   <Loading type="tab_body" color_entity="diagram" />
 {:else}
   <div class="tab_inner_tab">
+    <!-- eslint-disable svelte/no-at-html-tags -->
     {@html svg_diagramm}
   </div>
 {/if}

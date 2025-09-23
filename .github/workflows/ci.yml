@@ -41,8 +41,23 @@ jobs:
       - name: Install Playwright Chromium
         run: npx playwright install chromium
 
+      - name: Build
+        run: npm run build
+
+      - name: Prettier Format Check
+        run: npm run format:check
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: TypeScript
+        run: npm run type-check
+
+      - name: Svelte
+        run: npm run svelte-check
+
       - name: Tests (unit + UI)
-        run: npm test
+        run: npm run test:no-build
 
       - name: Compute artifact name
         if: failure()

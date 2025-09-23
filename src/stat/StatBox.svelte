@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import { get_color } from "@lib/util"
-  import { entity_names } from "@lib/constant"
-  import StatValue from "./StatValue.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import { get_color } from '@lib/util'
+  import { entity_names } from '@lib/constant'
+  import StatValue from './StatValue.svelte'
 
   let { entity, attribut, with_html = false, from_popup = false } = $props()
 
@@ -24,7 +24,7 @@
   </h2>
   <div class="values_wrapper">
     <div class="values">
-      {#each attribut.values as value}
+      {#each attribut.values as value, i (i)}
         <StatValue {value} {total_value} {main_color} {with_html} />
       {/each}
     </div>
@@ -32,8 +32,8 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
-  @use "../style/icon.scss" as *;
+  @use 'main.scss' as *;
+  @use '../style/icon.scss' as *;
 
   .stat_box {
     :global {

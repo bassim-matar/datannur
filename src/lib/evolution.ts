@@ -1,4 +1,5 @@
 import db from '@db'
+import type { EntityTypeMap } from '@type'
 import { entity_names, evolution_types, parent_entities } from '@lib/constant'
 import {
   date_to_timestamp,
@@ -74,7 +75,7 @@ function add_history(evo_deleted) {
     const parent_item = get_item(
       evo.parent_entity,
       evo.parent_entity_id,
-      evo_deleted
+      evo_deleted,
     )
     evo.parent_name = parent_item?.name
     evo.parent_deleted = parent_item?._deleted
@@ -108,17 +109,17 @@ function add_validity(validities, type, entity, entity_data, evo_deleted) {
   const parent_item = get_item(
     parent_entity,
     entity_data[`${parent_entities[entity]}_id`],
-    evo_deleted
+    evo_deleted,
   )
 
   const timestamp = date_to_timestamp(
     entity_data[type],
-    type === 'start_date' ? 'start' : 'end'
+    type === 'start_date' ? 'start' : 'end',
   )
 
   if (!timestamp) {
     console.error(
-      `Invalid date format for ${type} in ${entity} with id ${entity_data.id}, value = ${entity_data[type]}`
+      `Invalid date format for ${type} in ${entity} with id ${entity_data.id}, value = ${entity_data[type]}`,
     )
     return
   }
@@ -156,7 +157,7 @@ function add_validity(validities, type, entity, entity_data, evo_deleted) {
 
 function add_validities(evo_deleted) {
   const validities = []
-  const entities = Object.keys(parent_entities)
+  const entities = Object.keys(parent_entities) as (keyof EntityTypeMap)[]
   for (const entity of entities) {
     if (
       db.tables[entity]?.length > 0 &&
@@ -166,34 +167,34 @@ function add_validities(evo_deleted) {
         Object.keys(db.tables[entity][0]).includes('next_update_date'))
     ) {
       db.foreach(entity, entity_data => {
-        if (entity_data.start_date) {
+        if ('start_date' in entity_data && entity_data.start_date) {
           add_validity(
             validities,
             'start_date',
             entity,
             entity_data,
-            evo_deleted
+            evo_deleted,
           )
         }
-        if (entity_data.end_date) {
+        if ('end_date' in entity_data && entity_data.end_date) {
           add_validity(validities, 'end_date', entity, entity_data, evo_deleted)
         }
-        if (entity_data.last_update_date) {
+        if ('last_update_date' in entity_data && entity_data.last_update_date) {
           add_validity(
             validities,
             'last_update_date',
             entity,
             entity_data,
-            evo_deleted
+            evo_deleted,
           )
         }
-        if (entity_data.next_update_date) {
+        if ('next_update_date' in entity_data && entity_data.next_update_date) {
           add_validity(
             validities,
             'next_update_date',
             entity,
             entity_data,
-            evo_deleted
+            evo_deleted,
           )
         }
       })
@@ -234,8 +235,8 @@ function output_diff_number(oldVal, newVal) {
 
   return `${oldVal.toLocaleString()} ${arrow_right} ${newVal.toLocaleString()} 
       <br><span class="${diffClass}">${
-    diff > 0 ? '+' : ''
-  }${diff.toLocaleString()} | 
+        diff > 0 ? '+' : ''
+      }${diff.toLocaleString()} | 
       ${diff > 0 ? '+' : ''}${percentageChange}%</span>
   `
 }

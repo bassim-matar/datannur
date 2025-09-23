@@ -10,10 +10,6 @@
 
   let dataset_variables = db.getAll('variable', { dataset })
   dataset.nb_variable = dataset_variables.length
-  if (dataset.folder_id) dataset.folder = db.get('folder', dataset.folder_id)
-  if (dataset.owner_id) dataset.owner = db.get('institution', dataset.owner_id)
-  if (dataset.manager_id)
-    dataset.manager = db.get('institution', dataset.manager_id)
 
   let modalities = []
   for (const variable of dataset_variables) {

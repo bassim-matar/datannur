@@ -51,7 +51,7 @@
   with_variables = remove_duplicate_by_id(with_variables)
   with_docs = remove_duplicate_by_id(with_docs)
 
-  function get_opposite(entity, with_tag_items, self_id = false) {
+  function get_opposite(entity, with_tag_items, self_id = null) {
     if (with_tag_items.length === 0) return []
     const all = []
     const ids = []

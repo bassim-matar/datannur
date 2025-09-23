@@ -1,6 +1,6 @@
 <script lang="ts">
-  import markdown_render from "@lib/markdown"
-  import Icon from "@layout/Icon.svelte"
+  import markdown_render from '@lib/markdown'
+  import Icon from '@layout/Icon.svelte'
 
   let { description, inside_table = false } = $props()
 
@@ -20,6 +20,7 @@
         </div>
       </td>
       <td>
+        <!-- eslint-disable svelte/no-at-html-tags -->
         <div class="content inside_table">{@html description_clean}</div>
       </td>
     </tr>
@@ -28,6 +29,7 @@
       <div style="font-weight: bold;">
         <Icon type="description" /> Description
       </div>
+      <!-- eslint-disable svelte/no-at-html-tags -->
       <div class="content">{@html description_clean}</div>
     </div>
   {/if}

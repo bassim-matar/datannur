@@ -1,21 +1,22 @@
 <script lang="ts">
-  import { onMount } from "svelte"
-  import db from "@db"
-  import MdContent from "@layout/MdContent.svelte"
-  import Loading from "@frame/Loading.svelte"
+  import { onMount } from 'svelte'
+  import db from '@db'
+  import MdContent from '@layout/MdContent.svelte'
+  import Loading from '@frame/Loading.svelte'
 
-  let { doc_id, mode = "classic" } = $props()
+  let { doc_id, mode = 'classic' } = $props()
 
   let content = $state()
   let loading = $state(true)
 
   onMount(async () => {
     try {
-      const items = await db.load(`md_doc`, doc_id)
+      const items: any[] = await db.load(`md_doc`, doc_id)
       if (items && items.length > 0) {
         content = items[0].content
       }
-    } catch (error) {
+    } catch {
+      // ignore
     } finally {
       loading = false
     }

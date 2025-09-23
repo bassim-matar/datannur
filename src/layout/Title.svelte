@@ -1,35 +1,36 @@
 <script lang="ts">
-  import fitty from "fitty"
-  import db from "@db"
-  import { entity_names } from "@lib/constant"
-  import Head from "@frame/Head.svelte"
-  import Icon from "@layout/Icon.svelte"
-  import Favorite from "@favorite/Favorite.svelte"
-  import { onMount } from "svelte"
-  import type { MouseEventHandler } from "svelte/elements"
+  import fitty from 'fitty'
+  import db from '@db'
+  import { nb_favorite } from '@lib/store'
+  import { entity_names } from '@lib/constant'
+  import Head from '@frame/Head.svelte'
+  import Icon from '@layout/Icon.svelte'
+  import Favorite from '@favorite/Favorite.svelte'
+  import { onMount } from 'svelte'
+  import type { MouseEventHandler } from 'svelte/elements'
 
   let {
     type,
     name,
-    mode = "normal",
+    mode = 'normal',
     id = null,
-    info = "",
+    info = '',
     toggle_info = (() => {}) as MouseEventHandler<HTMLButtonElement>,
-    name_sup = "",
+    isFavoritePage = false,
   } = $props()
 
   let title = $state(name)
   let is_favorite = $state(false)
 
-  let separator = " | "
+  let separator = ' | '
   const entity_name = entity_names[type]
 
-  if (mode !== "main_title") {
+  if (mode !== 'main_title') {
     title = entity_name + separator + name
   }
 
   if (id) {
-    const item = db.get(type, id)
+    const item: any = db.get(type, id)
     is_favorite = item.is_favorite
   }
 
@@ -37,7 +38,7 @@
   let not_item_page = !item_page
 
   onMount(() => {
-    fitty(".fitty", {
+    fitty('.fitty', {
       minSize: 14,
       maxSize: 32,
     })
@@ -50,7 +51,7 @@
   <div>
     <h1 class="title" class:item_page class:not_item_page>
       <Icon {type} mode="main_title" />
-      {#if mode !== "main_title"}
+      {#if mode !== 'main_title'}
         <span>{entity_name}</span>
         {#if info}
           <button class="title_info" onclick={toggle_info}>{info}</button>
@@ -61,11 +62,12 @@
           <span class="separator">{separator}</span>
         {/if}
       {/if}
-      {#if name_sup}
-        <span class="title_name fitty">{name} {@html name_sup}</span>
-      {:else}
-        <span class="title_name fitty">{name}</span>
-      {/if}
+      <span class="title_name fitty"
+        >{name}
+        {#if isFavoritePage}
+          <span class="num_style big">{$nb_favorite}</span>
+        {/if}
+      </span>
     </h1>
   </div>
 </div>

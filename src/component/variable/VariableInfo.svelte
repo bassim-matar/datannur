@@ -121,7 +121,7 @@
       <td>
         <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
           <ul>
-            {#each variable.modalities as modality}
+            {#each variable.modalities as modality (modality.id)}
               <li>
                 <Link href="modality/{modality.id}" entity="modality">
                   {modality.name}

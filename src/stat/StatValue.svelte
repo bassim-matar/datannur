@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { get_percent } from "@lib/util"
-  import { extendable } from "@lib/extendable"
-  import { locale } from "@lib/constant"
+  import { get_percent } from '@lib/util'
+  import { extendable } from '@lib/extendable'
+  import { locale } from '@lib/constant'
 
   let { value, total_value, main_color, with_html = false } = $props()
 
@@ -17,6 +17,7 @@
       onmouseleave={extendable.close_one_line}
     >
       {#if with_html}
+        <!-- eslint-disable svelte/no-at-html-tags -->
         {@html value.readable}
       {:else}
         {value.readable}
@@ -32,7 +33,7 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .value_box {
     position: relative;

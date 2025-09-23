@@ -1,8 +1,8 @@
 <script lang="ts">
-  import db from "@db"
-  import { on_page_homepage } from "@lib/store"
-  import { debounce } from "@lib/util"
-  import SearchBarResultRow from "./SearchBarResultRow.svelte"
+  import db from '@db'
+  import { on_page_homepage } from '@lib/store'
+  import { debounce } from '@lib/util'
+  import SearchBarResultRow from './SearchBarResultRow.svelte'
 
   let {
     is_open,
@@ -17,7 +17,7 @@
   let height = $state(0)
   let has_scroll_bar = $state(false)
 
-  const plural = $derived(nb_result > 1 ? "s" : "")
+  const plural = $derived(nb_result > 1 ? 's' : '')
 
   function update_height() {
     if (!table_wrapper) return
@@ -43,8 +43,8 @@
 
   $effect(() => {
     const handle_resize = () => table_wrapper && debounced_update_height()
-    window.addEventListener("resize", handle_resize)
-    return () => window.removeEventListener("resize", handle_resize)
+    window.addEventListener('resize', handle_resize)
+    return () => window.removeEventListener('resize', handle_resize)
   })
 </script>
 
@@ -61,7 +61,7 @@
       {:then}
         <table class="table is-striped">
           <tbody>
-            {#if search_value === "" && nb_result > 0}
+            {#if search_value === '' && nb_result > 0}
               <tr>
                 <td colspan="3">
                   <div class="nb_result">
@@ -71,7 +71,7 @@
               </tr>
             {/if}
 
-            {#if search_value !== ""}
+            {#if search_value !== ''}
               <tr>
                 <td colspan="3">
                   <div class="nb_result">
@@ -80,7 +80,7 @@
                 </td>
               </tr>
             {/if}
-            {#each all_search as item}
+            {#each all_search as item (`${item.entity}/${item.id}`)}
               <SearchBarResultRow
                 {item}
                 {search_value}
@@ -96,7 +96,7 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   #search_bar_result_outer {
     position: relative;

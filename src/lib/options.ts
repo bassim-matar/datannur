@@ -1,15 +1,17 @@
-import db from "@db"
+import db from '@db'
+
+type Option = { id: string; value: any }
 
 export default class Options {
   static loaded: Promise<void>
   static db_key: string
-  static options: Array<{id: string, value: any}>
+  static options: Option[]
 
   static init() {
     return new Promise<void>(resolve => {
-      this.db_key = "user_data/option"
+      this.db_key = 'user_data/option'
       this.options = []
-      db.browser.get(this.db_key).then(options => {
+      db.browser.get(this.db_key).then((options: Option[]) => {
         if (options) {
           this.options = options
         }

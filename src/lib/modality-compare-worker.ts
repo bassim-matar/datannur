@@ -1,5 +1,4 @@
 export function modality_compare_worker(param) {
-
   function get_similitudes(modalities_to_compare, limit = null) {
     const similitutes = []
     for (const modality_1 of modalities_to_compare) {
@@ -44,7 +43,7 @@ export function modality_compare_worker(param) {
       const value = modality.values[i]
       let value_clean = value.value.toString().toLowerCase()
       if (value.description !== null && value.description !== undefined) {
-        value_clean += "___" + value.description.toString().toLowerCase()
+        value_clean += '___' + value.description.toString().toLowerCase()
       }
       values_clean.push(value_clean)
     }

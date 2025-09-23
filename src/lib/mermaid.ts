@@ -35,7 +35,7 @@ function mermaid_add_entities(code) {
     entity_names['manager'] + ' - ' + entity_names['owner']
   code = code.replaceAll(
     `-- manager - owner -->`,
-    `-- ${manager_owner_clean} -->`
+    `-- ${manager_owner_clean} -->`,
   )
 
   for (const [entity, icon_name] of Object.entries(entity_to_icon)) {

@@ -1,4 +1,27 @@
 import Jsonjsdb from 'jsonjsdb'
+import type {
+  Evolution,
+  Dataset,
+  Variable,
+  Modality,
+  Value,
+  Freq,
+  Folder,
+  Institution,
+  Tag,
+  Doc,
+  Config,
+  MetaVariable,
+  MetaDataset,
+  MetaFolder,
+  Favorite,
+  FilterActive,
+  Log,
+  Option,
+  SearchHistory,
+  EntityTypeMap,
+  EntityName,
+} from '@type'
 
 interface SearchResult {
   id: string | number
@@ -13,11 +36,45 @@ interface SearchResult {
   _entity_clean: string
 }
 
-interface ExtendedJsonjsdb extends Jsonjsdb {
+type ExtendedJsonjsdb = Omit<Jsonjsdb, 'get' | 'getAll' | 'foreach'> & {
   db: Record<string, unknown>
   loaded: Promise<void>
   preview: Record<string, unknown>
   search: (searchTerm: string) => Promise<SearchResult[]>
+  foreach<K extends EntityName>(
+    table: K,
+    callback: (row: EntityTypeMap[K]) => void,
+  ): void
+  get<K extends keyof EntityTypeMap>(
+    entity: K,
+    id: string | number,
+  ): EntityTypeMap[K] | undefined
+  getAll<K extends EntityName>(
+    entity: K,
+    filter?: Record<string, any>,
+  ): EntityTypeMap[K][]
+  tables: {
+    config?: Config[]
+    dataset?: Dataset[]
+    variable?: Variable[]
+    modality?: Modality[]
+    value?: Value[]
+    freq?: Freq[]
+    folder?: Folder[]
+    institution?: Institution[]
+    tag?: Tag[]
+    doc?: Doc[]
+    evolution?: Evolution[]
+    metaVariable?: MetaVariable[]
+    metaDataset?: MetaDataset[]
+    metaFolder?: MetaFolder[]
+    favorite?: Favorite[]
+    filter_active?: FilterActive[]
+    log?: Log[]
+    option?: Option[]
+    search_history?: SearchHistory[]
+    [key: string]: any[] | undefined
+  }
   use: {
     institution?: boolean
     folder?: boolean
@@ -27,7 +84,6 @@ interface ExtendedJsonjsdb extends Jsonjsdb {
     variable?: boolean
     modality?: boolean
     filter?: boolean
-    info?: boolean
     owner?: boolean
     manager?: boolean
     tag_recursive?: boolean
@@ -35,6 +91,6 @@ interface ExtendedJsonjsdb extends Jsonjsdb {
   }
 }
 
-const db = new Jsonjsdb('#jsonjsdb-config') as ExtendedJsonjsdb
+const db = new Jsonjsdb('#jsonjsdb-config') as unknown as ExtendedJsonjsdb
 
 export default db

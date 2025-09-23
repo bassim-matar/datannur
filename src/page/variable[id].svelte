@@ -8,7 +8,7 @@
   let { variable } = $props()
 
   const dataset = db.get('dataset', variable.dataset_id)
-  let variable_preview: false | {} = false
+  let variable_preview: false | object = false
   if (dataset.link) {
     variable_preview = {
       variable: variable.name,

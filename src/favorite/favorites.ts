@@ -18,7 +18,7 @@ export default class Favorites {
         item.favorite_timestamp = fav.timestamp
         count_nb_favorite += 1
       }
-      db.foreach('evolution', evo => {
+      db.foreach('evolution', (evo: any) => {
         if (!db.tableHasId(evo.entity, evo.entity_id)) return
         const item = db.get(evo.entity, evo.entity_id)
         if (item && item.is_favorite) evo.is_favorite = true

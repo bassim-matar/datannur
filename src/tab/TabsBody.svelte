@@ -19,7 +19,7 @@
       <Loading position="absolute" />
     </div>
   {/if}
-  {#each tabs as tab}
+  {#each tabs as tab (tab.key)}
     {#if open_all_tab || active_tab_body === tab.key || tabs_loaded[tab.key] > 0}
       <div
         class="tab_component_wrapper {tab.props.class || ''}"

@@ -1,4 +1,4 @@
-@use "main.scss" as *;
+@use 'main.scss' as *;
 
 @mixin exporter_style {
   div.dt-buttons {
@@ -26,7 +26,7 @@
         padding: 8px 2px;
       }
       &:hover {
-        color: color("download");
+        color: color('download');
       }
     }
     button.buttons-html5 {
@@ -54,7 +54,7 @@
       top: 40px;
       width: 40px;
       z-index: 25;
-      &[is_open="true"] {
+      &[is_open='true'] {
         background: $background-1;
       }
     }
