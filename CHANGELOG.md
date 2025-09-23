@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.12.9 (2024-09-23)
 
 - add: community standards docs (code of conduct, security, issue templates, pr templates)
 - add: code quality check on ci
