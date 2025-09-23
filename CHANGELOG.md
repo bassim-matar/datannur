@@ -3,6 +3,7 @@
 ## unreleased
 
 - add: community standards docs (code of conduct, security, issue templates, pr templates)
+- add: code quality check on ci
 - change: rename all ts files, image and folder to be in kebab-case
 - change: json config files use camelCase instead of snake_case
 - fix: fix eslint path, ci ignore path and contributing.md

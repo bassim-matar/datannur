@@ -5,8 +5,9 @@ import alias from '@rollup/plugin-alias'
 import FullReload from 'vite-plugin-full-reload'
 import { defineConfig } from 'vitest/config'
 import { visualizer } from 'rollup-plugin-visualizer'
-import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { JsonjsdbBuilder, jsonjsdbAddConfig } from 'jsonjsdb-builder'
+import svelteConfig from './svelte.config.js'
 
 const config = {
   bundleView: process.env.BUNDLE_VIEW === 'true' || false,
@@ -144,11 +145,7 @@ export default defineConfig({
     jsonjsdbAddConfig(config.paths.jsonjsdbConfig),
     updateRouterIndex(config.paths.routerIndex, '../page'),
     alias({ entries: aliases }),
-    svelte({
-      preprocess: vitePreprocess(),
-      configFile: false,
-      compilerOptions: { runes: true },
-    }),
+    svelte(svelteConfig),
     htmlReplace([
       ['{{app_version}}', appVersion],
       [' crossorigin ', ' '],

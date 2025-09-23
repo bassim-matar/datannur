@@ -41,6 +41,15 @@ jobs:
       - name: Install Playwright Chromium
         run: npx playwright install chromium
 
+      - name: ESLint
+        run: npm run lint
+
+      - name: TypeScript
+        run: npm run type-check
+
+      - name: Svelte
+        run: npm run svelte-check
+
       - name: Tests (unit + UI)
         run: npm test
 
