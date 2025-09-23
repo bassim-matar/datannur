@@ -1,9 +1,9 @@
 <script lang="ts">
-  import FilterInput from "./FilterInput.svelte"
+  import FilterInput from './FilterInput.svelte'
 
   let {
     columns,
-    table_id = "",
+    table_id = '',
     loading = true,
     nb_sticky = 1,
     datatable_update_draw = 0,
@@ -43,7 +43,7 @@
 </script>
 
 <tr class="header_filter_wrapper">
-  {#each columns as column, i}
+  {#each columns as column, i (`${column.data}/${column.title}`)}
     {#if i < nb_sticky}
       <th
         class="header_filter_th th_{table_id}_{i} sticky"
@@ -61,7 +61,7 @@
 </tr>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .header_filter_wrapper {
     .header_filter_th {

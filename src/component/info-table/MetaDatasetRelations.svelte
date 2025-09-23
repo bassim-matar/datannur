@@ -1,19 +1,19 @@
 <script lang="ts">
-  import db from "@db"
-  import Icon from "@layout/Icon.svelte"
-  import Link from "@layout/Link.svelte"
+  import db from '@db'
+  import Icon from '@layout/Icon.svelte'
+  import Link from '@layout/Link.svelte'
 
   let { dataset_id } = $props()
 
-  const schema = structuredClone(db.tables.__schema__)
+  const schema = structuredClone(db.tables.__schema__) as any
 
   const relation_types = [
-    { name: "one_to_one", symbol: "minus", tooltip: "one to one" },
-    { name: "one_to_many", symbol: "arrow-right-long", tooltip: "one to many" },
+    { name: 'one_to_one', symbol: 'minus', tooltip: 'one to one' },
+    { name: 'one_to_many', symbol: 'arrow-right-long', tooltip: 'one to many' },
     {
-      name: "many_to_many",
-      symbol: "arrows-left-right",
-      tooltip: "many to many",
+      name: 'many_to_many',
+      symbol: 'arrows-left-right',
+      tooltip: 'many to many',
     },
   ]
 
@@ -36,7 +36,7 @@
     type,
     relations: schema[type.name].filter(relation => {
       if (dataset_has_alias) {
-        if (type.name === "one_to_one" && relation.includes(dataset_id))
+        if (type.name === 'one_to_one' && relation.includes(dataset_id))
           return false
 
         for (const alias of aliases) {
@@ -71,18 +71,18 @@
   <tr>
     <td><Icon type="relation" /> Relations</td>
     <td>
-      {#each relations as relation_type}
+      {#each relations as relation_type (relation_type.type.name)}
         {#if relation_type.relations.length}
           <ul>
-            {#each relation_type.relations as relation}
+            {#each relation_type.relations as relation (relation)}
               <li>
-                <Link href={`metaDataset/${relation[0].split(" (")[0]}`}
+                <Link href={`metaDataset/${relation[0].split(' (')[0]}`}
                   >{relation[0]}</Link
                 >
                 <span class="use_tooltip" title={relation_type.type.tooltip}>
                   <Icon type={relation_type.type.symbol} margin_right={false} />
                 </span>
-                <Link href={`metaDataset/${relation[1].split(" (")[0]}`}
+                <Link href={`metaDataset/${relation[1].split(' (')[0]}`}
                   >{relation[1]}</Link
                 >
               </li>

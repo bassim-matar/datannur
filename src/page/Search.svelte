@@ -108,7 +108,7 @@
   let search_timeout
 
   $effect(() => {
-    $search_value
+    void $search_value
     if (search_timeout) clearTimeout(search_timeout)
     search_timeout = setTimeout(() => {
       search_input_change()

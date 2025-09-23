@@ -80,7 +80,7 @@ export default class SearchHistory {
         folder_id: item_data.folder_id,
         folder_name: item_data.folder_name,
         _entity: item_data._entity,
-        _entity_clean: entity_names[item_data._entity],
+        _entity_clean: entity_names[item_data._entity as string],
       })
     }
     return result

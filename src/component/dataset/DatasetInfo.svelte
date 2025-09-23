@@ -24,7 +24,10 @@
   <IdInfo id={dataset.id} />
   <InstitutionInfo type="owner" institution_id={dataset.owner_id} />
   <InstitutionInfo type="manager" institution_id={dataset.manager_id} />
-  <FolderInfo folder_id={dataset.folder?.id} is_meta={dataset.is_meta} />
+  <FolderInfo
+    folder_id={dataset.is_meta ? dataset.metaFolder_id : dataset.folder_id}
+    is_meta={dataset.is_meta}
+  />
   <TagsInfo tags={dataset.tags} />
   {#if dataset.type_clean}
     <tr>

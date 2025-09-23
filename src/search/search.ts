@@ -1,51 +1,51 @@
-import db from "@db"
-import { entity_names } from "@lib/constant"
-import { escape_html_entities } from "@lib/util"
+import db from '@db'
+import { entity_names } from '@lib/constant'
+import { escape_html_entities } from '@lib/util'
 
 function ensure_flexsearch_loaded() {
   return new Promise<void>(resolve => {
-    const flexsearch_src = "assets/external/flexsearch.js?v=0.8.158"
+    const flexsearch_src = 'assets/external/flexsearch.js?v=0.8.158'
     if (document.querySelector(`script[src="${flexsearch_src}"]`)) {
       resolve()
       return
     }
-    const script = document.createElement("script")
+    const script = document.createElement('script')
     const script_attributes = { src: flexsearch_src, onload: resolve }
     document.head.appendChild(Object.assign(script, script_attributes))
   })
 }
 
 function removeDiacritics(str) {
-  if (typeof str !== "string") return str
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  if (typeof str !== 'string') return str
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
 
 const charMap = {
-  a: "[aâäà]",
-  e: "[eéèêë]",
-  i: "[iîï]",
-  o: "[oôö]",
-  u: "[uûü]",
-  c: "[cç]",
+  a: '[aâäà]',
+  e: '[eéèêë]',
+  i: '[iîï]',
+  o: '[oôö]',
+  u: '[uûü]',
+  c: '[cç]',
 }
 
 export function search_highlight(value, search) {
-  if (!search || search.trim() === "") return value
+  if (!search || search.trim() === '') return value
 
   const normalizedSearch = removeDiacritics(search)
-    .split("")
+    .split('')
     .map(char => {
       const lowerChar = char.toLowerCase()
       if (charMap[lowerChar]) {
         return charMap[lowerChar]
       } else {
-        return char.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&")
+        return char.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&')
       }
     })
-    .join("")
+    .join('')
 
   const pattern = `(^|[^a-zA-Z])(${normalizedSearch})`
-  const regex = new RegExp(pattern, "gi")
+  const regex = new RegExp(pattern, 'gi')
 
   return escape_html_entities(value).replace(regex, (match, p1, p2) => {
     return `${p1}<span class="search_highlight">${p2}</span>`
@@ -65,13 +65,13 @@ export default class Search {
       await ensure_flexsearch_loaded()
       if (db.loaded) await db.loaded
       const { Index } = window.FlexSearch
-      const variables = ["name", "description"]
+      const variables = ['name', 'description']
       for (const variable of variables) {
         const entities_data = []
         for (const entity in entity_names) {
           entities_data.push({
             name: entity,
-            items: new Index({ tokenize: "forward" }),
+            items: new Index({ tokenize: 'forward' }),
             data: [],
           })
         }
@@ -81,7 +81,7 @@ export default class Search {
         for (const entity of variable.entities) {
           db.foreach(entity.name, item => {
             let name = item[variable.name]
-            if (item.original_name && variable.name === "name")
+            if (item.original_name && variable.name === 'name')
               name += ` (${item.original_name})`
             entity.items.add(item.id, removeDiacritics(name))
           })
@@ -103,7 +103,7 @@ export default class Search {
             id: item.id,
             name:
               item.name +
-              (item.original_name ? ` (${item.original_name})` : ""),
+              (item.original_name ? ` (${item.original_name})` : ''),
             description: item.description,
             entity: entity.name,
             variable: variable.name,
@@ -111,7 +111,7 @@ export default class Search {
             folder_id: item.folder_id,
             folder_name: item.folder_name,
             _entity: item._entity,
-            _entity_clean: entity_names[item._entity],
+            _entity_clean: entity_names[item._entity as string],
           })
         }
       }

@@ -115,6 +115,7 @@
   })
 
   $effect(() => {
+    void active_tab
     is_last_tab = check_if_last_tab()
   })
 
@@ -135,7 +136,7 @@
 >
   {#key tabs_title_key}
     <ul class="tabs_container_ul">
-      {#each tabs as tab}
+      {#each tabs as tab (tab.key)}
         <TabTitle {tab} bind:active_tab {select_tab} />
       {/each}
     </ul>

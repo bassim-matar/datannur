@@ -1,4 +1,5 @@
 import db from '@db'
+import type { EntityTypeMap } from '@type'
 import { entity_names, evolution_types, parent_entities } from '@lib/constant'
 import {
   date_to_timestamp,
@@ -156,7 +157,7 @@ function add_validity(validities, type, entity, entity_data, evo_deleted) {
 
 function add_validities(evo_deleted) {
   const validities = []
-  const entities = Object.keys(parent_entities)
+  const entities = Object.keys(parent_entities) as (keyof EntityTypeMap)[]
   for (const entity of entities) {
     if (
       db.tables[entity]?.length > 0 &&
@@ -166,7 +167,7 @@ function add_validities(evo_deleted) {
         Object.keys(db.tables[entity][0]).includes('next_update_date'))
     ) {
       db.foreach(entity, entity_data => {
-        if (entity_data.start_date) {
+        if ('start_date' in entity_data && entity_data.start_date) {
           add_validity(
             validities,
             'start_date',
@@ -175,10 +176,10 @@ function add_validities(evo_deleted) {
             evo_deleted
           )
         }
-        if (entity_data.end_date) {
+        if ('end_date' in entity_data && entity_data.end_date) {
           add_validity(validities, 'end_date', entity, entity_data, evo_deleted)
         }
-        if (entity_data.last_update_date) {
+        if ('last_update_date' in entity_data && entity_data.last_update_date) {
           add_validity(
             validities,
             'last_update_date',
@@ -187,7 +188,7 @@ function add_validities(evo_deleted) {
             evo_deleted
           )
         }
-        if (entity_data.next_update_date) {
+        if ('next_update_date' in entity_data && entity_data.next_update_date) {
           add_validity(
             validities,
             'next_update_date',

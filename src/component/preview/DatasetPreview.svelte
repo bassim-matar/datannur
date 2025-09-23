@@ -26,7 +26,7 @@
       Preview_manager.clean_keys(dataset_data)
       db.preview[dataset_preview] = [...dataset_data]
     }
-    dataset_data = db.preview[dataset_preview]
+    dataset_data = db.preview[dataset_preview] as any[]
     dataset_data = dataset_data.map(obj => {
       delete obj._row_num
       return obj

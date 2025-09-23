@@ -1,6 +1,5 @@
 <script lang="ts">
   import db from '@db'
-  import { nb_favorite } from '@lib/store'
   import { make_parents_relative, add_minimum_deep } from '@lib/db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
@@ -66,7 +65,7 @@
   <Title
     type="favorite"
     name="Favoris"
-    name_sup="<span class='num_style big'>{$nb_favorite}</span>"
+    isFavoritePage={true}
     mode="main_title"
   />
   <Tabs {tabs} />

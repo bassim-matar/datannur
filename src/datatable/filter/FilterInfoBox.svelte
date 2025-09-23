@@ -1,17 +1,23 @@
 <script lang="ts">
-  let { nb_active_filter = 0, click = () => {} } = $props()
+  let {
+    nb_active_filter = 0,
+    click,
+  }: {
+    nb_active_filter?: number
+    click?: (event: MouseEvent) => void
+  } = $props()
 </script>
 
 {#if nb_active_filter > 0}
   <button class="filter_info_box" onclick={click}>
-    {nb_active_filter} filtre{nb_active_filter > 1 ? "s" : ""}
-    actif{nb_active_filter > 1 ? "s" : ""}
+    {nb_active_filter} filtre{nb_active_filter > 1 ? 's' : ''}
+    actif{nb_active_filter > 1 ? 's' : ''}
     <i class="close_btn fa-solid fa-xmark"></i>
   </button>
 {/if}
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .filter_info_box {
     position: absolute;

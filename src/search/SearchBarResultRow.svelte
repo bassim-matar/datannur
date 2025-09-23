@@ -48,6 +48,7 @@
         {#if search_value === ''}
           {item.name}
         {:else}
+          <!-- eslint-disable svelte/no-at-html-tags -->
           {@html search_highlight(item.name, search_value)}
         {/if}
       </div>

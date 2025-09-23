@@ -17,16 +17,12 @@ export default class Filter_helper {
   }
   init(datatable) {
     this.datatable = datatable
-    const that = this
     this.history_search = this.get_history()
-    let count = 0
-    datatable.columns().every(function () {
-      that.init_column(this, count)
-      count += 1
+    datatable.columns().every(index => {
+      this.init_column(datatable.column(index), index)
     })
   }
   init_column(column, column_num) {
-    const that = this
     const id = 'datatables_title_' + this.table_id + '_filter_' + column_num
     const filter_elem = jQuery('#' + id)
     const filter_container = filter_elem.parent()
@@ -72,8 +68,9 @@ export default class Filter_helper {
       const select_wrap = jQuery('<div class="select"></div>')
       select_wrap.appendTo(filter_container)
       select.appendTo(select_wrap)
-      select.on('change', function () {
-        let val = jQuery.fn.dataTable.util.escapeRegex(jQuery(this).val())
+      select.on('change', event => {
+        const elem = jQuery(event.target)
+        let val = jQuery.fn.dataTable.util.escapeRegex(elem.val())
         if (val === true) val = 'vrai'
         if (val === false) val = 'faux'
 
@@ -82,8 +79,8 @@ export default class Filter_helper {
         } else {
           column.search(val ? '^' + val : '', true, false).draw()
         }
-        that.update_filter_url(column_num, val)
-        that.update_filter_count()
+        this.update_filter_url(column_num, val)
+        this.update_filter_count()
       })
 
       const col_filter_url = this.get_col_filter_url(column_num)
@@ -93,15 +90,16 @@ export default class Filter_helper {
         column
           .search(col_filter_url ? '^' + col_filter_url : '', true, false)
           .draw()
-        that.update_filter_count()
+        this.update_filter_count()
       } else if (column.search() !== '') {
         select.val(column.search().split('^')[1]).trigger('change')
       }
     } else {
-      filter_elem.on('keyup', function () {
-        const clear_btn = jQuery(this).parent().children('.btn_clear_input')
-        const search_icon = jQuery(this).parent().children('.search_icon')
-        if (this.value === '') {
+      filter_elem.on('keyup', event => {
+        const elem = jQuery(event.target)
+        const clear_btn = elem.parent().children('.btn_clear_input')
+        const search_icon = elem.parent().children('.search_icon')
+        if (elem.val() === '') {
           clear_btn.hide()
           search_icon.show()
         } else {
@@ -109,12 +107,12 @@ export default class Filter_helper {
           search_icon.hide()
         }
 
-        if (column_num in that.filters) {
-          that.search_equation_end(column_num, column)
-          that.update_filter_history(column_num, '')
+        if (column_num in this.filters) {
+          this.search_equation_end(column_num, column)
+          this.update_filter_history(column_num, '')
         }
 
-        let value = this.value
+        let value = elem.val()
 
         if (value && column_date_type) {
           if (value.charCodeAt(0) > 47 && value.charCodeAt(0) < 58) {
@@ -136,13 +134,13 @@ export default class Filter_helper {
             value.startsWith('!'))
         ) {
           column.search('')
-          that.search_equation_start(column_num, value)
+          this.search_equation_start(column_num, value)
         } else {
           column.search(value)
         }
         column.draw()
-        that.update_filter_url(column_num, this.value)
-        that.update_filter_count()
+        this.update_filter_url(column_num, elem.val())
+        this.update_filter_count()
       })
 
       const col_filter_url = this.get_col_filter_url(column_num)

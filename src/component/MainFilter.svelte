@@ -26,7 +26,7 @@
   }
 </script>
 
-{#each filters as filter}
+{#each filters as filter (filter.id)}
   <div class="navbar-item">
     <Switch bind:value={filter.is_active} change={update_filter_state}>
       {filter.name}

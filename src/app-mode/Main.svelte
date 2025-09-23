@@ -100,7 +100,7 @@
 
       timer = performance.now()
       const user_data = await get_user_data()
-      db.addMeta(user_data, db_schema)
+      db.addMeta(user_data, db_schema as any)
       db_add_processed_data()
       console.log('process db', Math.round(performance.now() - timer) + ' ms')
 

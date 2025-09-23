@@ -39,6 +39,7 @@
 <div class="about_file_wrapper" class:homepage={$on_page_homepage}>
   {#if use_mermaid}
     <div class="content">
+      <!-- eslint-disable svelte/no-at-html-tags -->
       {@html html_content}
       {#if !html_content_loaded}
         <Loading position="relative" />

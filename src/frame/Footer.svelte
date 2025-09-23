@@ -39,9 +39,6 @@
   db.loaded.then(() => {
     contact_email = db.getConfig('contact_email') as string
     last_update.state = 'loaded'
-    if (db.use.info) {
-      last_update.value = db.get('info', 'last_update')?.value
-    }
     const last_modif_timestamp = db.getLastModifTimestamp()
     if (last_modif_timestamp) last_update.value = last_modif_timestamp
     if (last_update.value) {
