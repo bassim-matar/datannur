@@ -1,45 +1,21 @@
-## Description
+## Summary
 
-Brief description of the changes made in this PR.
+Brief description of what this PR does and why.
 
 ## Type of Change
 
-- [ ] 🐛 Bug fix (non-breaking change which fixes an issue)
-- [ ] ✨ New feature (non-breaking change which adds functionality)
-- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] 📚 Documentation update
-- [ ] 🔧 Maintenance/refactor
-- [ ] 🎨 Style/formatting
-- [ ] ✅ Tests
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Breaking change
+- [ ] Documentation
+- [ ] Refactor/maintenance
 
-## Changes Made
+## Testing
 
-### What was changed?
-
--
-
-### Why was this changed?
-
--
-
-### How was this tested?
-
-- [ ] Unit tests pass
+- [ ] `npm run verify` passes
 - [ ] Manual testing completed
-- [ ] No breaking changes introduced
+- [ ] No console errors in browser
 
-## Screenshots (if applicable)
+## Notes
 
-<!-- Add screenshots to help explain your changes -->
-
-## Checklist
-
-- [ ] My code follows the project's coding standards
-- [ ] I have tested my changes thoroughly
-- [ ] I have updated documentation if needed
-- [ ] My changes don't introduce new warnings/errors
-- [ ] All tests pass
-
-## Additional Notes
-
-<!-- Any additional information or context -->
+<!-- Additional context or considerations -->
