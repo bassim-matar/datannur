@@ -14,6 +14,7 @@
     "test:unit": "vitest run --exclude=test/ui.test.ts",
     "test:ui": "npm run build && vitest run test/ui.test.ts",
     "test": "npm run test:unit && npm run test:ui",
+    "test:no-build": "vitest run",
     "node:ts": "node --experimental-strip-types --disable-warning=ExperimentalWarning",
     "static-make": "vite build && npm run node:ts app/node-scripts/static-make.ts",
     "deploy": "npm run node:ts app/node-scripts/deploy.ts",
