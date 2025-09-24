@@ -47,13 +47,13 @@
       link_same_entity_tab: true,
     }),
     Column.description(),
-    Column.nb_child_recursive('institution', institution_max),
-    Column.nb_folder_recursive('institution', folder_max),
-    Column.nb_dataset_recursive('institution', dataset_max),
-    Column.nb_variable('institution', variable_max, {
+    Column.nbChildRecursive('institution', institution_max),
+    Column.nbFolderRecursive('institution', folder_max),
+    Column.nbDatasetRecursive('institution', dataset_max),
+    Column.nbVariable('institution', variable_max, {
       recursive: true,
     }),
-    Column.nb_doc('institution', nb_doc_max),
+    Column.nbDoc('institution', nb_doc_max),
     Column.tag(),
     Column.parents('institution'),
     {
@@ -75,8 +75,8 @@
       render: data =>
         data ? `<a href="tel:${data}" target="_blanck" >${data}</a>` : '',
     },
-    Column.start_date(),
-    Column.end_date(),
+    Column.startDate(),
+    Column.endDate(),
     Column.level(level_max),
   ]
 </script>

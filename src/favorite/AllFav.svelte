@@ -11,7 +11,7 @@
     Column.entity(),
     Column.name(),
     Column.description(),
-    Column.folder_simple(),
+    Column.folderSimple(),
     Column.timestamp({ var_name: 'favorite_timestamp' }),
   ]
 </script>

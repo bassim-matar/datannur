@@ -83,7 +83,7 @@
       const filter = {
         entity: 'dataset',
         variable: 'type',
-        values: MainFilter.get_type_to_filter(),
+        values: MainFilter.getTypeToFilter(),
       }
       console.log('init filter', Math.round(performance.now() - timer) + ' ms')
 
@@ -122,7 +122,7 @@
     const from_search = UrlParam.get('from_search')
     if (from_search) {
       const entity = page_hash_value
-      const entity_id = UrlHash.get_level_2()
+      const entity_id = UrlHash.getLevel2()
       SearchHistory.add(entity, entity_id)
       Logs.add('search_bar', { entity, entity_id })
       UrlParam.delete('from_search')
@@ -130,7 +130,7 @@
     }
   }
 
-  $page_hash = UrlHash.get_level_1()
+  $page_hash = UrlHash.getLevel1()
   page_hash.subscribe(page_hash_value => check_from_search(page_hash_value))
 
   if (has_touch_screen) {

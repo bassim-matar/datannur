@@ -19,7 +19,7 @@ export function get_nb_values(values, row) {
 const separator = ' | '
 
 export default class Render {
-  static parents_indent(data, type, row) {
+  static parentsIndent(data, type, row) {
     return Render.tree(row._entity, [...data].reverse(), type)
   }
   static tree(entity, elements, type = 'normal') {
@@ -38,14 +38,14 @@ export default class Render {
     }
     return wrap_long_text(`<div class="tree">${content}</div>`)
   }
-  static with_parents_from_id(entity, id, type) {
+  static withParentsFromId(entity, id, type) {
     if (id === null) return ''
     const element = db.get(entity, id)
     const parents = db.getParents(entity, id)
     const elements = [...parents, element].reverse()
     return Render.tree(entity, elements, type)
   }
-  static first_parent(data, type, row) {
+  static firstParent(data, type, row) {
     if (data.length === 0) return wrap_long_text()
     const parent = data.slice(-1)[0]
     return wrap_long_text(link(row._entity + '/' + parent.id, parent.name))
@@ -84,7 +84,7 @@ export default class Render {
     content += '</ul>'
     return wrap_long_text(content)
   }
-  static freq_preview(freq_data, type, row) {
+  static freqPreview(freq_data, type, row) {
     if (!freq_data || freq_data.length === 0) return ''
 
     let content = '<ul class="ul_value">'
@@ -136,7 +136,7 @@ export default class Render {
     if (['filter', 'sort', 'export'].includes(type)) return data
     return data.toLocaleString(locale)
   }
-  static num_no_empty(data, type = 'normal') {
+  static numNoEmpty(data, type = 'normal') {
     if (!data) return ''
     return Render.num(data, type)
   }
@@ -164,7 +164,7 @@ export default class Render {
     }
     return `<span class='icon icon_${entity}'><i class='${class_names}'></i></span>`
   }
-  static modalities_name(modalities) {
+  static modalitiesName(modalities) {
     if (!modalities || modalities.length === 0) return wrap_long_text()
     let modalities_name = []
     for (const modality of modalities) {
@@ -174,7 +174,7 @@ export default class Render {
     }
     return wrap_long_text(modalities_name.join(' | '))
   }
-  static nb_values(data, type, row, nb_value_max) {
+  static nbValues(data, type, row, nb_value_max) {
     const nb_values = data
     let entity = 'dataset_id' in row ? 'variable' : 'modality'
     let tab = entity === 'variable' ? 'variable_values' : 'values'
@@ -188,18 +188,18 @@ export default class Render {
     if (nb_values) {
       content = link(`${entity}/${row.id}?tab=${tab}`, content)
     }
-    return `${Render.num_percent(content, percent, 'value', type)}`
+    return `${Render.numPercent(content, percent, 'value', type)}`
   }
-  static nb_duplicate(nb_duplicate, type, row) {
+  static nbDuplicate(nb_duplicate, type, row) {
     if (!nb_duplicate) return ''
     const percent = get_percent(nb_duplicate / row.nb_row)
-    return `${Render.num_percent(nb_duplicate, percent, 'duplicate', type)}`
+    return `${Render.numPercent(nb_duplicate, percent, 'duplicate', type)}`
   }
-  static nb_missing(nb_missing, type, row, stringify = true) {
+  static nbMissing(nb_missing, type, row, stringify = true) {
     if (!row.nb_row) return ''
     if (!nb_missing) return ''
     const percent = get_percent(nb_missing / row.nb_row)
-    const content = Render.num_percent(
+    const content = Render.numPercent(
       nb_missing,
       percent,
       'missing',
@@ -209,7 +209,7 @@ export default class Render {
     if (stringify) return `${content}`
     return content
   }
-  static num_percent(data, percent, color_type, type, with_percent = false) {
+  static numPercent(data, percent, color_type, type, with_percent = false) {
     let display_value = Render.num(data, type)
     if (!display_value) return ''
     if (type === 'display' && with_percent) display_value += ` (${percent}%)`
@@ -228,7 +228,7 @@ export default class Render {
     }
     return wrap_long_text(tags_name.join(' | '))
   }
-  static copy_cell(data, type) {
+  static copyCell(data, type) {
     if (!data) return wrap_long_text()
     if (type !== 'display') return data
     return wrap_long_text(
@@ -251,6 +251,6 @@ export default class Render {
     )
     const entity = percent < 0 ? 'value' : 'doc'
     const percent_abs_inversed = 100 - Math.abs(percent)
-    return `${Render.num_percent(content, percent_abs_inversed, entity, type)}`
+    return `${Render.numPercent(content, percent_abs_inversed, entity, type)}`
   }
 }

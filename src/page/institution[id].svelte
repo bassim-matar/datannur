@@ -37,7 +37,7 @@
   let modalities = variables.flatMap(variable => variable.modalities)
   modalities = remove_duplicate_by_id(modalities)
 
-  const tags = Tags.get_from_entities({ institutions, folders, datasets })
+  const tags = Tags.getFromEntities({ institutions, folders, datasets })
   make_parents_relative(false, tags)
   add_minimum_deep(tags)
 

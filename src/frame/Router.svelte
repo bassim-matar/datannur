@@ -35,7 +35,7 @@
     $page_content_loaded = false
     route = router_index[entity].component
     $page = entity
-    setTimeout(() => ($page_hash = UrlHash.get_level_1()), 1)
+    setTimeout(() => ($page_hash = UrlHash.getLevel1()), 1)
   }
 
   function set_route(entity) {

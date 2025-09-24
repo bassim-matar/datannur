@@ -7,13 +7,13 @@ import { entity_to_icon } from '@lib/constant'
 export default class Logs {
   static db_key = 'user_data/log'
   static logs = []
-  static on_change_callback = () => {}
+  static onChangeCallback = () => {}
   static all_tabs_icon_value = {}
 
   static init(logs) {
     this.logs = []
     if (logs) this.logs = logs
-    this.on_change_callback = () => {}
+    this.onChangeCallback = () => {}
     this.all_tabs_icon_value = {}
     all_tabs_icon.subscribe(value => {
       this.all_tabs_icon_value = value
@@ -21,13 +21,13 @@ export default class Logs {
   }
   static save() {
     db.browser.set(this.db_key, this.logs)
-    this.on_change_callback()
+    this.onChangeCallback()
   }
-  static on_change(callback) {
-    this.on_change_callback = callback
+  static onChange(callback) {
+    this.onChangeCallback = callback
   }
-  static off_change() {
-    this.on_change_callback = () => {}
+  static offChange() {
+    this.onChangeCallback = () => {}
   }
   static clear() {
     this.logs = []

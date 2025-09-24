@@ -39,7 +39,7 @@
     no_recent_search,
   )
 
-  SearchHistory.on_change('search_page', () => search_input_change())
+  SearchHistory.onChange('search_page', () => search_input_change())
 
   function set_tab_key() {
     recent_search_change = !recent_search_change
@@ -47,7 +47,7 @@
   }
 
   function init_search_recent() {
-    search_result_data = SearchHistory.get_recent_search()
+    search_result_data = SearchHistory.getRecentSearch()
     const tab_name = 'Recherches récentes'
     set_tabs(tab_name)
     is_loading = false
@@ -67,7 +67,7 @@
     const all_search_raw = await db.search($search_value)
     is_loading = false
     if ($search_value !== value_before) return false
-    search_result_data = SearchHistory.put_recent_first(all_search_raw)
+    search_result_data = SearchHistory.putRecentFirst(all_search_raw)
     set_tabs()
   }
 

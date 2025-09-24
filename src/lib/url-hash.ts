@@ -11,11 +11,11 @@ export class UrlHash {
     if (!hash || hash === '') return this.default
     return hash
   }
-  static get_level_1() {
+  static getLevel1() {
     const hash = this.getAll()
     return hash.split('/')[0]
   }
-  static get_level_2() {
+  static getLevel2() {
     const hash = this.getAll()
     if (hash.split('/').length < 2) return ''
     return hash.split('/')[1]

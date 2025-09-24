@@ -18,26 +18,26 @@
   function define_columns() {
     const base = [
       Column.name('variable', 'Variable', { is_meta }),
-      Column.original_name(),
+      Column.originalName(),
       Column.description(),
       Column.datatype(),
-      Column.is_key(),
-      Column.nb_sources(nb_sources_max, 'variable'),
-      Column.nb_derived(nb_derived_max, 'variable'),
-      Column.nb_missing(),
-      Column.nb_duplicates(),
+      Column.isKey(),
+      Column.nbSources(nb_sources_max, 'variable'),
+      Column.nbDerived(nb_derived_max, 'variable'),
+      Column.nbMissing(),
+      Column.nbDuplicates(),
       Column.freq(),
-      Column.nb_values(nb_value_max),
-      Column.values_preview(),
+      Column.nbValues(nb_value_max),
+      Column.valuesPreview(),
     ]
-    if (is_meta) return [...base, Column.meta_localisation()]
+    if (is_meta) return [...base, Column.metaLocalisation()]
     return [
       Column.favorite(),
       ...base,
       Column.modality(),
       Column.tag(),
-      Column.start_date(),
-      Column.end_date(),
+      Column.startDate(),
+      Column.endDate(),
     ]
   }
 

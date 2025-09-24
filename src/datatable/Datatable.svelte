@@ -98,10 +98,10 @@
     }
   })
 
-  let buttons = exporter.get_buttons()
+  let buttons = exporter.getButtons()
   if (is_big) {
     buttons.push(
-      filter.get_btn_info_popup(() => {
+      filter.getBtnInfoPopup(() => {
         is_popup_search_option_open = true
       }),
     )
@@ -130,7 +130,7 @@
         destroy: true,
         language: {
           zeroRecords: '<span class="no_result">Aucun résultat</span>',
-          buttons: exporter.get_language(),
+          buttons: exporter.getLanguage(),
         } as any,
         initComplete: function () {
           if (!is_big) return false
@@ -148,7 +148,7 @@
       })
       dom_table = jQuery('table#' + table_id + '._datatables')
       dom_table.on('mouseenter', '.long_text', extendable.open)
-      dom_table.on('mouseleave', '.long_text', extendable.close_two_lines)
+      dom_table.on('mouseleave', '.long_text', extendable.closeTwoLines)
 
       dom_table.on('click', 'td', function (event) {
         setTimeout(() => {
@@ -269,7 +269,7 @@
 <div class="datatable_main_wrapper">
   {#if data.length > 0}
     <div class="datatables_outer" class:visible={!loading}>
-      <FilterInfoBox {nb_active_filter} click={() => filter.remove_all()} />
+      <FilterInfoBox {nb_active_filter} click={() => filter.removeAll()} />
       <table
         id={table_id}
         class="_datatables table is-striped"

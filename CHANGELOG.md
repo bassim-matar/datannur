@@ -5,7 +5,7 @@
 - fix: folder markdown about_page to about-page
 - fix: demo image path in README
 - refactor: replace app_version meta tag with `__APP_VERSION__` constant
-- refactor: enforce PascalCase for class names
+- refactor: enforce PascalCase for class names and camelCase for methods
 
 ## 0.12.9 (2024-09-23)
 

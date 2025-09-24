@@ -14,8 +14,8 @@
     $tab_selected.nb = 0
     if (typeof dataset_preview !== 'string') {
       dataset_data = dataset_preview
-      dataset_data = PreviewManager.add_position(dataset_data)
-      columns = PreviewManager.get_columns(dataset_data)
+      dataset_data = PreviewManager.addPosition(dataset_data)
+      columns = PreviewManager.getColumns(dataset_data)
       $tab_selected.nb = dataset_data.length
       return
     }
@@ -23,7 +23,7 @@
     if (db.preview === undefined) db.preview = {}
     if (!(dataset_preview in db.preview)) {
       dataset_data = await PreviewManager.load(dataset_preview)
-      PreviewManager.clean_keys(dataset_data)
+      PreviewManager.cleanKeys(dataset_data)
       db.preview[dataset_preview] = [...dataset_data]
     }
     dataset_data = db.preview[dataset_preview] as any[]
@@ -31,7 +31,7 @@
       delete obj._row_num
       return obj
     })
-    columns = PreviewManager.get_columns(dataset_data)
+    columns = PreviewManager.getColumns(dataset_data)
     $tab_selected.nb = dataset_data.length
   }
 

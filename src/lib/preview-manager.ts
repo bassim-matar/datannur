@@ -3,7 +3,7 @@ import { wrap_long_text } from '@lib/util'
 import Render from '@lib/render'
 
 export default class PreviewManager {
-  static clean_keys(data) {
+  static cleanKeys(data) {
     if (typeof data === 'string') {
       return data.replaceAll('.', '_')
     }
@@ -17,7 +17,7 @@ export default class PreviewManager {
       }
     }
   }
-  static add_position(data) {
+  static addPosition(data) {
     const new_data = []
     let position = 0
     for (let row of data) {
@@ -26,7 +26,7 @@ export default class PreviewManager {
     }
     return new_data
   }
-  static get_columns(data) {
+  static getColumns(data) {
     const cols = []
     for (const [key, value] of Object.entries(data[0])) {
       let render
@@ -39,7 +39,7 @@ export default class PreviewManager {
     }
     return cols
   }
-  static get_variable_data(data, variable) {
+  static getVariableData(data, variable) {
     let variable_data = []
     let position = 0
     for (const row of data) {

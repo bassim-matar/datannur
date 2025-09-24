@@ -17,10 +17,10 @@ const namingConventionRules = {
       selector: 'class',
       format: ['PascalCase'],
     },
-    // {
-    //   selector: 'method',
-    //   format: ['camelCase'],
-    // },
+    {
+      selector: 'method',
+      format: ['camelCase'],
+    },
     // {
     //   selector: 'function',
     //   format: ['camelCase'],

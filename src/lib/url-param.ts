@@ -1,5 +1,5 @@
 export class UrlParam {
-  static get_app_mode() {
+  static getAppMode() {
     return app_mode
   }
   static get(key) {
@@ -56,7 +56,7 @@ export class UrlParam {
     }
     window.history.replaceState(null, null, url_with_params)
   }
-  static get_all_params() {
+  static getAllParams() {
     let hash = window.location.hash
     if (app_mode === 'static_render') hash = window.location.href
     if (!hash.includes('?')) return {}

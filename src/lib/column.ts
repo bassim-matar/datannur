@@ -18,7 +18,7 @@ export default class Column {
       tooltip: 'Identifiant unique',
       filter_type: 'input',
       has_long_text: true,
-      render: Render.copy_cell,
+      render: Render.copyCell,
     }
   }
   static name(entity = null, name = null, option = null) {
@@ -59,7 +59,7 @@ export default class Column {
       },
     }
   }
-  static original_name() {
+  static originalName() {
     return {
       data: 'original_name',
       title: Render.icon('name') + "Nom d'origine",
@@ -90,7 +90,7 @@ export default class Column {
       },
     }
   }
-  static parent_entity() {
+  static parentEntity() {
     return {
       data: 'parent_name',
       name: 'parent_entity',
@@ -124,7 +124,7 @@ export default class Column {
       const folder_name = row[folder_name_var]
       return is_mobile
         ? wrap_long_text(link('folder/' + folder_id, folder_name))
-        : Render.with_parents_from_id('folder', folder_id, type)
+        : Render.withParentsFromId('folder', folder_id, type)
     }
     return {
       data: folder_name_var,
@@ -135,7 +135,7 @@ export default class Column {
       render,
     }
   }
-  static folder_simple() {
+  static folderSimple() {
     return {
       data: 'folder_id',
       title: Render.icon('folder') + 'Dossier',
@@ -149,7 +149,7 @@ export default class Column {
     }
   }
   static parents(entity) {
-    const render = is_mobile ? Render.first_parent : Render.parents_indent
+    const render = is_mobile ? Render.firstParent : Render.parentsIndent
     return {
       data: 'parents',
       title: Render.icon(`folder_tree_${entity}`) + 'Partie de',
@@ -158,7 +158,7 @@ export default class Column {
       render,
     }
   }
-  static dataset_type() {
+  static datasetType() {
     return {
       data: 'type_clean',
       title: Render.icon('type') + 'Type',
@@ -204,7 +204,7 @@ export default class Column {
     const render = (data, type, { owner_id, owner_name }) =>
       is_mobile
         ? wrap_long_text(link(`institution/${owner_id}`, owner_name))
-        : Render.with_parents_from_id('institution', owner_id, type)
+        : Render.withParentsFromId('institution', owner_id, type)
     return {
       data: 'owner_name',
       title: Render.icon('institution') + entity_names.owner,
@@ -218,7 +218,7 @@ export default class Column {
     const render = (data, type, { manager_id, manager_name }) =>
       is_mobile
         ? wrap_long_text(link(`institution/${manager_id}`, manager_name))
-        : Render.with_parents_from_id('institution', manager_id, type)
+        : Render.withParentsFromId('institution', manager_id, type)
     return {
       data: 'manager_name',
       title: Render.icon('institution') + entity_names.manager,
@@ -234,7 +234,7 @@ export default class Column {
       title: Render.icon('modality') + 'Modalité',
       defaultContent: '',
       tooltip: 'Modalités',
-      render: Render.modalities_name,
+      render: Render.modalitiesName,
     }
   }
   static value() {
@@ -247,7 +247,7 @@ export default class Column {
       render: data => wrap_long_text(data),
     }
   }
-  static nb_values(nb_value_max) {
+  static nbValues(nb_value_max) {
     return {
       data: 'nb_value',
       name: 'value',
@@ -256,10 +256,10 @@ export default class Column {
       filter_type: 'input',
       tooltip: 'Nombre de valeurs',
       render: (data, type, row) =>
-        Render.nb_values(data, type, row, nb_value_max),
+        Render.nbValues(data, type, row, nb_value_max),
     }
   }
-  static values_preview() {
+  static valuesPreview() {
     return {
       data: 'values_preview',
       title: Render.icon('value') + 'Valeurs',
@@ -269,24 +269,24 @@ export default class Column {
       render: Render.value,
     }
   }
-  static nb_duplicates() {
+  static nbDuplicates() {
     return {
       data: 'nb_duplicate',
       defaultContent: '',
       filter_type: 'input',
       title: Render.icon('duplicate') + 'Doublons',
       tooltip: 'Nombre de valeurs dupliquées',
-      render: Render.nb_duplicate,
+      render: Render.nbDuplicate,
     }
   }
-  static nb_missing() {
+  static nbMissing() {
     return {
       data: 'nb_missing',
       defaultContent: '',
       filter_type: 'input',
       title: Render.icon('missing') + 'Manquant',
       tooltip: 'Nombre de valeurs manquantes',
-      render: Render.nb_missing,
+      render: Render.nbMissing,
     }
   }
   static freq() {
@@ -296,10 +296,10 @@ export default class Column {
       defaultContent: '',
       has_long_text: true,
       tooltip: 'Aperçu des données de fréquence',
-      render: Render.freq_preview,
+      render: Render.freqPreview,
     }
   }
-  static nb_row(nb_row_max) {
+  static nbRow(nb_row_max) {
     return {
       data: 'nb_row',
       title: Render.icon('nb_row') + 'Lignes',
@@ -312,11 +312,11 @@ export default class Column {
         }
         if (!data) return ''
         const percent = get_percent(data / nb_row_max)
-        return `${Render.num_percent(data, percent, 'nb_row', type)}`
+        return `${Render.numPercent(data, percent, 'nb_row', type)}`
       },
     }
   }
-  static nb_sources(nb_sources_max, entity) {
+  static nbSources(nb_sources_max, entity) {
     return {
       data: 'source_ids',
       title: Render.icon('nb_source') + 'In',
@@ -329,11 +329,11 @@ export default class Column {
         if (type !== 'display') return nb
         const percent = get_percent(nb / nb_sources_max)
         const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
-        return `${Render.num_percent(content, percent, 'nb_source', type)}`
+        return `${Render.numPercent(content, percent, 'nb_source', type)}`
       },
     }
   }
-  static nb_derived(nb_derived_max, entity) {
+  static nbDerived(nb_derived_max, entity) {
     return {
       data: 'derived_ids',
       title: Render.icon('nb_derived') + 'Out',
@@ -346,7 +346,7 @@ export default class Column {
         if (type !== 'display') return nb
         const percent = get_percent(nb / nb_derived_max)
         const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
-        return `${Render.num_percent(content, percent, 'nb_derived', type)}`
+        return `${Render.numPercent(content, percent, 'nb_derived', type)}`
       },
     }
   }
@@ -360,7 +360,7 @@ export default class Column {
       tooltip: 'Fréquence de mise à jour',
     }
   }
-  static last_update() {
+  static lastUpdate() {
     return {
       data: 'last_update_date',
       name: 'last_update',
@@ -371,7 +371,7 @@ export default class Column {
       render: (data, type, row) => Render.datetime(data, type, row),
     }
   }
-  static next_update() {
+  static nextUpdate() {
     return {
       data: 'next_update_date',
       name: 'next_update',
@@ -401,7 +401,7 @@ export default class Column {
         const value = row.parents?.length + 1
         if (!value) return ''
         const percent = get_percent(value / level_max)
-        return `${Render.num_percent(value, percent, 'key', type)}`
+        return `${Render.numPercent(value, percent, 'key', type)}`
       }
     }
     return {
@@ -427,7 +427,7 @@ export default class Column {
       },
     }
   }
-  static delivery_format() {
+  static deliveryFormat() {
     return {
       data: 'delivery_format',
       title: Render.icon('delivery_format') + 'Format livraison',
@@ -451,7 +451,7 @@ export default class Column {
       },
     }
   }
-  static start_date() {
+  static startDate() {
     return {
       data: 'start_date',
       title: Render.icon('date_range') + 'Début',
@@ -466,7 +466,7 @@ export default class Column {
       },
     }
   }
-  static end_date() {
+  static endDate() {
     return {
       data: 'end_date',
       title: Render.icon('date_range') + 'Fin',
@@ -493,16 +493,16 @@ export default class Column {
         ),
     }
   }
-  static data_path() {
+  static dataPath() {
     return {
       data: 'data_path',
       title: Render.icon('data_path') + 'Emplacement',
       defaultContent: '',
       tooltip: 'Emplacement des données',
-      render: Render.copy_cell,
+      render: Render.copyCell,
     }
   }
-  static doc_path() {
+  static docPath() {
     return {
       data: 'path',
       name: 'doc_path',
@@ -515,7 +515,7 @@ export default class Column {
       },
     }
   }
-  static nb_doc(entity, total, with_name = false) {
+  static nbDoc(entity, total, with_name = false) {
     return {
       data: 'docs_recursive',
       title:
@@ -529,11 +529,11 @@ export default class Column {
         if (!data.length) return ''
         const content = link(entity + '/' + row.id + '?tab=docs', data.length)
         const percent = get_percent(data.length / total)
-        return `${Render.num_percent(content, percent, 'doc', type)}`
+        return `${Render.numPercent(content, percent, 'doc', type)}`
       },
     }
   }
-  static nb_doc_recursive(entity, total) {
+  static nbDocRecursive(entity, total) {
     return {
       data: 'nb_doc_recursive',
       title: Render.icon('doc') + "<span class='hidden'>nb_docs</span>",
@@ -543,11 +543,11 @@ export default class Column {
         if (!data) return ''
         const content = link(entity + '/' + row.id + '?tab=docs', data)
         const percent = get_percent(data / total)
-        return `${Render.num_percent(content, percent, 'doc', type)}`
+        return `${Render.numPercent(content, percent, 'doc', type)}`
       },
     }
   }
-  static nb_child_recursive(entity, total, link_path = null) {
+  static nbChildRecursive(entity, total, link_path = null) {
     if (!link_path) link_path = entity + '/'
     const entity_plural = pluralize(entity)
     return {
@@ -560,11 +560,11 @@ export default class Column {
         if (!data) return ''
         const content = link(link_path + row.id + `?tab=${entity_plural}`, data)
         const percent = get_percent(data / total)
-        return `${Render.num_percent(content, percent, entity, type)}`
+        return `${Render.numPercent(content, percent, entity, type)}`
       },
     }
   }
-  static nb_folder_recursive(entity, total) {
+  static nbFolderRecursive(entity, total) {
     return {
       data: 'nb_folder_recursive',
       title: Render.icon('folder') + "<span class='hidden'>nb_folders</span>",
@@ -574,11 +574,11 @@ export default class Column {
         if (!data) return ''
         const content = link(`${entity}/${row.id}?tab=folders`, data)
         const percent = get_percent(data / total)
-        return `${Render.num_percent(content, percent, 'folder', type)}`
+        return `${Render.numPercent(content, percent, 'folder', type)}`
       },
     }
   }
-  static nb_dataset_recursive(entity, total) {
+  static nbDatasetRecursive(entity, total) {
     return {
       data: 'nb_dataset_recursive',
       title: Render.icon('dataset') + "<span class='hidden'>nb_datasets</span>",
@@ -588,11 +588,11 @@ export default class Column {
         if (!data) return ''
         const content = link(entity + '/' + row.id + '?tab=datasets', data)
         const percent = get_percent(data / total)
-        return `${Render.num_percent(content, percent, 'dataset', type)}`
+        return `${Render.numPercent(content, percent, 'dataset', type)}`
       },
     }
   }
-  static nb_variable(entity, total, option) {
+  static nbVariable(entity, total, option) {
     if (!option) option = {}
     if (!('link_path' in option)) option.link_path = entity + '/'
     if (!('tab' in option)) option.tab = 'variables'
@@ -613,7 +613,7 @@ export default class Column {
           data,
         )
         const percent = get_percent(data / total)
-        return `${Render.num_percent(content, percent, 'variable', type)}`
+        return `${Render.numPercent(content, percent, 'variable', type)}`
       },
     }
   }
@@ -659,7 +659,7 @@ export default class Column {
         const entity = percent < 0 ? 'value' : 'doc'
         const percent_abs_inversed = 100 - Math.abs(percent)
         const content = `${time_ago}<br>${datetime}`
-        return `${Render.num_percent(
+        return `${Render.numPercent(
           content,
           percent_abs_inversed,
           entity,
@@ -668,7 +668,7 @@ export default class Column {
       },
     }
   }
-  static is_key() {
+  static isKey() {
     return {
       data: 'key',
       title: Render.icon('key') + 'Clé',
@@ -682,7 +682,7 @@ export default class Column {
       },
     }
   }
-  static meta_localisation() {
+  static metaLocalisation() {
     return {
       data: 'meta_localisation',
       title: Render.icon('localisation') + 'Localisation',
@@ -703,7 +703,7 @@ export default class Column {
       tooltip: "Element direct (vide) ou hérité d'un sous-élément (hérité)",
     }
   }
-  static lineage_type() {
+  static lineageType() {
     return {
       data: 'lineage_type',
       title: Render.icon('diagram') + 'Relation',

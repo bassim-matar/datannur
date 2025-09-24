@@ -9,7 +9,7 @@ export default class Exporter {
   constructor(id: string) {
     this.id = id
   }
-  get_language() {
+  getLanguage() {
     return {
       copyTitle: 'Copier dans le presse-papier',
       copySuccess: {
@@ -18,12 +18,12 @@ export default class Exporter {
       },
     }
   }
-  get_buttons() {
+  getButtons() {
     const filename = this.id
     return [
       {
         text: '<span class="icon icon_download main"><i class="fas fa-cloud-download-alt"></i></span>',
-        action: () => this.toggle_main_btn(),
+        action: () => this.toggleMainBtn(),
         footer: false,
       },
       {
@@ -56,7 +56,7 @@ export default class Exporter {
       },
     ]
   }
-  toggle_main_btn() {
+  toggleMainBtn() {
     const table_id = `#${this.id}_wrapper`
     const btns = `${table_id} .buttons-html5`
     const main_btn = document.querySelector(`${table_id} .dt-buttons`)

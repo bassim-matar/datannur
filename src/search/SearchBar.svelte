@@ -31,10 +31,10 @@
   const max_search_result = 100
   let nav_position = 0
 
-  SearchHistory.on_change('search_bar', () => search_input_change())
+  SearchHistory.onChange('search_bar', () => search_input_change())
 
   function init_search_recent() {
-    all_search = SearchHistory.get_recent_search()
+    all_search = SearchHistory.getRecentSearch()
     nb_result = all_search.length
   }
 
@@ -48,7 +48,7 @@
     }
     let all_search_raw = await db.search($search_value)
     if ($search_value === '') return false
-    all_search_raw = SearchHistory.put_recent_first(all_search_raw)
+    all_search_raw = SearchHistory.putRecentFirst(all_search_raw)
     nb_result = all_search_raw.length
     all_search = all_search_raw.slice(0, max_search_result)
   }
@@ -159,7 +159,7 @@
     db_initied = true
   })
 
-  SearchHistory.on_clear(() => {
+  SearchHistory.onClear(() => {
     init_search_recent()
   })
 </script>

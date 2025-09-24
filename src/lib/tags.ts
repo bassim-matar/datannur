@@ -1,7 +1,7 @@
 import db from '@db'
 
 export default class Tags {
-  static get_from_entities(entities) {
+  static getFromEntities(entities) {
     const tags_db = db.getAll('tag')
     let tags_by_id = {}
 

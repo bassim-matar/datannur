@@ -17,14 +17,14 @@
     if (variable_preview.variable === undefined) {
       variable_data = variable_preview
     } else {
-      variable = PreviewManager.clean_keys(variable)
+      variable = PreviewManager.cleanKeys(variable)
       dataset_preview = variable_preview.dataset_id
       $tab_selected.nb = 0
       if (typeof dataset_preview !== 'string') {
         let dataset_data = dataset_preview
-        variable_data = PreviewManager.get_variable_data(dataset_data, variable)
-        variable_data = PreviewManager.add_position(variable_data)
-        columns = PreviewManager.get_columns(variable_data)
+        variable_data = PreviewManager.getVariableData(dataset_data, variable)
+        variable_data = PreviewManager.addPosition(variable_data)
+        columns = PreviewManager.getColumns(variable_data)
         $tab_selected.nb = variable_data.length
         return
       }
@@ -32,15 +32,15 @@
       if (db.preview === undefined) db.preview = {}
       if (!(dataset_preview in db.preview)) {
         let dataset_data = await PreviewManager.load(dataset_preview)
-        PreviewManager.clean_keys(dataset_data)
+        PreviewManager.cleanKeys(dataset_data)
         db.preview[dataset_preview] = dataset_data
       }
-      variable_data = PreviewManager.get_variable_data(
+      variable_data = PreviewManager.getVariableData(
         db.preview[dataset_preview],
         variable,
       )
     }
-    columns = PreviewManager.get_columns(variable_data)
+    columns = PreviewManager.getColumns(variable_data)
     $tab_selected.nb = variable_data.length
   }
 
