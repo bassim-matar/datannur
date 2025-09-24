@@ -4,10 +4,7 @@ import { url_prefix } from '@lib/util'
 import markdown_render from '@lib/markdown'
 
 export function ensure_mermaid_loaded(callback) {
-  const app_version = document
-    .querySelector('meta[name="app_version"]')
-    ?.getAttribute('content')
-  const mermaid_src = `assets/external/mermaid.min.js?v=${app_version}`
+  const mermaid_src = `assets/external/mermaid.min.js?v=${__APP_VERSION__}`
   if (document.querySelector(`script[src="${mermaid_src}"]`)) {
     callback()
     return

@@ -4,7 +4,7 @@ import { escape_html_entities } from '@lib/util'
 
 function ensure_flexsearch_loaded() {
   return new Promise<void>(resolve => {
-    const flexsearch_src = 'assets/external/flexsearch.js?v=0.8.158'
+    const flexsearch_src = `assets/external/flexsearch.js?v=${__APP_VERSION__}`
     if (document.querySelector(`script[src="${flexsearch_src}"]`)) {
       resolve()
       return

@@ -9,4 +9,6 @@ declare global {
     mermaid: Mermaid
     goToHref: (event: MouseEvent, href: string) => void
   }
+
+  const __APP_VERSION__: string
 }
