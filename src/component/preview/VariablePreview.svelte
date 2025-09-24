@@ -1,7 +1,7 @@
 <script lang="ts">
   import db from '@db'
   import { tab_selected } from '@lib/store'
-  import Preview_manager from '@lib/preview-manager'
+  import PreviewManager from '@lib/preview-manager'
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
 
@@ -17,33 +17,30 @@
     if (variable_preview.variable === undefined) {
       variable_data = variable_preview
     } else {
-      variable = Preview_manager.clean_keys(variable)
+      variable = PreviewManager.clean_keys(variable)
       dataset_preview = variable_preview.dataset_id
       $tab_selected.nb = 0
       if (typeof dataset_preview !== 'string') {
         let dataset_data = dataset_preview
-        variable_data = Preview_manager.get_variable_data(
-          dataset_data,
-          variable,
-        )
-        variable_data = Preview_manager.add_position(variable_data)
-        columns = Preview_manager.get_columns(variable_data)
+        variable_data = PreviewManager.get_variable_data(dataset_data, variable)
+        variable_data = PreviewManager.add_position(variable_data)
+        columns = PreviewManager.get_columns(variable_data)
         $tab_selected.nb = variable_data.length
         return
       }
 
       if (db.preview === undefined) db.preview = {}
       if (!(dataset_preview in db.preview)) {
-        let dataset_data = await Preview_manager.load(dataset_preview)
-        Preview_manager.clean_keys(dataset_data)
+        let dataset_data = await PreviewManager.load(dataset_preview)
+        PreviewManager.clean_keys(dataset_data)
         db.preview[dataset_preview] = dataset_data
       }
-      variable_data = Preview_manager.get_variable_data(
+      variable_data = PreviewManager.get_variable_data(
         db.preview[dataset_preview],
         variable,
       )
     }
-    columns = Preview_manager.get_columns(variable_data)
+    columns = PreviewManager.get_columns(variable_data)
     $tab_selected.nb = variable_data.length
   }
 

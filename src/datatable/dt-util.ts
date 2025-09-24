@@ -1,4 +1,4 @@
-import { url_hash } from '@lib/url-hash'
+import { UrlHash } from '@lib/url-hash'
 import Options from '@lib/options'
 import { get_sort_by_name } from '@lib/db'
 import { get_percent } from '@lib/util'
@@ -29,7 +29,7 @@ export function elem_has_clickable(target, container, selector) {
 }
 
 export function get_table_id(entity) {
-  const hash = url_hash.getAll()
+  const hash = UrlHash.getAll()
   const table_id = hash.replaceAll('/', '___').replace(/[^a-z0-9_\-,. ]/gi, '')
   return table_id + '___' + entity
 }
@@ -62,7 +62,7 @@ export function get_nb_sticky(columns) {
 
 export function get_clean_data(data, sort_by_name, is_recursive, is_big) {
   function get_has_filter_recursive() {
-    const hash = url_hash.getAll()
+    const hash = UrlHash.getAll()
     const open_all_recursive = Options.get('open_all_recursive')
     return hash !== 'favorite' && !open_all_recursive
   }

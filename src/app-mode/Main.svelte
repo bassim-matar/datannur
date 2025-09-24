@@ -14,16 +14,16 @@
   import Options from '@lib/options'
   import Logs from '@lib/logs'
   import Favorites from '@favorite/favorites'
-  import Main_filter from '@lib/main-filter'
+  import MainFilter from '@lib/main-filter'
   import { is_http, has_touch_screen, get_is_small_menu } from '@lib/util'
-  import { url_param } from '@lib/url-param'
-  import { url_hash } from '@lib/url-hash'
+  import { UrlParam } from '@lib/url-param'
+  import { UrlHash } from '@lib/url-hash'
   import { db_add_processed_data, get_user_data } from '@lib/db'
   import icon from '@img/icon.png'
   import icon_dark from '@img/icon-dark.png'
   import Search from '@search/search'
   import SearchHistory from '@search/search-history'
-  import { Dark_mode, dark_mode_theme } from '@dark-mode/dark-mode'
+  import { DarkMode, dark_mode_theme } from '@dark-mode/dark-mode'
   import { copy_text_listen_click } from '@lib/copy-text'
   import { add_values_to_attribut } from '@stat/stat'
   import definition from '@stat/attributs-def'
@@ -73,17 +73,17 @@
     console.log('init option', Math.round(performance.now() - timer) + ' ms')
   })()
 
-  Dark_mode.init(Options)
+  DarkMode.init(Options)
 
   db.search = async (searchTerm: string) => []
   db.loaded = (async () => {
     try {
       let timer = performance.now()
-      await Main_filter.init()
+      await MainFilter.init()
       const filter = {
         entity: 'dataset',
         variable: 'type',
-        values: Main_filter.get_type_to_filter(),
+        values: MainFilter.get_type_to_filter(),
       }
       console.log('init filter', Math.round(performance.now() - timer) + ' ms')
 
@@ -119,18 +119,18 @@
 
   async function check_from_search(page_hash_value) {
     await db.loaded
-    const from_search = url_param.get('from_search')
+    const from_search = UrlParam.get('from_search')
     if (from_search) {
       const entity = page_hash_value
-      const entity_id = url_hash.get_level_2()
+      const entity_id = UrlHash.get_level_2()
       SearchHistory.add(entity, entity_id)
       Logs.add('search_bar', { entity, entity_id })
-      url_param.delete('from_search')
-      url_param.delete('search')
+      UrlParam.delete('from_search')
+      UrlParam.delete('search')
     }
   }
 
-  $page_hash = url_hash.get_level_1()
+  $page_hash = UrlHash.get_level_1()
   page_hash.subscribe(page_hash_value => check_from_search(page_hash_value))
 
   if (has_touch_screen) {

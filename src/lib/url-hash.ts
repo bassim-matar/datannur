@@ -1,6 +1,6 @@
 import { app_mode } from '@lib/util'
 
-export class url_hash {
+export class UrlHash {
   static default = 'homepage'
   static getAll() {
     let hash = window.location.hash

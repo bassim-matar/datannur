@@ -1,8 +1,8 @@
 import jQuery from 'jquery'
-import { url_param } from '@lib/url-param'
+import { UrlParam } from '@lib/url-param'
 import { date_to_timestamp } from '@lib/time'
 
-export default class Filter_helper {
+export default class FilterHelper {
   table_id: string
   filters: any
   filter_table_id: string
@@ -237,20 +237,20 @@ export default class Filter_helper {
   update_filter_url(col_num, value) {
     const col_id = this.filter_table_id + '_' + col_num
     if ([undefined, null, NaN, ''].includes(value)) {
-      url_param.delete(col_id)
+      UrlParam.delete(col_id)
     } else {
-      url_param.set(col_id, value)
+      UrlParam.set(col_id, value)
     }
   }
   get_col_filter_url(col_num) {
     const col_id = this.filter_table_id + '_' + col_num
-    const value = url_param.get(col_id)
+    const value = UrlParam.get(col_id)
     if (!value) return false
     return value
   }
   update_filter_count() {
     let nb_active = 0
-    for (const key in url_param.get_all_params()) {
+    for (const key in UrlParam.get_all_params()) {
       if (key.startsWith(this.filter_table_id + '_')) {
         nb_active += 1
       }
@@ -258,7 +258,7 @@ export default class Filter_helper {
     this.on_update_filter_count(nb_active)
   }
   remove_all() {
-    for (const key in url_param.get_all_params()) {
+    for (const key in UrlParam.get_all_params()) {
       if (key.startsWith(this.filter_table_id + '_')) {
         const col_num = key.split(this.filter_table_id + '_')[1]
         const id = 'datatables_title_' + this.table_id + '_filter_' + col_num

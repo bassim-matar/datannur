@@ -1,4 +1,4 @@
-export class url_param {
+export class UrlParam {
   static get_app_mode() {
     return app_mode
   }
@@ -71,7 +71,7 @@ export class url_param {
 }
 
 let app_mode = 'spa'
-const url_app_mode = url_param.get('app_mode')
+const url_app_mode = UrlParam.get('app_mode')
 
 if (url_app_mode == 'check_db') {
   app_mode = 'check_db'

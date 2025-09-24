@@ -13,10 +13,10 @@ const namingConventionRules = {
       selector: 'typeAlias',
       format: ['PascalCase'],
     },
-    // {
-    //   selector: 'class',
-    //   format: ['PascalCase'],
-    // },
+    {
+      selector: 'class',
+      format: ['PascalCase'],
+    },
     // {
     //   selector: 'method',
     //   format: ['camelCase'],

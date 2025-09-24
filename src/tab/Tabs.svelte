@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { tab_selected, footer_visible, all_tabs } from '@lib/store'
-  import { url_param } from '@lib/url-param'
+  import { UrlParam } from '@lib/url-param'
   import { is_firefox, get_is_mobile } from '@lib/util'
   import { is_big_limit } from '@lib/constant'
   import Logs from '@lib/logs'
@@ -63,9 +63,9 @@
     center_active_tab()
     Logs.add('select_tab', { entity: tab_key })
     if (tabs[0].key === tab_key) {
-      url_param.delete('tab')
+      UrlParam.delete('tab')
     } else {
-      url_param.set('tab', tab_key)
+      UrlParam.set('tab', tab_key)
     }
   }
 
@@ -95,7 +95,7 @@
   }
 
   function load_tab_from_url_param() {
-    const url_param_tab = url_param.get('tab')
+    const url_param_tab = UrlParam.get('tab')
     if (url_param_tab) {
       load_tab(url_param_tab)
     }

@@ -2,7 +2,7 @@ import db from '@db'
 import { wrap_long_text } from '@lib/util'
 import Render from '@lib/render'
 
-export default class Preview_manager {
+export default class PreviewManager {
   static clean_keys(data) {
     if (typeof data === 'string') {
       return data.replaceAll('.', '_')

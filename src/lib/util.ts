@@ -1,7 +1,7 @@
 import { var_types, entity_to_icon } from '@lib/constant'
-import { url_param } from './url-param'
+import { UrlParam } from './url-param'
 
-export const app_mode = url_param.get_app_mode()
+export const app_mode = UrlParam.get_app_mode()
 
 export const is_http = window.location.protocol.startsWith('http')
 

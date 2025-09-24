@@ -1,12 +1,12 @@
 <script lang="ts">
   import { get_local_filter } from '@lib/db'
-  import Main_filter from '@lib/main-filter'
+  import MainFilter from '@lib/main-filter'
   import Switch from '@layout/Switch.svelte'
   import Button from '@layout/Button.svelte'
 
   let filters = $state([])
 
-  const saved_filters = Main_filter.get()
+  const saved_filters = MainFilter.get()
   const db_filters = get_local_filter()
 
   for (const db_filter of db_filters) {
@@ -22,7 +22,7 @@
   }
 
   function update_filter_state() {
-    Main_filter.save(filters)
+    MainFilter.save(filters)
   }
 </script>
 

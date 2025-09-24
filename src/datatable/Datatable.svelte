@@ -13,10 +13,10 @@
   import { tab_selected, all_tables_loaded, all_tabs } from '@lib/store'
   import { extendable } from '@lib/extendable'
   import Exporter from './exporter/exporter'
-  import Filter_helper from './filter/filter-helper'
+  import FilterHelper from './filter/filter-helper'
   import init_favorite from './favorite/init-favorite'
-  import Datatables_timer from './datatables-timer'
-  import Datatables_loading from './datatables-loading'
+  import DatatablesTimer from './datatables-timer'
+  import DatatablesLoading from './datatables-loading'
   import { define_columns } from './define-columns'
   import {
     get_table_id,
@@ -50,8 +50,8 @@
   let nb_active_filter = $state(0)
   let is_popup_search_option_open = $state(false)
 
-  Datatables_timer.start()
-  Datatables_loading.start()
+  DatatablesTimer.start()
+  DatatablesLoading.start()
 
   DataTable.Buttons.jszip(JSZip)
 
@@ -65,7 +65,7 @@
 
   const table_id = get_table_id(entity)
   const exporter = new Exporter(table_id)
-  const filter = new Filter_helper(table_id, entity, current_nb => {
+  const filter = new FilterHelper(table_id, entity, current_nb => {
     nb_active_filter = current_nb
   })
 
@@ -177,9 +177,9 @@
       }
       short_table = is_short_table(datatable)
       loading = false
-      Datatables_timer.end()
-      Datatables_loading.end()
-      if (Datatables_loading.finished) {
+      DatatablesTimer.end()
+      DatatablesLoading.end()
+      if (DatatablesLoading.finished) {
         $all_tables_loaded = true
       }
     }, 1)

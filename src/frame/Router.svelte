@@ -9,7 +9,7 @@
     page_content_loaded,
     reload_increment,
   } from '@lib/store'
-  import { url_hash } from '@lib/url-hash'
+  import { UrlHash } from '@lib/url-hash'
   import router_index from '@src/.generated/router-index'
 
   let entity_global = $state('')
@@ -35,7 +35,7 @@
     $page_content_loaded = false
     route = router_index[entity].component
     $page = entity
-    setTimeout(() => ($page_hash = url_hash.get_level_1()), 1)
+    setTimeout(() => ($page_hash = UrlHash.get_level_1()), 1)
   }
 
   function set_route(entity) {

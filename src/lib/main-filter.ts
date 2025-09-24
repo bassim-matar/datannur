@@ -1,6 +1,6 @@
 import db from '@db'
 
-export default class Main_filter {
+export default class MainFilter {
   static db_key
   static filters
 
