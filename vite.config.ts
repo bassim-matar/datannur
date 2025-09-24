@@ -125,6 +125,9 @@ if (process.env.NODE_ENV === 'development') {
 export default defineConfig({
   base: '',
   server: { port: config.serverPort, origin: '', open: true },
+  define: {
+    __APP_VERSION__: JSON.stringify(appVersion),
+  },
   test: { include: ['test/**/*.test.ts'], alias: aliases },
   css: {
     postcss: { plugins: [autoprefixer] },
@@ -147,7 +150,6 @@ export default defineConfig({
     alias({ entries: aliases }),
     svelte(svelteConfig),
     htmlReplace([
-      ['{{app_version}}', appVersion],
       [' crossorigin ', ' '],
       [` type="module" src="./`, ` defer src="./`],
     ]),

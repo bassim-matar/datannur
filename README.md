@@ -54,8 +54,8 @@ datannur is a client-side data catalog designed to organize and explore datasets
 
 🚀 **[Try the live demo](https://bassim-matar.github.io/datannur/)**
 
-![datannur interface](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/about_page/dossier-sitg-tab-dataset-dark.webp#gh-dark-mode-only)
-![datannur interface](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/about_page/dossier-sitg-tab-dataset.webp#gh-light-mode-only)
+![datannur interface](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/about-page/dossier-sitg-tab-dataset-dark.webp#gh-dark-mode-only)
+![datannur interface](https://raw.githubusercontent.com/bassim-matar/datannur/main/public/assets/about-page/dossier-sitg-tab-dataset.webp#gh-light-mode-only)
 
 ## Quick Start
 

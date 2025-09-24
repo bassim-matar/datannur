@@ -17,10 +17,6 @@
   })
   const year = new Date().getFullYear()
 
-  const app_version = document
-    .querySelector('meta[name="app_version"]')
-    ?.getAttribute('content')
-
   let current_interval
   let interval = 1000
   function update_last_modif() {
@@ -60,13 +56,13 @@
           © {year} dat<span class="main_color">a</span>nnur
         </a>
       </div>
-      {#if app_version}
+      {#if __APP_VERSION__}
         <div>
           <a
-            href="https://github.com/bassim-matar/datannur/releases/tag/v{app_version}"
+            href="https://github.com/bassim-matar/datannur/releases/tag/v{__APP_VERSION__}"
             target="_blanck"
           >
-            v{app_version}
+            v{__APP_VERSION__}
           </a>
         </div>
       {/if}
