@@ -1,6 +1,6 @@
 import { app_mode } from '@lib/util'
 
-export class url_hash {
+export class UrlHash {
   static default = 'homepage'
   static getAll() {
     let hash = window.location.hash
@@ -11,11 +11,11 @@ export class url_hash {
     if (!hash || hash === '') return this.default
     return hash
   }
-  static get_level_1() {
+  static getLevel1() {
     const hash = this.getAll()
     return hash.split('/')[0]
   }
-  static get_level_2() {
+  static getLevel2() {
     const hash = this.getAll()
     if (hash.split('/').length < 2) return ''
     return hash.split('/')[1]

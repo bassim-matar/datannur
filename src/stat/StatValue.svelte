@@ -14,7 +14,7 @@
     <div
       class="cell readable extendable"
       onmouseenter={extendable.open}
-      onmouseleave={extendable.close_one_line}
+      onmouseleave={extendable.closeOneLine}
     >
       {#if with_html}
         <!-- eslint-disable svelte/no-at-html-tags -->

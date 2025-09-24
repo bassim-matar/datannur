@@ -1,4 +1,4 @@
-export default class Datatables_loading {
+export default class DatatablesLoading {
   static nb_loading = 0
   static finished = false
   static start() {

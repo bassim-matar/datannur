@@ -96,7 +96,7 @@ export default class Search {
     for (const entity in entity_names) ids_found[entity] = []
     for (const variable of this.all_search) {
       for (const entity of variable.entities) {
-        const items_id = await this.get_items_id(to_search, entity, ids_found)
+        const items_id = await this.getItemsId(to_search, entity, ids_found)
         for (const item_id of items_id) {
           const item = db.get(entity.name, item_id)
           result.push({
@@ -118,7 +118,7 @@ export default class Search {
     }
     return result
   }
-  async get_items_id(to_search, entity, ids_found) {
+  async getItemsId(to_search, entity, ids_found) {
     entity.data = []
     const normalizedSearch = removeDiacritics(to_search)
     if (!normalizedSearch) return []

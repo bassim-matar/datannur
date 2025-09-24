@@ -38,9 +38,9 @@ export default class SearchHistory {
       this.search_history.pop()
     }
     this.save()
-    this.call_on_change()
+    this.callOnChange()
   }
-  static call_on_change() {
+  static callOnChange() {
     for (const [key, callback] of Object.entries(this.on_change_callbacks)) {
       callback()
     }
@@ -54,17 +54,17 @@ export default class SearchHistory {
         search_item.entity !== entity || search_item.entity_id !== entity_id,
     )
     this.save()
-    this.call_on_change()
+    this.callOnChange()
   }
   static clear() {
     this.search_history = []
     this.save()
     if (this.on_clear_callback) this.on_clear_callback()
   }
-  static on_clear(callback) {
+  static onClear(callback) {
     this.on_clear_callback = callback
   }
-  static get_recent_search() {
+  static getRecentSearch() {
     const result = []
     const recent_search = this.getAll()
     for (const entry of recent_search) {
@@ -85,7 +85,7 @@ export default class SearchHistory {
     }
     return result
   }
-  static get_recent_search_ids() {
+  static getRecentSearchIds() {
     const recent_search_ids = {}
     const recent_search = this.getAll()
     for (const [i, entry] of recent_search.entries()) {
@@ -94,8 +94,8 @@ export default class SearchHistory {
     }
     return recent_search_ids
   }
-  static put_recent_first(result) {
-    const recent_ids = this.get_recent_search_ids()
+  static putRecentFirst(result) {
+    const recent_ids = this.getRecentSearchIds()
     const recent_search = { name: [], description: [] }
     for (const item of result) {
       const key = `${item.entity}-${item.id}`
@@ -110,7 +110,7 @@ export default class SearchHistory {
     result = result.filter(item => !(`${item.entity}-${item.id}` in recent_ids))
     return [...recent_search.name, ...recent_search.description, ...result]
   }
-  static on_change(key: string, callback: () => void) {
+  static onChange(key: string, callback: () => void) {
     if (this.on_change_callbacks === undefined) this.on_change_callbacks = {}
     this.on_change_callbacks[key] = callback
   }

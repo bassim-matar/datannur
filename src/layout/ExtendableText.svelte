@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { extendable } from "@lib/extendable"
+  import { extendable } from '@lib/extendable'
 
   let { ...props } = $props()
 </script>
@@ -8,7 +8,7 @@
 <div
   class={`extendable ${props.class}`}
   onmouseenter={extendable.open}
-  onmouseleave={extendable.close_two_lines}
+  onmouseleave={extendable.closeTwoLines}
 >
   {@render props.children?.()}
 </div>

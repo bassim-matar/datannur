@@ -16,9 +16,9 @@
     Column.name('modality', 'Modalité'),
     Column.description(),
     Column.datatype(),
-    Column.nb_variable('modality', nb_variable_max, { show_title: true }),
-    Column.nb_values(nb_value_max),
-    Column.values_preview(),
+    Column.nbVariable('modality', nb_variable_max, { show_title: true }),
+    Column.nbValues(nb_value_max),
+    Column.valuesPreview(),
     Column.folder(),
   ]
 </script>

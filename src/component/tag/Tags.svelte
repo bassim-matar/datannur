@@ -73,14 +73,14 @@
           if (!data) return ''
           const content = link('tag/' + row.id + '?tab=institutions', data)
           const percent = get_percent(data / institution_max)
-          return `${Render.num_percent(content, percent, 'institution', type)}`
+          return `${Render.numPercent(content, percent, 'institution', type)}`
         },
       },
-      Column.nb_folder_recursive('tag', folder_max),
-      Column.nb_child_recursive('tag', tag_max),
-      Column.nb_doc_recursive('tag', doc_max),
-      Column.nb_dataset_recursive('tag', dataset_max),
-      Column.nb_variable('tag', variable_max, { recursive: true }),
+      Column.nbFolderRecursive('tag', folder_max),
+      Column.nbChildRecursive('tag', tag_max),
+      Column.nbDocRecursive('tag', doc_max),
+      Column.nbDatasetRecursive('tag', dataset_max),
+      Column.nbVariable('tag', variable_max, { recursive: true }),
     ])
 
     if (db.use.tag_recursive) {

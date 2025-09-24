@@ -11,7 +11,7 @@
   import Icon from '@layout/Icon.svelte'
   import { reset_cols_search_cache } from '@lib/util'
   import { get_user_data } from '@lib/db'
-  import { url_param } from '@lib/url-param'
+  import { UrlParam } from '@lib/url-param'
   import Switch from '@layout/Switch.svelte'
   import DarkModeSwitch from '@dark-mode/DarkModeSwitch.svelte'
   import BtnImport from '@layout/BtnImport.svelte'
@@ -87,7 +87,7 @@
   function clear_all() {
     db.browser.clear()
     reset_cols_search_cache()
-    url_param.reset()
+    UrlParam.reset()
     location.reload()
   }
 

@@ -39,7 +39,7 @@
           </div>`
         }
 
-        return Render.num_percent(data, percent_display, 'freq', type, true)
+        return Render.numPercent(data, percent_display, 'freq', type, true)
       },
     })
 

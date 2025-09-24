@@ -52,21 +52,21 @@
     const base = [
       Column.name('dataset', 'Dataset', { is_meta }),
       Column.description(),
-      Column.lineage_type(),
-      Column.nb_sources(nb_sources_max, 'dataset'),
-      Column.nb_derived(nb_derived_max, 'dataset'),
-      Column.dataset_type(),
-      Column.nb_variable('dataset', nb_variable_max, {
+      Column.lineageType(),
+      Column.nbSources(nb_sources_max, 'dataset'),
+      Column.nbDerived(nb_derived_max, 'dataset'),
+      Column.datasetType(),
+      Column.nbVariable('dataset', nb_variable_max, {
         tab: tab_variables,
         link_path: dataset_path,
         show_title: true,
       }),
-      Column.nb_row(nb_row_max),
+      Column.nbRow(nb_row_max),
     ]
     if (is_meta) {
       return [
         ...base,
-        Column.meta_localisation(),
+        Column.metaLocalisation(),
         Column.metaFolder(),
         Column.timestamp({
           var_name: 'last_update_timestamp',
@@ -78,19 +78,19 @@
     return [
       Column.favorite(),
       ...base,
-      Column.nb_doc('dataset', nb_doc_max, true),
+      Column.nbDoc('dataset', nb_doc_max, true),
       Column.folder(),
       Column.tag(),
-      Column.last_update(),
-      Column.next_update(),
+      Column.lastUpdate(),
+      Column.nextUpdate(),
       Column.frequency(),
-      Column.start_date(),
-      Column.end_date(),
+      Column.startDate(),
+      Column.endDate(),
       Column.owner(),
       Column.manager(),
       Column.localisation(),
-      Column.delivery_format(),
-      Column.data_path(),
+      Column.deliveryFormat(),
+      Column.dataPath(),
     ]
   }
   const columns = define_columns()

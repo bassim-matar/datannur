@@ -62,10 +62,10 @@
               data,
             )
             const percent = get_percent(data / dataset_max)
-            return `${Render.num_percent(content, percent, 'dataset', type)}`
+            return `${Render.numPercent(content, percent, 'dataset', type)}`
           },
         },
-        Column.nb_variable('folder', variable_max, {
+        Column.nbVariable('folder', variable_max, {
           tab: 'metaVariables',
           link_path: folder_path,
           show_title: true,
@@ -80,18 +80,18 @@
         link_same_entity_tab: true,
       }),
       Column.description(),
-      Column.nb_child_recursive('folder', folder_max, folder_path),
-      Column.nb_dataset_recursive('folder', dataset_max),
-      Column.nb_variable('folder', variable_max, {
+      Column.nbChildRecursive('folder', folder_max, folder_path),
+      Column.nbDatasetRecursive('folder', dataset_max),
+      Column.nbVariable('folder', variable_max, {
         recursive: true,
       }),
-      Column.nb_doc('folder', nb_doc_max),
+      Column.nbDoc('folder', nb_doc_max),
       Column.tag(),
-      Column.last_update(),
-      Column.next_update(),
+      Column.lastUpdate(),
+      Column.nextUpdate(),
       Column.frequency(),
-      Column.start_date(),
-      Column.end_date(),
+      Column.startDate(),
+      Column.endDate(),
       Column.parents('folder'),
       Column.owner(),
       Column.manager(),
@@ -102,15 +102,15 @@
         defaultContent: '',
         tooltip: "Type d'enquête",
       },
-      Column.delivery_format(),
+      Column.deliveryFormat(),
       {
         data: 'metadata_path',
         title: Render.icon('metadata_path') + 'Metadonnées',
         defaultContent: '',
         tooltip: 'Emplacement des métadonnées',
-        render: Render.copy_cell,
+        render: Render.copyCell,
       },
-      Column.data_path(),
+      Column.dataPath(),
       {
         data: 'git_code',
         title: Render.icon('git_code') + 'GIT code',

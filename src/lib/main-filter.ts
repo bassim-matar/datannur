@@ -1,6 +1,6 @@
 import db from '@db'
 
-export default class Main_filter {
+export default class MainFilter {
   static db_key
   static filters
 
@@ -19,7 +19,7 @@ export default class Main_filter {
   static get() {
     return this.filters
   }
-  static get_type_to_filter() {
+  static getTypeToFilter() {
     return this.filters
       .filter(({ is_active }) => !is_active)
       .map(({ id }) => id)

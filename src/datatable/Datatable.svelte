@@ -13,10 +13,10 @@
   import { tab_selected, all_tables_loaded, all_tabs } from '@lib/store'
   import { extendable } from '@lib/extendable'
   import Exporter from './exporter/exporter'
-  import Filter_helper from './filter/filter-helper'
+  import FilterHelper from './filter/filter-helper'
   import init_favorite from './favorite/init-favorite'
-  import Datatables_timer from './datatables-timer'
-  import Datatables_loading from './datatables-loading'
+  import DatatablesTimer from './datatables-timer'
+  import DatatablesLoading from './datatables-loading'
   import { define_columns } from './define-columns'
   import {
     get_table_id,
@@ -50,8 +50,8 @@
   let nb_active_filter = $state(0)
   let is_popup_search_option_open = $state(false)
 
-  Datatables_timer.start()
-  Datatables_loading.start()
+  DatatablesTimer.start()
+  DatatablesLoading.start()
 
   DataTable.Buttons.jszip(JSZip)
 
@@ -65,7 +65,7 @@
 
   const table_id = get_table_id(entity)
   const exporter = new Exporter(table_id)
-  const filter = new Filter_helper(table_id, entity, current_nb => {
+  const filter = new FilterHelper(table_id, entity, current_nb => {
     nb_active_filter = current_nb
   })
 
@@ -98,10 +98,10 @@
     }
   })
 
-  let buttons = exporter.get_buttons()
+  let buttons = exporter.getButtons()
   if (is_big) {
     buttons.push(
-      filter.get_btn_info_popup(() => {
+      filter.getBtnInfoPopup(() => {
         is_popup_search_option_open = true
       }),
     )
@@ -130,7 +130,7 @@
         destroy: true,
         language: {
           zeroRecords: '<span class="no_result">Aucun résultat</span>',
-          buttons: exporter.get_language(),
+          buttons: exporter.getLanguage(),
         } as any,
         initComplete: function () {
           if (!is_big) return false
@@ -148,7 +148,7 @@
       })
       dom_table = jQuery('table#' + table_id + '._datatables')
       dom_table.on('mouseenter', '.long_text', extendable.open)
-      dom_table.on('mouseleave', '.long_text', extendable.close_two_lines)
+      dom_table.on('mouseleave', '.long_text', extendable.closeTwoLines)
 
       dom_table.on('click', 'td', function (event) {
         setTimeout(() => {
@@ -177,9 +177,9 @@
       }
       short_table = is_short_table(datatable)
       loading = false
-      Datatables_timer.end()
-      Datatables_loading.end()
-      if (Datatables_loading.finished) {
+      DatatablesTimer.end()
+      DatatablesLoading.end()
+      if (DatatablesLoading.finished) {
         $all_tables_loaded = true
       }
     }, 1)
@@ -269,7 +269,7 @@
 <div class="datatable_main_wrapper">
   {#if data.length > 0}
     <div class="datatables_outer" class:visible={!loading}>
-      <FilterInfoBox {nb_active_filter} click={() => filter.remove_all()} />
+      <FilterInfoBox {nb_active_filter} click={() => filter.removeAll()} />
       <table
         id={table_id}
         class="_datatables table is-striped"

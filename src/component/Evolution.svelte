@@ -81,7 +81,7 @@
       },
       Column.entity(),
       Column.name(),
-      Column.parent_entity(),
+      Column.parentEntity(),
       {
         data: 'variable',
         title: Render.icon('variable') + 'Variable',

@@ -34,7 +34,7 @@
   modalities = modalities.concat(direct_modalities)
   modalities = remove_duplicate_by_id(modalities)
 
-  const tags = Tags.get_from_entities({ folders, datasets })
+  const tags = Tags.getFromEntities({ folders, datasets })
   make_parents_relative(false, tags)
   add_minimum_deep(tags)
 

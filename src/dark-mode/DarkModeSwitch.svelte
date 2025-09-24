@@ -1,13 +1,13 @@
 <script lang="ts">
   import Logs from '@lib/logs'
-  import { Dark_mode, dark_mode_theme } from '@dark-mode/dark-mode'
+  import { DarkMode, dark_mode_theme } from '@dark-mode/dark-mode'
 
   let { label = null } = $props()
 
   let id = window.crypto.randomUUID()
 
   function toggle() {
-    Dark_mode.toggle()
+    DarkMode.toggle()
     if ($dark_mode_theme === 'dark') Logs.add('toggle_dark_mode_btn_off')
     else Logs.add('toggle_dark_mode_btn_on')
   }

@@ -1,5 +1,5 @@
-export class url_param {
-  static get_app_mode() {
+export class UrlParam {
+  static getAppMode() {
     return app_mode
   }
   static get(key) {
@@ -56,7 +56,7 @@ export class url_param {
     }
     window.history.replaceState(null, null, url_with_params)
   }
-  static get_all_params() {
+  static getAllParams() {
     let hash = window.location.hash
     if (app_mode === 'static_render') hash = window.location.href
     if (!hash.includes('?')) return {}
@@ -71,7 +71,7 @@ export class url_param {
 }
 
 let app_mode = 'spa'
-const url_app_mode = url_param.get('app_mode')
+const url_app_mode = UrlParam.get('app_mode')
 
 if (url_app_mode == 'check_db') {
   app_mode = 'check_db'

@@ -39,24 +39,24 @@
   function define_columns() {
     const base = [
       Column.name('variable', 'Variable', { is_meta }),
-      Column.original_name(),
+      Column.originalName(),
       Column.description(),
       Column.datatype(),
-      Column.is_key(),
-      Column.lineage_type(),
-      Column.nb_sources(nb_sources_max, 'variable'),
-      Column.nb_derived(nb_derived_max, 'variable'),
-      Column.nb_row(nb_row_max),
-      Column.nb_missing(),
-      Column.nb_duplicates(),
-      Column.nb_values(nb_value_max),
+      Column.isKey(),
+      Column.lineageType(),
+      Column.nbSources(nb_sources_max, 'variable'),
+      Column.nbDerived(nb_derived_max, 'variable'),
+      Column.nbRow(nb_row_max),
+      Column.nbMissing(),
+      Column.nbDuplicates(),
+      Column.nbValues(nb_value_max),
       Column.freq(),
-      Column.values_preview(),
+      Column.valuesPreview(),
     ]
     if (is_meta) {
       return [
         ...base,
-        Column.meta_localisation(),
+        Column.metaLocalisation(),
         Column.dataset(parent_name),
         Column.metaFolder(),
       ]
@@ -70,8 +70,8 @@
       Column.owner(),
       Column.manager(),
       Column.tag(),
-      Column.start_date(),
-      Column.end_date(),
+      Column.startDate(),
+      Column.endDate(),
     ]
   }
   const columns = define_columns()

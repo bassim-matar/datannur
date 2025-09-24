@@ -1,6 +1,6 @@
 import { page_content_loaded } from '@lib/store'
 
-export default class Datatables_timer {
+export default class DatatablesTimer {
   static nb_loading = 0
   static start_time
   static start() {

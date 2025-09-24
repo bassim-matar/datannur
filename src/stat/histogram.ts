@@ -1,5 +1,5 @@
 export default class Histogram {
-  static get_ranges(data, numGroups = 12) {
+  static getRanges(data, numGroups = 12) {
     const cleanedData = data.filter(
       value =>
         value !== null &&
@@ -59,7 +59,7 @@ export default class Histogram {
     return ranges
   }
 
-  static add_count(ranges, data) {
+  static addCount(ranges, data) {
     let histogram = []
     for (const range of ranges) {
       histogram.push({
@@ -110,7 +110,7 @@ export default class Histogram {
   }
 
   static get(all_values, nb_range) {
-    const ranges = this.get_ranges(all_values, nb_range)
-    return this.add_count(ranges, all_values)
+    const ranges = this.getRanges(all_values, nb_range)
+    return this.addCount(ranges, all_values)
   }
 }

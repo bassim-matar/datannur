@@ -28,10 +28,10 @@ export const extendable = {
       elem.removeClass('open')
     })
   },
-  close_one_line() {
+  closeOneLine() {
     return extendable.close(this, 25)
   },
-  close_two_lines() {
+  closeTwoLines() {
     return extendable.close(this, 50)
   },
 }

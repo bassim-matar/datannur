@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import db from '@db'
   import { search_value, page_content_loaded } from '@lib/store'
-  import { url_param } from '@lib/url-param'
+  import { UrlParam } from '@lib/url-param'
   import Head from '@frame/Head.svelte'
   import Loading from '@frame/Loading.svelte'
   import Tabs from '@tab/Tabs.svelte'
@@ -39,7 +39,7 @@
     no_recent_search,
   )
 
-  SearchHistory.on_change('search_page', () => search_input_change())
+  SearchHistory.onChange('search_page', () => search_input_change())
 
   function set_tab_key() {
     recent_search_change = !recent_search_change
@@ -47,19 +47,19 @@
   }
 
   function init_search_recent() {
-    search_result_data = SearchHistory.get_recent_search()
+    search_result_data = SearchHistory.getRecentSearch()
     const tab_name = 'Recherches récentes'
     set_tabs(tab_name)
     is_loading = false
   }
 
   async function search_input_change() {
-    const url_search_value = url_param.get('search')
+    const url_search_value = UrlParam.get('search')
     if (url_search_value !== $search_value) {
-      url_param.set('search', $search_value)
+      UrlParam.set('search', $search_value)
     }
     if ($search_value === '') {
-      url_param.delete('search')
+      UrlParam.delete('search')
       init_search_recent()
       return false
     }
@@ -67,7 +67,7 @@
     const all_search_raw = await db.search($search_value)
     is_loading = false
     if ($search_value !== value_before) return false
-    search_result_data = SearchHistory.put_recent_first(all_search_raw)
+    search_result_data = SearchHistory.putRecentFirst(all_search_raw)
     set_tabs()
   }
 
@@ -95,7 +95,7 @@
 
   let is_empty_input = $derived(['', undefined, null].includes($search_value))
 
-  const url_search_value = url_param.get('search')
+  const url_search_value = UrlParam.get('search')
   if (url_search_value !== false && url_search_value !== '') {
     $search_value = url_search_value
   }

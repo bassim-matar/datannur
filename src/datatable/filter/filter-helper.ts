@@ -1,8 +1,8 @@
 import jQuery from 'jquery'
-import { url_param } from '@lib/url-param'
+import { UrlParam } from '@lib/url-param'
 import { date_to_timestamp } from '@lib/time'
 
-export default class Filter_helper {
+export default class FilterHelper {
   table_id: string
   filters: any
   filter_table_id: string
@@ -17,12 +17,12 @@ export default class Filter_helper {
   }
   init(datatable) {
     this.datatable = datatable
-    this.history_search = this.get_history()
+    this.history_search = this.getHistory()
     datatable.columns().every(index => {
-      this.init_column(datatable.column(index), index)
+      this.initColumn(datatable.column(index), index)
     })
   }
-  init_column(column, column_num) {
+  initColumn(column, column_num) {
     const id = 'datatables_title_' + this.table_id + '_filter_' + column_num
     const filter_elem = jQuery('#' + id)
     const filter_container = filter_elem.parent()
@@ -79,18 +79,18 @@ export default class Filter_helper {
         } else {
           column.search(val ? '^' + val : '', true, false).draw()
         }
-        this.update_filter_url(column_num, val)
-        this.update_filter_count()
+        this.updateFilterUrl(column_num, val)
+        this.updateFilterCount()
       })
 
-      const col_filter_url = this.get_col_filter_url(column_num)
+      const col_filter_url = this.getColFilterUrl(column_num)
 
       if (col_filter_url) {
         select.val(col_filter_url.replaceAll('\\', ''))
         column
           .search(col_filter_url ? '^' + col_filter_url : '', true, false)
           .draw()
-        this.update_filter_count()
+        this.updateFilterCount()
       } else if (column.search() !== '') {
         select.val(column.search().split('^')[1]).trigger('change')
       }
@@ -108,8 +108,8 @@ export default class Filter_helper {
         }
 
         if (column_num in this.filters) {
-          this.search_equation_end(column_num, column)
-          this.update_filter_history(column_num, '')
+          this.searchEquationEnd(column_num, column)
+          this.updateFilterHistory(column_num, '')
         }
 
         let value = elem.val()
@@ -134,17 +134,17 @@ export default class Filter_helper {
             value.startsWith('!'))
         ) {
           column.search('')
-          this.search_equation_start(column_num, value)
+          this.searchEquationStart(column_num, value)
         } else {
           column.search(value)
         }
         column.draw()
-        this.update_filter_url(column_num, elem.val())
-        this.update_filter_count()
+        this.updateFilterUrl(column_num, elem.val())
+        this.updateFilterCount()
       })
 
-      const col_filter_url = this.get_col_filter_url(column_num)
-      const col_history = this.get_filter_history(column_num)
+      const col_filter_url = this.getColFilterUrl(column_num)
+      const col_history = this.getFilterHistory(column_num)
       if (col_filter_url) {
         filter_elem.val(col_filter_url).trigger('keyup')
       } else if (
@@ -157,10 +157,10 @@ export default class Filter_helper {
       }
     }
   }
-  clean_string(value) {
+  cleanString(value) {
     return value.toString().trim().toLowerCase()
   }
-  search_equation_start(column_num, search) {
+  searchEquationStart(column_num, search) {
     let dt = jQuery.fn.dataTable
     this.filters[column_num] = dt.ext.search.length
     dt.ext.search.push((settings, data) => {
@@ -173,20 +173,18 @@ export default class Filter_helper {
       } else if (search.startsWith('>')) {
         return parseInt(value) > parseInt(search_value)
       } else if (search.startsWith(`=""`) || search.startsWith(`=''`)) {
-        return this.clean_string(value) === ''
+        return this.cleanString(value) === ''
       } else if (search.startsWith(`!""`) || search.startsWith(`!''`)) {
-        return this.clean_string(value) !== ''
+        return this.cleanString(value) !== ''
       } else if (search.startsWith('=')) {
-        return this.clean_string(value) === this.clean_string(search_value)
+        return this.cleanString(value) === this.cleanString(search_value)
       } else if (search.startsWith('!')) {
-        return !this.clean_string(value).includes(
-          this.clean_string(search_value),
-        )
+        return !this.cleanString(value).includes(this.cleanString(search_value))
       }
       return true
     })
   }
-  update_search_filters(position) {
+  updateSearchFilters(position) {
     if (!this.filters) return
     for (const [col_num, filter_position] of Object.entries(this.filters)) {
       if (filter_position > position) {
@@ -194,10 +192,10 @@ export default class Filter_helper {
       }
     }
   }
-  search_equation_end(column_num, column) {
+  searchEquationEnd(column_num, column) {
     const dt = jQuery.fn.dataTable
     dt.ext.search.splice(this.filters[column_num], 1)
-    this.update_search_filters(this.filters[column_num])
+    this.updateSearchFilters(this.filters[column_num])
     delete this.filters[column_num]
   }
   destroy() {
@@ -205,19 +203,19 @@ export default class Filter_helper {
     const to_remove = Object.values(this.filters)
     dt.ext.search = dt.ext.search.filter((v, i) => to_remove.indexOf(i) === -1)
   }
-  get_history() {
+  getHistory() {
     const json_str = localStorage.getItem(
       'DataTables_history_search_' + this.table_id,
     )
     if (!json_str) return null
     return JSON.parse(json_str)
   }
-  get_filter_history(col_num) {
+  getFilterHistory(col_num) {
     const col_data = this.history_search?.columns[col_num]
     if (!col_data) return {}
     return col_data
   }
-  update_filter_history(col_num, value) {
+  updateFilterHistory(col_num, value) {
     if (!this.history_search) {
       this.history_search = {
         columns: {},
@@ -234,31 +232,31 @@ export default class Filter_helper {
       JSON.stringify(this.history_search),
     )
   }
-  update_filter_url(col_num, value) {
+  updateFilterUrl(col_num, value) {
     const col_id = this.filter_table_id + '_' + col_num
     if ([undefined, null, NaN, ''].includes(value)) {
-      url_param.delete(col_id)
+      UrlParam.delete(col_id)
     } else {
-      url_param.set(col_id, value)
+      UrlParam.set(col_id, value)
     }
   }
-  get_col_filter_url(col_num) {
+  getColFilterUrl(col_num) {
     const col_id = this.filter_table_id + '_' + col_num
-    const value = url_param.get(col_id)
+    const value = UrlParam.get(col_id)
     if (!value) return false
     return value
   }
-  update_filter_count() {
+  updateFilterCount() {
     let nb_active = 0
-    for (const key in url_param.get_all_params()) {
+    for (const key in UrlParam.getAllParams()) {
       if (key.startsWith(this.filter_table_id + '_')) {
         nb_active += 1
       }
     }
     this.on_update_filter_count(nb_active)
   }
-  remove_all() {
-    for (const key in url_param.get_all_params()) {
+  removeAll() {
+    for (const key in UrlParam.getAllParams()) {
       if (key.startsWith(this.filter_table_id + '_')) {
         const col_num = key.split(this.filter_table_id + '_')[1]
         const id = 'datatables_title_' + this.table_id + '_filter_' + col_num
@@ -269,7 +267,7 @@ export default class Filter_helper {
       }
     }
   }
-  get_btn_info_popup(action = () => {}) {
+  getBtnInfoPopup(action = () => {}) {
     return {
       text: `<span class="icon"><i class="fa-solid fa-magnifying-glass-plus"></i></span>`,
       action,

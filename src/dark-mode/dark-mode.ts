@@ -5,7 +5,7 @@ const is_system_dark = window.matchMedia(color_scheme_dark).matches
 const default_theme = is_system_dark ? 'dark' : 'light'
 export const dark_mode_theme = writable(default_theme)
 
-export class Dark_mode {
+export class DarkMode {
   static Options: any
 
   static init(Options) {
