@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { tab_selected } from '@lib/store'
+  import { tabSelected } from '@lib/store'
   import PreviewManager from '@lib/preview-manager'
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
@@ -11,12 +11,12 @@
   let columns = $state([])
 
   async function getLoadPreview() {
-    $tab_selected.nb = 0
+    $tabSelected.nb = 0
     if (typeof dataset_preview !== 'string') {
       dataset_data = dataset_preview
       dataset_data = PreviewManager.addPosition(dataset_data)
       columns = PreviewManager.getColumns(dataset_data)
-      $tab_selected.nb = dataset_data.length
+      $tabSelected.nb = dataset_data.length
       return
     }
 
@@ -32,7 +32,7 @@
       return obj
     })
     columns = PreviewManager.getColumns(dataset_data)
-    $tab_selected.nb = dataset_data.length
+    $tabSelected.nb = dataset_data.length
   }
 
   const load_preview = getLoadPreview()

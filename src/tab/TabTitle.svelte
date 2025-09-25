@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { all_tabs, tab_selected } from '@lib/store'
+  import { allTabs, tabSelected } from '@lib/store'
   import Icon from '@layout/Icon.svelte'
   import Loading from '@frame/Loading.svelte'
   import Number from '@layout/Number.svelte'
@@ -33,12 +33,12 @@
   })
 
   $effect(() => {
-    if (active_tab === tab.key) tab_nb = $all_tabs[tab.icon].nb
+    if (active_tab === tab.key) tab_nb = $allTabs[tab.icon].nb
   })
 </script>
 
 <li
-  class="tab_li_{tab.key} tab_entity_{tab.icon} shadow_{$tab_selected.icon}"
+  class="tab_li_{tab.key} tab_entity_{tab.icon} shadow_{$tabSelected.icon}"
   class:is-active={active_tab === tab.key}
   class:not_active={active_tab !== tab.key}
   style="min-width: {min_width}px;"

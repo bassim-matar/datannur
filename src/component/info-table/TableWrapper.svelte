@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { page_content_loaded } from '@lib/store'
+  import { pageContentLoaded } from '@lib/store'
 
   let { no_max_height = true, children } = $props()
 
   onMount(() => {
-    $page_content_loaded = true
+    $pageContentLoaded = true
   })
 </script>
 

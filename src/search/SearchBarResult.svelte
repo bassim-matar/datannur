@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { on_page_homepage } from '@lib/store'
+  import { onPageHomepage } from '@lib/store'
   import { debounce } from '@lib/util'
   import SearchBarResultRow from './SearchBarResultRow.svelte'
 
@@ -23,7 +23,7 @@
   function updateHeight() {
     if (!table_wrapper) return
     const real_height = table_wrapper.offsetHeight + 20
-    const percent_height = $on_page_homepage ? 0.8 : 0.9
+    const percent_height = $onPageHomepage ? 0.8 : 0.9
     const window_height = window.innerHeight * percent_height
     has_scroll_bar = real_height > window_height
     height = Math.min(real_height, window_height)
@@ -40,7 +40,7 @@
   })
 
   $effect(() => {
-    if ($on_page_homepage !== undefined) debounced_updateHeight()
+    if ($onPageHomepage !== undefined) debounced_updateHeight()
   })
 
   $effect(() => {

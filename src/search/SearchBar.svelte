@@ -3,11 +3,11 @@
   import db from '@db'
   import { router } from '@lib/router.svelte.js'
   import {
-    search_value,
-    header_open,
-    on_page_search,
-    on_page_homepage,
-    is_small_menu,
+    searchValue,
+    headerOpen,
+    onPageSearch,
+    onPageHomepage,
+    isSmallMenu,
   } from '@lib/store'
   import { clickOutside, debounce } from '@lib/util'
   import Logs from '@lib/logs'
@@ -20,12 +20,12 @@
   let nb_result = $state(0)
   let all_search = $state([])
   let db_initied = $state(false)
-  let search_value_debounced = $state($search_value)
+  let search_value_debounced = $state($searchValue)
 
   let is_open = $derived(
-    is_focus_in && ($search_value !== '' || nb_result > 0 || !db_initied),
+    is_focus_in && ($searchValue !== '' || nb_result > 0 || !db_initied),
   )
-  let is_hidden_by_mobile_menu = $derived($is_small_menu && $header_open)
+  let is_hidden_by_mobile_menu = $derived($isSmallMenu && $headerOpen)
 
   const max_search_result = 100
   let nav_position = 0
@@ -38,23 +38,23 @@
   }
 
   async function searchInputChange() {
-    if ($on_page_search) return false
-    search_value_debounced = $search_value
+    if ($onPageSearch) return false
+    search_value_debounced = $searchValue
     nav_position = 0
-    if ($search_value === '') {
+    if ($searchValue === '') {
       initSearchRecent()
       return false
     }
-    let all_search_raw = await db.search($search_value)
-    if ($search_value === '') return false
+    let all_search_raw = await db.search($searchValue)
+    if ($searchValue === '') return false
     all_search_raw = SearchHistory.putRecentFirst(all_search_raw)
     nb_result = all_search_raw.length
     all_search = all_search_raw.slice(0, max_search_result)
   }
 
   function clearInput() {
-    $search_value = ''
-    search_value_debounced = $search_value
+    $searchValue = ''
+    search_value_debounced = $searchValue
     selectInput()
     searchInputChange()
   }
@@ -68,8 +68,8 @@
   }
 
   function goToPageSearch() {
-    if ($on_page_search) return false
-    router.navigate(`/search?search=${$search_value}`)
+    if ($onPageSearch) return false
+    router.navigate(`/search?search=${$searchValue}`)
     selectInput()
   }
 
@@ -138,19 +138,14 @@
       focused_element.tagName === 'INPUT' ||
       focused_element.tagName === 'TEXTAREA' ||
       focused_element.tagName === 'SELECT'
-    if (
-      e.key === '/' &&
-      !is_focus_in &&
-      !is_input_focused &&
-      !$on_page_search
-    ) {
+    if (e.key === '/' && !is_focus_in && !is_input_focused && !$onPageSearch) {
       e.preventDefault()
       selectInput()
     }
   }
 
   onMount(() => {
-    if ($on_page_search) selectInput()
+    if ($onPageSearch) selectInput()
   })
 
   db.loaded.then(() => {
@@ -174,14 +169,14 @@
     class="search_bar_container box_shadow_color shadow_search"
     class:box_shadow={is_focus_in}
     class:focus={is_focus_in}
-    class:homepage={$on_page_homepage}
-    class:page_search={$on_page_search}
+    class:homepage={$onPageHomepage}
+    class:page_search={$onPageSearch}
   >
     <p class="control has-icons-right">
       <button
         class="icon is-small is-left"
-        class:active={$search_value !== '' &&
-          $search_value !== undefined &&
+        class:active={$searchValue !== '' &&
+          $searchValue !== undefined &&
           is_focus_in &&
           nb_result > 0}
         onclick={goToPageSearch}
@@ -194,7 +189,7 @@
         class="input"
         type="text"
         placeholder="Rechercher..."
-        bind:value={$search_value}
+        bind:value={$searchValue}
         oninput={debounce(searchInputChange, 200)}
         onkeyup={keyup}
         onkeydown={keydown}
@@ -204,14 +199,14 @@
         autocomplete="off"
         enterkeyhint="search"
       />
-      {#if $search_value !== ''}
+      {#if $searchValue !== ''}
         <span class="btn_clear_input_wrapper">
           <BtnClearInput click={clearInput} />
         </span>
       {/if}
     </p>
 
-    {#if !$on_page_search}
+    {#if !$onPageSearch}
       <SearchBarResult
         {is_open}
         {nb_result}

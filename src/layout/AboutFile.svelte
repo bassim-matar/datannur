@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import MdContent from '@layout/MdContent.svelte'
-  import { page_content_loaded, on_page_homepage } from '@lib/store'
+  import { pageContentLoaded, onPageHomepage } from '@lib/store'
   import { dark_mode_theme } from '@dark-mode/dark-mode'
   import Loading from '@frame/Loading.svelte'
   import { ensureMermaidLoaded, mdWithMermaidToHtml } from '@lib/mermaid'
@@ -26,17 +26,17 @@
         if (!md_content) return
         html_content = await mdWithMermaidToHtml(md_content)
         html_content_loaded = true
-        $page_content_loaded = true
+        $pageContentLoaded = true
       })
     }
   })
 
   onMount(() => {
-    if (!use_mermaid) $page_content_loaded = true
+    if (!use_mermaid) $pageContentLoaded = true
   })
 </script>
 
-<div class="about_file_wrapper" class:homepage={$on_page_homepage}>
+<div class="about_file_wrapper" class:homepage={$onPageHomepage}>
   {#if use_mermaid}
     <div class="content">
       <!-- eslint-disable svelte/no-at-html-tags -->

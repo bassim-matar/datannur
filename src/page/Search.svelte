@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import db from '@db'
-  import { search_value, page_content_loaded } from '@lib/store'
+  import { searchValue, pageContentLoaded } from '@lib/store'
   import { UrlParam } from '@lib/url-param'
   import Head from '@frame/Head.svelte'
   import Tabs from '@tab/Tabs.svelte'
@@ -54,18 +54,18 @@
 
   async function searchInputChange() {
     const url_search_value = UrlParam.get('search')
-    if (url_search_value !== $search_value) {
-      UrlParam.set('search', $search_value)
+    if (url_search_value !== $searchValue) {
+      UrlParam.set('search', $searchValue)
     }
-    if ($search_value === '') {
+    if ($searchValue === '') {
       UrlParam.delete('search')
       initSearchRecent()
       return false
     }
-    const value_before = $search_value
-    const all_search_raw = await db.search($search_value)
+    const value_before = $searchValue
+    const all_search_raw = await db.search($searchValue)
     is_loading = false
-    if ($search_value !== value_before) return false
+    if ($searchValue !== value_before) return false
     search_result_data = SearchHistory.putRecentFirst(all_search_raw)
     setTabs()
   }
@@ -84,7 +84,7 @@
           nb: search_result_data.length,
           props: {
             search_result_data,
-            search_value: $search_value,
+            search_value: $searchValue,
           },
         },
       ]
@@ -92,22 +92,22 @@
     tabs.push(about_tab)
   }
 
-  let is_empty_input = $derived(['', undefined, null].includes($search_value))
+  let is_empty_input = $derived(['', undefined, null].includes($searchValue))
 
   const url_search_value = UrlParam.get('search')
   if (url_search_value !== false && url_search_value !== '') {
-    $search_value = url_search_value
+    $searchValue = url_search_value
   }
   setTabKey()
 
   onMount(() => {
-    $page_content_loaded = true
+    $pageContentLoaded = true
   })
 
   let search_timeout
 
   $effect(() => {
-    void $search_value
+    void $searchValue
     if (search_timeout) clearTimeout(search_timeout)
     search_timeout = setTimeout(() => {
       searchInputChange()
@@ -124,7 +124,7 @@
         class="input"
         type="text"
         name="search_page_input"
-        bind:value={$search_value}
+        bind:value={$searchValue}
         autocomplete="off"
         enterkeyhint="search"
       />

@@ -11,7 +11,7 @@
   import { onMount, onDestroy } from 'svelte'
   import { is_mobile } from '@lib/util'
   import { is_big_limit } from '@lib/constant'
-  import { tab_selected, all_tables_loaded, all_tabs } from '@lib/store'
+  import { tabSelected, allTablesLoaded, allTabs } from '@lib/store'
   import { extendable } from '@lib/extendable'
   import Exporter from './exporter/exporter'
   import FilterHelper from './filter/filter-helper'
@@ -90,8 +90,8 @@
     'log',
   ].includes(entity)
 
-  $all_tables_loaded = false
-  all_tables_loaded.subscribe(value => {
+  $allTablesLoaded = false
+  allTablesLoaded.subscribe(value => {
     if (value) {
       setTimeout(() => {
         datatable_update_draw += 1
@@ -139,8 +139,8 @@
         },
       } as Config)
       datatable.on('search.dt', () => {
-        if ($all_tabs[entity]) {
-          $all_tabs[entity].nb = getNbItem(datatable, clean_data)
+        if ($allTabs[entity]) {
+          $allTabs[entity].nb = getNbItem(datatable, clean_data)
         }
         short_table = isShortTable(datatable)
       })
@@ -177,15 +177,15 @@
       datatable.columns.adjust()
       datatable_update_draw += 1
       fixColumnsWidth(datatable)
-      if ($all_tabs[entity]) {
-        $all_tabs[entity].nb = getNbItem(datatable, clean_data)
+      if ($allTabs[entity]) {
+        $allTabs[entity].nb = getNbItem(datatable, clean_data)
       }
       short_table = isShortTable(datatable)
       loading = false
       DatatablesTimer.end()
       DatatablesLoading.end()
       if (DatatablesLoading.finished) {
-        $all_tables_loaded = true
+        $allTablesLoaded = true
       }
     }, 1)
   })
@@ -194,7 +194,7 @@
     datatable?.columns?.adjust()
   }
 
-  const tab_selected_unsubscribe = tab_selected.subscribe(tab => {
+  const tab_selected_unsubscribe = tabSelected.subscribe(tab => {
     if (tab && [tab.key, tab.icon].includes(entity)) {
       setTimeout(() => {
         datatable?.columns?.adjust()

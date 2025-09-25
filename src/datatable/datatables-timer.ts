@@ -1,4 +1,4 @@
-import { page_content_loaded } from '@lib/store'
+import { pageContentLoaded } from '@lib/store'
 
 export default class DatatablesTimer {
   static nb_loading = 0
@@ -12,7 +12,7 @@ export default class DatatablesTimer {
     if (this.nb_loading === 0) {
       const duration = performance.now() - this.start_time
       console.log('loaded all tabs in', Math.round(duration) + ' ms')
-      page_content_loaded.set(true)
+      pageContentLoaded.set(true)
     }
   }
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { modalities_similitutes, tab_selected } from '@lib/store'
+  import { modalitiesSimilitutes, tabSelected } from '@lib/store'
   import Column from '@lib/column'
   import Render from '@lib/render'
   import { link, worker } from '@lib/util'
@@ -14,8 +14,8 @@
   let loading = $state(true)
 
   ;(async () => {
-    if ($modalities_similitutes.length > 0) {
-      similitutes = $modalities_similitutes
+    if ($modalitiesSimilitutes.length > 0) {
+      similitutes = $modalitiesSimilitutes
       loading = false
       return
     }
@@ -24,9 +24,9 @@
       { modalities_compare, limit: 50000 },
       modalityCompareWorker,
     )) as unknown[]
-    $modalities_similitutes = similitutes
+    $modalitiesSimilitutes = similitutes
     loading = false
-    if (similitutes.length === 0) $tab_selected.nb = 0
+    if (similitutes.length === 0) $tabSelected.nb = 0
   })()
 
   const columns = [

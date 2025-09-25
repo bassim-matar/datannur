@@ -3,14 +3,14 @@
   import JSZip from 'jszip'
   import { saveAs } from 'file-saver'
   import db from '@db'
-  import { page_content_loaded } from '@lib/store'
+  import { pageContentLoaded } from '@lib/store'
   import Options from '@lib/options'
   import Logs from '@lib/logs'
   import Favorites from '@favorite/favorites'
   import SearchHistory from '@search/search-history'
   import Icon from '@layout/Icon.svelte'
-  import {resetColsSearchCache} from '@lib/util'
-  import {getUserData} from '@lib/db'
+  import { resetColsSearchCache } from '@lib/util'
+  import { getUserData } from '@lib/db'
   import { UrlParam } from '@lib/url-param'
   import Switch from '@layout/Switch.svelte'
   import DarkModeSwitch from '@dark-mode/DarkModeSwitch.svelte'
@@ -92,7 +92,7 @@
   }
 
   onMount(() => {
-    $page_content_loaded = true
+    $pageContentLoaded = true
   })
 </script>
 
@@ -120,10 +120,7 @@
     <Switch bind:value={rounded_design} change={updateRoundedDesign}>
       Design arrondi
     </Switch>
-    <Switch
-      bind:value={page_shadow_colored}
-      change={updatePageShadowColored}
-    >
+    <Switch bind:value={page_shadow_colored} change={updatePageShadowColored}>
       mode néon (onglets colorés)
     </Switch>
     <div>

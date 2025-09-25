@@ -1,7 +1,7 @@
 <script lang="ts">
   import Options from '@lib/options'
   import Loading from '@frame/Loading.svelte'
-  import { tab_selected } from '@lib/store'
+  import { tabSelected } from '@lib/store'
 
   let { tabs, no_first_tab, is_last_tab, active_tab_body, tabs_loaded } =
     $props()
@@ -10,7 +10,7 @@
 </script>
 
 <div
-  class="tabs_body box_shadow box_shadow_color shadow_{$tab_selected.icon}"
+  class="tabs_body box_shadow box_shadow_color shadow_{$tabSelected.icon}"
   class:no-first-tab={no_first_tab}
   class:is-last-tab={is_last_tab}
 >

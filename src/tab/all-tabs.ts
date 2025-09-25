@@ -27,7 +27,7 @@ import Options from '@component/options/Options.svelte'
 import Logs from '@component/options/Logs.svelte'
 import Evolution from '@component/Evolution.svelte'
 
-import { all_tabs_icon } from '@lib/store'
+import { allTabsIcon } from '@lib/store'
 import type { Row } from '@type'
 
 export const allTabs: Row = {
@@ -221,4 +221,4 @@ for (const key in allTabs) {
   const tab = allTabs[key] as { icon: string }
   allTabsIconValue[key] = { icon: tab.icon }
 }
-all_tabs_icon.set(allTabsIconValue)
+allTabsIcon.set(allTabsIconValue)

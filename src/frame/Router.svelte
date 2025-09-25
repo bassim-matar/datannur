@@ -5,9 +5,9 @@
   import Logs from '@lib/logs'
   import {
     page,
-    page_hash,
-    page_content_loaded,
-    reload_increment,
+    pageHash,
+    pageContentLoaded,
+    reloadIncrement,
   } from '@lib/store'
   import { UrlHash } from '@lib/url-hash'
   import router_index from '@src/.generated/router-index'
@@ -18,7 +18,7 @@
   let params = $state({})
   let entity_id = $state('')
   let page_key = $derived(
-    `${entity_global}___${entity_id}___${$reload_increment}`,
+    `${entity_global}___${entity_id}___${$reloadIncrement}`,
   )
 
   function isSpaHomepage() {
@@ -30,10 +30,10 @@
 
   function updateRoute(entity: string, new_params: Row = null) {
     if (new_params) params = new_params
-    $page_content_loaded = false
+    $pageContentLoaded = false
     route = router_index[entity].component
     $page = entity
-    setTimeout(() => ($page_hash = UrlHash.getLevel1()), 1)
+    setTimeout(() => ($pageHash = UrlHash.getLevel1()), 1)
   }
 
   function setRoute(entity) {

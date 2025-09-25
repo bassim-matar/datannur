@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { tab_selected } from '@lib/store'
+  import { tabSelected } from '@lib/store'
   import {
     makeParentsRelative,
     getRecursive,
@@ -87,11 +87,11 @@
   const nb_institution = institutions.length
   const nb_folder = folders.length
   let show_open_all_switch = $derived(
-    ($tab_selected.key === 'institutions' && nb_institution > is_big_limit) ||
-      ($tab_selected.key === 'folders' && nb_folder > is_big_limit),
+    ($tabSelected.key === 'institutions' && nb_institution > is_big_limit) ||
+      ($tabSelected.key === 'folders' && nb_folder > is_big_limit),
   )
   let show_evolution_summary_switch = $derived(
-    $tab_selected.key === 'evolutions' && evolutions.length > is_big_limit,
+    $tabSelected.key === 'evolutions' && evolutions.length > is_big_limit,
   )
 </script>
 

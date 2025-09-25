@@ -1,7 +1,7 @@
 <script lang="ts">
   import fitty from 'fitty'
   import db from '@db'
-  import { nb_favorite } from '@lib/store'
+  import { nbFavorite } from '@lib/store'
   import { entity_names } from '@lib/constant'
   import Head from '@frame/Head.svelte'
   import Icon from '@layout/Icon.svelte'
@@ -64,7 +64,7 @@
       <span class="title_name fitty"
         >{name}
         {#if isFavoritePage}
-          <span class="num_style big">{$nb_favorite}</span>
+          <span class="num_style big">{$nbFavorite}</span>
         {/if}
       </span>
     </h1>
