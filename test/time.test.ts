@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { get_time_ago } from '@lib/time'
+import { getTimeAgo } from '@lib/time'
 
 const sameDateMultipleTimes = [
   [new Date(2023, 10, 25, 0, 30, 0)],
@@ -27,7 +27,7 @@ describe('Time', () => {
         ['2023/11/16', 'la semaine dernière'],
       ]
       dates.forEach(([date, expected]) => {
-        const result = get_time_ago(date, true, true, dateNow)
+        const result = getTimeAgo(date, true, true, dateNow)
         expect(result).toBe(expected)
       })
     },

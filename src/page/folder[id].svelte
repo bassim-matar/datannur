@@ -2,10 +2,10 @@
   import db from '@db'
   import { tab_selected } from '@lib/store'
   import {
-    make_parents_relative,
-    get_recursive,
-    remove_duplicate_by_id,
-    add_minimum_deep,
+    makeParentsRelative,
+    getRecursive,
+    removeDuplicateById,
+    addMinimumDeep,
   } from '@lib/db'
   import { is_big_limit } from '@lib/constant'
   import { tabsHelper } from '@tab/tabs-helper'
@@ -21,10 +21,10 @@
   const docs = folder.docs_recursive
 
   const folders = db.getAllChilds('folder', folder.id)
-  make_parents_relative(folder.id, folders)
-  add_minimum_deep(folders)
+  makeParentsRelative(folder.id, folders)
+  addMinimumDeep(folders)
 
-  const datasets = get_recursive('folder', folder.id, 'dataset')
+  const datasets = getRecursive('folder', folder.id, 'dataset')
   const variables = datasets.flatMap(dataset =>
     db.getAll('variable', { dataset }),
   )
@@ -32,11 +32,11 @@
   let modalities = variables.flatMap(variable => variable.modalities)
   let direct_modalities = db.getAll('modality', { folder })
   modalities = modalities.concat(direct_modalities)
-  modalities = remove_duplicate_by_id(modalities)
+  modalities = removeDuplicateById(modalities)
 
   const tags = Tags.getFromEntities({ folders, datasets })
-  make_parents_relative(false, tags)
-  add_minimum_deep(tags)
+  makeParentsRelative(false, tags)
+  addMinimumDeep(tags)
 
   const modalities_id = new Set(modalities.map(item => item.id))
   const variables_id = new Set(variables.map(item => item.id))
@@ -90,10 +90,10 @@
 <section class="section">
   <Title type="folder" name={folder.name} id={folder.id} />
   {#if show_open_all_switch}
-    <OpenAllSwitch on_change={value => (key_tab = value)} />
+    <OpenAllSwitch onChange={value => (key_tab = value)} />
   {/if}
   {#if show_evolution_summary_switch}
-    <EvolutionSummarySwitch on_change={value => (key_tab = value)} />
+    <EvolutionSummarySwitch onChange={value => (key_tab = value)} />
   {/if}
   {#key key_tab}
     <Tabs {tabs} />

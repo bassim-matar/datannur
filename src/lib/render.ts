@@ -1,16 +1,16 @@
 import db from '@db'
 import { locale } from '@lib/constant'
 import { copy_text_classes, copy_text_msg } from '@lib/copy-text'
-import { get_time_ago, date_to_timestamp } from '@lib/time'
+import { getTimeAgo, dateToTimestamp } from '@lib/time'
 import {
   link,
-  wrap_long_text,
-  add_indend,
-  entity_to_icon_name,
-  get_percent,
+  wrapLongText,
+  addIndend,
+  entityToIconName,
+  getPercent,
 } from '@lib/util'
 
-export function get_nb_values(values, row) {
+export function getNbValues(values, row) {
   if (values && values.length) return values.length
   if (row.nb_distinct) return row.nb_distinct
   return ''
@@ -29,14 +29,10 @@ export default class Render {
       if (!element) continue
       let name = element.name
       if (level > 0 && type === 'export') name = separator + name
-      content += link(
-        entity + '/' + element.id,
-        add_indend(name, level),
-        entity,
-      )
+      content += link(entity + '/' + element.id, addIndend(name, level), entity)
       level += 1
     }
-    return wrap_long_text(`<div class="tree">${content}</div>`)
+    return wrapLongText(`<div class="tree">${content}</div>`)
   }
   static withParentsFromId(entity, id, type) {
     if (id === null) return ''
@@ -46,12 +42,12 @@ export default class Render {
     return Render.tree(entity, elements, type)
   }
   static firstParent(data, type, row) {
-    if (data.length === 0) return wrap_long_text()
+    if (data.length === 0) return wrapLongText()
     const parent = data.slice(-1)[0]
-    return wrap_long_text(link(row._entity + '/' + parent.id, parent.name))
+    return wrapLongText(link(row._entity + '/' + parent.id, parent.name))
   }
   static value(values, type, row) {
-    if (!values || values === '' || values.length === 0) return wrap_long_text()
+    if (!values || values === '' || values.length === 0) return wrapLongText()
     const nb_values = row.values.length
     let entity = 'dataset_id' in row ? 'variable' : 'modality'
     let tab = entity === 'variable' ? 'variable_values' : 'values'
@@ -82,7 +78,7 @@ export default class Render {
       content += `<li><i>${text}</i></li>`
     }
     content += '</ul>'
-    return wrap_long_text(content)
+    return wrapLongText(content)
   }
   static freqPreview(freq_data, type, row) {
     if (!freq_data || freq_data.length === 0) return ''
@@ -91,8 +87,8 @@ export default class Render {
     let i = 0
 
     for (const freq_item of freq_data) {
-      const percent_display = get_percent(freq_item.freq / freq_item.total) // Pour l'affichage du texte
-      const percent_background = get_percent(freq_item.freq / freq_item.max) // Pour la largeur du background
+      const percent_display = getPercent(freq_item.freq / freq_item.total) // Pour l'affichage du texte
+      const percent_background = getPercent(freq_item.freq / freq_item.max) // Pour la largeur du background
       const freq_num = Render.num(freq_item.freq, type)
       const percent_text = type === 'display' ? ` (${percent_display}%)` : ''
 
@@ -129,7 +125,7 @@ export default class Render {
       content += `<li><i>${text}</i></li>`
     }
     content += '</ul>'
-    return wrap_long_text(content)
+    return wrapLongText(content)
   }
   static num(data, type = 'normal') {
     if (data === false || data === undefined || data === null) return ''
@@ -156,7 +152,7 @@ export default class Render {
   }
   static icon(entity) {
     let class_names
-    let icon = entity_to_icon_name(entity)
+    let icon = entityToIconName(entity)
     if (icon.startsWith('fa-brands')) {
       class_names = icon
     } else {
@@ -165,14 +161,14 @@ export default class Render {
     return `<span class='icon icon_${entity}'><i class='${class_names}'></i></span>`
   }
   static modalitiesName(modalities) {
-    if (!modalities || modalities.length === 0) return wrap_long_text()
+    if (!modalities || modalities.length === 0) return wrapLongText()
     let modalities_name = []
     for (const modality of modalities) {
       modalities_name.push(
         link('modality/' + modality.id, modality.name, 'modality'),
       )
     }
-    return wrap_long_text(modalities_name.join(' | '))
+    return wrapLongText(modalities_name.join(' | '))
   }
   static nbValues(data, type, row, nb_value_max) {
     const nb_values = data
@@ -183,7 +179,7 @@ export default class Render {
       tab = 'variable_metaValues'
     }
     if (type !== 'display') return nb_values
-    const percent = get_percent(nb_values / nb_value_max)
+    const percent = getPercent(nb_values / nb_value_max)
     let content = Render.num(nb_values)
     if (nb_values) {
       content = link(`${entity}/${row.id}?tab=${tab}`, content)
@@ -192,13 +188,13 @@ export default class Render {
   }
   static nbDuplicate(nb_duplicate, type, row) {
     if (!nb_duplicate) return ''
-    const percent = get_percent(nb_duplicate / row.nb_row)
+    const percent = getPercent(nb_duplicate / row.nb_row)
     return `${Render.numPercent(nb_duplicate, percent, 'duplicate', type)}`
   }
   static nbMissing(nb_missing, type, row, stringify = true) {
     if (!row.nb_row) return ''
     if (!nb_missing) return ''
-    const percent = get_percent(nb_missing / row.nb_row)
+    const percent = getPercent(nb_missing / row.nb_row)
     const content = Render.numPercent(
       nb_missing,
       percent,
@@ -221,17 +217,17 @@ export default class Render {
     <span class="num_percent_value">${display_value}</span>`
   }
   static tags(tags) {
-    if (!tags || tags.length === 0) return wrap_long_text()
+    if (!tags || tags.length === 0) return wrapLongText()
     let tags_name = []
     for (const tag of tags) {
       tags_name.push(link('tag/' + tag.id, tag.name, 'tag'))
     }
-    return wrap_long_text(tags_name.join(' | '))
+    return wrapLongText(tags_name.join(' | '))
   }
   static copyCell(data, type) {
-    if (!data) return wrap_long_text()
+    if (!data) return wrapLongText()
     if (type !== 'display') return data
-    return wrap_long_text(
+    return wrapLongText(
       `<span class="${copy_text_classes}" title="${copy_text_msg}">${data}</span>`,
     )
   }
@@ -243,12 +239,10 @@ export default class Render {
     if (option?.estimation) {
       content_after = ` <span style="font-size: 12px;">(estim.)</span>`
     }
-    const time_ago = get_time_ago(data, true, true)
-    const timestamp = date_to_timestamp(data, 'start')
+    const time_ago = getTimeAgo(data, true, true)
+    const timestamp = dateToTimestamp(data, 'start')
     const content = `${time_ago}<br>${data}${content_after}`
-    const percent = get_percent(
-      (new Date().getTime() - timestamp) / 31536000000,
-    )
+    const percent = getPercent((new Date().getTime() - timestamp) / 31536000000)
     const entity = percent < 0 ? 'value' : 'doc'
     const percent_abs_inversed = 100 - Math.abs(percent)
     return `${Render.numPercent(content, percent_abs_inversed, entity, type)}`

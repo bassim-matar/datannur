@@ -1,6 +1,6 @@
 import Logs from '@lib/logs'
 
-function apply_to_elements(selector, apply) {
+function applyToElements(selector, apply) {
   document.querySelectorAll(selector).forEach(apply)
 }
 
@@ -62,11 +62,11 @@ export default class Exporter {
     const main_btn = document.querySelector(`${table_id} .dt-buttons`)
     const is_open = main_btn.getAttribute('is_open')
     if (is_open === 'true') {
-      apply_to_elements(btns, element => element.classList.remove('open'))
+      applyToElements(btns, element => element.classList.remove('open'))
       main_btn.setAttribute('is_open', 'false')
       Logs.add('close_table_download')
     } else {
-      apply_to_elements(btns, element => element.classList.add('open'))
+      applyToElements(btns, element => element.classList.add('open'))
       main_btn.setAttribute('is_open', 'true')
       Logs.add('open_table_download')
     }

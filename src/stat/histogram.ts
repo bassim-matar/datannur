@@ -20,24 +20,24 @@ export default class Histogram {
     const minValue = cleanedData[0]
     const maxValue = cleanedData[cleanedData.length - 1]
 
-    function from_log(value) {
+    function fromLog(value) {
       return Math.pow(10, value)
     }
 
-    function to_log(value) {
+    function toLog(value) {
       return Math.log10(value)
     }
 
-    const logMinValue = to_log(minValue)
-    const logMaxValue = to_log(maxValue)
+    const logMinValue = toLog(minValue)
+    const logMaxValue = toLog(maxValue)
 
     let currentLogMinValue = logMinValue
     for (let i = 0; i < numGroups - 3; i++) {
       const rangeSize = (logMaxValue - currentLogMinValue) / (numGroups - 2 - i)
       const groupLogMaxValue = currentLogMinValue + rangeSize
 
-      const groupMinValue = Math.round(from_log(currentLogMinValue))
-      const groupMaxValue = Math.round(from_log(groupLogMaxValue)) - 1
+      const groupMinValue = Math.round(fromLog(currentLogMinValue))
+      const groupMaxValue = Math.round(fromLog(groupLogMaxValue)) - 1
 
       if (groupMinValue > groupMaxValue) continue
 
@@ -49,8 +49,8 @@ export default class Histogram {
       currentLogMinValue = groupLogMaxValue
     }
 
-    const lastGroupMinValue = from_log(currentLogMinValue)
-    const lastGroupMaxValue = from_log(logMaxValue)
+    const lastGroupMinValue = fromLog(currentLogMinValue)
+    const lastGroupMaxValue = fromLog(logMaxValue)
     ranges.push({
       start: Math.round(lastGroupMinValue),
       end: Math.round(lastGroupMaxValue),

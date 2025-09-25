@@ -15,7 +15,7 @@
     nb_derived_max = Math.max(nb_derived_max, variable.derived_ids?.length || 0)
   }
 
-  function define_columns() {
+  function defineColumns() {
     const base = [
       Column.name('variable', 'Variable', { is_meta }),
       Column.originalName(),
@@ -41,7 +41,7 @@
     ]
   }
 
-  const columns = define_columns()
+  const columns = defineColumns()
 </script>
 
 <Datatable entity="variable" data={dataset_variables} {columns} {meta_path} />

@@ -1,10 +1,10 @@
 <script lang="ts">
   import db from '@db'
   import { tab_selected } from '@lib/store'
-  import { make_parents_relative, add_minimum_deep } from '@lib/db'
+  import { makeParentsRelative, addMinimumDeep } from '@lib/db'
   import { is_big_limit } from '@lib/constant'
   import { tabsHelper } from '@tab/tabs-helper'
-  import { get_about_main } from '@lib/get-about-main'
+  import { getAboutMain } from '@lib/get-about-main'
   import Head from '@frame/Head.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
@@ -21,14 +21,14 @@
   const docs = db.getAll('doc')
   const evolutions = db.getAll('evolution')
 
-  make_parents_relative(0, institutions)
-  make_parents_relative(0, folders)
-  add_minimum_deep(institutions)
-  add_minimum_deep(folders)
+  makeParentsRelative(0, institutions)
+  makeParentsRelative(0, folders)
+  addMinimumDeep(institutions)
+  addMinimumDeep(folders)
 
   if (db.use.tag_recursive) {
-    make_parents_relative(0, tags)
-    add_minimum_deep(tags)
+    makeParentsRelative(0, tags)
+    addMinimumDeep(tags)
   }
 
   const stat = [
@@ -42,7 +42,7 @@
   ]
 
   let tabs = tabsHelper({
-    about_file: get_about_main(),
+    about_file: getAboutMain(),
     institutions,
     folders,
     tags,
@@ -87,10 +87,10 @@
     <p class="has-text-centered">Vous pouvez ajouter du contenu.</p>
   {:else}
     {#if show_open_all_switch}
-      <OpenAllSwitch on_change={value => (key_tab = value)} />
+      <OpenAllSwitch onChange={value => (key_tab = value)} />
     {/if}
     {#if show_evolution_summary_switch}
-      <EvolutionSummarySwitch on_change={value => (key_tab = value)} />
+      <EvolutionSummarySwitch onChange={value => (key_tab = value)} />
     {/if}
     {#key key_tab}
       <Tabs {tabs} />

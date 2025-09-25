@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { wrap_long_text } from '@lib/util'
-  import { get_parent_path } from '@lib/db'
+  import { wrapLongText } from '@lib/util'
+  import { getParentPath } from '@lib/db'
   import Column from '@lib/column'
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
@@ -16,7 +16,7 @@
   let variable_max = 0
   let level_max = 0
   for (const institution of institutions) {
-    institution.path_string = get_parent_path(institution)
+    institution.path_string = getParentPath(institution)
     if (institution.nb_child_recursive > institution_max) {
       institution_max = institution.nb_child_recursive
     }
@@ -62,7 +62,7 @@
       title: Render.icon('email') + 'Email',
       tooltip: 'Email de contact',
       render: data => {
-        return wrap_long_text(
+        return wrapLongText(
           data ? `<a href="mailto:${data}" target="_blanck" >${data}</a>` : '',
         )
       },

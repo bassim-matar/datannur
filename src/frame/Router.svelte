@@ -20,14 +20,14 @@
     `${entity_global}___${entity_id}___${$reload_increment}`,
   )
 
-  function is_spa_homepage() {
+  function isSpaHomepage() {
     return (
       app_mode !== 'static_render' &&
       (!window.location.hash || window.location.hash === '#')
     )
   }
 
-  function update_route(
+  function updateRoute(
     entity: string,
     new_params: Record<string, any> | false = false,
   ) {
@@ -38,7 +38,7 @@
     setTimeout(() => ($page_hash = UrlHash.getLevel1()), 1)
   }
 
-  function set_route(entity) {
+  function setRoute(entity) {
     return ctx => {
       route = router_index._loading.component
       params = {}
@@ -47,24 +47,24 @@
       if (!ctx.data) ctx.data = {}
       if (ctx.data.id === undefined) {
         if (ctx.data[0]) ctx.data = {}
-        update_route(entity, ctx.data)
+        updateRoute(entity, ctx.data)
         setTimeout(() => Logs.add('load_page', { entity }), 10)
         return false
       }
       entity_id = ctx.data.id
       const entity_data = db.get(entity, entity_id)
       if (entity_data) {
-        update_route(entity, { [entity]: entity_data, id: entity_id })
+        updateRoute(entity, { [entity]: entity_data, id: entity_id })
         setTimeout(() => Logs.add('load_page', { entity, entity_id }), 10)
       } else {
-        update_route('_error', { entity })
+        updateRoute('_error', { entity })
         Logs.add('load_page', { entity: '_error' })
       }
     }
   }
 
   if ('_index' in router_index) {
-    router.on('/', set_route('_index'))
+    router.on('/', setRoute('_index'))
   }
   for (const [entity_global, { param }] of Object.entries(router_index)) {
     let route_url: string | false = false
@@ -73,19 +73,19 @@
     else route_url = `/${entity_global}`
 
     if (route_url) {
-      router.on(route_url, set_route(entity_global))
+      router.on(route_url, setRoute(entity_global))
     }
   }
   if ('_error' in router_index) {
-    router.notFound(set_route('_error'), {
+    router.notFound(setRoute('_error'), {
       before(done) {
-        if (is_spa_homepage()) router.resolve('/')
+        if (isSpaHomepage()) router.resolve('/')
         done()
       },
     })
   }
 
-  if (is_spa_homepage()) router.resolve('/')
+  if (isSpaHomepage()) router.resolve('/')
   else router.resolve()
 
   console.log(

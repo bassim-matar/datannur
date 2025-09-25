@@ -3,7 +3,7 @@
   import { is_mobile, url_prefix } from '@lib/util'
   import { entity_names } from '@lib/constant'
   import Render from '@lib/render'
-  import { ensure_mermaid_loaded } from '@lib/mermaid'
+  import { ensureMermaidLoaded } from '@lib/mermaid'
   import Loading from '@frame/Loading.svelte'
 
   let svg_diagramm = $state(null)
@@ -15,7 +15,7 @@
   const direction = is_mobile ? 'TB' : 'LR'
   let diagramm_definition = `flowchart ${direction}\n`
 
-  function compare_name_desc(a, b) {
+  function compareNameDesc(a, b) {
     if (a[0] > b[0]) return -1
     if (a[0] < b[0]) return 1
     return 0
@@ -44,9 +44,9 @@
 
   schema.alone = [...schema.alone]
 
-  schema.alone.sort(compare_name_desc)
-  schema.one_to_many.sort(compare_name_desc)
-  schema.many_to_many.sort(compare_name_desc)
+  schema.alone.sort(compareNameDesc)
+  schema.one_to_many.sort(compareNameDesc)
+  schema.many_to_many.sort(compareNameDesc)
 
   const recursive_entities = []
   for (const link of schema.one_to_many) {
@@ -104,7 +104,7 @@
     diagramm_definition += `${link[0]} <--> ${link[1]}\n`
   }
 
-  ensure_mermaid_loaded(async () => {
+  ensureMermaidLoaded(async () => {
     const { svg } = await window.mermaid.render('diagramm', diagramm_definition)
     svg_diagramm = svg
   })

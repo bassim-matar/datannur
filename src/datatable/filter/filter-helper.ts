@@ -1,6 +1,6 @@
 import jQuery from 'jquery'
 import { UrlParam } from '@lib/url-param'
-import { date_to_timestamp } from '@lib/time'
+import { dateToTimestamp } from '@lib/time'
 
 export default class FilterHelper {
   table_id: string
@@ -116,13 +116,12 @@ export default class FilterHelper {
 
         if (value && column_date_type) {
           if (value.charCodeAt(0) > 47 && value.charCodeAt(0) < 58) {
-            const timestamp = date_to_timestamp(value, column_date_type)
+            const timestamp = dateToTimestamp(value, column_date_type)
             if (![NaN, undefined].includes(timestamp)) {
               value = timestamp.toString()
             }
           } else {
-            value =
-              value[0] + date_to_timestamp(value.slice(1), column_date_type)
+            value = value[0] + dateToTimestamp(value.slice(1), column_date_type)
           }
         }
 

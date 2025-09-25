@@ -1,9 +1,9 @@
 <script lang="ts">
-  import markdown_render from '@lib/markdown'
+  import markdownRender from '@lib/markdown'
 
   let { content, mode = 'classic' } = $props()
 
-  let md_content = $derived(content ? markdown_render(content) : '')
+  let md_content = $derived(content ? markdownRender(content) : '')
 </script>
 
 <div class="main content" class:classic={mode === 'classic'}>

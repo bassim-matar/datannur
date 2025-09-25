@@ -10,7 +10,7 @@
   let dataset_data = $state([])
   let columns = $state([])
 
-  async function get_load_preview() {
+  async function getLoadPreview() {
     $tab_selected.nb = 0
     if (typeof dataset_preview !== 'string') {
       dataset_data = dataset_preview
@@ -35,7 +35,7 @@
     $tab_selected.nb = dataset_data.length
   }
 
-  const load_preview = get_load_preview()
+  const load_preview = getLoadPreview()
 </script>
 
 {#await load_preview}

@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { get_percent } from '@lib/util'
+  import { getPercent } from '@lib/util'
   import { extendable } from '@lib/extendable'
   import { locale } from '@lib/constant'
 
   let { value, total_value, main_color, with_html = false } = $props()
 
-  const percent = get_percent(value.count / total_value)
+  const percent = getPercent(value.count / total_value)
 </script>
 
 <div class="value_box">

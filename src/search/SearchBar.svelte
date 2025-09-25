@@ -31,19 +31,19 @@
   const max_search_result = 100
   let nav_position = 0
 
-  SearchHistory.onChange('search_bar', () => search_input_change())
+  SearchHistory.onChange('search_bar', () => searchInputChange())
 
-  function init_search_recent() {
+  function initSearchRecent() {
     all_search = SearchHistory.getRecentSearch()
     nb_result = all_search.length
   }
 
-  async function search_input_change() {
+  async function searchInputChange() {
     if ($on_page_search) return false
     search_value_debounced = $search_value
     nav_position = 0
     if ($search_value === '') {
-      init_search_recent()
+      initSearchRecent()
       return false
     }
     let all_search_raw = await db.search($search_value)
@@ -53,11 +53,11 @@
     all_search = all_search_raw.slice(0, max_search_result)
   }
 
-  function clear_input() {
+  function clearInput() {
     $search_value = ''
     search_value_debounced = $search_value
-    select_input()
-    search_input_change()
+    selectInput()
+    searchInputChange()
   }
 
   function focusin() {
@@ -68,10 +68,10 @@
     is_focus_in = false
   }
 
-  function go_to_page_search() {
+  function goToPageSearch() {
     if ($on_page_search) return false
     router.navigate(`/search?search=${$search_value}`)
-    select_input()
+    selectInput()
   }
 
   function keyup(e) {
@@ -79,9 +79,9 @@
     const code = e.keyCode ? e.keyCode : e.which
     if (code !== 13) return
     if (nav_position === 0) {
-      go_to_page_search()
+      goToPageSearch()
     } else {
-      apply_to_all_search((item, item_num, entity) => {
+      applyToAllSearch((item, item_num, entity) => {
         if (item_num === nav_position) {
           router.navigate(`/${entity}/${item.id}`)
           SearchHistory.add(entity, item.id)
@@ -95,9 +95,9 @@
   function keydown(e) {
     const code = e.keyCode ? e.keyCode : e.which
     if (code === 40) {
-      update_nav_position(1)
+      updateNavPosition(1)
     } else if (code === 38) {
-      update_nav_position(-1)
+      updateNavPosition(-1)
     }
     if (code === 38 || code === 40) {
       is_focus_in = true
@@ -106,7 +106,7 @@
     }
   }
 
-  function apply_to_all_search(callback) {
+  function applyToAllSearch(callback) {
     let item_num = 0
     for (const item of all_search) {
       item_num += 1
@@ -114,26 +114,26 @@
     }
   }
 
-  function update_nav_position(move) {
+  function updateNavPosition(move) {
     nav_position += move
     if (nav_position < 0) nav_position = 0
     if (nav_position > nb_result) nav_position = nb_result
     if (nav_position > max_search_result) nav_position = max_search_result
-    apply_to_all_search((item, item_num) => {
+    applyToAllSearch((item, item_num) => {
       item.nav_hover = item_num === nav_position
     })
   }
 
-  function on_click() {
+  function onClick() {
     is_focus_in = true
   }
 
-  function select_input() {
+  function selectInput() {
     input_element.focus()
     is_focus_in = true
   }
 
-  function window_keydown(e) {
+  function windowKeydown(e) {
     const focused_element = window.document.activeElement
     const is_input_focused =
       focused_element.tagName === 'INPUT' ||
@@ -146,25 +146,25 @@
       !$on_page_search
     ) {
       e.preventDefault()
-      select_input()
+      selectInput()
     }
   }
 
   onMount(() => {
-    if ($on_page_search) select_input()
+    if ($on_page_search) selectInput()
   })
 
   db.loaded.then(() => {
-    init_search_recent()
+    initSearchRecent()
     db_initied = true
   })
 
   SearchHistory.onClear(() => {
-    init_search_recent()
+    initSearchRecent()
   })
 </script>
 
-<svelte:window onkeydown={window_keydown} />
+<svelte:window onkeydown={windowKeydown} />
 
 <div
   class="navbar-item header_search_item"
@@ -185,7 +185,7 @@
           $search_value !== undefined &&
           is_focus_in &&
           nb_result > 0}
-        onclick={go_to_page_search}
+        onclick={goToPageSearch}
         aria-label="Rechercher"
       >
         <i class="fas fa-magnifying-glass"></i>
@@ -196,11 +196,11 @@
         type="text"
         placeholder="Rechercher..."
         bind:value={$search_value}
-        oninput={debounce(search_input_change, 200)}
+        oninput={debounce(searchInputChange, 200)}
         onkeyup={keyup}
         onkeydown={keydown}
         onfocusin={focusin}
-        onclick={on_click}
+        onclick={onClick}
         bind:this={input_element}
         class:is_open
         autocomplete="off"
@@ -208,7 +208,7 @@
       />
       {#if $search_value !== ''}
         <span class="btn_clear_input_wrapper">
-          <BtnClearInput click={clear_input} />
+          <BtnClearInput click={clearInput} />
         </span>
       {/if}
     </p>
@@ -219,7 +219,7 @@
         {nb_result}
         {all_search}
         search_value={search_value_debounced}
-        {select_input}
+        {selectInput}
         bind:is_focus_in
       />
     {/if}

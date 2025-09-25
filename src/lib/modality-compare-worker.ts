@@ -1,5 +1,5 @@
-export function modality_compare_worker(param) {
-  function get_similitudes(modalities_to_compare, limit = null) {
+export function modalityCompareWorker(param) {
+  function getSimilitudes(modalities_to_compare, limit = null) {
     const similitutes = []
     for (const modality_1 of modalities_to_compare) {
       const nb_value = modality_1.values_clean.length
@@ -57,7 +57,7 @@ export function modality_compare_worker(param) {
       folder_name: modality.folder_name,
     })
   }
-  const similitutes = get_similitudes(modalities_to_compare, limit)
+  const similitutes = getSimilitudes(modalities_to_compare, limit)
   similitutes.sort((a, b) => b.ratio - a.ratio)
   return similitutes
 }

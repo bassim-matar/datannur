@@ -2,19 +2,19 @@
   import { clickOutside } from "@lib/util"
   import BtnClearInput from "@layout/BtnClearInput.svelte"
 
-  let { is_open = $bindable(false), on_close = () => {}, children } = $props()
+  let { is_open = $bindable(false), onClose = () => {}, children } = $props()
 
-  function close_popup() {
+  function closePopup() {
     is_open = false
-    on_close()
+    onClose()
   }
 </script>
 
 {#if is_open}
   <div class="popup">
-    <div class="popup-content" use:clickOutside={close_popup}>
+    <div class="popup-content" use:clickOutside={closePopup}>
       <div class="close-btn">
-        <BtnClearInput click={close_popup} mode="normal" />
+        <BtnClearInput click={closePopup} mode="normal" />
       </div>
       <div class="main_content">
         {@render children?.()}

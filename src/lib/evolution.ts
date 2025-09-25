@@ -2,17 +2,17 @@ import db from '@db'
 import type { EntityTypeMap } from '@type'
 import { entity_names, evolution_types, parent_entities } from '@lib/constant'
 import {
-  date_to_timestamp,
-  timestamp_to_date,
-  convert_quarter_to_full_date,
+  dateToTimestamp,
+  timestampToDate,
+  convertQuarterToFullDate,
 } from '@lib/time'
 import { diffWords } from 'diff'
-import { get_period } from '@lib/time'
-import { split_on_last_separator } from '@lib/util'
+import { getPeriod } from '@lib/time'
+import { splitOnLastSeparator } from '@lib/util'
 
 const arrow_right = `<i class="fas fa-arrow-right"></i>`
 
-function get_evo_deleted() {
+function getEvoDeleted() {
   const evo_deleted = {}
   db.foreach('evolution', evo => {
     if (evo.type === 'delete') {
@@ -25,7 +25,7 @@ function get_evo_deleted() {
   return evo_deleted
 }
 
-function get_item(entity, entity_id, evo_deleted) {
+function getItem(entity, entity_id, evo_deleted) {
   if (db.tableHasId(entity, entity_id)) {
     const item = db.get(entity, entity_id)
     item._deleted = false
@@ -40,16 +40,16 @@ function get_item(entity, entity_id, evo_deleted) {
   return null
 }
 
-function add_history(evo_deleted) {
+function addHistory(evo_deleted) {
   db.foreach('evolution', evo => {
-    const item = get_item(evo.entity, evo.entity_id, evo_deleted)
+    const item = getItem(evo.entity, evo.entity_id, evo_deleted)
     if (item && item.name) {
       evo.name = item.name
       evo.parent_entity_id = item.parent_entity_id
       evo._deleted = item._deleted
       evo.id = item.id
     } else if (evo.entity === 'value') {
-      const [id, value] = split_on_last_separator(evo.entity_id, '---')
+      const [id, value] = splitOnLastSeparator(evo.entity_id, '---')
       evo._deleted = true
       evo.parent_entity_id = id
       evo.name = value ? value : evo.entity_id
@@ -72,7 +72,7 @@ function add_history(evo_deleted) {
     evo.timestamp *= 1000
     evo.time = evo.timestamp > Date.now() ? 'Futur' : 'Passé'
 
-    const parent_item = get_item(
+    const parent_item = getItem(
       evo.parent_entity,
       evo.parent_entity_id,
       evo_deleted,
@@ -81,14 +81,14 @@ function add_history(evo_deleted) {
     evo.parent_deleted = parent_item?._deleted
     evo.is_favorite = false
 
-    evo.date = timestamp_to_date(evo.timestamp)
-    evo.folder_id = get_folder_id(evo.entity, item, parent_item)
+    evo.date = timestampToDate(evo.timestamp)
+    evo.folder_id = getFolderId(evo.entity, item, parent_item)
   })
 
   db.tables.evolution = db.tables.evolution?.filter(evo => !evo._to_hide)
 }
 
-function get_folder_id(entity, entity_data, parent_item) {
+function getFolderId(entity, entity_data, parent_item) {
   if (entity === 'folder') {
     return entity_data?.id
   } else if (entity === 'dataset') {
@@ -103,16 +103,16 @@ function get_folder_id(entity, entity_data, parent_item) {
   return null
 }
 
-function add_validity(validities, type, entity, entity_data, evo_deleted) {
+function addValidity(validities, type, entity, entity_data, evo_deleted) {
   const parent_entity =
     parent_entities[entity] === 'parent' ? entity : parent_entities[entity]
-  const parent_item = get_item(
+  const parent_item = getItem(
     parent_entity,
     entity_data[`${parent_entities[entity]}_id`],
     evo_deleted,
   )
 
-  const timestamp = date_to_timestamp(
+  const timestamp = dateToTimestamp(
     entity_data[type],
     type === 'start_date' ? 'start' : 'end',
   )
@@ -129,7 +129,7 @@ function add_validity(validities, type, entity, entity_data, evo_deleted) {
   let type_clean = 'Autre'
   if (type in evolution_types) type_clean = evolution_types[type]
 
-  const folder_id = get_folder_id(entity, entity_data, parent_item)
+  const folder_id = getFolderId(entity, entity_data, parent_item)
 
   validities.push({
     id: entity_data.id,
@@ -149,13 +149,13 @@ function add_validity(validities, type, entity, entity_data, evo_deleted) {
     type_clean,
     timestamp,
     time,
-    date: timestamp_to_date(timestamp),
+    date: timestampToDate(timestamp),
     folder_id,
     is_favorite: false,
   })
 }
 
-function add_validities(evo_deleted) {
+function addValidities(evo_deleted) {
   const validities = []
   const entities = Object.keys(parent_entities) as (keyof EntityTypeMap)[]
   for (const entity of entities) {
@@ -168,7 +168,7 @@ function add_validities(evo_deleted) {
     ) {
       db.foreach(entity, entity_data => {
         if ('start_date' in entity_data && entity_data.start_date) {
-          add_validity(
+          addValidity(
             validities,
             'start_date',
             entity,
@@ -177,10 +177,10 @@ function add_validities(evo_deleted) {
           )
         }
         if ('end_date' in entity_data && entity_data.end_date) {
-          add_validity(validities, 'end_date', entity, entity_data, evo_deleted)
+          addValidity(validities, 'end_date', entity, entity_data, evo_deleted)
         }
         if ('last_update_date' in entity_data && entity_data.last_update_date) {
-          add_validity(
+          addValidity(
             validities,
             'last_update_date',
             entity,
@@ -189,7 +189,7 @@ function add_validities(evo_deleted) {
           )
         }
         if ('next_update_date' in entity_data && entity_data.next_update_date) {
-          add_validity(
+          addValidity(
             validities,
             'next_update_date',
             entity,
@@ -207,15 +207,15 @@ function add_validities(evo_deleted) {
   }
 }
 
-export function evolution_initial_setup() {
-  const evo_deleted = get_evo_deleted()
-  add_history(evo_deleted)
-  add_validities(evo_deleted)
+export function evolutionInitialSetup() {
+  const evo_deleted = getEvoDeleted()
+  addHistory(evo_deleted)
+  addValidities(evo_deleted)
 }
 
-function parse_date_standard(dateString) {
+function parseDateStandard(dateString) {
   if (dateString.length === 6 && dateString[4] === 't') {
-    dateString = convert_quarter_to_full_date(dateString, 'start')
+    dateString = convertQuarterToFullDate(dateString, 'start')
   }
   const parts = dateString.split('/')
   if (parts.length === 2) parts.push(1)
@@ -227,7 +227,7 @@ function parse_date_standard(dateString) {
   return null
 }
 
-function output_diff_number(oldVal, newVal) {
+function outputDiffNumber(oldVal, newVal) {
   const diff = newVal - oldVal
   const percentageChange =
     oldVal !== 0 ? ((diff / oldVal) * 100).toFixed(1) : '∞'
@@ -241,12 +241,12 @@ function output_diff_number(oldVal, newVal) {
   `
 }
 
-function output_diff_date(oldDate, newDate, old_date_string, new_date_string) {
+function outputDiffDate(oldDate, newDate, old_date_string, new_date_string) {
   const diffDays = Math.ceil((newDate - oldDate) / (1000 * 60 * 60 * 24))
   const diffClass =
     diffDays > 0 ? 'highlight_diff_add' : 'highlight_diff_delete'
 
-  const diff_relative = get_period(oldDate, newDate, true)
+  const diff_relative = getPeriod(oldDate, newDate, true)
 
   return `
   ${old_date_string} ${arrow_right} ${new_date_string}
@@ -255,7 +255,7 @@ function output_diff_date(oldDate, newDate, old_date_string, new_date_string) {
   }${diff_relative}</span>`
 }
 
-function output_diff_string(oldVal, newVal) {
+function outputDiffString(oldVal, newVal) {
   const diff = diffWords(oldVal, newVal)
   return diff
     .map(part => {
@@ -270,12 +270,12 @@ function output_diff_string(oldVal, newVal) {
     .join('')
 }
 
-export function highlight_diff(a, b, variable = null) {
+export function highlightDiff(a, b, variable = null) {
   if (!a && !b) return ''
 
   if (variable === 'last_update') {
-    a = timestamp_to_date(a * 1000)
-    b = timestamp_to_date(b * 1000)
+    a = timestampToDate(a * 1000)
+    b = timestampToDate(b * 1000)
   }
 
   a = a ? a.toString() : ''
@@ -287,7 +287,7 @@ export function highlight_diff(a, b, variable = null) {
   let is_b_number = !isNaN(b) && b !== ''
 
   if (!is_a_number) {
-    oldDate = parse_date_standard(a)
+    oldDate = parseDateStandard(a)
   } else {
     a = parseFloat(a)
     if (a > 1800 && a < 2100) {
@@ -296,7 +296,7 @@ export function highlight_diff(a, b, variable = null) {
   }
 
   if (!is_b_number) {
-    newDate = parse_date_standard(b)
+    newDate = parseDateStandard(b)
   } else {
     b = parseFloat(b)
     if (b > 1800 && b < 2100) {
@@ -304,9 +304,9 @@ export function highlight_diff(a, b, variable = null) {
     }
   }
 
-  if (oldDate && newDate) return output_diff_date(oldDate, newDate, a, b)
-  if (is_a_number && is_b_number) return output_diff_number(a, b)
+  if (oldDate && newDate) return outputDiffDate(oldDate, newDate, a, b)
+  if (is_a_number && is_b_number) return outputDiffNumber(a, b)
   if (is_a_number) a = a.toString()
   if (is_b_number) b = b.toString()
-  return output_diff_string(a, b)
+  return outputDiffString(a, b)
 }

@@ -13,7 +13,7 @@ export default class Tags {
       tags_by_id[tag.id] = tag
     }
 
-    function increment_tag_item_nb(items, entity) {
+    function incrementTagItemNb(items, entity) {
       if (!items) return
       for (const item of items) {
         for (const tag of item.tags) {
@@ -21,9 +21,9 @@ export default class Tags {
         }
       }
     }
-    increment_tag_item_nb(entities.institutions, 'institution')
-    increment_tag_item_nb(entities.folders, 'folder')
-    increment_tag_item_nb(entities.datasets, 'dataset')
+    incrementTagItemNb(entities.institutions, 'institution')
+    incrementTagItemNb(entities.folders, 'folder')
+    incrementTagItemNb(entities.datasets, 'dataset')
 
     for (const tag of tags) {
       tag.nb_institution = tags_by_id[tag.id].nb_institution

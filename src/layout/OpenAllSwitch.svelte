@@ -2,13 +2,13 @@
   import Switch from '@layout/Switch.svelte'
   import Options from '@lib/options'
 
-  let { on_change = value => {} } = $props()
+  let { onChange = value => {} } = $props()
 
   let open_all_recursive = $state(Options.get('open_all_recursive'))
 
-  function update_open_all_recursive() {
+  function updateOpenAllRecursive() {
     Options.set('open_all_recursive', open_all_recursive, () => {
-      on_change(open_all_recursive)
+      onChange(open_all_recursive)
     })
   }
 </script>
@@ -19,7 +19,7 @@
 >
   <Switch
     bind:value={open_all_recursive}
-    change={update_open_all_recursive}
+    change={updateOpenAllRecursive}
     slot_position="left"
     tree_switch={true}
     size="small"

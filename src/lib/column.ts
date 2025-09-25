@@ -1,11 +1,5 @@
-import {
-  is_mobile,
-  link,
-  wrap_long_text,
-  get_percent,
-  pluralize,
-} from '@lib/util'
-import { get_time_ago, get_datetime, date_to_timestamp } from '@lib/time'
+import { is_mobile, link, wrapLongText, getPercent, pluralize } from '@lib/util'
+import { getTimeAgo, getDatetime, dateToTimestamp } from '@lib/time'
 import { entity_names, entity_to_icon } from '@lib/constant'
 import Render from '@lib/render'
 
@@ -55,7 +49,7 @@ export default class Column {
         if (row._deleted) {
           text = `<span class="deleted">${data}</span>`
         }
-        return wrap_long_text(text, indent)
+        return wrapLongText(text, indent)
       },
     }
   }
@@ -66,7 +60,7 @@ export default class Column {
       has_long_text: true,
       filter_type: 'input',
       tooltip: "Nom d'origine avant renommage",
-      render: data => wrap_long_text(data),
+      render: data => wrapLongText(data),
     }
   }
   static entity() {
@@ -104,7 +98,7 @@ export default class Column {
         if (type === 'sort' || type === 'export' || type === 'filter') {
           return `${row.parent_entity_clean} | ${row.parent_name}`
         }
-        return wrap_long_text(`
+        return wrapLongText(`
           <span class="icon icon_${row.parent_entity}">
             <i class="fas fa-${
               entity_to_icon[row.parent_entity] || row.parent_entity
@@ -123,7 +117,7 @@ export default class Column {
       const folder_id = row[folder_id_var]
       const folder_name = row[folder_name_var]
       return is_mobile
-        ? wrap_long_text(link('folder/' + folder_id, folder_name))
+        ? wrapLongText(link('folder/' + folder_id, folder_name))
         : Render.withParentsFromId('folder', folder_id, type)
     }
     return {
@@ -144,7 +138,7 @@ export default class Column {
       tooltip: 'Dossier',
       render: (data, _, row) => {
         if (!data) return ''
-        return wrap_long_text(link('folder/' + data, row.folder_name))
+        return wrapLongText(link('folder/' + data, row.folder_name))
       },
     }
   }
@@ -186,7 +180,7 @@ export default class Column {
       has_long_text: true,
       filter_type: 'input',
       tooltip: 'Description',
-      render: data => wrap_long_text(data),
+      render: data => wrapLongText(data),
     }
   }
   static tag() {
@@ -203,7 +197,7 @@ export default class Column {
   static owner() {
     const render = (data, type, { owner_id, owner_name }) =>
       is_mobile
-        ? wrap_long_text(link(`institution/${owner_id}`, owner_name))
+        ? wrapLongText(link(`institution/${owner_id}`, owner_name))
         : Render.withParentsFromId('institution', owner_id, type)
     return {
       data: 'owner_name',
@@ -217,7 +211,7 @@ export default class Column {
   static manager() {
     const render = (data, type, { manager_id, manager_name }) =>
       is_mobile
-        ? wrap_long_text(link(`institution/${manager_id}`, manager_name))
+        ? wrapLongText(link(`institution/${manager_id}`, manager_name))
         : Render.withParentsFromId('institution', manager_id, type)
     return {
       data: 'manager_name',
@@ -244,7 +238,7 @@ export default class Column {
       title: Render.icon('value') + 'Valeur',
       has_long_text: true,
       tooltip: 'Valeur',
-      render: data => wrap_long_text(data),
+      render: data => wrapLongText(data),
     }
   }
   static nbValues(nb_value_max) {
@@ -311,7 +305,7 @@ export default class Column {
           return data === '' || data === null ? 0 : parseInt(data)
         }
         if (!data) return ''
-        const percent = get_percent(data / nb_row_max)
+        const percent = getPercent(data / nb_row_max)
         return `${Render.numPercent(data, percent, 'nb_row', type)}`
       },
     }
@@ -327,7 +321,7 @@ export default class Column {
         if (!data || (!data.length && !data.size)) return ''
         const nb = data.length || data.size
         if (type !== 'display') return nb
-        const percent = get_percent(nb / nb_sources_max)
+        const percent = getPercent(nb / nb_sources_max)
         const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
         return `${Render.numPercent(content, percent, 'nb_source', type)}`
       },
@@ -344,7 +338,7 @@ export default class Column {
         if (!data || (!data.length && !data.size)) return ''
         const nb = data.length || data.size
         if (type !== 'display') return nb
-        const percent = get_percent(nb / nb_derived_max)
+        const percent = getPercent(nb / nb_derived_max)
         const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
         return `${Render.numPercent(content, percent, 'nb_derived', type)}`
       },
@@ -400,7 +394,7 @@ export default class Column {
       render = (data, type, row) => {
         const value = row.parents?.length + 1
         if (!value) return ''
-        const percent = get_percent(value / level_max)
+        const percent = getPercent(value / level_max)
         return `${Render.numPercent(value, percent, 'key', type)}`
       }
     }
@@ -462,7 +456,7 @@ export default class Column {
       render: (data, type) => {
         if (!['sort', 'filter'].includes(type)) return data
         if (!data) data = 1000
-        return date_to_timestamp(data, 'start')
+        return dateToTimestamp(data, 'start')
       },
     }
   }
@@ -477,7 +471,7 @@ export default class Column {
       render: (data, type) => {
         if (!['sort', 'filter'].includes(type)) return data
         if (!data) data = 9999
-        return date_to_timestamp(data, 'end')
+        return dateToTimestamp(data, 'end')
       },
     }
   }
@@ -488,7 +482,7 @@ export default class Column {
       has_long_text: true,
       tooltip: 'Dataset',
       render: (data, type, row) =>
-        wrap_long_text(
+        wrapLongText(
           link(parent_name + '/' + row[parent_name + '_id'], data, 'dataset'),
         ),
     }
@@ -511,7 +505,7 @@ export default class Column {
       has_long_text: true,
       tooltip: 'Emplacement du doc',
       render: data => {
-        return wrap_long_text(`<a href="${data}" target="_blanck">${data}</a>`)
+        return wrapLongText(`<a href="${data}" target="_blanck">${data}</a>`)
       },
     }
   }
@@ -528,7 +522,7 @@ export default class Column {
       render: (data, type, row) => {
         if (!data.length) return ''
         const content = link(entity + '/' + row.id + '?tab=docs', data.length)
-        const percent = get_percent(data.length / total)
+        const percent = getPercent(data.length / total)
         return `${Render.numPercent(content, percent, 'doc', type)}`
       },
     }
@@ -542,7 +536,7 @@ export default class Column {
       render: (data, type, row) => {
         if (!data) return ''
         const content = link(entity + '/' + row.id + '?tab=docs', data)
-        const percent = get_percent(data / total)
+        const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'doc', type)}`
       },
     }
@@ -559,7 +553,7 @@ export default class Column {
       render: (data, type, row) => {
         if (!data) return ''
         const content = link(link_path + row.id + `?tab=${entity_plural}`, data)
-        const percent = get_percent(data / total)
+        const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, entity, type)}`
       },
     }
@@ -573,7 +567,7 @@ export default class Column {
       render: (data, type, row) => {
         if (!data) return ''
         const content = link(`${entity}/${row.id}?tab=folders`, data)
-        const percent = get_percent(data / total)
+        const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'folder', type)}`
       },
     }
@@ -587,7 +581,7 @@ export default class Column {
       render: (data, type, row) => {
         if (!data) return ''
         const content = link(entity + '/' + row.id + '?tab=datasets', data)
-        const percent = get_percent(data / total)
+        const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'dataset', type)}`
       },
     }
@@ -612,7 +606,7 @@ export default class Column {
           option.link_path + row.id + `?tab=${option.tab}`,
           data,
         )
-        const percent = get_percent(data / total)
+        const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'variable', type)}`
       },
     }
@@ -640,8 +634,8 @@ export default class Column {
       render: (data, type) => {
         if (!data) return ''
         if (type === 'sort') return data
-        if (type !== 'display') return get_datetime(data)
-        let datetime = get_datetime(data)
+        if (type !== 'display') return getDatetime(data)
+        let datetime = getDatetime(data)
         if (datetime.includes(' 00:00:00') || datetime.includes(' 01:00:00'))
           datetime = datetime.split(' ')[0]
 
@@ -649,13 +643,13 @@ export default class Column {
           datetime = `<span style="font-size: 12px";>${datetime}</span>`
         }
 
-        let time_ago = get_time_ago(data)
+        let time_ago = getTimeAgo(data)
 
         if (time_ago.length > 18) {
           time_ago = `<span style="font-size: 12px";>${time_ago}</span>`
         }
 
-        const percent = get_percent((new Date().getTime() - data) / 31536000000)
+        const percent = getPercent((new Date().getTime() - data) / 31536000000)
         const entity = percent < 0 ? 'value' : 'doc'
         const percent_abs_inversed = 100 - Math.abs(percent)
         const content = `${time_ago}<br>${datetime}`

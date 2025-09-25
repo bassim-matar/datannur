@@ -5,7 +5,7 @@ export default class SearchHistory {
   static limit = 100
   static search_history = []
   static db_key = 'user_data/search_history'
-  static on_change_callbacks: Record<string, () => void> = {}
+  static onChange_callbacks: Record<string, () => void> = {}
   static on_clear_callback = null
 
   static init(search_history, option) {
@@ -41,7 +41,7 @@ export default class SearchHistory {
     this.callOnChange()
   }
   static callOnChange() {
-    for (const [key, callback] of Object.entries(this.on_change_callbacks)) {
+    for (const [key, callback] of Object.entries(this.onChange_callbacks)) {
       callback()
     }
   }
@@ -111,7 +111,7 @@ export default class SearchHistory {
     return [...recent_search.name, ...recent_search.description, ...result]
   }
   static onChange(key: string, callback: () => void) {
-    if (this.on_change_callbacks === undefined) this.on_change_callbacks = {}
-    this.on_change_callbacks[key] = callback
+    if (this.onChange_callbacks === undefined) this.onChange_callbacks = {}
+    this.onChange_callbacks[key] = callback
   }
 }

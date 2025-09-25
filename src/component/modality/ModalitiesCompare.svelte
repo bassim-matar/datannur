@@ -4,7 +4,7 @@
   import Column from '@lib/column'
   import Render from '@lib/render'
   import { link, worker } from '@lib/util'
-  import { modality_compare_worker } from '@lib/modality-compare-worker'
+  import { modalityCompareWorker } from '@lib/modality-compare-worker'
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
 
@@ -22,7 +22,7 @@
     modalities_compare = db.getAll('modality')
     similitutes = (await worker(
       { modalities_compare, limit: 50000 },
-      modality_compare_worker,
+      modalityCompareWorker,
     )) as any[]
     $modalities_similitutes = similitutes
     loading = false

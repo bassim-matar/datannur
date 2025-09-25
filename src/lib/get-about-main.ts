@@ -3,7 +3,7 @@ import default_banner from '@markdown/main/banner.md?raw'
 import default_body from '@markdown/main/body.md?raw'
 import default_more_info from '@markdown/main/more-info.md?raw'
 
-export function get_about_main() {
+export function getAboutMain() {
   const banner = db.tableHasId('config', 'banner')
     ? db.getConfig('banner')
     : default_banner

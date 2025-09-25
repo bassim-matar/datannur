@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { get_local_filter } from '@lib/db'
+  import {getLocalFilter} from '@lib/db'
   import MainFilter from '@lib/main-filter'
   import Switch from '@layout/Switch.svelte'
   import Button from '@layout/Button.svelte'
@@ -7,7 +7,7 @@
   let filters = $state([])
 
   const saved_filters = MainFilter.get()
-  const db_filters = get_local_filter()
+  const db_filters = getLocalFilter()
 
   for (const db_filter of db_filters) {
     const filter = db_filter
@@ -21,14 +21,14 @@
     }
   }
 
-  function update_filter_state() {
+  function updateFilterState() {
     MainFilter.save(filters)
   }
 </script>
 
 {#each filters as filter (filter.id)}
   <div class="navbar-item">
-    <Switch bind:value={filter.is_active} change={update_filter_state}>
+    <Switch bind:value={filter.is_active} change={updateFilterState}>
       {filter.name}
     </Switch>
   </div>

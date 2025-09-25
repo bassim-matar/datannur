@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { get_local_filter } from '@lib/db'
+  import {getLocalFilter} from '@lib/db'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
 
@@ -10,9 +10,9 @@
   const meta_path = is_meta ? 'metaDataset' : null
   const datasets_sorted = [...datasets]
 
-  function sort_datasets(to_sort) {
+  function sortDatasets(to_sort) {
     if (to_sort.length === 0) return
-    const db_filters = get_local_filter()
+    const db_filters = getLocalFilter()
     const filter_pos = {}
     for (const i in db_filters) filter_pos[db_filters[i].id] = i
     to_sort.sort(
@@ -23,7 +23,7 @@
         a.name.localeCompare(b.name),
     )
   }
-  sort_datasets(datasets_sorted)
+  sortDatasets(datasets_sorted)
 
   let nb_variable_max = 0
   let nb_row_max = 0
@@ -48,7 +48,7 @@
     }
   }
 
-  function define_columns() {
+  function defineColumns() {
     const base = [
       Column.name('dataset', 'Dataset', { is_meta }),
       Column.description(),
@@ -93,7 +93,7 @@
       Column.dataPath(),
     ]
   }
-  const columns = define_columns()
+  const columns = defineColumns()
 </script>
 
 <Datatable entity="dataset" data={datasets_sorted} {columns} {meta_path} />

@@ -1,8 +1,8 @@
 import db from '@db'
 import { entity_names } from '@lib/constant'
-import { escape_html_entities } from '@lib/util'
+import { escapeHtmlEntities } from '@lib/util'
 
-function ensure_flexsearch_loaded() {
+function ensureFlexsearchLoaded() {
   return new Promise<void>(resolve => {
     const flexsearch_src = `assets/external/flexsearch.js?v=${__APP_VERSION__}`
     if (document.querySelector(`script[src="${flexsearch_src}"]`)) {
@@ -29,7 +29,7 @@ const charMap = {
   c: '[cç]',
 }
 
-export function search_highlight(value, search) {
+export function searchHighlight(value, search) {
   if (!search || search.trim() === '') return value
 
   const normalizedSearch = removeDiacritics(search)
@@ -47,8 +47,8 @@ export function search_highlight(value, search) {
   const pattern = `(^|[^a-zA-Z])(${normalizedSearch})`
   const regex = new RegExp(pattern, 'gi')
 
-  return escape_html_entities(value).replace(regex, (match, p1, p2) => {
-    return `${p1}<span class="search_highlight">${p2}</span>`
+  return escapeHtmlEntities(value).replace(regex, (match, p1, p2) => {
+    return `${p1}<span class="searchHighlight">${p2}</span>`
   })
 }
 
@@ -62,7 +62,7 @@ export default class Search {
   }
   async init() {
     this.loading = (async () => {
-      await ensure_flexsearch_loaded()
+      await ensureFlexsearchLoaded()
       if (db.loaded) await db.loaded
       const { Index } = window.FlexSearch
       const variables = ['name', 'description']

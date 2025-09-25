@@ -1,7 +1,7 @@
 <script lang="ts">
   import Column from '@lib/column'
   import Render from '@lib/render'
-  import { link, get_percent } from '@lib/util'
+  import { link, getPercent } from '@lib/util'
   import Datatable from '@datatable/Datatable.svelte'
 
   let { docs } = $props()
@@ -21,14 +21,14 @@
 
   const docs_sorted = [...docs]
 
-  function sort_docs(to_sort) {
+  function sortDocs(to_sort) {
     if (to_sort.length === 0) return
     to_sort.sort(
       (a, b) =>
         b.inherited?.localeCompare(a.inherited) || a.name.localeCompare(b.name),
     )
   }
-  sort_docs(docs_sorted)
+  sortDocs(docs_sorted)
 
   let columns = [
     Column.favorite(),
@@ -64,7 +64,7 @@
       render: (data, type, row) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=institutions', data)
-        const percent = get_percent(data / institution_max)
+        const percent = getPercent(data / institution_max)
         return `${Render.numPercent(content, percent, 'institution', type)}`
       },
     },
@@ -76,7 +76,7 @@
       render: (data, type, row) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=folders', data)
-        const percent = get_percent(data / folder_max)
+        const percent = getPercent(data / folder_max)
         return `${Render.numPercent(content, percent, 'folder', type)}`
       },
     },
@@ -88,7 +88,7 @@
       render: (data, type, row) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=tags', data)
-        const percent = get_percent(data / tag_max)
+        const percent = getPercent(data / tag_max)
         return `${Render.numPercent(content, percent, 'tag', type)}`
       },
     },
@@ -100,7 +100,7 @@
       render: (data, type, row) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=datasets', data)
-        const percent = get_percent(data / dataset_max)
+        const percent = getPercent(data / dataset_max)
         return `${Render.numPercent(content, percent, 'dataset', type)}`
       },
     },

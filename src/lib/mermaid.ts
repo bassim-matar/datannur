@@ -1,9 +1,9 @@
 import { entity_to_icon, entity_names } from '@lib/constant'
 import Render from '@lib/render'
 import { url_prefix } from '@lib/util'
-import markdown_render from '@lib/markdown'
+import markdownRender from '@lib/markdown'
 
-export function ensure_mermaid_loaded(callback) {
+export function ensureMermaidLoaded(callback) {
   const mermaid_src = `assets/external/mermaid.min.js?v=${__APP_VERSION__}`
   if (document.querySelector(`script[src="${mermaid_src}"]`)) {
     callback()
@@ -14,7 +14,7 @@ export function ensure_mermaid_loaded(callback) {
   document.head.appendChild(Object.assign(script, script_attributes))
 }
 
-function mermaid_add_entities(code) {
+function mermaidAddEntities(code) {
   let code_prefix = null
   let code_prefixes_search = ['flowchart LR', 'flowchart TB']
   for (const code_prefix_search of code_prefixes_search) {
@@ -64,7 +64,7 @@ function mermaid_add_entities(code) {
   return code
 }
 
-export async function md_with_mermaid_to_html(md_with_mermaid) {
+export async function mdWithMermaidToHtml(md_with_mermaid) {
   let content = ''
   const direction = 'TB'
   const diagramm_definition = `flowchart ${direction}\n`
@@ -83,7 +83,7 @@ export async function md_with_mermaid_to_html(md_with_mermaid) {
   for (const about_page_part of about_page_parts) {
     part_num += 1
     if (part_num === 1) {
-      content += markdown_render(about_page_part)
+      content += markdownRender(about_page_part)
     } else {
       let separator = '```'
       let is_auto_flowchart = false
@@ -92,12 +92,12 @@ export async function md_with_mermaid_to_html(md_with_mermaid) {
         is_auto_flowchart = true
       }
       let [mermaid_code, mardown_code] = about_page_part.split(separator)
-      mermaid_code = mermaid_add_entities(mermaid_code)
+      mermaid_code = mermaidAddEntities(mermaid_code)
       if (is_auto_flowchart) mermaid_code = diagramm_definition + mermaid_code
       const diagramm_id = 'about_page_diagramm_' + part_num
       const { svg } = await window.mermaid.render(diagramm_id, mermaid_code)
       content += `<div class="mermaid_block">${svg}</div>`
-      content += markdown_render(mardown_code)
+      content += markdownRender(mardown_code)
     }
   }
   return content
