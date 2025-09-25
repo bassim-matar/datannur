@@ -7,6 +7,7 @@
 - refactor: replace app_version meta tag with `__APP_VERSION__` constant
 - refactor: enforce PascalCase for class names and camelCase for methods and functions
 - refactor: enforce prefer-const
+- remove: loader on search page
 
 ## 0.12.9 (2024-09-23)
 
