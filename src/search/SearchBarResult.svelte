@@ -16,6 +16,7 @@
   let table_wrapper: HTMLDivElement = $state()
   let height = $state(0)
   let has_scroll_bar = $state(false)
+  let db_loaded = $state(false)
 
   const plural = $derived(nb_result > 1 ? 's' : '')
 
@@ -31,6 +32,7 @@
   const debounced_updateHeight = debounce(updateHeight, 150)
 
   $effect(() => {
+    void search_value
     if (nb_result !== undefined) {
       debounced_updateHeight()
       setTimeout(() => debounced_updateHeight(), 500)
@@ -46,6 +48,8 @@
     window.addEventListener('resize', handle_resize)
     return () => window.removeEventListener('resize', handle_resize)
   })
+
+  db.loaded.then(() => (db_loaded = true))
 </script>
 
 <div id="search_bar_result_outer">
@@ -56,9 +60,7 @@
     style="--height: {height}px"
   >
     <div class="table_wrapper" bind:this={table_wrapper}>
-      {#await db.loaded}
-        <!-- Loading -->
-      {:then}
+      {#if db_loaded}
         <table class="table is-striped">
           <tbody>
             {#if search_value === '' && nb_result > 0}
@@ -90,7 +92,7 @@
             {/each}
           </tbody>
         </table>
-      {/await}
+      {/if}
     </div>
   </div>
 </div>
