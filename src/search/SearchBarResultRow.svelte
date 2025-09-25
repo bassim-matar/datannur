@@ -22,7 +22,7 @@
   }
 </script>
 
-<tr class:nav_hover={item.nav_hover}>
+<tr class:nav-hover={item.nav_hover}>
   <td style="width: 20px;">
     <div>
       <Icon type={item.entity} />
@@ -72,7 +72,7 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  tr.nav_hover,
+  tr.nav-hover,
   tr:hover {
     background: rgba(127, 127, 127, 0.1);
   }

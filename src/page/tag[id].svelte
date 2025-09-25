@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { tab_selected } from '@lib/store'
+  import { tabSelected } from '@lib/store'
   import { is_big_limit } from '@lib/constant'
   import {
     makeParentsRelative,
@@ -142,7 +142,7 @@
   loadTabs()
 
   let show_open_all_switch = $derived(
-    $tab_selected.key === 'tags' && tags.length > is_big_limit,
+    $tabSelected.key === 'tags' && tags.length > is_big_limit,
   )
 </script>
 

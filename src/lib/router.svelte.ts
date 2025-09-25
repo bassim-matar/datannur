@@ -1,6 +1,6 @@
 import Navigo from 'navigo'
 import { app_mode } from '@lib/util'
-import { page, reload_increment } from '@lib/store'
+import { page, reloadIncrement } from '@lib/store'
 
 export const router = new Navigo('/', { hash: app_mode !== 'static_render' })
 
@@ -17,7 +17,7 @@ window.goToHref = (event, href) => {
     pageValue === href.split('?')[0]
   ) {
     router.navigate(href)
-    reload_increment.update(value => value + 1)
+    reloadIncrement.update(value => value + 1)
   } else {
     router.navigate(href)
   }

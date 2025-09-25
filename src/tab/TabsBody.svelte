@@ -1,7 +1,7 @@
 <script lang="ts">
   import Options from '@lib/options'
   import Loading from '@frame/Loading.svelte'
-  import { tab_selected } from '@lib/store'
+  import { tabSelected } from '@lib/store'
 
   let { tabs, no_first_tab, is_last_tab, active_tab_body, tabs_loaded } =
     $props()
@@ -10,9 +10,9 @@
 </script>
 
 <div
-  class="tabs_body box_shadow box_shadow_color shadow_{$tab_selected.icon}"
-  class:no_first_tab
-  class:is_last_tab
+  class="tabs_body box_shadow box_shadow_color shadow_{$tabSelected.icon}"
+  class:no-first-tab={no_first_tab}
+  class:is-last-tab={is_last_tab}
 >
   {#if active_tab_body === 'loading'}
     <div class="tabs_loading_wrapper">
@@ -77,10 +77,10 @@
       border-radius: $rounded-bottom;
       border-top-right-radius: $rounded-size;
     }
-    .tabs_body.no_first_tab {
+    .tabs_body.no-first-tab {
       border-top-left-radius: $rounded-size;
     }
-    .tabs_body.is_last_tab {
+    .tabs_body.is-last-tab {
       border-top-right-radius: initial;
     }
   }
@@ -89,8 +89,8 @@
     overflow: hidden;
   }
   .tabs_body:global(
-      :has(.tab_component_wrapper.visible .datatable_main_wrapper)
-    ) {
+    :has(.tab_component_wrapper.visible .datatable_main_wrapper)
+  ) {
     overflow: visible !important;
   }
 

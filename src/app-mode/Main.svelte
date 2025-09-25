@@ -4,12 +4,12 @@
   import 'jquery-powertip'
   import db from '@db'
   import {
-    page_hash,
-    footer_visible,
-    is_small_menu,
-    page_content_loaded,
-    on_page_homepage,
-    on_page_search,
+    pageHash,
+    footerVisible,
+    isSmallMenu,
+    pageContentLoaded,
+    onPageHomepage,
+    onPageSearch,
   } from '@lib/store'
   import Options from '@lib/options'
   import Logs from '@lib/logs'
@@ -46,9 +46,9 @@
 
   const timer = performance.now()
 
-  $is_small_menu = getIsSmallMenu()
+  $isSmallMenu = getIsSmallMenu()
   function onResize() {
-    $is_small_menu = getIsSmallMenu()
+    $isSmallMenu = getIsSmallMenu()
   }
 
   function setOptionDefault(key, value = true) {
@@ -129,8 +129,8 @@
     }
   }
 
-  $page_hash = UrlHash.getLevel1()
-  page_hash.subscribe(page_hash_value => checkFromSearch(page_hash_value))
+  $pageHash = UrlHash.getLevel1()
+  pageHash.subscribe(page_hash_value => checkFromSearch(page_hash_value))
 
   if (has_touch_screen) {
     document.documentElement.classList.toggle('has_touch_screen')
@@ -139,7 +139,7 @@
   const is_dark = $dark_mode_theme === 'dark'
   const favicon = is_dark ? icon_dark : icon
 
-  jQuery('body').on('mouseover', '.use_tooltip', function () {
+  jQuery('body').on('mouseover', '.use_tooltip', function (this: HTMLElement) {
     const elem = jQuery(this)
     if (!elem?.data('powertip_initialized')) {
       elem?.data('powertip_initialized', true)
@@ -152,7 +152,7 @@
     }
   })
 
-  jQuery('body').on('click', '.column_stat_btn', function () {
+  jQuery('body').on('click', '.column_stat_btn', function (this: HTMLElement) {
     const attribut_name = jQuery(this).data('attribut')
     column_stat_entity = jQuery(this).data('entity')
     column_stat_attribut = addValuesToAttribut(window._current_tab_data, {
@@ -189,7 +189,7 @@
     console.log('init total', Math.round(performance.now() - timer) + ' ms')
   })
 
-  const unsubscribe = page_content_loaded.subscribe(value => {
+  const unsubscribe = pageContentLoaded.subscribe(value => {
     if (value !== false) {
       if (window.location.hash) {
         page_loaded_route = window.location.hash.split('#/')[1].split('?')[0]
@@ -216,7 +216,7 @@
 
 {#await Options.loaded then}
   <Header />
-  <div id="wrapper" class:no_footer={!$footer_visible}>
+  <div id="wrapper" class:no_footer={!$footerVisible}>
     {#if error_loading_db}
       <div class="error_loading_db">
         <h2 class="title">Erreur de chargement</h2>
@@ -228,7 +228,7 @@
       {#await db.loaded}
         <Loading />
       {:then}
-        {#if ($is_small_menu && ($on_page_search || $on_page_homepage)) || !$is_small_menu}
+        {#if ($isSmallMenu && ($onPageSearch || $onPageHomepage)) || !$isSmallMenu}
           <SearchBar />
         {/if}
         <Router />
@@ -240,7 +240,7 @@
       {/await}
     {/if}
   </div>
-  {#if !$is_small_menu}
+  {#if !$isSmallMenu}
     <Footer />
   {/if}
 {/await}

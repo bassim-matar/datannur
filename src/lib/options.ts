@@ -11,9 +11,9 @@ export default class Options {
     return new Promise<void>(resolve => {
       this.db_key = 'user_data/option'
       this.options = []
-      db.browser.get(this.db_key).then((options: Option[]) => {
+      db.browser.get(this.db_key).then(options => {
         if (options) {
-          this.options = options
+          this.options = options as Option[]
         }
         resolve()
       })

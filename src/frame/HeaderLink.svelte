@@ -1,23 +1,23 @@
 <script lang="ts">
-  import db from "@db"
-  import { page, header_open } from "@lib/store"
-  import { pluralize } from "@lib/util"
-  import { entity_names } from "@lib/constant"
-  import Link from "@layout/Link.svelte"
-  import Icon from "@layout/Icon.svelte"
+  import db from '@db'
+  import { page, headerOpen } from '@lib/store'
+  import { pluralize } from '@lib/util'
+  import { entity_names } from '@lib/constant'
+  import Link from '@layout/Link.svelte'
+  import Icon from '@layout/Icon.svelte'
 
   let {
-    href = $bindable(""),
-    icon = $bindable(""),
-    className = "navbar-item",
+    href = $bindable(''),
+    icon = $bindable(''),
+    className = 'navbar-item',
     pages = $bindable([]),
     if_use = $bindable(null),
-    standard = "",
-    info = "",
+    standard = '',
+    info = '',
     children = null,
   } = $props()
 
-  let standard_readable = $state("")
+  let standard_readable = $state('')
   let loading = $state(true)
 
   if (standard) {
@@ -25,15 +25,17 @@
     pages = [standard, pluralize(standard)]
     icon = standard
     if_use = standard
-    standard_readable = entity_names[standard] + "s"
+    standard_readable = entity_names[standard] + 's'
   }
 
-  const closeMenu = () => ($header_open = false)
+  const closeMenu = () => ($headerOpen = false)
 
   function click() {
     closeMenu()
     if (!href) {
-      const elem = document.getElementsByClassName("tab_select_btn")[0] as HTMLElement | null
+      const elem = document.getElementsByClassName(
+        'tab_select_btn',
+      )[0] as HTMLElement | null
       elem?.click()
     }
   }
@@ -68,7 +70,7 @@
 {/if}
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .fix_on_mobile {
     @media screen and (max-width: $menu_mobile_limit) {

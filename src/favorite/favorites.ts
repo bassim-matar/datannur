@@ -1,6 +1,6 @@
 import db from '@db'
 import Logs from '@lib/logs'
-import { nb_favorite } from '@lib/store'
+import { nbFavorite } from '@lib/store'
 
 export default class Favorites {
   static db_key = 'user_data/favorite'
@@ -25,12 +25,12 @@ export default class Favorites {
           evo.is_favorite = true
       })
     }
-    nb_favorite.set(count_nb_favorite)
+    nbFavorite.set(count_nb_favorite)
   }
   static clear() {
     this.favorites = []
     this.save()
-    nb_favorite.set(0)
+    nbFavorite.set(0)
   }
   static save() {
     db.browser.set(this.db_key, this.favorites)
@@ -44,7 +44,7 @@ export default class Favorites {
     item.is_favorite = true
     item.favorite_timestamp = timestamp
     Logs.add('add_fav', { entity, entity_id })
-    nb_favorite.update(n => n + 1)
+    nbFavorite.update(n => n + 1)
   }
   static remove(entity, entity_id) {
     const id = entity + '/' + entity_id
@@ -53,6 +53,6 @@ export default class Favorites {
     const item = db.get(entity, entity_id)
     item.is_favorite = false
     Logs.add('remove_fav', { entity, entity_id })
-    nb_favorite.update(n => n - 1)
+    nbFavorite.update(n => n - 1)
   }
 }

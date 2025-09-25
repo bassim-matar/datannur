@@ -8,6 +8,22 @@ interface ValueEntry {
   start?: unknown
 }
 
+interface Attribut {
+  name?: string
+  type?: string
+  variable?: string
+  getValue?: (item: DatabaseItem) => unknown
+  parse_date?: boolean
+  nb_range?: number
+  range_type?: string
+  non_exclusive?: string
+  subtype?: (item: DatabaseItem) => boolean
+  icon?: string
+  key?: string
+}
+
+type DatabaseItem = Record<string, unknown>
+
 function getValueReadable(start, end) {
   if (start === 0 || start === end) return Render.num(start)
   return `${Render.num(start)} - ${Render.num(end)}`
@@ -57,7 +73,7 @@ function mergeZeroEmpty(values) {
 }
 
 function prepareTimeAgo(values) {
-  const new_values = []
+  const new_values: { start: unknown; end: unknown; count: number }[] = []
   let empty_value = null
   for (const value of values) {
     if (value.start === '__empty__') {
@@ -75,77 +91,119 @@ function prepareTimeAgo(values) {
   return new_values
 }
 
-function addNumeric(items, attribut) {
-  let values = []
+function addNumeric(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
+  const rawValues: (string | number)[] = []
   for (const item of items) {
     if (attribut.getValue) {
-      values.push(attribut.getValue(item))
-    } else if (attribut.parse_date && item[attribut.variable]) {
-      values.push(Date.parse(item[attribut.variable]))
-    } else {
-      values.push(item[attribut.variable])
+      const val = attribut.getValue(item)
+      if (typeof val === 'string' || typeof val === 'number') {
+        rawValues.push(val)
+      }
+    } else if (
+      attribut.parse_date &&
+      attribut.variable &&
+      typeof item[attribut.variable] === 'string'
+    ) {
+      rawValues.push(Date.parse(item[attribut.variable] as string))
+    } else if (attribut.variable) {
+      const val = item[attribut.variable]
+      if (typeof val === 'string' || typeof val === 'number') {
+        rawValues.push(val)
+      }
     }
   }
-  values = Histogram.get(values, attribut.nb_range || 10)
-  if (attribut.type === 'string') values = mergeZeroEmpty(values)
-  if (attribut.range_type === 'time_ago') values = prepareTimeAgo(values)
-  return values
+  let histogramValues = Histogram.get(
+    rawValues,
+    attribut.nb_range || 10,
+  ) as ValueEntry[]
+  if (attribut.type === 'string')
+    histogramValues = mergeZeroEmpty(histogramValues)
+  if (attribut.range_type === 'time_ago')
+    histogramValues = prepareTimeAgo(histogramValues)
+  return histogramValues
 }
 
-function addNonExclusive(items, attribut) {
-  const set = new Set()
-  const values = {}
+function addNonExclusive(
+  items: DatabaseItem[],
+  attribut: Attribut,
+): ValueEntry[] {
+  const set = new Set<string>()
+  const values: Record<string, ValueEntry> = {}
+  if (!attribut.non_exclusive) return []
   for (const item of items) {
     if (!(attribut.non_exclusive in item)) continue
-    for (const { name } of item[attribut.non_exclusive]) {
-      if (set.has(name)) {
-        values[name].count += 1
-      } else {
-        values[name] = { start: name, count: 1 }
-        set.add(name)
+    const itemValue = item[attribut.non_exclusive]
+    if (Array.isArray(itemValue)) {
+      for (const { name } of itemValue) {
+        if (typeof name === 'string') {
+          if (set.has(name)) {
+            values[name].count += 1
+          } else {
+            values[name] = { start: name, count: 1 }
+            set.add(name)
+          }
+        }
       }
     }
   }
   return getValuesSorted(values)
 }
 
-function addCategory(items, attribut, sort_by = 'count') {
-  const set = new Set()
-  const values = {}
+function addCategory(
+  items: DatabaseItem[],
+  attribut: Attribut,
+  sort_by = 'count',
+): ValueEntry[] {
+  const set = new Set<string>()
+  const values: Record<string, ValueEntry> = {}
   const has_getter = 'getValue' in attribut
   for (const item of items) {
-    let value = has_getter ? attribut.getValue(item) : item[attribut.variable]
-    if ([false, null, undefined, NaN, ''].includes(value)) value = '__empty__'
-    if (set.has(value)) {
-      values[value].count += 1
+    let value: unknown
+    if (has_getter && attribut.getValue) {
+      value = attribut.getValue(item)
+    } else if (attribut.variable) {
+      value = item[attribut.variable]
     } else {
-      values[value] = { start: value, count: 1 }
-      set.add(value)
+      continue
+    }
+    if (
+      [false, null, undefined, NaN, ''].includes(
+        value as string | number | boolean | null | undefined,
+      )
+    )
+      value = '__empty__'
+    const key = String(value)
+    if (set.has(key)) {
+      values[key].count += 1
+    } else {
+      values[key] = { start: value, count: 1 }
+      set.add(key)
     }
   }
   return getValuesSorted(values, sort_by)
 }
 
-function addSubtype(items, attribut) {
-  const set = new Set()
-  const values = {}
+function addSubtype(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
+  const set = new Set<string>()
+  const values: Record<string, ValueEntry> = {}
   for (const item of items) {
-    if (!attribut.subtype(item)) continue
-    const value = attribut.getValue(item)
-    if (set.has(value)) {
-      values[value].count += 1
+    if (!attribut.subtype || !attribut.subtype(item)) continue
+    const value = attribut.getValue ? attribut.getValue(item) : ''
+    const key = String(value)
+    if (set.has(key)) {
+      values[key].count += 1
     } else {
-      values[value] = { start: value, count: 1 }
-      set.add(value)
+      values[key] = { start: value, count: 1 }
+      set.add(key)
     }
   }
   return getValuesSorted(values)
 }
 
-export function addValuesToAttribut(items, attribut) {
-  let values
+export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
+  let values: ValueEntry[]
   let total_value = items.length
-  if (['numeric', 'string'].includes(attribut.type)) {
+  if (attribut.type && ['numeric', 'string'].includes(attribut.type)) {
     values = addNumeric(items, attribut)
   } else if (attribut.non_exclusive) {
     values = addNonExclusive(items, attribut)
@@ -159,14 +217,20 @@ export function addValuesToAttribut(items, attribut) {
     values = addCategory(items, attribut)
   }
   if (values.length === 0) return
-  if (values.length === 1 && [0, '0', '__empty__'].includes(values[0].start))
+  if (
+    values.length === 1 &&
+    [0, '0', '__empty__'].includes(values[0].start as string | number)
+  )
     return
-  values = addReadableValues(values, attribut.type)
+  values = addReadableValues(values, attribut.type || '')
   return { ...attribut, values, total_value }
 }
 
-export function addValues(items, attributs) {
-  const attributs_with_values = []
+export function addValues(items: DatabaseItem[], attributs: Attribut[]) {
+  const attributs_with_values: (Attribut & {
+    values: ValueEntry[]
+    total_value: number
+  })[] = []
   for (const attribut of attributs) {
     const attribut_with_values = addValuesToAttribut(items, attribut)
     if (attribut_with_values) attributs_with_values.push(attribut_with_values)
@@ -174,6 +238,6 @@ export function addValues(items, attributs) {
   return attributs_with_values
 }
 
-export function statExists(entity, attribut) {
+export function statExists(entity: string, attribut: string): boolean {
   return attributs[entity]?.includes(attribut)
 }

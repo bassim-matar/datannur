@@ -3,7 +3,7 @@ import Favorites from '@favorite/favorites'
 
 export default function initFavorite(table_id, datatable) {
   const jquery_favorite = jQuery('table#' + table_id + '._datatables')
-  jquery_favorite.on('click', '.icon.favorite', function () {
+  jquery_favorite.on('click', '.icon.favorite', function (this: HTMLElement) {
     const elem = jQuery(this)
     const is_favorite = elem.data('is_favorite')
     const column = elem.data('col')

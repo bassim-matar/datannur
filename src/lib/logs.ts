@@ -1,7 +1,7 @@
 import db from '@db'
 import { link } from '@lib/util'
 import Render from '@lib/render'
-import { all_tabs_icon } from '@lib/store'
+import { allTabsIcon } from '@lib/store'
 import { entity_to_icon } from '@lib/constant'
 
 export default class Logs {
@@ -15,7 +15,7 @@ export default class Logs {
     if (logs) this.logs = logs
     this.onChangeCallback = () => {}
     this.all_tabs_icon_value = {}
-    all_tabs_icon.subscribe(value => {
+    allTabsIcon.subscribe(value => {
       this.all_tabs_icon_value = value
     })
   }

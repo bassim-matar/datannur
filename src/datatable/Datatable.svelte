@@ -11,7 +11,7 @@
   import { onMount, onDestroy } from 'svelte'
   import { is_mobile } from '@lib/util'
   import { is_big_limit } from '@lib/constant'
-  import { tab_selected, all_tables_loaded, all_tabs } from '@lib/store'
+  import { tabSelected, allTablesLoaded, allTabs } from '@lib/store'
   import { extendable } from '@lib/extendable'
   import Exporter from './exporter/exporter'
   import FilterHelper from './filter/filter-helper'
@@ -90,8 +90,8 @@
     'log',
   ].includes(entity)
 
-  $all_tables_loaded = false
-  all_tables_loaded.subscribe(value => {
+  $allTablesLoaded = false
+  allTablesLoaded.subscribe(value => {
     if (value) {
       setTimeout(() => {
         datatable_update_draw += 1
@@ -139,8 +139,8 @@
         },
       } as Config)
       datatable.on('search.dt', () => {
-        if ($all_tabs[entity]) {
-          $all_tabs[entity].nb = getNbItem(datatable, clean_data)
+        if ($allTabs[entity]) {
+          $allTabs[entity].nb = getNbItem(datatable, clean_data)
         }
         short_table = isShortTable(datatable)
       })
@@ -151,37 +151,41 @@
       dom_table.on('mouseenter', '.long_text', extendable.open)
       dom_table.on('mouseleave', '.long_text', extendable.closeTwoLines)
 
-      dom_table.on('click', 'td', function (event) {
-        setTimeout(() => {
-          const clickable_elems =
-            'a, button, input, select, .copyclip, .favorite'
+      dom_table.on(
+        'click',
+        'td',
+        function (this: HTMLElement, event: MouseEvent) {
+          setTimeout(() => {
+            const clickable_elems =
+              'a, button, input, select, .copyclip, .favorite'
 
-          if (
-            is_mobile ||
-            !dom_table ||
-            elemHasClickable(event.target, this, clickable_elems)
-          ) {
-            return false
-          }
-          jQuery(this).parent().find('.var_main_col')[0]?.click()
-          jQuery(this).parent().find('.var_main_col a')[0]?.click()
-        }, 1)
-      })
+            if (
+              is_mobile ||
+              !dom_table ||
+              elemHasClickable(event.target, this, clickable_elems)
+            ) {
+              return false
+            }
+            jQuery(this).parent().find('.var_main_col')[0]?.click()
+            jQuery(this).parent().find('.var_main_col a')[0]?.click()
+          }, 1)
+        },
+      )
 
       initFavorite(table_id, datatable)
       initied()
       datatable.columns.adjust()
       datatable_update_draw += 1
       fixColumnsWidth(datatable)
-      if ($all_tabs[entity]) {
-        $all_tabs[entity].nb = getNbItem(datatable, clean_data)
+      if ($allTabs[entity]) {
+        $allTabs[entity].nb = getNbItem(datatable, clean_data)
       }
       short_table = isShortTable(datatable)
       loading = false
       DatatablesTimer.end()
       DatatablesLoading.end()
       if (DatatablesLoading.finished) {
-        $all_tables_loaded = true
+        $allTablesLoaded = true
       }
     }, 1)
   })
@@ -190,7 +194,7 @@
     datatable?.columns?.adjust()
   }
 
-  const tab_selected_unsubscribe = tab_selected.subscribe(tab => {
+  const tab_selected_unsubscribe = tabSelected.subscribe(tab => {
     if (tab && [tab.key, tab.icon].includes(entity)) {
       setTimeout(() => {
         datatable?.columns?.adjust()
@@ -219,7 +223,10 @@
   <div class="datatable_main_wrapper dt_loading">
     <div class="datatables_outer visible dt-container dt_loading_outer">
       <div class="dt-scroll" style="--max-height: {max_height_load}">
-        <table class="_datatables table is-striped dataTable" class:short_table>
+        <table
+          class="_datatables table is-striped dataTable"
+          class:short-table={short_table}
+        >
           <thead>
             <tr>
               {#each columns_copy as column, i (`${column.data}/${column.title}`)}
@@ -274,8 +281,8 @@
       <table
         id={table_id}
         class="_datatables table is-striped"
-        class:short_table
-        class:clickable_rows
+        class:short-table={short_table}
+        class:clickable-rows={clickable_rows}
       >
         <thead>
           <tr>
@@ -501,7 +508,7 @@
           margin-top: 0px !important;
           margin-bottom: 0px !important;
           background: $background-2;
-          &.short_table {
+          &.short-table {
             position: relative !important;
             + div {
               height: 0 !important;
@@ -766,7 +773,7 @@
               overflow-y: auto;
             }
           }
-          &.clickable_rows {
+          &.clickable-rows {
             tbody > tr:not(:has(.dt-empty)) {
               cursor: pointer;
             }

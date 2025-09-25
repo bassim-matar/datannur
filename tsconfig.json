@@ -11,6 +11,10 @@
     "baseUrl": ".",
     "strict": false,
     "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
     "paths": {
       "@src/*": ["src/*"],
       "@component/*": ["src/component/*"],

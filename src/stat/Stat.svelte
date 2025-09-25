@@ -4,9 +4,9 @@
   import Icon from '@layout/Icon.svelte'
   import { document_width, getColor } from '@lib/util'
   import { entity_names } from '@lib/constant'
-  import { all_tabs, on_page_homepage } from '@lib/store'
+  import { allTabs, onPageHomepage } from '@lib/store'
   import attributs from './attributs'
-  import {addValues} from './stat'
+  import { addValues } from './stat'
   import StatBox from './StatBox.svelte'
 
   let { stat } = $props()
@@ -38,7 +38,7 @@
         nb_item_visible += entity.attributs.length
       }
     }
-    $all_tabs.stat.nb = nb_item_visible
+    $allTabs.stat.nb = nb_item_visible
   }
 
   function updateLayout() {
@@ -75,7 +75,6 @@
   })
 
   let has_btns = entities.length > 1
-  let no_btns = !has_btns
 </script>
 
 {#if entities.length > 1}
@@ -107,8 +106,12 @@
   </div>
 {/if}
 
-<div class="main_wrapper" class:homepage={$on_page_homepage}>
-  <div class="all_stat_container_wrappper" class:no_btns class:has_btns>
+<div class="main_wrapper" class:homepage={$onPageHomepage}>
+  <div
+    class="all_stat_container_wrappper"
+    class:no-btns={!has_btns}
+    class:has-btns={has_btns}
+  >
     <div class="all_stat_container" class:loading>
       {#each entities as entity (entity.entity)}
         {#if visible[entity.entity] || show_all}
@@ -140,7 +143,7 @@
     background: $background-2;
     @include scrollbar_light();
 
-    &.has_btns {
+    &.has-btns {
       background: $background-1;
     }
   }
@@ -188,7 +191,7 @@
     }
     .all_stat_container_wrappper {
       border-bottom-left-radius: $rounded;
-      &.no_btns {
+      &.no-btns {
         border-radius: $rounded;
       }
     }

@@ -2,10 +2,10 @@
   let {
     value = $bindable(),
     change,
-    slot_position = "right",
+    slot_position = 'right',
     tree_switch = false,
     minimize = false,
-    size = "medium",
+    size = 'medium',
     children = undefined,
   } = $props()
 
@@ -17,7 +17,7 @@
     id="checkbox_{id}"
     type="checkbox"
     class="switch is-rounded is-outlined {size}"
-    class:tree_switch
+    class:tree-switch={tree_switch}
     class:minimize
     bind:checked={value}
     onchange={change}
@@ -30,7 +30,7 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .field.left {
     .slot_wrapper {
@@ -40,7 +40,7 @@
     }
   }
 
-  .switch[type="checkbox"] {
+  .switch[type='checkbox'] {
     outline: 0;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -50,7 +50,7 @@
     position: absolute;
     opacity: 0;
   }
-  .switch[type="checkbox"] + label {
+  .switch[type='checkbox'] + label {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -62,12 +62,12 @@
     padding-top: 0.2rem;
     cursor: pointer;
   }
-  .switch[type="checkbox"].is-rounded + label::before,
-  .switch[type="checkbox"].is-rounded + label:before {
+  .switch[type='checkbox'].is-rounded + label::before,
+  .switch[type='checkbox'].is-rounded + label:before {
     border-radius: $rounded;
   }
-  .switch[type="checkbox"] + label::before,
-  .switch[type="checkbox"] + label:before {
+  .switch[type='checkbox'] + label::before,
+  .switch[type='checkbox'] + label:before {
     position: absolute;
     display: block;
     top: calc(50% - 1.5rem * 0.5);
@@ -77,26 +77,26 @@
     border: 0.1rem solid transparent;
     border-radius: 4px;
     background: #b5b5b5;
-    content: "";
+    content: '';
   }
-  .switch[type="checkbox"].is-outlined + label::before,
-  .switch[type="checkbox"].is-outlined + label:before {
+  .switch[type='checkbox'].is-outlined + label::before,
+  .switch[type='checkbox'].is-outlined + label:before {
     background-color: transparent;
     border-color: #b5b5b5;
   }
-  .switch[type="checkbox"].is-outlined + label::after,
-  .switch[type="checkbox"].is-outlined + label:after {
+  .switch[type='checkbox'].is-outlined + label::after,
+  .switch[type='checkbox'].is-outlined + label:after {
     background: #b5b5b5;
   }
-  .switch[type="checkbox"].is-rounded + label::after,
-  .switch[type="checkbox"].is-rounded + label:after {
+  .switch[type='checkbox'].is-rounded + label::after,
+  .switch[type='checkbox'].is-rounded + label:after {
     border-radius: 50%;
   }
-  .switch[type="checkbox"]:checked + label::after {
+  .switch[type='checkbox']:checked + label::after {
     left: 1.625rem;
   }
-  .switch[type="checkbox"] + label::after,
-  .switch[type="checkbox"] + label:after {
+  .switch[type='checkbox'] + label::after,
+  .switch[type='checkbox'] + label:after {
     display: block;
     position: absolute;
     top: calc(50% - 1rem * 0.5);
@@ -108,52 +108,52 @@
     background: #fff;
     color: #b5b5b5;
     transition: all 0.25s ease-out;
-    content: "";
+    content: '';
   }
 
-  .switch[type="checkbox"].is-outlined:checked + label::before,
-  .switch[type="checkbox"].is-outlined:checked + label:before {
+  .switch[type='checkbox'].is-outlined:checked + label::before,
+  .switch[type='checkbox'].is-outlined:checked + label:before {
     border-color: $color-3;
   }
-  .switch[type="checkbox"].is-outlined:checked + label::after,
-  .switch[type="checkbox"].is-outlined:checked + label:after {
+  .switch[type='checkbox'].is-outlined:checked + label::after,
+  .switch[type='checkbox'].is-outlined:checked + label:after {
     background: $color-3;
   }
 
-  /* special tree_switch */
+  /* special tree-switch */
 
-  .switch[type="checkbox"].tree_switch + label::after,
-  .switch[type="checkbox"].tree_switch + label:after,
-  .switch[type="checkbox"].tree_switch.minimize + label::after,
-  .switch[type="checkbox"].tree_switch.minimize + label:after {
+  .switch[type='checkbox'].tree-switch + label::after,
+  .switch[type='checkbox'].tree-switch + label:after,
+  .switch[type='checkbox'].tree-switch.minimize + label::after,
+  .switch[type='checkbox'].tree-switch.minimize + label:after {
     background: transparent;
-    content: "\f802";
-    font-family: "Font Awesome 7 Free";
+    content: '\f802';
+    font-family: 'Font Awesome 7 Free';
     top: 8px;
     left: 0.5rem;
   }
-  .switch[type="checkbox"].tree_switch.minimize + label::after,
-  .switch[type="checkbox"].tree_switch.minimize + label:after {
-    content: "\f78c";
+  .switch[type='checkbox'].tree-switch.minimize + label::after,
+  .switch[type='checkbox'].tree-switch.minimize + label:after {
+    content: '\f78c';
   }
 
-  .switch[type="checkbox"].tree_switch:checked + label::after,
-  .switch[type="checkbox"].tree_switch:checked + label:after {
+  .switch[type='checkbox'].tree-switch:checked + label::after,
+  .switch[type='checkbox'].tree-switch:checked + label:after {
     left: 1.4rem;
     background: transparent;
     color: $color-3;
   }
 
   /* special size */
-  .switch[type="checkbox"].small + label {
+  .switch[type='checkbox'].small + label {
     padding-left: 2.8rem;
   }
-  .switch[type="checkbox"].small + label::before,
-  .switch[type="checkbox"].small + label:before {
+  .switch[type='checkbox'].small + label::before,
+  .switch[type='checkbox'].small + label:before {
     width: 2.5rem;
   }
-  .switch[type="checkbox"].small.tree_switch:checked + label::after,
-  .switch[type="checkbox"].small.tree_switch:checked + label:after {
+  .switch[type='checkbox'].small.tree-switch:checked + label::after,
+  .switch[type='checkbox'].small.tree-switch:checked + label:after {
     left: 1rem;
   }
 </style>

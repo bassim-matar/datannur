@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { tab_selected } from '@lib/store'
+  import { tabSelected } from '@lib/store'
   import { makeParentsRelative, addMinimumDeep } from '@lib/db'
   import { is_big_limit } from '@lib/constant'
   import Title from '@layout/Title.svelte'
@@ -37,10 +37,10 @@
   const nb_institution = institutions.length
 
   let show_open_all_switch = $derived(
-    $tab_selected.key === 'institutions' && nb_institution > is_big_limit,
+    $tabSelected.key === 'institutions' && nb_institution > is_big_limit,
   )
   let show_evolution_summary_switch = $derived(
-    $tab_selected.key === 'evolutions' && evolutions.length > is_big_limit,
+    $tabSelected.key === 'evolutions' && evolutions.length > is_big_limit,
   )
 </script>
 

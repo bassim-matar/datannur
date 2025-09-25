@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { footer_visible } from '@lib/store'
+  import { footerVisible } from '@lib/store'
   import { getDatetime, getTimeAgo } from '@lib/time'
   import Loading from '@frame/Loading.svelte'
   import Icon from '@layout/Icon.svelte'
@@ -48,7 +48,7 @@
   })
 </script>
 
-{#if $footer_visible || menu_mobile}
+{#if $footerVisible || menu_mobile}
   <footer class="footer">
     <div class="footer-content">
       <div>

@@ -2,6 +2,7 @@ import { UrlHash } from '@lib/url-hash'
 import Options from '@lib/options'
 import { getSortByName } from '@lib/db'
 import { getPercent } from '@lib/util'
+import type { Row } from '@type'
 
 export function isShortTable(dt) {
   return (
@@ -69,7 +70,7 @@ export function getCleanData(data, sort_by_name, is_recursive, is_big) {
 
   const has_filter_recursive = is_recursive && is_big && getHasFilterRecursive()
   const temp_data = [...data]
-  const new_data = []
+  const new_data: Row[] = []
   if (sort_by_name) {
     temp_data.sort(getSortByName)
   }

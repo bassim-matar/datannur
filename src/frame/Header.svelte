@@ -1,11 +1,11 @@
 <script lang="ts">
   import db from '@db'
   import {
-    nb_favorite,
-    header_open,
-    is_small_menu,
-    on_page_homepage,
-    on_page_search,
+    nbFavorite,
+    headerOpen,
+    isSmallMenu,
+    onPageHomepage,
+    onPageSearch,
   } from '@lib/store'
   import { app_mode } from '@lib/util'
   import { dark_mode_theme } from '@dark-mode/dark-mode'
@@ -24,12 +24,12 @@
 
   let logo_src = $derived($dark_mode_theme === 'dark' ? logo_dark : logo)
 
-  const toggle_header = () => ($header_open = !$header_open)
-  const closeMenu = () => ($header_open = false)
+  const toggle_header = () => ($headerOpen = !$headerOpen)
+  const closeMenu = () => ($headerOpen = false)
 
   function clickOnMainLogo() {
     closeMenu()
-    if (!$on_page_homepage) {
+    if (!$onPageHomepage) {
       router.navigate('/')
       return
     }
@@ -46,22 +46,18 @@
 
 <nav
   class="navbar is-fixed-top"
-  class:header_open={$header_open}
-  class:header_on_top={scroll_y < 10 || $header_open}
-  class:box_shadow={scroll_y >= 10 && !$header_open}
+  class:header_open={$headerOpen}
+  class:header_on_top={scroll_y < 10 || $headerOpen}
+  class:box_shadow={scroll_y >= 10 && !$headerOpen}
   style="max-height: 48px; min-height: 48px;"
 >
   <div class="navbar-brand">
-    <Link
-      href=""
-      className="navbar-item"
-      alternativeAction={clickOnMainLogo}
-    >
+    <Link href="" className="navbar-item" alternativeAction={clickOnMainLogo}>
       <img src={logo_src} class="header_logo" alt="logo" />
     </Link>
 
     <div class="mobile_right_btn">
-      {#if !$on_page_search && !$on_page_homepage && !loading}
+      {#if !$onPageSearch && !$onPageHomepage && !loading}
         <div class="search_bar_btn_wrapper">
           <HeaderLink href="search" pages={['search']}>
             <i class="fas fa-magnifying-glass"></i>
@@ -71,7 +67,7 @@
 
       <button
         class="navbar-burger"
-        class:is-active={$header_open}
+        class:is-active={$headerOpen}
         aria-label="menu"
         onclick={toggle_header}
       >
@@ -82,8 +78,8 @@
 
   <div
     class="navbar-menu"
-    class:box_shadow={$header_open}
-    class:is-active={$header_open}
+    class:box_shadow={$headerOpen}
+    class:is-active={$headerOpen}
   >
     <div class="navbar-start">
       {#if loading}
@@ -139,7 +135,7 @@
         icon="favorite"
         info="Favoris"
         ><span class="visible_on_mobile">Favoris</span><span
-          class="num_style favorite_number">{$nb_favorite}</span
+          class="num_style favorite_number">{$nbFavorite}</span
         ></HeaderLink
       >
 
@@ -158,7 +154,7 @@
     </div>
 
     <div class="navbar-end">
-      {#if $is_small_menu && app_mode !== 'static_render'}
+      {#if $isSmallMenu && app_mode !== 'static_render'}
         <Footer menu_mobile={true} />
       {/if}
     </div>

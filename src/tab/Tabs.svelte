@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { tab_selected, footer_visible, all_tabs } from '@lib/store'
+  import { tabSelected, footerVisible, allTabs } from '@lib/store'
   import { UrlParam } from '@lib/url-param'
   import { is_firefox, getIsMobile } from '@lib/util'
   import { is_big_limit } from '@lib/constant'
@@ -59,7 +59,7 @@
     const tab_key = tab.key
     loadTab(tab_key)
     setFooter(tab)
-    $tab_selected = tab
+    $tabSelected = tab
     centerActiveTab()
     Logs.add('select_tab', { entity: tab_key })
     if (tabs[0].key === tab_key) {
@@ -71,10 +71,10 @@
 
   function setFooter(tab) {
     if (tab.footer_visible === false) {
-      $footer_visible = false
+      $footerVisible = false
       return
     }
-    $footer_visible = tab.footer_visible || tab.nb < is_big_limit
+    $footerVisible = tab.footer_visible || tab.nb < is_big_limit
   }
 
   function centerActiveTab() {
@@ -90,7 +90,7 @@
   function setupTabs() {
     for (const tab of tabs) {
       all_keys.push(tab.key)
-      $all_tabs[tab.icon] = { ...tab }
+      $allTabs[tab.icon] = { ...tab }
     }
   }
 
@@ -105,7 +105,7 @@
     for (const tab of tabs) {
       if (active_tab_body === tab.key) {
         setFooter(tab)
-        $tab_selected = tab
+        $tabSelected = tab
       }
     }
   }
@@ -129,9 +129,9 @@
 <div
   id="tabs_container"
   class="tabs is-boxed"
-  class:no_first_tab
-  class:is_last_tab
-  class:has_reverse_scroll
+  class:no-first-tab={no_first_tab}
+  class:is-last-tab={is_last_tab}
+  class:has-reverse-scroll={has_reverse_scroll}
   bind:this={ul}
 >
   {#key tabs_title_key}
@@ -162,7 +162,7 @@
     }
   }
 
-  .tabs.has_reverse_scroll {
+  .tabs.has-reverse-scroll {
     transform: rotateX(180deg);
     .tabs_container_ul {
       transform: rotateX(180deg);

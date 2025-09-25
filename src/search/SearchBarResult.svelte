@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { on_page_homepage } from '@lib/store'
+  import { onPageHomepage } from '@lib/store'
   import { debounce } from '@lib/util'
   import SearchBarResultRow from './SearchBarResultRow.svelte'
 
@@ -23,7 +23,7 @@
   function updateHeight() {
     if (!table_wrapper) return
     const real_height = table_wrapper.offsetHeight + 20
-    const percent_height = $on_page_homepage ? 0.8 : 0.9
+    const percent_height = $onPageHomepage ? 0.8 : 0.9
     const window_height = window.innerHeight * percent_height
     has_scroll_bar = real_height > window_height
     height = Math.min(real_height, window_height)
@@ -40,7 +40,7 @@
   })
 
   $effect(() => {
-    if ($on_page_homepage !== undefined) debounced_updateHeight()
+    if ($onPageHomepage !== undefined) debounced_updateHeight()
   })
 
   $effect(() => {
@@ -55,8 +55,8 @@
 <div id="search_bar_result_outer">
   <div
     id="search_bar_result_wrapper"
-    class:is_open
-    class:has_scroll_bar
+    class:is-open={is_open}
+    class:has-scroll-bar={has_scroll_bar}
     style="--height: {height}px"
   >
     <div class="table_wrapper" bind:this={table_wrapper}>
@@ -110,10 +110,10 @@
     overflow-y: hidden;
     transition: height $transition-basic-1;
     @include scrollbar_light();
-    &.is_open {
+    &.is-open {
       height: var(--height);
     }
-    &.has_scroll_bar {
+    &.has-scroll-bar {
       overflow-y: auto;
     }
     .table {
