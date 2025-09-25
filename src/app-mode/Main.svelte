@@ -139,7 +139,7 @@
   const is_dark = $dark_mode_theme === 'dark'
   const favicon = is_dark ? icon_dark : icon
 
-  jQuery('body').on('mouseover', '.use_tooltip', function () {
+  jQuery('body').on('mouseover', '.use_tooltip', function (this: HTMLElement) {
     const elem = jQuery(this)
     if (!elem?.data('powertip_initialized')) {
       elem?.data('powertip_initialized', true)
@@ -152,7 +152,7 @@
     }
   })
 
-  jQuery('body').on('click', '.column_stat_btn', function () {
+  jQuery('body').on('click', '.column_stat_btn', function (this: HTMLElement) {
     const attribut_name = jQuery(this).data('attribut')
     column_stat_entity = jQuery(this).data('entity')
     column_stat_attribut = addValuesToAttribut(window._current_tab_data, {

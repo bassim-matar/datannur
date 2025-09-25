@@ -6,6 +6,7 @@ const open_duration = 300
 const close_duration = 600
 
 export const extendable = {
+  mouse_enter_timeout: null,
   open() {
     const elem = jQuery(this)
     elem.stop()

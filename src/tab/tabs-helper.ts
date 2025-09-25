@@ -79,7 +79,7 @@ function getTab(key: string, value: unknown) {
 }
 
 export function tabsHelper(items: Row) {
-  const tabs = []
+  const tabs: TabConfig[] = []
   for (const [key, value] of Object.entries(items)) {
     const tab = getTab(key, value)
     if (!tab) continue

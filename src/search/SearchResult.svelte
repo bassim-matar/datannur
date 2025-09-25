@@ -12,12 +12,16 @@
   function initied() {
     const table_id = 'search___search'
     const datatable_search = jQuery('table#' + table_id + '._datatables')
-    datatable_search.on('click', '.remove_search_item', function () {
-      const elem = jQuery(this)
-      const entity_name = elem.data('entity_name')
-      const item_id = elem.data('item_id')
-      SearchHistory.remove(entity_name, item_id)
-    })
+    datatable_search.on(
+      'click',
+      '.remove_search_item',
+      function (this: HTMLElement) {
+        const elem = jQuery(this)
+        const entity_name = elem.data('entity_name')
+        const item_id = elem.data('item_id')
+        SearchHistory.remove(entity_name, item_id)
+      },
+    )
   }
 
   const columns = [

@@ -151,22 +151,26 @@
       dom_table.on('mouseenter', '.long_text', extendable.open)
       dom_table.on('mouseleave', '.long_text', extendable.closeTwoLines)
 
-      dom_table.on('click', 'td', function (event) {
-        setTimeout(() => {
-          const clickable_elems =
-            'a, button, input, select, .copyclip, .favorite'
+      dom_table.on(
+        'click',
+        'td',
+        function (this: HTMLElement, event: MouseEvent) {
+          setTimeout(() => {
+            const clickable_elems =
+              'a, button, input, select, .copyclip, .favorite'
 
-          if (
-            is_mobile ||
-            !dom_table ||
-            elemHasClickable(event.target, this, clickable_elems)
-          ) {
-            return false
-          }
-          jQuery(this).parent().find('.var_main_col')[0]?.click()
-          jQuery(this).parent().find('.var_main_col a')[0]?.click()
-        }, 1)
-      })
+            if (
+              is_mobile ||
+              !dom_table ||
+              elemHasClickable(event.target, this, clickable_elems)
+            ) {
+              return false
+            }
+            jQuery(this).parent().find('.var_main_col')[0]?.click()
+            jQuery(this).parent().find('.var_main_col a')[0]?.click()
+          }, 1)
+        },
+      )
 
       initFavorite(table_id, datatable)
       initied()

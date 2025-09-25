@@ -1,12 +1,12 @@
 <script lang="ts">
-  import jQuery from "jquery"
-  import BtnClearInput from "@layout/BtnClearInput.svelte"
+  import jQuery from 'jquery'
+  import BtnClearInput from '@layout/BtnClearInput.svelte'
 
   let { table_id, i, column } = $props()
 
-  function clearInput() {
-    const input = jQuery(this).parent().children("input")
-    input[0].value = ""
+  function clearInput(this: HTMLElement) {
+    const input = jQuery(this).parent().children('input')
+    input[0].value = ''
     input.keyup()
     input.focus()
   }
@@ -42,12 +42,12 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .header_input_wrapper {
     position: relative;
     .fontAwesome {
-      font-family: "Helvetica", FontAwesome, sans-serif;
+      font-family: 'Helvetica', FontAwesome, sans-serif;
     }
     :global {
       .select {
