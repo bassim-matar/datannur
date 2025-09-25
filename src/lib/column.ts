@@ -113,7 +113,7 @@ export default class Column {
     }
   }
   static folder(folder_id_var = 'folder_id', folder_name_var = 'folder_name') {
-    const render = (data: any, type: any, row: any) => {
+    const render = (data, type, row) => {
       const folder_id = row[folder_id_var]
       const folder_name = row[folder_name_var]
       return is_mobile

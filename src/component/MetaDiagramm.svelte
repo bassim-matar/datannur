@@ -6,23 +6,25 @@
   import { ensureMermaidLoaded } from '@lib/mermaid'
   import Loading from '@frame/Loading.svelte'
 
-  let svg_diagramm = $state(null)
+  let svg_diagramm = $state<string | null>(null)
 
-  const schema = { ...db.tables.__schema__ } as any
+  const schema = { ...db.tables.__schema__ }
 
   delete schema.one_to_one
 
   const direction = is_mobile ? 'TB' : 'LR'
   let diagramm_definition = `flowchart ${direction}\n`
 
-  function compareNameDesc(a, b) {
-    if (a[0] > b[0]) return -1
-    if (a[0] < b[0]) return 1
+  function compareNameDesc(a: string[] | string, b: string[] | string): number {
+    const aName = Array.isArray(a) ? a[0] : a
+    const bName = Array.isArray(b) ? b[0] : b
+    if (aName > bName) return -1
+    if (aName < bName) return 1
     return 0
   }
 
-  schema.one_to_many = schema.one_to_many.map(relation => {
-    let other_one = null
+  schema.one_to_many = schema.one_to_many.map((relation: string[]) => {
+    let other_one: string | null = null
     if (relation.includes('manager')) other_one = 'owner'
     else if (relation.includes('owner')) other_one = 'manager'
     if (other_one) {
@@ -31,18 +33,20 @@
     return relation
   })
 
-  schema.alone = new Set()
+  const aloneSet: string[] = []
   const all_tables = [...schema.one_to_many, ...schema.many_to_many]
   for (const table_relation of all_tables) {
     for (const table of table_relation) {
       if (table === 'manager' || table === 'owner') {
         continue
       }
-      schema.alone.add(table)
+      if (!aloneSet.includes(table)) {
+        aloneSet.push(table)
+      }
     }
   }
 
-  schema.alone = [...schema.alone]
+  schema.alone = aloneSet
 
   schema.alone.sort(compareNameDesc)
   schema.one_to_many.sort(compareNameDesc)

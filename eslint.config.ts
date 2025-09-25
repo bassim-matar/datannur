@@ -31,7 +31,6 @@ const namingConventionRules = {
     //   format: ['camelCase'],
     // },
   ],
-  '@typescript-eslint/no-explicit-any': 'off',
 }
 
 const globals = {

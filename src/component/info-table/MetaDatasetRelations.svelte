@@ -3,11 +3,28 @@
   import Icon from '@layout/Icon.svelte'
   import Link from '@layout/Link.svelte'
 
-  let { dataset_id } = $props()
+  let { dataset_id }: { dataset_id: string } = $props()
 
-  const schema = structuredClone(db.tables.__schema__) as any
+  interface Alias {
+    alias: string
+    name: string
+    entity: string
+  }
 
-  const relation_types = [
+  interface RelationType {
+    name: string
+    symbol: string
+    tooltip: string
+  }
+
+  interface RelationGroup {
+    type: RelationType
+    relations: [string, string][]
+  }
+
+  const schema = structuredClone(db.tables.__schema__)
+
+  const relation_types: RelationType[] = [
     { name: 'one_to_one', symbol: 'minus', tooltip: 'one to one' },
     { name: 'one_to_many', symbol: 'arrow-right-long', tooltip: 'one to many' },
     {
@@ -17,7 +34,7 @@
     },
   ]
 
-  const aliases = []
+  const aliases: Alias[] = []
   for (const relation of schema.one_to_one) {
     for (const alias of schema.aliases) {
       if (relation[0] === alias) {
@@ -32,7 +49,7 @@
 
   let dataset_has_alias = aliases.some(alias => alias.entity === dataset_id)
 
-  const relations = relation_types.map(type => ({
+  const relations: RelationGroup[] = relation_types.map(type => ({
     type,
     relations: schema[type.name].filter(relation => {
       if (dataset_has_alias) {

@@ -1,14 +1,25 @@
 import jQuery from 'jquery'
+import type { Api } from 'datatables.net'
 import { UrlParam } from '@lib/url-param'
 import { dateToTimestamp } from '@lib/time'
 
+interface FilterHistory {
+  columns: Record<number, { special_search?: string }>
+}
+
+interface ButtonInfo {
+  text: string
+  action: () => void
+  footer: boolean
+}
+
 export default class FilterHelper {
   table_id: string
-  filters: any
+  filters: Record<number, number>
   filter_table_id: string
   on_update_filter_count: (count: number) => void
-  datatable: any
-  history_search: any
+  datatable: Api
+  history_search: FilterHistory | null
   constructor(table_id, entity, on_update_filter_count) {
     this.table_id = table_id
     this.filters = {}
@@ -266,12 +277,11 @@ export default class FilterHelper {
       }
     }
   }
-  getBtnInfoPopup(action = () => {}) {
+  getBtnInfoPopup(action = () => {}): ButtonInfo {
     return {
       text: `<span class="icon"><i class="fa-solid fa-magnifying-glass-plus"></i></span>`,
       action,
-      className: 'search_option',
       footer: false,
-    } as any
+    }
   }
 }

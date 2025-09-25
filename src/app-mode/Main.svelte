@@ -35,7 +35,7 @@
   import Loading from '@page/_loading.svelte'
   import StatBox from '@stat/StatBox.svelte'
   import SearchBar from '@search/SearchBar.svelte'
-  import db_schema from '@src/db-schema.json'
+  import dbSchema from '@src/db-schema.json'
 
   let error_loading_db = $state(false)
   let page_loaded_route = $state('')
@@ -99,7 +99,7 @@
 
       timer = performance.now()
       const user_data = await getUserData()
-      db.addMeta(user_data, db_schema as any)
+      db.addMeta(user_data, dbSchema as string[][])
       dbAddProcessedData()
       console.log('process db', Math.round(performance.now() - timer) + ' ms')
 

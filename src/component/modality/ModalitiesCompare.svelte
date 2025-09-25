@@ -23,7 +23,7 @@
     similitutes = (await worker(
       { modalities_compare, limit: 50000 },
       modalityCompareWorker,
-    )) as any[]
+    )) as unknown[]
     $modalities_similitutes = similitutes
     loading = false
     if (similitutes.length === 0) $tab_selected.nb = 0

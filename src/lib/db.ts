@@ -6,10 +6,10 @@ import { entity_names } from '@lib/constant'
 import { evolutionInitialSetup } from '@lib/evolution'
 
 interface UserData {
-  log?: any[]
-  favorite?: any[]
-  search_history?: any[]
-  [key: string]: any
+  log?: unknown[]
+  favorite?: unknown[]
+  search_history?: unknown[]
+  [key: string]: unknown
 }
 
 function addEntitiesUsed() {

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import db from "@db"
-  import TagsListLevel from "@component/tag/TagsListLevel.svelte"
+  import db from '@db'
+  import TagsListLevel from '@component/tag/TagsListLevel.svelte'
 
   let { tags } = $props()
 

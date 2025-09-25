@@ -21,7 +21,16 @@ import type {
   SearchHistory,
   EntityTypeMap,
   EntityName,
+  Row,
 } from '@type'
+
+interface Schema {
+  one_to_one: [string, string][]
+  one_to_many: string[][]
+  many_to_many: [string, string][]
+  aliases: string[]
+  alone?: string[]
+}
 
 interface SearchResult {
   id: string | number
@@ -36,10 +45,13 @@ interface SearchResult {
   _entity_clean: string
 }
 
-type ExtendedJsonjsdb = Omit<Jsonjsdb, 'get' | 'getAll' | 'foreach'> & {
-  db: Record<string, unknown>
+type ExtendedJsonjsdb = Omit<
+  Jsonjsdb,
+  'get' | 'getAll' | 'foreach' | 'addMeta'
+> & {
+  db: Row
   loaded: Promise<void>
-  preview: Record<string, unknown>
+  preview: Row
   search: (searchTerm: string) => Promise<SearchResult[]>
   foreach<K extends EntityName>(
     table: K,
@@ -49,11 +61,10 @@ type ExtendedJsonjsdb = Omit<Jsonjsdb, 'get' | 'getAll' | 'foreach'> & {
     entity: K,
     id: string | number,
   ): EntityTypeMap[K] | undefined
-  getAll<K extends EntityName>(
-    entity: K,
-    filter?: Record<string, any>,
-  ): EntityTypeMap[K][]
+  getAll<K extends EntityName>(entity: K, filter?: Row): EntityTypeMap[K][]
+  addMeta(userData?: Row, dbSchema?: string[][]): void
   tables: {
+    __schema__?: Schema
     config?: Config[]
     dataset?: Dataset[]
     variable?: Variable[]
@@ -73,7 +84,7 @@ type ExtendedJsonjsdb = Omit<Jsonjsdb, 'get' | 'getAll' | 'foreach'> & {
     log?: Log[]
     option?: Option[]
     search_history?: SearchHistory[]
-    [key: string]: any[] | undefined
+    [key: string]: unknown[] | Schema | undefined
   }
   use: {
     institution?: boolean

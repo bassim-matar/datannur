@@ -1,5 +1,5 @@
 import db from '@db'
-import type { EntityTypeMap } from '@type'
+import type { EntityName } from '@type'
 import { entity_names, evolution_types, parent_entities } from '@lib/constant'
 import {
   dateToTimestamp,
@@ -157,14 +157,16 @@ function addValidity(validities, type, entity, entity_data, evo_deleted) {
 
 function addValidities(evo_deleted) {
   const validities = []
-  const entities = Object.keys(parent_entities) as (keyof EntityTypeMap)[]
+  const entities = Object.keys(parent_entities) as EntityName[]
   for (const entity of entities) {
+    const tableData = db.tables[entity]
     if (
-      db.tables[entity]?.length > 0 &&
-      (Object.keys(db.tables[entity][0]).includes('start_date') ||
-        Object.keys(db.tables[entity][0]).includes('end_date') ||
-        Object.keys(db.tables[entity][0]).includes('last_update_date') ||
-        Object.keys(db.tables[entity][0]).includes('next_update_date'))
+      Array.isArray(tableData) &&
+      tableData.length > 0 &&
+      (Object.keys(tableData[0]).includes('start_date') ||
+        Object.keys(tableData[0]).includes('end_date') ||
+        Object.keys(tableData[0]).includes('last_update_date') ||
+        Object.keys(tableData[0]).includes('next_update_date'))
     ) {
       db.foreach(entity, entity_data => {
         if ('start_date' in entity_data && entity_data.start_date) {

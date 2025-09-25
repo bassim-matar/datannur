@@ -6,6 +6,8 @@ import { chromium, type Browser, type Page } from 'playwright'
 import { SitemapStream, streamToPromise } from 'sitemap'
 import handler from 'serve-handler'
 
+type Row = Record<string, unknown>
+
 interface Config {
   domain: string
   indexSeo: boolean
@@ -132,11 +134,11 @@ async function deleteIndexFile() {
   }
 }
 
-function arrayToObject(data: unknown[][]): Record<string, unknown>[] {
+function arrayToObject(data: unknown[][]): Row[] {
   const [headers, ...rows] = data
-  const result: Record<string, unknown>[] = []
+  const result: Row[] = []
   for (const row of rows) {
-    const obj: Record<string, unknown> = {}
+    const obj: Row = {}
     for (let i = 0; i < row.length; i++) {
       const key = headers[i] as string
       obj[key] = row[i]

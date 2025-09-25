@@ -11,6 +11,7 @@
   } from '@lib/store'
   import { UrlHash } from '@lib/url-hash'
   import router_index from '@src/.generated/router-index'
+  import type { Row } from '@type'
 
   let entity_global = $state('')
   let route = $state(router_index._loading.component)
@@ -27,10 +28,7 @@
     )
   }
 
-  function updateRoute(
-    entity: string,
-    new_params: Record<string, any> | false = false,
-  ) {
+  function updateRoute(entity: string, new_params: Row = null) {
     if (new_params) params = new_params
     $page_content_loaded = false
     route = router_index[entity].component

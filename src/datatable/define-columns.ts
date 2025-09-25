@@ -1,6 +1,7 @@
 import { entity_names } from '@lib/constant'
 import { link } from '@lib/util'
 import { statExists } from '@stat/stat'
+import type { ConfigColumns } from 'datatables.net'
 
 function filterEmptyColumns(columns, items) {
   const has_prop = {}
@@ -43,7 +44,11 @@ export function defineColumns(
   let columns_copy = columns.map(obj => ({ ...obj }))
 
   if (columns_copy[0]?.title !== '#') {
-    const col_numerotation: any = {
+    const col_numerotation: ConfigColumns & {
+      tooltip?: string
+      filter_type?: string
+      width?: string
+    } = {
       data: '_row_num',
       name: '_row_num',
       title: '#',

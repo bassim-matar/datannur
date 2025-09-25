@@ -4,13 +4,13 @@ export type {
   Config,
   Value,
   Freq,
-  Evolution,
   Favorite,
   FilterActive,
   Log,
   Option,
   SearchHistory,
   Filter,
+  Row,
 } from './base'
 
 // Entity types (business logic)
@@ -22,10 +22,12 @@ export type {
   Folder,
   Institution,
   Tag,
+  TagWithChildren,
   Doc,
   MetaVariable,
   MetaDataset,
   MetaFolder,
+  Evolution,
   AnyEntity,
   EntityTypeMap,
   EntityName,

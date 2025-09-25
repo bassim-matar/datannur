@@ -1,20 +1,31 @@
 <script lang="ts">
   import TagsListLevel from '@component/tag/TagsListLevel.svelte'
   import Link from '@layout/Link.svelte'
+  import type { TagWithChildren } from '@type'
 
-  let { tag }: { tag: any } = $props()
+  let {
+    tag,
+  }: {
+    tag: TagWithChildren | { children?: { [key: string]: TagWithChildren } }
+  } = $props()
 
-  const tag_children_data: any[] = Object.values(tag.children || {})
+  const tag_children_data: TagWithChildren[] = Object.values(tag.children || {})
+
+  const isTag = 'id' in tag && 'name' in tag
+
+  const typedTag = isTag ? (tag as TagWithChildren) : null
 </script>
 
 <div class="main_tag_list_wrapper">
-  {#if tag.id}
-    <span><Link href="tag/{tag.id}" entity="tag">{tag.name}</Link></span>
+  {#if isTag && typedTag}
+    <span>
+      <Link href="tag/{typedTag.id}" entity="tag">{typedTag.name}</Link>
+    </span>
   {/if}
   {#if tag_children_data && tag_children_data.length > 0}
-    <div class="tags_list_level_wrapper" class:with_indent={tag.id}>
+    <div class="tags_list_level_wrapper" class:with_indent={isTag}>
       {#each tag_children_data as childTag (childTag.id)}
-        {#if (childTag as any).children && Object.values((childTag as any).children).length > 0}
+        {#if childTag.children && Object.values(childTag.children).length > 0}
           <div class="tag_list_level_wrapper">
             <TagsListLevel tag={childTag} />
           </div>

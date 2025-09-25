@@ -1,6 +1,8 @@
 import db from '@db'
 import { entity_names } from '@lib/constant'
 import { escapeHtmlEntities } from '@lib/util'
+import type { Index } from 'flexsearch'
+import type { EntityName, BaseEntity } from '@type'
 
 function ensureFlexsearchLoaded() {
   return new Promise<void>(resolve => {
@@ -52,8 +54,13 @@ export function searchHighlight(value, search) {
   })
 }
 
+type EntityData = { name: EntityName; items: Index; data: unknown[] }
+
 export default class Search {
-  all_search: any[]
+  all_search: {
+    name: string
+    entities: EntityData[]
+  }[]
   loading: Promise<void> | null
 
   constructor() {
@@ -80,8 +87,13 @@ export default class Search {
       for (const variable of this.all_search) {
         for (const entity of variable.entities) {
           db.foreach(entity.name, item => {
-            let name = item[variable.name]
-            if (item.original_name && variable.name === 'name')
+            if (!('name' in item)) return
+            let name = String(item[variable.name] || '')
+            if (
+              'original_name' in item &&
+              item.original_name &&
+              variable.name === 'name'
+            )
               name += ` (${item.original_name})`
             entity.items.add(item.id, removeDiacritics(name))
           })
@@ -98,20 +110,24 @@ export default class Search {
       for (const entity of variable.entities) {
         const items_id = await this.getItemsId(to_search, entity, ids_found)
         for (const item_id of items_id) {
-          const item = db.get(entity.name, item_id)
+          const item = db.get(entity.name, item_id) as BaseEntity & {
+            folder_id?: string | number
+            folder_name?: string
+            original_name?: string
+          }
           result.push({
             id: item.id,
             name:
               item.name +
               (item.original_name ? ` (${item.original_name})` : ''),
-            description: item.description,
+            description: item.description || '',
             entity: entity.name,
             variable: variable.name,
-            is_favorite: item.is_favorite,
-            folder_id: item.folder_id,
-            folder_name: item.folder_name,
-            _entity: item._entity,
-            _entity_clean: entity_names[item._entity as string],
+            is_favorite: item.is_favorite || false,
+            folder_id: item.folder_id || '',
+            folder_name: item.folder_name || '',
+            _entity: item._entity || '',
+            _entity_clean: entity_names[item._entity as string] || '',
           })
         }
       }

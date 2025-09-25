@@ -11,7 +11,7 @@
   let columns = $state([])
 
   let variable = variable_preview.variable
-  let dataset_preview: string | any = false
+  let dataset_preview: string | null = null
 
   async function getLoadPreview() {
     if (variable_preview.variable === undefined) {
