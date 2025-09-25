@@ -16,14 +16,14 @@ export function ensureMermaidLoaded(callback) {
 
 function mermaidAddEntities(code) {
   let code_prefix = null
-  let code_prefixes_search = ['flowchart LR', 'flowchart TB']
+  const code_prefixes_search = ['flowchart LR', 'flowchart TB']
   for (const code_prefix_search of code_prefixes_search) {
     if (
       code.startsWith(code_prefix_search) ||
       code.startsWith('\n' + code_prefix_search)
     ) {
       code_prefix = `\n${code_prefix_search}\n`
-      let [before, ...after] = code.split(code_prefix_search)
+      const [before, ...after] = code.split(code_prefix_search)
       code = after.join('_')
     }
   }
@@ -45,7 +45,7 @@ function mermaidAddEntities(code) {
     if (entity === 'manager' || entity === 'owner') {
       entity_name = 'institution'
     }
-    let icon = Render.icon(entity_name)
+    const icon = Render.icon(entity_name)
 
     let recursive_icon = ''
     const entity_recursive = '$' + entity + ' $recursive'
@@ -91,8 +91,9 @@ export async function mdWithMermaidToHtml(md_with_mermaid) {
         separator = ');'
         is_auto_flowchart = true
       }
-      let [mermaid_code, mardown_code] = about_page_part.split(separator)
-      mermaid_code = mermaidAddEntities(mermaid_code)
+
+      const [mermaid_code_raw, mardown_code] = about_page_part.split(separator)
+      let mermaid_code = mermaidAddEntities(mermaid_code_raw)
       if (is_auto_flowchart) mermaid_code = diagramm_definition + mermaid_code
       const diagramm_id = 'about_page_diagramm_' + part_num
       const { svg } = await window.mermaid.render(diagramm_id, mermaid_code)

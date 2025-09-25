@@ -20,7 +20,7 @@ export default class PreviewManager {
   static addPosition(data) {
     const new_data = []
     let position = 0
-    for (let row of data) {
+    for (const row of data) {
       position += 1
       new_data.push({ '#': position, ...row })
     }
@@ -40,7 +40,7 @@ export default class PreviewManager {
     return cols
   }
   static getVariableData(data, variable) {
-    let variable_data = []
+    const variable_data = []
     let position = 0
     for (const row of data) {
       position += 1
@@ -54,7 +54,7 @@ export default class PreviewManager {
   }
   static async load(dataset_preview) {
     let path = 'preview'
-    let dataset_id_parts = dataset_preview.split('-')
+    const dataset_id_parts = dataset_preview.split('-')
     if (dataset_id_parts.length > 1) {
       path += '/' + dataset_id_parts[0]
     }

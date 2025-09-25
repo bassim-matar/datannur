@@ -283,8 +283,8 @@ export function highlightDiff(a, b, variable = null) {
 
   let oldDate = null
   let newDate = null
-  let is_a_number = !isNaN(a) && a !== ''
-  let is_b_number = !isNaN(b) && b !== ''
+  const is_a_number = !isNaN(a) && a !== ''
+  const is_b_number = !isNaN(b) && b !== ''
 
   if (!is_a_number) {
     oldDate = parseDateStandard(a)

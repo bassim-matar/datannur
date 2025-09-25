@@ -160,7 +160,7 @@ export default class FilterHelper {
     return value.toString().trim().toLowerCase()
   }
   searchEquationStart(column_num, search) {
-    let dt = jQuery.fn.dataTable
+    const dt = jQuery.fn.dataTable
     this.filters[column_num] = dt.ext.search.length
     dt.ext.search.push((settings, data) => {
       if (settings.nTable.id !== this.table_id) return true
