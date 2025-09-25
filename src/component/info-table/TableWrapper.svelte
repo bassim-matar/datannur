@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { onMount } from "svelte"
-  import { page_content_loaded } from "@lib/store"
+  import { onMount } from 'svelte'
+  import { page_content_loaded } from '@lib/store'
 
   let { no_max_height = true, children } = $props()
 
@@ -9,7 +9,7 @@
   })
 </script>
 
-<div class="table_wrapper" class:no_max_height>
+<div class="table_wrapper" class:no-max-height={no_max_height}>
   <table class="table is-striped">
     <tbody>
       {@render children?.()}
@@ -18,7 +18,7 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .table_wrapper {
     display: inline-block;
@@ -32,7 +32,7 @@
       border-bottom-left-radius: $rounded;
     }
 
-    &.no_max_height {
+    &.no-max-height {
       max-height: none;
     }
     .table {

@@ -21,11 +21,11 @@
       </td>
       <td>
         <!-- eslint-disable svelte/no-at-html-tags -->
-        <div class="content inside_table">{@html description_clean}</div>
+        <div class="content inside-table">{@html description_clean}</div>
       </td>
     </tr>
   {:else}
-    <div class="description_wrapper" class:inside_table>
+    <div class="description_wrapper" class:inside-table={inside_table}>
       <div style="font-weight: bold;">
         <Icon type="description" /> Description
       </div>
@@ -47,7 +47,7 @@
     max-width: 800px;
     word-wrap: break-word;
     box-sizing: border-box;
-    &.inside_table {
+    &.inside-table {
       padding: 0;
       display: block;
       width: 100%;

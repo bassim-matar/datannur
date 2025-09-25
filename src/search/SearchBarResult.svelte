@@ -55,8 +55,8 @@
 <div id="search_bar_result_outer">
   <div
     id="search_bar_result_wrapper"
-    class:is_open
-    class:has_scroll_bar
+    class:is-open={is_open}
+    class:has-scroll-bar={has_scroll_bar}
     style="--height: {height}px"
   >
     <div class="table_wrapper" bind:this={table_wrapper}>
@@ -110,10 +110,10 @@
     overflow-y: hidden;
     transition: height $transition-basic-1;
     @include scrollbar_light();
-    &.is_open {
+    &.is-open {
       height: var(--height);
     }
-    &.has_scroll_bar {
+    &.has-scroll-bar {
       overflow-y: auto;
     }
     .table {

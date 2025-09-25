@@ -129,9 +129,9 @@
 <div
   id="tabs_container"
   class="tabs is-boxed"
-  class:no_first_tab
-  class:is_last_tab
-  class:has_reverse_scroll
+  class:no-first-tab={no_first_tab}
+  class:is-last-tab={is_last_tab}
+  class:has-reverse-scroll={has_reverse_scroll}
   bind:this={ul}
 >
   {#key tabs_title_key}
@@ -162,7 +162,7 @@
     }
   }
 
-  .tabs.has_reverse_scroll {
+  .tabs.has-reverse-scroll {
     transform: rotateX(180deg);
     .tabs_container_ul {
       transform: rotateX(180deg);

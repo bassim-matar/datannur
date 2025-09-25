@@ -201,7 +201,6 @@
         onfocusin={focusin}
         onclick={onClick}
         bind:this={input_element}
-        class:is_open
         autocomplete="off"
         enterkeyhint="search"
       />

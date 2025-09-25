@@ -223,7 +223,10 @@
   <div class="datatable_main_wrapper dt_loading">
     <div class="datatables_outer visible dt-container dt_loading_outer">
       <div class="dt-scroll" style="--max-height: {max_height_load}">
-        <table class="_datatables table is-striped dataTable" class:short_table>
+        <table
+          class="_datatables table is-striped dataTable"
+          class:short-table={short_table}
+        >
           <thead>
             <tr>
               {#each columns_copy as column, i (`${column.data}/${column.title}`)}
@@ -278,8 +281,8 @@
       <table
         id={table_id}
         class="_datatables table is-striped"
-        class:short_table
-        class:clickable_rows
+        class:short-table={short_table}
+        class:clickable-rows={clickable_rows}
       >
         <thead>
           <tr>
@@ -505,7 +508,7 @@
           margin-top: 0px !important;
           margin-bottom: 0px !important;
           background: $background-2;
-          &.short_table {
+          &.short-table {
             position: relative !important;
             + div {
               height: 0 !important;
@@ -770,7 +773,7 @@
               overflow-y: auto;
             }
           }
-          &.clickable_rows {
+          &.clickable-rows {
             tbody > tr:not(:has(.dt-empty)) {
               cursor: pointer;
             }

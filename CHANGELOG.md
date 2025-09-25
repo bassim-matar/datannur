@@ -9,6 +9,7 @@
 - refactor: enforce PascalCase for class names and camelCase for methods and functions
 - refactor: enforce prefer-const, no-unused-vars, no-undef and no-explicit-any elint rules
 - refactor: enforce noImplicitThis and strictFunctionTypes ts rules
+- refactor: avoid svelte class name from variable name
 - remove: loader on search page
 
 ## 0.12.9 (2024-09-23)

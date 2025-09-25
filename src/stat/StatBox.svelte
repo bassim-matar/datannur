@@ -12,7 +12,7 @@
 
 <div
   class="stat_box box_shadow box_shadow_color shadow_{entity}"
-  class:from_popup
+  class:from-popup={from_popup}
   style="background: {main_color}44;"
 >
   <h2 class="title is-6">
@@ -48,7 +48,7 @@
     box-sizing: border-box;
     border-radius: 4px;
     overflow: hidden;
-    &.from_popup {
+    &.from-popup {
       position: relative;
     }
     :global(html.rounded_design) & {

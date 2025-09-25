@@ -237,12 +237,12 @@
         }
       }
     }
-    :global(.tabs:not(.no_first_tab)) {
+    :global(.tabs:not(.no-first-tab)) {
       li.is-active .rounded_wrapper.left {
         display: none;
       }
     }
-    :global(.tabs.is_last_tab) {
+    :global(.tabs.is-last-tab) {
       li.is-active .rounded_wrapper.right {
         display: none;
       }

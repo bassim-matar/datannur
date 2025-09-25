@@ -35,7 +35,6 @@
   }
 
   let item_page = id ? true : false
-  let not_item_page = !item_page
 
   onMount(() => {
     fitty('.fitty', {
@@ -49,7 +48,7 @@
 
 <div class="fitty_wrapper">
   <div>
-    <h1 class="title" class:item_page class:not_item_page>
+    <h1 class="title" class:not-item-page={!item_page}>
       <Icon {type} mode="main_title" />
       {#if mode !== 'main_title'}
         <span>{entity_name}</span>
@@ -114,7 +113,7 @@
     .title_info {
       font-size: 1rem;
     }
-    .title.not_item_page {
+    .title.not-item-page {
       :global(.icon) {
         margin-right: 0;
       }
