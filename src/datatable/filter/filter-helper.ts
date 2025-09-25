@@ -1,14 +1,25 @@
 import jQuery from 'jquery'
+import type { Api } from 'datatables.net'
 import { UrlParam } from '@lib/url-param'
 import { dateToTimestamp } from '@lib/time'
 
+interface FilterHistory {
+  columns: Record<number, { special_search?: string }>
+}
+
+interface ButtonInfo {
+  text: string
+  action: () => void
+  footer: boolean
+}
+
 export default class FilterHelper {
   table_id: string
-  filters: any
+  filters: Record<number, number>
   filter_table_id: string
   on_update_filter_count: (count: number) => void
-  datatable: any
-  history_search: any
+  datatable: Api
+  history_search: FilterHistory | null
   constructor(table_id, entity, on_update_filter_count) {
     this.table_id = table_id
     this.filters = {}
@@ -49,7 +60,7 @@ export default class FilterHelper {
         unique_values = unique_values.map(val =>
           [null, undefined].includes(val) ? '' : val,
         )
-        unique_values.sort().each(function (val, j) {
+        unique_values.sort().each(function (val) {
           if (val === '') {
             options += '<option value="__empty__"></option>'
           } else {
@@ -108,7 +119,7 @@ export default class FilterHelper {
         }
 
         if (column_num in this.filters) {
-          this.searchEquationEnd(column_num, column)
+          this.searchEquationEnd(column_num)
           this.updateFilterHistory(column_num, '')
         }
 
@@ -160,7 +171,7 @@ export default class FilterHelper {
     return value.toString().trim().toLowerCase()
   }
   searchEquationStart(column_num, search) {
-    let dt = jQuery.fn.dataTable
+    const dt = jQuery.fn.dataTable
     this.filters[column_num] = dt.ext.search.length
     dt.ext.search.push((settings, data) => {
       if (settings.nTable.id !== this.table_id) return true
@@ -191,7 +202,7 @@ export default class FilterHelper {
       }
     }
   }
-  searchEquationEnd(column_num, column) {
+  searchEquationEnd(column_num) {
     const dt = jQuery.fn.dataTable
     dt.ext.search.splice(this.filters[column_num], 1)
     this.updateSearchFilters(this.filters[column_num])
@@ -266,12 +277,11 @@ export default class FilterHelper {
       }
     }
   }
-  getBtnInfoPopup(action = () => {}) {
+  getBtnInfoPopup(action = () => {}): ButtonInfo {
     return {
       text: `<span class="icon"><i class="fa-solid fa-magnifying-glass-plus"></i></span>`,
       action,
-      className: 'search_option',
       footer: false,
-    } as any
+    }
   }
 }

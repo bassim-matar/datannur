@@ -30,7 +30,7 @@
   }
 
   if (id) {
-    const item: any = db.get(type, id)
+    const item: { is_favorite: boolean } = db.get(type, id)
     is_favorite = item.is_favorite
   }
 

@@ -28,10 +28,9 @@ import Logs from '@component/options/Logs.svelte'
 import Evolution from '@component/Evolution.svelte'
 
 import { all_tabs_icon } from '@lib/store'
+import type { Row } from '@type'
 
-type TabKey = string
-
-export const allTabs: Record<TabKey, unknown> = {
+export const allTabs: Row = {
   institutions: {
     name: 'Institution',
     icon: 'institution',
@@ -209,7 +208,7 @@ const infoItems = {
   modality: ModalityInfo,
 }
 for (const [key, value] of Object.entries(infoItems)) {
-  ;(allTabs as Record<string, unknown>)[key] = {
+  ;(allTabs as Row)[key] = {
     name: 'A propos',
     icon: 'about',
     component: value,

@@ -1,4 +1,5 @@
 import { writable, derived } from 'svelte/store'
+import type { Row } from '@type'
 
 export const page = writable('')
 export const on_page_homepage = derived(page, p => p === '_index')
@@ -12,7 +13,7 @@ export const modalities_similitutes = writable([])
 export const nb_favorite = writable(0)
 export const tab_selected = writable({ icon: '', key: '', nb: 0 })
 export const all_tabs_icon = writable({})
-export const all_tabs = writable({ stat: {} as Record<string, unknown> })
+export const all_tabs = writable({ stat: {} as Row })
 export const all_tables_loaded = writable(false)
 export const search_value = writable('')
 export const reload_increment = writable(0)

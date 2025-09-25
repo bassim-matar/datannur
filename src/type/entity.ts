@@ -3,7 +3,6 @@ import type {
   Value,
   Freq,
   Config,
-  Evolution,
   Favorite,
   FilterActive,
   Log,
@@ -165,6 +164,10 @@ export interface Tag extends EntityWithRelations {
   nb_variable_recursive?: number
 }
 
+export type TagWithChildren = Tag & {
+  children?: { [key: string]: TagWithChildren }
+}
+
 export interface Doc extends BaseEntity {
   path?: string
   type?: string
@@ -184,7 +187,7 @@ export interface Doc extends BaseEntity {
 export interface MetaVariable extends BaseEntity {
   metaDataset_id: string | number
   type?: string
-  values?: any[]
+  values?: unknown[]
   is_in_meta?: boolean
   is_in_data?: boolean
 
@@ -221,6 +224,29 @@ export interface MetaFolder extends BaseEntity {
   is_meta?: boolean
   nb_dataset?: number
   nb_variable?: number
+}
+
+export interface Evolution {
+  id?: string | number
+  entity: EntityName
+  entity_id: string | number
+  type: string
+  timestamp: number
+  name?: string | number
+  parent_entity_id?: string | number
+  _deleted?: boolean
+  _entity?: string
+  _entity_clean?: string
+  type_clean?: string
+  parent_entity?: EntityName
+  parent_entity_clean?: string
+  time?: string
+  parent_name?: string
+  parent_deleted?: boolean
+  is_favorite?: boolean
+  date?: string
+  folder_id?: string | number
+  _to_hide?: boolean
 }
 
 // Entity type mapping for type-safe database operations

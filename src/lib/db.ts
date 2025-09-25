@@ -6,10 +6,10 @@ import { entity_names } from '@lib/constant'
 import { evolutionInitialSetup } from '@lib/evolution'
 
 interface UserData {
-  log?: any[]
-  favorite?: any[]
-  search_history?: any[]
-  [key: string]: any
+  log?: unknown[]
+  favorite?: unknown[]
+  search_history?: unknown[]
+  [key: string]: unknown
 }
 
 function addEntitiesUsed() {
@@ -208,7 +208,7 @@ export function getRecursive(entity, item_id, target) {
       ? id => getInstitutionItems(id, target)
       : id => db.getAll(target, { [entity]: id })
   let items = get(item_id)
-  let childs = db.getAllChilds(entity, item_id)
+  const childs = db.getAllChilds(entity, item_id)
   for (const child of childs) items = items.concat(get(child.id))
   return removeDuplicateById(items)
 }
@@ -226,11 +226,8 @@ export function getSortByName(a, b) {
 }
 
 export function getParentPath(row) {
-  let parents = []
   const items = 'parents_relative' in row ? row.parents_relative : row.parents
-  for (parent of items) {
-    parents.push(parent.name)
-  }
+  const parents = items.map(parent => parent.name)
   parents.push(row.name)
   return parents.join(' / ')
 }

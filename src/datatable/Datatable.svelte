@@ -2,6 +2,7 @@
   import jQuery from 'jquery'
   import JSZip from 'jszip'
   import DataTable from 'datatables.net-bm'
+  import type { Config, ConfigLanguage } from 'datatables.net'
   import 'datatables.net-buttons-bm'
   import 'datatables.net-buttons/js/buttons.html5.mjs'
   import 'datatables.net-fixedcolumns-bm'
@@ -131,12 +132,12 @@
         language: {
           zeroRecords: '<span class="no_result">Aucun résultat</span>',
           buttons: exporter.getLanguage(),
-        } as any,
+        } as ConfigLanguage,
         initComplete: function () {
           if (!is_big) return false
           filter.init(this.api())
         },
-      } as any)
+      } as Config)
       datatable.on('search.dt', () => {
         if ($all_tabs[entity]) {
           $all_tabs[entity].nb = getNbItem(datatable, clean_data)
@@ -242,7 +243,7 @@
             </thead>
           {/if}
           <tbody>
-            {#each Array(nb_row_loading) as _, i (i)}
+            {#each Array(nb_row_loading).keys() as i (i)}
               <tr>
                 {#each columns_copy as column, j (`${column.data}/${column.title}`)}
                   <td class:first_col={j === 0} class:first_row={i === 0}>

@@ -2,7 +2,7 @@
   import Switch from '@layout/Switch.svelte'
   import Options from '@lib/options'
 
-  let { onChange = value => {} } = $props()
+  let { onChange = () => {} } = $props()
 
   let evolution_summary = $state(Options.get('evolution_summary'))
 

@@ -11,7 +11,7 @@
 
   onMount(async () => {
     try {
-      const items: any[] = await db.load(`md_doc`, doc_id)
+      const items = (await db.load(`md_doc`, doc_id)) as { content: string }[]
       if (items && items.length > 0) {
         content = items[0].content
       }

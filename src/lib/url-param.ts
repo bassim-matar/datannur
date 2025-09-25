@@ -62,7 +62,7 @@ export class UrlParam {
     if (!hash.includes('?')) return {}
     const params_string = hash.split('?')[1]
     const url_params = new URLSearchParams(params_string)
-    let params_obj = {}
+    const params_obj = {}
     url_params.forEach((value, key) => {
       params_obj[key] = value
     })

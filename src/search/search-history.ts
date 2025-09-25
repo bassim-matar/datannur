@@ -41,9 +41,7 @@ export default class SearchHistory {
     this.callOnChange()
   }
   static callOnChange() {
-    for (const [key, callback] of Object.entries(this.onChange_callbacks)) {
-      callback()
-    }
+    Object.values(this.onChange_callbacks).forEach(callback => callback())
   }
   static save() {
     db.browser.set(this.db_key, this.search_history)

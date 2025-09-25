@@ -152,7 +152,7 @@ export default class Render {
   }
   static icon(entity) {
     let class_names
-    let icon = entityToIconName(entity)
+    const icon = entityToIconName(entity)
     if (icon.startsWith('fa-brands')) {
       class_names = icon
     } else {
@@ -162,7 +162,7 @@ export default class Render {
   }
   static modalitiesName(modalities) {
     if (!modalities || modalities.length === 0) return wrapLongText()
-    let modalities_name = []
+    const modalities_name = []
     for (const modality of modalities) {
       modalities_name.push(
         link('modality/' + modality.id, modality.name, 'modality'),
@@ -218,7 +218,7 @@ export default class Render {
   }
   static tags(tags) {
     if (!tags || tags.length === 0) return wrapLongText()
-    let tags_name = []
+    const tags_name = []
     for (const tag of tags) {
       tags_name.push(link('tag/' + tag.id, tag.name, 'tag'))
     }

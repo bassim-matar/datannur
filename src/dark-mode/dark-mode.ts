@@ -6,7 +6,7 @@ const default_theme = is_system_dark ? 'dark' : 'light'
 export const dark_mode_theme = writable(default_theme)
 
 export class DarkMode {
-  static Options: any
+  static Options
 
   static init(Options) {
     this.Options = Options
@@ -23,7 +23,7 @@ export class DarkMode {
         document.documentElement.classList.remove('dark_mode')
         theme = 'light'
       }
-      dark_mode_theme.update(current_theme => theme)
+      dark_mode_theme.set(theme)
     })
   }
 

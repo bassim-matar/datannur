@@ -2,7 +2,7 @@
   import Switch from '@layout/Switch.svelte'
   import Options from '@lib/options'
 
-  let { onChange = value => {} } = $props()
+  let { onChange = () => {} } = $props()
 
   let open_all_recursive = $state(Options.get('open_all_recursive'))
 

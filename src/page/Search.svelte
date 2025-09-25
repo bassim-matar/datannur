@@ -4,7 +4,6 @@
   import { search_value, page_content_loaded } from '@lib/store'
   import { UrlParam } from '@lib/url-param'
   import Head from '@frame/Head.svelte'
-  import Loading from '@frame/Loading.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import SearchResult from '@search/SearchResult.svelte'
   import SearchHistory from '@search/search-history'
@@ -131,9 +130,7 @@
       />
     </p>
   </div>
-  {#if is_loading}
-    <Loading />
-  {:else}
+  {#if !is_loading}
     {#key tab_key}
       <Tabs {tabs} />
     {/key}

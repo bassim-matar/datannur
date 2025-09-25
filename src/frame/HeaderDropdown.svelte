@@ -1,14 +1,12 @@
 <script lang="ts">
-  import db from "@db"
-  import { page } from "@lib/store"
+  import db from '@db'
+  import { page } from '@lib/store'
 
   let { title, pages = [], if_use = null, children } = $props()
 
   let visible = $state(!if_use)
-  let loading = true
 
   db.loaded.then(() => {
-    loading = false
     if (!if_use) return
     for (const use of if_use) {
       if (db.use[use]) visible = true
@@ -28,7 +26,7 @@
 {/if}
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .navbar-link::after {
     border-color: $color-3;

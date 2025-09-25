@@ -18,18 +18,19 @@ export default class Favorites {
         item.favorite_timestamp = fav.timestamp
         count_nb_favorite += 1
       }
-      db.foreach('evolution', (evo: any) => {
+      db.foreach('evolution', evo => {
         if (!db.tableHasId(evo.entity, evo.entity_id)) return
         const item = db.get(evo.entity, evo.entity_id)
-        if (item && item.is_favorite) evo.is_favorite = true
+        if (item && 'is_favorite' in item && item.is_favorite)
+          evo.is_favorite = true
       })
     }
-    nb_favorite.update(n => count_nb_favorite)
+    nb_favorite.set(count_nb_favorite)
   }
   static clear() {
     this.favorites = []
     this.save()
-    nb_favorite.update(n => 0)
+    nb_favorite.set(0)
   }
   static save() {
     db.browser.set(this.db_key, this.favorites)

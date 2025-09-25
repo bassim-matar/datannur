@@ -6,7 +6,15 @@
   import about_file from '@markdown/about-modality.md?raw'
 
   const modalities = db.getAll('modality')
-  const raw_tabs: any = { modalities }
+  const raw_tabs: {
+    modalities: unknown[]
+    evolutions?: unknown[]
+    modalities_compare?: boolean
+    stat?: { entity: string; items: unknown[] }[]
+    about_file?: string
+  } = {
+    modalities,
+  }
   if (modalities.length > 1) raw_tabs.modalities_compare = false
 
   raw_tabs.evolutions = db

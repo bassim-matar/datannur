@@ -5,7 +5,7 @@ import { attributs } from './attributs'
 
 interface ValueEntry {
   count: number
-  start?: any
+  start?: unknown
 }
 
 function getValueReadable(start, end) {

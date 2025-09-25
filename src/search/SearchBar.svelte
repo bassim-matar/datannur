@@ -8,7 +8,6 @@
     on_page_search,
     on_page_homepage,
     is_small_menu,
-    page,
   } from '@lib/store'
   import { clickOutside, debounce } from '@lib/util'
   import Logs from '@lib/logs'

@@ -3,7 +3,7 @@ import db from '@db'
 export default class Tags {
   static getFromEntities(entities) {
     const tags_db = db.getAll('tag')
-    let tags_by_id = {}
+    const tags_by_id = {}
 
     let tags = JSON.parse(JSON.stringify(tags_db))
     for (const tag of tags) {

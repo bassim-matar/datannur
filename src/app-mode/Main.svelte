@@ -24,8 +24,8 @@
   import Search from '@search/search'
   import SearchHistory from '@search/search-history'
   import { DarkMode, dark_mode_theme } from '@dark-mode/dark-mode'
-  import {copyTextListenClick} from '@lib/copy-text'
-  import {addValuesToAttribut} from '@stat/stat'
+  import { copyTextListenClick } from '@lib/copy-text'
+  import { addValuesToAttribut } from '@stat/stat'
   import definition from '@stat/attributs-def'
   import default_banner from '@markdown/main/banner.md?raw'
   import Header from '@frame/Header.svelte'
@@ -35,7 +35,7 @@
   import Loading from '@page/_loading.svelte'
   import StatBox from '@stat/StatBox.svelte'
   import SearchBar from '@search/SearchBar.svelte'
-  import db_schema from '@src/db-schema.json'
+  import dbSchema from '@src/db-schema.json'
 
   let error_loading_db = $state(false)
   let page_loaded_route = $state('')
@@ -75,7 +75,6 @@
 
   DarkMode.init(Options)
 
-  db.search = async (searchTerm: string) => []
   db.loaded = (async () => {
     try {
       let timer = performance.now()
@@ -100,7 +99,7 @@
 
       timer = performance.now()
       const user_data = await getUserData()
-      db.addMeta(user_data, db_schema as any)
+      db.addMeta(user_data, dbSchema as string[][])
       dbAddProcessedData()
       console.log('process db', Math.round(performance.now() - timer) + ' ms')
 

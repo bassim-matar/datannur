@@ -1,6 +1,6 @@
 import db from '@db'
 
-type Option = { id: string; value: any }
+type Option = { id: string; value: unknown }
 
 export default class Options {
   static loaded: Promise<void>

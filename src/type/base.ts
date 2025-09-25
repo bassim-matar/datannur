@@ -17,6 +17,9 @@ export interface BaseEntity {
   no_indent?: boolean
 }
 
+// General types
+export type Row = Record<string, unknown>
+
 // Core database entities (no dependencies)
 export interface Config {
   id: string
@@ -36,29 +39,6 @@ export interface Freq {
   variable_id: string | number
   value: string
   freq: number
-}
-
-export interface Evolution {
-  id?: string | number
-  entity: string
-  entity_id: string | number
-  type: string
-  timestamp: number
-  name?: string | number
-  parent_entity_id?: string | number
-  _deleted?: boolean
-  _entity?: string
-  _entity_clean?: string
-  type_clean?: string
-  parent_entity?: string
-  parent_entity_clean?: string
-  time?: string
-  parent_name?: string
-  parent_deleted?: boolean
-  is_favorite?: boolean
-  date?: string
-  folder_id?: string | number
-  _to_hide?: boolean
 }
 
 // User data entities

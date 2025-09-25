@@ -1,10 +1,11 @@
 import { allTabs } from '@tab/all-tabs'
 import attributs from '@stat/attributs'
+import type { Row } from '@type'
 
 interface TabConfig {
   key?: string
   nb?: number | string
-  props?: Record<string, unknown>
+  props?: Row
   is_meta?: boolean
   meta_key?: string
   without_prop?: boolean
@@ -77,7 +78,7 @@ function getTab(key: string, value: unknown) {
   return tab
 }
 
-export function tabsHelper(items: Record<string, unknown>) {
+export function tabsHelper(items: Row) {
   const tabs = []
   for (const [key, value] of Object.entries(items)) {
     const tab = getTab(key, value)
