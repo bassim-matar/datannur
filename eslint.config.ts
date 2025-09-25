@@ -1,6 +1,7 @@
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import svelte from 'eslint-plugin-svelte'
+import { browser } from 'globals'
 
 const namingConventionRules = {
   '@typescript-eslint/naming-convention': [
@@ -31,7 +32,11 @@ const namingConventionRules = {
     // },
   ],
   '@typescript-eslint/no-explicit-any': 'off',
-  'no-undef': 'off',
+}
+
+const globals = {
+  ...browser,
+  __APP_VERSION__: 'readonly',
 }
 
 export default [
@@ -45,16 +50,10 @@ export default [
     files: ['**/*.ts', '**/*.svelte.ts'],
     ignores: ['eslint.config.ts'],
     languageOptions: {
+      globals,
       parser: tseslint.parser,
       parserOptions: {
         project: './tsconfig.json',
-      },
-      globals: {
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        navigator: 'readonly',
-        location: 'readonly',
       },
     },
     rules: namingConventionRules,
@@ -62,15 +61,9 @@ export default [
   {
     files: ['**/*.svelte'],
     languageOptions: {
+      globals,
       parserOptions: {
         parser: tseslint.parser,
-      },
-      globals: {
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        navigator: 'readonly',
-        location: 'readonly',
       },
     },
     rules: namingConventionRules,

@@ -226,11 +226,8 @@ export function getSortByName(a, b) {
 }
 
 export function getParentPath(row) {
-  const parents = []
   const items = 'parents_relative' in row ? row.parents_relative : row.parents
-  for (parent of items) {
-    parents.push(parent.name)
-  }
+  const parents = items.map(parent => parent.name)
   parents.push(row.name)
   return parents.join(' / ')
 }

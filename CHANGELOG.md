@@ -7,7 +7,7 @@
 - fix: search bar height debonce with no result
 - refactor: replace app_version meta tag with `__APP_VERSION__` constant
 - refactor: enforce PascalCase for class names and camelCase for methods and functions
-- refactor: enforce prefer-const and no-unused-vars
+- refactor: enforce prefer-const, no-unused-vars and no-undef
 - remove: loader on search page
 
 ## 0.12.9 (2024-09-23)
