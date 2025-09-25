@@ -5,7 +5,7 @@ import { statExists } from '@stat/stat'
 function filterEmptyColumns(columns, items) {
   const has_prop = {}
   for (const item of items) {
-    for (const [key, value] of Object.entries(item)) {
+    for (const key of Object.keys(item)) {
       if (key === 'id' || key === 'is_favorite') {
         has_prop[key] = true
         continue

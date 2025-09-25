@@ -41,7 +41,7 @@
       defaultContent: '',
       filter_type: 'select',
       tooltip: 'Type de fichier (markdown ou pdf)',
-      render: (data, type, row) => {
+      render: (data, type) => {
         if (!data) return ''
         if (['filter', 'sort', 'export'].includes(type)) return data
         return `${data} ${Render.icon(data)}`

@@ -23,7 +23,7 @@ function mermaidAddEntities(code) {
       code.startsWith('\n' + code_prefix_search)
     ) {
       code_prefix = `\n${code_prefix_search}\n`
-      const [before, ...after] = code.split(code_prefix_search)
+      const [, ...after] = code.split(code_prefix_search)
       code = after.join('_')
     }
   }
@@ -35,7 +35,7 @@ function mermaidAddEntities(code) {
     `-- ${manager_owner_clean} -->`,
   )
 
-  for (const [entity, icon_name] of Object.entries(entity_to_icon)) {
+  for (const entity of Object.keys(entity_to_icon)) {
     const entity_clean_name = entity_names[entity]
     code = code.replaceAll(`-- ${entity} -->`, `-- ${entity_clean_name} -->`)
 

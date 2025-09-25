@@ -24,8 +24,8 @@
   import Search from '@search/search'
   import SearchHistory from '@search/search-history'
   import { DarkMode, dark_mode_theme } from '@dark-mode/dark-mode'
-  import {copyTextListenClick} from '@lib/copy-text'
-  import {addValuesToAttribut} from '@stat/stat'
+  import { copyTextListenClick } from '@lib/copy-text'
+  import { addValuesToAttribut } from '@stat/stat'
   import definition from '@stat/attributs-def'
   import default_banner from '@markdown/main/banner.md?raw'
   import Header from '@frame/Header.svelte'
@@ -75,7 +75,6 @@
 
   DarkMode.init(Options)
 
-  db.search = async (searchTerm: string) => []
   db.loaded = (async () => {
     try {
       let timer = performance.now()

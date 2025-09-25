@@ -2,8 +2,8 @@
   import { page } from '@lib/store'
   import Column from '@lib/column'
   import Render from '@lib/render'
-  import {wrapLongText} from '@lib/util'
-  import {highlightDiff} from '@lib/evolution'
+  import { wrapLongText } from '@lib/util'
+  import { highlightDiff } from '@lib/evolution'
   import {
     entity_to_icon,
     column_clean_names,
@@ -27,9 +27,6 @@
 
     const detail_entities = ['dataset', 'variable', 'modality', 'value', 'freq']
 
-    const detail_rows = to_filter.filter(evo =>
-      detail_entities.includes(evo.entity),
-    )
     const main_rows = to_filter.filter(
       evo => !detail_entities.includes(evo.entity),
     )
@@ -129,11 +126,7 @@
           if (row.old_value === row.new_value)
             return wrapLongText(row.old_value)
 
-          const diff = highlightDiff(
-            row.old_value,
-            row.new_value,
-            row.variable,
-          )
+          const diff = highlightDiff(row.old_value, row.new_value, row.variable)
           if (type === 'sort' || type === 'export' || type === 'filter') {
             return diff
           }

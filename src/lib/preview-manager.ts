@@ -41,9 +41,7 @@ export default class PreviewManager {
   }
   static getVariableData(data, variable) {
     const variable_data = []
-    let position = 0
     for (const row of data) {
-      position += 1
       for (const [key, value] of Object.entries(row)) {
         if (key === variable) {
           variable_data.push({ [key]: value })

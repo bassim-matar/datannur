@@ -25,7 +25,7 @@
       tooltip: "Nombre d'occurrences avec pourcentage",
       filter_type: 'input',
       className: 'text-right',
-      render: (data, type, row) => {
+      render: (data, type) => {
         if (data === null || data === undefined || !totalFreq) return ''
         const percent_display = getPercent(data / totalFreq)
         const percent_background = getPercent(data / maxFreq)

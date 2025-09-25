@@ -30,7 +30,6 @@ const namingConventionRules = {
     //   format: ['camelCase'],
     // },
   ],
-  '@typescript-eslint/no-unused-vars': 'off',
   '@typescript-eslint/no-explicit-any': 'off',
   'no-undef': 'off',
 }

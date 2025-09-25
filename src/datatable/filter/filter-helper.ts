@@ -49,7 +49,7 @@ export default class FilterHelper {
         unique_values = unique_values.map(val =>
           [null, undefined].includes(val) ? '' : val,
         )
-        unique_values.sort().each(function (val, j) {
+        unique_values.sort().each(function (val) {
           if (val === '') {
             options += '<option value="__empty__"></option>'
           } else {
@@ -108,7 +108,7 @@ export default class FilterHelper {
         }
 
         if (column_num in this.filters) {
-          this.searchEquationEnd(column_num, column)
+          this.searchEquationEnd(column_num)
           this.updateFilterHistory(column_num, '')
         }
 
@@ -191,7 +191,7 @@ export default class FilterHelper {
       }
     }
   }
-  searchEquationEnd(column_num, column) {
+  searchEquationEnd(column_num) {
     const dt = jQuery.fn.dataTable
     dt.ext.search.splice(this.filters[column_num], 1)
     this.updateSearchFilters(this.filters[column_num])

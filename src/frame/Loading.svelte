@@ -1,29 +1,24 @@
 <script lang="ts">
-  import { onDestroy } from "svelte"
+  import { onDestroy } from 'svelte'
 
-  let {
-    type = "classic",
-    position = "fixed",
-    color_entity = "",
-    ...rest
-  } = $props()
+  let { type = 'classic', position = 'fixed', color_entity = '' } = $props()
 
   let with_height = $state(false)
   let with_timer = $state(true)
   let timer = $state(0)
 
-  let loading_timer = setInterval(() => timer += 1, 1000)
+  let loading_timer = setInterval(() => (timer += 1), 1000)
 
   onDestroy(() => clearInterval(loading_timer))
 
-  if (type === "tab_body") {
-    position = "absolute"
+  if (type === 'tab_body') {
+    position = 'absolute'
     with_height = true
-  } else if (type === "mini") {
+  } else if (type === 'mini') {
     with_timer = false
-  } else if (type === "tab") {
+  } else if (type === 'tab') {
     with_timer = false
-    position = "absolute"
+    position = 'absolute'
   }
 </script>
 
@@ -44,7 +39,7 @@
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .loading {
     --loader-color: #{$color-3};

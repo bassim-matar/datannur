@@ -242,7 +242,7 @@
             </thead>
           {/if}
           <tbody>
-            {#each Array(nb_row_loading) as _, i (i)}
+            {#each Array(nb_row_loading).keys() as i (i)}
               <tr>
                 {#each columns_copy as column, j (`${column.data}/${column.title}`)}
                   <td class:first_col={j === 0} class:first_row={i === 0}>

@@ -704,7 +704,7 @@ export default class Column {
       defaultContent: '',
       filter_type: 'select',
       tooltip: 'Source (parent) ou dérivé (enfant)',
-      render: (data, type) => {
+      render: data => {
         if (!data) return ''
         if (data === 'derived') return 'Dérivé'
         if (data === 'source') return 'Source'

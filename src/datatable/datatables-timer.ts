@@ -12,7 +12,7 @@ export default class DatatablesTimer {
     if (this.nb_loading === 0) {
       const duration = performance.now() - this.start_time
       console.log('loaded all tabs in', Math.round(duration) + ' ms')
-      page_content_loaded.update(value => true)
+      page_content_loaded.set(true)
     }
   }
 }

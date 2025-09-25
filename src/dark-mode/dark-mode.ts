@@ -23,7 +23,7 @@ export class DarkMode {
         document.documentElement.classList.remove('dark_mode')
         theme = 'light'
       }
-      dark_mode_theme.update(current_theme => theme)
+      dark_mode_theme.set(theme)
     })
   }
 
