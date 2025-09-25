@@ -25,10 +25,10 @@
   let logo_src = $derived($dark_mode_theme === 'dark' ? logo_dark : logo)
 
   const toggle_header = () => ($header_open = !$header_open)
-  const close_menu = () => ($header_open = false)
+  const closeMenu = () => ($header_open = false)
 
-  function click_on_main_logo() {
-    close_menu()
+  function clickOnMainLogo() {
+    closeMenu()
     if (!$on_page_homepage) {
       router.navigate('/')
       return
@@ -55,7 +55,7 @@
     <Link
       href=""
       className="navbar-item"
-      alternative_action={click_on_main_logo}
+      alternativeAction={clickOnMainLogo}
     >
       <img src={logo_src} class="header_logo" alt="logo" />
     </Link>

@@ -5,59 +5,59 @@ export const app_mode = UrlParam.getAppMode()
 
 export const is_http = window.location.protocol.startsWith('http')
 
-function get_sub_folder() {
+function getSubFolder() {
   const url = new URL(window.location.href)
   const pathname = url.pathname.split('/').filter(Boolean)
   return pathname.length > 0 ? pathname[0] : ''
 }
-const subfolder = get_sub_folder()
+const subfolder = getSubFolder()
 export const url_prefix = (() => {
   if (app_mode === 'static_render') return ''
   else if (is_http && subfolder) return '/' + subfolder + '/#'
   return '#'
 })()
 
-export function get_base_link_url() {
+export function getBaseLinkUrl() {
   if (app_mode === 'static_render') return '/'
   return '#/'
 }
 
 export const is_firefox = navigator.userAgent.toLowerCase().includes('firefox')
 
-function get_document_width() {
+function getDocumentWidth() {
   return (
     window.innerWidth ||
     document.documentElement.clientWidth ||
     document.body.clientWidth
   )
 }
-export const document_width = get_document_width()
-export function get_is_mobile() {
-  return get_document_width() < 600
+export const document_width = getDocumentWidth()
+export function getIsMobile() {
+  return getDocumentWidth() < 600
 }
 
-export const is_mobile = get_is_mobile()
+export const is_mobile = getIsMobile()
 
-export function get_is_small_menu() {
-  return get_document_width() < 1023
+export function getIsSmallMenu() {
+  return getDocumentWidth() < 1023
 }
 
 export const has_touch_screen =
   'ontouchstart' in window || navigator.maxTouchPoints > 0
 
-export function get_percent(value) {
+export function getPercent(value) {
   return Math.min(Math.round(value * 1000) / 10, 100)
 }
 
-export function get_variable_type_clean(type) {
+export function getVariableTypeClean(type) {
   return var_types[type] || '???'
 }
 
-export function entity_to_icon_name(type) {
+export function entityToIconName(type) {
   return type in entity_to_icon ? entity_to_icon[type] : type
 }
 
-export function get_color(entity) {
+export function getColor(entity) {
   return getComputedStyle(document.body).getPropertyValue(`--color-${entity}`)
 }
 
@@ -66,7 +66,7 @@ export function pluralize(str) {
   return str + 's'
 }
 
-export function escape_html_entities(str) {
+export function escapeHtmlEntities(str) {
   const to_replace = {
     '&': '&amp;',
     '<': '&lt;',
@@ -77,7 +77,7 @@ export function escape_html_entities(str) {
   return String(str).replace(/[&<>"']/g, char => to_replace[char])
 }
 
-export function split_on_last_separator(str, separator) {
+export function splitOnLastSeparator(str, separator) {
   const last_index = str.lastIndexOf(separator)
   return last_index === -1
     ? [str, '']
@@ -85,7 +85,7 @@ export function split_on_last_separator(str, separator) {
 }
 
 export function link(href, content, entity = null) {
-  const base = get_base_link_url()
+  const base = getBaseLinkUrl()
   const onclick = `window.goToHref(event, '${href}')`
   let special_class = ''
   if (entity) {
@@ -94,15 +94,15 @@ export function link(href, content, entity = null) {
   return `<a href="${base}${href}" onclick="${onclick}" ${special_class}>${content}</a>`
 }
 
-export function add_indend(text, indent) {
+export function addIndend(text, indent) {
   const style = `padding-left: ${indent * 7}px;`
   return `<div class="indented_text" style="${style}">${text}</div>`
 }
 
-export function wrap_long_text(text = null, indent = null) {
+export function wrapLongText(text = null, indent = null) {
   if (text === undefined || text === null || text === '')
     return `<div class="long_text_empty"></div>`
-  if (indent) text = add_indend(text, indent)
+  if (indent) text = addIndend(text, indent)
   return `<div class="long_text">${text}</div>`
 }
 
@@ -114,7 +114,7 @@ export function debounce(func, wait) {
   }
 }
 
-export function reset_cols_search_cache() {
+export function resetColsSearchCache() {
   Object.keys(localStorage)
     .filter(x => x.startsWith('DataTables_'))
     .forEach(x => localStorage.removeItem(x))
@@ -140,12 +140,12 @@ export function clickOutside(node, callback) {
 
 export async function worker(params, callback) {
   return new Promise(resolve => {
-    function worker_function(callback) {
+    function workerFunction(callback) {
       onmessage = e => postMessage(callback(e.data))
     }
     const worker_api = new Worker(
       URL.createObjectURL(
-        new Blob([`(${worker_function.toString()})(${callback.toString()})`], {
+        new Blob([`(${workerFunction.toString()})(${callback.toString()})`], {
           type: 'text/javascript',
         }),
       ),

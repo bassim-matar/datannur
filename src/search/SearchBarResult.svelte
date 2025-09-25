@@ -10,7 +10,7 @@
     all_search,
     search_value,
     is_focus_in = $bindable(),
-    select_input,
+    selectInput,
   } = $props()
 
   let table_wrapper: HTMLDivElement = $state()
@@ -19,7 +19,7 @@
 
   const plural = $derived(nb_result > 1 ? 's' : '')
 
-  function update_height() {
+  function updateHeight() {
     if (!table_wrapper) return
     const real_height = table_wrapper.offsetHeight + 20
     const percent_height = $on_page_homepage ? 0.8 : 0.9
@@ -28,21 +28,21 @@
     height = Math.min(real_height, window_height)
   }
 
-  const debounced_update_height = debounce(update_height, 150)
+  const debounced_updateHeight = debounce(updateHeight, 150)
 
   $effect(() => {
     if (nb_result !== undefined) {
-      debounced_update_height()
-      setTimeout(() => debounced_update_height(), 500)
+      debounced_updateHeight()
+      setTimeout(() => debounced_updateHeight(), 500)
     }
   })
 
   $effect(() => {
-    if ($on_page_homepage !== undefined) debounced_update_height()
+    if ($on_page_homepage !== undefined) debounced_updateHeight()
   })
 
   $effect(() => {
-    const handle_resize = () => table_wrapper && debounced_update_height()
+    const handle_resize = () => table_wrapper && debounced_updateHeight()
     window.addEventListener('resize', handle_resize)
     return () => window.removeEventListener('resize', handle_resize)
   })
@@ -84,7 +84,7 @@
               <SearchBarResultRow
                 {item}
                 {search_value}
-                {select_input}
+                {selectInput}
                 bind:is_focus_in
               />
             {/each}

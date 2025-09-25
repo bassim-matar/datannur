@@ -1,5 +1,5 @@
 <script lang="ts">
-  import markdown_render from '@lib/markdown'
+  import markdownRender from '@lib/markdown'
   import Icon from '@layout/Icon.svelte'
 
   let { description, inside_table = false } = $props()
@@ -7,7 +7,7 @@
   let description_clean = $state(description)
 
   if (description) {
-    description_clean = markdown_render(description)
+    description_clean = markdownRender(description)
   }
 </script>
 

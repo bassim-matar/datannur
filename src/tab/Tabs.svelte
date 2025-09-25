@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { tab_selected, footer_visible, all_tabs } from '@lib/store'
   import { UrlParam } from '@lib/url-param'
-  import { is_firefox, get_is_mobile } from '@lib/util'
+  import { is_firefox, getIsMobile } from '@lib/util'
   import { is_big_limit } from '@lib/constant'
   import Logs from '@lib/logs'
   import TabsBody from '@tab/TabsBody.svelte'
@@ -10,7 +10,7 @@
 
   let { tabs } = $props()
 
-  let is_mobile = get_is_mobile()
+  let is_mobile = getIsMobile()
   let all_keys = []
   let has_reverse_scroll = !is_firefox
 
@@ -23,29 +23,29 @@
 
   let no_first_tab = $derived(active_tab !== tabs[0]?.key)
 
-  const get_width = selector => document.querySelector(selector)?.offsetWidth
+  const getWidth = selector => document.querySelector(selector)?.offsetWidth
 
-  function is_tabs_overflow() {
-    return get_width('.tabs_container_ul') + 30 > get_width('#tabs_container')
+  function isTabsOverflow() {
+    return getWidth('.tabs_container_ul') + 30 > getWidth('#tabs_container')
   }
 
-  function check_if_last_tab() {
+  function checkIfLastTab() {
     return (
       tabs.length > 0 &&
       active_tab === tabs[tabs.length - 1].key &&
-      is_tabs_overflow()
+      isTabsOverflow()
     )
   }
 
-  function on_resize() {
-    is_last_tab = check_if_last_tab()
-    is_mobile = get_is_mobile()
+  function onResize() {
+    is_last_tab = checkIfLastTab()
+    is_mobile = getIsMobile()
     if (!tabs_title_key && is_mobile) {
       tabs_title_key = true
     }
   }
 
-  function load_tab(tab_key) {
+  function loadTab(tab_key) {
     if (!all_keys.includes(tab_key)) return
     active_tab = tab_key
     active_tab_body = tab_key
@@ -55,12 +55,12 @@
     tabs_loaded[tab_key] += 1
   }
 
-  function select_tab(tab) {
+  function selectTab(tab) {
     const tab_key = tab.key
-    load_tab(tab_key)
-    set_footer(tab)
+    loadTab(tab_key)
+    setFooter(tab)
     $tab_selected = tab
-    center_active_tab()
+    centerActiveTab()
     Logs.add('select_tab', { entity: tab_key })
     if (tabs[0].key === tab_key) {
       UrlParam.delete('tab')
@@ -69,7 +69,7 @@
     }
   }
 
-  function set_footer(tab) {
+  function setFooter(tab) {
     if (tab.footer_visible === false) {
       $footer_visible = false
       return
@@ -77,7 +77,7 @@
     $footer_visible = tab.footer_visible || tab.nb < is_big_limit
   }
 
-  function center_active_tab() {
+  function centerActiveTab() {
     setTimeout(() => {
       const li_active = '#tabs_container ul.tabs_container_ul li.is-active'
       const li: HTMLLIElement | null = document.querySelector(li_active)
@@ -87,44 +87,44 @@
     }, 1)
   }
 
-  function setup_tabs() {
+  function setupTabs() {
     for (const tab of tabs) {
       all_keys.push(tab.key)
       $all_tabs[tab.icon] = { ...tab }
     }
   }
 
-  function load_tab_from_url_param() {
+  function loadTabFromUrlParam() {
     const url_param_tab = UrlParam.get('tab')
     if (url_param_tab) {
-      load_tab(url_param_tab)
+      loadTab(url_param_tab)
     }
   }
 
-  function setup_active_tab() {
+  function setupActiveTab() {
     for (const tab of tabs) {
       if (active_tab_body === tab.key) {
-        set_footer(tab)
+        setFooter(tab)
         $tab_selected = tab
       }
     }
   }
 
   onMount(() => {
-    center_active_tab()
+    centerActiveTab()
   })
 
   $effect(() => {
     void active_tab
-    is_last_tab = check_if_last_tab()
+    is_last_tab = checkIfLastTab()
   })
 
-  setup_tabs()
-  load_tab_from_url_param()
-  setup_active_tab()
+  setupTabs()
+  loadTabFromUrlParam()
+  setupActiveTab()
 </script>
 
-<svelte:window onresize={on_resize} />
+<svelte:window onresize={onResize} />
 
 <div
   id="tabs_container"
@@ -137,7 +137,7 @@
   {#key tabs_title_key}
     <ul class="tabs_container_ul">
       {#each tabs as tab (tab.key)}
-        <TabTitle {tab} bind:active_tab {select_tab} />
+        <TabTitle {tab} bind:active_tab {selectTab} />
       {/each}
     </ul>
   {/key}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import db from '@db'
   import { footer_visible } from '@lib/store'
-  import { get_datetime, get_time_ago } from '@lib/time'
+  import { getDatetime, getTimeAgo } from '@lib/time'
   import Loading from '@frame/Loading.svelte'
   import Icon from '@layout/Icon.svelte'
   import DarkModeSwitch from '@dark-mode/DarkModeSwitch.svelte'
@@ -19,8 +19,8 @@
 
   let current_interval
   let interval = 1000
-  function update_last_modif() {
-    last_update.relative = get_time_ago(last_update.value * 1000)
+  function updateLastModif() {
+    last_update.relative = getTimeAgo(last_update.value * 1000)
     if (
       interval === 1000 &&
       !last_update.relative.includes('seconde') &&
@@ -28,7 +28,7 @@
     ) {
       clearInterval(current_interval)
       interval = 60000
-      current_interval = setInterval(update_last_modif, interval)
+      current_interval = setInterval(updateLastModif, interval)
     }
   }
 
@@ -39,9 +39,9 @@
     if (last_modif_timestamp) last_update.value = last_modif_timestamp
     if (last_update.value) {
       const timestamp = last_update.value * 1000
-      last_update.relative = get_time_ago(timestamp)
-      last_update.absolute = get_datetime(timestamp)
-      current_interval = setInterval(update_last_modif, interval)
+      last_update.relative = getTimeAgo(timestamp)
+      last_update.absolute = getDatetime(timestamp)
+      current_interval = setInterval(updateLastModif, interval)
     } else {
       last_update.state = 'not_found'
     }

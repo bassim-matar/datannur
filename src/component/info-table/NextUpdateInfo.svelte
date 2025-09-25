@@ -1,15 +1,15 @@
 <script lang="ts">
   import Icon from '@layout/Icon.svelte'
-  import { get_time_ago, get_datetime } from '@lib/time'
+  import { getTimeAgo, getDatetime } from '@lib/time'
 
   let { next_update_date, intraday = false, from_timestamp = false } = $props()
 
   let next_update_date_readable = $state(next_update_date)
-  let time_ago = $state(get_time_ago(next_update_date, true, !intraday))
+  let time_ago = $state(getTimeAgo(next_update_date, true, !intraday))
 
   if (from_timestamp) {
-    next_update_date_readable = get_datetime(next_update_date)
-    time_ago = get_time_ago(next_update_date, false, !intraday)
+    next_update_date_readable = getDatetime(next_update_date)
+    time_ago = getTimeAgo(next_update_date, false, !intraday)
   }
 </script>
 

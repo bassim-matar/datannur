@@ -20,7 +20,7 @@
 
   let recent_search_change = false
 
-  function make_tab(name, icon, key, about_file) {
+  function makeTab(name, icon, key, about_file) {
     return {
       name,
       icon,
@@ -30,37 +30,37 @@
       props: { about_file },
     }
   }
-  const about_tab = make_tab('A propos', 'about', 'about', about_search)
-  const no_result_tab = make_tab('Résultat', 'search', 'no_result', no_result)
-  const no_recent_search_tab = make_tab(
+  const about_tab = makeTab('A propos', 'about', 'about', about_search)
+  const no_result_tab = makeTab('Résultat', 'search', 'no_result', no_result)
+  const no_recent_search_tab = makeTab(
     'Recherches récentes',
     'search',
     'no_recent_search',
     no_recent_search,
   )
 
-  SearchHistory.onChange('search_page', () => search_input_change())
+  SearchHistory.onChange('search_page', () => searchInputChange())
 
-  function set_tab_key() {
+  function setTabKey() {
     recent_search_change = !recent_search_change
     tab_key = recent_search_change
   }
 
-  function init_search_recent() {
+  function initSearchRecent() {
     search_result_data = SearchHistory.getRecentSearch()
     const tab_name = 'Recherches récentes'
-    set_tabs(tab_name)
+    setTabs(tab_name)
     is_loading = false
   }
 
-  async function search_input_change() {
+  async function searchInputChange() {
     const url_search_value = UrlParam.get('search')
     if (url_search_value !== $search_value) {
       UrlParam.set('search', $search_value)
     }
     if ($search_value === '') {
       UrlParam.delete('search')
-      init_search_recent()
+      initSearchRecent()
       return false
     }
     const value_before = $search_value
@@ -68,11 +68,11 @@
     is_loading = false
     if ($search_value !== value_before) return false
     search_result_data = SearchHistory.putRecentFirst(all_search_raw)
-    set_tabs()
+    setTabs()
   }
 
-  function set_tabs(name = 'Résultat') {
-    set_tab_key()
+  function setTabs(name = 'Résultat') {
+    setTabKey()
     if (search_result_data.length === 0) {
       tabs = [is_empty_input ? no_recent_search_tab : no_result_tab]
     } else {
@@ -99,7 +99,7 @@
   if (url_search_value !== false && url_search_value !== '') {
     $search_value = url_search_value
   }
-  set_tab_key()
+  setTabKey()
 
   onMount(() => {
     $page_content_loaded = true
@@ -111,7 +111,7 @@
     void $search_value
     if (search_timeout) clearTimeout(search_timeout)
     search_timeout = setTimeout(() => {
-      search_input_change()
+      searchInputChange()
     }, 200)
   })
 </script>
@@ -147,7 +147,7 @@
     margin-top: 13px;
   }
 
-  .section :global(.search_highlight) {
+  .section :global(.searchHighlight) {
     border-radius: $rounded;
     background: rgba(255, 255, 0, 0.5);
   }

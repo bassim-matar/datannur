@@ -1,8 +1,8 @@
 import { entity_names } from '@lib/constant'
 import { link } from '@lib/util'
-import { stat_exists } from '@stat/stat'
+import { statExists } from '@stat/stat'
 
-function filter_empty_columns(columns, items) {
+function filterEmptyColumns(columns, items) {
   const has_prop = {}
   for (const item of items) {
     for (const [key, value] of Object.entries(item)) {
@@ -20,7 +20,7 @@ function filter_empty_columns(columns, items) {
   return filter_columns
 }
 
-function get_text_width(lines, font) {
+function getTextWidth(lines, font) {
   const canvas = document.createElement('canvas')
   const context = canvas.getContext('2d')
   context.font = font
@@ -32,7 +32,7 @@ function get_text_width(lines, font) {
   return maxWidth
 }
 
-export function define_columns(
+export function defineColumns(
   columns,
   data,
   entity,
@@ -65,7 +65,7 @@ export function define_columns(
     columns_copy = [col_numerotation, ...columns_copy]
   }
 
-  if (!keep_all_cols) columns_copy = filter_empty_columns(columns_copy, data)
+  if (!keep_all_cols) columns_copy = filterEmptyColumns(columns_copy, data)
 
   let bold = ''
   const mini_col = [
@@ -77,7 +77,7 @@ export function define_columns(
   ]
   for (const column of columns_copy) {
     const key = column.name ? column.name : column.data
-    if (key !== '_row_num' && stat_exists(entity, key)) {
+    if (key !== '_row_num' && statExists(entity, key)) {
       const column_stat_btn = `
         <span class="column_stat_btn icon_stat" data-entity="${entity}" data-attribut="${key}">
           <i class="fa-solid fa-signal">
@@ -105,7 +105,7 @@ export function define_columns(
       cells.push(value)
     }
     const cells_width =
-      Math.round(get_text_width(cells, `${bold} 16px "Helvetica Neue"`) * 100) /
+      Math.round(getTextWidth(cells, `${bold} 16px "Helvetica Neue"`) * 100) /
       100
     column.loading_width = Math.min(274, cells_width)
     column.loading_max_width = Math.min(274, cells_width)

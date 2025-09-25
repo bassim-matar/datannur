@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { wrap_long_text } from '@lib/util'
+  import { wrapLongText } from '@lib/util'
   import Datatable from '@datatable/Datatable.svelte'
   import Render from '@lib/render'
   import Column from '@lib/column'
@@ -18,7 +18,7 @@
       title: Render.icon('log') + 'Log',
       tooltip: 'Action',
       render: data => {
-        return wrap_long_text(data ? data : '')
+        return wrapLongText(data ? data : '')
       },
     },
     Column.entity(),
@@ -27,7 +27,7 @@
       title: Render.icon('entity') + 'Element',
       defaultContent: '',
       tooltip: 'Element impliqué',
-      render: data => wrap_long_text(data ? data : ''),
+      render: data => wrapLongText(data ? data : ''),
     },
     Column.timestamp(),
   ]

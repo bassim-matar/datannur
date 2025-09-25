@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { filter_keys } from '@lib/db'
+  import { filterKeys } from '@lib/db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
@@ -15,7 +15,7 @@
   } else if (metaDataset.name in db.tables.__user_data__) {
     dataset_preview = db.tables.__user_data__[metaDataset.name]
   }
-  variable_preview = filter_keys(dataset_preview, [metaVariable.name])
+  variable_preview = filterKeys(dataset_preview, [metaVariable.name])
 
   let tabs = tabsHelper({
     variable: metaVariable,

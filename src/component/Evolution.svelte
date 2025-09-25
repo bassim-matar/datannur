@@ -2,8 +2,8 @@
   import { page } from '@lib/store'
   import Column from '@lib/column'
   import Render from '@lib/render'
-  import { wrap_long_text } from '@lib/util'
-  import { highlight_diff } from '@lib/evolution'
+  import {wrapLongText} from '@lib/util'
+  import {highlightDiff} from '@lib/evolution'
   import {
     entity_to_icon,
     column_clean_names,
@@ -17,12 +17,12 @@
 
   let evolution_summary = $state(Options.get('evolution_summary'))
 
-  function sort_evolutions(to_sort) {
+  function sortEvolutions(to_sort) {
     if (to_sort.length === 0) return
     to_sort.sort((a, b) => b.timestamp - a.timestamp)
   }
 
-  function filter_evolutions(to_filter) {
+  function filterEvolutions(to_filter) {
     if (to_filter.length === 0) return
 
     const detail_entities = ['dataset', 'variable', 'modality', 'value', 'freq']
@@ -52,12 +52,12 @@
     evolutions.length > is_big_limit
 
   const evolutions_sorted = filter_evolution
-    ? filter_evolutions([...evolutions])
+    ? filterEvolutions([...evolutions])
     : [...evolutions]
 
-  sort_evolutions(evolutions_sorted)
+  sortEvolutions(evolutions_sorted)
 
-  function define_columns() {
+  function defineColumns() {
     return [
       Column.favorite(),
       {
@@ -127,9 +127,9 @@
             return ''
           }
           if (row.old_value === row.new_value)
-            return wrap_long_text(row.old_value)
+            return wrapLongText(row.old_value)
 
-          const diff = highlight_diff(
+          const diff = highlightDiff(
             row.old_value,
             row.new_value,
             row.variable,
@@ -137,7 +137,7 @@
           if (type === 'sort' || type === 'export' || type === 'filter') {
             return diff
           }
-          return wrap_long_text(diff)
+          return wrapLongText(diff)
         },
       },
       {
@@ -156,7 +156,7 @@
       Column.timestamp(),
     ]
   }
-  const columns = define_columns()
+  const columns = defineColumns()
 </script>
 
 <Datatable entity="evolution" data={evolutions_sorted} {columns} />

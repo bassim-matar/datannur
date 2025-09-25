@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { get_percent } from '@lib/util'
+  import { getPercent } from '@lib/util'
   import Render from '@lib/render'
 
-  let { value, nb_row, type, percent = get_percent(value / nb_row) } = $props()
+  let { value, nb_row, type, percent = getPercent(value / nb_row) } = $props()
 </script>
 
 <span class="num_percent color_{type} placeholder" style="width: 100%"></span>

@@ -1,5 +1,5 @@
 import { marked } from 'marked'
-import { get_base_link_url } from '@lib/util'
+import { getBaseLinkUrl } from '@lib/util'
 
 const renderer = new marked.Renderer()
 renderer.link = ({ href, title, text }) => {
@@ -15,7 +15,7 @@ renderer.link = ({ href, title, text }) => {
     return `<a href="${href}" ${target} class="basic_link" title="${title}">${text}</a>`
   }
 
-  const base = get_base_link_url()
+  const base = getBaseLinkUrl()
   const onclick = `window.goToHref(event, '${href}')`
   return `<a href="${base}${href}" onclick="${onclick}" class="basic_link" title="${title}">${text}</a>`
 }

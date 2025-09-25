@@ -4,7 +4,7 @@
 
   let { table_id, i, column } = $props()
 
-  function clear_input() {
+  function clearInput() {
     const input = jQuery(this).parent().children("input")
     input[0].value = ""
     input.keyup()
@@ -37,7 +37,7 @@
       autocomplete="off"
       enterkeyhint="search"
     />
-    <BtnClearInput click={clear_input} mode="mini" />
+    <BtnClearInput click={clearInput} mode="mini" />
   {/if}
 </div>
 

@@ -13,7 +13,7 @@
   let variable = variable_preview.variable
   let dataset_preview: string | any = false
 
-  async function get_load_preview() {
+  async function getLoadPreview() {
     if (variable_preview.variable === undefined) {
       variable_data = variable_preview
     } else {
@@ -44,7 +44,7 @@
     $tab_selected.nb = variable_data.length
   }
 
-  const load_preview = get_load_preview()
+  const load_preview = getLoadPreview()
 </script>
 
 {#await load_preview}

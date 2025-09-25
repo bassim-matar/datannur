@@ -12,14 +12,14 @@
   let loaded = $state(false)
   const filters_left = $state({ 0: 0 })
 
-  function get_width_elem_num(num) {
+  function getWidthElemNum(num) {
     const selector = `.header_filter_wrapper .th_${table_id}_${num}`
     return document.querySelector(selector)?.getBoundingClientRect().width
   }
 
-  function update_sticky_width() {
+  function updateStickyWidth() {
     for (let i = 0; i < nb_sticky; i++) {
-      filters_left[i + 1] = filters_left[i] + get_width_elem_num(i)
+      filters_left[i + 1] = filters_left[i] + getWidthElemNum(i)
     }
   }
 
@@ -27,17 +27,17 @@
     if (!loading && !loaded) {
       loaded = true
       setTimeout(() => {
-        update_sticky_width()
+        updateStickyWidth()
       }, 100)
       setTimeout(() => {
-        update_sticky_width()
+        updateStickyWidth()
       }, 1000)
     }
   })
 
   $effect(() => {
     if (datatable_update_draw) {
-      update_sticky_width()
+      updateStickyWidth()
     }
   })
 </script>

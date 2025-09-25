@@ -3,9 +3,9 @@
   import { tab_selected } from '@lib/store'
   import { is_big_limit } from '@lib/constant'
   import {
-    make_parents_relative,
-    add_minimum_deep,
-    remove_duplicate_by_id,
+    makeParentsRelative,
+    addMinimumDeep,
+    removeDuplicateById,
   } from '@lib/db'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
@@ -45,13 +45,13 @@
     with_variables = with_variables.concat(child_variables)
     with_docs = with_docs.concat(child_docs)
   }
-  with_institutions = remove_duplicate_by_id(with_institutions)
-  with_folders = remove_duplicate_by_id(with_folders)
-  with_datasets = remove_duplicate_by_id(with_datasets)
-  with_variables = remove_duplicate_by_id(with_variables)
-  with_docs = remove_duplicate_by_id(with_docs)
+  with_institutions = removeDuplicateById(with_institutions)
+  with_folders = removeDuplicateById(with_folders)
+  with_datasets = removeDuplicateById(with_datasets)
+  with_variables = removeDuplicateById(with_variables)
+  with_docs = removeDuplicateById(with_docs)
 
-  function get_opposite(entity, with_tag_items, self_id = null) {
+  function getOpposite(entity, with_tag_items, self_id = null) {
     if (with_tag_items.length === 0) return []
     const all = []
     const ids = []
@@ -66,14 +66,14 @@
     return all
   }
 
-  function load_tabs() {
+  function loadTabs() {
     if (opposite) {
-      institutions = get_opposite('institution', with_institutions)
-      folders = get_opposite('folder', with_folders)
-      docs = get_opposite('doc', with_docs)
-      datasets = get_opposite('dataset', with_datasets)
-      variables = get_opposite('variable', with_variables)
-      tags = get_opposite('tag', with_tags, tag.id)
+      institutions = getOpposite('institution', with_institutions)
+      folders = getOpposite('folder', with_folders)
+      docs = getOpposite('doc', with_docs)
+      datasets = getOpposite('dataset', with_datasets)
+      variables = getOpposite('variable', with_variables)
+      tags = getOpposite('tag', with_tags, tag.id)
     } else {
       institutions = with_institutions
       folders = with_folders
@@ -83,15 +83,15 @@
       tags = with_tags
     }
 
-    make_parents_relative(false, institutions)
-    make_parents_relative(false, folders)
+    makeParentsRelative(false, institutions)
+    makeParentsRelative(false, folders)
 
-    add_minimum_deep(institutions)
-    add_minimum_deep(folders)
+    addMinimumDeep(institutions)
+    addMinimumDeep(folders)
 
     if (db.use.tag_recursive) {
-      make_parents_relative(tag.id, tags)
-      add_minimum_deep(tags)
+      makeParentsRelative(tag.id, tags)
+      addMinimumDeep(tags)
     }
 
     const variables_id = new Set(variables.map(item => item.id))
@@ -134,12 +134,12 @@
 
   let info = $derived(opposite ? '(absent)' : '(présent)')
 
-  function toggle_opposite() {
+  function toggleOpposite() {
     opposite = !opposite
-    load_tabs()
+    loadTabs()
   }
 
-  load_tabs()
+  loadTabs()
 
   let show_open_all_switch = $derived(
     $tab_selected.key === 'tags' && tags.length > is_big_limit,
@@ -152,10 +152,10 @@
     name={tag.name}
     id={tag.id}
     {info}
-    toggle_info={toggle_opposite}
+    toggle_info={toggleOpposite}
   />
   {#if show_open_all_switch}
-    <OpenAllSwitch on_change={value => (key_tab = value)} />
+    <OpenAllSwitch onChange={value => (key_tab = value)} />
   {/if}
   {#key Number(opposite) + key_tab}
     <Tabs {tabs} />

@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { make_parents_relative, add_minimum_deep } from '@lib/db'
+  import { makeParentsRelative, addMinimumDeep } from '@lib/db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
@@ -25,15 +25,15 @@
     ...modalities,
   ]
 
-  make_parents_relative(false, folders)
-  make_parents_relative(false, institutions)
+  makeParentsRelative(false, folders)
+  makeParentsRelative(false, institutions)
 
-  add_minimum_deep(institutions, true, true)
-  add_minimum_deep(folders, true, true)
+  addMinimumDeep(institutions, true, true)
+  addMinimumDeep(folders, true, true)
 
   if (db.use.tag_recursive) {
-    make_parents_relative(false, tags)
-    add_minimum_deep(tags, true, true)
+    makeParentsRelative(false, tags)
+    addMinimumDeep(tags, true, true)
   }
 
   const stat = [

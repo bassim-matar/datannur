@@ -2,11 +2,11 @@
   import MiniMasonry from 'minimasonry'
   import { onMount, onDestroy } from 'svelte'
   import Icon from '@layout/Icon.svelte'
-  import { document_width, get_color } from '@lib/util'
+  import { document_width, getColor } from '@lib/util'
   import { entity_names } from '@lib/constant'
   import { all_tabs, on_page_homepage } from '@lib/store'
   import attributs from './attributs'
-  import { add_values } from './stat'
+  import {addValues} from './stat'
   import StatBox from './StatBox.svelte'
 
   let { stat } = $props()
@@ -24,14 +24,14 @@
       gutter: 20,
       ultimateGutter: 20,
     })
-    update_layout()
+    updateLayout()
   })
 
   onDestroy(() => {
     masonry.destroy()
   })
 
-  function update_nb_item_visible(entities) {
+  function updateNbItemVisible(entities) {
     let nb_item_visible = 0
     for (const entity of entities) {
       if (visible[entity.entity] || show_all) {
@@ -41,8 +41,8 @@
     $all_tabs.stat.nb = nb_item_visible
   }
 
-  function update_layout() {
-    update_nb_item_visible(entities)
+  function updateLayout() {
+    updateNbItemVisible(entities)
     loading = true
     setTimeout(() => {
       masonry.layout()
@@ -56,22 +56,22 @@
       visible[key] = key === entity
     }
     show_all = false
-    update_layout()
+    updateLayout()
   }
 
-  function click_show_all() {
+  function clickShowAll() {
     for (const key in visible) {
       visible[key] = false
     }
     show_all = true
-    update_layout()
+    updateLayout()
   }
 
   const entities = stat.filter(x => x.items?.length > 0)
   entities.forEach(entity => {
     visible[entity.entity] = false
     entity.with_html = entity.entity === 'log'
-    entity.attributs = add_values(entity.items, attributs[entity.entity])
+    entity.attributs = addValues(entity.items, attributs[entity.entity])
   })
 
   let has_btns = entities.length > 1
@@ -84,8 +84,8 @@
       class="button"
       class:box_shadow={show_all}
       class:box_shadow_color={show_all}
-      style="color: {show_all ? get_color('entity') : ''}"
-      onclick={click_show_all}
+      style="color: {show_all ? getColor('entity') : ''}"
+      onclick={clickShowAll}
     >
       <Icon type="entity" />
       <span class="btn_select_entity_name">Tout</span>
@@ -95,7 +95,7 @@
         class="button shadow_{entity.entity}"
         class:active={visible[entity.entity]}
         class:box_shadow_color={visible[entity.entity]}
-        style="color: {visible[entity.entity] ? get_color(entity.entity) : ''}"
+        style="color: {visible[entity.entity] ? getColor(entity.entity) : ''}"
         onclick={() => show(entity.entity)}
       >
         <Icon type={entity.entity} />

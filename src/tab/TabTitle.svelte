@@ -1,20 +1,20 @@
 <script lang="ts">
-  import { all_tabs, tab_selected } from "@lib/store"
-  import Icon from "@layout/Icon.svelte"
-  import Loading from "@frame/Loading.svelte"
-  import Number from "@layout/Number.svelte"
-  import { onMount } from "svelte"
+  import { all_tabs, tab_selected } from '@lib/store'
+  import Icon from '@layout/Icon.svelte'
+  import Loading from '@frame/Loading.svelte'
+  import Number from '@layout/Number.svelte'
+  import { onMount } from 'svelte'
 
-  let { tab, active_tab = $bindable(), select_tab } = $props()
+  let { tab, active_tab = $bindable(), selectTab } = $props()
 
   let tab_nb = $state(tab.nb)
   let min_width = $state(0)
 
-  function to_percent(value) {
-    const separator = "|"
+  function toPercent(value) {
+    const separator = '|'
     const splited = value.split(separator)
     if (splited.length === 1) return false
-    return splited[1].split("%")[0]
+    return splited[1].split('%')[0]
   }
 
   onMount(() => {
@@ -25,7 +25,7 @@
   })
 
   $effect(() => {
-    if (active_tab === tab.key && tab_nb !== "...") {
+    if (active_tab === tab.key && tab_nb !== '...') {
       setTimeout(() => {
         min_width = 0
       }, 300)
@@ -52,16 +52,16 @@
 
   <a
     href={null}
-    onclick={() => select_tab(tab)}
+    onclick={() => selectTab(tab)}
     class="tab_select_btn"
     class:is_loaded={tab_nb > 0 ||
       tab_nb === undefined ||
-      tab_nb === "?" ||
-      (tab_nb?.length > 0 && tab_nb !== "...")}
+      tab_nb === '?' ||
+      (tab_nb?.length > 0 && tab_nb !== '...')}
   >
     <div>
       {#if tab_nb !== undefined}
-        {#if tab_nb === "..."}
+        {#if tab_nb === '...'}
           <Loading type="tab" color_entity={tab.icon} />
         {:else if tab_nb === parseInt(tab_nb)}
           <span class="num_style tab_visible">
@@ -78,9 +78,9 @@
         <Icon type={tab.icon} margin_right={false} mode="compact" />
       </span>
       <span>
-        {#if tab_nb !== undefined && tab_nb !== "..." && tab_nb !== parseInt(tab_nb)}
+        {#if tab_nb !== undefined && tab_nb !== '...' && tab_nb !== parseInt(tab_nb)}
           <span class="percent_wrapper">
-            <span class="percent" style="width: {100 - to_percent(tab_nb)}%"
+            <span class="percent" style="width: {100 - toPercent(tab_nb)}%"
             ></span>
           </span>
         {/if}
@@ -93,7 +93,7 @@
 </li>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .tab_visible {
     position: relative;
@@ -179,12 +179,12 @@
   }
 
   @each $entity in $entities {
-      .tab_entity_#{$entity} {
-        .percent_wrapper {
-          background: #{color($entity)};
-        }
+    .tab_entity_#{$entity} {
+      .percent_wrapper {
+        background: #{color($entity)};
       }
     }
+  }
 
   :global(html.rounded_design) {
     a.tab_select_btn {
@@ -199,7 +199,7 @@
       position: relative;
       border-radius: $rounded-top;
       .rounded_wrapper {
-        content: "";
+        content: '';
         position: absolute;
         height: 20px;
         width: 20px;

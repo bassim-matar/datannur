@@ -1,7 +1,7 @@
 <script lang="ts">
   import db from '@db'
   import { tabsHelper } from '@tab/tabs-helper'
-  import { get_lineage } from '@lib/db'
+  import { getLineage } from '@lib/db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
 
@@ -17,8 +17,8 @@
   }
 
   const variables = [
-    ...get_lineage('variable', variable, 'source'),
-    ...get_lineage('variable', variable, 'derived'),
+    ...getLineage('variable', variable, 'source'),
+    ...getLineage('variable', variable, 'derived'),
   ]
 
   const evolutions = db

@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { filter_keys } from '@lib/db'
+  import { filterKeys } from '@lib/db'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
@@ -12,8 +12,8 @@
   let dataset_preview = []
   if (metaDataset.name in db.tables) {
     const dataset_preview_raw = db.tables[metaDataset.name]
-    const keys_to_keep = meta_dataset_variables.map(a => a.name)
-    dataset_preview = filter_keys(dataset_preview_raw, keys_to_keep)
+    const keysToKeep = meta_dataset_variables.map(a => a.name)
+    dataset_preview = filterKeys(dataset_preview_raw, keysToKeep)
   } else if (metaDataset.name in db.tables.__user_data__) {
     dataset_preview = db.tables.__user_data__[metaDataset.name]
   }

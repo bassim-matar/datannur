@@ -21,10 +21,10 @@ const namingConventionRules = {
       selector: 'method',
       format: ['camelCase'],
     },
-    // {
-    //   selector: 'function',
-    //   format: ['camelCase'],
-    // },
+    {
+      selector: 'function',
+      format: ['camelCase'],
+    },
     // {
     //   selector: 'variableLike',
     //   format: ['camelCase'],

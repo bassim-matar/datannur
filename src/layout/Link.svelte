@@ -1,34 +1,34 @@
 <script lang="ts">
   import { router } from "@lib/router.svelte.js"
-  import { get_base_link_url } from "@lib/util"
+  import {getBaseLinkUrl} from "@lib/util"
 
   let {
     href,
     className = "",
     click = () => false,
     isActive = () => false,
-    alternative_action = null,
+    alternativeAction = null,
     entity = "",
     children,
   } = $props()
 
-  const base = href === "/" ? "" : get_base_link_url()
+  const base = href === "/" ? "" : getBaseLinkUrl()
 
   const entity_class = $derived(entity ? `color_entity_${entity}` : "")
 
-  function go_to_href(event) {
+  function goToHref(event) {
     if (event.ctrlKey || event.metaKey) return
     event.preventDefault()
-    if (alternative_action) {
-      alternative_action()
+    if (alternativeAction) {
+      alternativeAction()
       return
     }
     router.navigate(href)
   }
 
-  function on_click_event(event) {
+  function onClickEvent(event) {
     click(event)
-    go_to_href(event)
+    goToHref(event)
   }
 </script>
 
@@ -36,7 +36,7 @@
   href="{base}{href}"
   class="{className} {entity_class}"
   class:is-active={isActive()}
-  onclick={on_click_event}
+  onclick={onClickEvent}
 >
   {@render children?.()}
 </a>

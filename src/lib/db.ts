@@ -1,9 +1,9 @@
 import db from '@db'
-import { get_variable_type_clean, escape_html_entities } from '@lib/util'
-import { get_period, date_to_timestamp, timestamp_to_date } from '@lib/time'
-import { get_nb_values } from '@lib/render'
+import { getVariableTypeClean, escapeHtmlEntities } from '@lib/util'
+import { getPeriod, dateToTimestamp, timestampToDate } from '@lib/time'
+import { getNbValues } from '@lib/render'
 import { entity_names } from '@lib/constant'
-import { evolution_initial_setup } from '@lib/evolution'
+import { evolutionInitialSetup } from '@lib/evolution'
 
 interface UserData {
   log?: any[]
@@ -12,7 +12,7 @@ interface UserData {
   [key: string]: any
 }
 
-function add_entities_used() {
+function addEntitiesUsed() {
   db.use = {}
   for (const entity of [
     'institution',
@@ -24,11 +24,11 @@ function add_entities_used() {
     'modality',
     'filter',
   ]) {
-    db.use[entity] = is_db_using(entity)
+    db.use[entity] = isDbUsing(entity)
   }
   if (db.use.institution) {
-    db.use.owner = is_db_using('owner')
-    db.use.manager = is_db_using('manager')
+    db.use.owner = isDbUsing('owner')
+    db.use.manager = isDbUsing('manager')
   }
   if (db.use.tag) {
     const tags = db.getAll('tag')
@@ -38,38 +38,38 @@ function add_entities_used() {
   }
 }
 
-function is_db_using(entity) {
+function isDbUsing(entity) {
   return db.getAll(entity).length > 0
 }
-function add_tags(entity, item) {
+function addTags(entity, item) {
   item.tags = db.getAll('tag', { [entity]: item.id })
 }
-function add_parents(entity, item) {
+function addParents(entity, item) {
   item.parents = db.getParents(entity, item.id)
 }
-function add_favorite(item) {
+function addFavorite(item) {
   item.is_favorite = false
 }
-function add_nb(entity, item, entity_nb) {
+function addNb(entity, item, entity_nb) {
   item[`nb_${entity_nb}`] = db.hasNb(entity, item.id, entity_nb)
 }
-function add_nb_recursive(entity, item, target) {
-  item[`nb_${target}_recursive`] = get_recursive(entity, item.id, target).length
+function addNbRecursive(entity, item, target) {
+  item[`nb_${target}_recursive`] = getRecursive(entity, item.id, target).length
 }
-function add_institution_nb(institution, entity) {
-  institution[`nb_${entity}`] = get_institution_items(
+function addInstitutionNb(institution, entity) {
+  institution[`nb_${entity}`] = getInstitutionItems(
     institution.id,
     entity,
   ).length
 }
-function add_nb_child(entity, item) {
+function addNbChild(entity, item) {
   item.nb_child = db.hasNb('parent', item.id, entity)
 }
-function add_nb_child_recursive(entity, item) {
+function addNbChildRecursive(entity, item) {
   const childs = db.getAllChilds(entity, item.id)
   item.nb_child_recursive = childs.length
 }
-function add_name(item, entity, alias = '') {
+function addName(item, entity, alias = '') {
   if (!alias) alias = entity
   const item_id = item[`${alias}_id`]
   let item_name = ''
@@ -77,11 +77,11 @@ function add_name(item, entity, alias = '') {
     item_name = db.get(entity, item_id)?.name as string
   item[`${alias}_name`] = item_name || ''
 }
-function add_variable_num(dataset, entity, variable_entity) {
+function addVariableNum(dataset, entity, variable_entity) {
   const variables = db.getAll(variable_entity, { [entity]: dataset.id })
   for (const [i, variable] of variables.entries()) variable.num = i + 1
 }
-function add_entities(item) {
+function addEntities(item) {
   item.entities = []
   for (const entity of ['institution', 'folder', 'dataset']) {
     if (item['nb_' + entity] > 0) {
@@ -89,18 +89,18 @@ function add_entities(item) {
     }
   }
 }
-function add_period(item) {
+function addPeriod(item) {
   item.period = ''
   if (item.start_date && item.start_date === item.end_date)
     item.period = item.start_date
   else if (item.start_date && item.end_date) {
-    item.period_duration = get_period(item.start_date, item.end_date, true)
+    item.period_duration = getPeriod(item.start_date, item.end_date, true)
     item.period = `${item.start_date} - ${item.end_date}`
   } else if (item.start_date) item.period = `dès ${item.start_date}`
   else if (item.end_date) item.period = `jusqu'à ${item.end_date}`
 }
 
-function add_docs(entity, item) {
+function addDocs(entity, item) {
   item.docs = db.getAll('doc', { [entity]: item.id })
   for (const doc of item.docs) {
     doc.entity = entity
@@ -108,7 +108,7 @@ function add_docs(entity, item) {
   }
 }
 
-function variable_add_dataset_info(variable) {
+function variableAddDatasetInfo(variable) {
   const dataset = db.get('dataset', variable.dataset_id)
   if (!dataset) return
   variable.nb_row = dataset.nb_row
@@ -129,12 +129,12 @@ function variable_add_dataset_info(variable) {
   }
 }
 
-function add_entity(item, entity) {
+function addEntity(item, entity) {
   item._entity = entity
   item._entity_clean = entity_names[entity]
 }
 
-function add_source_var(variable) {
+function addSourceVar(variable) {
   if (!variable.sourceVar_ids) return false
   variable.source_ids = []
   const dataset = db.get('dataset', variable.dataset_id)
@@ -162,7 +162,7 @@ function add_source_var(variable) {
   }
 }
 
-function add_next_update(item) {
+function addNextUpdate(item) {
   if (!item.last_update_date || !item.updating_each || item.no_more_update)
     return
   let diff
@@ -179,12 +179,12 @@ function add_next_update(item) {
   else if (updating_each === 'quinquennale') diff = 5 * (365 * 24 * 3600)
 
   if (diff) {
-    const last_update = date_to_timestamp(item.last_update_date)
-    item.next_update_date = timestamp_to_date(last_update + diff * 1000)
+    const last_update = dateToTimestamp(item.last_update_date)
+    item.next_update_date = timestampToDate(last_update + diff * 1000)
   }
 }
 
-export function make_parents_relative(parent_id, items) {
+export function makeParentsRelative(parent_id, items) {
   for (const item of items) {
     let position = 0
     item.parents_relative = []
@@ -196,24 +196,24 @@ export function make_parents_relative(parent_id, items) {
   }
 }
 
-function get_institution_items(institution_id, entity) {
+function getInstitutionItems(institution_id, entity) {
   const own_items = db.getAll(entity, { owner: institution_id })
   const manage_items = db.getAll(entity, { manager: institution_id })
-  return remove_duplicate_by_id([...own_items, ...manage_items])
+  return removeDuplicateById([...own_items, ...manage_items])
 }
 
-export function get_recursive(entity, item_id, target) {
+export function getRecursive(entity, item_id, target) {
   const get =
     entity === 'institution'
-      ? id => get_institution_items(id, target)
+      ? id => getInstitutionItems(id, target)
       : id => db.getAll(target, { [entity]: id })
   let items = get(item_id)
   let childs = db.getAllChilds(entity, item_id)
   for (const child of childs) items = items.concat(get(child.id))
-  return remove_duplicate_by_id(items)
+  return removeDuplicateById(items)
 }
 
-export async function get_user_data(): Promise<UserData> {
+export async function getUserData(): Promise<UserData> {
   return new Promise(resolve => {
     db.browser.getAll('user_data/', items =>
       resolve(items as unknown as UserData),
@@ -221,11 +221,11 @@ export async function get_user_data(): Promise<UserData> {
   })
 }
 
-export function get_sort_by_name(a, b) {
+export function getSortByName(a, b) {
   return a?.name?.localeCompare(b?.name)
 }
 
-export function get_parent_path(row) {
+export function getParentPath(row) {
   let parents = []
   const items = 'parents_relative' in row ? row.parents_relative : row.parents
   for (parent of items) {
@@ -235,15 +235,15 @@ export function get_parent_path(row) {
   return parents.join(' / ')
 }
 
-export function remove_duplicate_by_id(items) {
+export function removeDuplicateById(items) {
   return items.filter((v, i, a) => a.findIndex(v2 => v2.id === v.id) === i)
 }
 
-export function filter_keys(list, keys) {
+export function filterKeys(list, keys) {
   return list.map(o => Object.fromEntries(keys.map(k => [k, o[k]])))
 }
 
-export function add_minimum_deep(items, no_deep = false, no_indent = false) {
+export function addMinimumDeep(items, no_deep = false, no_indent = false) {
   let minimum_deep = 999
   for (const item of items) {
     if (item.parents_relative.length < minimum_deep) {
@@ -259,7 +259,7 @@ export function add_minimum_deep(items, no_deep = false, no_indent = false) {
   }
 }
 
-export function get_lineage(entity, elem, lineage_type) {
+export function getLineage(entity, elem, lineage_type) {
   const lineage = []
   const lineage_ids = elem[`${lineage_type}_ids`]
   if (!lineage_ids) return lineage
@@ -274,18 +274,18 @@ export function get_lineage(entity, elem, lineage_type) {
 class Process {
   static institution() {
     db.foreach('institution', institution => {
-      add_entity(institution, 'institution')
-      add_favorite(institution)
-      add_period(institution)
-      add_tags('institution', institution)
-      add_parents('institution', institution)
-      add_docs('institution', institution)
-      add_nb_child('institution', institution)
-      add_nb_child_recursive('institution', institution)
-      add_institution_nb(institution, 'folder')
-      add_institution_nb(institution, 'dataset')
-      add_nb_recursive('institution', institution, 'folder')
-      const datasets = get_recursive('institution', institution.id, 'dataset')
+      addEntity(institution, 'institution')
+      addFavorite(institution)
+      addPeriod(institution)
+      addTags('institution', institution)
+      addParents('institution', institution)
+      addDocs('institution', institution)
+      addNbChild('institution', institution)
+      addNbChildRecursive('institution', institution)
+      addInstitutionNb(institution, 'folder')
+      addInstitutionNb(institution, 'dataset')
+      addNbRecursive('institution', institution, 'folder')
+      const datasets = getRecursive('institution', institution.id, 'dataset')
       const variables = datasets.flatMap(dataset =>
         db.getAll('variable', { dataset }),
       )
@@ -295,18 +295,18 @@ class Process {
   }
   static folder() {
     db.foreach('folder', folder => {
-      add_entity(folder, 'folder')
-      add_favorite(folder)
-      add_tags('folder', folder)
-      add_parents('folder', folder)
-      add_docs('folder', folder)
-      add_nb_child('folder', folder)
-      add_nb_child_recursive('folder', folder)
-      add_next_update(folder)
-      if (db.use.owner) add_name(folder, 'institution', 'owner')
-      if (db.use.manager) add_name(folder, 'institution', 'manager')
-      add_period(folder)
-      const datasets = get_recursive('folder', folder.id, 'dataset')
+      addEntity(folder, 'folder')
+      addFavorite(folder)
+      addTags('folder', folder)
+      addParents('folder', folder)
+      addDocs('folder', folder)
+      addNbChild('folder', folder)
+      addNbChildRecursive('folder', folder)
+      addNextUpdate(folder)
+      if (db.use.owner) addName(folder, 'institution', 'owner')
+      if (db.use.manager) addName(folder, 'institution', 'manager')
+      addPeriod(folder)
+      const datasets = getRecursive('folder', folder.id, 'dataset')
       const variables = datasets.flatMap(dataset =>
         db.getAll('variable', { dataset }),
       )
@@ -316,45 +316,45 @@ class Process {
   }
   static tag() {
     db.foreach('tag', tag => {
-      add_entity(tag, 'tag')
-      add_favorite(tag)
-      add_nb('tag', tag, 'institution')
-      add_nb('tag', tag, 'folder')
-      add_nb('tag', tag, 'dataset')
-      add_nb('tag', tag, 'variable')
-      add_docs('tag', tag)
-      add_entities(tag)
-      if (db.use.tag_recursive) add_parents('tag', tag)
-      add_nb_child('tag', tag)
-      add_nb_child_recursive('tag', tag)
-      add_nb_recursive('tag', tag, 'institution')
-      add_nb_recursive('tag', tag, 'folder')
-      add_nb_recursive('tag', tag, 'doc')
-      add_nb_recursive('tag', tag, 'dataset')
-      add_nb_recursive('tag', tag, 'variable')
+      addEntity(tag, 'tag')
+      addFavorite(tag)
+      addNb('tag', tag, 'institution')
+      addNb('tag', tag, 'folder')
+      addNb('tag', tag, 'dataset')
+      addNb('tag', tag, 'variable')
+      addDocs('tag', tag)
+      addEntities(tag)
+      if (db.use.tag_recursive) addParents('tag', tag)
+      addNbChild('tag', tag)
+      addNbChildRecursive('tag', tag)
+      addNbRecursive('tag', tag, 'institution')
+      addNbRecursive('tag', tag, 'folder')
+      addNbRecursive('tag', tag, 'doc')
+      addNbRecursive('tag', tag, 'dataset')
+      addNbRecursive('tag', tag, 'variable')
     })
   }
   static dataset() {
-    const filters = get_local_filter()
+    const filters = getLocalFilter()
     const filter_to_name = {}
     for (const filter of filters) {
       db.use.filter = true
       filter_to_name[filter.id] = filter.name
     }
     db.foreach('dataset', dataset => {
-      add_entity(dataset, 'dataset')
-      add_favorite(dataset)
-      add_tags('dataset', dataset)
-      add_docs('dataset', dataset)
-      if (db.use.owner) add_name(dataset, 'institution', 'owner')
-      if (db.use.manager) add_name(dataset, 'institution', 'manager')
+      addEntity(dataset, 'dataset')
+      addFavorite(dataset)
+      addTags('dataset', dataset)
+      addDocs('dataset', dataset)
+      if (db.use.owner) addName(dataset, 'institution', 'owner')
+      if (db.use.manager) addName(dataset, 'institution', 'manager')
       if (db.use.folder) {
-        add_name(dataset, 'folder')
+        addName(dataset, 'folder')
       } else dataset.folder_name = ''
-      add_variable_num(dataset, 'dataset', 'variable')
-      add_nb('dataset', dataset, 'variable')
-      add_period(dataset)
-      add_next_update(dataset)
+      addVariableNum(dataset, 'dataset', 'variable')
+      addNb('dataset', dataset, 'variable')
+      addPeriod(dataset)
+      addNextUpdate(dataset)
       dataset.type_clean = ''
       if (dataset.type) {
         dataset.type_clean = filter_to_name[dataset.type]
@@ -363,13 +363,13 @@ class Process {
   }
   static doc() {
     db.foreach('doc', doc => {
-      add_entity(doc, 'doc')
-      add_favorite(doc)
-      add_nb('doc', doc, 'institution')
-      add_nb('doc', doc, 'folder')
-      add_nb('doc', doc, 'dataset')
-      add_nb('doc', doc, 'tag')
-      add_entities(doc)
+      addEntity(doc, 'doc')
+      addFavorite(doc)
+      addNb('doc', doc, 'institution')
+      addNb('doc', doc, 'folder')
+      addNb('doc', doc, 'dataset')
+      addNb('doc', doc, 'tag')
+      addEntities(doc)
       if (doc.last_update) doc.last_update *= 1000
       doc.last_update_date = ''
       if (doc.last_update) {
@@ -382,10 +382,10 @@ class Process {
   }
   static variable() {
     db.foreach('variable', variable => {
-      add_entity(variable, 'variable')
-      add_favorite(variable)
-      add_period(variable)
-      add_tags('variable', variable)
+      addEntity(variable, 'variable')
+      addFavorite(variable)
+      addPeriod(variable)
+      addTags('variable', variable)
       variable.modalities = []
       variable.values = []
       const modalities = db.getAll('modality', { variable })
@@ -395,12 +395,12 @@ class Process {
         variable.modalities = variable.modalities.concat(modality)
       }
       variable.values_preview = [...variable.values.slice(0, 10)]
-      variable.type_clean = get_variable_type_clean(variable.type)
-      variable_add_dataset_info(variable)
-      const nb_values = get_nb_values(variable.values, variable)
+      variable.type_clean = getVariableTypeClean(variable.type)
+      variableAddDatasetInfo(variable)
+      const nb_values = getNbValues(variable.values, variable)
       variable.nb_distinct = nb_values
       variable.nb_value = nb_values
-      add_source_var(variable)
+      addSourceVar(variable)
       if (variable.key) variable.key = 'oui'
 
       const freq_data = db.getAll('freq', { variable })
@@ -431,10 +431,10 @@ class Process {
   }
   static modality() {
     db.foreach('modality', modality => {
-      add_entity(modality, 'modality')
-      add_favorite(modality)
-      add_nb('modality', modality, 'variable')
-      if (db.use.folder) add_name(modality, 'folder')
+      addEntity(modality, 'modality')
+      addFavorite(modality)
+      addNb('modality', modality, 'variable')
+      if (db.use.folder) addName(modality, 'folder')
 
       modality.variables = db.getAll('variable', { modality })
       modality.values = db.getAll('value', { modality })
@@ -444,21 +444,21 @@ class Process {
         value.modality_name = modality.name
         if (value.value === null) value.value = ''
         else {
-          value.value = escape_html_entities(value.value)
+          value.value = escapeHtmlEntities(value.value)
         }
       }
       if (!modality.type && modality.variables.length > 0) {
         modality.type = modality.variables[0].type
       }
-      modality.type_clean = get_variable_type_clean(modality.type)
+      modality.type_clean = getVariableTypeClean(modality.type)
     })
   }
   static metaVariable() {
     db.foreach('metaVariable', metaVariable => {
-      add_entity(metaVariable, 'metaVariable')
+      addEntity(metaVariable, 'metaVariable')
       metaVariable.is_meta = true
-      metaVariable.type_clean = get_variable_type_clean(metaVariable.type)
-      metaVariable.nb_value = get_nb_values(metaVariable.values, metaVariable)
+      metaVariable.type_clean = getVariableTypeClean(metaVariable.type)
+      metaVariable.nb_value = getNbValues(metaVariable.values, metaVariable)
       if (metaVariable.name === 'id') metaVariable.key = 'oui'
 
       const metaDataset = db.get('metaDataset', metaVariable.metaDataset_id)
@@ -476,11 +476,11 @@ class Process {
   }
   static metaDataset() {
     db.foreach('metaDataset', metaDataset => {
-      add_entity(metaDataset, 'metaDataset')
+      addEntity(metaDataset, 'metaDataset')
       metaDataset.is_meta = true
       metaDataset.folder = { id: metaDataset.metaFolder_id }
       metaDataset.folder_name = metaDataset.metaFolder_id as string
-      add_variable_num(metaDataset, 'metaDataset', 'metaVariable')
+      addVariableNum(metaDataset, 'metaDataset', 'metaVariable')
       const metaVariables = db.getAll('metaVariable', { metaDataset })
       metaDataset.nb_variable = metaVariables.length
       if (metaDataset.last_update_timestamp)
@@ -494,7 +494,7 @@ class Process {
   }
   static metaFolder() {
     db.foreach('metaFolder', metaFolder => {
-      add_entity(metaFolder, 'metaFolder')
+      addEntity(metaFolder, 'metaFolder')
       metaFolder.is_meta = true
       const metaDatasets = db.getAll('metaDataset', { metaFolder })
       metaFolder.nb_dataset = metaDatasets.length
@@ -505,26 +505,26 @@ class Process {
   }
 
   static evolution() {
-    evolution_initial_setup()
+    evolutionInitialSetup()
   }
 }
 
-function add_doc_recursive() {
+function addDocRecursive() {
   for (const entity of ['institution', 'folder', 'dataset', 'tag'] as const) {
     db.foreach(entity, item => {
       item.docs_recursive = []
       let docs = []
       if (entity === 'institution') {
-        const childs = get_recursive(entity, item.id, entity)
+        const childs = getRecursive(entity, item.id, entity)
         for (const child of childs) docs = docs.concat(child.docs)
       }
       if (['institution', 'folder'].includes(entity)) {
-        const folders = get_recursive(entity, item.id, 'folder')
-        const datasets = get_recursive(entity, item.id, 'dataset')
+        const folders = getRecursive(entity, item.id, 'folder')
+        const datasets = getRecursive(entity, item.id, 'dataset')
         for (const folder of folders) docs = docs.concat(folder.docs)
         for (const dataset of datasets) docs = docs.concat(dataset.docs)
       }
-      if (docs.length > 1) docs = remove_duplicate_by_id(docs)
+      if (docs.length > 1) docs = removeDuplicateById(docs)
       for (const doc of docs) {
         item.docs_recursive.push({ ...doc, inherited: 'hérité' })
       }
@@ -533,7 +533,7 @@ function add_doc_recursive() {
   }
 }
 
-export function get_local_filter() {
+export function getLocalFilter() {
   const db_filters = []
   for (const config_row of db.getAll('config')) {
     if (config_row.id?.startsWith('filter_')) {
@@ -548,8 +548,8 @@ export function get_local_filter() {
   return db.getAll('filter')
 }
 
-export function db_add_processed_data() {
-  add_entities_used()
+export function dbAddProcessedData() {
+  addEntitiesUsed()
   Process.institution()
   Process.folder()
   Process.tag()
@@ -561,5 +561,5 @@ export function db_add_processed_data() {
   Process.metaDataset()
   Process.metaFolder()
   Process.evolution()
-  if (db.use.doc) add_doc_recursive()
+  if (db.use.doc) addDocRecursive()
 }

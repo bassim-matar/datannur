@@ -1,7 +1,7 @@
 import jQuery from 'jquery'
 import Favorites from '@favorite/favorites'
 
-export default function init_favorite(table_id, datatable) {
+export default function initFavorite(table_id, datatable) {
   const jquery_favorite = jQuery('table#' + table_id + '._datatables')
   jquery_favorite.on('click', '.icon.favorite', function () {
     const elem = jQuery(this)

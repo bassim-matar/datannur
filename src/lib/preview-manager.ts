@@ -1,5 +1,5 @@
 import db from '@db'
-import { wrap_long_text } from '@lib/util'
+import { wrapLongText } from '@lib/util'
 import Render from '@lib/render'
 
 export default class PreviewManager {
@@ -33,7 +33,7 @@ export default class PreviewManager {
       if (typeof value === 'number') {
         render = data => Render.num(data)
       } else {
-        render = data => wrap_long_text(data)
+        render = data => wrapLongText(data)
       }
       cols.push({ data: key, title: key, defaultContent: '', render })
     }

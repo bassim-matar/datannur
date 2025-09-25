@@ -1,7 +1,7 @@
 <script lang="ts">
   import db from '@db'
   import { tab_selected } from '@lib/store'
-  import { make_parents_relative, add_minimum_deep } from '@lib/db'
+  import { makeParentsRelative, addMinimumDeep } from '@lib/db'
   import { is_big_limit } from '@lib/constant'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
@@ -14,8 +14,8 @@
 
   const tags = db.getAll('tag')
   if (db.use.tag_recursive) {
-    make_parents_relative(0, tags)
-    add_minimum_deep(tags)
+    makeParentsRelative(0, tags)
+    addMinimumDeep(tags)
   }
 
   const evolutions = db.getAll('evolution').filter(evo => evo.entity === 'tag')
@@ -39,10 +39,10 @@
 <section class="section">
   <Title type="tag" name="Mots clés" mode="main_title" />
   {#if show_open_all_switch}
-    <OpenAllSwitch on_change={value => (key_tab = value)} />
+    <OpenAllSwitch onChange={value => (key_tab = value)} />
   {/if}
   {#if show_evolution_summary_switch}
-    <EvolutionSummarySwitch on_change={value => (key_tab = value)} />
+    <EvolutionSummarySwitch onChange={value => (key_tab = value)} />
   {/if}
   {#key key_tab}
     <Tabs {tabs} />

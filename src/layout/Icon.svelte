@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { entity_to_icon_name } from "@lib/util"
+  import { entityToIconName } from "@lib/util"
 
   let {
     type,
@@ -8,7 +8,7 @@
     mode = "normal",
   } = $props()
 
-  const icon = $derived(entity_to_icon_name(type))
+  const icon = $derived(entityToIconName(type))
   const class_names = $derived(
     icon.startsWith("fa-brands") ? icon : `fas fa-${icon}`,
   )

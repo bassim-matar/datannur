@@ -1,5 +1,5 @@
 import Render from '@lib/render'
-import { get_time_ago } from '@lib/time'
+import { getTimeAgo } from '@lib/time'
 import Histogram from './histogram'
 import { attributs } from './attributs'
 
@@ -8,12 +8,12 @@ interface ValueEntry {
   start?: any
 }
 
-function get_value_readable(start, end) {
+function getValueReadable(start, end) {
   if (start === 0 || start === end) return Render.num(start)
   return `${Render.num(start)} - ${Render.num(end)}`
 }
 
-function add_readable_values(values, type) {
+function addReadableValues(values, type) {
   for (const value of values) {
     if (value.start === '__empty__') {
       value.readable = 'vide / manquant'
@@ -23,7 +23,7 @@ function add_readable_values(values, type) {
       value.readable = value.start
       continue
     }
-    value.readable = get_value_readable(value.start, value.end)
+    value.readable = getValueReadable(value.start, value.end)
     if (type === 'string') {
       value.readable += ' caractère' + (value.start > 1 ? 's' : '')
     }
@@ -31,7 +31,7 @@ function add_readable_values(values, type) {
   return values
 }
 
-function get_values_sorted(
+function getValuesSorted(
   values: Record<string, ValueEntry>,
   sort_by = 'count',
 ) {
@@ -46,7 +46,7 @@ function get_values_sorted(
   return sorted
 }
 
-function merge_zero_empty(values) {
+function mergeZeroEmpty(values) {
   if (values[0]?.start === '__empty__' && values[1]?.start === 0) {
     values[0].count += values[1].count
     values.splice(1, 1)
@@ -56,7 +56,7 @@ function merge_zero_empty(values) {
   return values
 }
 
-function prepare_time_ago(values) {
+function prepareTimeAgo(values) {
   const new_values = []
   let empty_value = null
   for (const value of values) {
@@ -64,8 +64,8 @@ function prepare_time_ago(values) {
       empty_value = value
     } else {
       new_values.push({
-        start: get_time_ago(value.end),
-        end: get_time_ago(value.start),
+        start: getTimeAgo(value.end),
+        end: getTimeAgo(value.start),
         count: value.count,
       })
     }
@@ -75,11 +75,11 @@ function prepare_time_ago(values) {
   return new_values
 }
 
-function add_numeric(items, attribut) {
+function addNumeric(items, attribut) {
   let values = []
   for (const item of items) {
-    if (attribut.get_value) {
-      values.push(attribut.get_value(item))
+    if (attribut.getValue) {
+      values.push(attribut.getValue(item))
     } else if (attribut.parse_date && item[attribut.variable]) {
       values.push(Date.parse(item[attribut.variable]))
     } else {
@@ -87,12 +87,12 @@ function add_numeric(items, attribut) {
     }
   }
   values = Histogram.get(values, attribut.nb_range || 10)
-  if (attribut.type === 'string') values = merge_zero_empty(values)
-  if (attribut.range_type === 'time_ago') values = prepare_time_ago(values)
+  if (attribut.type === 'string') values = mergeZeroEmpty(values)
+  if (attribut.range_type === 'time_ago') values = prepareTimeAgo(values)
   return values
 }
 
-function add_non_exclusive(items, attribut) {
+function addNonExclusive(items, attribut) {
   const set = new Set()
   const values = {}
   for (const item of items) {
@@ -106,15 +106,15 @@ function add_non_exclusive(items, attribut) {
       }
     }
   }
-  return get_values_sorted(values)
+  return getValuesSorted(values)
 }
 
-function add_category(items, attribut, sort_by = 'count') {
+function addCategory(items, attribut, sort_by = 'count') {
   const set = new Set()
   const values = {}
-  const has_getter = 'get_value' in attribut
+  const has_getter = 'getValue' in attribut
   for (const item of items) {
-    let value = has_getter ? attribut.get_value(item) : item[attribut.variable]
+    let value = has_getter ? attribut.getValue(item) : item[attribut.variable]
     if ([false, null, undefined, NaN, ''].includes(value)) value = '__empty__'
     if (set.has(value)) {
       values[value].count += 1
@@ -123,15 +123,15 @@ function add_category(items, attribut, sort_by = 'count') {
       set.add(value)
     }
   }
-  return get_values_sorted(values, sort_by)
+  return getValuesSorted(values, sort_by)
 }
 
-function add_subtype(items, attribut) {
+function addSubtype(items, attribut) {
   const set = new Set()
   const values = {}
   for (const item of items) {
     if (!attribut.subtype(item)) continue
-    const value = attribut.get_value(item)
+    const value = attribut.getValue(item)
     if (set.has(value)) {
       values[value].count += 1
     } else {
@@ -139,41 +139,41 @@ function add_subtype(items, attribut) {
       set.add(value)
     }
   }
-  return get_values_sorted(values)
+  return getValuesSorted(values)
 }
 
-export function add_values_to_attribut(items, attribut) {
+export function addValuesToAttribut(items, attribut) {
   let values
   let total_value = items.length
   if (['numeric', 'string'].includes(attribut.type)) {
-    values = add_numeric(items, attribut)
+    values = addNumeric(items, attribut)
   } else if (attribut.non_exclusive) {
-    values = add_non_exclusive(items, attribut)
+    values = addNonExclusive(items, attribut)
   } else if (attribut.subtype) {
-    values = add_subtype(items, attribut)
+    values = addSubtype(items, attribut)
     total_value = items.filter(attribut.subtype).length
   } else if (attribut.type === 'category_ordered') {
-    values = add_category(items, attribut, 'start')
+    values = addCategory(items, attribut, 'start')
     values.reverse()
   } else {
-    values = add_category(items, attribut)
+    values = addCategory(items, attribut)
   }
   if (values.length === 0) return
   if (values.length === 1 && [0, '0', '__empty__'].includes(values[0].start))
     return
-  values = add_readable_values(values, attribut.type)
+  values = addReadableValues(values, attribut.type)
   return { ...attribut, values, total_value }
 }
 
-export function add_values(items, attributs) {
+export function addValues(items, attributs) {
   const attributs_with_values = []
   for (const attribut of attributs) {
-    const attribut_with_values = add_values_to_attribut(items, attribut)
+    const attribut_with_values = addValuesToAttribut(items, attribut)
     if (attribut_with_values) attributs_with_values.push(attribut_with_values)
   }
   return attributs_with_values
 }
 
-export function stat_exists(entity, attribut) {
+export function statExists(entity, attribut) {
   return attributs[entity]?.includes(attribut)
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
   import db from '@db'
   import { tab_selected } from '@lib/store'
-  import { make_parents_relative, add_minimum_deep } from '@lib/db'
+  import { makeParentsRelative, addMinimumDeep } from '@lib/db'
   import { is_big_limit } from '@lib/constant'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
@@ -11,13 +11,13 @@
   import about_file from '@markdown/about-folder.md?raw'
 
   const folders = db.getAll('folder')
-  make_parents_relative(0, folders)
-  add_minimum_deep(folders)
+  makeParentsRelative(0, folders)
+  addMinimumDeep(folders)
 
   const tags = db.getAll('tag').filter(tag => tag.nb_folder > 0)
   if (db.use.tag_recursive) {
-    make_parents_relative(false, tags)
-    add_minimum_deep(tags, true, true)
+    makeParentsRelative(false, tags)
+    addMinimumDeep(tags, true, true)
   }
 
   const evolutions = db
@@ -45,10 +45,10 @@
 <section class="section">
   <Title type="folder" name="Dossiers" mode="main_title" />
   {#if show_open_all_switch}
-    <OpenAllSwitch on_change={value => (key_tab = value)} />
+    <OpenAllSwitch onChange={value => (key_tab = value)} />
   {/if}
   {#if show_evolution_summary_switch}
-    <EvolutionSummarySwitch on_change={value => (key_tab = value)} />
+    <EvolutionSummarySwitch onChange={value => (key_tab = value)} />
   {/if}
   {#key key_tab}
     <Tabs {tabs} />

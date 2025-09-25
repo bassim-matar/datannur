@@ -1,13 +1,13 @@
 <script lang="ts">
   import Icon from '@layout/Icon.svelte'
-  import { get_color } from '@lib/util'
+  import { getColor } from '@lib/util'
   import { entity_names } from '@lib/constant'
   import StatValue from './StatValue.svelte'
 
   let { entity, attribut, with_html = false, from_popup = false } = $props()
 
   const total_value = attribut.total_value
-  const main_color = get_color(entity)
+  const main_color = getColor(entity)
 </script>
 
 <div

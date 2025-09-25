@@ -2,8 +2,8 @@
   import { onMount } from 'svelte'
   import db from '@db'
   import { page } from '@lib/store'
-  import { get_parent_path } from '@lib/db'
-  import { link, get_percent } from '@lib/util'
+  import {getParentPath} from '@lib/db'
+  import { link, getPercent } from '@lib/util'
   import Column from '@lib/column'
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
@@ -21,7 +21,7 @@
   let variable_max = 0
   let level_max = 0
   for (const tag of tags) {
-    if (db.use.tag_recursive) tag.path_string = get_parent_path(tag)
+    if (db.use.tag_recursive) tag.path_string = getParentPath(tag)
     if (tag.nb_child_recursive > tag_max) tag_max = tag.nb_child_recursive
     if (tag.nb_institution_recursive > institution_max)
       institution_max = tag.nb_institution_recursive
@@ -40,7 +40,7 @@
     tags_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
   }
 
-  function define_columns() {
+  function defineColumns() {
     let columns = []
     columns.push(Column.favorite())
     if (db.use.tag_recursive) {
@@ -72,7 +72,7 @@
         render: (data, type, row) => {
           if (!data) return ''
           const content = link('tag/' + row.id + '?tab=institutions', data)
-          const percent = get_percent(data / institution_max)
+          const percent = getPercent(data / institution_max)
           return `${Render.numPercent(content, percent, 'institution', type)}`
         },
       },
@@ -89,7 +89,7 @@
     return columns
   }
 
-  const columns = define_columns()
+  const columns = defineColumns()
 
   onMount(() => {
     is_recursive =

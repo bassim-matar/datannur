@@ -1,9 +1,9 @@
 <script lang="ts">
   import jQuery from 'jquery'
-  import { wrap_long_text, link } from '@lib/util'
+  import { wrapLongText, link } from '@lib/util'
   import Render from '@lib/render'
   import SearchHistory from './search-history'
-  import { search_highlight } from './search'
+  import { searchHighlight } from './search'
   import Datatable from '@datatable/Datatable.svelte'
   import Column from '@lib/column'
 
@@ -30,11 +30,11 @@
       name: 'name',
       tooltip: 'Nom',
       render: (data, _, row) =>
-        wrap_long_text(
+        wrapLongText(
           `<strong class="var_main_col">` +
             link(
               row._entity + '/' + row.id + '?from_search=true',
-              `${search_highlight(data, search_value)}`,
+              `${searchHighlight(data, search_value)}`,
               row._entity,
             ) +
             `</strong>`,
@@ -46,8 +46,8 @@
       defaultContent: '',
       tooltip: 'Description',
       render: data => {
-        if ([null, undefined].includes(data)) return wrap_long_text()
-        return wrap_long_text(search_highlight(data, search_value))
+        if ([null, undefined].includes(data)) return wrapLongText()
+        return wrapLongText(searchHighlight(data, search_value))
       },
     },
     {
@@ -56,8 +56,8 @@
       defaultContent: '',
       tooltip: 'Dossier',
       render: (data, _, row) => {
-        if (!data) return wrap_long_text()
-        return wrap_long_text(link('folder/' + data, row.folder_name))
+        if (!data) return wrapLongText()
+        return wrapLongText(link('folder/' + data, row.folder_name))
       },
     },
     {

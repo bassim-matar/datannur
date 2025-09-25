@@ -28,10 +28,10 @@
     standard_readable = entity_names[standard] + "s"
   }
 
-  const close_menu = () => ($header_open = false)
+  const closeMenu = () => ($header_open = false)
 
   function click() {
-    close_menu()
+    closeMenu()
     if (!href) {
       const elem = document.getElementsByClassName("tab_select_btn")[0] as HTMLElement | null
       elem?.click()

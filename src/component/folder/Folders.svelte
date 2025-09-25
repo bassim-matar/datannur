@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { link, wrap_long_text, get_percent } from '@lib/util'
-  import { get_parent_path } from '@lib/db'
+  import { link, wrapLongText, getPercent } from '@lib/util'
+  import {getParentPath} from '@lib/db'
   import Column from '@lib/column'
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
@@ -19,7 +19,7 @@
 
   if (!is_meta) {
     for (const folder of folders) {
-      folder.path_string = get_parent_path(folder)
+      folder.path_string = getParentPath(folder)
       if (folder.nb_dataset_recursive > dataset_max) {
         dataset_max = folder.nb_dataset_recursive
       }
@@ -46,7 +46,7 @@
     }
   }
 
-  function define_columns() {
+  function defineColumns() {
     if (is_meta) {
       return [
         Column.name('folder', 'Dossiers'),
@@ -61,7 +61,7 @@
               folder_path + row.id + '?tab=metaDatasets',
               data,
             )
-            const percent = get_percent(data / dataset_max)
+            const percent = getPercent(data / dataset_max)
             return `${Render.numPercent(content, percent, 'dataset', type)}`
           },
         },
@@ -117,7 +117,7 @@
         defaultContent: '',
         tooltip: 'Code source des traitements',
         render: data =>
-          wrap_long_text(
+          wrapLongText(
             data ? `<a href="${data}" target="_blanck">${data}</a>` : '',
           ),
       },
@@ -125,7 +125,7 @@
     ]
   }
 
-  const columns = define_columns()
+  const columns = defineColumns()
 </script>
 
 <Datatable

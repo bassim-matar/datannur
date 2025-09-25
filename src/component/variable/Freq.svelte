@@ -1,7 +1,7 @@
 <script lang="ts">
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
-  import { get_percent, wrap_long_text } from '@lib/util'
+  import { getPercent, wrapLongText } from '@lib/util'
 
   let { freq } = $props()
 
@@ -9,14 +9,14 @@
   const totalFreq = freq.reduce((sum, item) => sum + (item.freq || 0), 0)
   const maxFreq = freq_sorted.length > 0 ? freq_sorted[0].freq : 1
 
-  function define_columns() {
+  function defineColumns() {
     const columns = []
 
     columns.push({
       data: 'value',
       title: Render.icon('value') + 'Valeur',
       tooltip: 'Valeur de la variable',
-      render: wrap_long_text,
+      render: wrapLongText,
     })
 
     columns.push({
@@ -27,8 +27,8 @@
       className: 'text-right',
       render: (data, type, row) => {
         if (data === null || data === undefined || !totalFreq) return ''
-        const percent_display = get_percent(data / totalFreq)
-        const percent_background = get_percent(data / maxFreq)
+        const percent_display = getPercent(data / totalFreq)
+        const percent_background = getPercent(data / maxFreq)
         if (type === 'display') {
           const freq_num = Render.num(data, type)
           return `
@@ -46,7 +46,7 @@
     return columns
   }
 
-  const columns = define_columns()
+  const columns = defineColumns()
 </script>
 
 <Datatable entity="freq" data={freq_sorted} {columns} keep_all_cols={true} />

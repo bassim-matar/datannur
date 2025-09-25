@@ -3,12 +3,12 @@
   import Link from '@layout/Link.svelte'
   import Logs from '@lib/logs'
   import SearchHistory from './search-history'
-  import { search_highlight } from './search'
+  import { searchHighlight } from './search'
   import Favorite from '@favorite/Favorite.svelte'
 
-  let { item, search_value, is_focus_in = $bindable(), select_input } = $props()
+  let { item, search_value, is_focus_in = $bindable(), selectInput } = $props()
 
-  function click_link(entity_name, item_id) {
+  function clickLink(entity_name, item_id) {
     setTimeout(() => {
       SearchHistory.add(entity_name, item_id)
       Logs.add('search_bar', { entity: entity_name, entity_id: item_id })
@@ -16,9 +16,9 @@
     }, 10)
   }
 
-  function remove_item(entity_name, item_id) {
+  function removeItem(entity_name, item_id) {
     SearchHistory.remove(entity_name, item_id)
-    select_input()
+    selectInput()
   }
 </script>
 
@@ -41,7 +41,7 @@
   <td>
     <Link
       href="{item.entity}/{item.id}"
-      click={() => click_link(item.entity, item.id)}
+      click={() => clickLink(item.entity, item.id)}
       entity={item.entity}
     >
       <div class="long_text">
@@ -49,7 +49,7 @@
           {item.name}
         {:else}
           <!-- eslint-disable svelte/no-at-html-tags -->
-          {@html search_highlight(item.name, search_value)}
+          {@html searchHighlight(item.name, search_value)}
         {/if}
       </div>
     </Link>
@@ -59,7 +59,7 @@
       <button
         class="btn_delete_item"
         style="cursor: pointer;"
-        onclick={() => remove_item(item.entity, item.id)}
+        onclick={() => removeItem(item.entity, item.id)}
         aria-label="Remove item from recent search"
       >
         <i class="fa-solid fa-xmark close"></i>
@@ -82,7 +82,7 @@
   .long_text {
     word-break: break-word;
     width: 100%;
-    :global(.search_highlight) {
+    :global(.searchHighlight) {
       border-radius: $rounded;
       background: rgba(255, 255, 0, 0.5);
     }

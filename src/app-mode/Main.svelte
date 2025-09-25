@@ -15,17 +15,17 @@
   import Logs from '@lib/logs'
   import Favorites from '@favorite/favorites'
   import MainFilter from '@lib/main-filter'
-  import { is_http, has_touch_screen, get_is_small_menu } from '@lib/util'
+  import { is_http, has_touch_screen, getIsSmallMenu } from '@lib/util'
   import { UrlParam } from '@lib/url-param'
   import { UrlHash } from '@lib/url-hash'
-  import { db_add_processed_data, get_user_data } from '@lib/db'
+  import { dbAddProcessedData, getUserData } from '@lib/db'
   import icon from '@img/icon.png'
   import icon_dark from '@img/icon-dark.png'
   import Search from '@search/search'
   import SearchHistory from '@search/search-history'
   import { DarkMode, dark_mode_theme } from '@dark-mode/dark-mode'
-  import { copy_text_listen_click } from '@lib/copy-text'
-  import { add_values_to_attribut } from '@stat/stat'
+  import {copyTextListenClick} from '@lib/copy-text'
+  import {addValuesToAttribut} from '@stat/stat'
   import definition from '@stat/attributs-def'
   import default_banner from '@markdown/main/banner.md?raw'
   import Header from '@frame/Header.svelte'
@@ -46,12 +46,12 @@
 
   const timer = performance.now()
 
-  $is_small_menu = get_is_small_menu()
-  function on_resize() {
-    $is_small_menu = get_is_small_menu()
+  $is_small_menu = getIsSmallMenu()
+  function onResize() {
+    $is_small_menu = getIsSmallMenu()
   }
 
-  function set_option_default(key, value = true) {
+  function setOptionDefault(key, value = true) {
     let option_value = Options.get(key)
     if (option_value === undefined) {
       option_value = value
@@ -66,10 +66,10 @@
   Options.loaded = (async () => {
     let timer = performance.now()
     await Options.init()
-    set_option_default('rounded_design')
-    set_option_default('open_all_recursive')
-    set_option_default('evolution_summary', false)
-    set_option_default('page_shadow_colored', false)
+    setOptionDefault('rounded_design')
+    setOptionDefault('open_all_recursive')
+    setOptionDefault('evolution_summary', false)
+    setOptionDefault('page_shadow_colored', false)
     console.log('init option', Math.round(performance.now() - timer) + ' ms')
   })()
 
@@ -99,9 +99,9 @@
       console.log('load db', Math.round(performance.now() - timer) + ' ms')
 
       timer = performance.now()
-      const user_data = await get_user_data()
+      const user_data = await getUserData()
       db.addMeta(user_data, db_schema as any)
-      db_add_processed_data()
+      dbAddProcessedData()
       console.log('process db', Math.round(performance.now() - timer) + ' ms')
 
       timer = performance.now()
@@ -117,7 +117,7 @@
     }
   })()
 
-  async function check_from_search(page_hash_value) {
+  async function checkFromSearch(page_hash_value) {
     await db.loaded
     const from_search = UrlParam.get('from_search')
     if (from_search) {
@@ -131,7 +131,7 @@
   }
 
   $page_hash = UrlHash.getLevel1()
-  page_hash.subscribe(page_hash_value => check_from_search(page_hash_value))
+  page_hash.subscribe(page_hash_value => checkFromSearch(page_hash_value))
 
   if (has_touch_screen) {
     document.documentElement.classList.toggle('has_touch_screen')
@@ -156,14 +156,14 @@
   jQuery('body').on('click', '.column_stat_btn', function () {
     const attribut_name = jQuery(this).data('attribut')
     column_stat_entity = jQuery(this).data('entity')
-    column_stat_attribut = add_values_to_attribut(window._current_tab_data, {
+    column_stat_attribut = addValuesToAttribut(window._current_tab_data, {
       key: attribut_name,
       ...definition[attribut_name],
     })
     if (column_stat_attribut) is_popup_column_stat_open = true
   })
 
-  copy_text_listen_click()
+  copyTextListenClick()
 
   db.loaded.then(() => {
     const mainBanner = new Image()
@@ -213,7 +213,7 @@
   {/if}
 </svelte:head>
 
-<svelte:window onresize={on_resize} />
+<svelte:window onresize={onResize} />
 
 {#await Options.loaded then}
   <Header />

@@ -14,18 +14,18 @@
   import { extendable } from '@lib/extendable'
   import Exporter from './exporter/exporter'
   import FilterHelper from './filter/filter-helper'
-  import init_favorite from './favorite/init-favorite'
+  import initFavorite from './favorite/init-favorite'
   import DatatablesTimer from './datatables-timer'
   import DatatablesLoading from './datatables-loading'
-  import { define_columns } from './define-columns'
+  import { defineColumns } from './define-columns'
   import {
-    get_table_id,
-    get_clean_data,
-    is_short_table,
-    elem_has_clickable,
-    get_nb_sticky,
-    get_nb_item,
-    fix_columns_width,
+    getTableId,
+    getCleanData,
+    isShortTable,
+    elemHasClickable,
+    getNbSticky,
+    getNbItem,
+    fixColumnsWidth,
   } from './dt-util'
   import Filter from './filter/Filter.svelte'
   import FilterInfoBox from './filter/FilterInfoBox.svelte'
@@ -63,15 +63,15 @@
   const max_height = `max(calc(100vh - ${max_height_value}px), 170px)`
   const max_height_load = `max(calc(100vh - ${max_height_value - 82}px), 80px)`
 
-  const table_id = get_table_id(entity)
+  const table_id = getTableId(entity)
   const exporter = new Exporter(table_id)
   const filter = new FilterHelper(table_id, entity, current_nb => {
     nb_active_filter = current_nb
   })
 
-  const clean_data = get_clean_data(data, sort_by_name, is_recursive, is_big)
+  const clean_data = getCleanData(data, sort_by_name, is_recursive, is_big)
   const nb_row_loading = Math.min(clean_data.length, 50)
-  const columns_copy = define_columns(
+  const columns_copy = defineColumns(
     columns,
     clean_data,
     entity,
@@ -79,7 +79,7 @@
     meta_path,
     nb_row_loading,
   )
-  const nb_sticky = get_nb_sticky(columns_copy)
+  const nb_sticky = getNbSticky(columns_copy)
 
   const clickable_rows = ![
     'value',
@@ -139,9 +139,9 @@
       } as any)
       datatable.on('search.dt', () => {
         if ($all_tabs[entity]) {
-          $all_tabs[entity].nb = get_nb_item(datatable, clean_data)
+          $all_tabs[entity].nb = getNbItem(datatable, clean_data)
         }
-        short_table = is_short_table(datatable)
+        short_table = isShortTable(datatable)
       })
       datatable.on('draw.dt', () => {
         datatable_update_draw += 1
@@ -158,7 +158,7 @@
           if (
             is_mobile ||
             !dom_table ||
-            elem_has_clickable(event.target, this, clickable_elems)
+            elemHasClickable(event.target, this, clickable_elems)
           ) {
             return false
           }
@@ -167,15 +167,15 @@
         }, 1)
       })
 
-      init_favorite(table_id, datatable)
+      initFavorite(table_id, datatable)
       initied()
       datatable.columns.adjust()
       datatable_update_draw += 1
-      fix_columns_width(datatable)
+      fixColumnsWidth(datatable)
       if ($all_tabs[entity]) {
-        $all_tabs[entity].nb = get_nb_item(datatable, clean_data)
+        $all_tabs[entity].nb = getNbItem(datatable, clean_data)
       }
-      short_table = is_short_table(datatable)
+      short_table = isShortTable(datatable)
       loading = false
       DatatablesTimer.end()
       DatatablesLoading.end()
@@ -185,7 +185,7 @@
     }, 1)
   })
 
-  function on_resize() {
+  function onResize() {
     datatable?.columns?.adjust()
   }
 
@@ -208,7 +208,7 @@
   })
 </script>
 
-<svelte:window onresize={on_resize} />
+<svelte:window onresize={onResize} />
 
 <Popup bind:is_open={is_popup_search_option_open}>
   <SearchOptionInfo />

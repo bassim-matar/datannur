@@ -2,13 +2,13 @@
   import Switch from '@layout/Switch.svelte'
   import Options from '@lib/options'
 
-  let { on_change = value => {} } = $props()
+  let { onChange = value => {} } = $props()
 
   let evolution_summary = $state(Options.get('evolution_summary'))
 
-  function update_evolution_summary() {
+  function updateEvolutionSummary() {
     Options.set('evolution_summary', evolution_summary, () => {
-      on_change('evolution_summary' + String(evolution_summary))
+      onChange('evolution_summary' + String(evolution_summary))
     })
   }
 </script>
@@ -19,7 +19,7 @@
 >
   <Switch
     bind:value={evolution_summary}
-    change={update_evolution_summary}
+    change={updateEvolutionSummary}
     slot_position="left"
     tree_switch={true}
     minimize={true}

@@ -4,7 +4,7 @@
 
   let { tags } = $props()
 
-  function build_tree(tags) {
+  function buildTree(tags) {
     const tags_tree = {}
     tags.forEach(tag => {
       if (!(tag.id in tags_tree)) {
@@ -40,7 +40,7 @@
     return root_tags
   }
 
-  let tags_tree = build_tree(tags)
+  let tags_tree = buildTree(tags)
 </script>
 
 <div class="tags_wrapper">

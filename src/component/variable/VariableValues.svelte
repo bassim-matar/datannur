@@ -14,7 +14,7 @@
     }
   }
 
-  function define_columns() {
+  function defineColumns() {
     const columns = []
     if (!is_meta) {
       columns.push({
@@ -29,7 +29,7 @@
     if (has_description) columns.push(Column.description())
     return columns
   }
-  const columns = define_columns()
+  const columns = defineColumns()
 </script>
 
 <Datatable

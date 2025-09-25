@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { remove_duplicate_by_id, get_lineage } from '@lib/db'
+  import { removeDuplicateById, getLineage } from '@lib/db'
   import { tabsHelper } from '@tab/tabs-helper'
   import Tabs from '@tab/Tabs.svelte'
   import Title from '@layout/Title.svelte'
@@ -15,15 +15,15 @@
   for (const variable of dataset_variables) {
     modalities = modalities.concat(variable.modalities)
   }
-  modalities = remove_duplicate_by_id(modalities)
+  modalities = removeDuplicateById(modalities)
 
   let dataset_preview = dataset.link ? dataset.id : false
 
   const modalities_id = new Set(modalities.map(item => item.id))
 
   const datasets = [
-    ...get_lineage('dataset', dataset, 'source'),
-    ...get_lineage('dataset', dataset, 'derived'),
+    ...getLineage('dataset', dataset, 'source'),
+    ...getLineage('dataset', dataset, 'derived'),
   ]
 
   const evolutions = db

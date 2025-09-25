@@ -1,6 +1,6 @@
 import { locale } from '@lib/constant'
 
-export function convert_quarter_to_full_date(complete_date, mode = 'start') {
+export function convertQuarterToFullDate(complete_date, mode = 'start') {
   const quarter = complete_date[5]
   complete_date = complete_date.slice(0, 4)
   if (mode === 'start') {
@@ -19,7 +19,7 @@ export function convert_quarter_to_full_date(complete_date, mode = 'start') {
   return complete_date
 }
 
-export function date_to_timestamp(date, mode = 'start') {
+export function dateToTimestamp(date, mode = 'start') {
   let complete_date = date
   if (!complete_date) return 0
   if (complete_date.length === 4) {
@@ -32,12 +32,12 @@ export function date_to_timestamp(date, mode = 'start') {
   }
 
   if (complete_date.length === 6 && complete_date[4] === 't') {
-    complete_date = convert_quarter_to_full_date(complete_date, mode)
+    complete_date = convertQuarterToFullDate(complete_date, mode)
   }
   return Date.parse(complete_date)
 }
 
-export function timestamp_to_date(timestamp) {
+export function timestampToDate(timestamp) {
   const date = new Date(timestamp)
   return date.toISOString().slice(0, 10).replaceAll('-', '/')
 }
@@ -57,7 +57,7 @@ const divisions: {
   { amount: Number.POSITIVE_INFINITY, name: 'years', local_name: 'an' },
 ]
 
-export function get_datetime(timestamp, with_second = false) {
+export function getDatetime(timestamp, with_second = false) {
   const date = new Date(timestamp)
 
   const year = date.getFullYear()
@@ -74,7 +74,7 @@ export function get_datetime(timestamp, with_second = false) {
   return `${year}/${month}/${day} ${hours}:${minutes}`
 }
 
-export function get_time_ago(
+export function getTimeAgo(
   date,
   parse = false,
   day = false,
@@ -93,7 +93,7 @@ export function get_time_ago(
   }
 }
 
-export function get_period(start, end, parse = false) {
+export function getPeriod(start, end, parse = false) {
   if (!start || !end) return ''
   if (parse) {
     if (start.length === 4) start += '/01'
@@ -101,10 +101,10 @@ export function get_period(start, end, parse = false) {
     if (end.length === 4) end += '/12'
     if (end.length === 7) end += '/30'
     if (start.length === 6 && start[4] === 't') {
-      start = convert_quarter_to_full_date(start, 'start')
+      start = convertQuarterToFullDate(start, 'start')
     }
     if (end.length === 6 && end[4] === 't') {
-      end = convert_quarter_to_full_date(end, 'end')
+      end = convertQuarterToFullDate(end, 'end')
     }
     start = Date.parse(start)
     end = Date.parse(end)
