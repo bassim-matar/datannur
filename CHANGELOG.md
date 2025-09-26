@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.12.10 (2024-09-26)
 
 - add: DOMPurify for HTML sanitization
 - fix: folder markdown about_page to about-page
