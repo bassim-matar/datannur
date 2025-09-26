@@ -5,6 +5,7 @@
 - fix: folder markdown about_page to about-page
 - fix: demo image path in README
 - fix: search bar height debonce with no result
+- fix: clean up head elements before mounting app
 - refactor: replace app_version meta tag with `__APP_VERSION__` constant
 - refactor: enforce PascalCase for class names and camelCase for methods, functions and variables
 - refactor: enforce prefer-const, no-unused-vars, no-undef and no-explicit-any elint rules
