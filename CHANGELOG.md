@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- add: DOMPurify for HTML sanitization
 - fix: folder markdown about_page to about-page
 - fix: demo image path in README
 - fix: search bar height debonce with no result

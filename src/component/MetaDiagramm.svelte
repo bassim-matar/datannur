@@ -5,6 +5,7 @@
   import Render from '@lib/render'
   import { ensureMermaidLoaded } from '@lib/mermaid'
   import Loading from '@frame/Loading.svelte'
+  import { safeHtmlWithSvg } from '@lib/html-sanitizer'
 
   let svgDiagramm = $state<string | null>(null)
 
@@ -114,10 +115,7 @@
 {#if !svgDiagramm}
   <Loading type="tab_body" colorEntity="diagram" />
 {:else}
-  <div class="tab_inner_tab">
-    <!-- eslint-disable svelte/no-at-html-tags -->
-    {@html svgDiagramm}
-  </div>
+  <div class="tab_inner_tab" use:safeHtmlWithSvg={svgDiagramm}></div>
 {/if}
 
 <style lang="scss">

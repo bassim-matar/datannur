@@ -5,6 +5,7 @@
   import { darkModeTheme } from '@dark-mode/dark-mode'
   import Loading from '@frame/Loading.svelte'
   import { ensureMermaidLoaded, mdWithMermaidToHtml } from '@lib/mermaid'
+  import { safeHtmlWithSvg } from '@lib/html-sanitizer'
 
   let { aboutFile } = $props()
 
@@ -38,13 +39,10 @@
 
 <div class="about_file_wrapper" class:homepage={$onPageHomepage}>
   {#if useMermaid}
-    <div class="content">
-      <!-- eslint-disable svelte/no-at-html-tags -->
-      {@html htmlContent}
-      {#if !htmlContentLoaded}
-        <Loading position="relative" />
-      {/if}
-    </div>
+    <div class="content" use:safeHtmlWithSvg={htmlContent}></div>
+    {#if !htmlContentLoaded}
+      <Loading position="absolute" />
+    {/if}
   {:else}
     <MdContent content={mdContent} />
   {/if}

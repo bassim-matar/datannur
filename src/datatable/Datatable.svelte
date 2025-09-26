@@ -33,6 +33,7 @@
     getNbItem,
     fixColumnsWidth,
   } from './dt-util'
+  import { safeHtml } from '@lib/html-sanitizer'
   import Filter from './filter/Filter.svelte'
   import FilterInfoBox from './filter/FilterInfoBox.svelte'
   import Popup from '@layout/Popup.svelte'
@@ -242,8 +243,7 @@
                   style="min-width: {column.loading_width}px; 
                     width: {column.loading_max_width}px;"
                 >
-                  <!-- eslint-disable svelte/no-at-html-tags -->
-                  {@html column.title}
+                  <span use:safeHtml={column.title}></span>
                   <span class="dt-column-order"></span>
                 </th>
               {/each}

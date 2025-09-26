@@ -16,8 +16,7 @@ renderer.link = ({ href, title, text }) => {
   }
 
   const base = getBaseLinkUrl()
-  const onclick = `window.goToHref(event, '${href}')`
-  return `<a href="${base}${href}" onclick="${onclick}" class="basic_link" title="${title}">${text}</a>`
+  return `<a href="${base}${href}" data-href="${href}" class="basic_link internal-link" title="${title}">${text}</a>`
 }
 
 renderer.image = function ({ href, text }) {

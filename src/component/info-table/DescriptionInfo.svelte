@@ -1,13 +1,14 @@
 <script lang="ts">
   import markdownRender from '@lib/markdown'
+  import { safeHtml } from '@lib/html-sanitizer'
   import Icon from '@layout/Icon.svelte'
 
   let { description, insideTable = false } = $props()
 
-  let descriptionClean = $state(description)
+  let descriptionHtml = $state(description)
 
   if (description) {
-    descriptionClean = markdownRender(description)
+    descriptionHtml = markdownRender(description)
   }
 </script>
 
@@ -20,8 +21,7 @@
         </div>
       </td>
       <td>
-        <!-- eslint-disable svelte/no-at-html-tags -->
-        <div class="content inside-table">{@html descriptionClean}</div>
+        <div class="content inside-table" use:safeHtml={descriptionHtml}></div>
       </td>
     </tr>
   {:else}
@@ -29,8 +29,7 @@
       <div style="font-weight: bold;">
         <Icon type="description" /> Description
       </div>
-      <!-- eslint-disable svelte/no-at-html-tags -->
-      <div class="content">{@html descriptionClean}</div>
+      <div class="content" use:safeHtml={descriptionHtml}></div>
     </div>
   {/if}
 {/if}

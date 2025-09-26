@@ -4,6 +4,7 @@
   import Logs from '@lib/logs'
   import SearchHistory from './search-history'
   import { searchHighlight } from './search'
+  import { safeHtml } from '@lib/html-sanitizer'
   import Favorite from '@favorite/Favorite.svelte'
 
   let { item, searchValue, isFocusIn = $bindable(), selectInput } = $props()
@@ -48,8 +49,7 @@
         {#if searchValue === ''}
           {item.name}
         {:else}
-          <!-- eslint-disable svelte/no-at-html-tags -->
-          {@html searchHighlight(item.name, searchValue)}
+          <span use:safeHtml={searchHighlight(item.name, searchValue)}></span>
         {/if}
       </div>
     </Link>
