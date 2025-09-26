@@ -22,11 +22,11 @@
     </td>
   </tr>
   <LastUpdateInfo
-    last_update_date={doc.last_update}
+    lastUpdateDate={doc.last_update}
     intraday={true}
-    from_timestamp={true}
+    fromTimestamp={true}
   />
-  <DescriptionInfo description={doc.description} inside_table={true} />
+  <DescriptionInfo description={doc.description} insideTable={true} />
 </TableWrapper>
 
 <DocPreview {doc} />

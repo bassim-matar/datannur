@@ -1,10 +1,10 @@
-import { app_mode } from '@lib/util'
+import { appMode } from '@lib/util'
 
 export class UrlHash {
   static default = 'homepage'
   static getAll() {
     let hash = window.location.hash
-    if (app_mode === 'static_render')
+    if (appMode === 'static_render')
       hash = window.location.pathname.substring(1)
     if (hash.includes('#/')) hash = hash?.split('#/')[1]
     hash = hash?.split('?')[0]

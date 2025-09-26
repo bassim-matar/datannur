@@ -8,53 +8,53 @@
   import SearchResult from '@search/SearchResult.svelte'
   import SearchHistory from '@search/search-history'
   import AboutFile from '@layout/AboutFile.svelte'
-  import about_search from '@markdown/search/about-search.md?raw'
-  import no_result from '@markdown/search/no-result.md?raw'
-  import no_recent_search from '@markdown/search/no-recent-search.md?raw'
+  import aboutSearch from '@markdown/search/about-search.md?raw'
+  import noResult from '@markdown/search/no-result.md?raw'
+  import noRecentSearch from '@markdown/search/no-recent-search.md?raw'
 
-  let is_loading = $state(true)
-  let search_result_data = $state([])
+  let isLoading = $state(true)
+  let searchResultData = $state([])
   let tabs = $state([])
-  let tab_key = $state()
+  let tabKey = $state()
 
-  let recent_search_change = false
+  let recentSearchChange = false
 
-  function makeTab(name, icon, key, about_file) {
+  function makeTab(name, icon, key, aboutFile) {
     return {
       name,
       icon,
       key,
       component: AboutFile,
-      footer_visible: true,
-      props: { about_file },
+      footerVisible: true,
+      props: { aboutFile },
     }
   }
-  const about_tab = makeTab('A propos', 'about', 'about', about_search)
-  const no_result_tab = makeTab('Résultat', 'search', 'no_result', no_result)
-  const no_recent_search_tab = makeTab(
+  const aboutTab = makeTab('A propos', 'about', 'about', aboutSearch)
+  const noResultTab = makeTab('Résultat', 'search', 'noResult', noResult)
+  const noRecentSearchTab = makeTab(
     'Recherches récentes',
     'search',
-    'no_recent_search',
-    no_recent_search,
+    'noRecentSearch',
+    noRecentSearch,
   )
 
   SearchHistory.onChange('search_page', () => searchInputChange())
 
   function setTabKey() {
-    recent_search_change = !recent_search_change
-    tab_key = recent_search_change
+    recentSearchChange = !recentSearchChange
+    tabKey = recentSearchChange
   }
 
   function initSearchRecent() {
-    search_result_data = SearchHistory.getRecentSearch()
-    const tab_name = 'Recherches récentes'
-    setTabs(tab_name)
-    is_loading = false
+    searchResultData = SearchHistory.getRecentSearch()
+    const tabName = 'Recherches récentes'
+    setTabs(tabName)
+    isLoading = false
   }
 
   async function searchInputChange() {
-    const url_search_value = UrlParam.get('search')
-    if (url_search_value !== $searchValue) {
+    const urlSearchValue = UrlParam.get('search')
+    if (urlSearchValue !== $searchValue) {
       UrlParam.set('search', $searchValue)
     }
     if ($searchValue === '') {
@@ -62,18 +62,18 @@
       initSearchRecent()
       return false
     }
-    const value_before = $searchValue
-    const all_search_raw = await db.search($searchValue)
-    is_loading = false
-    if ($searchValue !== value_before) return false
-    search_result_data = SearchHistory.putRecentFirst(all_search_raw)
+    const valueBefore = $searchValue
+    const allSearchRaw = await db.search($searchValue)
+    isLoading = false
+    if ($searchValue !== valueBefore) return false
+    searchResultData = SearchHistory.putRecentFirst(allSearchRaw)
     setTabs()
   }
 
   function setTabs(name = 'Résultat') {
     setTabKey()
-    if (search_result_data.length === 0) {
-      tabs = [is_empty_input ? no_recent_search_tab : no_result_tab]
+    if (searchResultData.length === 0) {
+      tabs = [isEmptyInput ? noRecentSearchTab : noResultTab]
     } else {
       tabs = [
         {
@@ -81,22 +81,22 @@
           icon: 'search',
           key: 'search',
           component: SearchResult,
-          nb: search_result_data.length,
+          nb: searchResultData.length,
           props: {
-            search_result_data,
-            search_value: $searchValue,
+            searchResultData,
+            searchValue: $searchValue,
           },
         },
       ]
     }
-    tabs.push(about_tab)
+    tabs.push(aboutTab)
   }
 
-  let is_empty_input = $derived(['', undefined, null].includes($searchValue))
+  let isEmptyInput = $derived(['', undefined, null].includes($searchValue))
 
-  const url_search_value = UrlParam.get('search')
-  if (url_search_value !== false && url_search_value !== '') {
-    $searchValue = url_search_value
+  const urlSearchValue = UrlParam.get('search')
+  if (urlSearchValue !== false && urlSearchValue !== '') {
+    $searchValue = urlSearchValue
   }
   setTabKey()
 
@@ -104,12 +104,12 @@
     $pageContentLoaded = true
   })
 
-  let search_timeout
+  let searchTimeout
 
   $effect(() => {
     void $searchValue
-    if (search_timeout) clearTimeout(search_timeout)
-    search_timeout = setTimeout(() => {
+    if (searchTimeout) clearTimeout(searchTimeout)
+    searchTimeout = setTimeout(() => {
       searchInputChange()
     }, 200)
   })
@@ -130,8 +130,8 @@
       />
     </p>
   </div>
-  {#if !is_loading}
-    {#key tab_key}
+  {#if !isLoading}
+    {#key tabKey}
       <Tabs {tabs} />
     {/key}
   {/if}

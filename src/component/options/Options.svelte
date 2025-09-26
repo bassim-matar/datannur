@@ -17,9 +17,9 @@
   import BtnImport from '@layout/BtnImport.svelte'
   import Button from '@layout/Button.svelte'
 
-  async function importUserData(zip_file) {
+  async function importUserData(zipFile) {
     const jszip = new JSZip()
-    const zip = await jszip.loadAsync(zip_file)
+    const zip = await jszip.loadAsync(zipFile)
     for (const file of Object.values(zip.files)) {
       if (file.dir) continue
       const key = file.name.split('.json')[0]
@@ -34,42 +34,42 @@
 
   async function downloadUserData() {
     const jszip = new JSZip()
-    const data_folder = jszip.folder('user_data')
-    const user_data = await getUserData()
-    for (const [name, data] of Object.entries(user_data)) {
+    const dataFolder = jszip.folder('user_data')
+    const userData = await getUserData()
+    for (const [name, data] of Object.entries(userData)) {
       const filename = name + '.json'
-      const json_data = JSON.stringify(data, null, 2)
-      data_folder.file(filename, json_data)
+      const jsonData = JSON.stringify(data, null, 2)
+      dataFolder.file(filename, jsonData)
     }
     jszip.generateAsync({ type: 'blob' }).then(function (content) {
       saveAs(content, 'datannur_user_data.zip')
     })
   }
 
-  let open_all_recursive = $state(Options.get('open_all_recursive'))
+  let openAllRecursive = $state(Options.get('open_all_recursive'))
   function updateOpenAllRecursive() {
-    Options.set('open_all_recursive', open_all_recursive)
+    Options.set('open_all_recursive', openAllRecursive)
   }
 
-  let evolution_summary = $state(Options.get('evolution_summary'))
+  let evolutionSummary = $state(Options.get('evolution_summary'))
   function updateEvolutionSummary() {
-    Options.set('evolution_summary', evolution_summary)
+    Options.set('evolution_summary', evolutionSummary)
   }
 
-  let open_all_tab = $state(Options.get('open_all_tab'))
+  let openAllTab = $state(Options.get('open_all_tab'))
   function updateOpenAllTab() {
-    Options.set('open_all_tab', open_all_tab)
+    Options.set('open_all_tab', openAllTab)
   }
 
-  let rounded_design = $state(Options.get('rounded_design'))
+  let roundedDesign = $state(Options.get('rounded_design'))
   function updateRoundedDesign() {
-    Options.set('rounded_design', rounded_design)
+    Options.set('rounded_design', roundedDesign)
     document.documentElement.classList.toggle('rounded_design')
   }
 
-  let page_shadow_colored = $state(Options.get('page_shadow_colored'))
+  let pageShadowColored = $state(Options.get('page_shadow_colored'))
   function updatePageShadowColored() {
-    Options.set('page_shadow_colored', page_shadow_colored)
+    Options.set('page_shadow_colored', pageShadowColored)
     document.documentElement.classList.toggle('page_shadow_colored')
   }
 
@@ -100,27 +100,27 @@
   <div class="flex_col">
     <h5 class="title is-5">Affichage</h5>
     <Switch
-      bind:value={open_all_recursive}
+      bind:value={openAllRecursive}
       change={updateOpenAllRecursive}
-      tree_switch={true}
+      treeSwitch={true}
     >
       Afficher les éléments imbriqués (institutions et dossiers)
     </Switch>
     <Switch
-      bind:value={evolution_summary}
+      bind:value={evolutionSummary}
       change={updateEvolutionSummary}
-      tree_switch={true}
+      treeSwitch={true}
       minimize={true}
     >
       Afficher les évolultions de façon résumée
     </Switch>
-    <Switch bind:value={open_all_tab} change={updateOpenAllTab}>
+    <Switch bind:value={openAllTab} change={updateOpenAllTab}>
       Charger tous les onglets automatiquement
     </Switch>
-    <Switch bind:value={rounded_design} change={updateRoundedDesign}>
+    <Switch bind:value={roundedDesign} change={updateRoundedDesign}>
       Design arrondi
     </Switch>
-    <Switch bind:value={page_shadow_colored} change={updatePageShadowColored}>
+    <Switch bind:value={pageShadowColored} change={updatePageShadowColored}>
       mode néon (onglets colorés)
     </Switch>
     <div>
@@ -131,16 +131,16 @@
   <div class="flex_col">
     <h5 class="title is-5">Réinitialiser</h5>
     <Button onclick={clearLogs}>
-      Logs <Icon type="log" margin_left={true} />
+      Logs <Icon type="log" marginLeft={true} />
     </Button>
     <Button onclick={clearFavorite}>
-      Favoris <Icon type="favorite" margin_left={true} />
+      Favoris <Icon type="favorite" marginLeft={true} />
     </Button>
     <Button onclick={resetColsSearchCache}>
-      Filtres de colonne <Icon type="col_search" margin_left={true} />
+      Filtres de colonne <Icon type="colSearch" marginLeft={true} />
     </Button>
     <Button onclick={clearHistorySearch}>
-      Recherches récentes <Icon type="recent_search" margin_left={true} />
+      Recherches récentes <Icon type="recentSearch" marginLeft={true} />
     </Button>
     <Button onclick={clearAll}>Tout</Button>
   </div>
@@ -148,10 +148,10 @@
   <div class="flex_col">
     <h5 class="title is-5">Mes données utilisateur</h5>
     <Button onclick={downloadUserData}>
-      Exporter <Icon type="download" margin_left={true} />
+      Exporter <Icon type="download" marginLeft={true} />
     </Button>
     <BtnImport onImport={importUserData}>
-      Importer <Icon type="upload" margin_left={true} />
+      Importer <Icon type="upload" marginLeft={true} />
     </BtnImport>
   </div>
 </div>

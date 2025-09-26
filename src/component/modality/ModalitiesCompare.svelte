@@ -8,7 +8,7 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
 
-  let { modalities_compare } = $props()
+  let { modalitiesCompare } = $props()
 
   let similitutes = $state([])
   let loading = $state(true)
@@ -19,9 +19,9 @@
       loading = false
       return
     }
-    modalities_compare = db.getAll('modality')
+    modalitiesCompare = db.getAll('modality')
     similitutes = (await worker(
-      { modalities_compare, limit: 50000 },
+      { modalitiesCompare, limit: 50000 },
       modalityCompareWorker,
     )) as unknown[]
     $modalitiesSimilitutes = similitutes
@@ -91,14 +91,9 @@
 </script>
 
 {#if loading && similitutes.length === 0}
-  <Loading type="tab_body" color_entity="compare" />
+  <Loading type="tab_body" colorEntity="compare" />
 {:else if similitutes.length > 0}
-  <Datatable
-    entity="compare"
-    data={similitutes}
-    {columns}
-    sort_by_name={true}
-  />
+  <Datatable entity="compare" data={similitutes} {columns} sortByName={true} />
 {:else}
   <div style="padding: 20px; text-align: center;">
     Aucune similitude trouvée

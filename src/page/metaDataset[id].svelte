@@ -7,21 +7,21 @@
 
   let { metaDataset } = $props()
 
-  let meta_dataset_variables = db.getAll('metaVariable', { metaDataset })
+  let metaDatasetVariables = db.getAll('metaVariable', { metaDataset })
 
-  let dataset_preview = []
+  let datasetPreview = []
   if (metaDataset.name in db.tables) {
-    const dataset_preview_raw = db.tables[metaDataset.name]
-    const keysToKeep = meta_dataset_variables.map(a => a.name)
-    dataset_preview = filterKeys(dataset_preview_raw, keysToKeep)
+    const datasetPreviewRaw = db.tables[metaDataset.name]
+    const keysToKeep = metaDatasetVariables.map(a => a.name)
+    datasetPreview = filterKeys(datasetPreviewRaw, keysToKeep)
   } else if (metaDataset.name in db.tables.__user_data__) {
-    dataset_preview = db.tables.__user_data__[metaDataset.name]
+    datasetPreview = db.tables.__user_data__[metaDataset.name]
   }
 
   let tabs = tabsHelper({
     dataset: metaDataset,
-    meta_dataset_variables,
-    dataset_preview,
+    metaDatasetVariables,
+    datasetPreview,
   })
 </script>
 

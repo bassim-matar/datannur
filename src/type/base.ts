@@ -6,15 +6,15 @@ export interface BaseEntity {
 
   // Fields added during processing in db.ts
   _entity?: string
-  _entity_clean?: string
-  is_favorite?: boolean
+  _entityClean?: string
+  isFavorite?: boolean
   parents?: BaseEntity[]
-  parents_relative?: BaseEntity[]
+  parentsRelative?: BaseEntity[]
   entities?: { name: string; nb: number }[]
   period?: string
-  period_duration?: string
-  minimum_deep?: number
-  no_indent?: boolean
+  periodDuration?: string
+  minimumDeep?: number
+  noIndent?: boolean
 }
 
 // General types
@@ -32,7 +32,7 @@ export interface Value {
   description?: string
 
   // Computed fields added during processing
-  modality_name?: string
+  modalityName?: string
 }
 
 export interface Freq {

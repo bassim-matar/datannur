@@ -3,7 +3,7 @@
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
-  import about_file from '@markdown/about-doc.md?raw'
+  import aboutFile from '@markdown/about-doc.md?raw'
 
   const docs = db.getAll('doc')
 
@@ -13,7 +13,7 @@
     docs,
     evolutions,
     stat: [{ entity: 'doc', items: docs }],
-    about_file,
+    aboutFile,
   })
 </script>
 

@@ -5,89 +5,89 @@
   import SearchBarResultRow from './SearchBarResultRow.svelte'
 
   let {
-    is_open,
-    nb_result,
-    all_search,
-    search_value,
-    is_focus_in = $bindable(),
+    isOpen,
+    nbResult,
+    allSearch,
+    searchValue,
+    isFocusIn = $bindable(),
     selectInput,
   } = $props()
 
-  let table_wrapper: HTMLDivElement = $state()
+  let tableWrapper: HTMLDivElement = $state()
   let height = $state(0)
-  let has_scroll_bar = $state(false)
-  let db_loaded = $state(false)
+  let hasScrollBar = $state(false)
+  let dbLoaded = $state(false)
 
-  const plural = $derived(nb_result > 1 ? 's' : '')
+  const plural = $derived(nbResult > 1 ? 's' : '')
 
   function updateHeight() {
-    if (!table_wrapper) return
-    const real_height = table_wrapper.offsetHeight + 20
-    const percent_height = $onPageHomepage ? 0.8 : 0.9
-    const window_height = window.innerHeight * percent_height
-    has_scroll_bar = real_height > window_height
-    height = Math.min(real_height, window_height)
+    if (!tableWrapper) return
+    const realHeight = tableWrapper.offsetHeight + 20
+    const percentHeight = $onPageHomepage ? 0.8 : 0.9
+    const windowHeight = window.innerHeight * percentHeight
+    hasScrollBar = realHeight > windowHeight
+    height = Math.min(realHeight, windowHeight)
   }
 
-  const debounced_updateHeight = debounce(updateHeight, 150)
+  const debouncedUpdateHeight = debounce(updateHeight, 150)
 
   $effect(() => {
-    void search_value
-    if (nb_result !== undefined) {
-      debounced_updateHeight()
-      setTimeout(() => debounced_updateHeight(), 500)
+    void searchValue
+    if (nbResult !== undefined) {
+      debouncedUpdateHeight()
+      setTimeout(() => debouncedUpdateHeight(), 500)
     }
   })
 
   $effect(() => {
-    if ($onPageHomepage !== undefined) debounced_updateHeight()
+    if ($onPageHomepage !== undefined) debouncedUpdateHeight()
   })
 
   $effect(() => {
-    const handle_resize = () => table_wrapper && debounced_updateHeight()
-    window.addEventListener('resize', handle_resize)
-    return () => window.removeEventListener('resize', handle_resize)
+    const handleResize = () => tableWrapper && debouncedUpdateHeight()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   })
 
-  db.loaded.then(() => (db_loaded = true))
+  db.loaded.then(() => (dbLoaded = true))
 </script>
 
 <div id="search_bar_result_outer">
   <div
     id="search_bar_result_wrapper"
-    class:is-open={is_open}
-    class:has-scroll-bar={has_scroll_bar}
+    class:is-open={isOpen}
+    class:has-scroll-bar={hasScrollBar}
     style="--height: {height}px"
   >
-    <div class="table_wrapper" bind:this={table_wrapper}>
-      {#if db_loaded}
+    <div class="table_wrapper" bind:this={tableWrapper}>
+      {#if dbLoaded}
         <table class="table is-striped">
           <tbody>
-            {#if search_value === '' && nb_result > 0}
+            {#if searchValue === '' && nbResult > 0}
               <tr>
                 <td colspan="3">
                   <div class="nb_result">
-                    {nb_result} recherche{plural} récente{plural}
+                    {nbResult} recherche{plural} récente{plural}
                   </div>
                 </td>
               </tr>
             {/if}
 
-            {#if search_value !== ''}
+            {#if searchValue !== ''}
               <tr>
                 <td colspan="3">
                   <div class="nb_result">
-                    {nb_result} résultat{plural}
+                    {nbResult} résultat{plural}
                   </div>
                 </td>
               </tr>
             {/if}
-            {#each all_search as item (`${item.entity}/${item.id}`)}
+            {#each allSearch as item (`${item.entity}/${item.id}`)}
               <SearchBarResultRow
                 {item}
-                {search_value}
+                {searchValue}
                 {selectInput}
-                bind:is_focus_in
+                bind:isFocusIn
               />
             {/each}
           </tbody>

@@ -7,9 +7,9 @@
   import DarkModeSwitch from '@dark-mode/DarkModeSwitch.svelte'
   import HeaderLink from '@frame/HeaderLink.svelte'
 
-  let { menu_mobile = false } = $props()
-  let contact_email = $state('loading')
-  const last_update = $state({
+  let { menuMobile = false } = $props()
+  let contactEmail = $state('loading')
+  const lastUpdate = $state({
     state: 'loading',
     value: 0,
     relative: '',
@@ -17,38 +17,38 @@
   })
   const year = new Date().getFullYear()
 
-  let current_interval
+  let currentInterval
   let interval = 1000
   function updateLastModif() {
-    last_update.relative = getTimeAgo(last_update.value * 1000)
+    lastUpdate.relative = getTimeAgo(lastUpdate.value * 1000)
     if (
       interval === 1000 &&
-      !last_update.relative.includes('seconde') &&
-      !last_update.relative.includes('maintenant')
+      !lastUpdate.relative.includes('seconde') &&
+      !lastUpdate.relative.includes('maintenant')
     ) {
-      clearInterval(current_interval)
+      clearInterval(currentInterval)
       interval = 60000
-      current_interval = setInterval(updateLastModif, interval)
+      currentInterval = setInterval(updateLastModif, interval)
     }
   }
 
   db.loaded.then(() => {
-    contact_email = db.getConfig('contact_email') as string
-    last_update.state = 'loaded'
-    const last_modif_timestamp = db.getLastModifTimestamp()
-    if (last_modif_timestamp) last_update.value = last_modif_timestamp
-    if (last_update.value) {
-      const timestamp = last_update.value * 1000
-      last_update.relative = getTimeAgo(timestamp)
-      last_update.absolute = getDatetime(timestamp)
-      current_interval = setInterval(updateLastModif, interval)
+    contactEmail = db.getConfig('contact_email') as string
+    lastUpdate.state = 'loaded'
+    const lastModifTimestamp = db.getLastModifTimestamp()
+    if (lastModifTimestamp) lastUpdate.value = lastModifTimestamp
+    if (lastUpdate.value) {
+      const timestamp = lastUpdate.value * 1000
+      lastUpdate.relative = getTimeAgo(timestamp)
+      lastUpdate.absolute = getDatetime(timestamp)
+      currentInterval = setInterval(updateLastModif, interval)
     } else {
-      last_update.state = 'not_found'
+      lastUpdate.state = 'not_found'
     }
   })
 </script>
 
-{#if $footerVisible || menu_mobile}
+{#if $footerVisible || menuMobile}
   <footer class="footer">
     <div class="footer-content">
       <div>
@@ -68,7 +68,7 @@
       {/if}
       <div>
         <a href="https://github.com/bassim-matar/datannur" target="_blanck">
-          <Icon type="github" margin_right={false} /> github
+          <Icon type="github" marginRight={false} /> github
         </a>
       </div>
       <div>
@@ -77,35 +77,34 @@
           pages={['meta', 'metaFolder', 'metaDataset', 'metaVariable']}
           className=""
         >
-          <Icon type="internal_view" margin_right={false} />
+          <Icon type="internalView" marginRight={false} />
           vue interne
         </HeaderLink>
       </div>
       <div>
         <DarkModeSwitch />
       </div>
-      {#if last_update.state === 'loading'}
+      {#if lastUpdate.state === 'loading'}
         <div>
           <Loading type="mini" position="relative" />
         </div>
-      {:else if last_update.state === 'loaded'}
+      {:else if lastUpdate.state === 'loaded'}
         <div>
           <span
             class="break_line use_tooltip tooltip_top"
-            title={last_update.absolute}
+            title={lastUpdate.absolute}
           >
-            actualisé {last_update.relative}
+            actualisé {lastUpdate.relative}
           </span>
         </div>
       {/if}
 
-      {#if contact_email}
+      {#if contactEmail}
         <div>
-          {#if contact_email === 'loading'}
+          {#if contactEmail === 'loading'}
             <Loading type="mini" position="relative" />
           {:else}
-            <a href="mailto:{contact_email}" target="_blanck">{contact_email}</a
-            >
+            <a href="mailto:{contactEmail}" target="_blanck">{contactEmail}</a>
           {/if}
         </div>
       {/if}

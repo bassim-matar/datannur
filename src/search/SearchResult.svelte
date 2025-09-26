@@ -7,19 +7,19 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Column from '@lib/column'
 
-  let { search_result_data, search_value } = $props()
+  let { searchValue, searchResultData } = $props()
 
   function initied() {
-    const table_id = 'search___search'
-    const datatable_search = jQuery('table#' + table_id + '._datatables')
-    datatable_search.on(
+    const tableId = 'search___search'
+    const datatableSearch = jQuery('table#' + tableId + '._datatables')
+    datatableSearch.on(
       'click',
       '.remove_search_item',
       function (this: HTMLElement) {
         const elem = jQuery(this)
-        const entity_name = elem.data('entity_name')
-        const item_id = elem.data('item_id')
-        SearchHistory.remove(entity_name, item_id)
+        const entityName = elem.data('entity_name')
+        const itemId = elem.data('item_id')
+        SearchHistory.remove(entityName, itemId)
       },
     )
   }
@@ -33,12 +33,12 @@
       defaultContent: '',
       name: 'name',
       tooltip: 'Nom',
-      render: (data, _, row) =>
+      render: (data, type, row) =>
         wrapLongText(
           `<strong class="var_main_col">` +
             link(
               row._entity + '/' + row.id + '?from_search=true',
-              `${searchHighlight(data, search_value)}`,
+              `${searchHighlight(data, searchValue)}`,
               row._entity,
             ) +
             `</strong>`,
@@ -51,7 +51,7 @@
       tooltip: 'Description',
       render: data => {
         if ([null, undefined].includes(data)) return wrapLongText()
-        return wrapLongText(searchHighlight(data, search_value))
+        return wrapLongText(searchHighlight(data, searchValue))
       },
     },
     {
@@ -59,7 +59,7 @@
       title: Render.icon('folder') + 'Dossier',
       defaultContent: '',
       tooltip: 'Dossier',
-      render: (data, _, row) => {
+      render: (data, type, row) => {
         if (!data) return wrapLongText()
         return wrapLongText(link('folder/' + data, row.folder_name))
       },
@@ -67,9 +67,9 @@
     {
       data: 'id',
       title: "<span class='hidden'>Recent search</span>",
-      name: 'search_receht',
+      name: 'search_recent',
       defaultContent: '',
-      no_search: true,
+      noSearch: true,
       width: '20px',
       render: (data, type, row) => {
         if (type === 'sort' || type === 'export') {
@@ -90,9 +90,9 @@
   ]
 </script>
 
-{#if search_result_data.length > 0}
+{#if searchResultData.length > 0}
   <div class="search_page_result_wrapper">
-    <Datatable entity="search" data={search_result_data} {columns} {initied} />
+    <Datatable entity="search" data={searchResultData} {columns} {initied} />
   </div>
 {/if}
 

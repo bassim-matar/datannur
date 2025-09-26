@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
+  import Icon from '@layout/Icon.svelte'
 
-  let { period, period_duration = false } = $props()
+  let { period, periodDuration = false } = $props()
 </script>
 
 {#if period}
@@ -9,8 +9,8 @@
     <td><Icon type="date_range" /> Période</td>
     <td>
       {period}
-      {#if period_duration}
-        ({period_duration})
+      {#if periodDuration}
+        ({periodDuration})
       {/if}
     </td>
   </tr>

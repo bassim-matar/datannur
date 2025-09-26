@@ -1,20 +1,20 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import Breadcrumb from "@component/Breadcrumb.svelte"
-  import ExtendableText from "@layout/ExtendableText.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import Breadcrumb from '@component/Breadcrumb.svelte'
+  import ExtendableText from '@layout/ExtendableText.svelte'
 
-  let { tag_id } = $props()
+  let { tagId } = $props()
 
-  const name = "Partie de"
-  const icon = "folder_tree_tag"
+  const name = 'Partie de'
+  const icon = 'folder_tree_tag'
 </script>
 
-{#if tag_id}
+{#if tagId}
   <tr>
     <td><Icon type={icon} /> {name}</td>
     <td>
       <ExtendableText>
-        <Breadcrumb type="tag" elem_id={tag_id} is_self={true} />
+        <Breadcrumb type="tag" elemId={tagId} isSelf={true} />
       </ExtendableText>
     </td>
   </tr>

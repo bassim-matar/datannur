@@ -4,7 +4,7 @@
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
-  import about_file from '@markdown/about-variable.md?raw'
+  import aboutFile from '@markdown/about-variable.md?raw'
 
   const variables = db.getAll('variable')
   const tags = db.getAll('tag').filter(tag => tag.nb_variable > 0)
@@ -22,7 +22,7 @@
     tags,
     evolutions,
     stat: [{ entity: 'variable', items: variables }],
-    about_file,
+    aboutFile,
   })
 </script>
 

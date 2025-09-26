@@ -2,9 +2,9 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Column from '@lib/column'
 
-  let { all_fav } = $props()
+  let { allFav } = $props()
 
-  all_fav.sort((a, b) => b.favorite_timestamp - a.favorite_timestamp)
+  allFav.sort((a, b) => b.favorite_timestamp - a.favorite_timestamp)
 
   const columns = [
     Column.favorite(),
@@ -12,8 +12,8 @@
     Column.name(),
     Column.description(),
     Column.folderSimple(),
-    Column.timestamp({ var_name: 'favorite_timestamp' }),
+    Column.timestamp({ varName: 'favorite_timestamp' }),
   ]
 </script>
 
-<Datatable entity="favorite" data={all_fav} {columns} />
+<Datatable entity="favorite" data={allFav} {columns} />

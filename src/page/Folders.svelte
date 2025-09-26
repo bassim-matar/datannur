@@ -2,13 +2,13 @@
   import db from '@db'
   import { tabSelected } from '@lib/store'
   import { makeParentsRelative, addMinimumDeep } from '@lib/db'
-  import { is_big_limit } from '@lib/constant'
+  import { isBigLimit } from '@lib/constant'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
   import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
   import EvolutionSummarySwitch from '@layout/EvolutionSummarySwitch.svelte'
-  import about_file from '@markdown/about-folder.md?raw'
+  import aboutFile from '@markdown/about-folder.md?raw'
 
   const folders = db.getAll('folder')
   makeParentsRelative(0, folders)
@@ -29,28 +29,28 @@
     tags,
     evolutions,
     stat: [{ entity: 'folder', items: folders }],
-    about_file,
+    aboutFile,
   })
 
-  const nb_folder = folders.length
-  let key_tab = $state(1)
-  let show_open_all_switch = $derived(
-    $tabSelected.key === 'folders' && nb_folder > is_big_limit,
+  const nbFolder = folders.length
+  let keyTab = $state(1)
+  let showOpenAllSwitch = $derived(
+    $tabSelected.key === 'folders' && nbFolder > isBigLimit,
   )
-  let show_evolution_summary_switch = $derived(
-    $tabSelected.key === 'evolutions' && evolutions.length > is_big_limit,
+  let showEvolutionSummarySwitch = $derived(
+    $tabSelected.key === 'evolutions' && evolutions.length > isBigLimit,
   )
 </script>
 
 <section class="section">
   <Title type="folder" name="Dossiers" mode="main_title" />
-  {#if show_open_all_switch}
-    <OpenAllSwitch onChange={value => (key_tab = value)} />
+  {#if showOpenAllSwitch}
+    <OpenAllSwitch onChange={value => (keyTab = value)} />
   {/if}
-  {#if show_evolution_summary_switch}
-    <EvolutionSummarySwitch onChange={value => (key_tab = value)} />
+  {#if showEvolutionSummarySwitch}
+    <EvolutionSummarySwitch onChange={value => (keyTab = value)} />
   {/if}
-  {#key key_tab}
+  {#key keyTab}
     <Tabs {tabs} />
   {/key}
 </section>

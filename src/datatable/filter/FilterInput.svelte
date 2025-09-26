@@ -2,7 +2,7 @@
   import jQuery from 'jquery'
   import BtnClearInput from '@layout/BtnClearInput.svelte'
 
-  let { table_id, i, column } = $props()
+  let { tableId, i, column } = $props()
 
   function clearInput(this: HTMLElement) {
     const input = jQuery(this).parent().children('input')
@@ -13,13 +13,13 @@
 </script>
 
 <div class="header_input_wrapper">
-  {#if column.no_search}
+  {#if column.noSearch}
     <span></span>
   {:else if column.search_modality}
     <div class="select">
       <select
-        id="datatables_title_{table_id}_filter_{i}"
-        name="datatables_title_{table_id}_filter_{i}"
+        id="datatables_title_{tableId}_filter_{i}"
+        name="datatables_title_{tableId}_filter_{i}"
         autocomplete="off"
         required
       >
@@ -32,8 +32,8 @@
       type="text"
       class="input fontAwesome"
       value=""
-      id="datatables_title_{table_id}_filter_{i}"
-      name="datatables_title_{table_id}_filter_{i}"
+      id="datatables_title_{tableId}_filter_{i}"
+      name="datatables_title_{tableId}_filter_{i}"
       autocomplete="off"
       enterkeyhint="search"
     />

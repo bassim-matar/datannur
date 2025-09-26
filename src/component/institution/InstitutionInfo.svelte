@@ -15,7 +15,7 @@
   <IdInfo id={institution.id} />
   <DeepLevelInfo level={institution.parents.length + 1} />
   {#if institution.parent_id}
-    <InstitutionInfo institution_id={institution.id} is_self={true} />
+    <InstitutionInfo institutionId={institution.id} isSelf={true} />
   {/if}
   <TagsInfo tags={institution.tags} />
   {#if institution.email}
@@ -40,7 +40,7 @@
   {/if}
   <PeriodInfo
     period={institution.period}
-    period_duration={institution.period_duration}
+    periodDuration={institution.periodDuration}
   />
 </TableWrapper>
 <DescriptionInfo description={institution.description} />

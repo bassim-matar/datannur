@@ -38,11 +38,11 @@ interface SearchResult {
   description: string
   entity: string
   variable: string
-  is_favorite: boolean
+  isFavorite: boolean
   folder_id: string | number
   folder_name: string
   _entity: string
-  _entity_clean: string
+  _entityClean: string
 }
 
 type ExtendedJsonjsdb = Omit<

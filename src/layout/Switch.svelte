@@ -2,8 +2,8 @@
   let {
     value = $bindable(),
     change,
-    slot_position = 'right',
-    tree_switch = false,
+    slotPosition = 'right',
+    treeSwitch = false,
     minimize = false,
     size = 'medium',
     children = undefined,
@@ -12,12 +12,12 @@
   let id = window.crypto.randomUUID()
 </script>
 
-<div class="field {slot_position}">
+<div class="field {slotPosition}">
   <input
     id="checkbox_{id}"
     type="checkbox"
     class="switch is-rounded is-outlined {size}"
-    class:tree-switch={tree_switch}
+    class:tree-switch={treeSwitch}
     class:minimize
     bind:checked={value}
     onchange={change}

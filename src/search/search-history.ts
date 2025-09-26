@@ -1,115 +1,115 @@
 import db from '@db'
-import { entity_names } from '@lib/constant'
+import { entityNames } from '@lib/constant'
 
 export default class SearchHistory {
   static limit = 100
-  static search_history = []
-  static db_key = 'user_data/search_history'
-  static onChange_callbacks: Record<string, () => void> = {}
-  static on_clear_callback = null
+  static searchHistory = []
+  static dbKey = 'user_data/search_history'
+  static onChangeCallbacks: Record<string, () => void> = {}
+  static onClearCallback = null
 
-  static init(search_history, option) {
+  static init(searchHistory, option) {
     this.limit = option.limit || 100
-    this.search_history = search_history || []
+    this.searchHistory = searchHistory || []
   }
   static getAll() {
-    return this.search_history
+    return this.searchHistory
   }
-  static add(entity, entity_id) {
-    let search_entity_id = 1
-    this.search_history = this.search_history
+  static add(entity, entityId) {
+    let searchEntityId = 1
+    this.searchHistory = this.searchHistory
       .filter(
-        search_item =>
-          search_item.entity !== entity || search_item.entity_id !== entity_id,
+        searchItem =>
+          searchItem.entity !== entity || searchItem.entity_id !== entityId,
       )
-      .map(search_item => {
-        search_item.id = search_entity_id
-        search_entity_id += 1
-        return search_item
+      .map(searchItem => {
+        searchItem.id = searchEntityId
+        searchEntityId += 1
+        return searchItem
       })
 
-    this.search_history.unshift({
+    this.searchHistory.unshift({
       id: 0,
       entity,
-      entity_id,
+      entity_id: entityId,
       timestamp: Date.now(),
     })
-    if (this.search_history.length > this.limit) {
-      this.search_history.pop()
+    if (this.searchHistory.length > this.limit) {
+      this.searchHistory.pop()
     }
     this.save()
     this.callOnChange()
   }
   static callOnChange() {
-    Object.values(this.onChange_callbacks).forEach(callback => callback())
+    Object.values(this.onChangeCallbacks).forEach(callback => callback())
   }
   static save() {
-    db.browser.set(this.db_key, this.search_history)
+    db.browser.set(this.dbKey, this.searchHistory)
   }
-  static remove(entity, entity_id) {
-    this.search_history = this.search_history.filter(
-      search_item =>
-        search_item.entity !== entity || search_item.entity_id !== entity_id,
+  static remove(entity, entityId) {
+    this.searchHistory = this.searchHistory.filter(
+      searchItem =>
+        searchItem.entity !== entity || searchItem.entity_id !== entityId,
     )
     this.save()
     this.callOnChange()
   }
   static clear() {
-    this.search_history = []
+    this.searchHistory = []
     this.save()
-    if (this.on_clear_callback) this.on_clear_callback()
+    if (this.onClearCallback) this.onClearCallback()
   }
   static onClear(callback) {
-    this.on_clear_callback = callback
+    this.onClearCallback = callback
   }
   static getRecentSearch() {
     const result = []
-    const recent_search = this.getAll()
-    for (const entry of recent_search) {
+    const recentSearch = this.getAll()
+    for (const entry of recentSearch) {
       if (!db.tableHasId(entry.entity, entry.entity_id)) continue
-      const item_data = db.get(entry.entity, entry.entity_id)
+      const itemData = db.get(entry.entity, entry.entity_id)
       result.push({
-        id: item_data.id,
-        name: item_data.name,
-        description: item_data.description,
+        id: itemData.id,
+        name: itemData.name,
+        description: itemData.description,
         entity: entry.entity,
         is_recent: true,
-        is_favorite: item_data.is_favorite,
-        folder_id: item_data.folder_id,
-        folder_name: item_data.folder_name,
-        _entity: item_data._entity,
-        _entity_clean: entity_names[item_data._entity as string],
+        isFavorite: itemData.isFavorite,
+        folder_id: itemData.folder_id,
+        folder_name: itemData.folder_name,
+        _entity: itemData._entity,
+        _entityClean: entityNames[itemData._entity as string],
       })
     }
     return result
   }
   static getRecentSearchIds() {
-    const recent_search_ids = {}
-    const recent_search = this.getAll()
-    for (const [i, entry] of recent_search.entries()) {
+    const recentSearchIds = {}
+    const recentSearch = this.getAll()
+    for (const [i, entry] of recentSearch.entries()) {
       if (!db.tableHasId(entry.entity, entry.entity_id)) continue
-      recent_search_ids[`${entry.entity}-${entry.entity_id}`] = i
+      recentSearchIds[`${entry.entity}-${entry.entity_id}`] = i
     }
-    return recent_search_ids
+    return recentSearchIds
   }
   static putRecentFirst(result) {
-    const recent_ids = this.getRecentSearchIds()
-    const recent_search = { name: [], description: [] }
+    const recentIds = this.getRecentSearchIds()
+    const recentSearch = { name: [], description: [] }
     for (const item of result) {
       const key = `${item.entity}-${item.id}`
-      if (!(key in recent_ids)) continue
-      const item_data = { ...item, is_recent: true, position: recent_ids[key] }
-      for (const [variable, list] of Object.entries(recent_search)) {
-        if (item.variable === variable) list.push(item_data)
+      if (!(key in recentIds)) continue
+      const itemData = { ...item, is_recent: true, position: recentIds[key] }
+      for (const [variable, list] of Object.entries(recentSearch)) {
+        if (item.variable === variable) list.push(itemData)
       }
     }
-    recent_search.name.sort((a, b) => a.position - b.position)
-    recent_search.description.sort((a, b) => a.position - b.position)
-    result = result.filter(item => !(`${item.entity}-${item.id}` in recent_ids))
-    return [...recent_search.name, ...recent_search.description, ...result]
+    recentSearch.name.sort((a, b) => a.position - b.position)
+    recentSearch.description.sort((a, b) => a.position - b.position)
+    result = result.filter(item => !(`${item.entity}-${item.id}` in recentIds))
+    return [...recentSearch.name, ...recentSearch.description, ...result]
   }
   static onChange(key: string, callback: () => void) {
-    if (this.onChange_callbacks === undefined) this.onChange_callbacks = {}
-    this.onChange_callbacks[key] = callback
+    if (this.onChangeCallbacks === undefined) this.onChangeCallbacks = {}
+    this.onChangeCallbacks[key] = callback
   }
 }

@@ -4,29 +4,29 @@
   import Datatable from '@datatable/Datatable.svelte'
   import { link } from '@lib/util'
 
-  let { variable_values, is_meta = false } = $props()
+  let { variableValues, isMeta = false } = $props()
 
-  let has_description = false
-  for (const value of variable_values) {
+  let hasDescription = false
+  for (const value of variableValues) {
     if (value.description) {
-      has_description = true
+      hasDescription = true
       break
     }
   }
 
   function defineColumns() {
     const columns = []
-    if (!is_meta) {
+    if (!isMeta) {
       columns.push({
-        data: 'modality_name',
+        data: 'modalityName',
         title: Render.icon('modality') + 'modalité',
         tooltip: 'Modalité',
-        render: (data, _, row) =>
+        render: (data, type, row) =>
           link('modality/' + row.modality_id, data, 'modality'),
       })
     }
     columns.push(Column.value())
-    if (has_description) columns.push(Column.description())
+    if (hasDescription) columns.push(Column.description())
     return columns
   }
   const columns = defineColumns()
@@ -34,8 +34,8 @@
 
 <Datatable
   entity="value"
-  data={variable_values}
+  data={variableValues}
   {columns}
-  keep_all_cols={true}
-  sort_by_name={true}
+  keepAllCols={true}
+  sortByName={true}
 />

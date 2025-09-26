@@ -5,55 +5,55 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
 
-  let { variable_preview } = $props()
+  let { variablePreview } = $props()
 
-  let variable_data = $state([])
+  let variableData = $state([])
   let columns = $state([])
 
-  let variable = variable_preview.variable
-  let dataset_preview: string | null = null
+  let variable = variablePreview.variable
+  let datasetPreview: string | null = null
 
   async function getLoadPreview() {
-    if (variable_preview.variable === undefined) {
-      variable_data = variable_preview
+    if (variablePreview.variable === undefined) {
+      variableData = variablePreview
     } else {
       variable = PreviewManager.cleanKeys(variable)
-      dataset_preview = variable_preview.dataset_id
+      datasetPreview = variablePreview.dataset_id
       $tabSelected.nb = 0
-      if (typeof dataset_preview !== 'string') {
-        let dataset_data = dataset_preview
-        variable_data = PreviewManager.getVariableData(dataset_data, variable)
-        variable_data = PreviewManager.addPosition(variable_data)
-        columns = PreviewManager.getColumns(variable_data)
-        $tabSelected.nb = variable_data.length
+      if (typeof datasetPreview !== 'string') {
+        let datasetData = datasetPreview
+        variableData = PreviewManager.getVariableData(datasetData, variable)
+        variableData = PreviewManager.addPosition(variableData)
+        columns = PreviewManager.getColumns(variableData)
+        $tabSelected.nb = variableData.length
         return
       }
 
       if (db.preview === undefined) db.preview = {}
-      if (!(dataset_preview in db.preview)) {
-        let dataset_data = await PreviewManager.load(dataset_preview)
-        PreviewManager.cleanKeys(dataset_data)
-        db.preview[dataset_preview] = dataset_data
+      if (!(datasetPreview in db.preview)) {
+        let datasetData = await PreviewManager.load(datasetPreview)
+        PreviewManager.cleanKeys(datasetData)
+        db.preview[datasetPreview] = datasetData
       }
-      variable_data = PreviewManager.getVariableData(
-        db.preview[dataset_preview],
+      variableData = PreviewManager.getVariableData(
+        db.preview[datasetPreview],
         variable,
       )
     }
-    columns = PreviewManager.getColumns(variable_data)
-    $tabSelected.nb = variable_data.length
+    columns = PreviewManager.getColumns(variableData)
+    $tabSelected.nb = variableData.length
   }
 
-  const load_preview = getLoadPreview()
+  const loadPreview = getLoadPreview()
 </script>
 
-{#await load_preview}
-  <Loading type="tab_body" color_entity="search" />
+{#await loadPreview}
+  <Loading type="tab_body" colorEntity="search" />
 {:then}
   <Datatable
     entity="preview"
-    data={variable_data}
+    data={variableData}
     {columns}
-    keep_all_cols={true}
+    keepAllCols={true}
   />
 {/await}

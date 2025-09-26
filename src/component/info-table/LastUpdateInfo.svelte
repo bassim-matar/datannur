@@ -2,20 +2,20 @@
   import Icon from '@layout/Icon.svelte'
   import { getTimeAgo, getDatetime } from '@lib/time'
 
-  let { last_update_date, intraday = false, from_timestamp = false } = $props()
+  let { lastUpdateDate, intraday = false, fromTimestamp = false } = $props()
 
-  let last_update_date_readable = $state(last_update_date)
-  let time_ago = $state(getTimeAgo(last_update_date, true, !intraday))
+  let lastUpdateDateReadable = $state(lastUpdateDate)
+  let timeAgo = $state(getTimeAgo(lastUpdateDate, true, !intraday))
 
-  if (from_timestamp) {
-    last_update_date_readable = getDatetime(last_update_date)
-    time_ago = getTimeAgo(last_update_date, false, !intraday)
+  if (fromTimestamp) {
+    lastUpdateDateReadable = getDatetime(lastUpdateDate)
+    timeAgo = getTimeAgo(lastUpdateDate, false, !intraday)
   }
 </script>
 
-{#if last_update_date}
+{#if lastUpdateDate}
   <tr>
     <td><Icon type="date" /> Mise à jour</td>
-    <td>{last_update_date_readable}, {time_ago}</td>
+    <td>{lastUpdateDateReadable}, {timeAgo}</td>
   </tr>
 {/if}

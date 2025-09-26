@@ -1,19 +1,20 @@
 <script lang="ts">
   import db from '@db'
-  import { is_mobile, url_prefix } from '@lib/util'
-  import { entity_names } from '@lib/constant'
+  import { isMobile, urlPrefix } from '@lib/util'
+  import { entityNames } from '@lib/constant'
   import Render from '@lib/render'
   import { ensureMermaidLoaded } from '@lib/mermaid'
   import Loading from '@frame/Loading.svelte'
+  import { safeHtmlWithSvg } from '@lib/html-sanitizer'
 
-  let svg_diagramm = $state<string | null>(null)
+  let svgDiagramm = $state<string | null>(null)
 
   const schema = { ...db.tables.__schema__ }
 
   delete schema.one_to_one
 
-  const direction = is_mobile ? 'TB' : 'LR'
-  let diagramm_definition = `flowchart ${direction}\n`
+  const direction = isMobile ? 'TB' : 'LR'
+  let diagrammDefinition = `flowchart ${direction}\n`
 
   function compareNameDesc(a: string[] | string, b: string[] | string): number {
     const aName = Array.isArray(a) ? a[0] : a
@@ -24,19 +25,19 @@
   }
 
   schema.one_to_many = schema.one_to_many.map((relation: string[]) => {
-    let other_one: string | null = null
-    if (relation.includes('manager')) other_one = 'owner'
-    else if (relation.includes('owner')) other_one = 'manager'
-    if (other_one) {
-      relation = ['institution', other_one, ...relation]
+    let otherOne: string | null = null
+    if (relation.includes('manager')) otherOne = 'owner'
+    else if (relation.includes('owner')) otherOne = 'manager'
+    if (otherOne) {
+      relation = ['institution', otherOne, ...relation]
     }
     return relation
   })
 
   const aloneSet: string[] = []
-  const all_tables = [...schema.one_to_many, ...schema.many_to_many]
-  for (const table_relation of all_tables) {
-    for (const table of table_relation) {
+  const allTables = [...schema.one_to_many, ...schema.many_to_many]
+  for (const tableRelation of allTables) {
+    for (const table of tableRelation) {
       if (table === 'manager' || table === 'owner') {
         continue
       }
@@ -52,75 +53,69 @@
   schema.one_to_many.sort(compareNameDesc)
   schema.many_to_many.sort(compareNameDesc)
 
-  const recursive_entities = []
+  const recursiveEntities = []
   for (const link of schema.one_to_many) {
-    if (link[0] === link[1]) recursive_entities.push(link[0])
+    if (link[0] === link[1]) recursiveEntities.push(link[0])
   }
 
   for (const table of schema.alone) {
     if (['metaFolder', 'metaDataset', 'metaVariable', 'alias'].includes(table))
       continue
-    let entity_name = table
+    let entityName = table
     if (table === 'manager' || table === 'owner') continue
 
-    let icon = Render.icon(entity_name)
+    let icon = Render.icon(entityName)
     if (table === 'config') icon = ''
-    const entity_clean_name = entity_names[table]
+    const entityCleanName = entityNames[table]
 
-    let recursive_icon = ''
-    if (recursive_entities.includes(table))
-      recursive_icon = ' ' + Render.icon('recursive')
+    let recursiveIcon = ''
+    if (recursiveEntities.includes(table))
+      recursiveIcon = ' ' + Render.icon('recursive')
 
-    diagramm_definition += `${table}(${icon}<span>${entity_clean_name}</span>${recursive_icon})\n`
-    diagramm_definition += `click ${table} href "${url_prefix}/metaDataset/${table}";\n`
+    diagrammDefinition += `${table}(${icon}<span>${entityCleanName}</span>${recursiveIcon})\n`
+    diagrammDefinition += `click ${table} href "${urlPrefix}/metaDataset/${table}";\n`
   }
 
-  const other_links = []
+  const otherLinks = []
   let separator = ' - '
   for (const link of schema.one_to_many) {
     if (link.includes('metaDataset')) continue
     if (link[0] === link[1]) continue
     if (link.length > 2) {
-      const last_one = link[link.length - 1]
-      let link_clean_name = ''
+      const lastOne = link[link.length - 1]
+      let linkCleanName = ''
       for (let i = 0; i < link.length - 1; i++) {
         if (i === 0) continue
         if (i === link.length - 1) continue
-        if (link_clean_name === '') link_clean_name += entity_names[link[i]]
-        else link_clean_name += separator + entity_names[link[i]]
+        if (linkCleanName === '') linkCleanName += entityNames[link[i]]
+        else linkCleanName += separator + entityNames[link[i]]
       }
 
-      let reverse_name = link_clean_name
-        .split(separator)
-        .reverse()
-        .join(separator)
-      const new_link = `${link[0]} -- ${link_clean_name} --> ${last_one}\n`
-      const reverse_link = `${link[0]} -- ${reverse_name} --> ${last_one}\n`
-      if (other_links.includes(reverse_link)) continue
+      let reverseName = linkCleanName.split(separator).reverse().join(separator)
+      const newLink = `${link[0]} -- ${linkCleanName} --> ${lastOne}\n`
+      const reverseLink = `${link[0]} -- ${reverseName} --> ${lastOne}\n`
+      if (otherLinks.includes(reverseLink)) continue
 
-      other_links.push(new_link)
-      diagramm_definition += new_link
+      otherLinks.push(newLink)
+      diagrammDefinition += newLink
       continue
     }
-    diagramm_definition += `${link[0]} --> ${link[1]}\n`
+    diagrammDefinition += `${link[0]} --> ${link[1]}\n`
   }
   for (const link of schema.many_to_many) {
-    diagramm_definition += `${link[0]} <--> ${link[1]}\n`
+    diagrammDefinition += `${link[0]} <--> ${link[1]}\n`
   }
 
   ensureMermaidLoaded(async () => {
-    const { svg } = await window.mermaid.render('diagramm', diagramm_definition)
-    svg_diagramm = svg
+    const { svg } = await window.mermaid.render('diagramm', diagrammDefinition)
+    svgDiagramm = svg
   })
 </script>
 
-{#if !svg_diagramm}
-  <Loading type="tab_body" color_entity="diagram" />
+{#if !svgDiagramm}
+  <Loading type="tab_body" colorEntity="diagram" />
 {:else}
-  <div class="tab_inner_tab">
-    <!-- eslint-disable svelte/no-at-html-tags -->
-    {@html svg_diagramm}
-  </div>
+  <div class="tab_inner_tab" use:safeHtmlWithSvg={svgDiagramm}></div>
 {/if}
 
 <style lang="scss">

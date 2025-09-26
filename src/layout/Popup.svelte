@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { clickOutside } from "@lib/util"
-  import BtnClearInput from "@layout/BtnClearInput.svelte"
+  import { clickOutside } from '@lib/util'
+  import BtnClearInput from '@layout/BtnClearInput.svelte'
 
-  let { is_open = $bindable(false), onClose = () => {}, children } = $props()
+  let { isOpen = $bindable(false), onClose = () => {}, children } = $props()
 
   function closePopup() {
-    is_open = false
+    isOpen = false
     onClose()
   }
 </script>
 
-{#if is_open}
+{#if isOpen}
   <div class="popup">
     <div class="popup-content" use:clickOutside={closePopup}>
       <div class="close-btn">
@@ -24,7 +24,7 @@
 {/if}
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
   .popup {
     position: fixed;
     top: 0;

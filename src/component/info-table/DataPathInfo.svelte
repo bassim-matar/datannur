@@ -1,13 +1,13 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import CopyText from "@layout/CopyText.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import CopyText from '@layout/CopyText.svelte'
 
-  let { data_path } = $props()
+  let { dataPath } = $props()
 </script>
 
-{#if data_path}
+{#if dataPath}
   <tr>
     <td><Icon type="data_path" /> Emplacement</td>
-    <td><CopyText text={data_path} /></td>
+    <td><CopyText text={dataPath} /></td>
   </tr>
 {/if}

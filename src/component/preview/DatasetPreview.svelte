@@ -5,48 +5,48 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
 
-  let { dataset_preview } = $props()
+  let { datasetPreview } = $props()
 
-  let dataset_data = $state([])
+  let datasetData = $state([])
   let columns = $state([])
 
   async function getLoadPreview() {
     $tabSelected.nb = 0
-    if (typeof dataset_preview !== 'string') {
-      dataset_data = dataset_preview
-      dataset_data = PreviewManager.addPosition(dataset_data)
-      columns = PreviewManager.getColumns(dataset_data)
-      $tabSelected.nb = dataset_data.length
+    if (typeof datasetPreview !== 'string') {
+      datasetData = datasetPreview
+      datasetData = PreviewManager.addPosition(datasetData)
+      columns = PreviewManager.getColumns(datasetData)
+      $tabSelected.nb = datasetData.length
       return
     }
 
     if (db.preview === undefined) db.preview = {}
-    if (!(dataset_preview in db.preview)) {
-      dataset_data = await PreviewManager.load(dataset_preview)
-      PreviewManager.cleanKeys(dataset_data)
-      db.preview[dataset_preview] = [...dataset_data]
+    if (!(datasetPreview in db.preview)) {
+      datasetData = await PreviewManager.load(datasetPreview)
+      PreviewManager.cleanKeys(datasetData)
+      db.preview[datasetPreview] = [...datasetData]
     }
-    dataset_data = db.preview[dataset_preview] as unknown[]
-    dataset_data = dataset_data.map(obj => {
+    datasetData = db.preview[datasetPreview] as unknown[]
+    datasetData = datasetData.map(obj => {
       delete obj._row_num
       return obj
     })
-    columns = PreviewManager.getColumns(dataset_data)
-    $tabSelected.nb = dataset_data.length
+    columns = PreviewManager.getColumns(datasetData)
+    $tabSelected.nb = datasetData.length
   }
 
-  const load_preview = getLoadPreview()
+  const loadPreview = getLoadPreview()
 </script>
 
-{#await load_preview}
-  <Loading type="tab_body" color_entity="search" />
+{#await loadPreview}
+  <Loading type="tab_body" colorEntity="search" />
 {:then}
-  {#if dataset_data.length > 0}
+  {#if datasetData.length > 0}
     <Datatable
       entity="preview"
-      data={dataset_data}
+      data={datasetData}
       {columns}
-      keep_all_cols={true}
+      keepAllCols={true}
     />
   {/if}
 {/await}

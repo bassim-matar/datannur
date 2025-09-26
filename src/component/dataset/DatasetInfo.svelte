@@ -22,11 +22,11 @@
 
 <TableWrapper>
   <IdInfo id={dataset.id} />
-  <InstitutionInfo type="owner" institution_id={dataset.owner_id} />
-  <InstitutionInfo type="manager" institution_id={dataset.manager_id} />
+  <InstitutionInfo type="owner" institutionId={dataset.owner_id} />
+  <InstitutionInfo type="manager" institutionId={dataset.manager_id} />
   <FolderInfo
-    folder_id={dataset.is_meta ? dataset.metaFolder_id : dataset.folder_id}
-    is_meta={dataset.is_meta}
+    folderId={dataset.isMeta ? dataset.metaFolder_id : dataset.folder_id}
+    isMeta={dataset.isMeta}
   />
   <TagsInfo tags={dataset.tags} />
   {#if dataset.type_clean}
@@ -35,28 +35,25 @@
       <td>{dataset.type_clean}</td>
     </tr>
   {/if}
-  <RowInfo nb_row={dataset.nb_row} />
-  {#if dataset.is_meta}
+  <RowInfo nbRow={dataset.nb_row} />
+  {#if dataset.isMeta}
     <LastUpdateInfo
-      last_update_date={dataset.last_update_timestamp}
+      lastUpdateDate={dataset.last_update_timestamp}
       intraday={true}
-      from_timestamp={true}
+      fromTimestamp={true}
     />
   {:else}
-    <LastUpdateInfo last_update_date={dataset.last_update_date} />
-    <NextUpdateInfo next_update_date={dataset.next_update_date} />
+    <LastUpdateInfo lastUpdateDate={dataset.last_update_date} />
+    <NextUpdateInfo nextUpdateDate={dataset.next_update_date} />
   {/if}
   <FrequencyInfo frequency={dataset.updating_each} />
-  <PeriodInfo
-    period={dataset.period}
-    period_duration={dataset.period_duration}
-  />
+  <PeriodInfo period={dataset.period} periodDuration={dataset.periodDuration} />
   <LocalisationInfo localisation={dataset.localisation} />
-  <DeliveryFormatInfo delivery_format={dataset.delivery_format} />
-  <DataPathInfo data_path={dataset.data_path} />
+  <DeliveryFormatInfo deliveryFormat={dataset.delivery_format} />
+  <DataPathInfo dataPath={dataset.data_path} />
   {#if dataset.link}
     <tr>
-      <td><Icon type="download_file" /> Données</td>
+      <td><Icon type="downloadFile" /> Données</td>
       <td>
         <a href={dataset.link} target="_blanck" class="break_line">
           {dataset.link}
@@ -64,9 +61,9 @@
       </td>
     </tr>
   {/if}
-  {#if dataset.is_meta}
-    <MetaDatasetRelations dataset_id={dataset.id} />
-    <MetaLocalisationInfo meta_localisation={dataset.meta_localisation} />
+  {#if dataset.isMeta}
+    <MetaDatasetRelations datasetId={dataset.id} />
+    <MetaLocalisationInfo metaLocalisation={dataset.metaLocalisation} />
   {/if}
 </TableWrapper>
 

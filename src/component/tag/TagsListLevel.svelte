@@ -9,7 +9,7 @@
     tag: TagWithChildren | { children?: { [key: string]: TagWithChildren } }
   } = $props()
 
-  const tag_children_data: TagWithChildren[] = Object.values(tag.children || {})
+  const tagChildrenData: TagWithChildren[] = Object.values(tag.children || {})
 
   const isTag = 'id' in tag && 'name' in tag
 
@@ -22,9 +22,9 @@
       <Link href="tag/{typedTag.id}" entity="tag">{typedTag.name}</Link>
     </span>
   {/if}
-  {#if tag_children_data && tag_children_data.length > 0}
+  {#if tagChildrenData && tagChildrenData.length > 0}
     <div class="tags_list_level_wrapper" class:with_indent={isTag}>
-      {#each tag_children_data as childTag (childTag.id)}
+      {#each tagChildrenData as childTag (childTag.id)}
         {#if childTag.children && Object.values(childTag.children).length > 0}
           <div class="tag_list_level_wrapper">
             <TagsListLevel tag={childTag} />

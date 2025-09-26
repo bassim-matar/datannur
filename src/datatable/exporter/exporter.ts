@@ -57,17 +57,17 @@ export default class Exporter {
     ]
   }
   toggleMainBtn() {
-    const table_id = `#${this.id}_wrapper`
-    const btns = `${table_id} .buttons-html5`
-    const main_btn = document.querySelector(`${table_id} .dt-buttons`)
-    const is_open = main_btn.getAttribute('is_open')
-    if (is_open === 'true') {
+    const tableId = `#${this.id}_wrapper`
+    const btns = `${tableId} .buttons-html5`
+    const mainBtn = document.querySelector(`${tableId} .dt-buttons`)
+    const isOpen = mainBtn.getAttribute('is-open')
+    if (isOpen === 'true') {
       applyToElements(btns, element => element.classList.remove('open'))
-      main_btn.setAttribute('is_open', 'false')
+      mainBtn.setAttribute('is-open', 'false')
       Logs.add('close_table_download')
     } else {
       applyToElements(btns, element => element.classList.add('open'))
-      main_btn.setAttribute('is_open', 'true')
+      mainBtn.setAttribute('is-open', 'true')
       Logs.add('open_table_download')
     }
   }

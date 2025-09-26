@@ -2,51 +2,49 @@
   import { onMount } from 'svelte'
   import MdContent from '@layout/MdContent.svelte'
   import { pageContentLoaded, onPageHomepage } from '@lib/store'
-  import { dark_mode_theme } from '@dark-mode/dark-mode'
+  import { darkModeTheme } from '@dark-mode/dark-mode'
   import Loading from '@frame/Loading.svelte'
   import { ensureMermaidLoaded, mdWithMermaidToHtml } from '@lib/mermaid'
+  import { safeHtmlWithSvg } from '@lib/html-sanitizer'
 
-  let { about_file } = $props()
+  let { aboutFile } = $props()
 
-  let html_content = $state('')
-  let html_content_loaded = $state(false)
+  let htmlContent = $state('')
+  let htmlContentLoaded = $state(false)
 
-  let md_content = $derived(
-    about_file.replaceAll(
+  let mdContent = $derived(
+    aboutFile.replaceAll(
       '{darkMode}',
-      $dark_mode_theme === 'dark' ? '-dark' : '',
+      $darkModeTheme === 'dark' ? '-dark' : '',
     ),
   )
 
-  const use_mermaid = about_file.includes('mermaid(')
+  const useMermaid = aboutFile.includes('mermaid(')
 
   $effect(() => {
-    if (use_mermaid) {
+    if (useMermaid) {
       ensureMermaidLoaded(async () => {
-        if (!md_content) return
-        html_content = await mdWithMermaidToHtml(md_content)
-        html_content_loaded = true
+        if (!mdContent) return
+        htmlContent = await mdWithMermaidToHtml(mdContent)
+        htmlContentLoaded = true
         $pageContentLoaded = true
       })
     }
   })
 
   onMount(() => {
-    if (!use_mermaid) $pageContentLoaded = true
+    if (!useMermaid) $pageContentLoaded = true
   })
 </script>
 
 <div class="about_file_wrapper" class:homepage={$onPageHomepage}>
-  {#if use_mermaid}
-    <div class="content">
-      <!-- eslint-disable svelte/no-at-html-tags -->
-      {@html html_content}
-      {#if !html_content_loaded}
-        <Loading position="relative" />
-      {/if}
-    </div>
+  {#if useMermaid}
+    <div class="content" use:safeHtmlWithSvg={htmlContent}></div>
+    {#if !htmlContentLoaded}
+      <Loading position="absolute" />
+    {/if}
   {:else}
-    <MdContent content={md_content} />
+    <MdContent content={mdContent} />
   {/if}
 </div>
 

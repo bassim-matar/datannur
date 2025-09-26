@@ -9,9 +9,14 @@
   import 'datatables.net-fixedheader-bm'
   import 'datatables.net-scroller-bm'
   import { onMount, onDestroy } from 'svelte'
-  import { is_mobile } from '@lib/util'
-  import { is_big_limit } from '@lib/constant'
-  import { tabSelected, allTablesLoaded, allTabs } from '@lib/store'
+  import { isMobile } from '@lib/util'
+  import { isBigLimit } from '@lib/constant'
+  import {
+    tabSelected,
+    allTablesLoaded,
+    allTabs,
+    currentTabData,
+  } from '@lib/store'
   import { extendable } from '@lib/extendable'
   import Exporter from './exporter/exporter'
   import FilterHelper from './filter/filter-helper'
@@ -28,6 +33,7 @@
     getNbItem,
     fixColumnsWidth,
   } from './dt-util'
+  import { safeHtml } from '@lib/html-sanitizer'
   import Filter from './filter/Filter.svelte'
   import FilterInfoBox from './filter/FilterInfoBox.svelte'
   import Popup from '@layout/Popup.svelte'
@@ -38,18 +44,18 @@
     entity,
     data,
     columns,
-    sort_by_name = false,
-    keep_all_cols = false,
-    meta_path = null,
-    is_recursive = false,
+    sortByName = false,
+    keepAllCols = false,
+    metaPath = null,
+    isRecursive = false,
     initied = () => {},
   } = $props()
 
   let loading = $state(true)
-  let short_table = $state(false)
-  let datatable_update_draw = $state(0)
-  let nb_active_filter = $state(0)
-  let is_popup_search_option_open = $state(false)
+  let shortTable = $state(false)
+  let datatableUpdateDraw = $state(0)
+  let nbActiveFilter = $state(0)
+  let isPopupSearchOptionOpen = $state(false)
 
   DatatablesTimer.start()
   DatatablesLoading.start()
@@ -57,32 +63,32 @@
   DataTable.Buttons.jszip(JSZip)
 
   let datatable = null
-  let dom_table = null
+  let domTable = null
 
-  const is_big = data.length > is_big_limit
-  const max_height_value = 275
-  const max_height = `max(calc(100vh - ${max_height_value}px), 170px)`
-  const max_height_load = `max(calc(100vh - ${max_height_value - 82}px), 80px)`
+  const isBig = data.length > isBigLimit
+  const maxHeightValue = 275
+  const maxHeight = `max(calc(100vh - ${maxHeightValue}px), 170px)`
+  const maxHeightLoad = `max(calc(100vh - ${maxHeightValue - 82}px), 80px)`
 
-  const table_id = getTableId(entity)
-  const exporter = new Exporter(table_id)
-  const filter = new FilterHelper(table_id, entity, current_nb => {
-    nb_active_filter = current_nb
+  const tableId = getTableId(entity)
+  const exporter = new Exporter(tableId)
+  const filter = new FilterHelper(tableId, entity, currentNb => {
+    nbActiveFilter = currentNb
   })
 
-  const clean_data = getCleanData(data, sort_by_name, is_recursive, is_big)
-  const nb_row_loading = Math.min(clean_data.length, 50)
-  const columns_copy = defineColumns(
+  const cleanData = getCleanData(data, sortByName, isRecursive, isBig)
+  const nbRowLoading = Math.min(cleanData.length, 50)
+  const columnsCopy = defineColumns(
     columns,
-    clean_data,
+    cleanData,
     entity,
-    keep_all_cols,
-    meta_path,
-    nb_row_loading,
+    keepAllCols,
+    metaPath,
+    nbRowLoading,
   )
-  const nb_sticky = getNbSticky(columns_copy)
+  const nbSticky = getNbSticky(columnsCopy)
 
-  const clickable_rows = ![
+  const clickableRows = ![
     'value',
     'dataset_preview',
     'variable_preview',
@@ -94,35 +100,35 @@
   allTablesLoaded.subscribe(value => {
     if (value) {
       setTimeout(() => {
-        datatable_update_draw += 1
+        datatableUpdateDraw += 1
       }, 1000)
     }
   })
 
   let buttons = exporter.getButtons()
-  if (is_big) {
+  if (isBig) {
     buttons.push(
       filter.getBtnInfoPopup(() => {
-        is_popup_search_option_open = true
+        isPopupSearchOptionOpen = true
       }),
     )
   }
 
   onMount(() => {
     setTimeout(() => {
-      datatable = new DataTable('table#' + table_id, {
-        data: clean_data,
-        columns: columns_copy,
-        scrollY: max_height,
+      datatable = new DataTable('table#' + tableId, {
+        data: cleanData,
+        columns: columnsCopy,
+        scrollY: maxHeight,
         scrollX: true,
         scrollCollapse: true,
         pageLength: 100,
-        paging: is_big,
-        searching: is_big,
-        deferRender: is_big,
-        scroller: is_big ? { rowHeight: 65 } : false,
+        paging: isBig,
+        searching: isBig,
+        deferRender: isBig,
+        scroller: isBig ? { rowHeight: 65 } : false,
         autoWidth: false,
-        fixedColumns: { leftColumns: nb_sticky },
+        fixedColumns: { leftColumns: nbSticky },
         stateSave: true,
         info: false,
         dom: '<"toolbar">ftB',
@@ -134,35 +140,35 @@
           buttons: exporter.getLanguage(),
         } as ConfigLanguage,
         initComplete: function () {
-          if (!is_big) return false
+          if (!isBig) return false
           filter.init(this.api())
         },
       } as Config)
       datatable.on('search.dt', () => {
         if ($allTabs[entity]) {
-          $allTabs[entity].nb = getNbItem(datatable, clean_data)
+          $allTabs[entity].nb = getNbItem(datatable, cleanData)
         }
-        short_table = isShortTable(datatable)
+        shortTable = isShortTable(datatable)
       })
       datatable.on('draw.dt', () => {
-        datatable_update_draw += 1
+        datatableUpdateDraw += 1
       })
-      dom_table = jQuery('table#' + table_id + '._datatables')
-      dom_table.on('mouseenter', '.long_text', extendable.open)
-      dom_table.on('mouseleave', '.long_text', extendable.closeTwoLines)
+      domTable = jQuery('table#' + tableId + '._datatables')
+      domTable.on('mouseenter', '.long_text', extendable.open)
+      domTable.on('mouseleave', '.long_text', extendable.closeTwoLines)
 
-      dom_table.on(
+      domTable.on(
         'click',
         'td',
         function (this: HTMLElement, event: MouseEvent) {
           setTimeout(() => {
-            const clickable_elems =
+            const clickableElems =
               'a, button, input, select, .copyclip, .favorite'
 
             if (
-              is_mobile ||
-              !dom_table ||
-              elemHasClickable(event.target, this, clickable_elems)
+              isMobile ||
+              !domTable ||
+              elemHasClickable(event.target, this, clickableElems)
             ) {
               return false
             }
@@ -172,15 +178,15 @@
         },
       )
 
-      initFavorite(table_id, datatable)
+      initFavorite(tableId, datatable)
       initied()
       datatable.columns.adjust()
-      datatable_update_draw += 1
+      datatableUpdateDraw += 1
       fixColumnsWidth(datatable)
       if ($allTabs[entity]) {
-        $allTabs[entity].nb = getNbItem(datatable, clean_data)
+        $allTabs[entity].nb = getNbItem(datatable, cleanData)
       }
-      short_table = isShortTable(datatable)
+      shortTable = isShortTable(datatable)
       loading = false
       DatatablesTimer.end()
       DatatablesLoading.end()
@@ -194,42 +200,42 @@
     datatable?.columns?.adjust()
   }
 
-  const tab_selected_unsubscribe = tabSelected.subscribe(tab => {
+  const tabSelectedUnsubscribe = tabSelected.subscribe(tab => {
     if (tab && [tab.key, tab.icon].includes(entity)) {
       setTimeout(() => {
         datatable?.columns?.adjust()
-        datatable_update_draw += 1
-        window._current_tab_data = clean_data
+        datatableUpdateDraw += 1
+        $currentTabData = cleanData
       }, 1)
     }
   })
 
   onDestroy(() => {
     if (datatable) datatable?.destroy()
-    tab_selected_unsubscribe()
+    tabSelectedUnsubscribe()
     filter.destroy()
-    jQuery('table#' + table_id + '._datatables *')?.off()
-    dom_table = null
+    jQuery('table#' + tableId + '._datatables *')?.off()
+    domTable = null
   })
 </script>
 
 <svelte:window onresize={onResize} />
 
-<Popup bind:is_open={is_popup_search_option_open}>
+<Popup bind:isOpen={isPopupSearchOptionOpen}>
   <SearchOptionInfo />
 </Popup>
 
 {#if loading}
   <div class="datatable_main_wrapper dt_loading">
     <div class="datatables_outer visible dt-container dt_loading_outer">
-      <div class="dt-scroll" style="--max-height: {max_height_load}">
+      <div class="dt-scroll" style="--max-height: {maxHeightLoad}">
         <table
           class="_datatables table is-striped dataTable"
-          class:short-table={short_table}
+          class:short-table={shortTable}
         >
           <thead>
             <tr>
-              {#each columns_copy as column, i (`${column.data}/${column.title}`)}
+              {#each columnsCopy as column, i (`${column.data}/${column.title}`)}
                 <th
                   class="sorting"
                   class:sorting_asc={i === 0}
@@ -237,26 +243,25 @@
                   style="min-width: {column.loading_width}px; 
                     width: {column.loading_max_width}px;"
                 >
-                  <!-- eslint-disable svelte/no-at-html-tags -->
-                  {@html column.title}
+                  <span use:safeHtml={column.title}></span>
                   <span class="dt-column-order"></span>
                 </th>
               {/each}
             </tr>
           </thead>
-          {#if is_big}
+          {#if isBig}
             <thead class="loading_filter_wrapper">
-              <Filter columns={columns_copy} />
+              <Filter columns={columnsCopy} />
             </thead>
           {/if}
           <tbody>
-            {#each Array(nb_row_loading).keys() as i (i)}
+            {#each Array(nbRowLoading).keys() as i (i)}
               <tr>
-                {#each columns_copy as column, j (`${column.data}/${column.title}`)}
+                {#each columnsCopy as column, j (`${column.data}/${column.title}`)}
                   <td class:first_col={j === 0} class:first_row={i === 0}>
                     {#if column.data === '_row_num'}
                       {i + 1}
-                    {:else if column.data === 'is_favorite'}
+                    {:else if column.data === 'isFavorite'}
                       <span class="icon favorite">
                         <i class="fas fa-star"></i>
                       </span>
@@ -277,16 +282,16 @@
 <div class="datatable_main_wrapper">
   {#if data.length > 0}
     <div class="datatables_outer" class:visible={!loading}>
-      <FilterInfoBox {nb_active_filter} click={() => filter.removeAll()} />
+      <FilterInfoBox {nbActiveFilter} click={() => filter.removeAll()} />
       <table
-        id={table_id}
+        id={tableId}
         class="_datatables table is-striped"
-        class:short-table={short_table}
-        class:clickable-rows={clickable_rows}
+        class:short-table={shortTable}
+        class:clickable-rows={clickableRows}
       >
         <thead>
           <tr>
-            {#each columns_copy as column, i (`${column.data}/${column.title}`)}
+            {#each columnsCopy as column, i (`${column.data}/${column.title}`)}
               <th
                 title={column.tooltip}
                 class:first_col={i === 0}
@@ -296,14 +301,14 @@
           </tr>
         </thead>
 
-        {#if is_big}
+        {#if isBig}
           <thead>
             <Filter
-              columns={columns_copy}
-              {table_id}
+              columns={columnsCopy}
+              {tableId}
               {loading}
-              {nb_sticky}
-              {datatable_update_draw}
+              {nbSticky}
+              {datatableUpdateDraw}
             />
           </thead>
         {/if}
@@ -710,10 +715,10 @@
                 background: color('value');
               }
               &.color_nb_source {
-                background: color('nb_source');
+                background: color('nbSource');
               }
               &.color_nb_derived {
-                background: color('nb_derived');
+                background: color('nbDerived');
               }
               &.color_key {
                 background: color('key');

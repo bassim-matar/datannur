@@ -2,35 +2,35 @@
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
 
-  let { dataset_variables, is_meta = false } = $props()
+  let { datasetVariables, isMeta = false } = $props()
 
-  const meta_path = is_meta ? 'metaVariable' : false
+  const metaPath = isMeta ? 'metaVariable' : false
 
-  let nb_value_max = 0
-  let nb_sources_max = 0
-  let nb_derived_max = 0
-  for (const variable of dataset_variables) {
-    nb_value_max = Math.max(nb_value_max, variable.nb_value)
-    nb_sources_max = Math.max(nb_sources_max, variable.source_ids?.length || 0)
-    nb_derived_max = Math.max(nb_derived_max, variable.derived_ids?.length || 0)
+  let nbValueMax = 0
+  let nbSourcesMax = 0
+  let nbDerivedMax = 0
+  for (const variable of datasetVariables) {
+    nbValueMax = Math.max(nbValueMax, variable.nb_value)
+    nbSourcesMax = Math.max(nbSourcesMax, variable.source_ids?.length || 0)
+    nbDerivedMax = Math.max(nbDerivedMax, variable.derived_ids?.length || 0)
   }
 
   function defineColumns() {
     const base = [
-      Column.name('variable', 'Variable', { is_meta }),
+      Column.name('variable', 'Variable', { isMeta }),
       Column.originalName(),
       Column.description(),
       Column.datatype(),
       Column.isKey(),
-      Column.nbSources(nb_sources_max, 'variable'),
-      Column.nbDerived(nb_derived_max, 'variable'),
+      Column.nbSources(nbSourcesMax, 'variable'),
+      Column.nbDerived(nbDerivedMax, 'variable'),
       Column.nbMissing(),
       Column.nbDuplicates(),
       Column.freq(),
-      Column.nbValues(nb_value_max),
+      Column.nbValues(nbValueMax),
       Column.valuesPreview(),
     ]
-    if (is_meta) return [...base, Column.metaLocalisation()]
+    if (isMeta) return [...base, Column.metaLocalisation()]
     return [
       Column.favorite(),
       ...base,
@@ -44,4 +44,4 @@
   const columns = defineColumns()
 </script>
 
-<Datatable entity="variable" data={dataset_variables} {columns} {meta_path} />
+<Datatable entity="variable" data={datasetVariables} {columns} {metaPath} />

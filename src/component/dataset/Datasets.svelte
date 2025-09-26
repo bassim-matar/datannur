@@ -1,75 +1,75 @@
 <script lang="ts">
-  import {getLocalFilter} from '@lib/db'
+  import { getLocalFilter } from '@lib/db'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
 
-  let { datasets, is_meta = false } = $props()
+  let { datasets, isMeta = false } = $props()
 
-  const dataset_path = is_meta ? 'metaDataset/' : 'dataset/'
-  const tab_variables = is_meta ? 'meta_dataset_variables' : 'dataset_variables'
-  const meta_path = is_meta ? 'metaDataset' : null
-  const datasets_sorted = [...datasets]
+  const datasetPath = isMeta ? 'metaDataset/' : 'dataset/'
+  const tabVariables = isMeta ? 'metaDatasetVariables' : 'datasetVariables'
+  const metaPath = isMeta ? 'metaDataset' : null
+  const datasetsSorted = [...datasets]
 
-  function sortDatasets(to_sort) {
-    if (to_sort.length === 0) return
-    const db_filters = getLocalFilter()
-    const filter_pos = {}
-    for (const i in db_filters) filter_pos[db_filters[i].id] = i
-    to_sort.sort(
+  function sortDatasets(toSort) {
+    if (toSort.length === 0) return
+    const dbFilters = getLocalFilter()
+    const filterPos = {}
+    for (const i in dbFilters) filterPos[dbFilters[i].id] = i
+    toSort.sort(
       (a, b) =>
-        b.lineage_type?.localeCompare(a.lineage_type) ||
-        filter_pos[a.type] - filter_pos[b.type] ||
+        b.lineageType?.localeCompare(a.lineageType) ||
+        filterPos[a.type] - filterPos[b.type] ||
         a.folder_name.localeCompare(b.folder_name) ||
         a.name.localeCompare(b.name),
     )
   }
-  sortDatasets(datasets_sorted)
+  sortDatasets(datasetsSorted)
 
-  let nb_variable_max = 0
-  let nb_row_max = 0
-  let nb_doc_max = 0
-  let nb_sources_max = 0
-  let nb_derived_max = 0
+  let nbVariableMax = 0
+  let nbRowMax = 0
+  let nbDocMax = 0
+  let nbSourcesMax = 0
+  let nbDerivedMax = 0
   for (const dataset of datasets) {
-    if (dataset.nb_variable > nb_variable_max) {
-      nb_variable_max = dataset.nb_variable
+    if (dataset.nb_variable > nbVariableMax) {
+      nbVariableMax = dataset.nb_variable
     }
-    if (dataset.nb_row > nb_row_max) {
-      nb_row_max = dataset.nb_row
+    if (dataset.nb_row > nbRowMax) {
+      nbRowMax = dataset.nb_row
     }
-    if (dataset.docs_recursive?.length > nb_doc_max) {
-      nb_doc_max = dataset.docs_recursive?.length
+    if (dataset.docs_recursive?.length > nbDocMax) {
+      nbDocMax = dataset.docs_recursive?.length
     }
-    if (dataset.source_ids?.size > nb_sources_max) {
-      nb_sources_max = dataset.source_ids.size
+    if (dataset.source_ids?.size > nbSourcesMax) {
+      nbSourcesMax = dataset.source_ids.size
     }
-    if (dataset.derived_ids?.size > nb_derived_max) {
-      nb_derived_max = dataset.derived_ids.size
+    if (dataset.derived_ids?.size > nbDerivedMax) {
+      nbDerivedMax = dataset.derived_ids.size
     }
   }
 
   function defineColumns() {
     const base = [
-      Column.name('dataset', 'Dataset', { is_meta }),
+      Column.name('dataset', 'Dataset', { isMeta }),
       Column.description(),
       Column.lineageType(),
-      Column.nbSources(nb_sources_max, 'dataset'),
-      Column.nbDerived(nb_derived_max, 'dataset'),
+      Column.nbSources(nbSourcesMax, 'dataset'),
+      Column.nbDerived(nbDerivedMax, 'dataset'),
       Column.datasetType(),
-      Column.nbVariable('dataset', nb_variable_max, {
-        tab: tab_variables,
-        link_path: dataset_path,
-        show_title: true,
+      Column.nbVariable('dataset', nbVariableMax, {
+        tab: tabVariables,
+        linkPath: datasetPath,
+        showTitle: true,
       }),
-      Column.nbRow(nb_row_max),
+      Column.nbRow(nbRowMax),
     ]
-    if (is_meta) {
+    if (isMeta) {
       return [
         ...base,
         Column.metaLocalisation(),
         Column.metaFolder(),
         Column.timestamp({
-          var_name: 'last_update_timestamp',
+          varName: 'last_update_timestamp',
           title: 'Mise à jour',
           tooltip: 'Moment de la dernière mise à jour',
         }),
@@ -78,7 +78,7 @@
     return [
       Column.favorite(),
       ...base,
-      Column.nbDoc('dataset', nb_doc_max, true),
+      Column.nbDoc('dataset', nbDocMax, true),
       Column.folder(),
       Column.tag(),
       Column.lastUpdate(),
@@ -96,4 +96,4 @@
   const columns = defineColumns()
 </script>
 
-<Datatable entity="dataset" data={datasets_sorted} {columns} {meta_path} />
+<Datatable entity="dataset" data={datasetsSorted} {columns} {metaPath} />

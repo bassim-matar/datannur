@@ -1,44 +1,44 @@
-import { is_mobile, link, wrapLongText, getPercent, pluralize } from '@lib/util'
+import { isMobile, link, wrapLongText, getPercent, pluralize } from '@lib/util'
 import { getTimeAgo, getDatetime, dateToTimestamp } from '@lib/time'
-import { entity_names, entity_to_icon } from '@lib/constant'
+import { entityNames, entityToIcon } from '@lib/constant'
 import Render from '@lib/render'
 
 export default class Column {
   static id() {
     return {
       data: 'id',
-      title: Render.icon('internal_id') + 'Identifiant',
+      title: Render.icon('internalId') + 'Identifiant',
       name: 'id',
       tooltip: 'Identifiant unique',
-      filter_type: 'input',
-      has_long_text: true,
+      filterType: 'input',
+      hasLongText: true,
       render: Render.copyCell,
     }
   }
   static name(entity = null, name = null, option = null) {
     const icon = entity || 'name'
-    const title_name = name || 'Nom'
+    const titleName = name || 'Nom'
     if (option === null) option = {}
     if (!('with_link' in option)) option.with_link = true
     return {
       data: 'name',
-      title: Render.icon(icon) + title_name,
+      title: Render.icon(icon) + titleName,
       name: 'name',
       tooltip: 'Nom',
-      filter_type: 'input',
-      has_long_text: true,
+      filterType: 'input',
+      hasLongText: true,
       render: (data, type, row) => {
         let indent = null
         let text
         if (!option.with_link) {
           text = data
-        } else if (option.with_indent && !row.no_indent) {
+        } else if (option.withIndent && !row.noIndent) {
           text = link(row._entity + '/' + row.id, data, row._entity)
-          indent = row?.parents_relative?.length - row?.minimum_deep
+          indent = row?.parentsRelative?.length - row?.minimumDeep
         } else {
           text = link(row._entity + '/' + row.id, data, row._entity)
         }
-        if (option.link_same_entity_tab && row.nb_child > 0) {
+        if (option.linkSameEntityTab && row.nb_child > 0) {
           text = link(
             row._entity + '/' + row.id + '?tab=' + row._entity + 's',
             data,
@@ -57,20 +57,20 @@ export default class Column {
     return {
       data: 'original_name',
       title: Render.icon('name') + "Nom d'origine",
-      has_long_text: true,
-      filter_type: 'input',
+      hasLongText: true,
+      filterType: 'input',
       tooltip: "Nom d'origine avant renommage",
       render: data => wrapLongText(data),
     }
   }
   static entity() {
     return {
-      data: '_entity_clean',
+      data: '_entityClean',
       name: 'entity',
       title: Render.icon('entity') + 'Entité',
       defaultContent: '',
       tooltip: 'Entité',
-      filter_type: 'select',
+      filterType: 'select',
       render: (data, type, row) => {
         if (!data) return ''
         if (type === 'sort' || type === 'export' || type === 'filter') {
@@ -78,7 +78,7 @@ export default class Column {
         }
         return `
           <span class="icon icon_${row._entity}">
-            <i class="fas fa-${entity_to_icon[row._entity] || row._entity}"></i>
+            <i class="fas fa-${entityToIcon[row._entity] || row._entity}"></i>
           </span>
           <span>${data}</span>`
       },
@@ -90,9 +90,9 @@ export default class Column {
       name: 'parent_entity',
       title: Render.icon('entity') + 'Partie de',
       defaultContent: '',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: "Partie de l'entité",
-      filter_type: 'input',
+      filterType: 'input',
       render: (data, type, row) => {
         if (!data) return ''
         if (type === 'sort' || type === 'export' || type === 'filter') {
@@ -101,7 +101,7 @@ export default class Column {
         return wrapLongText(`
           <span class="icon icon_${row.parent_entity}">
             <i class="fas fa-${
-              entity_to_icon[row.parent_entity] || row.parent_entity
+              entityToIcon[row.parent_entity] || row.parent_entity
             }"></i>
           </span>
           <span>${link(
@@ -112,19 +112,19 @@ export default class Column {
       },
     }
   }
-  static folder(folder_id_var = 'folder_id', folder_name_var = 'folder_name') {
+  static folder(folderIdVar = 'folder_id', folderNameVar = 'folder_name') {
     const render = (data, type, row) => {
-      const folder_id = row[folder_id_var]
-      const folder_name = row[folder_name_var]
-      return is_mobile
-        ? wrapLongText(link('folder/' + folder_id, folder_name))
-        : Render.withParentsFromId('folder', folder_id, type)
+      const folderId = row[folderIdVar]
+      const folderName = row[folderNameVar]
+      return isMobile
+        ? wrapLongText(link('folder/' + folderId, folderName))
+        : Render.withParentsFromId('folder', folderId, type)
     }
     return {
-      data: folder_name_var,
+      data: folderNameVar,
       title: Render.icon('folder') + 'Dossier',
       defaultContent: '',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Dossier',
       render,
     }
@@ -134,20 +134,20 @@ export default class Column {
       data: 'folder_id',
       title: Render.icon('folder') + 'Dossier',
       defaultContent: '',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Dossier',
-      render: (data, _, row) => {
+      render: (data, type, row) => {
         if (!data) return ''
         return wrapLongText(link('folder/' + data, row.folder_name))
       },
     }
   }
   static parents(entity) {
-    const render = is_mobile ? Render.firstParent : Render.parentsIndent
+    const render = isMobile ? Render.firstParent : Render.parentsIndent
     return {
       data: 'parents',
       title: Render.icon(`folder_tree_${entity}`) + 'Partie de',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Eléments parents',
       render,
     }
@@ -158,7 +158,7 @@ export default class Column {
       title: Render.icon('type') + 'Type',
       defaultContent: '',
       name: 'type',
-      filter_type: 'select',
+      filterType: 'select',
       tooltip: 'Type de dataset',
     }
   }
@@ -168,7 +168,7 @@ export default class Column {
       title: Render.icon('type') + 'Type',
       defaultContent: '',
       name: 'type',
-      filter_type: 'select',
+      filterType: 'select',
       tooltip: 'Type de données',
     }
   }
@@ -177,8 +177,8 @@ export default class Column {
       data: 'description',
       defaultContent: '',
       title: Render.icon('description') + 'Description',
-      has_long_text: true,
-      filter_type: 'input',
+      hasLongText: true,
+      filterType: 'input',
       tooltip: 'Description',
       render: data => wrapLongText(data),
     }
@@ -188,36 +188,36 @@ export default class Column {
       data: 'tags',
       title: Render.icon('tag') + 'Mots clés',
       defaultContent: '',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Mots clés directement associés',
       name: 'tag',
       render: Render.tags,
     }
   }
   static owner() {
-    const render = (data, type, { owner_id, owner_name }) =>
-      is_mobile
-        ? wrapLongText(link(`institution/${owner_id}`, owner_name))
-        : Render.withParentsFromId('institution', owner_id, type)
+    const render = (data, type, row) =>
+      isMobile
+        ? wrapLongText(link(`institution/${row.owner_id}`, row.owner_name))
+        : Render.withParentsFromId('institution', row.owner_id, type)
     return {
       data: 'owner_name',
-      title: Render.icon('institution') + entity_names.owner,
+      title: Render.icon('institution') + entityNames.owner,
       defaultContent: '',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Institution propriétaire',
       render,
     }
   }
   static manager() {
-    const render = (data, type, { manager_id, manager_name }) =>
-      is_mobile
-        ? wrapLongText(link(`institution/${manager_id}`, manager_name))
-        : Render.withParentsFromId('institution', manager_id, type)
+    const render = (data, type, row) =>
+      isMobile
+        ? wrapLongText(link(`institution/${row.manager_id}`, row.manager_name))
+        : Render.withParentsFromId('institution', row.manager_id, type)
     return {
       data: 'manager_name',
-      title: Render.icon('institution') + entity_names.manager,
+      title: Render.icon('institution') + entityNames.manager,
       defaultContent: '',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Institution gestionnaire',
       render,
     }
@@ -236,28 +236,27 @@ export default class Column {
       data: 'value',
       defaultContent: '',
       title: Render.icon('value') + 'Valeur',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Valeur',
       render: data => wrapLongText(data),
     }
   }
-  static nbValues(nb_value_max) {
+  static nbValues(nbValueMax) {
     return {
       data: 'nb_value',
       name: 'value',
       title: Render.icon('value') + 'Nb',
       defaultContent: '',
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Nombre de valeurs',
-      render: (data, type, row) =>
-        Render.nbValues(data, type, row, nb_value_max),
+      render: (data, type, row) => Render.nbValues(data, type, row, nbValueMax),
     }
   }
   static valuesPreview() {
     return {
       data: 'values_preview',
       title: Render.icon('value') + 'Valeurs',
-      has_long_text: true,
+      hasLongText: true,
       defaultContent: '',
       tooltip: 'Valeurs',
       render: Render.value,
@@ -267,7 +266,7 @@ export default class Column {
     return {
       data: 'nb_duplicate',
       defaultContent: '',
-      filter_type: 'input',
+      filterType: 'input',
       title: Render.icon('duplicate') + 'Doublons',
       tooltip: 'Nombre de valeurs dupliquées',
       render: Render.nbDuplicate,
@@ -277,7 +276,7 @@ export default class Column {
     return {
       data: 'nb_missing',
       defaultContent: '',
-      filter_type: 'input',
+      filterType: 'input',
       title: Render.icon('missing') + 'Manquant',
       tooltip: 'Nombre de valeurs manquantes',
       render: Render.nbMissing,
@@ -288,16 +287,16 @@ export default class Column {
       data: 'freq_preview',
       title: Render.icon('freq') + 'Fréquence',
       defaultContent: '',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Aperçu des données de fréquence',
       render: Render.freqPreview,
     }
   }
-  static nbRow(nb_row_max) {
+  static nbRow(nbRowMax) {
     return {
       data: 'nb_row',
       title: Render.icon('nb_row') + 'Lignes',
-      filter_type: 'input',
+      filterType: 'input',
       defaultContent: '',
       tooltip: 'Nombre de lignes',
       render: (data, type) => {
@@ -305,42 +304,42 @@ export default class Column {
           return data === '' || data === null ? 0 : parseInt(data)
         }
         if (!data) return ''
-        const percent = getPercent(data / nb_row_max)
+        const percent = getPercent(data / nbRowMax)
         return `${Render.numPercent(data, percent, 'nb_row', type)}`
       },
     }
   }
-  static nbSources(nb_sources_max, entity) {
+  static nbSources(nbSourcesMax, entity) {
     return {
       data: 'source_ids',
-      title: Render.icon('nb_source') + 'In',
-      filter_type: 'input',
+      title: Render.icon('nbSource') + 'In',
+      filterType: 'input',
       defaultContent: '',
       tooltip: `Nombre de ${entity}s sources (en amont)`,
       render: (data, type, row) => {
         if (!data || (!data.length && !data.size)) return ''
         const nb = data.length || data.size
         if (type !== 'display') return nb
-        const percent = getPercent(nb / nb_sources_max)
+        const percent = getPercent(nb / nbSourcesMax)
         const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
-        return `${Render.numPercent(content, percent, 'nb_source', type)}`
+        return `${Render.numPercent(content, percent, 'nbSource', type)}`
       },
     }
   }
-  static nbDerived(nb_derived_max, entity) {
+  static nbDerived(nbDerivedMax, entity) {
     return {
       data: 'derived_ids',
-      title: Render.icon('nb_derived') + 'Out',
-      filter_type: 'input',
+      title: Render.icon('nbDerived') + 'Out',
+      filterType: 'input',
       defaultContent: '',
       tooltip: `Nombre de ${entity}s dérivées (en aval)`,
       render: (data, type, row) => {
         if (!data || (!data.length && !data.size)) return ''
         const nb = data.length || data.size
         if (type !== 'display') return nb
-        const percent = getPercent(nb / nb_derived_max)
+        const percent = getPercent(nb / nbDerivedMax)
         const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
-        return `${Render.numPercent(content, percent, 'nb_derived', type)}`
+        return `${Render.numPercent(content, percent, 'nbDerived', type)}`
       },
     }
   }
@@ -349,7 +348,7 @@ export default class Column {
       data: 'updating_each',
       name: 'frequency',
       defaultContent: '',
-      filter_type: 'select',
+      filterType: 'select',
       title: Render.icon('frequency') + 'Fréquence',
       tooltip: 'Fréquence de mise à jour',
     }
@@ -360,7 +359,7 @@ export default class Column {
       name: 'last_update',
       defaultContent: '',
       title: Render.icon('date') + 'Mise à jour',
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Date de dernière mise à jour',
       render: (data, type, row) => Render.datetime(data, type, row),
     }
@@ -371,7 +370,7 @@ export default class Column {
       name: 'next_update',
       defaultContent: '',
       title: Render.icon('date') + 'Prochaine',
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Date de prochaine mise à jour estimée',
       render: (data, type, row) =>
         Render.datetime(data, type, row, { estimation: true }),
@@ -379,22 +378,22 @@ export default class Column {
   }
   static favorite() {
     return {
-      data: 'is_favorite',
+      data: 'isFavorite',
       title: Render.icon('favorite') + "<span class='hidden'>favorite</span>",
-      name: 'is_favorite',
+      name: 'isFavorite',
       width: '20px',
       tooltip: 'Favoris',
-      filter_type: 'select',
+      filterType: 'select',
       render: Render.favorite,
     }
   }
-  static level(level_max = null) {
+  static level(levelMax = null) {
     let render = (data, type, row) => row.parents?.length + 1
-    if (level_max) {
+    if (levelMax) {
       render = (data, type, row) => {
         const value = row.parents?.length + 1
         if (!value) return ''
-        const percent = getPercent(value / level_max)
+        const percent = getPercent(value / levelMax)
         return `${Render.numPercent(value, percent, 'key', type)}`
       }
     }
@@ -403,7 +402,7 @@ export default class Column {
       title: Render.icon('level') + "<span class='hidden'>level</span>",
       defaultContent: '',
       name: 'level',
-      filter_type: 'input',
+      filterType: 'input',
       width: '20px',
       tooltip: "Niveau de profondeur de l'arborecence",
       render,
@@ -426,7 +425,7 @@ export default class Column {
       data: 'delivery_format',
       title: Render.icon('delivery_format') + 'Format livraison',
       defaultContent: '',
-      filter_type: 'select',
+      filterType: 'select',
       tooltip: 'Format de livraison des données',
     }
   }
@@ -440,7 +439,7 @@ export default class Column {
         if (!data) return ''
         if (type !== 'display') return data
         let text = data
-        if (row.period_duration) text += '<br>' + row.period_duration
+        if (row.periodDuration) text += '<br>' + row.periodDuration
         return text
       },
     }
@@ -450,8 +449,8 @@ export default class Column {
       data: 'start_date',
       title: Render.icon('date_range') + 'Début',
       defaultContent: '',
-      date_type: 'start',
-      filter_type: 'input',
+      dateType: 'start',
+      filterType: 'input',
       tooltip: 'Date de début de validité',
       render: (data, type) => {
         if (!['sort', 'filter'].includes(type)) return data
@@ -465,8 +464,8 @@ export default class Column {
       data: 'end_date',
       title: Render.icon('date_range') + 'Fin',
       defaultContent: '',
-      date_type: 'end',
-      filter_type: 'input',
+      dateType: 'end',
+      filterType: 'input',
       tooltip: 'Date de fin de validité',
       render: (data, type) => {
         if (!['sort', 'filter'].includes(type)) return data
@@ -475,15 +474,15 @@ export default class Column {
       },
     }
   }
-  static dataset(parent_name) {
+  static dataset(parentName) {
     return {
       data: 'dataset_name',
       title: Render.icon('dataset') + 'Dataset',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Dataset',
       render: (data, type, row) =>
         wrapLongText(
-          link(parent_name + '/' + row[parent_name + '_id'], data, 'dataset'),
+          link(parentName + '/' + row[parentName + '_id'], data, 'dataset'),
         ),
     }
   }
@@ -502,22 +501,22 @@ export default class Column {
       name: 'doc_path',
       title: Render.icon('link') + 'Lien',
       defaultContent: '',
-      has_long_text: true,
+      hasLongText: true,
       tooltip: 'Emplacement du doc',
       render: data => {
         return wrapLongText(`<a href="${data}" target="_blanck">${data}</a>`)
       },
     }
   }
-  static nbDoc(entity, total, with_name = false) {
+  static nbDoc(entity, total, withName = false) {
     return {
       data: 'docs_recursive',
       title:
         Render.icon('doc') +
-        (with_name ? 'Docs' : "<span class='hidden'>nb_docs</span>"),
-      filter_type: 'input',
+        (withName ? 'Docs' : "<span class='hidden'>nb_docs</span>"),
+      filterType: 'input',
       defaultContent: '',
-      from_length: true,
+      fromLength: true,
       tooltip: 'Nombre de docs',
       render: (data, type, row) => {
         if (!data.length) return ''
@@ -531,7 +530,7 @@ export default class Column {
     return {
       data: 'nb_doc_recursive',
       title: Render.icon('doc') + "<span class='hidden'>nb_docs</span>",
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Nombre de docs',
       render: (data, type, row) => {
         if (!data) return ''
@@ -541,18 +540,18 @@ export default class Column {
       },
     }
   }
-  static nbChildRecursive(entity, total, link_path = null) {
-    if (!link_path) link_path = entity + '/'
-    const entity_plural = pluralize(entity)
+  static nbChildRecursive(entity, total, linkPath = null) {
+    if (!linkPath) linkPath = entity + '/'
+    const entityPlural = pluralize(entity)
     return {
       data: 'nb_child_recursive',
       title:
-        Render.icon(entity) + `<span class='hidden'>nb_${entity_plural}</span>`,
-      filter_type: 'input',
+        Render.icon(entity) + `<span class='hidden'>nb_${entityPlural}</span>`,
+      filterType: 'input',
       tooltip: "Nombre d'éléments de type " + entity,
       render: (data, type, row) => {
         if (!data) return ''
-        const content = link(link_path + row.id + `?tab=${entity_plural}`, data)
+        const content = link(linkPath + row.id + `?tab=${entityPlural}`, data)
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, entity, type)}`
       },
@@ -562,7 +561,7 @@ export default class Column {
     return {
       data: 'nb_folder_recursive',
       title: Render.icon('folder') + "<span class='hidden'>nb_folders</span>",
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Nombre de dossiers',
       render: (data, type, row) => {
         if (!data) return ''
@@ -576,7 +575,7 @@ export default class Column {
     return {
       data: 'nb_dataset_recursive',
       title: Render.icon('dataset') + "<span class='hidden'>nb_datasets</span>",
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Nombre de datasets',
       render: (data, type, row) => {
         if (!data) return ''
@@ -588,22 +587,22 @@ export default class Column {
   }
   static nbVariable(entity, total, option) {
     if (!option) option = {}
-    if (!('link_path' in option)) option.link_path = entity + '/'
+    if (!('linkPath' in option)) option.linkPath = entity + '/'
     if (!('tab' in option)) option.tab = 'variables'
-    if (!('show_title' in option)) option.show_title = false
-    const title = option.show_title
+    if (!('showTitle' in option)) option.showTitle = false
+    const title = option.showTitle
       ? 'Variables'
       : `<span class='hidden'>nb_variables</span>`
     return {
       data: 'nb_variable' + (option.recursive ? '_recursive' : ''),
       title: Render.icon('variable') + title,
       name: 'variable',
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Nombre de variables',
       render: (data, type, row) => {
         if (!data) return ''
         const content = link(
-          option.link_path + row.id + `?tab=${option.tab}`,
+          option.linkPath + row.id + `?tab=${option.tab}`,
           data,
         )
         const percent = getPercent(data / total)
@@ -621,15 +620,15 @@ export default class Column {
   }
   static timestamp(options = null) {
     if (!options) options = {}
-    if (!('var_name' in options)) options.var_name = 'timestamp'
+    if (!('varName' in options)) options.varName = 'timestamp'
     if (!('title' in options)) options.title = 'Moment'
     if (!('tooltip' in options)) options.tooltip = "moment de l'ajout"
     return {
-      data: options.var_name,
+      data: options.varName,
       title: Render.icon('date') + options.title,
       defaultContent: '',
       type: 'num',
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: options.tooltip,
       render: (data, type) => {
         if (!data) return ''
@@ -643,22 +642,17 @@ export default class Column {
           datetime = `<span style="font-size: 12px";>${datetime}</span>`
         }
 
-        let time_ago = getTimeAgo(data)
+        let timeAgo = getTimeAgo(data)
 
-        if (time_ago.length > 18) {
-          time_ago = `<span style="font-size: 12px";>${time_ago}</span>`
+        if (timeAgo.length > 18) {
+          timeAgo = `<span style="font-size: 12px";>${timeAgo}</span>`
         }
 
         const percent = getPercent((new Date().getTime() - data) / 31536000000)
         const entity = percent < 0 ? 'value' : 'doc'
-        const percent_abs_inversed = 100 - Math.abs(percent)
-        const content = `${time_ago}<br>${datetime}`
-        return `${Render.numPercent(
-          content,
-          percent_abs_inversed,
-          entity,
-          type,
-        )}`
+        const percentAbsInversed = 100 - Math.abs(percent)
+        const content = `${timeAgo}<br>${datetime}`
+        return `${Render.numPercent(content, percentAbsInversed, entity, type)}`
       },
     }
   }
@@ -667,7 +661,7 @@ export default class Column {
       data: 'key',
       title: Render.icon('key') + 'Clé',
       defaultContent: '',
-      filter_type: 'select',
+      filterType: 'select',
       tooltip: 'Clé primaire ou partie de clé primaire',
       render: (data, type) => {
         if (!data) return ''
@@ -678,9 +672,9 @@ export default class Column {
   }
   static metaLocalisation() {
     return {
-      data: 'meta_localisation',
+      data: 'metaLocalisation',
       title: Render.icon('localisation') + 'Localisation',
-      filter_type: 'select',
+      filterType: 'select',
       defaultContent: '',
       tooltip: 'Localisation (dans les données ou dans le schéma',
       render: data => {
@@ -699,10 +693,10 @@ export default class Column {
   }
   static lineageType() {
     return {
-      data: 'lineage_type',
+      data: 'lineageType',
       title: Render.icon('diagram') + 'Relation',
       defaultContent: '',
-      filter_type: 'select',
+      filterType: 'select',
       tooltip: 'Source (parent) ou dérivé (enfant)',
       render: data => {
         if (!data) return ''

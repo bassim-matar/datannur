@@ -1,6 +1,6 @@
 <script lang="ts">
   import Logs from '@lib/logs'
-  import { DarkMode, dark_mode_theme } from '@dark-mode/dark-mode'
+  import { DarkMode, darkModeTheme } from '@dark-mode/dark-mode'
 
   let { label = null } = $props()
 
@@ -8,12 +8,12 @@
 
   function toggle() {
     DarkMode.toggle()
-    if ($dark_mode_theme === 'dark') Logs.add('toggle_dark_mode_btn_off')
+    if ($darkModeTheme === 'dark') Logs.add('toggle_dark_mode_btn_off')
     else Logs.add('toggle_dark_mode_btn_on')
   }
 
-  let day = $derived($dark_mode_theme === 'dark' ? '' : 'day')
-  let sun = $derived($dark_mode_theme === 'dark' ? '' : 'sun')
+  let day = $derived($darkModeTheme === 'dark' ? '' : 'day')
+  let sun = $derived($darkModeTheme === 'dark' ? '' : 'sun')
 </script>
 
 <button

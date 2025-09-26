@@ -1,31 +1,31 @@
 import jQuery from 'jquery'
 
-const max_height = 200
-const delay_before_open = 200
-const open_duration = 300
-const close_duration = 600
+const maxHeight = 200
+const delayBeforeOpen = 200
+const openDuration = 300
+const closeDuration = 600
 
 export const extendable = {
-  mouse_enter_timeout: null,
+  mouseEnterTimeout: null,
   open() {
     const elem = jQuery(this)
     elem.stop()
-    this.mouse_enter_timeout = setTimeout(() => {
+    this.mouseEnterTimeout = setTimeout(() => {
       elem.addClass('open').removeClass('open_full')
-      elem.stop().animate({ maxHeight: max_height }, open_duration, () => {
+      elem.stop().animate({ maxHeight: maxHeight }, openDuration, () => {
         elem.addClass('open_full')
       })
-    }, delay_before_open)
+    }, delayBeforeOpen)
   },
-  close(elem_ref, min_height = 25) {
-    clearTimeout(elem_ref.mouse_enter_timeout)
-    const elem = jQuery(elem_ref)
+  close(elemRef, minHeight = 25) {
+    clearTimeout(elemRef.mouseEnterTimeout)
+    const elem = jQuery(elemRef)
     if (!elem.hasClass('open')) return false
-    const elem_height = elem.height()
-    const duration = (elem_height / max_height) * close_duration
+    const elemHeight = elem.height()
+    const duration = (elemHeight / maxHeight) * closeDuration
     elem.removeClass('open_full')
-    elem.css({ maxHeight: elem_height + 'px' })
-    elem.stop().animate({ maxHeight: min_height }, duration, () => {
+    elem.css({ maxHeight: elemHeight + 'px' })
+    elem.stop().animate({ maxHeight: minHeight }, duration, () => {
       elem.removeClass('open')
     })
   },

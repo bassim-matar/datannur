@@ -2,7 +2,7 @@
   import { getPercent } from '@lib/util'
   import Render from '@lib/render'
 
-  let { value, nb_row, type, percent = getPercent(value / nb_row) } = $props()
+  let { value, nbRow, type, percent = getPercent(value / nbRow) } = $props()
 </script>
 
 <span class="num_percent color_{type} placeholder" style="width: 100%"></span>

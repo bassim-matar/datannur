@@ -1,17 +1,17 @@
 export class UrlParam {
   static getAppMode() {
-    return app_mode
+    return appMode
   }
   static get(key) {
     let hash = window.location.hash
-    if (app_mode === 'static_render') hash = window.location.search
+    if (appMode === 'static_render') hash = window.location.search
     if (!hash.includes('?')) {
       hash = window.location.search
       if (!hash.includes('?')) return false
     }
-    const params_string = hash.split('?')[1]
-    if (!params_string) return false
-    const urlParams = new URLSearchParams(params_string)
+    const paramsString = hash.split('?')[1]
+    if (!paramsString) return false
+    const urlParams = new URLSearchParams(paramsString)
     return urlParams.get(key)
   }
   static set(key, value) {
@@ -25,7 +25,7 @@ export class UrlParam {
     let hash = loc.hash.split('?')[0]
     if (hash === '') {
       hash = '#/'
-      if (app_mode === 'static_render') hash = ''
+      if (appMode === 'static_render') hash = ''
     }
     const url = loc.protocol + '//' + loc.host + loc.pathname + hash
     window.history.replaceState(null, null, url)
@@ -33,14 +33,14 @@ export class UrlParam {
   static edit(key, value, mode) {
     const loc = window.location
     let hash
-    const params_string = loc.href.split('?')[1]
-    const params = new URLSearchParams(params_string)
+    const paramsString = loc.href.split('?')[1]
+    const params = new URLSearchParams(paramsString)
     if (mode === 'set') {
       params.set(key, value)
     } else if (mode === 'delete') {
       params.delete(key)
     }
-    if (app_mode === 'static_render') {
+    if (appMode === 'static_render') {
       hash = ''
     } else {
       hash = loc.hash.split('?')[0]
@@ -50,33 +50,33 @@ export class UrlParam {
       if (hash === '#/' && params.toString() === '') hash = ''
     }
     const url = loc.protocol + '//' + loc.host + loc.pathname + hash
-    let url_with_params = url
+    let urlWithParams = url
     if (params.toString() !== '') {
-      url_with_params += '?' + params.toString()
+      urlWithParams += '?' + params.toString()
     }
-    window.history.replaceState(null, null, url_with_params)
+    window.history.replaceState(null, null, urlWithParams)
   }
   static getAllParams() {
     let hash = window.location.hash
-    if (app_mode === 'static_render') hash = window.location.href
+    if (appMode === 'static_render') hash = window.location.href
     if (!hash.includes('?')) return {}
-    const params_string = hash.split('?')[1]
-    const url_params = new URLSearchParams(params_string)
-    const params_obj = {}
-    url_params.forEach((value, key) => {
-      params_obj[key] = value
+    const paramsString = hash.split('?')[1]
+    const urlParams = new URLSearchParams(paramsString)
+    const paramsObj = {}
+    urlParams.forEach((value, key) => {
+      paramsObj[key] = value
     })
-    return params_obj
+    return paramsObj
   }
 }
 
-let app_mode = 'spa'
-const url_app_mode = UrlParam.get('app_mode')
+let appMode = 'spa'
+const urlAppMode = UrlParam.get('app_mode')
 
-if (url_app_mode == 'check_db') {
-  app_mode = 'check_db'
-} else if (url_app_mode == 'static_render') {
-  app_mode = 'static_render'
-} else if (document.querySelector('meta[app_mode="static"]')) {
-  app_mode = 'static_render'
+if (urlAppMode == 'check_db') {
+  appMode = 'check_db'
+} else if (urlAppMode == 'static_render') {
+  appMode = 'static_render'
+} else if (document.querySelector('meta[app-mode="static"]')) {
+  appMode = 'static_render'
 }

@@ -4,11 +4,11 @@
 
   let { onChange = () => {} } = $props()
 
-  let evolution_summary = $state(Options.get('evolution_summary'))
+  let evolutionSummary = $state(Options.get('evolution_summary'))
 
   function updateEvolutionSummary() {
-    Options.set('evolution_summary', evolution_summary, () => {
-      onChange('evolution_summary' + String(evolution_summary))
+    Options.set('evolution_summary', evolutionSummary, () => {
+      onChange('evolution_summary' + String(evolutionSummary))
     })
   }
 </script>
@@ -18,10 +18,10 @@
   title="Afficher les évolultions de façon résumée"
 >
   <Switch
-    bind:value={evolution_summary}
+    bind:value={evolutionSummary}
     change={updateEvolutionSummary}
-    slot_position="left"
-    tree_switch={true}
+    slotPosition="left"
+    treeSwitch={true}
     minimize={true}
     size="small"
   ></Switch>

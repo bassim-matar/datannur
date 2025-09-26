@@ -4,7 +4,7 @@ import { UrlParam } from '@lib/url-param'
 import { dateToTimestamp } from '@lib/time'
 
 interface FilterHistory {
-  columns: Record<number, { special_search?: string }>
+  columns: Record<number, { specialSearch?: string }>
 }
 
 interface ButtonInfo {
@@ -14,42 +14,42 @@ interface ButtonInfo {
 }
 
 export default class FilterHelper {
-  table_id: string
+  tableId: string
   filters: Record<number, number>
-  filter_table_id: string
-  on_update_filter_count: (count: number) => void
+  filterTableId: string
+  onUpdateFilterCount: (count: number) => void
   datatable: Api
-  history_search: FilterHistory | null
-  constructor(table_id, entity, on_update_filter_count) {
-    this.table_id = table_id
+  historySearch: FilterHistory | null
+  constructor(tableId, entity, onUpdateFilterCount) {
+    this.tableId = tableId
     this.filters = {}
-    this.filter_table_id = 'tab_' + entity
-    this.on_update_filter_count = on_update_filter_count
+    this.filterTableId = 'tab_' + entity
+    this.onUpdateFilterCount = onUpdateFilterCount
   }
   init(datatable) {
     this.datatable = datatable
-    this.history_search = this.getHistory()
+    this.historySearch = this.getHistory()
     datatable.columns().every(index => {
       this.initColumn(datatable.column(index), index)
     })
   }
-  initColumn(column, column_num) {
-    const id = 'datatables_title_' + this.table_id + '_filter_' + column_num
-    const filter_elem = jQuery('#' + id)
-    const filter_container = filter_elem.parent()
-    const column_attr = column.settings().init().columns[column_num]
-    const column_date_type = column_attr?.date_type
-    const filter_type = column_attr?.filter_type
-    let unique_values = column.data().unique()
+  initColumn(column, columnNum) {
+    const id = 'datatables_title_' + this.tableId + '_filter_' + columnNum
+    const filterElem = jQuery('#' + id)
+    const filterContainer = filterElem.parent()
+    const columnAttr = column.settings().init().columns[columnNum]
+    const columnDateType = columnAttr?.dateType
+    const filterType = columnAttr?.filterType
+    let uniqueValues = column.data().unique()
 
     if (
-      filter_type === 'select' ||
-      (filter_type !== 'input' &&
-        unique_values.length < 10 &&
-        Array.isArray(unique_values[0]) &&
-        typeof unique_values[0] !== 'object' &&
-        Array.isArray(unique_values[1]) &&
-        typeof unique_values[1] !== 'object')
+      filterType === 'select' ||
+      (filterType !== 'input' &&
+        uniqueValues.length < 10 &&
+        Array.isArray(uniqueValues[0]) &&
+        typeof uniqueValues[0] !== 'object' &&
+        Array.isArray(uniqueValues[1]) &&
+        typeof uniqueValues[1] !== 'object')
     ) {
       let options = '<option value="">- - -</option>'
       if (column.header().innerHTML.includes('icon_favorite')) {
@@ -57,10 +57,10 @@ export default class FilterHelper {
           options += '<option value="' + val + '">' + val + '</option>'
         }
       } else {
-        unique_values = unique_values.map(val =>
+        uniqueValues = uniqueValues.map(val =>
           [null, undefined].includes(val) ? '' : val,
         )
-        unique_values.sort().each(function (val) {
+        uniqueValues.sort().each(function (val) {
           if (val === '') {
             options += '<option value="__empty__"></option>'
           } else {
@@ -75,10 +75,10 @@ export default class FilterHelper {
       const select = jQuery(
         `<select required name="${id}" id="${id}">${options}</select>`,
       )
-      filter_container.html('')
-      const select_wrap = jQuery('<div class="select"></div>')
-      select_wrap.appendTo(filter_container)
-      select.appendTo(select_wrap)
+      filterContainer.html('')
+      const selectWrap = jQuery('<div class="select"></div>')
+      selectWrap.appendTo(filterContainer)
+      select.appendTo(selectWrap)
       select.on('change', event => {
         const elem = jQuery(event.target)
         let val = jQuery.fn.dataTable.util.escapeRegex(elem.val())
@@ -90,49 +90,49 @@ export default class FilterHelper {
         } else {
           column.search(val ? '^' + val : '', true, false).draw()
         }
-        this.updateFilterUrl(column_num, val)
+        this.updateFilterUrl(columnNum, val)
         this.updateFilterCount()
       })
 
-      const col_filter_url = this.getColFilterUrl(column_num)
+      const colFilterUrl = this.getColFilterUrl(columnNum)
 
-      if (col_filter_url) {
-        select.val(col_filter_url.replaceAll('\\', ''))
+      if (colFilterUrl) {
+        select.val(colFilterUrl.replaceAll('\\', ''))
         column
-          .search(col_filter_url ? '^' + col_filter_url : '', true, false)
+          .search(colFilterUrl ? '^' + colFilterUrl : '', true, false)
           .draw()
         this.updateFilterCount()
       } else if (column.search() !== '') {
         select.val(column.search().split('^')[1]).trigger('change')
       }
     } else {
-      filter_elem.on('keyup', event => {
+      filterElem.on('keyup', event => {
         const elem = jQuery(event.target)
-        const clear_btn = elem.parent().children('.btn_clear_input')
-        const search_icon = elem.parent().children('.search_icon')
+        const clearBtn = elem.parent().children('.btn_clear_input')
+        const searchIcon = elem.parent().children('.search_icon')
         if (elem.val() === '') {
-          clear_btn.hide()
-          search_icon.show()
+          clearBtn.hide()
+          searchIcon.show()
         } else {
-          clear_btn.show()
-          search_icon.hide()
+          clearBtn.show()
+          searchIcon.hide()
         }
 
-        if (column_num in this.filters) {
-          this.searchEquationEnd(column_num)
-          this.updateFilterHistory(column_num, '')
+        if (columnNum in this.filters) {
+          this.searchEquationEnd(columnNum)
+          this.updateFilterHistory(columnNum, '')
         }
 
         let value = elem.val()
 
-        if (value && column_date_type) {
+        if (value && columnDateType) {
           if (value.charCodeAt(0) > 47 && value.charCodeAt(0) < 58) {
-            const timestamp = dateToTimestamp(value, column_date_type)
+            const timestamp = dateToTimestamp(value, columnDateType)
             if (![NaN, undefined].includes(timestamp)) {
               value = timestamp.toString()
             }
           } else {
-            value = value[0] + dateToTimestamp(value.slice(1), column_date_type)
+            value = value[0] + dateToTimestamp(value.slice(1), columnDateType)
           }
         }
 
@@ -144,132 +144,132 @@ export default class FilterHelper {
             value.startsWith('!'))
         ) {
           column.search('')
-          this.searchEquationStart(column_num, value)
+          this.searchEquationStart(columnNum, value)
         } else {
           column.search(value)
         }
         column.draw()
-        this.updateFilterUrl(column_num, elem.val())
+        this.updateFilterUrl(columnNum, elem.val())
         this.updateFilterCount()
       })
 
-      const col_filter_url = this.getColFilterUrl(column_num)
-      const col_history = this.getFilterHistory(column_num)
-      if (col_filter_url) {
-        filter_elem.val(col_filter_url).trigger('keyup')
+      const colFilterUrl = this.getColFilterUrl(columnNum)
+      const colHistory = this.getFilterHistory(columnNum)
+      if (colFilterUrl) {
+        filterElem.val(colFilterUrl).trigger('keyup')
       } else if (
-        col_history?.special_search &&
-        col_history?.special_search !== ''
+        colHistory?.specialSearch &&
+        colHistory?.specialSearch !== ''
       ) {
-        filter_elem.val(col_history?.special_search).trigger('keyup')
+        filterElem.val(colHistory?.specialSearch).trigger('keyup')
       } else if (column.search() !== '') {
-        filter_elem.val(column.search()).trigger('keyup')
+        filterElem.val(column.search()).trigger('keyup')
       }
     }
   }
   cleanString(value) {
     return value.toString().trim().toLowerCase()
   }
-  searchEquationStart(column_num, search) {
+  searchEquationStart(columnNum, search) {
     const dt = jQuery.fn.dataTable
-    this.filters[column_num] = dt.ext.search.length
+    this.filters[columnNum] = dt.ext.search.length
     dt.ext.search.push((settings, data) => {
-      if (settings.nTable.id !== this.table_id) return true
+      if (settings.nTable.id !== this.tableId) return true
       if (!search || search.slice(1).trim() === '') return true
-      const value = data[column_num].replaceAll(' ', '')
-      const search_value = search.slice(1).trim()
+      const value = data[columnNum].replaceAll(' ', '')
+      const searchValue = search.slice(1).trim()
       if (search.startsWith('<')) {
-        return parseInt(value) < parseInt(search_value)
+        return parseInt(value) < parseInt(searchValue)
       } else if (search.startsWith('>')) {
-        return parseInt(value) > parseInt(search_value)
+        return parseInt(value) > parseInt(searchValue)
       } else if (search.startsWith(`=""`) || search.startsWith(`=''`)) {
         return this.cleanString(value) === ''
       } else if (search.startsWith(`!""`) || search.startsWith(`!''`)) {
         return this.cleanString(value) !== ''
       } else if (search.startsWith('=')) {
-        return this.cleanString(value) === this.cleanString(search_value)
+        return this.cleanString(value) === this.cleanString(searchValue)
       } else if (search.startsWith('!')) {
-        return !this.cleanString(value).includes(this.cleanString(search_value))
+        return !this.cleanString(value).includes(this.cleanString(searchValue))
       }
       return true
     })
   }
   updateSearchFilters(position) {
     if (!this.filters) return
-    for (const [col_num, filter_position] of Object.entries(this.filters)) {
-      if (filter_position > position) {
-        this.filters[col_num] -= 1
+    for (const [colNum, filterPosition] of Object.entries(this.filters)) {
+      if (filterPosition > position) {
+        this.filters[colNum] -= 1
       }
     }
   }
-  searchEquationEnd(column_num) {
+  searchEquationEnd(columnNum) {
     const dt = jQuery.fn.dataTable
-    dt.ext.search.splice(this.filters[column_num], 1)
-    this.updateSearchFilters(this.filters[column_num])
-    delete this.filters[column_num]
+    dt.ext.search.splice(this.filters[columnNum], 1)
+    this.updateSearchFilters(this.filters[columnNum])
+    delete this.filters[columnNum]
   }
   destroy() {
     const dt = jQuery.fn.dataTable
-    const to_remove = Object.values(this.filters)
-    dt.ext.search = dt.ext.search.filter((v, i) => to_remove.indexOf(i) === -1)
+    const toRemove = Object.values(this.filters)
+    dt.ext.search = dt.ext.search.filter((v, i) => toRemove.indexOf(i) === -1)
   }
   getHistory() {
-    const json_str = localStorage.getItem(
-      'DataTables_history_search_' + this.table_id,
+    const jsonStr = localStorage.getItem(
+      'DataTables_history_search_' + this.tableId,
     )
-    if (!json_str) return null
-    return JSON.parse(json_str)
+    if (!jsonStr) return null
+    return JSON.parse(jsonStr)
   }
-  getFilterHistory(col_num) {
-    const col_data = this.history_search?.columns[col_num]
-    if (!col_data) return {}
-    return col_data
+  getFilterHistory(colNum) {
+    const colData = this.historySearch?.columns[colNum]
+    if (!colData) return {}
+    return colData
   }
-  updateFilterHistory(col_num, value) {
-    if (!this.history_search) {
-      this.history_search = {
+  updateFilterHistory(colNum, value) {
+    if (!this.historySearch) {
+      this.historySearch = {
         columns: {},
       }
     }
-    let col_data = this.history_search.columns[col_num]
-    if (!col_data) {
-      col_data = {}
-      this.history_search.columns[col_num] = col_data
+    let colData = this.historySearch.columns[colNum]
+    if (!colData) {
+      colData = {}
+      this.historySearch.columns[colNum] = colData
     }
-    col_data.special_search = value
+    colData.specialSearch = value
     localStorage.setItem(
-      'DataTables_history_search_' + this.table_id,
-      JSON.stringify(this.history_search),
+      'DataTables_history_search_' + this.tableId,
+      JSON.stringify(this.historySearch),
     )
   }
-  updateFilterUrl(col_num, value) {
-    const col_id = this.filter_table_id + '_' + col_num
+  updateFilterUrl(colNum, value) {
+    const colId = this.filterTableId + '_' + colNum
     if ([undefined, null, NaN, ''].includes(value)) {
-      UrlParam.delete(col_id)
+      UrlParam.delete(colId)
     } else {
-      UrlParam.set(col_id, value)
+      UrlParam.set(colId, value)
     }
   }
-  getColFilterUrl(col_num) {
-    const col_id = this.filter_table_id + '_' + col_num
-    const value = UrlParam.get(col_id)
+  getColFilterUrl(colNum) {
+    const colId = this.filterTableId + '_' + colNum
+    const value = UrlParam.get(colId)
     if (!value) return false
     return value
   }
   updateFilterCount() {
-    let nb_active = 0
+    let nbActive = 0
     for (const key in UrlParam.getAllParams()) {
-      if (key.startsWith(this.filter_table_id + '_')) {
-        nb_active += 1
+      if (key.startsWith(this.filterTableId + '_')) {
+        nbActive += 1
       }
     }
-    this.on_update_filter_count(nb_active)
+    this.onUpdateFilterCount(nbActive)
   }
   removeAll() {
     for (const key in UrlParam.getAllParams()) {
-      if (key.startsWith(this.filter_table_id + '_')) {
-        const col_num = key.split(this.filter_table_id + '_')[1]
-        const id = 'datatables_title_' + this.table_id + '_filter_' + col_num
+      if (key.startsWith(this.filterTableId + '_')) {
+        const colNum = key.split(this.filterTableId + '_')[1]
+        const id = 'datatables_title_' + this.tableId + '_filter_' + colNum
         jQuery('#' + id)
           .val('')
           .trigger('keyup')

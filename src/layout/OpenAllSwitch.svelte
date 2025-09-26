@@ -4,11 +4,11 @@
 
   let { onChange = () => {} } = $props()
 
-  let open_all_recursive = $state(Options.get('open_all_recursive'))
+  let openAllRecursive = $state(Options.get('open_all_recursive'))
 
   function updateOpenAllRecursive() {
-    Options.set('open_all_recursive', open_all_recursive, () => {
-      onChange(open_all_recursive)
+    Options.set('open_all_recursive', openAllRecursive, () => {
+      onChange(openAllRecursive)
     })
   }
 </script>
@@ -18,10 +18,10 @@
   title="Afficher les éléments imbriqués"
 >
   <Switch
-    bind:value={open_all_recursive}
+    bind:value={openAllRecursive}
     change={updateOpenAllRecursive}
-    slot_position="left"
-    tree_switch={true}
+    slotPosition="left"
+    treeSwitch={true}
     size="small"
   ></Switch>
 </div>

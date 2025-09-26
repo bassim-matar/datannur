@@ -7,8 +7,8 @@
     onPageHomepage,
     onPageSearch,
   } from '@lib/store'
-  import { app_mode } from '@lib/util'
-  import { dark_mode_theme } from '@dark-mode/dark-mode'
+  import { appMode } from '@lib/util'
+  import { darkModeTheme } from '@dark-mode/dark-mode'
   import { router } from '@lib/router.svelte.js'
   import logo from '@img/logo.png'
   import logo_dark from '@img/logo-dark.png'
@@ -19,12 +19,12 @@
   import Link from '@layout/Link.svelte'
   import Footer from '@frame/Footer.svelte'
 
-  let scroll_y = $state(0)
+  let scrollY = $state(0)
   let loading = $state(true)
 
-  let logo_src = $derived($dark_mode_theme === 'dark' ? logo_dark : logo)
+  let logoSrc = $derived($darkModeTheme === 'dark' ? logo_dark : logo)
 
-  const toggle_header = () => ($headerOpen = !$headerOpen)
+  const toggleHeader = () => ($headerOpen = !$headerOpen)
   const closeMenu = () => ($headerOpen = false)
 
   function clickOnMainLogo() {
@@ -42,18 +42,18 @@
   db.loaded.then(() => (loading = false))
 </script>
 
-<svelte:window bind:scrollY={scroll_y} />
+<svelte:window bind:scrollY />
 
 <nav
   class="navbar is-fixed-top"
   class:header_open={$headerOpen}
-  class:header_on_top={scroll_y < 10 || $headerOpen}
-  class:box_shadow={scroll_y >= 10 && !$headerOpen}
+  class:header_on_top={scrollY < 10 || $headerOpen}
+  class:box_shadow={scrollY >= 10 && !$headerOpen}
   style="max-height: 48px; min-height: 48px;"
 >
   <div class="navbar-brand">
     <Link href="" className="navbar-item" alternativeAction={clickOnMainLogo}>
-      <img src={logo_src} class="header_logo" alt="logo" />
+      <img src={logoSrc} class="header_logo" alt="logo" />
     </Link>
 
     <div class="mobile_right_btn">
@@ -69,7 +69,7 @@
         class="navbar-burger"
         class:is-active={$headerOpen}
         aria-label="menu"
-        onclick={toggle_header}
+        onclick={toggleHeader}
       >
         <span></span><span></span><span></span>
       </button>
@@ -100,7 +100,7 @@
           'doc',
           'docs',
         ]}
-        if_use={['institution', 'folder', 'tag', 'doc']}
+        ifUse={['institution', 'folder', 'tag', 'doc']}
       >
         <HeaderLink standard="institution" />
         <HeaderLink standard="folder" />
@@ -118,14 +118,14 @@
           'modality',
           'modalities',
         ]}
-        if_use={['dataset', 'variable', 'modality']}
+        ifUse={['dataset', 'variable', 'modality']}
       >
         <HeaderLink standard="dataset" />
         <HeaderLink standard="variable" />
         <HeaderLink standard="modality" />
       </HeaderDropdown>
 
-      <HeaderDropdown title="Filtre" if_use={['filter']}>
+      <HeaderDropdown title="Filtre" ifUse={['filter']}>
         <MainFilter />
       </HeaderDropdown>
 
@@ -154,8 +154,8 @@
     </div>
 
     <div class="navbar-end">
-      {#if $isSmallMenu && app_mode !== 'static_render'}
-        <Footer menu_mobile={true} />
+      {#if $isSmallMenu && appMode !== 'static_render'}
+        <Footer menuMobile={true} />
       {/if}
     </div>
   </div>

@@ -1,32 +1,32 @@
 <script lang="ts">
-  import { entityToIconName } from "@lib/util"
+  import { entityToIconName } from '@lib/util'
 
   let {
     type,
-    margin_right = true,
-    margin_left = false,
-    mode = "normal",
+    marginRight = true,
+    marginLeft = false,
+    mode = 'normal',
   } = $props()
 
   const icon = $derived(entityToIconName(type))
-  const class_names = $derived(
-    icon.startsWith("fa-brands") ? icon : `fas fa-${icon}`,
+  const classNames = $derived(
+    icon.startsWith('fa-brands') ? icon : `fas fa-${icon}`,
   )
 </script>
 
 {#if type}
   <span
     class="icon icon_{type} {mode}"
-    class:no_margin_right={!margin_right}
-    class:with_margin_left={margin_left}
+    class:no_margin_right={!marginRight}
+    class:with_margin_left={marginLeft}
   >
-    <i class={class_names}></i>
+    <i class={classNames}></i>
   </span>
 {/if}
 
 <style lang="scss">
-  @use "main.scss" as *;
-  @use "../style/icon.scss" as *;
+  @use 'main.scss' as *;
+  @use '../style/icon.scss' as *;
 
   @include icon-color;
 

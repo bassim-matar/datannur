@@ -2,26 +2,26 @@
   import { onMount } from 'svelte'
   import { tabSelected, footerVisible, allTabs } from '@lib/store'
   import { UrlParam } from '@lib/url-param'
-  import { is_firefox, getIsMobile } from '@lib/util'
-  import { is_big_limit } from '@lib/constant'
+  import { isFirefox, getIsMobile } from '@lib/util'
+  import { isBigLimit } from '@lib/constant'
   import Logs from '@lib/logs'
   import TabsBody from '@tab/TabsBody.svelte'
   import TabTitle from '@tab/TabTitle.svelte'
 
   let { tabs } = $props()
 
-  let is_mobile = getIsMobile()
-  let all_keys = []
-  let has_reverse_scroll = !is_firefox
+  let isMobile = getIsMobile()
+  let allKeys = []
+  let hasReverseScroll = !isFirefox
 
-  let active_tab = $state(tabs[0]?.key)
-  let active_tab_body = $state(tabs[0]?.key)
-  let tabs_loaded = $state({ active_tab: 1 })
-  let tabs_title_key = $state(is_mobile)
+  let activeTab = $state(tabs[0]?.key)
+  let activeTabBody = $state(tabs[0]?.key)
+  let tabsLoaded = $state({ activeTab: 1 })
+  let tabsTitleKey = $state(isMobile)
   let ul: HTMLDivElement | null = $state()
-  let is_last_tab = $state()
+  let isLastTab = $state()
 
-  let no_first_tab = $derived(active_tab !== tabs[0]?.key)
+  let noFirstTab = $derived(activeTab !== tabs[0]?.key)
 
   const getWidth = selector => document.querySelector(selector)?.offsetWidth
 
@@ -32,55 +32,55 @@
   function checkIfLastTab() {
     return (
       tabs.length > 0 &&
-      active_tab === tabs[tabs.length - 1].key &&
+      activeTab === tabs[tabs.length - 1].key &&
       isTabsOverflow()
     )
   }
 
   function onResize() {
-    is_last_tab = checkIfLastTab()
-    is_mobile = getIsMobile()
-    if (!tabs_title_key && is_mobile) {
-      tabs_title_key = true
+    isLastTab = checkIfLastTab()
+    isMobile = getIsMobile()
+    if (!tabsTitleKey && isMobile) {
+      tabsTitleKey = true
     }
   }
 
-  function loadTab(tab_key) {
-    if (!all_keys.includes(tab_key)) return
-    active_tab = tab_key
-    active_tab_body = tab_key
-    if (!(tab_key in tabs_loaded)) {
-      tabs_loaded[tab_key] = 0
+  function loadTab(tabKey) {
+    if (!allKeys.includes(tabKey)) return
+    activeTab = tabKey
+    activeTabBody = tabKey
+    if (!(tabKey in tabsLoaded)) {
+      tabsLoaded[tabKey] = 0
     }
-    tabs_loaded[tab_key] += 1
+    tabsLoaded[tabKey] += 1
   }
 
   function selectTab(tab) {
-    const tab_key = tab.key
-    loadTab(tab_key)
+    const tabKey = tab.key
+    loadTab(tabKey)
     setFooter(tab)
     $tabSelected = tab
     centerActiveTab()
-    Logs.add('select_tab', { entity: tab_key })
-    if (tabs[0].key === tab_key) {
+    Logs.add('select_tab', { entity: tabKey })
+    if (tabs[0].key === tabKey) {
       UrlParam.delete('tab')
     } else {
-      UrlParam.set('tab', tab_key)
+      UrlParam.set('tab', tabKey)
     }
   }
 
   function setFooter(tab) {
-    if (tab.footer_visible === false) {
+    if (tab.footerVisible === false) {
       $footerVisible = false
       return
     }
-    $footerVisible = tab.footer_visible || tab.nb < is_big_limit
+    $footerVisible = tab.footerVisible || tab.nb < isBigLimit
   }
 
   function centerActiveTab() {
     setTimeout(() => {
-      const li_active = '#tabs_container ul.tabs_container_ul li.is-active'
-      const li: HTMLLIElement | null = document.querySelector(li_active)
+      const liActive = '#tabs_container ul.tabs_container_ul li.is-active'
+      const li: HTMLLIElement | null = document.querySelector(liActive)
       if (!li || !ul) return
       const position = ul.offsetWidth / 2 - li.offsetWidth / 2
       ul.scrollLeft = 0 - (position - li.offsetLeft)
@@ -89,21 +89,21 @@
 
   function setupTabs() {
     for (const tab of tabs) {
-      all_keys.push(tab.key)
+      allKeys.push(tab.key)
       $allTabs[tab.icon] = { ...tab }
     }
   }
 
   function loadTabFromUrlParam() {
-    const url_param_tab = UrlParam.get('tab')
-    if (url_param_tab) {
-      loadTab(url_param_tab)
+    const urlParamTab = UrlParam.get('tab')
+    if (urlParamTab) {
+      loadTab(urlParamTab)
     }
   }
 
   function setupActiveTab() {
     for (const tab of tabs) {
-      if (active_tab_body === tab.key) {
+      if (activeTabBody === tab.key) {
         setFooter(tab)
         $tabSelected = tab
       }
@@ -115,8 +115,8 @@
   })
 
   $effect(() => {
-    void active_tab
-    is_last_tab = checkIfLastTab()
+    void activeTab
+    isLastTab = checkIfLastTab()
   })
 
   setupTabs()
@@ -129,21 +129,21 @@
 <div
   id="tabs_container"
   class="tabs is-boxed"
-  class:no-first-tab={no_first_tab}
-  class:is-last-tab={is_last_tab}
-  class:has-reverse-scroll={has_reverse_scroll}
+  class:no-first-tab={noFirstTab}
+  class:is-last-tab={isLastTab}
+  class:has-reverse-scroll={hasReverseScroll}
   bind:this={ul}
 >
-  {#key tabs_title_key}
+  {#key tabsTitleKey}
     <ul class="tabs_container_ul">
       {#each tabs as tab (tab.key)}
-        <TabTitle {tab} bind:active_tab {selectTab} />
+        <TabTitle {tab} bind:activeTab {selectTab} />
       {/each}
     </ul>
   {/key}
 </div>
 
-<TabsBody {tabs} {no_first_tab} {is_last_tab} {active_tab_body} {tabs_loaded} />
+<TabsBody {tabs} {noFirstTab} {isLastTab} {activeTabBody} {tabsLoaded} />
 
 <style lang="scss">
   @use 'main.scss' as *;

@@ -1,17 +1,17 @@
 <script lang="ts">
   let {
-    nb_active_filter = 0,
+    nbActiveFilter = 0,
     click,
   }: {
-    nb_active_filter?: number
+    nbActiveFilter?: number
     click?: (event: MouseEvent) => void
   } = $props()
 </script>
 
-{#if nb_active_filter > 0}
+{#if nbActiveFilter > 0}
   <button class="filter_info_box" onclick={click}>
-    {nb_active_filter} filtre{nb_active_filter > 1 ? 's' : ''}
-    actif{nb_active_filter > 1 ? 's' : ''}
+    {nbActiveFilter} filtre{nbActiveFilter > 1 ? 's' : ''}
+    actif{nbActiveFilter > 1 ? 's' : ''}
     <i class="close_btn fa-solid fa-xmark"></i>
   </button>
 {/if}

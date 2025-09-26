@@ -16,8 +16,8 @@ export function fixColumnsWidth(dt) {
   dt.columns()
     .header()
     .each(function (header) {
-      const column_with = header.getBoundingClientRect().width
-      header.style.minWidth = `${column_with}px`
+      const columnWith = header.getBoundingClientRect().width
+      header.style.minWidth = `${columnWith}px`
     })
 }
 
@@ -31,61 +31,61 @@ export function elemHasClickable(target, container, selector) {
 
 export function getTableId(entity) {
   const hash = UrlHash.getAll()
-  const table_id = hash.replaceAll('/', '___').replace(/[^a-z0-9_\-,. ]/gi, '')
-  return table_id + '___' + entity
+  const tableId = hash.replaceAll('/', '___').replace(/[^a-z0-9_\-,. ]/gi, '')
+  return tableId + '___' + entity
 }
 
-export function getNbItem(dt, clean_data) {
+export function getNbItem(dt, cleanData) {
   const separator = '|'
-  const nb_total = clean_data.length
-  const nb_item_display = dt?.page?.info()?.recordsDisplay
-  if (nb_item_display !== nb_total) {
-    const percent = getPercent(nb_item_display / nb_total)
-    return `${nb_item_display} / ${nb_total} ${separator} ${percent}%`
+  const nbTotal = cleanData.length
+  const nbItemDisplay = dt?.page?.info()?.recordsDisplay
+  if (nbItemDisplay !== nbTotal) {
+    const percent = getPercent(nbItemDisplay / nbTotal)
+    return `${nbItemDisplay} / ${nbTotal} ${separator} ${percent}%`
   } else {
-    return nb_item_display
+    return nbItemDisplay
   }
 }
 
 export function getNbSticky(columns) {
-  let nb_sticky = 1
+  let nbSticky = 1
   if (window.innerWidth > 1023) {
     for (const column of columns) {
-      if (column.name === 'entity') nb_sticky += 1
-      if (column.name === 'id') nb_sticky += 1
-      if (column.name === 'is_favorite') nb_sticky += 1
-      if (column.name === 'name') nb_sticky += 1
-      if (column.name === 'evolution_type') nb_sticky += 1
+      if (column.name === 'entity') nbSticky += 1
+      if (column.name === 'id') nbSticky += 1
+      if (column.name === 'isFavorite') nbSticky += 1
+      if (column.name === 'name') nbSticky += 1
+      if (column.name === 'evolution_type') nbSticky += 1
     }
   }
-  return nb_sticky
+  return nbSticky
 }
 
-export function getCleanData(data, sort_by_name, is_recursive, is_big) {
+export function getCleanData(data, sortByName, isRecursive, isBig) {
   function getHasFilterRecursive() {
     const hash = UrlHash.getAll()
-    const open_all_recursive = Options.get('open_all_recursive')
-    return hash !== 'favorite' && !open_all_recursive
+    const openAllRecursive = Options.get('open_all_recursive')
+    return hash !== 'favorite' && !openAllRecursive
   }
 
-  const has_filter_recursive = is_recursive && is_big && getHasFilterRecursive()
-  const temp_data = [...data]
-  const new_data: Row[] = []
-  if (sort_by_name) {
-    temp_data.sort(getSortByName)
+  const hasFilterRecursive = isRecursive && isBig && getHasFilterRecursive()
+  const tempData = [...data]
+  const newData: Row[] = []
+  if (sortByName) {
+    tempData.sort(getSortByName)
   }
-  let row_num = 0
-  for (const rows of temp_data) {
+  let rowNum = 0
+  for (const rows of tempData) {
     if (
-      has_filter_recursive &&
-      rows.parents_relative.length - rows.minimum_deep !== 0
+      hasFilterRecursive &&
+      rows.parentsRelative.length - rows.minimumDeep !== 0
     ) {
       continue
     }
-    row_num += 1
-    const copy_rows = { ...rows }
-    copy_rows._row_num = row_num
-    new_data.push(copy_rows)
+    rowNum += 1
+    const copyRows = { ...rows }
+    copyRows._row_num = rowNum
+    newData.push(copyRows)
   }
-  return new_data
+  return newData
 }

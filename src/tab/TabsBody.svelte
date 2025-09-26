@@ -3,31 +3,30 @@
   import Loading from '@frame/Loading.svelte'
   import { tabSelected } from '@lib/store'
 
-  let { tabs, no_first_tab, is_last_tab, active_tab_body, tabs_loaded } =
-    $props()
+  let { tabs, noFirstTab, isLastTab, activeTabBody, tabsLoaded } = $props()
 
-  let open_all_tab = Options.get('open_all_tab')
+  let openAllTab = Options.get('open_all_tab')
 </script>
 
 <div
   class="tabs_body box_shadow box_shadow_color shadow_{$tabSelected.icon}"
-  class:no-first-tab={no_first_tab}
-  class:is-last-tab={is_last_tab}
+  class:no-first-tab={noFirstTab}
+  class:is-last-tab={isLastTab}
 >
-  {#if active_tab_body === 'loading'}
+  {#if activeTabBody === 'loading'}
     <div class="tabs_loading_wrapper">
       <Loading position="absolute" />
     </div>
   {/if}
   {#each tabs as tab (tab.key)}
-    {#if open_all_tab || active_tab_body === tab.key || tabs_loaded[tab.key] > 0}
+    {#if openAllTab || activeTabBody === tab.key || tabsLoaded[tab.key] > 0}
       <div
         class="tab_component_wrapper {tab.props.class || ''}"
-        class:visible={active_tab_body === tab.key}
-        class:not_visible={active_tab_body !== tab.key}
+        class:visible={activeTabBody === tab.key}
+        class:not_visible={activeTabBody !== tab.key}
         class:padding={tab.padding}
-        class:has_footer={tab.footer_visible}
-        class:without_footer={!tab.footer_visible}
+        class:has_footer={tab.footerVisible}
+        class:without_footer={!tab.footerVisible}
       >
         <tab.component {...tab.props} />
       </div>

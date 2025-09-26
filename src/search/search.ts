@@ -1,19 +1,19 @@
 import db from '@db'
-import { entity_names } from '@lib/constant'
+import { entityNames } from '@lib/constant'
 import { escapeHtmlEntities } from '@lib/util'
 import type { Index } from 'flexsearch'
 import type { EntityName, BaseEntity } from '@type'
 
 function ensureFlexsearchLoaded() {
   return new Promise<void>(resolve => {
-    const flexsearch_src = `assets/external/flexsearch.js?v=${__APP_VERSION__}`
-    if (document.querySelector(`script[src="${flexsearch_src}"]`)) {
+    const flexsearchSrc = `assets/external/flexsearch.js?v=${__APP_VERSION__}`
+    if (document.querySelector(`script[src="${flexsearchSrc}"]`)) {
       resolve()
       return
     }
     const script = document.createElement('script')
-    const script_attributes = { src: flexsearch_src, onload: resolve }
-    document.head.appendChild(Object.assign(script, script_attributes))
+    const scriptAttributes = { src: flexsearchSrc, onload: resolve }
+    document.head.appendChild(Object.assign(script, scriptAttributes))
   })
 }
 
@@ -57,34 +57,33 @@ export function searchHighlight(value, search) {
 type EntityData = { name: EntityName; items: Index; data: unknown[] }
 
 export default class Search {
-  all_search: {
+  allSearch: {
     name: string
     entities: EntityData[]
   }[]
   loading: Promise<void> | null
 
   constructor() {
-    this.all_search = []
+    this.allSearch = []
     this.loading = null
   }
   async init() {
     this.loading = (async () => {
       await ensureFlexsearchLoaded()
       if (db.loaded) await db.loaded
-      const { Index } = window.FlexSearch
       const variables = ['name', 'description']
       for (const variable of variables) {
-        const entities_data = []
-        for (const entity in entity_names) {
-          entities_data.push({
+        const entitiesData = []
+        for (const entity in entityNames) {
+          entitiesData.push({
             name: entity,
-            items: new Index({ tokenize: 'forward' }),
+            items: new window.FlexSearch.Index({ tokenize: 'forward' }),
             data: [],
           })
         }
-        this.all_search.push({ name: variable, entities: entities_data })
+        this.allSearch.push({ name: variable, entities: entitiesData })
       }
-      for (const variable of this.all_search) {
+      for (const variable of this.allSearch) {
         for (const entity of variable.entities) {
           db.foreach(entity.name, item => {
             if (!('name' in item)) return
@@ -101,16 +100,16 @@ export default class Search {
       }
     })()
   }
-  async search(to_search) {
+  async search(toSearch) {
     if (this.loading) await this.loading
     const result = []
-    const ids_found = {}
-    for (const entity in entity_names) ids_found[entity] = []
-    for (const variable of this.all_search) {
+    const idsFound = {}
+    for (const entity in entityNames) idsFound[entity] = []
+    for (const variable of this.allSearch) {
       for (const entity of variable.entities) {
-        const items_id = await this.getItemsId(to_search, entity, ids_found)
-        for (const item_id of items_id) {
-          const item = db.get(entity.name, item_id) as BaseEntity & {
+        const itemsId = await this.getItemsId(toSearch, entity, idsFound)
+        for (const itemId of itemsId) {
+          const item = db.get(entity.name, itemId) as BaseEntity & {
             folder_id?: string | number
             folder_name?: string
             original_name?: string
@@ -123,24 +122,24 @@ export default class Search {
             description: item.description || '',
             entity: entity.name,
             variable: variable.name,
-            is_favorite: item.is_favorite || false,
+            isFavorite: item.isFavorite || false,
             folder_id: item.folder_id || '',
             folder_name: item.folder_name || '',
             _entity: item._entity || '',
-            _entity_clean: entity_names[item._entity as string] || '',
+            _entityClean: entityNames[item._entity as string] || '',
           })
         }
       }
     }
     return result
   }
-  async getItemsId(to_search, entity, ids_found) {
+  async getItemsId(toSearch, entity, idsFound) {
     entity.data = []
-    const normalizedSearch = removeDiacritics(to_search)
+    const normalizedSearch = removeDiacritics(toSearch)
     if (!normalizedSearch) return []
     const result = await entity.items.search(normalizedSearch, { limit: 99999 })
-    const items_id = result.filter(x => !ids_found[entity.name].includes(x))
-    ids_found[entity.name] = ids_found[entity.name].concat(items_id)
-    return items_id
+    const itemsId = result.filter(x => !idsFound[entity.name].includes(x))
+    idsFound[entity.name] = idsFound[entity.name].concat(itemsId)
+    return itemsId
   }
 }

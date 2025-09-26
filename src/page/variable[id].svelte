@@ -8,9 +8,9 @@
   let { variable } = $props()
 
   const dataset = db.get('dataset', variable.dataset_id)
-  let variable_preview: false | object = false
+  let variablePreview: false | object = false
   if (dataset.link) {
-    variable_preview = {
+    variablePreview = {
       variable: variable.name,
       dataset_id: dataset.link ? dataset.id : false,
     }
@@ -25,14 +25,14 @@
     .getAll('evolution')
     .filter(evo => evo.entity === 'variable' && evo.id === variable.id)
 
-  const freq_data = db.getAll('freq', { variable })
+  const freqData = db.getAll('freq', { variable })
 
   let tabs = tabsHelper({
     variable,
     variables,
-    variable_values: variable.values,
-    freq: freq_data,
-    variable_preview,
+    variableValues: variable.values,
+    freq: freqData,
+    variablePreview,
     evolutions,
   })
 </script>

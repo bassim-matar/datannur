@@ -16,10 +16,10 @@
   import '@src/style/global.scss'
   import CheckDb from '@src/app-mode/CheckDb.svelte'
   import Main from '@src/app-mode/Main.svelte'
-  import { app_mode } from '@lib/util'
+  import { appMode } from '@lib/util'
 </script>
 
-{#if app_mode === 'check_db'}
+{#if appMode === 'check_db'}
   <CheckDb />
 {:else}
   <Main />

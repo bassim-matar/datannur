@@ -2,8 +2,8 @@
   import MiniMasonry from 'minimasonry'
   import { onMount, onDestroy } from 'svelte'
   import Icon from '@layout/Icon.svelte'
-  import { document_width, getColor } from '@lib/util'
-  import { entity_names } from '@lib/constant'
+  import { documentWidth, getColor } from '@lib/util'
+  import { entityNames } from '@lib/constant'
   import { allTabs, onPageHomepage } from '@lib/store'
   import attributs from './attributs'
   import { addValues } from './stat'
@@ -11,7 +11,7 @@
 
   let { stat } = $props()
 
-  let show_all = $state(true)
+  let showAll = $state(true)
   let visible = $state({})
   let loading = $state(false)
 
@@ -20,7 +20,7 @@
   onMount(() => {
     masonry = new MiniMasonry({
       container: '.all_stat_container',
-      baseWidth: Math.min(document_width - 20, 300),
+      baseWidth: Math.min(documentWidth - 20, 300),
       gutter: 20,
       ultimateGutter: 20,
     })
@@ -32,13 +32,13 @@
   })
 
   function updateNbItemVisible(entities) {
-    let nb_item_visible = 0
+    let nbItemVisible = 0
     for (const entity of entities) {
-      if (visible[entity.entity] || show_all) {
-        nb_item_visible += entity.attributs.length
+      if (visible[entity.entity] || showAll) {
+        nbItemVisible += entity.attributs.length
       }
     }
-    $allTabs.stat.nb = nb_item_visible
+    $allTabs.stat.nb = nbItemVisible
   }
 
   function updateLayout() {
@@ -55,7 +55,7 @@
     for (const key in visible) {
       visible[key] = key === entity
     }
-    show_all = false
+    showAll = false
     updateLayout()
   }
 
@@ -63,27 +63,26 @@
     for (const key in visible) {
       visible[key] = false
     }
-    show_all = true
+    showAll = true
     updateLayout()
   }
 
   const entities = stat.filter(x => x.items?.length > 0)
   entities.forEach(entity => {
     visible[entity.entity] = false
-    entity.with_html = entity.entity === 'log'
     entity.attributs = addValues(entity.items, attributs[entity.entity])
   })
 
-  let has_btns = entities.length > 1
+  let hasBtns = entities.length > 1
 </script>
 
 {#if entities.length > 1}
   <div class="btns">
     <button
       class="button"
-      class:box_shadow={show_all}
-      class:box_shadow_color={show_all}
-      style="color: {show_all ? getColor('entity') : ''}"
+      class:box_shadow={showAll}
+      class:box_shadow_color={showAll}
+      style="color: {showAll ? getColor('entity') : ''}"
       onclick={clickShowAll}
     >
       <Icon type="entity" />
@@ -99,7 +98,7 @@
       >
         <Icon type={entity.entity} />
         <span class="btn_select_entity_name">
-          {entity_names[entity.entity]}
+          {entityNames[entity.entity]}
         </span>
       </button>
     {/each}
@@ -109,18 +108,14 @@
 <div class="main_wrapper" class:homepage={$onPageHomepage}>
   <div
     class="all_stat_container_wrappper"
-    class:no-btns={!has_btns}
-    class:has-btns={has_btns}
+    class:no-btns={!hasBtns}
+    class:has-btns={hasBtns}
   >
     <div class="all_stat_container" class:loading>
       {#each entities as entity (entity.entity)}
-        {#if visible[entity.entity] || show_all}
+        {#if visible[entity.entity] || showAll}
           {#each entity.attributs as attribut (attribut.key)}
-            <StatBox
-              entity={entity.entity}
-              {attribut}
-              with_html={entity.with_html}
-            />
+            <StatBox entity={entity.entity} {attribut} />
           {/each}
         {/if}
       {/each}

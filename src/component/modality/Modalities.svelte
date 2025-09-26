@@ -4,11 +4,11 @@
 
   let { modalities } = $props()
 
-  let nb_value_max = 0
-  let nb_variable_max = 0
+  let nbValueMax = 0
+  let nbVariableMax = 0
   for (const modality of modalities) {
-    nb_value_max = Math.max(nb_value_max, modality.nb_value)
-    nb_variable_max = Math.max(nb_variable_max, modality.nb_variable)
+    nbValueMax = Math.max(nbValueMax, modality.nb_value)
+    nbVariableMax = Math.max(nbVariableMax, modality.nb_variable)
   }
 
   const columns = [
@@ -16,11 +16,11 @@
     Column.name('modality', 'Modalité'),
     Column.description(),
     Column.datatype(),
-    Column.nbVariable('modality', nb_variable_max, { show_title: true }),
-    Column.nbValues(nb_value_max),
+    Column.nbVariable('modality', nbVariableMax, { showTitle: true }),
+    Column.nbValues(nbValueMax),
     Column.valuesPreview(),
     Column.folder(),
   ]
 </script>
 
-<Datatable entity="modality" data={modalities} {columns} sort_by_name={true} />
+<Datatable entity="modality" data={modalities} {columns} sortByName={true} />

@@ -1,63 +1,63 @@
 <script lang="ts">
-  import {getLocalFilter} from '@lib/db'
+  import { getLocalFilter } from '@lib/db'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
 
-  let { variables, is_meta = false } = $props()
+  let { variables, isMeta = false } = $props()
 
-  const variables_sorted = [...variables]
-  const parent_name = is_meta ? 'metaDataset' : 'dataset'
-  const meta_path = is_meta ? 'metaVariable/' : false
+  const variablesSorted = [...variables]
+  const parentName = isMeta ? 'metaDataset' : 'dataset'
+  const metaPath = isMeta ? 'metaVariable/' : false
 
-  function sortVariables(to_sort) {
-    if (to_sort.length === 0) return
-    const db_filters = getLocalFilter()
-    const filter_pos = {}
-    for (const i in db_filters) filter_pos[db_filters[i].id] = i
-    to_sort.sort(
+  function sortVariables(toSort) {
+    if (toSort.length === 0) return
+    const dbFilters = getLocalFilter()
+    const filterPos = {}
+    for (const i in dbFilters) filterPos[dbFilters[i].id] = i
+    toSort.sort(
       (a, b) =>
-        b.lineage_type?.localeCompare(a.lineage_type) ||
-        filter_pos[a.dataset_type] - filter_pos[b.dataset_type] ||
+        b.lineageType?.localeCompare(a.lineageType) ||
+        filterPos[a.dataset_type] - filterPos[b.dataset_type] ||
         a.folder_name.localeCompare(b.folder_name) ||
         a.dataset_name.localeCompare(b.dataset_name) ||
         a.num - b.num,
     )
   }
-  sortVariables(variables_sorted)
+  sortVariables(variablesSorted)
 
-  let nb_row_max = 0
-  let nb_value_max = 0
-  let nb_sources_max = 0
-  let nb_derived_max = 0
+  let nbRowMax = 0
+  let nbValueMax = 0
+  let nbSourcesMax = 0
+  let nbDerivedMax = 0
   for (const variable of variables) {
-    nb_row_max = Math.max(nb_row_max, variable.nb_row)
-    nb_value_max = Math.max(nb_value_max, variable.nb_value)
-    nb_sources_max = Math.max(nb_sources_max, variable.source_ids?.length || 0)
-    nb_derived_max = Math.max(nb_derived_max, variable.derived_ids?.length || 0)
+    nbRowMax = Math.max(nbRowMax, variable.nb_row)
+    nbValueMax = Math.max(nbValueMax, variable.nb_value)
+    nbSourcesMax = Math.max(nbSourcesMax, variable.source_ids?.length || 0)
+    nbDerivedMax = Math.max(nbDerivedMax, variable.derived_ids?.length || 0)
   }
 
   function defineColumns() {
     const base = [
-      Column.name('variable', 'Variable', { is_meta }),
+      Column.name('variable', 'Variable', { isMeta }),
       Column.originalName(),
       Column.description(),
       Column.datatype(),
       Column.isKey(),
       Column.lineageType(),
-      Column.nbSources(nb_sources_max, 'variable'),
-      Column.nbDerived(nb_derived_max, 'variable'),
-      Column.nbRow(nb_row_max),
+      Column.nbSources(nbSourcesMax, 'variable'),
+      Column.nbDerived(nbDerivedMax, 'variable'),
+      Column.nbRow(nbRowMax),
       Column.nbMissing(),
       Column.nbDuplicates(),
-      Column.nbValues(nb_value_max),
+      Column.nbValues(nbValueMax),
       Column.freq(),
       Column.valuesPreview(),
     ]
-    if (is_meta) {
+    if (isMeta) {
       return [
         ...base,
         Column.metaLocalisation(),
-        Column.dataset(parent_name),
+        Column.dataset(parentName),
         Column.metaFolder(),
       ]
     }
@@ -65,7 +65,7 @@
       Column.favorite(),
       ...base,
       Column.modality(),
-      Column.dataset(parent_name),
+      Column.dataset(parentName),
       Column.folder(),
       Column.owner(),
       Column.manager(),
@@ -77,4 +77,4 @@
   const columns = defineColumns()
 </script>
 
-<Datatable entity="variable" data={variables_sorted} {columns} {meta_path} />
+<Datatable entity="variable" data={variablesSorted} {columns} {metaPath} />

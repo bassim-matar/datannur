@@ -1,15 +1,17 @@
 <script lang="ts">
   import markdownRender from '@lib/markdown'
+  import { safeHtml } from '@lib/html-sanitizer'
 
   let { content, mode = 'classic' } = $props()
 
-  let md_content = $derived(content ? markdownRender(content) : '')
+  let mdContent = $derived(content ? (markdownRender(content) as string) : '')
 </script>
 
-<div class="main content" class:classic={mode === 'classic'}>
-  <!-- eslint-disable svelte/no-at-html-tags -->
-  {@html md_content}
-</div>
+<div
+  class="main content"
+  class:classic={mode === 'classic'}
+  use:safeHtml={mdContent}
+></div>
 
 <style lang="scss">
   @use 'main.scss' as *;

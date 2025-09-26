@@ -1,26 +1,25 @@
 import db from '@db'
-import { link } from '@lib/util'
 import Render from '@lib/render'
 import { allTabsIcon } from '@lib/store'
-import { entity_to_icon } from '@lib/constant'
+import { entityToIcon } from '@lib/constant'
 
 export default class Logs {
-  static db_key = 'user_data/log'
+  static dbKey = 'user_data/log'
   static logs = []
   static onChangeCallback = () => {}
-  static all_tabs_icon_value = {}
+  static allTabsIconValue = {}
 
   static init(logs) {
     this.logs = []
     if (logs) this.logs = logs
     this.onChangeCallback = () => {}
-    this.all_tabs_icon_value = {}
+    this.allTabsIconValue = {}
     allTabsIcon.subscribe(value => {
-      this.all_tabs_icon_value = value
+      this.allTabsIconValue = value
     })
   }
   static save() {
-    db.browser.set(this.db_key, this.logs)
+    db.browser.set(this.dbKey, this.logs)
     this.onChangeCallback()
   }
   static onChange(callback) {
@@ -45,53 +44,64 @@ export default class Logs {
   }
   static getAll() {
     const logs = []
-    for (const log_source of this.logs) {
-      const log = { ...log_source }
+    for (const logSource of this.logs) {
+      const log = { ...logSource }
 
       log.action_name = log.action
+      log.element = log.entity
 
       if (log.entity_id) {
         if (!db.tableHasId(log.entity, log.entity_id)) continue
         const item = db.get(log.entity, log.entity_id)
         if (item) {
-          log.element = link(log.entity + '/' + log.entity_id, item.name)
+          log.element = item.name
+          log.elementLink = log.entity + '/' + log.entity_id
         }
       } else if (log.entity === 'log') {
-        log.element = link('options?tab=logs', log.entity)
+        log.elementLink = 'options?tab=logs'
       } else if (log.entity === '_index') {
         log.entity = 'homepage'
-        log.element = link('', log.entity)
-      } else if (log.action === 'load_page') {
-        log.element = link(log.entity, log.entity)
-      } else {
         log.element = log.entity
+        log.elementLink = '/'
+      } else if (log.action === 'load_page') {
+        log.elementLink = log.entity
       }
 
-      const readeable_action = {
-        search_bar: Render.icon('search') + 'Rechercher',
-        load_page: Render.icon('page') + 'Charger la page',
-        add_fav: Render.icon('favorite') + 'Ajouter le favoris',
-        remove_fav: Render.icon('favorite') + 'Supprimer le favoris',
-        select_tab: Render.icon('tab') + "Sélectionner l'onglet",
-        toggle_dark_mode_btn_on: Render.icon('moon') + 'Activer le mode sombre',
-        toggle_dark_mode_btn_off: Render.icon('sun') + 'Activer le mode clair',
-        open_table_download:
-          Render.icon('download') + 'Ouvrir les options de téléchargement',
-        close_table_download:
-          Render.icon('download_close') +
-          'Fermer les options de téléchargement',
+      const actionConfig = {
+        search_bar: { text: 'Rechercher', icon: 'search' },
+        load_page: { text: 'Charger la page', icon: 'page' },
+        add_fav: { text: 'Ajouter le favoris', icon: 'favorite' },
+        remove_fav: { text: 'Supprimer le favoris', icon: 'favorite' },
+        select_tab: { text: "Sélectionner l'onglet", icon: 'tab' },
+        toggle_dark_mode_btn_on: {
+          text: 'Activer le mode sombre',
+          icon: 'moon',
+        },
+        toggle_dark_mode_btn_off: {
+          text: 'Activer le mode clair',
+          icon: 'sun',
+        },
+        open_table_download: {
+          text: 'Ouvrir les options de téléchargement',
+          icon: 'download',
+        },
+        close_table_download: {
+          text: 'Fermer les options de téléchargement',
+          icon: 'downloadClose',
+        },
       }
-      if (log.action in readeable_action) {
-        log.action = readeable_action[log.action]
-      }
-      let icon_name = log.entity
-      if (
-        !(icon_name in entity_to_icon) &&
-        icon_name in this.all_tabs_icon_value
-      )
-        icon_name = this.all_tabs_icon_value[icon_name].icon
 
-      if (icon_name) log.element = Render.icon(icon_name) + log.element
+      if (log.action in actionConfig) {
+        const config = actionConfig[log.action]
+        log.actionReadable = config.text
+        log.actionIcon = config.icon
+        log.action = Render.icon(config.icon) + config.text
+      }
+      let iconName = log.entity
+      if (!(iconName in entityToIcon) && iconName in this.allTabsIconValue)
+        iconName = this.allTabsIconValue[iconName].icon
+
+      if (iconName) log.elementIcon = iconName
       logs.push(log)
     }
     return logs

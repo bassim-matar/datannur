@@ -37,15 +37,15 @@ export const attributs = {
   ],
   variable: ['type', 'modality', 'value', 'name', 'description'],
   modality: ['type', 'variable', 'value', 'name', 'description'],
-  log: ['action', 'page', 'tab', 'search', 'time_ago'],
+  log: ['actionReadable', 'page', 'tab', 'search', 'time_ago'],
 }
 
-const attributs_filled = {}
+const attributsFilled = {}
 for (const [entity, value] of Object.entries(attributs)) {
-  attributs_filled[entity] = value.map(key => {
+  attributsFilled[entity] = value.map(key => {
     if (!(key in definition)) console.error(`key ${key} not found`)
     return { ...definition[key], key }
   })
 }
 
-export default attributs_filled
+export default attributsFilled

@@ -2,13 +2,13 @@
   import db from '@db'
   import { page } from '@lib/store'
 
-  let { title, pages = [], if_use = null, children } = $props()
+  let { title, pages = [], ifUse = null, children } = $props()
 
-  let visible = $state(!if_use)
+  let visible = $state(!ifUse)
 
   db.loaded.then(() => {
-    if (!if_use) return
-    for (const use of if_use) {
+    if (!ifUse) return
+    for (const use of ifUse) {
       if (db.use[use]) visible = true
     }
   })

@@ -8,20 +8,20 @@
 
   let { metaVariable } = $props()
 
-  let variable_preview = []
-  let dataset_preview: Row[] = []
+  let variablePreview = []
+  let datasetPreview: Row[] = []
   let metaDataset = db.get('metaDataset', metaVariable.metaDataset_id)
   if (metaDataset.name in db.tables) {
-    dataset_preview = db.tables[metaDataset.name] as Row[]
+    datasetPreview = db.tables[metaDataset.name] as Row[]
   } else if (metaDataset.name in db.tables.__user_data__) {
-    dataset_preview = db.tables.__user_data__[metaDataset.name] as Row[]
+    datasetPreview = db.tables.__user_data__[metaDataset.name] as Row[]
   }
-  variable_preview = filterKeys(dataset_preview, [metaVariable.name])
+  variablePreview = filterKeys(datasetPreview, [metaVariable.name])
 
   let tabs = tabsHelper({
     variable: metaVariable,
-    variable_metaValues: metaVariable.values,
-    variable_preview,
+    variableMetaValues: metaVariable.values,
+    variablePreview,
   })
 </script>
 

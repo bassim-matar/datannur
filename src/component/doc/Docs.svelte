@@ -6,29 +6,28 @@
 
   let { docs } = $props()
 
-  let institution_max = 0
-  let folder_max = 0
-  let dataset_max = 0
-  let tag_max = 0
+  let institutionMax = 0
+  let folderMax = 0
+  let datasetMax = 0
+  let tagMax = 0
 
   for (const doc of docs) {
-    if (doc.nb_institution > institution_max)
-      institution_max = doc.nb_institution
-    if (doc.nb_folder > folder_max) folder_max = doc.nb_folder
-    if (doc.nb_dataset > dataset_max) dataset_max = doc.nb_dataset
-    if (doc.nb_tag > tag_max) tag_max = doc.nb_tag
+    if (doc.nb_institution > institutionMax) institutionMax = doc.nb_institution
+    if (doc.nb_folder > folderMax) folderMax = doc.nb_folder
+    if (doc.nb_dataset > datasetMax) datasetMax = doc.nb_dataset
+    if (doc.nb_tag > tagMax) tagMax = doc.nb_tag
   }
 
-  const docs_sorted = [...docs]
+  const docsSorted = [...docs]
 
-  function sortDocs(to_sort) {
-    if (to_sort.length === 0) return
-    to_sort.sort(
+  function sortDocs(toSort) {
+    if (toSort.length === 0) return
+    toSort.sort(
       (a, b) =>
         b.inherited?.localeCompare(a.inherited) || a.name.localeCompare(b.name),
     )
   }
-  sortDocs(docs_sorted)
+  sortDocs(docsSorted)
 
   let columns = [
     Column.favorite(),
@@ -39,7 +38,7 @@
       name: 'doc_type',
       title: Render.icon('type') + 'Type',
       defaultContent: '',
-      filter_type: 'select',
+      filterType: 'select',
       tooltip: 'Type de fichier (markdown ou pdf)',
       render: (data, type) => {
         if (!data) return ''
@@ -49,7 +48,7 @@
     },
     Column.docPath(),
     Column.timestamp({
-      var_name: 'last_update',
+      varName: 'last_update',
       title: 'Mise à jour',
       tooltip: 'Date de dernière mise à jour',
     }),
@@ -59,52 +58,52 @@
       title:
         Render.icon('institution') +
         "<span class='hidden'>nb_institutions</span>",
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: "Nombre d'institutions",
       render: (data, type, row) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=institutions', data)
-        const percent = getPercent(data / institution_max)
+        const percent = getPercent(data / institutionMax)
         return `${Render.numPercent(content, percent, 'institution', type)}`
       },
     },
     {
       data: 'nb_folder',
       title: Render.icon('folder') + "<span class='hidden'>nb_folder</span>",
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Nombre de dossiers',
       render: (data, type, row) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=folders', data)
-        const percent = getPercent(data / folder_max)
+        const percent = getPercent(data / folderMax)
         return `${Render.numPercent(content, percent, 'folder', type)}`
       },
     },
     {
       data: 'nb_tag',
       title: Render.icon('tag') + "<span class='hidden'>nb_tag</span>",
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Nombre de mots clés',
       render: (data, type, row) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=tags', data)
-        const percent = getPercent(data / tag_max)
+        const percent = getPercent(data / tagMax)
         return `${Render.numPercent(content, percent, 'tag', type)}`
       },
     },
     {
       data: 'nb_dataset',
       title: Render.icon('dataset') + "<span class='hidden'>nb_dataset</span>",
-      filter_type: 'input',
+      filterType: 'input',
       tooltip: 'Nombre de datasets',
       render: (data, type, row) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=datasets', data)
-        const percent = getPercent(data / dataset_max)
+        const percent = getPercent(data / datasetMax)
         return `${Render.numPercent(content, percent, 'dataset', type)}`
       },
     },
   ]
 </script>
 
-<Datatable entity="doc" data={docs_sorted} {columns} />
+<Datatable entity="doc" data={docsSorted} {columns} />

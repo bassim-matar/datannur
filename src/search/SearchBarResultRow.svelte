@@ -4,20 +4,21 @@
   import Logs from '@lib/logs'
   import SearchHistory from './search-history'
   import { searchHighlight } from './search'
+  import { safeHtml } from '@lib/html-sanitizer'
   import Favorite from '@favorite/Favorite.svelte'
 
-  let { item, search_value, is_focus_in = $bindable(), selectInput } = $props()
+  let { item, searchValue, isFocusIn = $bindable(), selectInput } = $props()
 
-  function clickLink(entity_name, item_id) {
+  function clickLink(entityName, itemId) {
     setTimeout(() => {
-      SearchHistory.add(entity_name, item_id)
-      Logs.add('search_bar', { entity: entity_name, entity_id: item_id })
-      is_focus_in = false
+      SearchHistory.add(entityName, itemId)
+      Logs.add('search_bar', { entity: entityName, entity_id: itemId })
+      isFocusIn = false
     }, 10)
   }
 
-  function removeItem(entity_name, item_id) {
-    SearchHistory.remove(entity_name, item_id)
+  function removeItem(entityName, itemId) {
+    SearchHistory.remove(entityName, itemId)
     selectInput()
   }
 </script>
@@ -33,8 +34,8 @@
       <Favorite
         type={item.entity}
         id={item.id}
-        is_favorite={item.is_favorite}
-        no_margin={true}
+        isFavorite={item.isFavorite}
+        noMargin={true}
       />
     </div>
   </td>
@@ -45,16 +46,15 @@
       entity={item.entity}
     >
       <div class="long_text">
-        {#if search_value === ''}
+        {#if searchValue === ''}
           {item.name}
         {:else}
-          <!-- eslint-disable svelte/no-at-html-tags -->
-          {@html searchHighlight(item.name, search_value)}
+          <span use:safeHtml={searchHighlight(item.name, searchValue)}></span>
         {/if}
       </div>
     </Link>
   </td>
-  {#if search_value === '' || item.is_recent}
+  {#if searchValue === '' || item.is_recent}
     <td style="width: 20px;">
       <button
         class="btn_delete_item"

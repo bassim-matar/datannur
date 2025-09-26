@@ -1,12 +1,12 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
+  import Icon from '@layout/Icon.svelte'
 
-  let { delivery_format } = $props()
+  let { deliveryFormat } = $props()
 </script>
 
-{#if delivery_format}
+{#if deliveryFormat}
   <tr>
     <td><Icon type="delivery_format" /> Format livraison</td>
-    <td>{delivery_format}</td>
+    <td>{deliveryFormat}</td>
   </tr>
 {/if}

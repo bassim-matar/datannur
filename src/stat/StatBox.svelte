@@ -1,23 +1,23 @@
 <script lang="ts">
   import Icon from '@layout/Icon.svelte'
   import { getColor } from '@lib/util'
-  import { entity_names } from '@lib/constant'
+  import { entityNames } from '@lib/constant'
   import StatValue from './StatValue.svelte'
 
-  let { entity, attribut, with_html = false, from_popup = false } = $props()
+  let { entity, attribut, fromPopup = false } = $props()
 
-  const total_value = attribut.total_value
-  const main_color = getColor(entity)
+  const totalValue = attribut.totalValue
+  const mainColor = getColor(entity)
 </script>
 
 <div
   class="stat_box box_shadow box_shadow_color shadow_{entity}"
-  class:from-popup={from_popup}
-  style="background: {main_color}44;"
+  class:from-popup={fromPopup}
+  style="background: {mainColor}44;"
 >
   <h2 class="title is-6">
     <Icon type={entity} />
-    {entity_names[entity]}
+    {entityNames[entity]}
     <span class="separator"></span>
     <Icon type={attribut.icon || attribut.key} />
     {attribut.name}
@@ -25,7 +25,7 @@
   <div class="values_wrapper">
     <div class="values">
       {#each attribut.values as value, i (i)}
-        <StatValue {value} {total_value} {main_color} {with_html} />
+        <StatValue {value} {totalValue} {mainColor} />
       {/each}
     </div>
   </div>

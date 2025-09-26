@@ -5,36 +5,36 @@
   import { wrapLongText } from '@lib/util'
   import { highlightDiff } from '@lib/evolution'
   import {
-    entity_to_icon,
-    column_clean_names,
-    column_icons,
-    is_big_limit,
+    entityToIcon,
+    columnCleanNames,
+    columnIcons,
+    isBigLimit,
   } from '@lib/constant'
   import Options from '@lib/options'
   import Datatable from '@datatable/Datatable.svelte'
 
   let { evolutions } = $props()
 
-  let evolution_summary = $state(Options.get('evolution_summary'))
+  let evolutionSummary = $state(Options.get('evolution_summary'))
 
-  function sortEvolutions(to_sort) {
-    if (to_sort.length === 0) return
-    to_sort.sort((a, b) => b.timestamp - a.timestamp)
+  function sortEvolutions(toSort) {
+    if (toSort.length === 0) return
+    toSort.sort((a, b) => b.timestamp - a.timestamp)
   }
 
-  function filterEvolutions(to_filter) {
-    if (to_filter.length === 0) return
+  function filterEvolutions(toFilter) {
+    if (toFilter.length === 0) return
 
-    const detail_entities = ['dataset', 'variable', 'modality', 'value', 'freq']
+    const detailEntities = ['dataset', 'variable', 'modality', 'value', 'freq']
 
-    const main_rows = to_filter.filter(
-      evo => !detail_entities.includes(evo.entity),
+    const mainRows = toFilter.filter(
+      evo => !detailEntities.includes(evo.entity),
     )
 
-    return main_rows
+    return mainRows
   }
 
-  const detail_pages = [
+  const detailPages = [
     'dataset',
     'datasets',
     'variable',
@@ -43,16 +43,16 @@
     'modalities',
     'favorite',
   ]
-  const filter_evolution =
-    evolution_summary &&
-    !detail_pages.includes($page) &&
-    evolutions.length > is_big_limit
+  const filterEvolution =
+    evolutionSummary &&
+    !detailPages.includes($page) &&
+    evolutions.length > isBigLimit
 
-  const evolutions_sorted = filter_evolution
+  const evolutionsSorted = filterEvolution
     ? filterEvolutions([...evolutions])
     : [...evolutions]
 
-  sortEvolutions(evolutions_sorted)
+  sortEvolutions(evolutionsSorted)
 
   function defineColumns() {
     return [
@@ -63,7 +63,7 @@
         defaultContent: '',
         name: 'evolution_type',
         width: '20px',
-        filter_type: 'select',
+        filterType: 'select',
         tooltip: 'Type de modification',
         render: (data, type, row) => {
           if (type === 'sort' || type === 'export' || type === 'filter') {
@@ -71,7 +71,7 @@
           }
           return `
           <span class="icon icon_${row.type}" title="${data}">
-            <i class="fas fa-${entity_to_icon[row.type]}"></i>
+            <i class="fas fa-${entityToIcon[row.type]}"></i>
           </span>
           <span style="display: none;">${data}</span>`
         },
@@ -84,30 +84,29 @@
         title: Render.icon('variable') + 'Variable',
         defaultContent: '',
         name: 'variable',
-        filter_type: 'input',
+        filterType: 'input',
         tooltip: 'Nom de la variable',
         render: (data, type) => {
           if (!data) return ''
 
-          let column_clean_name = data
-          if (column_clean_names[data])
-            column_clean_name = column_clean_names[data]
+          let columnCleanName = data
+          if (columnCleanNames[data]) columnCleanName = columnCleanNames[data]
           else if (Column[data.toLowerCase()])
-            column_clean_name = Column[data.toLowerCase()]?.name
+            columnCleanName = Column[data.toLowerCase()]?.name
 
           if (type === 'sort' || type === 'export' || type === 'filter') {
-            return column_clean_name
+            return columnCleanName
           }
 
           let icon = data
-          if (column_icons[data]) icon = column_icons[data]
+          if (columnIcons[data]) icon = columnIcons[data]
 
           return `
           <div style="display: flex; align-items: center;">
             <span class="icon icon_${icon}" title="${data}">
-              <i class="fas fa-${entity_to_icon[icon] || icon}"></i>
+              <i class="fas fa-${entityToIcon[icon] || icon}"></i>
             </span>
-            <span style="font-size: 13px;">${column_clean_name}</span>
+            <span style="font-size: 13px;">${columnCleanName}</span>
           </div>`
         },
       },
@@ -115,9 +114,9 @@
         data: 'type',
         title: Render.icon('update') + 'Valeur',
         defaultContent: '',
-        has_long_text: true,
+        hasLongText: true,
         name: 'value',
-        filter_type: 'input',
+        filterType: 'input',
         tooltip: 'Valeur de la variable',
         render: (data, type, row) => {
           if (!row.old_value && !row.new_value) {
@@ -137,7 +136,7 @@
         data: 'time',
         title: Render.icon('date'),
         defaultContent: '',
-        filter_type: 'select',
+        filterType: 'select',
         tooltip: 'passé ou futur',
         render: (data, type) => {
           if (type === 'sort' || type === 'export' || type === 'filter') {
@@ -152,4 +151,4 @@
   const columns = defineColumns()
 </script>
 
-<Datatable entity="evolution" data={evolutions_sorted} {columns} />
+<Datatable entity="evolution" data={evolutionsSorted} {columns} />

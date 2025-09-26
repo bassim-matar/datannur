@@ -2,12 +2,12 @@
   import db from '@db'
   import Link from '@layout/Link.svelte'
 
-  let { type, elem_id, is_self = false } = $props()
+  let { type, elemId, isSelf = false } = $props()
 
-  const elems = db.getParents(type, elem_id)
+  const elems = db.getParents(type, elemId)
 
-  if (!is_self) {
-    const current = db.get(type, elem_id)
+  if (!isSelf) {
+    const current = db.get(type, elemId)
     elems.push(current)
   }
 
