@@ -4,11 +4,13 @@
   let { ...props } = $props()
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
   class={`extendable ${props.class}`}
   onmouseenter={extendable.open}
   onmouseleave={extendable.closeTwoLines}
+  onkeydown={() => {}}
+  role="button"
+  tabindex="0"
 >
   {@render props.children?.()}
 </div>

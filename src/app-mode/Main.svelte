@@ -247,7 +247,6 @@
   <StatBox
     entity={columnStatEntity}
     attribut={columnStatAttribut}
-    withHtml={columnStatEntity === 'log'}
     fromPopup={true}
   />
 </Popup>

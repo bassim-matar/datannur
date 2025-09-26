@@ -122,19 +122,31 @@ export default {
     nbRange: 1,
     getValue: x => x.git_code?.length,
   },
-  action: {
+  actionReadable: {
     icon: 'log',
     name: 'Log',
-    getValue: item => item.action,
+    withHtml: {
+      text: 'actionReadable',
+      icon: 'actionIcon',
+      link: 'actionLink',
+    },
   },
   page: {
     name: 'Charger la page',
-    getValue: item => item.element,
+    withHtml: {
+      text: 'element',
+      icon: 'elementIcon',
+      link: 'elementLink',
+    },
     subtype: x => x.action_name === 'load_page',
   },
   tab: {
     name: "Sélectionner l'onglet",
-    getValue: item => item.element,
+    withHtml: {
+      text: 'element',
+      icon: 'elementIcon',
+      link: 'elementLink',
+    },
     subtype: x => x.action_name === 'select_tab',
   },
   search: {

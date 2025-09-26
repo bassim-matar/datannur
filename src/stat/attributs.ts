@@ -37,7 +37,7 @@ export const attributs = {
   ],
   variable: ['type', 'modality', 'value', 'name', 'description'],
   modality: ['type', 'variable', 'value', 'name', 'description'],
-  log: ['action', 'page', 'tab', 'search', 'time_ago'],
+  log: ['actionReadable', 'page', 'tab', 'search', 'time_ago'],
 }
 
 const attributsFilled = {}

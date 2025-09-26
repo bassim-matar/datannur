@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { wrapLongText } from '@lib/util'
+  import { wrapLongText, link } from '@lib/util'
   import Datatable from '@datatable/Datatable.svelte'
   import Render from '@lib/render'
   import Column from '@lib/column'
@@ -17,8 +17,12 @@
       data: 'action',
       title: Render.icon('log') + 'Log',
       tooltip: 'Action',
-      render: data => {
-        return wrapLongText(data ? data : '')
+      render: (data, type, row) => {
+        let content = ''
+        if (row.actionIcon) content += Render.icon(row.actionIcon)
+        if (row.actionReadable) content += ' ' + row.actionReadable
+        else content += ' ' + row.action
+        return wrapLongText(data ? content : '')
       },
     },
     Column.entity(),
@@ -27,7 +31,16 @@
       title: Render.icon('entity') + 'Element',
       defaultContent: '',
       tooltip: 'Element impliqué',
-      render: data => wrapLongText(data ? data : ''),
+      render: (data, type, row) => {
+        let content = ''
+        if (row.elementIcon) content += Render.icon(row.elementIcon)
+        if (row.elementLink) {
+          content += link(row.elementLink, row.element)
+        } else {
+          content += ' ' + row.element
+        }
+        return wrapLongText(data ? content : '')
+      },
     },
     Column.timestamp(),
   ]

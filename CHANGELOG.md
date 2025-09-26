@@ -11,6 +11,7 @@
 - refactor: enforce prefer-const, no-unused-vars, no-undef and no-explicit-any elint rules
 - refactor: enforce noImplicitThis and strictFunctionTypes ts rules
 - refactor: avoid svelte class name from variable name
+- refactor: enhance log handling and HTML rendering in stats components
 - remove: loader on search page
 
 ## 0.12.9 (2024-09-23)

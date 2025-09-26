@@ -6,6 +6,8 @@ import { attributs } from './attributs'
 interface ValueEntry {
   count: number
   start?: unknown
+  icon?: string
+  link?: string
 }
 
 interface Attribut {
@@ -20,6 +22,11 @@ interface Attribut {
   subtype?: (item: DatabaseItem) => boolean
   icon?: string
   key?: string
+  withHtml?: {
+    text: string
+    icon?: string
+    link?: string | null
+  }
 }
 
 type DatabaseItem = Record<string, unknown>
@@ -49,7 +56,12 @@ function addReadableValues(values, type) {
 
 function getValuesSorted(values: Record<string, ValueEntry>, sortBy = 'count') {
   const list = Object.entries(values)
-  const sorted = list.map(([start, { count }]) => ({ start, count }))
+  const sorted = list.map(([start, valueEntry]) => ({
+    start,
+    count: valueEntry.count,
+    icon: valueEntry.icon,
+    link: valueEntry.link,
+  }))
   sorted.sort((a, b) => {
     if (a['start'] === '__empty__') return -1
     if (b['start'] === '__empty__') return 1
@@ -197,6 +209,38 @@ function addSubtype(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
   return getValuesSorted(values)
 }
 
+function addWithHtml(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
+  const set = new Set<string>()
+  const values: Record<string, ValueEntry> = {}
+  for (const item of items) {
+    if (
+      attribut.subtype !== undefined &&
+      (!attribut.subtype || !attribut.subtype(item))
+    )
+      continue
+    const value = attribut.withHtml?.text ? item[attribut.withHtml?.text] : ''
+    const icon = attribut.withHtml?.icon
+      ? (item[attribut.withHtml?.icon] as string)
+      : null
+    const link = attribut.withHtml?.link
+      ? (item[attribut.withHtml?.link] as string)
+      : null
+    const key = String(value)
+    if (set.has(key)) {
+      values[key].count += 1
+    } else {
+      values[key] = {
+        start: value,
+        count: 1,
+        icon: icon,
+        link: link,
+      }
+      set.add(key)
+    }
+  }
+  return getValuesSorted(values)
+}
+
 export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
   let values: ValueEntry[]
   let totalValue = items.length
@@ -204,6 +248,8 @@ export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
     values = addNumeric(items, attribut)
   } else if (attribut.nonExclusive) {
     values = addNonExclusive(items, attribut)
+  } else if (attribut.withHtml) {
+    values = addWithHtml(items, attribut)
   } else if (attribut.subtype) {
     values = addSubtype(items, attribut)
     totalValue = items.filter(attribut.subtype).length

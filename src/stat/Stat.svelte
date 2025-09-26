@@ -70,7 +70,6 @@
   const entities = stat.filter(x => x.items?.length > 0)
   entities.forEach(entity => {
     visible[entity.entity] = false
-    entity.with_html = entity.entity === 'log'
     entity.attributs = addValues(entity.items, attributs[entity.entity])
   })
 
@@ -116,11 +115,7 @@
       {#each entities as entity (entity.entity)}
         {#if visible[entity.entity] || showAll}
           {#each entity.attributs as attribut (attribut.key)}
-            <StatBox
-              entity={entity.entity}
-              {attribut}
-              withHtml={entity.with_html}
-            />
+            <StatBox entity={entity.entity} {attribut} />
           {/each}
         {/if}
       {/each}

@@ -4,7 +4,7 @@
   import { entityNames } from '@lib/constant'
   import StatValue from './StatValue.svelte'
 
-  let { entity, attribut, withHtml = false, fromPopup = false } = $props()
+  let { entity, attribut, fromPopup = false } = $props()
 
   const totalValue = attribut.totalValue
   const mainColor = getColor(entity)
@@ -25,7 +25,7 @@
   <div class="values_wrapper">
     <div class="values">
       {#each attribut.values as value, i (i)}
-        <StatValue {value} {totalValue} {mainColor} {withHtml} />
+        <StatValue {value} {totalValue} {mainColor} />
       {/each}
     </div>
   </div>

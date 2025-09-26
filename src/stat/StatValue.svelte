@@ -2,23 +2,31 @@
   import { getPercent } from '@lib/util'
   import { extendable } from '@lib/extendable'
   import { locale } from '@lib/constant'
+  import Icon from '@layout/Icon.svelte'
+  import Link from '@layout/Link.svelte'
 
-  let { value, totalValue, mainColor, withHtml = false } = $props()
+  let { value, totalValue, mainColor } = $props()
 
   const percent = getPercent(value.count / totalValue)
 </script>
 
 <div class="value_box">
   <div class="value_text">
-    <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
       class="cell readable extendable"
       onmouseenter={extendable.open}
       onmouseleave={extendable.closeOneLine}
+      onkeydown={() => {}}
+      role="button"
+      tabindex="0"
     >
-      {#if withHtml}
-        <!-- eslint-disable svelte/no-at-html-tags -->
-        {@html value.readable}
+      {#if value.icon}
+        <Icon type={value.icon} />
+      {/if}
+      {#if value.link}
+        <Link href={value.link}>
+          {value.readable}
+        </Link>
       {:else}
         {value.readable}
       {/if}
