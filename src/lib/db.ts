@@ -1,5 +1,5 @@
 import db from '@db'
-import { getVariableTypeClean, escapeHtmlEntities } from '@lib/util'
+import { getVariableTypeClean, escapeHtmlEntities, capitalize } from '@lib/util'
 import { getPeriod, dateToTimestamp, timestampToDate } from '@lib/time'
 import { getNbValues } from '@lib/render'
 import { entityNames } from '@lib/constant'
@@ -33,7 +33,7 @@ function addEntitiesUsed() {
   if (db.use.tag) {
     const tags = db.getAll('tag')
     if (tags.length > 0 && tags[0].parent_id !== undefined) {
-      db.use.tag_recursive = true
+      db.use.tagRecursive = true
     }
   }
 }
@@ -51,23 +51,27 @@ function addFavorite(item) {
   item.isFavorite = false
 }
 function addNb(entity, item, entityNb) {
-  item[`nb_${entityNb}`] = db.hasNb(entity, item.id, entityNb)
+  item[`nb${capitalize(entityNb)}`] = db.hasNb(entity, item.id, entityNb)
 }
 function addNbRecursive(entity, item, target) {
-  item[`nb_${target}_recursive`] = getRecursive(entity, item.id, target).length
+  item[`nb${capitalize(target)}Recursive`] = getRecursive(
+    entity,
+    item.id,
+    target,
+  ).length
 }
 function addInstitutionNb(institution, entity) {
-  institution[`nb_${entity}`] = getInstitutionItems(
+  institution[`nb${capitalize(entity)}`] = getInstitutionItems(
     institution.id,
     entity,
   ).length
 }
 function addNbChild(entity, item) {
-  item.nb_child = db.hasNb('parent', item.id, entity)
+  item.nbChild = db.hasNb('parent', item.id, entity)
 }
 function addNbChildRecursive(entity, item) {
   const childs = db.getAllChilds(entity, item.id)
-  item.nb_child_recursive = childs.length
+  item.nbChildRecursive = childs.length
 }
 function addName(item, entity, alias = '') {
   if (!alias) alias = entity
@@ -75,7 +79,7 @@ function addName(item, entity, alias = '') {
   let itemName = ''
   if (itemId !== null && itemId !== undefined)
     itemName = db.get(entity, itemId)?.name as string
-  item[`${alias}_name`] = itemName || ''
+  item[`${alias}Name`] = itemName || ''
 }
 function addVariableNum(dataset, entity, variableEntity) {
   const variables = db.getAll(variableEntity, { [entity]: dataset.id })
@@ -84,8 +88,8 @@ function addVariableNum(dataset, entity, variableEntity) {
 function addEntities(item) {
   item.entities = []
   for (const entity of ['institution', 'folder', 'dataset']) {
-    if (item['nb_' + entity] > 0) {
-      item.entities.push({ name: entity, nb: item['nb_' + entity] })
+    if (item['nb' + capitalize(entity)] > 0) {
+      item.entities.push({ name: entity, nb: item['nb' + capitalize(entity)] })
     }
   }
 }
@@ -112,20 +116,20 @@ function variableAddDatasetInfo(variable) {
   const dataset = db.get('dataset', variable.dataset_id)
   if (!dataset) return
   variable.nb_row = dataset.nb_row
-  variable.dataset_name = dataset.name
-  variable.dataset_type = dataset.type
-  variable.folder_name = ''
+  variable.datasetName = dataset.name
+  variable.datasetType = dataset.type
+  variable.folderName = ''
   if (db.use.folder) {
     variable.folder_id = dataset.folder_id
-    variable.folder_name = dataset.folder_name
+    variable.folderName = dataset.folderName
   }
   if (db.use.owner) {
     variable.owner_id = dataset.owner_id
-    variable.owner_name = dataset.owner_name
+    variable.ownerName = dataset.ownerName
   }
   if (db.use.manager) {
     variable.manager_id = dataset.manager_id
-    variable.manager_name = dataset.manager_name
+    variable.managerName = dataset.managerName
   }
 }
 
@@ -136,27 +140,27 @@ function addEntity(item, entity) {
 
 function addSourceVar(variable) {
   if (!variable.sourceVar_ids) return false
-  variable.source_ids = []
+  variable.sourceIds = []
   const dataset = db.get('dataset', variable.dataset_id)
   for (const sourceVarIdRaw of variable.sourceVar_ids.split(',')) {
     const sourceVarId = sourceVarIdRaw.trim()
     const sourceVar = db.get('variable', sourceVarId.trim())
     if (!sourceVar) continue
-    variable.source_ids.push(sourceVarId)
-    if (!sourceVar.derived_ids) sourceVar.derived_ids = []
-    sourceVar.derived_ids.push(variable.id)
+    variable.sourceIds.push(sourceVarId)
+    if (!sourceVar.derivedIds) sourceVar.derivedIds = []
+    sourceVar.derivedIds.push(variable.id)
 
     if (dataset) {
-      if (!dataset.source_ids) dataset.source_ids = new Set()
+      if (!dataset.sourceIds) dataset.sourceIds = new Set()
       if (dataset.id !== sourceVar.dataset_id) {
-        dataset.source_ids.add(sourceVar.dataset_id)
+        dataset.sourceIds.add(sourceVar.dataset_id)
       }
     }
     const sourceDataset = db.get('dataset', sourceVar.dataset_id)
     if (sourceDataset) {
-      if (!sourceDataset.derived_ids) sourceDataset.derived_ids = new Set()
+      if (!sourceDataset.derivedIds) sourceDataset.derivedIds = new Set()
       if (sourceDataset.id !== dataset.id) {
-        sourceDataset.derived_ids.add(dataset.id)
+        sourceDataset.derivedIds.add(dataset.id)
       }
     }
   }
@@ -180,7 +184,7 @@ function addNextUpdate(item) {
 
   if (diff) {
     const lastUpdate = dateToTimestamp(item.last_update_date)
-    item.next_update_date = timestampToDate(lastUpdate + diff * 1000)
+    item.nextUpdateDate = timestampToDate(lastUpdate + diff * 1000)
   }
 }
 
@@ -286,8 +290,8 @@ class Process {
       const variables = datasets.flatMap(dataset =>
         db.getAll('variable', { dataset }),
       )
-      institution.nb_dataset_recursive = datasets.length
-      institution.nb_variable_recursive = variables.length
+      institution.nbDatasetRecursive = datasets.length
+      institution.nbVariableRecursive = variables.length
     })
   }
   static folder() {
@@ -307,8 +311,8 @@ class Process {
       const variables = datasets.flatMap(dataset =>
         db.getAll('variable', { dataset }),
       )
-      folder.nb_dataset_recursive = datasets.length
-      folder.nb_variable_recursive = variables.length
+      folder.nbDatasetRecursive = datasets.length
+      folder.nbVariableRecursive = variables.length
     })
   }
   static tag() {
@@ -321,7 +325,7 @@ class Process {
       addNb('tag', tag, 'variable')
       addDocs('tag', tag)
       addEntities(tag)
-      if (db.use.tag_recursive) addParents('tag', tag)
+      if (db.use.tagRecursive) addParents('tag', tag)
       addNbChild('tag', tag)
       addNbChildRecursive('tag', tag)
       addNbRecursive('tag', tag, 'institution')
@@ -347,14 +351,14 @@ class Process {
       if (db.use.manager) addName(dataset, 'institution', 'manager')
       if (db.use.folder) {
         addName(dataset, 'folder')
-      } else dataset.folder_name = ''
+      } else dataset.folderName = ''
       addVariableNum(dataset, 'dataset', 'variable')
       addNb('dataset', dataset, 'variable')
       addPeriod(dataset)
       addNextUpdate(dataset)
-      dataset.type_clean = ''
+      dataset.typeClean = ''
       if (dataset.type) {
-        dataset.type_clean = filterToName[dataset.type]
+        dataset.typeClean = filterToName[dataset.type]
       }
     })
   }
@@ -391,17 +395,17 @@ class Process {
         variable.values = variable.values.concat(values)
         variable.modalities = variable.modalities.concat(modality)
       }
-      variable.values_preview = [...variable.values.slice(0, 10)]
-      variable.type_clean = getVariableTypeClean(variable.type)
+      variable.valuesPreview = [...variable.values.slice(0, 10)]
+      variable.typeClean = getVariableTypeClean(variable.type)
       variableAddDatasetInfo(variable)
       const nbValues = getNbValues(variable.values, variable)
       variable.nb_distinct = nbValues
-      variable.nb_value = nbValues
+      variable.nbValue = nbValues
       addSourceVar(variable)
       if (variable.key) variable.key = 'oui'
 
       const freqData = db.getAll('freq', { variable })
-      variable.has_freq = freqData.length > 0
+      variable.hasFreq = freqData.length > 0
 
       if (freqData.length > 0) {
         const freqSorted = [...freqData].sort(
@@ -412,13 +416,13 @@ class Process {
           0,
         )
         const maxFreq = freqSorted[0].freq || 1
-        variable.freq_preview = freqSorted.slice(0, 10).map(item => ({
+        variable.freqPreview = freqSorted.slice(0, 10).map(item => ({
           ...item,
           total: totalFreq,
           max: maxFreq,
         }))
       } else {
-        variable.freq_preview = []
+        variable.freqPreview = []
       }
 
       if (!nbValues || !variable.nb_duplicate) return
@@ -435,8 +439,8 @@ class Process {
 
       modality.variables = db.getAll('variable', { modality })
       modality.values = db.getAll('value', { modality })
-      modality.nb_value = modality.values.length
-      modality.values_preview = [...modality.values.slice(0, 10)]
+      modality.nbValue = modality.values.length
+      modality.valuesPreview = [...modality.values.slice(0, 10)]
       for (const value of modality.values) {
         value.modalityName = modality.name
         if (value.value === null) value.value = ''
@@ -447,23 +451,23 @@ class Process {
       if (!modality.type && modality.variables.length > 0) {
         modality.type = modality.variables[0].type
       }
-      modality.type_clean = getVariableTypeClean(modality.type)
+      modality.typeClean = getVariableTypeClean(modality.type)
     })
   }
   static metaVariable() {
     db.foreach('metaVariable', metaVariable => {
       addEntity(metaVariable, 'metaVariable')
       metaVariable.isMeta = true
-      metaVariable.type_clean = getVariableTypeClean(metaVariable.type)
-      metaVariable.nb_value = getNbValues(metaVariable.values, metaVariable)
+      metaVariable.typeClean = getVariableTypeClean(metaVariable.type)
+      metaVariable.nbValue = getNbValues(metaVariable.values, metaVariable)
       if (metaVariable.name === 'id') metaVariable.key = 'oui'
 
       const metaDataset = db.get('metaDataset', metaVariable.metaDataset_id)
       metaVariable.dataset_id = metaDataset.id
-      metaVariable.dataset_name = metaDataset.name
+      metaVariable.datasetName = metaDataset.name
       metaVariable.nb_row = metaDataset.nb_row
       metaVariable.metaFolder_id = metaDataset.metaFolder_id
-      metaVariable.folder_name = metaDataset.metaFolder_id as string
+      metaVariable.folderName = metaDataset.metaFolder_id as string
       metaVariable.metaLocalisation = ''
       if (metaVariable.is_in_meta && !metaVariable.is_in_data)
         metaVariable.metaLocalisation = 'schéma'
@@ -476,12 +480,12 @@ class Process {
       addEntity(metaDataset, 'metaDataset')
       metaDataset.isMeta = true
       metaDataset.folder = { id: metaDataset.metaFolder_id }
-      metaDataset.folder_name = metaDataset.metaFolder_id as string
+      metaDataset.folderName = metaDataset.metaFolder_id as string
       addVariableNum(metaDataset, 'metaDataset', 'metaVariable')
       const metaVariables = db.getAll('metaVariable', { metaDataset })
-      metaDataset.nb_variable = metaVariables.length
-      if (metaDataset.last_update_timestamp)
-        metaDataset.last_update_timestamp *= 1000
+      metaDataset.nbVariable = metaVariables.length
+      if (metaDataset.lastUpdateTimestamp)
+        metaDataset.lastUpdateTimestamp *= 1000
       metaDataset.metaLocalisation = ''
       if (metaDataset.is_in_meta && !metaDataset.is_in_data)
         metaDataset.metaLocalisation = 'schéma'
@@ -494,10 +498,10 @@ class Process {
       addEntity(metaFolder, 'metaFolder')
       metaFolder.isMeta = true
       const metaDatasets = db.getAll('metaDataset', { metaFolder })
-      metaFolder.nb_dataset = metaDatasets.length
-      metaFolder.nb_variable = 0
+      metaFolder.nbDataset = metaDatasets.length
+      metaFolder.nbVariable = 0
       for (const metaDataset of metaDatasets)
-        metaFolder.nb_variable += metaDataset.nb_variable
+        metaFolder.nbVariable += metaDataset.nbVariable
     })
   }
 
@@ -509,7 +513,7 @@ class Process {
 function addDocRecursive() {
   for (const entity of ['institution', 'folder', 'dataset', 'tag'] as const) {
     db.foreach(entity, item => {
-      item.docs_recursive = []
+      item.docsRecursive = []
       let docs = []
       if (entity === 'institution') {
         const childs = getRecursive(entity, item.id, entity)
@@ -523,9 +527,9 @@ function addDocRecursive() {
       }
       if (docs.length > 1) docs = removeDuplicateById(docs)
       for (const doc of docs) {
-        item.docs_recursive.push({ ...doc, inherited: 'hérité' })
+        item.docsRecursive.push({ ...doc, inherited: 'hérité' })
       }
-      if (item.docs) item.docs_recursive = item.docs_recursive.concat(item.docs)
+      if (item.docs) item.docsRecursive = item.docsRecursive.concat(item.docs)
     })
   }
 }

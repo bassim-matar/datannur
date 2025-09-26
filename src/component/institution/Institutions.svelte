@@ -16,21 +16,21 @@
   let variableMax = 0
   let levelMax = 0
   for (const institution of institutions) {
-    institution.path_string = getParentPath(institution)
-    if (institution.nb_child_recursive > institutionMax) {
-      institutionMax = institution.nb_child_recursive
+    institution.pathString = getParentPath(institution)
+    if (institution.nbChildRecursive > institutionMax) {
+      institutionMax = institution.nbChildRecursive
     }
-    if (institution.nb_folder_recursive > folderMax) {
-      folderMax = institution.nb_folder_recursive
+    if (institution.nbFolderRecursive > folderMax) {
+      folderMax = institution.nbFolderRecursive
     }
-    if (institution.nb_dataset_recursive > datasetMax) {
-      datasetMax = institution.nb_dataset_recursive
+    if (institution.nbDatasetRecursive > datasetMax) {
+      datasetMax = institution.nbDatasetRecursive
     }
-    if (institution.docs_recursive.length > nbDocMax) {
-      nbDocMax = institution.docs_recursive.length
+    if (institution.docsRecursive.length > nbDocMax) {
+      nbDocMax = institution.docsRecursive.length
     }
-    if (institution.nb_variable_recursive > variableMax) {
-      variableMax = institution.nb_variable_recursive
+    if (institution.nbVariableRecursive > variableMax) {
+      variableMax = institution.nbVariableRecursive
     }
     if (institution.parents?.length + 1 > levelMax) {
       levelMax = institution.parents?.length + 1
@@ -38,7 +38,7 @@
   }
 
   const institutionsSorted = [...institutions]
-  institutionsSorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
+  institutionsSorted.sort((a, b) => a.pathString.localeCompare(b.pathString))
 
   const columns = [
     Column.favorite(),

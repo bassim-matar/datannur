@@ -10,9 +10,9 @@
   let nbSourcesMax = 0
   let nbDerivedMax = 0
   for (const variable of datasetVariables) {
-    nbValueMax = Math.max(nbValueMax, variable.nb_value)
-    nbSourcesMax = Math.max(nbSourcesMax, variable.source_ids?.length || 0)
-    nbDerivedMax = Math.max(nbDerivedMax, variable.derived_ids?.length || 0)
+    nbValueMax = Math.max(nbValueMax, variable.nbValue)
+    nbSourcesMax = Math.max(nbSourcesMax, variable.sourceIds?.length || 0)
+    nbDerivedMax = Math.max(nbDerivedMax, variable.derivedIds?.length || 0)
   }
 
   function defineColumns() {

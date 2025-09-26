@@ -88,16 +88,16 @@
   <tr>
     <td><Icon type="relation" /> Relations</td>
     <td>
-      {#each relations as relation_type (relation_type.type.name)}
-        {#if relation_type.relations.length}
+      {#each relations as relationType (relationType.type.name)}
+        {#if relationType.relations.length}
           <ul>
-            {#each relation_type.relations as relation (relation)}
+            {#each relationType.relations as relation (relation)}
               <li>
                 <Link href={`metaDataset/${relation[0].split(' (')[0]}`}
                   >{relation[0]}</Link
                 >
-                <span class="use_tooltip" title={relation_type.type.tooltip}>
-                  <Icon type={relation_type.type.symbol} marginRight={false} />
+                <span class="use_tooltip" title={relationType.type.tooltip}>
+                  <Icon type={relationType.type.symbol} marginRight={false} />
                 </span>
                 <Link href={`metaDataset/${relation[1].split(' (')[0]}`}
                   >{relation[1]}</Link

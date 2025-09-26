@@ -89,7 +89,7 @@
     addMinimumDeep(institutions)
     addMinimumDeep(folders)
 
-    if (db.use.tag_recursive) {
+    if (db.use.tagRecursive) {
       makeParentsRelative(tag.id, tags)
       addMinimumDeep(tags)
     }
@@ -104,7 +104,7 @@
       .filter(
         evo =>
           (evo.entity === 'tag' && evo.id === tag.id) ||
-          (evo.parent_entity === 'tag' && evo.parent_entity_id === tag.id) ||
+          (evo.parentEntity === 'tag' && evo.parent_entity_id === tag.id) ||
           (evo.entity === 'variable' && variablesId.has(evo.id)) ||
           (evo.entity === 'dataset' && datasetsId.has(evo.id)) ||
           (evo.entity === 'folder' && foldersId.has(evo.id)) ||

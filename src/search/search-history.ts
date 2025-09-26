@@ -73,10 +73,10 @@ export default class SearchHistory {
         name: itemData.name,
         description: itemData.description,
         entity: entry.entity,
-        is_recent: true,
+        isRecent: true,
         isFavorite: itemData.isFavorite,
         folder_id: itemData.folder_id,
-        folder_name: itemData.folder_name,
+        folderName: itemData.folderName,
         _entity: itemData._entity,
         _entityClean: entityNames[itemData._entity as string],
       })
@@ -98,7 +98,7 @@ export default class SearchHistory {
     for (const item of result) {
       const key = `${item.entity}-${item.id}`
       if (!(key in recentIds)) continue
-      const itemData = { ...item, is_recent: true, position: recentIds[key] }
+      const itemData = { ...item, isRecent: true, position: recentIds[key] }
       for (const [variable, list] of Object.entries(recentSearch)) {
         if (item.variable === variable) list.push(itemData)
       }

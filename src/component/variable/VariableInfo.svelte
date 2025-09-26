@@ -36,12 +36,12 @@
     </td>
     <td>
       <Link href="{parentName}/{variable.dataset_id}" entity="dataset"
-        >{variable.dataset_name}</Link
+        >{variable.datasetName}</Link
       >
     </td>
   </tr>
   <TagsInfo tags={variable.tags} />
-  <TypeInfo type={variable.type_clean} />
+  <TypeInfo type={variable.typeClean} />
   {#if variable.key}
     <tr>
       <td>

@@ -10,7 +10,7 @@
 
 <TableWrapper>
   <IdInfo id={modality.id} />
-  <TypeInfo type={modality.type_clean} />
+  <TypeInfo type={modality.typeClean} />
   <FolderInfo folderId={modality.folder_id} />
 </TableWrapper>
 <DescriptionInfo description={modality.description} />

@@ -30,7 +30,7 @@
     <InstitutionInfo type="manager" institutionId={folder.manager_id} />
     <TagsInfo tags={folder.tags} />
     <LastUpdateInfo lastUpdateDate={folder.last_update_date} />
-    <NextUpdateInfo nextUpdateDate={folder.next_update_date} />
+    <NextUpdateInfo nextUpdateDate={folder.nextUpdateDate} />
     <FrequencyInfo frequency={folder.updating_each} />
     <PeriodInfo period={folder.period} periodDuration={folder.periodDuration} />
     <LocalisationInfo localisation={folder.localisation} />

@@ -9,7 +9,7 @@
   const dataset = db.get('dataset', id)
 
   let datasetVariables = db.getAll('variable', { dataset })
-  dataset.nb_variable = datasetVariables.length
+  dataset.nbVariable = datasetVariables.length
 
   let modalities = []
   for (const variable of datasetVariables) {
@@ -31,9 +31,9 @@
     .filter(
       evo =>
         (evo.entity === 'dataset' && evo.id === dataset.id) ||
-        (evo.parent_entity === 'dataset' &&
+        (evo.parentEntity === 'dataset' &&
           evo.parent_entity_id === dataset.id) ||
-        (evo.parent_entity === 'modality' &&
+        (evo.parentEntity === 'modality' &&
           modalitiesId.has(evo.parent_entity_id)) ||
         (evo.entity === 'modality' && modalitiesId.has(evo.id)),
     )

@@ -714,10 +714,10 @@
               &.color_value {
                 background: color('value');
               }
-              &.color_nb_source {
+              &.color_nbSource {
                 background: color('nbSource');
               }
-              &.color_nb_derived {
+              &.color_nbDerived {
                 background: color('nbDerived');
               }
               &.color_key {

@@ -17,9 +17,9 @@
     toSort.sort(
       (a, b) =>
         b.lineageType?.localeCompare(a.lineageType) ||
-        filterPos[a.dataset_type] - filterPos[b.dataset_type] ||
-        a.folder_name.localeCompare(b.folder_name) ||
-        a.dataset_name.localeCompare(b.dataset_name) ||
+        filterPos[a.datasetType] - filterPos[b.datasetType] ||
+        a.folderName.localeCompare(b.folderName) ||
+        a.datasetName.localeCompare(b.datasetName) ||
         a.num - b.num,
     )
   }
@@ -31,9 +31,9 @@
   let nbDerivedMax = 0
   for (const variable of variables) {
     nbRowMax = Math.max(nbRowMax, variable.nb_row)
-    nbValueMax = Math.max(nbValueMax, variable.nb_value)
-    nbSourcesMax = Math.max(nbSourcesMax, variable.source_ids?.length || 0)
-    nbDerivedMax = Math.max(nbDerivedMax, variable.derived_ids?.length || 0)
+    nbValueMax = Math.max(nbValueMax, variable.nbValue)
+    nbSourcesMax = Math.max(nbSourcesMax, variable.sourceIds?.length || 0)
+    nbDerivedMax = Math.max(nbDerivedMax, variable.derivedIds?.length || 0)
   }
 
   function defineColumns() {

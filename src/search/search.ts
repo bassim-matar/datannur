@@ -111,7 +111,7 @@ export default class Search {
         for (const itemId of itemsId) {
           const item = db.get(entity.name, itemId) as BaseEntity & {
             folder_id?: string | number
-            folder_name?: string
+            folderName?: string
             original_name?: string
           }
           result.push({
@@ -124,7 +124,7 @@ export default class Search {
             variable: variable.name,
             isFavorite: item.isFavorite || false,
             folder_id: item.folder_id || '',
-            folder_name: item.folder_name || '',
+            folderName: item.folderName || '',
             _entity: item._entity || '',
             _entityClean: entityNames[item._entity as string] || '',
           })

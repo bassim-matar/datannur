@@ -66,18 +66,18 @@ function addHistory(evoDeleted) {
 
     evo._entity = evo.entity
     evo._entityClean = entityNames[evo.entity]
-    evo.type_clean = evolutionTypes[evo.type]
-    evo.parent_entity = parentEntity
-    evo.parent_entity_clean = entityNames[parentEntity]
+    evo.typeClean = evolutionTypes[evo.type]
+    evo.parentEntity = parentEntity
+    evo.parentEntityClean = entityNames[parentEntity]
     evo.timestamp *= 1000
     evo.time = evo.timestamp > Date.now() ? 'Futur' : 'Passé'
 
     const parentItem = getItem(
-      evo.parent_entity,
+      evo.parentEntity,
       evo.parent_entity_id,
       evoDeleted,
     )
-    evo.parent_name = parentItem?.name
+    evo.parentName = parentItem?.name
     evo.parentDeleted = parentItem?._deleted
     evo.isFavorite = false
 
@@ -137,16 +137,16 @@ function addValidity(validities, type, entity, entityData, evoDeleted) {
     _entity: entity,
     _entityClean: entityNames[entity],
     entity_id: entityData.id,
-    parent_entity: parentEntity,
-    parent_entity_clean: entityNames[parentEntity],
+    parentEntity: parentEntity,
+    parentEntityClean: entityNames[parentEntity],
     parent_entity_id: entityData[`${parentEntities[entity]}_id`],
-    parent_name: parentItem?.name,
+    parentName: parentItem?.name,
     name: entityData.name,
     type,
     old_value: entityData[type],
     new_value: entityData[type],
     variable: type,
-    type_clean: typeClean,
+    typeClean: typeClean,
     timestamp,
     time,
     date: timestampToDate(timestamp),
@@ -166,7 +166,7 @@ function addValidities(evoDeleted) {
       (Object.keys(tableData[0]).includes('start_date') ||
         Object.keys(tableData[0]).includes('end_date') ||
         Object.keys(tableData[0]).includes('last_update_date') ||
-        Object.keys(tableData[0]).includes('next_update_date'))
+        Object.keys(tableData[0]).includes('nextUpdateDate'))
     ) {
       db.foreach(entity, entityData => {
         if ('start_date' in entityData && entityData.start_date) {
@@ -184,10 +184,10 @@ function addValidities(evoDeleted) {
             evoDeleted,
           )
         }
-        if ('next_update_date' in entityData && entityData.next_update_date) {
+        if ('nextUpdateDate' in entityData && entityData.nextUpdateDate) {
           addValidity(
             validities,
-            'next_update_date',
+            'nextUpdateDate',
             entity,
             entityData,
             evoDeleted,

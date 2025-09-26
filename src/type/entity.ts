@@ -15,7 +15,7 @@ import type {
 export interface EntityWithRelations extends BaseEntity {
   tags?: Tag[]
   docs?: Doc[]
-  docs_recursive?: (Doc & { inherited?: string })[]
+  docsRecursive?: (Doc & { inherited?: string })[]
 }
 
 export interface Dataset extends EntityWithRelations {
@@ -37,14 +37,14 @@ export interface Dataset extends EntityWithRelations {
   no_more_update?: boolean
 
   // Computed fields added during processing
-  type_clean?: string
-  folder_name?: string
-  owner_name?: string
-  manager_name?: string
-  nb_variable?: number
-  source_ids?: Set<string | number>
-  derived_ids?: Set<string | number>
-  next_update_date?: string
+  typeClean?: string
+  folderName?: string
+  ownerName?: string
+  managerName?: string
+  nbVariable?: number
+  sourceIds?: Set<string | number>
+  derivedIds?: Set<string | number>
+  nextUpdateDate?: string
 }
 
 export interface Variable extends BaseEntity {
@@ -62,25 +62,25 @@ export interface Variable extends BaseEntity {
   sourceVar_ids?: string
 
   // Computed fields added during processing
-  type_clean?: string
+  typeClean?: string
   num?: number
   nb_row?: number
-  dataset_name?: string
-  dataset_type?: string
+  datasetName?: string
+  datasetType?: string
   folder_id?: string | number
-  folder_name?: string
+  folderName?: string
   owner_id?: string | number
-  owner_name?: string
+  ownerName?: string
   manager_id?: string | number
-  manager_name?: string
+  managerName?: string
   modalities?: Modality[]
   values?: Value[]
-  values_preview?: Value[]
-  nb_value?: number
-  source_ids?: (string | number)[]
-  derived_ids?: (string | number)[]
-  has_freq?: boolean
-  freq_preview?: (Freq & {
+  valuesPreview?: Value[]
+  nbValue?: number
+  sourceIds?: (string | number)[]
+  derivedIds?: (string | number)[]
+  hasFreq?: boolean
+  freqPreview?: (Freq & {
     total?: number
     max?: number
   })[]
@@ -91,12 +91,12 @@ export interface Modality extends BaseEntity {
   type?: string
 
   // Computed fields added during processing
-  type_clean?: string
-  nb_variable?: number
+  typeClean?: string
+  nbVariable?: number
   variables?: Variable[]
   values?: Value[]
-  values_preview?: Value[]
-  nb_value?: number
+  valuesPreview?: Value[]
+  nbValue?: number
 }
 
 export interface Folder extends EntityWithRelations {
@@ -118,13 +118,13 @@ export interface Folder extends EntityWithRelations {
   no_more_update?: boolean
 
   // Computed fields added during processing
-  owner_name?: string
-  manager_name?: string
-  nb_child?: number
-  nb_child_recursive?: number
-  nb_dataset_recursive?: number
-  nb_variable_recursive?: number
-  next_update_date?: string
+  ownerName?: string
+  managerName?: string
+  nbChild?: number
+  nbChildRecursive?: number
+  nbDatasetRecursive?: number
+  nbVariableRecursive?: number
+  nextUpdateDate?: string
 }
 
 export interface Institution extends EntityWithRelations {
@@ -137,31 +137,31 @@ export interface Institution extends EntityWithRelations {
   end_date?: string
 
   // Computed fields added during processing
-  nb_child?: number
-  nb_child_recursive?: number
-  nb_folder?: number
-  nb_dataset?: number
-  nb_folder_recursive?: number
-  nb_dataset_recursive?: number
-  nb_variable_recursive?: number
+  nbChild?: number
+  nbChildRecursive?: number
+  nbFolder?: number
+  nbDataset?: number
+  nbFolderRecursive?: number
+  nbDatasetRecursive?: number
+  nbVariableRecursive?: number
 }
 
 export interface Tag extends EntityWithRelations {
   parent_id?: string | number
-  doc_ids?: string
+  docIds?: string
 
   // Computed fields added during processing
-  nb_institution?: number
-  nb_folder?: number
-  nb_dataset?: number
-  nb_variable?: number
-  nb_child?: number
-  nb_child_recursive?: number
-  nb_institution_recursive?: number
-  nb_folder_recursive?: number
-  nb_doc_recursive?: number
-  nb_dataset_recursive?: number
-  nb_variable_recursive?: number
+  nbInstitution?: number
+  nbFolder?: number
+  nbDataset?: number
+  nbVariable?: number
+  nbChild?: number
+  nbChildRecursive?: number
+  nbInstitutionRecursive?: number
+  nbFolderRecursive?: number
+  nbDocRecursive?: number
+  nbDatasetRecursive?: number
+  nbVariableRecursive?: number
 }
 
 export type TagWithChildren = Tag & {
@@ -172,15 +172,15 @@ export interface Doc extends BaseEntity {
   path?: string
   type?: string
   last_update?: number
+  last_update_date?: string
 
   // Computed fields added during processing
-  last_update_date?: string
   entity?: string
   entity_id?: string | number
-  nb_institution?: number
-  nb_folder?: number
-  nb_dataset?: number
-  nb_tag?: number
+  nbInstitution?: number
+  nbFolder?: number
+  nbDataset?: number
+  nbTag?: number
 }
 
 // Meta entities (for metadata datasets)
@@ -193,13 +193,13 @@ export interface MetaVariable extends BaseEntity {
 
   // Computed fields
   isMeta?: boolean
-  type_clean?: string
-  nb_value?: number
+  typeClean?: string
+  nbValue?: number
   dataset_id?: string | number
-  dataset_name?: string
+  datasetName?: string
   nb_row?: number
   metaFolder_id?: string | number
-  folder_name?: string
+  folderName?: string
   metaLocalisation?: string
   key?: string
 }
@@ -208,13 +208,13 @@ export interface MetaDataset extends BaseEntity {
   metaFolder_id: string | number
   is_in_meta?: boolean
   is_in_data?: boolean
-  last_update_timestamp?: number
+  lastUpdateTimestamp?: number
 
   // Computed fields
   isMeta?: boolean
   folder?: { id: string | number }
-  folder_name?: string
-  nb_variable?: number
+  folderName?: string
+  nbVariable?: number
   metaLocalisation?: string
   nb_row?: number
 }
@@ -222,8 +222,8 @@ export interface MetaDataset extends BaseEntity {
 export interface MetaFolder extends BaseEntity {
   // Computed fields
   isMeta?: boolean
-  nb_dataset?: number
-  nb_variable?: number
+  nbDataset?: number
+  nbVariable?: number
 }
 
 export interface Evolution {
@@ -237,11 +237,11 @@ export interface Evolution {
   _deleted?: boolean
   _entity?: string
   _entityClean?: string
-  type_clean?: string
-  parent_entity?: EntityName
-  parent_entity_clean?: string
+  typeClean?: string
+  parentEntity?: EntityName
+  parentEntityClean?: string
   time?: string
-  parent_name?: string
+  parentName?: string
   parentDeleted?: boolean
   isFavorite?: boolean
   date?: string

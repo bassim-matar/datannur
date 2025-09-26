@@ -22,26 +22,26 @@ export default {
     variable: 'updating_each',
   },
   last_update: {
-    icon: 'time_ago',
+    icon: 'timeAgo',
     name: 'Mise à jour',
     type: 'numeric',
     variable: 'last_update_date',
-    rangeType: 'time_ago',
+    rangeType: 'timeAgo',
     parseDate: true,
   },
-  last_update_doc: {
-    icon: 'time_ago',
+  lastUpdateDoc: {
+    icon: 'timeAgo',
     name: 'Mise à jour',
     type: 'numeric',
     variable: 'last_update',
-    rangeType: 'time_ago',
+    rangeType: 'timeAgo',
   },
   type: {
     name: 'Type',
     type: 'category',
-    variable: 'type_clean',
+    variable: 'typeClean',
   },
-  doc_type: {
+  docType: {
     name: 'Type',
     icon: 'type',
     type: 'category',
@@ -60,7 +60,7 @@ export default {
   variable: {
     name: 'Nombre de variables',
     type: 'numeric',
-    variable: 'nb_variable',
+    variable: 'nbVariable',
   },
   value: {
     name: 'Nombre de valeurs',
@@ -110,7 +110,7 @@ export default {
     nbRange: 1,
     getValue: x => x.metadata_path?.length,
   },
-  doc_path: {
+  docPath: {
     name: 'Lien',
     type: 'string',
     nbRange: 1,
@@ -138,7 +138,7 @@ export default {
       icon: 'elementIcon',
       link: 'elementLink',
     },
-    subtype: x => x.action_name === 'load_page',
+    subtype: x => x.actionName === 'load_page',
   },
   tab: {
     name: "Sélectionner l'onglet",
@@ -147,17 +147,21 @@ export default {
       icon: 'elementIcon',
       link: 'elementLink',
     },
-    subtype: x => x.action_name === 'select_tab',
+    subtype: x => x.actionName === 'select_tab',
   },
   search: {
     name: 'Rechercher',
-    getValue: item => item.element,
-    subtype: x => x.action_name === 'search_bar',
+    withHtml: {
+      text: 'element',
+      icon: 'elementIcon',
+      link: 'elementLink',
+    },
+    subtype: x => x.actionName === 'search_bar',
   },
-  time_ago: {
+  timeAgo: {
     name: 'Moment',
     type: 'numeric',
     variable: 'timestamp',
-    rangeType: 'time_ago',
+    rangeType: 'timeAgo',
   },
 }
