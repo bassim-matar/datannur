@@ -2,20 +2,20 @@
   import Icon from '@layout/Icon.svelte'
   import { getTimeAgo, getDatetime } from '@lib/time'
 
-  let { next_update_date, intraday = false, from_timestamp = false } = $props()
+  let { nextUpdateDate, intraday = false, fromTimestamp = false } = $props()
 
-  let next_update_date_readable = $state(next_update_date)
-  let time_ago = $state(getTimeAgo(next_update_date, true, !intraday))
+  let nextUpdateDateReadable = $state(nextUpdateDate)
+  let timeAgo = $state(getTimeAgo(nextUpdateDate, true, !intraday))
 
-  if (from_timestamp) {
-    next_update_date_readable = getDatetime(next_update_date)
-    time_ago = getTimeAgo(next_update_date, false, !intraday)
+  if (fromTimestamp) {
+    nextUpdateDateReadable = getDatetime(nextUpdateDate)
+    timeAgo = getTimeAgo(nextUpdateDate, false, !intraday)
   }
 </script>
 
-{#if next_update_date}
+{#if nextUpdateDate}
   <tr>
     <td><Icon type="date" /> Prochaine</td>
-    <td>{next_update_date_readable}, {time_ago}</td>
+    <td>{nextUpdateDateReadable}, {timeAgo}</td>
   </tr>
 {/if}

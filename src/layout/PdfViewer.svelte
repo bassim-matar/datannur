@@ -1,21 +1,21 @@
 <script lang="ts">
-  import { has_touch_screen } from "@lib/util"
-  import Loading from "@frame/Loading.svelte"
+  import { hasTouchScreen } from '@lib/util'
+  import Loading from '@frame/Loading.svelte'
 
   let { pdf } = $props()
 
   let loading = $state(true)
-  let url_mobile = $state(
-    "https://drive.google.com/viewerng/viewer?embedded=true&url=",
+  let urlMobile = $state(
+    'https://drive.google.com/viewerng/viewer?embedded=true&url=',
   )
 
-  let url = pdf + "#toolbar=1&view=FitH"
-  url_mobile += window.location.origin + "/" + url
+  let url = pdf + '#toolbar=1&view=FitH'
+  urlMobile += window.location.origin + '/' + url
 </script>
 
 <div class="iframe_wrapper">
   {#if loading}
-    <Loading position="relative" color_entity="doc" />
+    <Loading position="relative" colorEntity="doc" />
   {/if}
   <object
     data={url}
@@ -25,14 +25,14 @@
     title="pdf viewer"
     onload={() => (loading = false)}
   >
-    {#if has_touch_screen}
-      <embed src={url_mobile} class="frame" />
+    {#if hasTouchScreen}
+      <embed src={urlMobile} class="frame" />
     {/if}
   </object>
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .iframe_wrapper {
     position: relative;

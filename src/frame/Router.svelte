@@ -1,7 +1,7 @@
 <script lang="ts">
   import db from '@db'
   import { router } from '@lib/router.svelte.js'
-  import { app_mode } from '@lib/util'
+  import { appMode } from '@lib/util'
   import Logs from '@lib/logs'
   import {
     page,
@@ -13,23 +13,21 @@
   import router_index from '@src/.generated/router-index'
   import type { Row } from '@type'
 
-  let entity_global = $state('')
+  let entityGlobal = $state('')
   let route = $state(router_index._loading.component)
   let params = $state({})
-  let entity_id = $state('')
-  let page_key = $derived(
-    `${entity_global}___${entity_id}___${$reloadIncrement}`,
-  )
+  let entityId = $state('')
+  let pageKey = $derived(`${entityGlobal}___${entityId}___${$reloadIncrement}`)
 
   function isSpaHomepage() {
     return (
-      app_mode !== 'static_render' &&
+      appMode !== 'static_render' &&
       (!window.location.hash || window.location.hash === '#')
     )
   }
 
-  function updateRoute(entity: string, new_params: Row = null) {
-    if (new_params) params = new_params
+  function updateRoute(entity: string, newParams: Row = null) {
+    if (newParams) params = newParams
     $pageContentLoaded = false
     route = router_index[entity].component
     $page = entity
@@ -40,7 +38,7 @@
     return ctx => {
       route = router_index._loading.component
       params = {}
-      entity_id = ''
+      entityId = ''
       window.document.body.setAttribute('page', entity)
       if (!ctx.data) ctx.data = {}
       if (ctx.data.id === undefined) {
@@ -49,11 +47,14 @@
         setTimeout(() => Logs.add('load_page', { entity }), 10)
         return false
       }
-      entity_id = ctx.data.id
-      const entity_data = db.get(entity, entity_id)
-      if (entity_data) {
-        updateRoute(entity, { [entity]: entity_data, id: entity_id })
-        setTimeout(() => Logs.add('load_page', { entity, entity_id }), 10)
+      entityId = ctx.data.id
+      const entityData = db.get(entity, entityId)
+      if (entityData) {
+        updateRoute(entity, { [entity]: entityData, id: entityId })
+        setTimeout(
+          () => Logs.add('load_page', { entity, entity_id: entityId }),
+          10,
+        )
       } else {
         updateRoute('_error', { entity })
         Logs.add('load_page', { entity: '_error' })
@@ -64,14 +65,14 @@
   if ('_index' in router_index) {
     router.on('/', setRoute('_index'))
   }
-  for (const [entity_global, { param }] of Object.entries(router_index)) {
-    let route_url: string | false = false
-    if (['_index', '_error', '_loading'].includes(entity_global)) continue
-    else if (param) route_url = `/${entity_global}/:${param}`
-    else route_url = `/${entity_global}`
+  for (const [entityGlobal, { param }] of Object.entries(router_index)) {
+    let routeUrl: string | false = false
+    if (['_index', '_error', '_loading'].includes(entityGlobal)) continue
+    else if (param) routeUrl = `/${entityGlobal}/:${param}`
+    else routeUrl = `/${entityGlobal}`
 
-    if (route_url) {
-      router.on(route_url, setRoute(entity_global))
+    if (routeUrl) {
+      router.on(routeUrl, setRoute(entityGlobal))
     }
   }
   if ('_error' in router_index) {
@@ -86,14 +87,11 @@
   if (isSpaHomepage()) router.resolve('/')
   else router.resolve()
 
-  console.log(
-    'init global timer',
-    Math.round(performance.now() - window.__global_timer) + ' ms',
-  )
+  console.log('init global timer', Math.round(performance.now()) + ' ms')
 
   const SvelteComponent = $derived(route)
 </script>
 
-{#key page_key}
+{#key pageKey}
   <SvelteComponent {...params} />
 {/key}

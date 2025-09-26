@@ -1,20 +1,20 @@
 import db from '@db'
-import default_banner from '@markdown/main/banner.md?raw'
-import default_body from '@markdown/main/body.md?raw'
-import default_more_info from '@markdown/main/more-info.md?raw'
+import defaultBanner from '@markdown/main/banner.md?raw'
+import defaultBody from '@markdown/main/body.md?raw'
+import defaultMoreInfo from '@markdown/main/more-info.md?raw'
 
 export function getAboutMain() {
   const banner = db.tableHasId('config', 'banner')
     ? db.getConfig('banner')
-    : default_banner
+    : defaultBanner
 
   const body = db.tableHasId('config', 'body')
     ? db.getConfig('body')
-    : default_body
+    : defaultBody
 
-  const more_info = db.tableHasId('config', 'more_info')
+  const moreInfo = db.tableHasId('config', 'more_info')
     ? db.getConfig('more_info')
-    : default_more_info
+    : defaultMoreInfo
 
-  return banner + '\n' + body + '\n\n' + more_info
+  return banner + '\n' + body + '\n\n' + moreInfo
 }

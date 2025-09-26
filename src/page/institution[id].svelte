@@ -7,7 +7,7 @@
     removeDuplicateById,
     addMinimumDeep,
   } from '@lib/db'
-  import { is_big_limit } from '@lib/constant'
+  import { isBigLimit } from '@lib/constant'
   import Tags from '@lib/tags'
   import { tabsHelper } from '@tab/tabs-helper'
   import Tabs from '@tab/Tabs.svelte'
@@ -17,7 +17,7 @@
 
   let { institution } = $props()
 
-  let key_tab = $state(1)
+  let keyTab = $state(1)
 
   const docs = institution.docs_recursive
 
@@ -41,24 +41,24 @@
   makeParentsRelative(false, tags)
   addMinimumDeep(tags)
 
-  const modalities_id = new Set(modalities.map(item => item.id))
-  const variables_id = new Set(variables.map(item => item.id))
-  const datasets_id = new Set(datasets.map(item => item.id))
-  const folders_id = new Set(folders.map(item => item.id))
-  const institutions_id = new Set(institutions.map(item => item.id))
+  const modalitiesId = new Set(modalities.map(item => item.id))
+  const variablesId = new Set(variables.map(item => item.id))
+  const datasetsId = new Set(datasets.map(item => item.id))
+  const foldersId = new Set(folders.map(item => item.id))
+  const institutionsId = new Set(institutions.map(item => item.id))
 
   const evolutions = db
     .getAll('evolution')
     .filter(
       evo =>
         (evo.entity === 'institution' &&
-          (evo.id === institution.id || institutions_id.has(evo.id))) ||
-        (evo.entity === 'folder' && folders_id.has(evo.id)) ||
-        (evo.entity === 'dataset' && datasets_id.has(evo.id)) ||
-        (evo.entity === 'variable' && variables_id.has(evo.id)) ||
-        (evo.entity === 'modality' && modalities_id.has(evo.id)) ||
+          (evo.id === institution.id || institutionsId.has(evo.id))) ||
+        (evo.entity === 'folder' && foldersId.has(evo.id)) ||
+        (evo.entity === 'dataset' && datasetsId.has(evo.id)) ||
+        (evo.entity === 'variable' && variablesId.has(evo.id)) ||
+        (evo.entity === 'modality' && modalitiesId.has(evo.id)) ||
         (evo.parent_entity === 'modality' &&
-          modalities_id.has(evo.parent_entity_id)),
+          modalitiesId.has(evo.parent_entity_id)),
     )
 
   const stat = [
@@ -84,26 +84,26 @@
     stat,
   })
 
-  const nb_institution = institutions.length
-  const nb_folder = folders.length
-  let show_open_all_switch = $derived(
-    ($tabSelected.key === 'institutions' && nb_institution > is_big_limit) ||
-      ($tabSelected.key === 'folders' && nb_folder > is_big_limit),
+  const nbInstitution = institutions.length
+  const nbFolder = folders.length
+  let showOpenAllSwitch = $derived(
+    ($tabSelected.key === 'institutions' && nbInstitution > isBigLimit) ||
+      ($tabSelected.key === 'folders' && nbFolder > isBigLimit),
   )
-  let show_evolution_summary_switch = $derived(
-    $tabSelected.key === 'evolutions' && evolutions.length > is_big_limit,
+  let showEvolutionSummarySwitch = $derived(
+    $tabSelected.key === 'evolutions' && evolutions.length > isBigLimit,
   )
 </script>
 
 <section class="section">
   <Title type="institution" name={institution.name} id={institution.id} />
-  {#if show_open_all_switch}
-    <OpenAllSwitch onChange={value => (key_tab = value)} />
+  {#if showOpenAllSwitch}
+    <OpenAllSwitch onChange={value => (keyTab = value)} />
   {/if}
-  {#if show_evolution_summary_switch}
-    <EvolutionSummarySwitch onChange={value => (key_tab = value)} />
+  {#if showEvolutionSummarySwitch}
+    <EvolutionSummarySwitch onChange={value => (keyTab = value)} />
   {/if}
-  {#key key_tab}
+  {#key keyTab}
     <Tabs {tabs} />
   {/key}
 </section>

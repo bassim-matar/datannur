@@ -6,12 +6,12 @@ interface TabConfig {
   key?: string
   nb?: number | string
   props?: Row
-  is_meta?: boolean
-  meta_key?: string
-  without_prop?: boolean
-  load_async?: boolean
-  without_num?: boolean
-  use_about_file?: boolean
+  isMeta?: boolean
+  metaKey?: string
+  withoutProp?: boolean
+  loadAsync?: boolean
+  withoutNum?: boolean
+  useAboutFile?: boolean
   [key: string]: unknown
 }
 
@@ -37,8 +37,7 @@ function getTab(key: string, value: unknown) {
   if (
     ([null, undefined, false].includes(value as null | undefined | boolean) ||
       (Array.isArray(value) && value.length === 0)) &&
-    !tab.without_prop &&
-    !tab.load_async
+    !tab.without_prop
   )
     return false
 
@@ -56,19 +55,19 @@ function getTab(key: string, value: unknown) {
   if (Array.isArray(value) || (typeof value === 'object' && value !== null))
     tab.nb = (value as unknown[]).length
   tab.props = {}
-  if (tab.is_meta) {
-    tab.props!.is_meta = true
-    tab.props![tab.meta_key!] = value
+  if (tab.isMeta) {
+    tab.props!.isMeta = true
+    tab.props![tab.metaKey!] = value
   } else if (value !== '') {
     tab.props![key] = value
   }
   if (tab.without_num) {
     tab.nb = undefined
   }
-  if (tab.load_async) tab.nb = '?'
+  if (tab.loadAsync) tab.nb = '?'
 
-  if (tab.use_about_file) {
-    tab.props = { about_file: value }
+  if (tab.useAboutFile) {
+    tab.props = { aboutFile: value }
   }
 
   if (key === 'stat') {

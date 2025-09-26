@@ -3,12 +3,12 @@
 
   let { content, mode = 'classic' } = $props()
 
-  let md_content = $derived(content ? markdownRender(content) : '')
+  let mdContent = $derived(content ? markdownRender(content) : '')
 </script>
 
 <div class="main content" class:classic={mode === 'classic'}>
   <!-- eslint-disable svelte/no-at-html-tags -->
-  {@html md_content}
+  {@html mdContent}
 </div>
 
 <style lang="scss">

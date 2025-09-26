@@ -1,21 +1,21 @@
 <script lang="ts">
-  import {getLocalFilter} from '@lib/db'
+  import { getLocalFilter } from '@lib/db'
   import MainFilter from '@lib/main-filter'
   import Switch from '@layout/Switch.svelte'
   import Button from '@layout/Button.svelte'
 
   let filters = $state([])
 
-  const saved_filters = MainFilter.get()
-  const db_filters = getLocalFilter()
+  const savedFilters = MainFilter.get()
+  const dbFilters = getLocalFilter()
 
-  for (const db_filter of db_filters) {
-    const filter = db_filter
+  for (const dbFilter of dbFilters) {
+    const filter = dbFilter
     filter.is_active = true
     filters.push(filter)
-    for (const saved_filter of saved_filters) {
-      if (saved_filter.id === filter.id) {
-        filter.is_active = saved_filter.is_active
+    for (const savedFilter of savedFilters) {
+      if (savedFilter.id === filter.id) {
+        filter.is_active = savedFilter.is_active
         break
       }
     }

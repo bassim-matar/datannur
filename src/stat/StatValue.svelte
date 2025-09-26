@@ -3,9 +3,9 @@
   import { extendable } from '@lib/extendable'
   import { locale } from '@lib/constant'
 
-  let { value, total_value, main_color, with_html = false } = $props()
+  let { value, totalValue, mainColor, withHtml = false } = $props()
 
-  const percent = getPercent(value.count / total_value)
+  const percent = getPercent(value.count / totalValue)
 </script>
 
 <div class="value_box">
@@ -16,7 +16,7 @@
       onmouseenter={extendable.open}
       onmouseleave={extendable.closeOneLine}
     >
-      {#if with_html}
+      {#if withHtml}
         <!-- eslint-disable svelte/no-at-html-tags -->
         {@html value.readable}
       {:else}
@@ -28,7 +28,7 @@
   </div>
   <div
     class="percent_background"
-    style="width: {percent}%; background: {main_color};"
+    style="width: {percent}%; background: {mainColor};"
   ></div>
 </div>
 

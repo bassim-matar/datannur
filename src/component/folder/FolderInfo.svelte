@@ -21,21 +21,18 @@
 
 <TableWrapper>
   <IdInfo id={folder.id} />
-  {#if !folder.is_meta}
+  {#if !folder.isMeta}
     <DeepLevelInfo level={folder.parents.length + 1} />
     {#if folder.parent_id}
-      <FolderInfo folder_id={folder.id} is_self={true} />
+      <FolderInfo folderId={folder.id} isSelf={true} />
     {/if}
-    <InstitutionInfo type="owner" institution_id={folder.owner_id} />
-    <InstitutionInfo type="manager" institution_id={folder.manager_id} />
+    <InstitutionInfo type="owner" institutionId={folder.owner_id} />
+    <InstitutionInfo type="manager" institutionId={folder.manager_id} />
     <TagsInfo tags={folder.tags} />
-    <LastUpdateInfo last_update_date={folder.last_update_date} />
-    <NextUpdateInfo next_update_date={folder.next_update_date} />
+    <LastUpdateInfo lastUpdateDate={folder.last_update_date} />
+    <NextUpdateInfo nextUpdateDate={folder.next_update_date} />
     <FrequencyInfo frequency={folder.updating_each} />
-    <PeriodInfo
-      period={folder.period}
-      period_duration={folder.period_duration}
-    />
+    <PeriodInfo period={folder.period} periodDuration={folder.periodDuration} />
     <LocalisationInfo localisation={folder.localisation} />
     {#if folder.survey_type}
       <tr>
@@ -43,14 +40,14 @@
         <td>{folder.survey_type}</td>
       </tr>
     {/if}
-    <DeliveryFormatInfo delivery_format={folder.delivery_format} />
+    <DeliveryFormatInfo deliveryFormat={folder.delivery_format} />
     {#if folder.metadata_path}
       <tr>
         <td><Icon type="metadata_path" /> Metadonnées</td>
         <td><CopyText text={folder.metadata_path} /></td>
       </tr>
     {/if}
-    <DataPathInfo data_path={folder.data_path} />
+    <DataPathInfo dataPath={folder.data_path} />
     {#if folder.git_code}
       <tr>
         <td><Icon type="git_code" /> GIT code</td>

@@ -5,46 +5,46 @@
   let { tags } = $props()
 
   function buildTree(tags) {
-    const tags_tree = {}
+    const tagsTree = {}
     tags.forEach(tag => {
-      if (!(tag.id in tags_tree)) {
-        tags_tree[tag.id] = { ...tag, children: {} }
+      if (!(tag.id in tagsTree)) {
+        tagsTree[tag.id] = { ...tag, children: {} }
       }
     })
     if (!db.use.tag_recursive) {
-      return tags_tree
+      return tagsTree
     }
     tags.forEach(tag => {
-      let current_level = tags_tree
+      let currentLevel = tagsTree
       tag.parents.forEach(parent => {
-        if (!(parent.id in current_level)) {
-          current_level[parent.id] = { ...parent, children: {} }
+        if (!(parent.id in currentLevel)) {
+          currentLevel[parent.id] = { ...parent, children: {} }
         }
-        current_level = current_level[parent.id].children
+        currentLevel = currentLevel[parent.id].children
       })
-      if (!(tag.id in current_level)) {
-        current_level[tag.id] = tags_tree[tag.id]
+      if (!(tag.id in currentLevel)) {
+        currentLevel[tag.id] = tagsTree[tag.id]
       } else {
-        current_level[tag.id] = {
-          ...tags_tree[tag.id],
-          children: { ...current_level[tag.id].children },
+        currentLevel[tag.id] = {
+          ...tagsTree[tag.id],
+          children: { ...currentLevel[tag.id].children },
         }
       }
     })
-    const root_tags = {}
-    Object.keys(tags_tree).forEach(tagId => {
-      if (tags_tree[tagId].parents.length === 0) {
-        root_tags[tagId] = tags_tree[tagId]
+    const rootTags = {}
+    Object.keys(tagsTree).forEach(tagId => {
+      if (tagsTree[tagId].parents.length === 0) {
+        rootTags[tagId] = tagsTree[tagId]
       }
     })
-    return root_tags
+    return rootTags
   }
 
-  let tags_tree = buildTree(tags)
+  let tagsTree = buildTree(tags)
 </script>
 
 <div class="tags_wrapper">
-  <TagsListLevel tag={{ children: tags_tree }} />
+  <TagsListLevel tag={{ children: tagsTree }} />
 </div>
 
 <style lang="scss">

@@ -1,8 +1,8 @@
 import Navigo from 'navigo'
-import { app_mode } from '@lib/util'
+import { appMode } from '@lib/util'
 import { page, reloadIncrement } from '@lib/store'
 
-export const router = new Navigo('/', { hash: app_mode !== 'static_render' })
+export const router = new Navigo('/', { hash: appMode !== 'static_render' })
 
 let pageValue = ''
 page.subscribe(value => (pageValue = value))

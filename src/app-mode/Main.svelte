@@ -10,12 +10,13 @@
     pageContentLoaded,
     onPageHomepage,
     onPageSearch,
+    currentTabData,
   } from '@lib/store'
   import Options from '@lib/options'
   import Logs from '@lib/logs'
   import Favorites from '@favorite/favorites'
   import MainFilter from '@lib/main-filter'
-  import { is_http, has_touch_screen, getIsSmallMenu } from '@lib/util'
+  import { isHttp, hasTouchScreen, getIsSmallMenu } from '@lib/util'
   import { UrlParam } from '@lib/url-param'
   import { UrlHash } from '@lib/url-hash'
   import { dbAddProcessedData, getUserData } from '@lib/db'
@@ -23,7 +24,7 @@
   import icon_dark from '@img/icon-dark.png'
   import Search from '@search/search'
   import SearchHistory from '@search/search-history'
-  import { DarkMode, dark_mode_theme } from '@dark-mode/dark-mode'
+  import { DarkMode, darkModeTheme } from '@dark-mode/dark-mode'
   import { copyTextListenClick } from '@lib/copy-text'
   import { addValuesToAttribut } from '@stat/stat'
   import definition from '@stat/attributs-def'
@@ -37,12 +38,12 @@
   import SearchBar from '@search/SearchBar.svelte'
   import dbSchema from '@src/db-schema.json'
 
-  let error_loading_db = $state(false)
-  let page_loaded_route = $state('')
+  let errorLoadingDb = $state(false)
+  let pageLoadedRoute = $state('')
 
-  let is_popup_column_stat_open = $state(false)
-  let column_stat_entity = $state()
-  let column_stat_attribut = $state()
+  let isPopupColumnStatOpen = $state(false)
+  let columnStatEntity = $state()
+  let columnStatAttribut = $state()
 
   const timer = performance.now()
 
@@ -52,15 +53,15 @@
   }
 
   function setOptionDefault(key, value = true) {
-    let option_value = Options.get(key)
-    if (option_value === undefined) {
-      option_value = value
+    let optionValue = Options.get(key)
+    if (optionValue === undefined) {
+      optionValue = value
       Options.set(key, value)
     }
-    if (option_value) {
+    if (optionValue) {
       document.documentElement.classList.add(key)
     }
-    return option_value
+    return optionValue
   }
 
   Options.loaded = (async () => {
@@ -87,19 +88,19 @@
       console.log('init filter', Math.round(performance.now() - timer) + ' ms')
 
       timer = performance.now()
-      const db_option = {
+      const dbOption = {
         filter,
         aliases: [
           { table: 'institution', alias: 'owner' },
           { table: 'institution', alias: 'manager' },
         ],
       }
-      await db.init(db_option)
+      await db.init(dbOption)
       console.log('load db', Math.round(performance.now() - timer) + ' ms')
 
       timer = performance.now()
-      const user_data = await getUserData()
-      db.addMeta(user_data, dbSchema as string[][])
+      const userData = await getUserData()
+      db.addMeta(userData, dbSchema as string[][])
       dbAddProcessedData()
       console.log('process db', Math.round(performance.now() - timer) + ' ms')
 
@@ -107,37 +108,37 @@
       const search = new Search()
       search.init()
       db.search = async (...args) => await search.search(...args)
-      Logs.init(user_data.log)
-      Favorites.init(user_data.favorite)
-      SearchHistory.init(user_data.search_history, { limit: 100 })
+      Logs.init(userData.log)
+      Favorites.init(userData.favorite)
+      SearchHistory.init(userData.search_history, { limit: 100 })
     } catch (e) {
       console.error(e)
-      error_loading_db = true
+      errorLoadingDb = true
     }
   })()
 
-  async function checkFromSearch(page_hash_value) {
+  async function checkFromSearch(pageHashValue) {
     await db.loaded
-    const from_search = UrlParam.get('from_search')
-    if (from_search) {
-      const entity = page_hash_value
-      const entity_id = UrlHash.getLevel2()
-      SearchHistory.add(entity, entity_id)
-      Logs.add('search_bar', { entity, entity_id })
+    const fromSearch = UrlParam.get('from_search')
+    if (fromSearch) {
+      const entity = pageHashValue
+      const entityId = UrlHash.getLevel2()
+      SearchHistory.add(entity, entityId)
+      Logs.add('search_bar', { entity, entity_id: entityId })
       UrlParam.delete('from_search')
       UrlParam.delete('search')
     }
   }
 
   $pageHash = UrlHash.getLevel1()
-  pageHash.subscribe(page_hash_value => checkFromSearch(page_hash_value))
+  pageHash.subscribe(pageHashValue => checkFromSearch(pageHashValue))
 
-  if (has_touch_screen) {
+  if (hasTouchScreen) {
     document.documentElement.classList.toggle('has_touch_screen')
   }
 
-  const is_dark = $dark_mode_theme === 'dark'
-  const favicon = is_dark ? icon_dark : icon
+  const isDark = $darkModeTheme === 'dark'
+  const favicon = isDark ? icon_dark : icon
 
   jQuery('body').on('mouseover', '.use_tooltip', function (this: HTMLElement) {
     const elem = jQuery(this)
@@ -153,34 +154,31 @@
   })
 
   jQuery('body').on('click', '.column_stat_btn', function (this: HTMLElement) {
-    const attribut_name = jQuery(this).data('attribut')
-    column_stat_entity = jQuery(this).data('entity')
-    column_stat_attribut = addValuesToAttribut(window._current_tab_data, {
-      key: attribut_name,
-      ...definition[attribut_name],
+    const attributName = jQuery(this).data('attribut')
+    columnStatEntity = jQuery(this).data('entity')
+    columnStatAttribut = addValuesToAttribut($currentTabData, {
+      key: attributName,
+      ...definition[attributName],
     })
-    if (column_stat_attribut) is_popup_column_stat_open = true
+    if (columnStatAttribut) isPopupColumnStatOpen = true
   })
 
   copyTextListenClick()
 
   db.loaded.then(() => {
     const mainBanner = new Image()
-    let banner_src = db.tableHasId('config', 'banner')
+    let bannerSrc = db.tableHasId('config', 'banner')
       ? (db.getConfig('banner') as string)
       : default_banner
-    banner_src = banner_src?.split('(')[1]?.split(')')[0]
-    mainBanner.src = banner_src?.replaceAll(
-      '{darkMode}',
-      is_dark ? '-dark' : '',
-    )
+    bannerSrc = bannerSrc?.split('(')[1]?.split(')')[0]
+    mainBanner.src = bannerSrc?.replaceAll('{darkMode}', isDark ? '-dark' : '')
     mainBanner.onload = () => {
-      const css_var_style = document.documentElement.style
-      css_var_style.setProperty(
+      const cssVarStyle = document.documentElement.style
+      cssVarStyle.setProperty(
         '--main-banner-width',
         mainBanner.width.toString(),
       )
-      css_var_style.setProperty(
+      cssVarStyle.setProperty(
         '--main-banner-height',
         mainBanner.height.toString(),
       )
@@ -192,11 +190,11 @@
   const unsubscribe = pageContentLoaded.subscribe(value => {
     if (value !== false) {
       if (window.location.hash) {
-        page_loaded_route = window.location.hash.split('#/')[1].split('?')[0]
+        pageLoadedRoute = window.location.hash.split('#/')[1].split('?')[0]
       } else {
-        page_loaded_route = window.location.pathname.substring(1)
+        pageLoadedRoute = window.location.pathname.substring(1)
       }
-      page_loaded_route = page_loaded_route.replace(/\//g, '___')
+      pageLoadedRoute = pageLoadedRoute.replace(/\//g, '___')
     }
   })
 
@@ -207,7 +205,7 @@
 
 <svelte:head>
   <link href={favicon} rel="shortcut icon" type="image/png" />
-  {#if is_http}
+  {#if isHttp}
     <link href="manifest.json?v=6" rel="manifest" />
   {/if}
 </svelte:head>
@@ -217,7 +215,7 @@
 {#await Options.loaded then}
   <Header />
   <div id="wrapper" class:no_footer={!$footerVisible}>
-    {#if error_loading_db}
+    {#if errorLoadingDb}
       <div class="error_loading_db">
         <h2 class="title">Erreur de chargement</h2>
         <p>Erreur durant le chargement de la base de données.</p>
@@ -234,7 +232,7 @@
         <Router />
         <div id="db_loaded" style="display: none;"></div>
         <div
-          id="page_loaded_route_{page_loaded_route}"
+          id="page_loaded_route_{pageLoadedRoute}"
           style="display: none;"
         ></div>
       {/await}
@@ -245,12 +243,12 @@
   {/if}
 {/await}
 
-<Popup bind:is_open={is_popup_column_stat_open}>
+<Popup bind:isOpen={isPopupColumnStatOpen}>
   <StatBox
-    entity={column_stat_entity}
-    attribut={column_stat_attribut}
-    with_html={column_stat_entity === 'log'}
-    from_popup={true}
+    entity={columnStatEntity}
+    attribut={columnStatAttribut}
+    withHtml={columnStatEntity === 'log'}
+    fromPopup={true}
   />
 </Popup>
 

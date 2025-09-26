@@ -2,7 +2,7 @@
   import db from '@db'
 
   import { tabsHelper } from '@tab/tabs-helper'
-  import about_file from '@markdown/about-main-meta.md?raw'
+  import aboutFile from '@markdown/about-main-meta.md?raw'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
 
@@ -17,7 +17,7 @@
   ]
 
   const tabs = tabsHelper({
-    about_file,
+    aboutFile,
     metaFolders,
     metaDatasets,
     metaVariables,
@@ -27,6 +27,6 @@
 </script>
 
 <section class="section">
-  <Title type="internal_view" name="Vue interne" mode="main_title" />
+  <Title type="internalView" name="Vue interne" mode="main_title" />
   <Tabs {tabs} />
 </section>

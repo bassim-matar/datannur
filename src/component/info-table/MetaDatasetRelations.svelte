@@ -3,7 +3,7 @@
   import Icon from '@layout/Icon.svelte'
   import Link from '@layout/Link.svelte'
 
-  let { dataset_id }: { dataset_id: string } = $props()
+  let { datasetId }: { datasetId: string } = $props()
 
   interface Alias {
     alias: string
@@ -24,7 +24,7 @@
 
   const schema = structuredClone(db.tables.__schema__)
 
-  const relation_types: RelationType[] = [
+  const relationTypes: RelationType[] = [
     { name: 'one_to_one', symbol: 'minus', tooltip: 'one to one' },
     { name: 'one_to_many', symbol: 'arrow-right-long', tooltip: 'one to many' },
     {
@@ -47,13 +47,13 @@
     }
   }
 
-  let dataset_has_alias = aliases.some(alias => alias.entity === dataset_id)
+  let datasetHasAlias = aliases.some(alias => alias.entity === datasetId)
 
-  const relations: RelationGroup[] = relation_types.map(type => ({
+  const relations: RelationGroup[] = relationTypes.map(type => ({
     type,
     relations: schema[type.name].filter(relation => {
-      if (dataset_has_alias) {
-        if (type.name === 'one_to_one' && relation.includes(dataset_id))
+      if (datasetHasAlias) {
+        if (type.name === 'one_to_one' && relation.includes(datasetId))
           return false
 
         for (const alias of aliases) {
@@ -62,13 +62,13 @@
           }
         }
       }
-      if (relation.includes(dataset_id)) return true
+      if (relation.includes(datasetId)) return true
       return false
     }),
   }))
 
-  for (const relation_type of relations) {
-    for (const relation of relation_type.relations) {
+  for (const relationType of relations) {
+    for (const relation of relationType.relations) {
       for (const alias of aliases) {
         if (relation[0] === alias.alias) {
           relation[0] = alias.name
@@ -79,12 +79,12 @@
     }
   }
 
-  const has_relation = relations.some(
-    relation_type => relation_type.relations.length > 0,
+  const hasRelation = relations.some(
+    relationType => relationType.relations.length > 0,
   )
 </script>
 
-{#if has_relation}
+{#if hasRelation}
   <tr>
     <td><Icon type="relation" /> Relations</td>
     <td>
@@ -97,7 +97,7 @@
                   >{relation[0]}</Link
                 >
                 <span class="use_tooltip" title={relation_type.type.tooltip}>
-                  <Icon type={relation_type.type.symbol} margin_right={false} />
+                  <Icon type={relation_type.type.symbol} marginRight={false} />
                 </span>
                 <Link href={`metaDataset/${relation[1].split(' (')[0]}`}
                   >{relation[1]}</Link

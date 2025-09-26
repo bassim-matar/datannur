@@ -1,7 +1,7 @@
 export const locale = 'fr'
-export const is_big_limit = 5
+export const isBigLimit = 5
 
-export const entity_names = {
+export const entityNames = {
   institution: 'Institution',
   owner: 'Fournisseur',
   manager: 'Gestionnaire',
@@ -16,7 +16,7 @@ export const entity_names = {
   log: 'Log',
 }
 
-export const parent_entities = {
+export const parentEntities = {
   institution: 'parent',
   folder: 'parent',
   tag: 'parent',
@@ -28,7 +28,7 @@ export const parent_entities = {
   freq: 'variable',
 }
 
-export const var_types = {
+export const varTypes = {
   integer: 'nombre',
   float: 'décimal',
   string: 'texte',
@@ -37,7 +37,7 @@ export const var_types = {
   other: 'autre',
 }
 
-export const evolution_types = {
+export const evolutionTypes = {
   add: 'Ajout',
   update: 'Modification',
   delete: 'Suppression',
@@ -47,7 +47,7 @@ export const evolution_types = {
   next_update_date: 'Prochaine mise à jour',
 }
 
-export const column_clean_names = {
+export const columnCleanNames = {
   start_date: 'Validité début',
   end_date: 'Validité fin',
   last_update: 'Dernière<br>mise à jour',
@@ -58,12 +58,12 @@ export const column_clean_names = {
   updating_each: 'Fréquence<br>de mise à jour',
 }
 
-export const column_icons = {
+export const columnIcons = {
   updating_each: 'frequency',
   last_update: 'last_update_date',
 }
 
-export const entity_to_icon = {
+export const entityToIcon = {
   institution: 'university',
   owner: 'university',
   manager: 'university',
@@ -78,8 +78,8 @@ export const entity_to_icon = {
   favorite: 'star',
   log: 'warehouse',
   search: 'magnifying-glass',
-  col_search: 'magnifying-glass',
-  recent_search: 'clock-rotate-left',
+  colSearch: 'magnifying-glass',
+  recentSearch: 'clock-rotate-left',
   type: 't',
   missing: 'circle-question',
   duplicate: 'clone',
@@ -90,10 +90,10 @@ export const entity_to_icon = {
   end_date: 'calendar-xmark',
   last_update_date: 'rotate-right',
   next_update_date: 'rotate-left',
-  download_file: 'file-arrow-down',
+  downloadFile: 'file-arrow-down',
   download: 'cloud-download-alt',
   upload: 'cloud-arrow-up',
-  download_close: 'cloud-arrow-down fa-rotate-180',
+  downloadClose: 'cloud-arrow-down fa-rotate-180',
   pdf: 'file-pdf',
   md: 'fa-brands fa-markdown',
   github: 'fa-brands fa-github',
@@ -124,15 +124,14 @@ export const entity_to_icon = {
   recursive: 'rotate-left',
   functionality: 'screwdriver-wrench',
   preview: 'eye',
-  filter_info: 'magnifying-glass-plus',
   relation: 'arrows-left-right',
   evolution: 'history',
   add: 'plus',
   update: 'pen',
   delete: 'trash',
-  internal_view: 'box-open',
-  internal_id: 'fingerprint',
-  nb_source: 'arrow-up',
-  nb_derived: 'arrow-down',
+  internalView: 'box-open',
+  internalId: 'fingerprint',
+  nbSource: 'arrow-up',
+  nbDerived: 'arrow-down',
   freq: 'chart-bar',
 }

@@ -2,19 +2,19 @@ export default {
   name: {
     name: 'Nom',
     type: 'string',
-    nb_range: 5,
+    nbRange: 5,
     getValue: x => x.name?.length,
   },
   description: {
     name: 'Description',
     type: 'string',
-    nb_range: 5,
+    nbRange: 5,
     getValue: x => x.description?.length,
   },
   tag: {
     name: 'Mots clés',
     type: 'category',
-    non_exclusive: 'tags',
+    nonExclusive: 'tags',
   },
   frequency: {
     name: 'Fréquence',
@@ -26,15 +26,15 @@ export default {
     name: 'Mise à jour',
     type: 'numeric',
     variable: 'last_update_date',
-    range_type: 'time_ago',
-    parse_date: true,
+    rangeType: 'time_ago',
+    parseDate: true,
   },
   last_update_doc: {
     icon: 'time_ago',
     name: 'Mise à jour',
     type: 'numeric',
     variable: 'last_update',
-    range_type: 'time_ago',
+    rangeType: 'time_ago',
   },
   type: {
     name: 'Type',
@@ -55,7 +55,7 @@ export default {
   entity: {
     name: 'Entités',
     type: 'category',
-    non_exclusive: 'entities',
+    nonExclusive: 'entities',
   },
   variable: {
     name: 'Nombre de variables',
@@ -75,7 +75,7 @@ export default {
   level: {
     name: "Niveau de l'arborecence",
     type: 'category_ordered',
-    getValue: x => x.parents_relative?.length + 1,
+    getValue: x => x.parentsRelative?.length + 1,
   },
   localisation: {
     name: 'Localisation',
@@ -85,13 +85,13 @@ export default {
   email: {
     name: 'Email',
     type: 'string',
-    nb_range: 1,
+    nbRange: 1,
     getValue: x => x.email?.length,
   },
   phone: {
     name: 'Téléphone',
     type: 'string',
-    nb_range: 1,
+    nbRange: 1,
     getValue: x => x.phone?.length,
   },
   survey_type: {
@@ -107,19 +107,19 @@ export default {
   metadata_path: {
     name: 'Metadonnées',
     type: 'string',
-    nb_range: 1,
+    nbRange: 1,
     getValue: x => x.metadata_path?.length,
   },
   doc_path: {
     name: 'Lien',
     type: 'string',
-    nb_range: 1,
+    nbRange: 1,
     getValue: x => x.path?.length,
   },
   git_code: {
     name: 'Repo GIT',
     type: 'string',
-    nb_range: 1,
+    nbRange: 1,
     getValue: x => x.git_code?.length,
   },
   action: {
@@ -146,6 +146,6 @@ export default {
     name: 'Moment',
     type: 'numeric',
     variable: 'timestamp',
-    range_type: 'time_ago',
+    rangeType: 'time_ago',
   },
 }

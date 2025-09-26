@@ -1,40 +1,40 @@
 import { locale } from '@lib/constant'
 
-export function convertQuarterToFullDate(complete_date, mode = 'start') {
-  const quarter = complete_date[5]
-  complete_date = complete_date.slice(0, 4)
+export function convertQuarterToFullDate(completeDate, mode = 'start') {
+  const quarter = completeDate[5]
+  completeDate = completeDate.slice(0, 4)
   if (mode === 'start') {
-    if (quarter === '1') complete_date += '/01'
-    else if (quarter === '2') complete_date += '/04'
-    else if (quarter === '3') complete_date += '/07'
-    else if (quarter === '4') complete_date += '/10'
-    complete_date += '/01'
+    if (quarter === '1') completeDate += '/01'
+    else if (quarter === '2') completeDate += '/04'
+    else if (quarter === '3') completeDate += '/07'
+    else if (quarter === '4') completeDate += '/10'
+    completeDate += '/01'
   } else if (mode === 'end') {
-    if (quarter === '1') complete_date += '/03'
-    else if (quarter === '2') complete_date += '/06'
-    else if (quarter === '3') complete_date += '/09'
-    else if (quarter === '4') complete_date += '/12'
-    complete_date += '/30'
+    if (quarter === '1') completeDate += '/03'
+    else if (quarter === '2') completeDate += '/06'
+    else if (quarter === '3') completeDate += '/09'
+    else if (quarter === '4') completeDate += '/12'
+    completeDate += '/30'
   }
-  return complete_date
+  return completeDate
 }
 
 export function dateToTimestamp(date, mode = 'start') {
-  let complete_date = date
-  if (!complete_date) return 0
-  if (complete_date.length === 4) {
-    if (mode === 'start') complete_date += '/01'
-    if (mode === 'end') complete_date += '/12'
+  let completeDate = date
+  if (!completeDate) return 0
+  if (completeDate.length === 4) {
+    if (mode === 'start') completeDate += '/01'
+    if (mode === 'end') completeDate += '/12'
   }
-  if (complete_date.length === 7) {
-    if (mode === 'start') complete_date += '/01'
-    if (mode === 'end') complete_date += '/30'
+  if (completeDate.length === 7) {
+    if (mode === 'start') completeDate += '/01'
+    if (mode === 'end') completeDate += '/30'
   }
 
-  if (complete_date.length === 6 && complete_date[4] === 't') {
-    complete_date = convertQuarterToFullDate(complete_date, mode)
+  if (completeDate.length === 6 && completeDate[4] === 't') {
+    completeDate = convertQuarterToFullDate(completeDate, mode)
   }
-  return Date.parse(complete_date)
+  return Date.parse(completeDate)
 }
 
 export function timestampToDate(timestamp) {
@@ -46,18 +46,18 @@ const formatter = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' })
 const divisions: {
   amount: number
   name: Intl.RelativeTimeFormatUnit
-  local_name: string
+  localName: string
 }[] = [
-  { amount: 60, name: 'seconds', local_name: 'seconde' },
-  { amount: 60, name: 'minutes', local_name: 'minute' },
-  { amount: 24, name: 'hours', local_name: 'heure' },
-  { amount: 7, name: 'days', local_name: 'jour' },
-  { amount: 4.34524, name: 'weeks', local_name: 'semaine' },
-  { amount: 12, name: 'months', local_name: 'mois' },
-  { amount: Number.POSITIVE_INFINITY, name: 'years', local_name: 'an' },
+  { amount: 60, name: 'seconds', localName: 'seconde' },
+  { amount: 60, name: 'minutes', localName: 'minute' },
+  { amount: 24, name: 'hours', localName: 'heure' },
+  { amount: 7, name: 'days', localName: 'jour' },
+  { amount: 4.34524, name: 'weeks', localName: 'semaine' },
+  { amount: 12, name: 'months', localName: 'mois' },
+  { amount: Number.POSITIVE_INFINITY, name: 'years', localName: 'an' },
 ]
 
-export function getDatetime(timestamp, with_second = false) {
+export function getDatetime(timestamp, withSecond = false) {
   const date = new Date(timestamp)
 
   const year = date.getFullYear()
@@ -67,7 +67,7 @@ export function getDatetime(timestamp, with_second = false) {
   const hours = String(date.getHours()).padStart(2, '0')
   const minutes = String(date.getMinutes()).padStart(2, '0')
 
-  if (with_second) {
+  if (withSecond) {
     const seconds = String(date.getSeconds()).padStart(2, '0')
     return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`
   }
@@ -78,12 +78,12 @@ export function getTimeAgo(
   date,
   parse = false,
   day = false,
-  date_now = new Date(),
+  dateNow = new Date(),
 ) {
   if (!date) return ''
   if (parse) date = Date.parse(date)
-  if (day) date_now.setHours(0, 0, 0, 0)
-  let duration = (Number(date) - Number(date_now)) / 1000
+  if (day) dateNow.setHours(0, 0, 0, 0)
+  let duration = (Number(date) - Number(dateNow)) / 1000
   if (day && duration === 0) return "aujourd'hui"
   for (const division of divisions) {
     if (Math.abs(duration) < division.amount) {
@@ -114,10 +114,10 @@ export function getPeriod(start, end, parse = false) {
   let duration = (end - start) / 1000
   for (const division of divisions) {
     if (Math.abs(duration) < division.amount) {
-      const round_duration = Math.round(duration)
-      let unit = division.local_name
-      if (round_duration > 1 && !unit.endsWith('s')) unit += 's'
-      return round_duration + ' ' + unit
+      const roundDuration = Math.round(duration)
+      let unit = division.localName
+      if (roundDuration > 1 && !unit.endsWith('s')) unit += 's'
+      return roundDuration + ' ' + unit
     }
     duration /= division.amount
   }

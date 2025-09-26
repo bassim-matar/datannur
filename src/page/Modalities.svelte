@@ -3,28 +3,20 @@
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
-  import about_file from '@markdown/about-modality.md?raw'
+  import aboutFile from '@markdown/about-modality.md?raw'
 
   const modalities = db.getAll('modality')
-  const raw_tabs: {
-    modalities: unknown[]
-    evolutions?: unknown[]
-    modalities_compare?: boolean
-    stat?: { entity: string; items: unknown[] }[]
-    about_file?: string
-  } = {
-    modalities,
-  }
-  if (modalities.length > 1) raw_tabs.modalities_compare = false
-
-  raw_tabs.evolutions = db
+  const evolutions = db
     .getAll('evolution')
     .filter(evo => evo.entity === 'modality' || evo.entity === 'value')
 
-  raw_tabs.stat = [{ entity: 'modality', items: modalities }]
-  raw_tabs.about_file = about_file
-
-  const tabs = tabsHelper(raw_tabs)
+  const tabs = tabsHelper({
+    modalities,
+    modalitiesCompare: modalities.length > 1,
+    evolutions,
+    stat: [{ entity: 'modality', items: modalities }],
+    aboutFile,
+  })
 </script>
 
 <section class="section">

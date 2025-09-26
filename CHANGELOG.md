@@ -6,7 +6,7 @@
 - fix: demo image path in README
 - fix: search bar height debonce with no result
 - refactor: replace app_version meta tag with `__APP_VERSION__` constant
-- refactor: enforce PascalCase for class names and camelCase for methods and functions
+- refactor: enforce PascalCase for class names and camelCase for methods, functions and variables
 - refactor: enforce prefer-const, no-unused-vars, no-undef and no-explicit-any elint rules
 - refactor: enforce noImplicitThis and strictFunctionTypes ts rules
 - refactor: avoid svelte class name from variable name
@@ -54,7 +54,7 @@
 
 ## 0.12.6 (2025-09-11)
 
-- add: filter_type "select" to column meta_localisation
+- add: filterType "select" to column meta_localisation
 - add: doc for data integration
 - change: increase update_app.py compatibility to python 3.8+
 - change: internalize alias for institution

@@ -1,24 +1,24 @@
 <script lang="ts">
-  import Breadcrumb from "@component/Breadcrumb.svelte"
-  import Icon from "@layout/Icon.svelte"
-  import ExtendableText from "@layout/ExtendableText.svelte"
-  import Link from "@layout/Link.svelte"
+  import Breadcrumb from '@component/Breadcrumb.svelte'
+  import Icon from '@layout/Icon.svelte'
+  import ExtendableText from '@layout/ExtendableText.svelte'
+  import Link from '@layout/Link.svelte'
 
-  let { folder_id, is_self = false, is_meta = false } = $props()
+  let { folderId, isSelf = false, isMeta = false } = $props()
 
-  const name = is_self ? "Partie de" : "Dossier"
-  const icon = is_self ? "folder_tree_folder" : "folder"
+  const name = isSelf ? 'Partie de' : 'Dossier'
+  const icon = isSelf ? 'folder_tree_folder' : 'folder'
 </script>
 
-{#if folder_id}
+{#if folderId}
   <tr>
     <td><Icon type={icon} /> {name}</td>
     <td>
-      {#if is_meta}
-        <Link href="metaFolder/{folder_id}">{folder_id}</Link>
+      {#if isMeta}
+        <Link href="metaFolder/{folderId}">{folderId}</Link>
       {:else}
         <ExtendableText>
-          <Breadcrumb type="folder" elem_id={folder_id} {is_self} />
+          <Breadcrumb type="folder" elemId={folderId} {isSelf} />
         </ExtendableText>
       {/if}
     </td>

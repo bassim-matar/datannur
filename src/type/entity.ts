@@ -192,7 +192,7 @@ export interface MetaVariable extends BaseEntity {
   is_in_data?: boolean
 
   // Computed fields
-  is_meta?: boolean
+  isMeta?: boolean
   type_clean?: string
   nb_value?: number
   dataset_id?: string | number
@@ -200,7 +200,7 @@ export interface MetaVariable extends BaseEntity {
   nb_row?: number
   metaFolder_id?: string | number
   folder_name?: string
-  meta_localisation?: string
+  metaLocalisation?: string
   key?: string
 }
 
@@ -211,17 +211,17 @@ export interface MetaDataset extends BaseEntity {
   last_update_timestamp?: number
 
   // Computed fields
-  is_meta?: boolean
+  isMeta?: boolean
   folder?: { id: string | number }
   folder_name?: string
   nb_variable?: number
-  meta_localisation?: string
+  metaLocalisation?: string
   nb_row?: number
 }
 
 export interface MetaFolder extends BaseEntity {
   // Computed fields
-  is_meta?: boolean
+  isMeta?: boolean
   nb_dataset?: number
   nb_variable?: number
 }
@@ -236,17 +236,17 @@ export interface Evolution {
   parent_entity_id?: string | number
   _deleted?: boolean
   _entity?: string
-  _entity_clean?: string
+  _entityClean?: string
   type_clean?: string
   parent_entity?: EntityName
   parent_entity_clean?: string
   time?: string
   parent_name?: string
-  parent_deleted?: boolean
-  is_favorite?: boolean
+  parentDeleted?: boolean
+  isFavorite?: boolean
   date?: string
   folder_id?: string | number
-  _to_hide?: boolean
+  _toHide?: boolean
 }
 
 // Entity type mapping for type-safe database operations

@@ -3,23 +3,23 @@
 
   let {
     columns,
-    table_id = '',
+    tableId = '',
     loading = true,
-    nb_sticky = 1,
-    datatable_update_draw = 0,
+    nbSticky = 1,
+    datatableUpdateDraw = 0,
   } = $props()
 
   let loaded = $state(false)
-  const filters_left = $state({ 0: 0 })
+  const filtersLeft = $state({ 0: 0 })
 
   function getWidthElemNum(num) {
-    const selector = `.header_filter_wrapper .th_${table_id}_${num}`
+    const selector = `.header_filter_wrapper .th_${tableId}_${num}`
     return document.querySelector(selector)?.getBoundingClientRect().width
   }
 
   function updateStickyWidth() {
-    for (let i = 0; i < nb_sticky; i++) {
-      filters_left[i + 1] = filters_left[i] + getWidthElemNum(i)
+    for (let i = 0; i < nbSticky; i++) {
+      filtersLeft[i + 1] = filtersLeft[i] + getWidthElemNum(i)
     }
   }
 
@@ -36,7 +36,7 @@
   })
 
   $effect(() => {
-    if (datatable_update_draw) {
+    if (datatableUpdateDraw) {
       updateStickyWidth()
     }
   })
@@ -44,17 +44,17 @@
 
 <tr class="header_filter_wrapper">
   {#each columns as column, i (`${column.data}/${column.title}`)}
-    {#if i < nb_sticky}
+    {#if i < nbSticky}
       <th
-        class="header_filter_th th_{table_id}_{i} sticky"
-        class:dtfc-fixed-left={i + 1 === nb_sticky}
-        style={`left: ${filters_left[i]}px`}
+        class="header_filter_th th_{tableId}_{i} sticky"
+        class:dtfc-fixed-left={i + 1 === nbSticky}
+        style={`left: ${filtersLeft[i]}px`}
       >
-        <FilterInput {table_id} {i} {column} />
+        <FilterInput {tableId} {i} {column} />
       </th>
     {:else}
       <th class="header_filter_th">
-        <FilterInput {table_id} {i} {column} />
+        <FilterInput {tableId} {i} {column} />
       </th>
     {/if}
   {/each}

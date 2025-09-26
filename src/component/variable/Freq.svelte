@@ -5,9 +5,9 @@
 
   let { freq } = $props()
 
-  const freq_sorted = [...freq].sort((a, b) => (b.freq || 0) - (a.freq || 0))
+  const freqSorted = [...freq].sort((a, b) => (b.freq || 0) - (a.freq || 0))
   const totalFreq = freq.reduce((sum, item) => sum + (item.freq || 0), 0)
-  const maxFreq = freq_sorted.length > 0 ? freq_sorted[0].freq : 1
+  const maxFreq = freqSorted.length > 0 ? freqSorted[0].freq : 1
 
   function defineColumns() {
     const columns = []
@@ -23,23 +23,23 @@
       data: 'freq',
       title: Render.icon('freq') + 'Fréquence',
       tooltip: "Nombre d'occurrences avec pourcentage",
-      filter_type: 'input',
+      filterType: 'input',
       className: 'text-right',
       render: (data, type) => {
         if (data === null || data === undefined || !totalFreq) return ''
-        const percent_display = getPercent(data / totalFreq)
-        const percent_background = getPercent(data / maxFreq)
+        const percentDisplay = getPercent(data / totalFreq)
+        const percentBackground = getPercent(data / maxFreq)
         if (type === 'display') {
-          const freq_num = Render.num(data, type)
+          const freqNum = Render.num(data, type)
           return `
           <div class="freq_item_container">
-            <div class="freq_background color_freq" style="width: ${percent_background}%"></div>
-            <span class="freq_number">${freq_num}</span>
-            <span class="freq_percent">${percent_display}%</span>
+            <div class="freq_background color_freq" style="width: ${percentBackground}%"></div>
+            <span class="freq_number">${freqNum}</span>
+            <span class="freq_percent">${percentDisplay}%</span>
           </div>`
         }
 
-        return Render.numPercent(data, percent_display, 'freq', type, true)
+        return Render.numPercent(data, percentDisplay, 'freq', type, true)
       },
     })
 
@@ -49,4 +49,4 @@
   const columns = defineColumns()
 </script>
 
-<Datatable entity="freq" data={freq_sorted} {columns} keep_all_cols={true} />
+<Datatable entity="freq" data={freqSorted} {columns} keepAllCols={true} />

@@ -2,25 +2,25 @@ import db from '@db'
 import { link } from '@lib/util'
 import Render from '@lib/render'
 import { allTabsIcon } from '@lib/store'
-import { entity_to_icon } from '@lib/constant'
+import { entityToIcon } from '@lib/constant'
 
 export default class Logs {
-  static db_key = 'user_data/log'
+  static dbKey = 'user_data/log'
   static logs = []
   static onChangeCallback = () => {}
-  static all_tabs_icon_value = {}
+  static allTabsIconValue = {}
 
   static init(logs) {
     this.logs = []
     if (logs) this.logs = logs
     this.onChangeCallback = () => {}
-    this.all_tabs_icon_value = {}
+    this.allTabsIconValue = {}
     allTabsIcon.subscribe(value => {
-      this.all_tabs_icon_value = value
+      this.allTabsIconValue = value
     })
   }
   static save() {
-    db.browser.set(this.db_key, this.logs)
+    db.browser.set(this.dbKey, this.logs)
     this.onChangeCallback()
   }
   static onChange(callback) {
@@ -45,8 +45,8 @@ export default class Logs {
   }
   static getAll() {
     const logs = []
-    for (const log_source of this.logs) {
-      const log = { ...log_source }
+    for (const logSource of this.logs) {
+      const log = { ...logSource }
 
       log.action_name = log.action
 
@@ -67,7 +67,7 @@ export default class Logs {
         log.element = log.entity
       }
 
-      const readeable_action = {
+      const readeableAction = {
         search_bar: Render.icon('search') + 'Rechercher',
         load_page: Render.icon('page') + 'Charger la page',
         add_fav: Render.icon('favorite') + 'Ajouter le favoris',
@@ -78,20 +78,16 @@ export default class Logs {
         open_table_download:
           Render.icon('download') + 'Ouvrir les options de téléchargement',
         close_table_download:
-          Render.icon('download_close') +
-          'Fermer les options de téléchargement',
+          Render.icon('downloadClose') + 'Fermer les options de téléchargement',
       }
-      if (log.action in readeable_action) {
-        log.action = readeable_action[log.action]
+      if (log.action in readeableAction) {
+        log.action = readeableAction[log.action]
       }
-      let icon_name = log.entity
-      if (
-        !(icon_name in entity_to_icon) &&
-        icon_name in this.all_tabs_icon_value
-      )
-        icon_name = this.all_tabs_icon_value[icon_name].icon
+      let iconName = log.entity
+      if (!(iconName in entityToIcon) && iconName in this.allTabsIconValue)
+        iconName = this.allTabsIconValue[iconName].icon
 
-      if (icon_name) log.element = Render.icon(icon_name) + log.element
+      if (iconName) log.element = Render.icon(iconName) + log.element
       logs.push(log)
     }
     return logs

@@ -2,7 +2,7 @@
   import fitty from 'fitty'
   import db from '@db'
   import { nbFavorite } from '@lib/store'
-  import { entity_names } from '@lib/constant'
+  import { entityNames } from '@lib/constant'
   import Head from '@frame/Head.svelte'
   import Icon from '@layout/Icon.svelte'
   import Favorite from '@favorite/Favorite.svelte'
@@ -15,26 +15,26 @@
     mode = 'normal',
     id = null,
     info = '',
-    toggle_info = (() => {}) as MouseEventHandler<HTMLButtonElement>,
+    toggleInfo = (() => {}) as MouseEventHandler<HTMLButtonElement>,
     isFavoritePage = false,
   } = $props()
 
   let title = $state(name)
-  let is_favorite = $state(false)
+  let isFavorite = $state(false)
 
   let separator = ' | '
-  const entity_name = entity_names[type]
+  const entityName = entityNames[type]
 
   if (mode !== 'main_title') {
-    title = entity_name + separator + name
+    title = entityName + separator + name
   }
 
   if (id) {
-    const item: { is_favorite: boolean } = db.get(type, id)
-    is_favorite = item.is_favorite
+    const item: { isFavorite: boolean } = db.get(type, id)
+    isFavorite = item.isFavorite
   }
 
-  let item_page = id ? true : false
+  let itemPage = id ? true : false
 
   onMount(() => {
     fitty('.fitty', {
@@ -48,15 +48,15 @@
 
 <div class="fitty_wrapper">
   <div>
-    <h1 class="title" class:not-item-page={!item_page}>
+    <h1 class="title" class:not-item-page={!itemPage}>
       <Icon {type} mode="main_title" />
       {#if mode !== 'main_title'}
-        <span>{entity_name}</span>
+        <span>{entityName}</span>
         {#if info}
-          <button class="title_info" onclick={toggle_info}>{info}</button>
+          <button class="title_info" onclick={toggleInfo}>{info}</button>
         {/if}
         {#if id}
-          <Favorite {type} {id} {is_favorite} />
+          <Favorite {type} {id} {isFavorite} />
         {:else}
           <span class="separator">{separator}</span>
         {/if}

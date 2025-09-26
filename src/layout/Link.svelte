@@ -1,20 +1,20 @@
 <script lang="ts">
-  import { router } from "@lib/router.svelte.js"
-  import {getBaseLinkUrl} from "@lib/util"
+  import { router } from '@lib/router.svelte.js'
+  import { getBaseLinkUrl } from '@lib/util'
 
   let {
     href,
-    className = "",
+    className = '',
     click = () => false,
     isActive = () => false,
     alternativeAction = null,
-    entity = "",
+    entity = '',
     children,
   } = $props()
 
-  const base = href === "/" ? "" : getBaseLinkUrl()
+  const base = href === '/' ? '' : getBaseLinkUrl()
 
-  const entity_class = $derived(entity ? `color_entity_${entity}` : "")
+  const entityClass = $derived(entity ? `color_entity_${entity}` : '')
 
   function goToHref(event) {
     if (event.ctrlKey || event.metaKey) return
@@ -34,7 +34,7 @@
 
 <a
   href="{base}{href}"
-  class="{className} {entity_class}"
+  class="{className} {entityClass}"
   class:is-active={isActive()}
   onclick={onClickEvent}
 >
@@ -42,7 +42,7 @@
 </a>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   a {
     text-decoration: none;

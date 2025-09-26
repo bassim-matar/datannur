@@ -109,8 +109,8 @@ export default class Histogram {
     return histogram
   }
 
-  static get(all_values, nb_range) {
-    const ranges = this.getRanges(all_values, nb_range)
-    return this.addCount(ranges, all_values)
+  static get(allValues, nbRange) {
+    const ranges = this.getRanges(allValues, nbRange)
+    return this.addCount(ranges, allValues)
   }
 }

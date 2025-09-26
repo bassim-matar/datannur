@@ -112,7 +112,7 @@ async function createIndexFile() {
     index = index
       .toString()
       .replace(`<base href=""`, `<base href="/"`)
-      .replace('<head>', `<head><meta app_mode="static" />`)
+      .replace('<head>', `<head><meta app-mode="static" />`)
     if (config.indexSeo) {
       index = index.replace(
         `<meta name="robots" content="noindex"`,

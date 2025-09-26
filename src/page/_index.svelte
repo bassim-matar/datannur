@@ -2,7 +2,7 @@
   import db from '@db'
   import { tabSelected } from '@lib/store'
   import { makeParentsRelative, addMinimumDeep } from '@lib/db'
-  import { is_big_limit } from '@lib/constant'
+  import { isBigLimit } from '@lib/constant'
   import { tabsHelper } from '@tab/tabs-helper'
   import { getAboutMain } from '@lib/get-about-main'
   import Head from '@frame/Head.svelte'
@@ -10,7 +10,7 @@
   import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
   import EvolutionSummarySwitch from '@layout/EvolutionSummarySwitch.svelte'
 
-  let key_tab = $state(1)
+  let keyTab = $state(1)
 
   let institutions = db.getAll('institution')
   let folders = db.getAll('folder')
@@ -42,7 +42,7 @@
   ]
 
   let tabs = tabsHelper({
-    about_file: getAboutMain(),
+    aboutFile: getAboutMain(),
     institutions,
     folders,
     tags,
@@ -54,7 +54,7 @@
     stat,
   })
 
-  const all_empty =
+  const allEmpty =
     !db.use.institution &&
     !db.use.folder &&
     !db.use.tag &&
@@ -64,35 +64,35 @@
     !db.use.modality &&
     !db.use.about
 
-  const nb_institution = institutions.length
-  const nb_folder = folders.length
-  const nb_tag = tags.length
+  const nbInstitution = institutions.length
+  const nbFolder = folders.length
+  const nbTag = tags.length
 
-  let show_open_all_switch = $derived(
-    ($tabSelected.key === 'institutions' && nb_institution > is_big_limit) ||
-      ($tabSelected.key === 'folders' && nb_folder > is_big_limit) ||
-      ($tabSelected.key === 'tags' && nb_tag > is_big_limit),
+  let showOpenAllSwitch = $derived(
+    ($tabSelected.key === 'institutions' && nbInstitution > isBigLimit) ||
+      ($tabSelected.key === 'folders' && nbFolder > isBigLimit) ||
+      ($tabSelected.key === 'tags' && nbTag > isBigLimit),
   )
 
-  let show_evolution_summary_switch = $derived(
-    $tabSelected.key === 'evolutions' && evolutions.length > is_big_limit,
+  let showEvolutionSummarySwitch = $derived(
+    $tabSelected.key === 'evolutions' && evolutions.length > isBigLimit,
   )
 </script>
 
 <Head title="datannur | Accueil" description="Page d'accueil de datannur" />
 
 <section class="section">
-  {#if all_empty}
+  {#if allEmpty}
     <p class="has-text-centered">Le catalogue est vide.</p>
     <p class="has-text-centered">Vous pouvez ajouter du contenu.</p>
   {:else}
-    {#if show_open_all_switch}
-      <OpenAllSwitch onChange={value => (key_tab = value)} />
+    {#if showOpenAllSwitch}
+      <OpenAllSwitch onChange={value => (keyTab = value)} />
     {/if}
-    {#if show_evolution_summary_switch}
-      <EvolutionSummarySwitch onChange={value => (key_tab = value)} />
+    {#if showEvolutionSummarySwitch}
+      <EvolutionSummarySwitch onChange={value => (keyTab = value)} />
     {/if}
-    {#key key_tab}
+    {#key keyTab}
       <Tabs {tabs} />
     {/key}
   {/if}

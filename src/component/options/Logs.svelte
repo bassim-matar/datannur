@@ -3,12 +3,12 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Render from '@lib/render'
   import Column from '@lib/column'
-  import { entity_names } from '@lib/constant'
+  import { entityNames } from '@lib/constant'
 
   let { logs } = $props()
 
   for (const log of logs) {
-    log._entity_clean = log.entity ? entity_names[log.entity] : ''
+    log._entityClean = log.entity ? entityNames[log.entity] : ''
     log._entity = log.entity
   }
 

@@ -7,53 +7,53 @@
 
   let { institutions } = $props()
 
-  const is_recursive = true
+  const isRecursive = true
 
-  let institution_max = 0
-  let folder_max = 0
-  let dataset_max = 0
-  let nb_doc_max = 0
-  let variable_max = 0
-  let level_max = 0
+  let institutionMax = 0
+  let folderMax = 0
+  let datasetMax = 0
+  let nbDocMax = 0
+  let variableMax = 0
+  let levelMax = 0
   for (const institution of institutions) {
     institution.path_string = getParentPath(institution)
-    if (institution.nb_child_recursive > institution_max) {
-      institution_max = institution.nb_child_recursive
+    if (institution.nb_child_recursive > institutionMax) {
+      institutionMax = institution.nb_child_recursive
     }
-    if (institution.nb_folder_recursive > folder_max) {
-      folder_max = institution.nb_folder_recursive
+    if (institution.nb_folder_recursive > folderMax) {
+      folderMax = institution.nb_folder_recursive
     }
-    if (institution.nb_dataset_recursive > dataset_max) {
-      dataset_max = institution.nb_dataset_recursive
+    if (institution.nb_dataset_recursive > datasetMax) {
+      datasetMax = institution.nb_dataset_recursive
     }
-    if (institution.docs_recursive.length > nb_doc_max) {
-      nb_doc_max = institution.docs_recursive.length
+    if (institution.docs_recursive.length > nbDocMax) {
+      nbDocMax = institution.docs_recursive.length
     }
-    if (institution.nb_variable_recursive > variable_max) {
-      variable_max = institution.nb_variable_recursive
+    if (institution.nb_variable_recursive > variableMax) {
+      variableMax = institution.nb_variable_recursive
     }
-    if (institution.parents?.length + 1 > level_max) {
-      level_max = institution.parents?.length + 1
+    if (institution.parents?.length + 1 > levelMax) {
+      levelMax = institution.parents?.length + 1
     }
   }
 
-  const institutions_sorted = [...institutions]
-  institutions_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
+  const institutionsSorted = [...institutions]
+  institutionsSorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
 
   const columns = [
     Column.favorite(),
     Column.name('institution', 'Institution', {
-      with_indent: true,
-      link_same_entity_tab: true,
+      withIndent: true,
+      linkSameEntityTab: true,
     }),
     Column.description(),
-    Column.nbChildRecursive('institution', institution_max),
-    Column.nbFolderRecursive('institution', folder_max),
-    Column.nbDatasetRecursive('institution', dataset_max),
-    Column.nbVariable('institution', variable_max, {
+    Column.nbChildRecursive('institution', institutionMax),
+    Column.nbFolderRecursive('institution', folderMax),
+    Column.nbDatasetRecursive('institution', datasetMax),
+    Column.nbVariable('institution', variableMax, {
       recursive: true,
     }),
-    Column.nbDoc('institution', nb_doc_max),
+    Column.nbDoc('institution', nbDocMax),
     Column.tag(),
     Column.parents('institution'),
     {
@@ -77,13 +77,13 @@
     },
     Column.startDate(),
     Column.endDate(),
-    Column.level(level_max),
+    Column.level(levelMax),
   ]
 </script>
 
 <Datatable
   entity="institution"
-  data={institutions_sorted}
-  {is_recursive}
+  data={institutionsSorted}
+  {isRecursive}
   {columns}
 />

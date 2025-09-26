@@ -3,14 +3,14 @@
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
-  import about_file from '@markdown/about-options.md?raw'
+  import aboutFile from '@markdown/about-options.md?raw'
 
   let logs = Logs.getAll()
   let tabs = tabsHelper({
     options: '',
     logs,
     stat: [{ entity: 'log', items: logs }],
-    about_file,
+    aboutFile,
   })
 </script>
 

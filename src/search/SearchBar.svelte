@@ -15,56 +15,56 @@
   import SearchHistory from './search-history'
   import SearchBarResult from './SearchBarResult.svelte'
 
-  let is_focus_in = $state(false)
-  let input_element: HTMLInputElement = $state()
-  let nb_result = $state(0)
-  let all_search = $state([])
-  let db_initied = $state(false)
-  let search_value_debounced = $state($searchValue)
+  let isFocusIn = $state(false)
+  let inputElement: HTMLInputElement = $state()
+  let nbResult = $state(0)
+  let allSearch = $state([])
+  let dbInitied = $state(false)
+  let searchValueDebounced = $state($searchValue)
 
-  let is_open = $derived(
-    is_focus_in && ($searchValue !== '' || nb_result > 0 || !db_initied),
+  let isOpen = $derived(
+    isFocusIn && ($searchValue !== '' || nbResult > 0 || !dbInitied),
   )
-  let is_hidden_by_mobile_menu = $derived($isSmallMenu && $headerOpen)
+  let isHiddenByMobileMenu = $derived($isSmallMenu && $headerOpen)
 
-  const max_search_result = 100
-  let nav_position = 0
+  const maxSearchResult = 100
+  let navPosition = 0
 
   SearchHistory.onChange('search_bar', () => searchInputChange())
 
   function initSearchRecent() {
-    all_search = SearchHistory.getRecentSearch()
-    nb_result = all_search.length
+    allSearch = SearchHistory.getRecentSearch()
+    nbResult = allSearch.length
   }
 
   async function searchInputChange() {
     if ($onPageSearch) return false
-    search_value_debounced = $searchValue
-    nav_position = 0
+    searchValueDebounced = $searchValue
+    navPosition = 0
     if ($searchValue === '') {
       initSearchRecent()
       return false
     }
-    let all_search_raw = await db.search($searchValue)
+    let allSearchRaw = await db.search($searchValue)
     if ($searchValue === '') return false
-    all_search_raw = SearchHistory.putRecentFirst(all_search_raw)
-    nb_result = all_search_raw.length
-    all_search = all_search_raw.slice(0, max_search_result)
+    allSearchRaw = SearchHistory.putRecentFirst(allSearchRaw)
+    nbResult = allSearchRaw.length
+    allSearch = allSearchRaw.slice(0, maxSearchResult)
   }
 
   function clearInput() {
     $searchValue = ''
-    search_value_debounced = $searchValue
+    searchValueDebounced = $searchValue
     selectInput()
     searchInputChange()
   }
 
   function focusin() {
-    is_focus_in = true
+    isFocusIn = true
   }
 
   function focusout() {
-    is_focus_in = false
+    isFocusIn = false
   }
 
   function goToPageSearch() {
@@ -74,17 +74,17 @@
   }
 
   function keyup(e) {
-    is_focus_in = true
+    isFocusIn = true
     const code = e.keyCode ? e.keyCode : e.which
     if (code !== 13) return
-    if (nav_position === 0) {
+    if (navPosition === 0) {
       goToPageSearch()
     } else {
-      applyToAllSearch((item, item_num, entity) => {
-        if (item_num === nav_position) {
+      applyToAllSearch((item, itemNum, entity) => {
+        if (itemNum === navPosition) {
           router.navigate(`/${entity}/${item.id}`)
           SearchHistory.add(entity, item.id)
-          is_focus_in = false
+          isFocusIn = false
           Logs.add('search_bar', { entity, entity_id: item.id })
         }
       })
@@ -99,46 +99,46 @@
       updateNavPosition(-1)
     }
     if (code === 38 || code === 40) {
-      is_focus_in = true
+      isFocusIn = true
       e.preventDefault()
       return false
     }
   }
 
   function applyToAllSearch(callback) {
-    let item_num = 0
-    for (const item of all_search) {
-      item_num += 1
-      callback(item, item_num, item.entity)
+    let itemNum = 0
+    for (const item of allSearch) {
+      itemNum += 1
+      callback(item, itemNum, item.entity)
     }
   }
 
   function updateNavPosition(move) {
-    nav_position += move
-    if (nav_position < 0) nav_position = 0
-    if (nav_position > nb_result) nav_position = nb_result
-    if (nav_position > max_search_result) nav_position = max_search_result
-    applyToAllSearch((item, item_num) => {
-      item.nav_hover = item_num === nav_position
+    navPosition += move
+    if (navPosition < 0) navPosition = 0
+    if (navPosition > nbResult) navPosition = nbResult
+    if (navPosition > maxSearchResult) navPosition = maxSearchResult
+    applyToAllSearch((item, itemNum) => {
+      item.nav_hover = itemNum === navPosition
     })
   }
 
   function onClick() {
-    is_focus_in = true
+    isFocusIn = true
   }
 
   function selectInput() {
-    input_element.focus()
-    is_focus_in = true
+    inputElement.focus()
+    isFocusIn = true
   }
 
   function windowKeydown(e) {
-    const focused_element = window.document.activeElement
-    const is_input_focused =
-      focused_element.tagName === 'INPUT' ||
-      focused_element.tagName === 'TEXTAREA' ||
-      focused_element.tagName === 'SELECT'
-    if (e.key === '/' && !is_focus_in && !is_input_focused && !$onPageSearch) {
+    const focusedElement = window.document.activeElement
+    const isInputFocused =
+      focusedElement.tagName === 'INPUT' ||
+      focusedElement.tagName === 'TEXTAREA' ||
+      focusedElement.tagName === 'SELECT'
+    if (e.key === '/' && !isFocusIn && !isInputFocused && !$onPageSearch) {
       e.preventDefault()
       selectInput()
     }
@@ -150,7 +150,7 @@
 
   db.loaded.then(() => {
     initSearchRecent()
-    db_initied = true
+    dbInitied = true
   })
 
   SearchHistory.onClear(() => {
@@ -162,13 +162,13 @@
 
 <div
   class="navbar-item header_search_item"
-  class:hidden_by_mobile_menu={is_hidden_by_mobile_menu}
+  class:hidden_by_mobile_menu={isHiddenByMobileMenu}
   use:clickOutside={focusout}
 >
   <div
     class="search_bar_container box_shadow_color shadow_search"
-    class:box_shadow={is_focus_in}
-    class:focus={is_focus_in}
+    class:box_shadow={isFocusIn}
+    class:focus={isFocusIn}
     class:homepage={$onPageHomepage}
     class:page_search={$onPageSearch}
   >
@@ -177,8 +177,8 @@
         class="icon is-small is-left"
         class:active={$searchValue !== '' &&
           $searchValue !== undefined &&
-          is_focus_in &&
-          nb_result > 0}
+          isFocusIn &&
+          nbResult > 0}
         onclick={goToPageSearch}
         aria-label="Rechercher"
       >
@@ -195,7 +195,7 @@
         onkeydown={keydown}
         onfocusin={focusin}
         onclick={onClick}
-        bind:this={input_element}
+        bind:this={inputElement}
         autocomplete="off"
         enterkeyhint="search"
       />
@@ -208,12 +208,12 @@
 
     {#if !$onPageSearch}
       <SearchBarResult
-        {is_open}
-        {nb_result}
-        {all_search}
-        search_value={search_value_debounced}
+        {isOpen}
+        {nbResult}
+        {allSearch}
+        searchValue={searchValueDebounced}
         {selectInput}
-        bind:is_focus_in
+        bind:isFocusIn
       />
     {/if}
   </div>

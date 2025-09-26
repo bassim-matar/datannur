@@ -1,53 +1,53 @@
 <script lang="ts">
   import { link, wrapLongText, getPercent } from '@lib/util'
-  import {getParentPath} from '@lib/db'
+  import { getParentPath } from '@lib/db'
   import Column from '@lib/column'
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
 
-  let { folders, is_meta = false } = $props()
+  let { folders, isMeta = false } = $props()
 
-  const folders_sorted = [...folders]
-  const folder_path = is_meta ? 'metaFolder/' : 'folder/'
-  const meta_path = is_meta ? 'metaFolder' : false
+  const foldersSorted = [...folders]
+  const folderPath = isMeta ? 'metaFolder/' : 'folder/'
+  const metaPath = isMeta ? 'metaFolder' : false
 
-  let variable_max = 0
-  let dataset_max = 0
-  let folder_max = 0
-  let nb_doc_max = 0
-  let level_max = 0
+  let variableMax = 0
+  let datasetMax = 0
+  let folderMax = 0
+  let nbDocMax = 0
+  let levelMax = 0
 
-  if (!is_meta) {
+  if (!isMeta) {
     for (const folder of folders) {
       folder.path_string = getParentPath(folder)
-      if (folder.nb_dataset_recursive > dataset_max) {
-        dataset_max = folder.nb_dataset_recursive
+      if (folder.nb_dataset_recursive > datasetMax) {
+        datasetMax = folder.nb_dataset_recursive
       }
-      if (folder.nb_variable_recursive > variable_max) {
-        variable_max = folder.nb_variable_recursive
+      if (folder.nb_variable_recursive > variableMax) {
+        variableMax = folder.nb_variable_recursive
       }
-      if (folder.nb_child_recursive > folder_max) {
-        folder_max = folder.nb_child_recursive
+      if (folder.nb_child_recursive > folderMax) {
+        folderMax = folder.nb_child_recursive
       }
-      if (folder.docs_recursive?.length > nb_doc_max) {
-        nb_doc_max = folder.docs_recursive?.length
+      if (folder.docs_recursive?.length > nbDocMax) {
+        nbDocMax = folder.docs_recursive?.length
       }
-      if (folder.parents?.length + 1 > level_max) {
-        level_max = folder.parents?.length + 1
+      if (folder.parents?.length + 1 > levelMax) {
+        levelMax = folder.parents?.length + 1
       }
     }
-    folders_sorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
+    foldersSorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
   }
 
-  if (is_meta) {
+  if (isMeta) {
     for (const folder of folders) {
-      dataset_max = Math.max(dataset_max, folder.nb_dataset)
-      variable_max = Math.max(variable_max, folder.nb_variable)
+      datasetMax = Math.max(datasetMax, folder.nb_dataset)
+      variableMax = Math.max(variableMax, folder.nb_variable)
     }
   }
 
   function defineColumns() {
-    if (is_meta) {
+    if (isMeta) {
       return [
         Column.name('folder', 'Dossiers'),
         Column.description(),
@@ -58,17 +58,17 @@
           render: (data, type, row) => {
             if (!data) return ''
             const content = link(
-              folder_path + row.id + '?tab=metaDatasets',
+              folderPath + row.id + '?tab=metaDatasets',
               data,
             )
-            const percent = getPercent(data / dataset_max)
+            const percent = getPercent(data / datasetMax)
             return `${Render.numPercent(content, percent, 'dataset', type)}`
           },
         },
-        Column.nbVariable('folder', variable_max, {
+        Column.nbVariable('folder', variableMax, {
           tab: 'metaVariables',
-          link_path: folder_path,
-          show_title: true,
+          linkPath: folderPath,
+          showTitle: true,
         }),
       ]
     }
@@ -76,16 +76,16 @@
     return [
       Column.favorite(),
       Column.name('folder', 'Dossier', {
-        with_indent: true,
-        link_same_entity_tab: true,
+        withIndent: true,
+        linkSameEntityTab: true,
       }),
       Column.description(),
-      Column.nbChildRecursive('folder', folder_max, folder_path),
-      Column.nbDatasetRecursive('folder', dataset_max),
-      Column.nbVariable('folder', variable_max, {
+      Column.nbChildRecursive('folder', folderMax, folderPath),
+      Column.nbDatasetRecursive('folder', datasetMax),
+      Column.nbVariable('folder', variableMax, {
         recursive: true,
       }),
-      Column.nbDoc('folder', nb_doc_max),
+      Column.nbDoc('folder', nbDocMax),
       Column.tag(),
       Column.lastUpdate(),
       Column.nextUpdate(),
@@ -121,7 +121,7 @@
             data ? `<a href="${data}" target="_blanck">${data}</a>` : '',
           ),
       },
-      Column.level(level_max),
+      Column.level(levelMax),
     ]
   }
 
@@ -130,8 +130,8 @@
 
 <Datatable
   entity="folder"
-  data={folders_sorted}
-  is_recursive={true}
+  data={foldersSorted}
+  isRecursive={true}
   {columns}
-  {meta_path}
+  {metaPath}
 />

@@ -2,17 +2,17 @@
   import markdownRender from '@lib/markdown'
   import Icon from '@layout/Icon.svelte'
 
-  let { description, inside_table = false } = $props()
+  let { description, insideTable = false } = $props()
 
-  let description_clean = $state(description)
+  let descriptionClean = $state(description)
 
   if (description) {
-    description_clean = markdownRender(description)
+    descriptionClean = markdownRender(description)
   }
 </script>
 
 {#if description}
-  {#if inside_table}
+  {#if insideTable}
     <tr>
       <td>
         <div style="font-weight: bold;">
@@ -21,16 +21,16 @@
       </td>
       <td>
         <!-- eslint-disable svelte/no-at-html-tags -->
-        <div class="content inside-table">{@html description_clean}</div>
+        <div class="content inside-table">{@html descriptionClean}</div>
       </td>
     </tr>
   {:else}
-    <div class="description_wrapper" class:inside-table={inside_table}>
+    <div class="description_wrapper" class:inside-table={insideTable}>
       <div style="font-weight: bold;">
         <Icon type="description" /> Description
       </div>
       <!-- eslint-disable svelte/no-at-html-tags -->
-      <div class="content">{@html description_clean}</div>
+      <div class="content">{@html descriptionClean}</div>
     </div>
   {/if}
 {/if}

@@ -13,7 +13,7 @@
 
   let { variable } = $props()
 
-  let parent_name = variable.is_meta ? 'metaDataset' : 'dataset'
+  let parentName = variable.isMeta ? 'metaDataset' : 'dataset'
 </script>
 
 <TableWrapper>
@@ -35,7 +35,7 @@
       Dataset
     </td>
     <td>
-      <Link href="{parent_name}/{variable.dataset_id}" entity="dataset"
+      <Link href="{parentName}/{variable.dataset_id}" entity="dataset"
         >{variable.dataset_name}</Link
       >
     </td>
@@ -64,9 +64,9 @@
   </tr>
   <PeriodInfo
     period={variable.period}
-    period_duration={variable.period_duration}
+    periodDuration={variable.periodDuration}
   />
-  <RowInfo nb_row={variable.nb_row} />
+  <RowInfo nbRow={variable.nb_row} />
   {#if variable.nb_missing > 0}
     <tr>
       <td>
@@ -77,7 +77,7 @@
         <PercentBar
           type="missing"
           value={variable.nb_missing}
-          nb_row={variable.nb_row}
+          nbRow={variable.nb_row}
         />
       </td>
     </tr>
@@ -92,7 +92,7 @@
         <PercentBar
           type="duplicate"
           value={variable.nb_duplicate}
-          nb_row={variable.nb_row}
+          nbRow={variable.nb_row}
         />
       </td>
     </tr>
@@ -107,7 +107,7 @@
         <PercentBar
           type="value"
           value={variable.nb_distinct}
-          nb_row={variable.nb_row}
+          nbRow={variable.nb_row}
         />
       </td>
     </tr>
@@ -133,8 +133,8 @@
       </td>
     </tr>
   {/if}
-  {#if variable.is_meta}
-    <MetaLocalisationInfo meta_localisation={variable.meta_localisation} />
+  {#if variable.isMeta}
+    <MetaLocalisationInfo metaLocalisation={variable.metaLocalisation} />
   {/if}
 </TableWrapper>
 <DescriptionInfo description={variable.description} />

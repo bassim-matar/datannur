@@ -1,12 +1,12 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
+  import Icon from '@layout/Icon.svelte'
 
-  let { meta_localisation } = $props()
+  let { metaLocalisation } = $props()
 </script>
 
-{#if meta_localisation}
+{#if metaLocalisation}
   <tr>
     <td><Icon type="localisation" /> Localisation</td>
-    <td>{meta_localisation}</td>
+    <td>{metaLocalisation}</td>
   </tr>
 {/if}

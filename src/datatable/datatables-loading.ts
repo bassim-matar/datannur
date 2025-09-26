@@ -1,12 +1,12 @@
 export default class DatatablesLoading {
-  static nb_loading = 0
+  static nbLoading = 0
   static finished = false
   static start() {
-    this.nb_loading += 1
+    this.nbLoading += 1
   }
   static end() {
-    this.nb_loading -= 1
-    if (this.nb_loading === 0) {
+    this.nbLoading -= 1
+    if (this.nbLoading === 0) {
       this.finished = true
     }
   }

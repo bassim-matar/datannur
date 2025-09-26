@@ -1,15 +1,15 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import PdfViewer from "@layout/PdfViewer.svelte"
-  import MdFileDynamic from "@layout/MdFileDynamic.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import PdfViewer from '@layout/PdfViewer.svelte'
+  import MdFileDynamic from '@layout/MdFileDynamic.svelte'
 
   let { doc } = $props()
 </script>
 
 <div
   class="doc_content_wrapper"
-  class:has_pdf_format={doc.type === "pdf"}
-  class:has_md_format={doc.type === "md"}
+  class:has_pdf_format={doc.type === 'pdf'}
+  class:has_md_format={doc.type === 'md'}
 >
   <div style="font-weight: bold;">
     <Icon type="search" /> Aperçu
@@ -17,17 +17,17 @@
 
   <div class="doc_content_box">
     <div class="doc_content">
-      {#if doc.type === "pdf"}
+      {#if doc.type === 'pdf'}
         <PdfViewer pdf={doc.path} />
-      {:else if doc.type === "md"}
-        <MdFileDynamic doc_id={doc.id} mode="no_padding" />
+      {:else if doc.type === 'md'}
+        <MdFileDynamic docId={doc.id} mode="no_padding" />
       {/if}
     </div>
   </div>
 </div>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   .doc_content_wrapper {
     width: calc(50% - 3px);

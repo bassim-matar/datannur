@@ -2,14 +2,14 @@
   import { onMount } from 'svelte'
   import { pageContentLoaded } from '@lib/store'
 
-  let { no_max_height = true, children } = $props()
+  let { noMaxHeight = true, children } = $props()
 
   onMount(() => {
     $pageContentLoaded = true
   })
 </script>
 
-<div class="table_wrapper" class:no-max-height={no_max_height}>
+<div class="table_wrapper" class:no-max-height={noMaxHeight}>
   <table class="table is-striped">
     <tbody>
       {@render children?.()}

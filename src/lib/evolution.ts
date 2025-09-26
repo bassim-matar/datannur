@@ -1,6 +1,6 @@
 import db from '@db'
 import type { EntityName } from '@type'
-import { entity_names, evolution_types, parent_entities } from '@lib/constant'
+import { entityNames, evolutionTypes, parentEntities } from '@lib/constant'
 import {
   dateToTimestamp,
   timestampToDate,
@@ -10,29 +10,29 @@ import { diffWords } from 'diff'
 import { getPeriod } from '@lib/time'
 import { splitOnLastSeparator } from '@lib/util'
 
-const arrow_right = `<i class="fas fa-arrow-right"></i>`
+const arrowRight = `<i class="fas fa-arrow-right"></i>`
 
 function getEvoDeleted() {
-  const evo_deleted = {}
+  const evoDeleted = {}
   db.foreach('evolution', evo => {
     if (evo.type === 'delete') {
-      if (!(evo.entity in evo_deleted)) {
-        evo_deleted[evo.entity] = {}
+      if (!(evo.entity in evoDeleted)) {
+        evoDeleted[evo.entity] = {}
       }
-      evo_deleted[evo.entity][evo.entity_id] = evo
+      evoDeleted[evo.entity][evo.entity_id] = evo
     }
   })
-  return evo_deleted
+  return evoDeleted
 }
 
-function getItem(entity, entity_id, evo_deleted) {
-  if (db.tableHasId(entity, entity_id)) {
-    const item = db.get(entity, entity_id)
+function getItem(entity, entityId, evoDeleted) {
+  if (db.tableHasId(entity, entityId)) {
+    const item = db.get(entity, entityId)
     item._deleted = false
-    item.parent_entity_id = item[`${parent_entities[entity]}_id`]
+    item.parent_entity_id = item[`${parentEntities[entity]}_id`]
     return item
   }
-  const item = evo_deleted[entity]?.[entity_id]
+  const item = evoDeleted[entity]?.[entityId]
   if (item) {
     item._deleted = true
     return item
@@ -40,9 +40,9 @@ function getItem(entity, entity_id, evo_deleted) {
   return null
 }
 
-function addHistory(evo_deleted) {
+function addHistory(evoDeleted) {
   db.foreach('evolution', evo => {
-    const item = getItem(evo.entity, evo.entity_id, evo_deleted)
+    const item = getItem(evo.entity, evo.entity_id, evoDeleted)
     if (item && item.name) {
       evo.name = item.name
       evo.parent_entity_id = item.parent_entity_id
@@ -56,108 +56,108 @@ function addHistory(evo_deleted) {
     } else {
       evo.name = evo.entity_id
       evo._deleted = true
-      evo._to_hide = true
+      evo._toHide = true
     }
 
-    const parent_entity =
-      parent_entities[evo.entity] === 'parent'
+    const parentEntity =
+      parentEntities[evo.entity] === 'parent'
         ? evo.entity
-        : parent_entities[evo.entity]
+        : parentEntities[evo.entity]
 
     evo._entity = evo.entity
-    evo._entity_clean = entity_names[evo.entity]
-    evo.type_clean = evolution_types[evo.type]
-    evo.parent_entity = parent_entity
-    evo.parent_entity_clean = entity_names[parent_entity]
+    evo._entityClean = entityNames[evo.entity]
+    evo.type_clean = evolutionTypes[evo.type]
+    evo.parent_entity = parentEntity
+    evo.parent_entity_clean = entityNames[parentEntity]
     evo.timestamp *= 1000
     evo.time = evo.timestamp > Date.now() ? 'Futur' : 'Passé'
 
-    const parent_item = getItem(
+    const parentItem = getItem(
       evo.parent_entity,
       evo.parent_entity_id,
-      evo_deleted,
+      evoDeleted,
     )
-    evo.parent_name = parent_item?.name
-    evo.parent_deleted = parent_item?._deleted
-    evo.is_favorite = false
+    evo.parent_name = parentItem?.name
+    evo.parentDeleted = parentItem?._deleted
+    evo.isFavorite = false
 
     evo.date = timestampToDate(evo.timestamp)
-    evo.folder_id = getFolderId(evo.entity, item, parent_item)
+    evo.folder_id = getFolderId(evo.entity, item, parentItem)
   })
 
-  db.tables.evolution = db.tables.evolution?.filter(evo => !evo._to_hide)
+  db.tables.evolution = db.tables.evolution?.filter(evo => !evo._toHide)
 }
 
-function getFolderId(entity, entity_data, parent_item) {
+function getFolderId(entity, entityData, parentItem) {
   if (entity === 'folder') {
-    return entity_data?.id
+    return entityData?.id
   } else if (entity === 'dataset') {
-    return entity_data?.folder_id
+    return entityData?.folder_id
   } else if (entity === 'variable') {
-    return parent_item?.folder_id
+    return parentItem?.folder_id
   } else if (entity === 'modality') {
-    return entity_data?.folder_id
+    return entityData?.folder_id
   } else if (entity === 'value') {
-    return parent_item?.folder_id
+    return parentItem?.folder_id
   }
   return null
 }
 
-function addValidity(validities, type, entity, entity_data, evo_deleted) {
-  const parent_entity =
-    parent_entities[entity] === 'parent' ? entity : parent_entities[entity]
-  const parent_item = getItem(
-    parent_entity,
-    entity_data[`${parent_entities[entity]}_id`],
-    evo_deleted,
+function addValidity(validities, type, entity, entityData, evoDeleted) {
+  const parentEntity =
+    parentEntities[entity] === 'parent' ? entity : parentEntities[entity]
+  const parentItem = getItem(
+    parentEntity,
+    entityData[`${parentEntities[entity]}_id`],
+    evoDeleted,
   )
 
   const timestamp = dateToTimestamp(
-    entity_data[type],
+    entityData[type],
     type === 'start_date' ? 'start' : 'end',
   )
 
   if (!timestamp) {
     console.error(
-      `Invalid date format for ${type} in ${entity} with id ${entity_data.id}, value = ${entity_data[type]}`,
+      `Invalid date format for ${type} in ${entity} with id ${entityData.id}, value = ${entityData[type]}`,
     )
     return
   }
 
   const time = timestamp > Date.now() ? 'Futur' : 'Passé'
 
-  let type_clean = 'Autre'
-  if (type in evolution_types) type_clean = evolution_types[type]
+  let typeClean = 'Autre'
+  if (type in evolutionTypes) typeClean = evolutionTypes[type]
 
-  const folder_id = getFolderId(entity, entity_data, parent_item)
+  const folderId = getFolderId(entity, entityData, parentItem)
 
   validities.push({
-    id: entity_data.id,
+    id: entityData.id,
     entity: entity,
     _entity: entity,
-    _entity_clean: entity_names[entity],
-    entity_id: entity_data.id,
-    parent_entity: parent_entity,
-    parent_entity_clean: entity_names[parent_entity],
-    parent_entity_id: entity_data[`${parent_entities[entity]}_id`],
-    parent_name: parent_item?.name,
-    name: entity_data.name,
+    _entityClean: entityNames[entity],
+    entity_id: entityData.id,
+    parent_entity: parentEntity,
+    parent_entity_clean: entityNames[parentEntity],
+    parent_entity_id: entityData[`${parentEntities[entity]}_id`],
+    parent_name: parentItem?.name,
+    name: entityData.name,
     type,
-    old_value: entity_data[type],
-    new_value: entity_data[type],
+    old_value: entityData[type],
+    new_value: entityData[type],
     variable: type,
-    type_clean,
+    type_clean: typeClean,
     timestamp,
     time,
     date: timestampToDate(timestamp),
-    folder_id,
-    is_favorite: false,
+    folder_id: folderId,
+    isFavorite: false,
   })
 }
 
-function addValidities(evo_deleted) {
+function addValidities(evoDeleted) {
   const validities = []
-  const entities = Object.keys(parent_entities) as EntityName[]
+  const entities = Object.keys(parentEntities) as EntityName[]
   for (const entity of entities) {
     const tableData = db.tables[entity]
     if (
@@ -168,35 +168,29 @@ function addValidities(evo_deleted) {
         Object.keys(tableData[0]).includes('last_update_date') ||
         Object.keys(tableData[0]).includes('next_update_date'))
     ) {
-      db.foreach(entity, entity_data => {
-        if ('start_date' in entity_data && entity_data.start_date) {
-          addValidity(
-            validities,
-            'start_date',
-            entity,
-            entity_data,
-            evo_deleted,
-          )
+      db.foreach(entity, entityData => {
+        if ('start_date' in entityData && entityData.start_date) {
+          addValidity(validities, 'start_date', entity, entityData, evoDeleted)
         }
-        if ('end_date' in entity_data && entity_data.end_date) {
-          addValidity(validities, 'end_date', entity, entity_data, evo_deleted)
+        if ('end_date' in entityData && entityData.end_date) {
+          addValidity(validities, 'end_date', entity, entityData, evoDeleted)
         }
-        if ('last_update_date' in entity_data && entity_data.last_update_date) {
+        if ('last_update_date' in entityData && entityData.last_update_date) {
           addValidity(
             validities,
             'last_update_date',
             entity,
-            entity_data,
-            evo_deleted,
+            entityData,
+            evoDeleted,
           )
         }
-        if ('next_update_date' in entity_data && entity_data.next_update_date) {
+        if ('next_update_date' in entityData && entityData.next_update_date) {
           addValidity(
             validities,
             'next_update_date',
             entity,
-            entity_data,
-            evo_deleted,
+            entityData,
+            evoDeleted,
           )
         }
       })
@@ -210,9 +204,9 @@ function addValidities(evo_deleted) {
 }
 
 export function evolutionInitialSetup() {
-  const evo_deleted = getEvoDeleted()
-  addHistory(evo_deleted)
-  addValidities(evo_deleted)
+  const evoDeleted = getEvoDeleted()
+  addHistory(evoDeleted)
+  addValidities(evoDeleted)
 }
 
 function parseDateStandard(dateString) {
@@ -235,7 +229,7 @@ function outputDiffNumber(oldVal, newVal) {
     oldVal !== 0 ? ((diff / oldVal) * 100).toFixed(1) : '∞'
   const diffClass = diff > 0 ? 'highlight_diff_add' : 'highlight_diff_delete'
 
-  return `${oldVal.toLocaleString()} ${arrow_right} ${newVal.toLocaleString()} 
+  return `${oldVal.toLocaleString()} ${arrowRight} ${newVal.toLocaleString()} 
       <br><span class="${diffClass}">${
         diff > 0 ? '+' : ''
       }${diff.toLocaleString()} | 
@@ -243,18 +237,18 @@ function outputDiffNumber(oldVal, newVal) {
   `
 }
 
-function outputDiffDate(oldDate, newDate, old_date_string, new_date_string) {
+function outputDiffDate(oldDate, newDate, oldDateString, newDateString) {
   const diffDays = Math.ceil((newDate - oldDate) / (1000 * 60 * 60 * 24))
   const diffClass =
     diffDays > 0 ? 'highlight_diff_add' : 'highlight_diff_delete'
 
-  const diff_relative = getPeriod(oldDate, newDate, true)
+  const diffRelative = getPeriod(oldDate, newDate, true)
 
   return `
-  ${old_date_string} ${arrow_right} ${new_date_string}
+  ${oldDateString} ${arrowRight} ${newDateString}
   <br><span class="${diffClass}">${
     diffDays > 0 ? '+' : ''
-  }${diff_relative}</span>`
+  }${diffRelative}</span>`
 }
 
 function outputDiffString(oldVal, newVal) {
@@ -285,10 +279,10 @@ export function highlightDiff(a, b, variable = null) {
 
   let oldDate = null
   let newDate = null
-  const is_a_number = !isNaN(a) && a !== ''
-  const is_b_number = !isNaN(b) && b !== ''
+  const isANumber = !isNaN(a) && a !== ''
+  const isBNumber = !isNaN(b) && b !== ''
 
-  if (!is_a_number) {
+  if (!isANumber) {
     oldDate = parseDateStandard(a)
   } else {
     a = parseFloat(a)
@@ -297,7 +291,7 @@ export function highlightDiff(a, b, variable = null) {
     }
   }
 
-  if (!is_b_number) {
+  if (!isBNumber) {
     newDate = parseDateStandard(b)
   } else {
     b = parseFloat(b)
@@ -307,8 +301,8 @@ export function highlightDiff(a, b, variable = null) {
   }
 
   if (oldDate && newDate) return outputDiffDate(oldDate, newDate, a, b)
-  if (is_a_number && is_b_number) return outputDiffNumber(a, b)
-  if (is_a_number) a = a.toString()
-  if (is_b_number) b = b.toString()
+  if (isANumber && isBNumber) return outputDiffNumber(a, b)
+  if (isANumber) a = a.toString()
+  if (isBNumber) b = b.toString()
   return outputDiffString(a, b)
 }

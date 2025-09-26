@@ -61,13 +61,13 @@ export const allTabs: Row = {
     icon: 'modality',
     component: Modalities,
   },
-  modalities_compare: {
+  modalitiesCompare: {
     name: 'Similitude',
     icon: 'compare',
     component: ModalitiesCompare,
-    load_async: true,
+    loadAsync: true,
   },
-  dataset_variables: {
+  datasetVariables: {
     name: 'Variable',
     icon: 'variable',
     component: DatasetVariables,
@@ -77,7 +77,7 @@ export const allTabs: Row = {
     icon: 'value',
     component: Values,
   },
-  variable_values: {
+  variableValues: {
     name: 'Valeur',
     icon: 'value',
     component: VariableValues,
@@ -87,7 +87,7 @@ export const allTabs: Row = {
     icon: 'freq',
     component: Freq,
   },
-  all_fav: {
+  allFav: {
     name: 'Favori',
     icon: 'favorite',
     component: AllFav,
@@ -106,44 +106,44 @@ export const allTabs: Row = {
     name: 'Dossier',
     icon: 'folder',
     component: Folders,
-    is_meta: true,
-    meta_key: 'folders',
+    isMeta: true,
+    metaKey: 'folders',
   },
   metaDatasets: {
     name: 'Dataset',
     icon: 'dataset',
     component: Datasets,
-    is_meta: true,
-    meta_key: 'datasets',
+    isMeta: true,
+    metaKey: 'datasets',
   },
   metaVariables: {
     name: 'Variable',
     icon: 'variable',
     component: Variables,
-    is_meta: true,
-    meta_key: 'variables',
+    isMeta: true,
+    metaKey: 'variables',
   },
-  meta_dataset_variables: {
+  metaDatasetVariables: {
     name: 'Variable',
     icon: 'variable',
     component: DatasetVariables,
-    is_meta: true,
-    meta_key: 'dataset_variables',
+    isMeta: true,
+    metaKey: 'datasetVariables',
   },
-  variable_metaValues: {
+  variableMetaValues: {
     name: 'Valeur',
     icon: 'value',
     component: VariableValues,
-    is_meta: true,
-    meta_key: 'variable_values',
+    isMeta: true,
+    metaKey: 'variableValues',
   },
   metaDiagramm: {
     name: 'Diagramme',
     icon: 'diagram',
     component: MetaDiagramm,
-    without_num: true,
-    without_prop: true,
-    footer_visible: true,
+    withoutNum: true,
+    withoutProp: true,
+    footerVisible: true,
   },
   docs: {
     name: 'Doc',
@@ -154,17 +154,17 @@ export const allTabs: Row = {
     name: 'Option',
     icon: 'option',
     component: Options,
-    without_num: true,
-    without_prop: true,
+    withoutNum: true,
+    withoutProp: true,
     padding: true,
-    footer_visible: true,
+    footerVisible: true,
   },
-  dataset_preview: {
+  datasetPreview: {
     name: 'Aperçu',
     icon: 'preview',
     component: DatasetPreview,
   },
-  variable_preview: {
+  variablePreview: {
     name: 'Aperçu',
     icon: 'preview',
     component: VariablePreview,
@@ -173,32 +173,32 @@ export const allTabs: Row = {
     name: 'Stat',
     icon: 'stat',
     component: Stat,
-    without_prop: true,
-    footer_visible: true,
+    withoutProp: true,
+    footerVisible: true,
   },
-  about_organisation: {
+  aboutOrganisation: {
     name: 'Organisation',
     icon: 'diagram',
     component: AboutFile,
-    footer_visible: true,
-    use_about_file: true,
+    footerVisible: true,
+    useAboutFile: true,
   },
-  about_functionality: {
+  aboutFunctionality: {
     name: 'Fonctionnalité',
     icon: 'functionality',
     component: AboutFile,
-    footer_visible: true,
-    use_about_file: true,
+    footerVisible: true,
+    useAboutFile: true,
   },
   homepage: { icon: 'home' },
-  meta: { icon: 'internal_view' },
+  meta: { icon: 'internalView' },
   metaFolder: { icon: 'folder' },
   metaDataset: { icon: 'dataset' },
   metaVariable: { icon: 'variable' },
 }
 
 const infoItems = {
-  about_file: AboutFile,
+  aboutFile: AboutFile,
   institution: InstitutionInfo,
   folder: FolderInfo,
   tag: TagInfo,
@@ -212,7 +212,7 @@ for (const [key, value] of Object.entries(infoItems)) {
     name: 'A propos',
     icon: 'about',
     component: value,
-    footer_visible: true,
+    footerVisible: true,
   }
 }
 

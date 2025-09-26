@@ -10,21 +10,21 @@ export default class PreviewManager {
     for (const row of data) {
       for (const [key, value] of Object.entries(row)) {
         if (key.includes('.')) {
-          const clean_key = key.replaceAll('.', '_')
-          row[clean_key] = value
+          const cleanKey = key.replaceAll('.', '_')
+          row[cleanKey] = value
           delete row[key]
         }
       }
     }
   }
   static addPosition(data) {
-    const new_data = []
+    const newData = []
     let position = 0
     for (const row of data) {
       position += 1
-      new_data.push({ '#': position, ...row })
+      newData.push({ '#': position, ...row })
     }
-    return new_data
+    return newData
   }
   static getColumns(data) {
     const cols = []
@@ -40,22 +40,22 @@ export default class PreviewManager {
     return cols
   }
   static getVariableData(data, variable) {
-    const variable_data = []
+    const variableData = []
     for (const row of data) {
       for (const [key, value] of Object.entries(row)) {
         if (key === variable) {
-          variable_data.push({ [key]: value })
+          variableData.push({ [key]: value })
         }
       }
     }
-    return variable_data
+    return variableData
   }
-  static async load(dataset_preview) {
+  static async load(datasetPreview) {
     let path = 'preview'
-    const dataset_id_parts = dataset_preview.split('-')
-    if (dataset_id_parts.length > 1) {
-      path += '/' + dataset_id_parts[0]
+    const datasetIdParts = datasetPreview.split('-')
+    if (datasetIdParts.length > 1) {
+      path += '/' + datasetIdParts[0]
     }
-    return await db.load(path, dataset_preview)
+    return await db.load(path, datasetPreview)
   }
 }

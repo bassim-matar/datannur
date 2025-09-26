@@ -1,9 +1,9 @@
-import { var_types, entity_to_icon } from '@lib/constant'
+import { varTypes, entityToIcon } from '@lib/constant'
 import { UrlParam } from './url-param'
 
-export const app_mode = UrlParam.getAppMode()
+export const appMode = UrlParam.getAppMode()
 
-export const is_http = window.location.protocol.startsWith('http')
+export const isHttp = window.location.protocol.startsWith('http')
 
 function getSubFolder() {
   const url = new URL(window.location.href)
@@ -11,18 +11,18 @@ function getSubFolder() {
   return pathname.length > 0 ? pathname[0] : ''
 }
 const subfolder = getSubFolder()
-export const url_prefix = (() => {
-  if (app_mode === 'static_render') return ''
-  else if (is_http && subfolder) return '/' + subfolder + '/#'
+export const urlPrefix = (() => {
+  if (appMode === 'static_render') return ''
+  else if (isHttp && subfolder) return '/' + subfolder + '/#'
   return '#'
 })()
 
 export function getBaseLinkUrl() {
-  if (app_mode === 'static_render') return '/'
+  if (appMode === 'static_render') return '/'
   return '#/'
 }
 
-export const is_firefox = navigator.userAgent.toLowerCase().includes('firefox')
+export const isFirefox = navigator.userAgent.toLowerCase().includes('firefox')
 
 function getDocumentWidth() {
   return (
@@ -31,18 +31,18 @@ function getDocumentWidth() {
     document.body.clientWidth
   )
 }
-export const document_width = getDocumentWidth()
+export const documentWidth = getDocumentWidth()
 export function getIsMobile() {
   return getDocumentWidth() < 600
 }
 
-export const is_mobile = getIsMobile()
+export const isMobile = getIsMobile()
 
 export function getIsSmallMenu() {
   return getDocumentWidth() < 1023
 }
 
-export const has_touch_screen =
+export const hasTouchScreen =
   'ontouchstart' in window || navigator.maxTouchPoints > 0
 
 export function getPercent(value) {
@@ -50,11 +50,11 @@ export function getPercent(value) {
 }
 
 export function getVariableTypeClean(type) {
-  return var_types[type] || '???'
+  return varTypes[type] || '???'
 }
 
 export function entityToIconName(type) {
-  return type in entity_to_icon ? entity_to_icon[type] : type
+  return type in entityToIcon ? entityToIcon[type] : type
 }
 
 export function getColor(entity) {
@@ -67,31 +67,32 @@ export function pluralize(str) {
 }
 
 export function escapeHtmlEntities(str) {
-  const to_replace = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-  }
-  return String(str).replace(/[&<>"']/g, char => to_replace[char])
+  const htmlEntities = new Map([
+    ['&', '&amp;'],
+    ['<', '&lt;'],
+    ['>', '&gt;'],
+    ['"', '&quot;'],
+    ["'", '&#39;'],
+  ])
+
+  return String(str).replace(/[&<>"']/g, char => htmlEntities.get(char) || char)
 }
 
 export function splitOnLastSeparator(str, separator) {
-  const last_index = str.lastIndexOf(separator)
-  return last_index === -1
+  const lastIndex = str.lastIndexOf(separator)
+  return lastIndex === -1
     ? [str, '']
-    : [str.slice(0, last_index), str.slice(last_index + separator.length)]
+    : [str.slice(0, lastIndex), str.slice(lastIndex + separator.length)]
 }
 
 export function link(href, content, entity = null) {
   const base = getBaseLinkUrl()
   const onclick = `window.goToHref(event, '${href}')`
-  let special_class = ''
+  let specialClass = ''
   if (entity) {
-    special_class = `class="color_entity_${entity}"`
+    specialClass = `class="color_entity_${entity}"`
   }
-  return `<a href="${base}${href}" onclick="${onclick}" ${special_class}>${content}</a>`
+  return `<a href="${base}${href}" onclick="${onclick}" ${specialClass}>${content}</a>`
 }
 
 export function addIndend(text, indent) {
@@ -146,14 +147,14 @@ export async function worker(params, callback) {
     function workerFunction(callback) {
       onmessage = e => postMessage(callback(e.data))
     }
-    const worker_api = new Worker(
+    const workerApi = new Worker(
       URL.createObjectURL(
         new Blob([`(${workerFunction.toString()})(${callback.toString()})`], {
           type: 'text/javascript',
         }),
       ),
     )
-    worker_api.postMessage(params)
-    worker_api.onmessage = e => resolve(e.data)
+    workerApi.postMessage(params)
+    workerApi.onmessage = e => resolve(e.data)
   })
 }

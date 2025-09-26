@@ -1,38 +1,38 @@
 import { writable } from 'svelte/store'
 
-const color_scheme_dark = '(prefers-color-scheme: dark)'
-const is_system_dark = window.matchMedia(color_scheme_dark).matches
-const default_theme = is_system_dark ? 'dark' : 'light'
-export const dark_mode_theme = writable(default_theme)
+const colorSchemeDark = '(prefers-color-scheme: dark)'
+const isSystemDark = window.matchMedia(colorSchemeDark).matches
+const defaultTheme = isSystemDark ? 'dark' : 'light'
+export const darkModeTheme = writable(defaultTheme)
 
 export class DarkMode {
-  static Options
+  static options
 
-  static init(Options) {
-    this.Options = Options
-    this.Options.loaded.then(() => {
+  static init(options) {
+    this.options = options
+    this.options.loaded.then(() => {
       let theme = 'light'
-      if (default_theme === 'dark') {
+      if (defaultTheme === 'dark') {
         document.documentElement.classList.add('dark_mode')
         theme = 'dark'
       }
-      if (this.Options.get('dark_mode') === 'dark') {
+      if (this.options.get('dark_mode') === 'dark') {
         document.documentElement.classList.add('dark_mode')
         theme = 'dark'
-      } else if (this.Options.get('dark_mode') === 'light') {
+      } else if (this.options.get('dark_mode') === 'light') {
         document.documentElement.classList.remove('dark_mode')
         theme = 'light'
       }
-      dark_mode_theme.set(theme)
+      darkModeTheme.set(theme)
     })
   }
 
   static toggle() {
     document.documentElement.classList.toggle('dark_mode')
-    dark_mode_theme.update(theme => {
-      const new_theme = theme === 'dark' ? 'light' : 'dark'
-      this.Options.set('dark_mode', new_theme)
-      return new_theme
+    darkModeTheme.update(theme => {
+      const newTheme = theme === 'dark' ? 'light' : 'dark'
+      this.options.set('dark_mode', newTheme)
+      return newTheme
     })
   }
 }

@@ -8,18 +8,18 @@
   let { id } = $props()
   const dataset = db.get('dataset', id)
 
-  let dataset_variables = db.getAll('variable', { dataset })
-  dataset.nb_variable = dataset_variables.length
+  let datasetVariables = db.getAll('variable', { dataset })
+  dataset.nb_variable = datasetVariables.length
 
   let modalities = []
-  for (const variable of dataset_variables) {
+  for (const variable of datasetVariables) {
     modalities = modalities.concat(variable.modalities)
   }
   modalities = removeDuplicateById(modalities)
 
-  let dataset_preview = dataset.link ? dataset.id : false
+  let datasetPreview = dataset.link ? dataset.id : false
 
-  const modalities_id = new Set(modalities.map(item => item.id))
+  const modalitiesId = new Set(modalities.map(item => item.id))
 
   const datasets = [
     ...getLineage('dataset', dataset, 'source'),
@@ -34,13 +34,13 @@
         (evo.parent_entity === 'dataset' &&
           evo.parent_entity_id === dataset.id) ||
         (evo.parent_entity === 'modality' &&
-          modalities_id.has(evo.parent_entity_id)) ||
-        (evo.entity === 'modality' && modalities_id.has(evo.id)),
+          modalitiesId.has(evo.parent_entity_id)) ||
+        (evo.entity === 'modality' && modalitiesId.has(evo.id)),
     )
 
   const stat = [
     { entity: 'doc', items: dataset.docs },
-    { entity: 'variable', items: dataset_variables },
+    { entity: 'variable', items: datasetVariables },
     { entity: 'modality', items: modalities },
   ]
 
@@ -48,9 +48,9 @@
     dataset,
     docs: dataset.docs,
     datasets,
-    dataset_variables,
+    datasetVariables,
     modalities,
-    dataset_preview,
+    datasetPreview,
     evolutions,
     stat,
   })

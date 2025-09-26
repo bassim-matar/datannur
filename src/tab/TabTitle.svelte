@@ -5,10 +5,10 @@
   import Number from '@layout/Number.svelte'
   import { onMount } from 'svelte'
 
-  let { tab, active_tab = $bindable(), selectTab } = $props()
+  let { tab, activeTab = $bindable(), selectTab } = $props()
 
-  let tab_nb = $state(tab.nb)
-  let min_width = $state(0)
+  let tabNb = $state(tab.nb)
+  let minWidth = $state(0)
 
   function toPercent(value) {
     const separator = '|'
@@ -20,28 +20,28 @@
   onMount(() => {
     const selector = `.tab_li_${tab.key}`
     const elem = document.querySelector(selector) as HTMLLIElement
-    min_width = elem.offsetWidth
-    if (min_width > 500) min_width = 0
+    minWidth = elem.offsetWidth
+    if (minWidth > 500) minWidth = 0
   })
 
   $effect(() => {
-    if (active_tab === tab.key && tab_nb !== '...') {
+    if (activeTab === tab.key && tabNb !== '...') {
       setTimeout(() => {
-        min_width = 0
+        minWidth = 0
       }, 300)
     }
   })
 
   $effect(() => {
-    if (active_tab === tab.key) tab_nb = $allTabs[tab.icon].nb
+    if (activeTab === tab.key) tabNb = $allTabs[tab.icon].nb
   })
 </script>
 
 <li
   class="tab_li_{tab.key} tab_entity_{tab.icon} shadow_{$tabSelected.icon}"
-  class:is-active={active_tab === tab.key}
-  class:not_active={active_tab !== tab.key}
-  style="min-width: {min_width}px;"
+  class:is-active={activeTab === tab.key}
+  class:not_active={activeTab !== tab.key}
+  style="min-width: {minWidth}px;"
 >
   <div class="rounded_wrapper left">
     <div class="rounded left"></div>
@@ -54,33 +54,33 @@
     href={null}
     onclick={() => selectTab(tab)}
     class="tab_select_btn"
-    class:is_loaded={tab_nb > 0 ||
-      tab_nb === undefined ||
-      tab_nb === '?' ||
-      (tab_nb?.length > 0 && tab_nb !== '...')}
+    class:is_loaded={tabNb > 0 ||
+      tabNb === undefined ||
+      tabNb === '?' ||
+      (tabNb?.length > 0 && tabNb !== '...')}
   >
     <div>
-      {#if tab_nb !== undefined}
-        {#if tab_nb === '...'}
-          <Loading type="tab" color_entity={tab.icon} />
-        {:else if tab_nb === parseInt(tab_nb)}
+      {#if tabNb !== undefined}
+        {#if tabNb === '...'}
+          <Loading type="tab" colorEntity={tab.icon} />
+        {:else if tabNb === parseInt(tabNb)}
           <span class="num_style tab_visible">
-            <Number number={tab_nb} />
+            <Number number={tabNb} />
           </span>
         {:else}
-          <span class="num_style tab_visible">{tab_nb}</span>
+          <span class="num_style tab_visible">{tabNb}</span>
         {/if}
       {/if}
     </div>
 
     <div>
       <span class="tab_visible icon_wrapper">
-        <Icon type={tab.icon} margin_right={false} mode="compact" />
+        <Icon type={tab.icon} marginRight={false} mode="compact" />
       </span>
       <span>
-        {#if tab_nb !== undefined && tab_nb !== '...' && tab_nb !== parseInt(tab_nb)}
+        {#if tabNb !== undefined && tabNb !== '...' && tabNb !== parseInt(tabNb)}
           <span class="percent_wrapper">
-            <span class="percent" style="width: {100 - toPercent(tab_nb)}%"
+            <span class="percent" style="width: {100 - toPercent(tabNb)}%"
             ></span>
           </span>
         {/if}

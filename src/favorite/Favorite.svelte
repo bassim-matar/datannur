@@ -1,13 +1,13 @@
 <script lang="ts">
   import Favorites from './favorites'
 
-  let { type, id, is_favorite, is_meta = false, no_margin = false } = $props()
+  let { type, id, isFavorite, isMeta = false, noMargin = false } = $props()
 
   let clicked = $state(false)
 
   function toggle() {
-    is_favorite = !is_favorite
-    if (is_favorite) {
+    isFavorite = !isFavorite
+    if (isFavorite) {
       Favorites.add(type, id)
       clicked = true
     } else {
@@ -17,12 +17,12 @@
   }
 </script>
 
-{#if !is_meta}
+{#if !isMeta}
   <button
     class="icon favorite"
     class:clicked
-    class:is-active={is_favorite}
-    class:no-margin={no_margin}
+    class:is-active={isFavorite}
+    class:no-margin={noMargin}
     onclick={toggle}
     aria-label="Favorite"
   >

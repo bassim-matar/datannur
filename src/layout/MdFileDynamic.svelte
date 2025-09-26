@@ -4,14 +4,14 @@
   import MdContent from '@layout/MdContent.svelte'
   import Loading from '@frame/Loading.svelte'
 
-  let { doc_id, mode = 'classic' } = $props()
+  let { docId, mode = 'classic' } = $props()
 
   let content = $state()
   let loading = $state(true)
 
   onMount(async () => {
     try {
-      const items = (await db.load(`md_doc`, doc_id)) as { content: string }[]
+      const items = (await db.load(`md_doc`, docId)) as { content: string }[]
       if (items && items.length > 0) {
         content = items[0].content
       }
@@ -24,7 +24,7 @@
 </script>
 
 {#if loading}
-  <Loading position="relative" color_entity="doc" />
+  <Loading position="relative" colorEntity="doc" />
 {:else if !content}
   <div style="text-align: center; padding-top: 20px;">
     <p>Impossible de charger le fichier</p>

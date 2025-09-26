@@ -2,7 +2,7 @@
   import db from '@db'
   import { page, headerOpen } from '@lib/store'
   import { pluralize } from '@lib/util'
-  import { entity_names } from '@lib/constant'
+  import { entityNames } from '@lib/constant'
   import Link from '@layout/Link.svelte'
   import Icon from '@layout/Icon.svelte'
 
@@ -11,21 +11,21 @@
     icon = $bindable(''),
     className = 'navbar-item',
     pages = $bindable([]),
-    if_use = $bindable(null),
+    ifUse = $bindable(null),
     standard = '',
     info = '',
     children = null,
   } = $props()
 
-  let standard_readable = $state('')
+  let standardReadable = $state('')
   let loading = $state(true)
 
   if (standard) {
     href = pluralize(standard)
     pages = [standard, pluralize(standard)]
     icon = standard
-    if_use = standard
-    standard_readable = entity_names[standard] + 's'
+    ifUse = standard
+    standardReadable = entityNames[standard] + 's'
   }
 
   const closeMenu = () => ($headerOpen = false)
@@ -43,7 +43,7 @@
   db.loaded.then(() => (loading = false))
 </script>
 
-{#if !if_use || (!loading && db.use[if_use])}
+{#if !ifUse || (!loading && db.use[ifUse])}
   <Link
     {href}
     {click}
@@ -62,7 +62,7 @@
     {/if}
 
     {#if standard}
-      <span>{standard_readable}</span>
+      <span>{standardReadable}</span>
     {:else}
       {@render children?.()}
     {/if}
