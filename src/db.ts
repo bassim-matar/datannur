@@ -40,7 +40,7 @@ interface SearchResult {
   variable: string
   isFavorite: boolean
   folder_id: string | number
-  folder_name: string
+  folderName: string
   _entity: string
   _entityClean: string
 }
@@ -97,7 +97,7 @@ type ExtendedJsonjsdb = Omit<
     filter?: boolean
     owner?: boolean
     manager?: boolean
-    tag_recursive?: boolean
+    tagRecursive?: boolean
     about?: boolean
   }
 }

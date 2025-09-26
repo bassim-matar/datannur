@@ -19,30 +19,30 @@
 
   if (!isMeta) {
     for (const folder of folders) {
-      folder.path_string = getParentPath(folder)
-      if (folder.nb_dataset_recursive > datasetMax) {
-        datasetMax = folder.nb_dataset_recursive
+      folder.pathString = getParentPath(folder)
+      if (folder.nbDatasetRecursive > datasetMax) {
+        datasetMax = folder.nbDatasetRecursive
       }
-      if (folder.nb_variable_recursive > variableMax) {
-        variableMax = folder.nb_variable_recursive
+      if (folder.nbVariableRecursive > variableMax) {
+        variableMax = folder.nbVariableRecursive
       }
-      if (folder.nb_child_recursive > folderMax) {
-        folderMax = folder.nb_child_recursive
+      if (folder.nbChildRecursive > folderMax) {
+        folderMax = folder.nbChildRecursive
       }
-      if (folder.docs_recursive?.length > nbDocMax) {
-        nbDocMax = folder.docs_recursive?.length
+      if (folder.docsRecursive?.length > nbDocMax) {
+        nbDocMax = folder.docsRecursive?.length
       }
       if (folder.parents?.length + 1 > levelMax) {
         levelMax = folder.parents?.length + 1
       }
     }
-    foldersSorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
+    foldersSorted.sort((a, b) => a.pathString.localeCompare(b.pathString))
   }
 
   if (isMeta) {
     for (const folder of folders) {
-      datasetMax = Math.max(datasetMax, folder.nb_dataset)
-      variableMax = Math.max(variableMax, folder.nb_variable)
+      datasetMax = Math.max(datasetMax, folder.nbDataset)
+      variableMax = Math.max(variableMax, folder.nbVariable)
     }
   }
 
@@ -52,7 +52,7 @@
         Column.name('folder', 'Dossiers'),
         Column.description(),
         {
-          data: 'nb_dataset',
+          data: 'nbDataset',
           title: Render.icon('dataset') + 'Datasets',
           tooltip: 'Nombre de datasets',
           render: (data, type, row) => {

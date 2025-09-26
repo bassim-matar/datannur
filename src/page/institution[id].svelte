@@ -19,7 +19,7 @@
 
   let keyTab = $state(1)
 
-  const docs = institution.docs_recursive
+  const docs = institution.docsRecursive
 
   const institutions = db.getAllChilds('institution', institution.id)
   makeParentsRelative(institution.id, institutions)
@@ -57,7 +57,7 @@
         (evo.entity === 'dataset' && datasetsId.has(evo.id)) ||
         (evo.entity === 'variable' && variablesId.has(evo.id)) ||
         (evo.entity === 'modality' && modalitiesId.has(evo.id)) ||
-        (evo.parent_entity === 'modality' &&
+        (evo.parentEntity === 'modality' &&
           modalitiesId.has(evo.parent_entity_id)),
     )
 

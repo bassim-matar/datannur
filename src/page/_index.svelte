@@ -26,7 +26,7 @@
   addMinimumDeep(institutions)
   addMinimumDeep(folders)
 
-  if (db.use.tag_recursive) {
+  if (db.use.tagRecursive) {
     makeParentsRelative(0, tags)
     addMinimumDeep(tags)
   }

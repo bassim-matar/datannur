@@ -21,7 +21,7 @@
   import { UrlHash } from '@lib/url-hash'
   import { dbAddProcessedData, getUserData } from '@lib/db'
   import icon from '@img/icon.png'
-  import icon_dark from '@img/icon-dark.png'
+  import iconDark from '@img/icon-dark.png'
   import Search from '@search/search'
   import SearchHistory from '@search/search-history'
   import { DarkMode, darkModeTheme } from '@dark-mode/dark-mode'
@@ -138,7 +138,7 @@
   }
 
   const isDark = $darkModeTheme === 'dark'
-  const favicon = isDark ? icon_dark : icon
+  const favicon = isDark ? iconDark : icon
 
   jQuery('body').on('mouseover', '.use_tooltip', function (this: HTMLElement) {
     const elem = jQuery(this)

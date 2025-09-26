@@ -61,7 +61,7 @@
       tooltip: 'Dossier',
       render: (data, type, row) => {
         if (!data) return wrapLongText()
-        return wrapLongText(link('folder/' + data, row.folder_name))
+        return wrapLongText(link('folder/' + data, row.folderName))
       },
     },
     {
@@ -73,9 +73,9 @@
       width: '20px',
       render: (data, type, row) => {
         if (type === 'sort' || type === 'export') {
-          return row.is_recent ? '1' : '0'
+          return row.isRecent ? '1' : '0'
         }
-        return !row.is_recent
+        return !row.isRecent
           ? ''
           : `<button style="cursor: pointer; margin: 0;" 
               class="remove_search_item" 

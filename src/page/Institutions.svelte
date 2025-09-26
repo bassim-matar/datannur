@@ -16,8 +16,8 @@
   makeParentsRelative(0, institutions)
   addMinimumDeep(institutions)
 
-  const tags = db.getAll('tag').filter(tag => tag.nb_institution > 0)
-  if (db.use.tag_recursive) {
+  const tags = db.getAll('tag').filter(tag => tag.nbInstitution > 0)
+  if (db.use.tagRecursive) {
     makeParentsRelative(false, tags)
     addMinimumDeep(tags, true, true)
   }

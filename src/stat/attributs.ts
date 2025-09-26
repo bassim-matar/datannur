@@ -16,14 +16,7 @@ export const attributs = {
     'description',
   ],
   tag: ['entity', 'level', 'name', 'description'],
-  doc: [
-    'doc_type',
-    'entity',
-    'doc_path',
-    'last_update_doc',
-    'name',
-    'description',
-  ],
+  doc: ['docType', 'entity', 'docPath', 'lastUpdateDoc', 'name', 'description'],
   dataset: [
     'frequency',
     'last_update',
@@ -37,7 +30,7 @@ export const attributs = {
   ],
   variable: ['type', 'modality', 'value', 'name', 'description'],
   modality: ['type', 'variable', 'value', 'name', 'description'],
-  log: ['actionReadable', 'page', 'tab', 'search', 'time_ago'],
+  log: ['actionReadable', 'page', 'tab', 'search', 'timeAgo'],
 }
 
 const attributsFilled = {}

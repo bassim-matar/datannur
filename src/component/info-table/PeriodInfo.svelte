@@ -6,7 +6,7 @@
 
 {#if period}
   <tr>
-    <td><Icon type="date_range" /> Période</td>
+    <td><Icon type="dateRange" /> Période</td>
     <td>
       {period}
       {#if periodDuration}

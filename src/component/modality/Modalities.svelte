@@ -7,8 +7,8 @@
   let nbValueMax = 0
   let nbVariableMax = 0
   for (const modality of modalities) {
-    nbValueMax = Math.max(nbValueMax, modality.nb_value)
-    nbVariableMax = Math.max(nbVariableMax, modality.nb_variable)
+    nbValueMax = Math.max(nbValueMax, modality.nbValue)
+    nbVariableMax = Math.max(nbVariableMax, modality.nbVariable)
   }
 
   const columns = [

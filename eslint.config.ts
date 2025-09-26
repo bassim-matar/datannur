@@ -2,28 +2,42 @@ import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import svelte from 'eslint-plugin-svelte'
 import { browser } from 'globals'
+import { readFileSync } from 'fs'
+import { join } from 'path'
 
-// const allowedProps = [
-//   '\\d+',
-//   '__[a-zA-Z_]+__',
-//   '#',
-//   'FlexSearch',
-//   'sourceVar_ids',
-//   'metaFolder_id',
-//   'metaDataset_id',
-//   'entity_id',
-//   'modality_id',
-//   'variable_id',
-//   'dataset_id',
-//   'folder_id',
-//   'institution_id',
-//   'tag_id',
-//   'is_in_data',
-//   'is_in_meta',
-//   'one_to_one',
-//   'one_to_many',
-//   'many_to_many',
-// ]
+const dbSchemaVariables = (() => {
+  try {
+    const schema = JSON.parse(
+      readFileSync(join(__dirname, 'src', 'db-schema.json'), 'utf-8'),
+    )
+    return [
+      ...new Set(
+        schema.flatMap((row: string[]) =>
+          [row[1], row[2]].filter(item => item?.includes('_')),
+        ),
+      ),
+    ]
+  } catch {
+    return []
+  }
+})()
+
+const allowedProps = [
+  '\\d+',
+  '__[a-zA-Z_]+__',
+  '#',
+  'FlexSearch',
+  'is_in_data',
+  'is_in_meta',
+  'one_to_one',
+  'one_to_many',
+  'many_to_many',
+  'metaDataset_id',
+  'metaFolder_id',
+  'ADD_TAGS',
+  'ADD_ATTR',
+  ...dbSchemaVariables,
+]
 
 const namingConventionRules = {
   '@typescript-eslint/naming-convention': [
@@ -72,24 +86,24 @@ const namingConventionRules = {
         match: true,
       },
     },
-    // {
-    //   selector: 'property',
-    //   format: ['camelCase'],
-    //   leadingUnderscore: 'allow',
-    //   trailingUnderscore: 'allow',
-    //   filter: {
-    //     regex: `^(${allowedProps.join('|')})$`,
-    //     match: false,
-    //   },
-    // },
-    // {
-    //   selector: 'property',
-    //   filter: {
-    //     regex: `^(${allowedProps.join('|')})$`,
-    //     match: true,
-    //   },
-    //   format: null,
-    // },
+    {
+      selector: 'property',
+      format: ['camelCase'],
+      leadingUnderscore: 'allow',
+      trailingUnderscore: 'allow',
+      filter: {
+        regex: `^(${allowedProps.join('|')})$`,
+        match: false,
+      },
+    },
+    {
+      selector: 'property',
+      filter: {
+        regex: `^(${allowedProps.join('|')})$`,
+        match: true,
+      },
+      format: null,
+    },
   ],
 }
 

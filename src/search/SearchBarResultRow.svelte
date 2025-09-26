@@ -54,7 +54,7 @@
       </div>
     </Link>
   </td>
-  {#if searchValue === '' || item.is_recent}
+  {#if searchValue === '' || item.isRecent}
     <td style="width: 20px;">
       <button
         class="btn_delete_item"

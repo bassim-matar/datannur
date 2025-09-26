@@ -1,4 +1,11 @@
-import { isMobile, link, wrapLongText, getPercent, pluralize } from '@lib/util'
+import {
+  isMobile,
+  link,
+  wrapLongText,
+  getPercent,
+  pluralize,
+  capitalize,
+} from '@lib/util'
 import { getTimeAgo, getDatetime, dateToTimestamp } from '@lib/time'
 import { entityNames, entityToIcon } from '@lib/constant'
 import Render from '@lib/render'
@@ -19,7 +26,7 @@ export default class Column {
     const icon = entity || 'name'
     const titleName = name || 'Nom'
     if (option === null) option = {}
-    if (!('with_link' in option)) option.with_link = true
+    if (!('withLink' in option)) option.withLink = true
     return {
       data: 'name',
       title: Render.icon(icon) + titleName,
@@ -30,7 +37,7 @@ export default class Column {
       render: (data, type, row) => {
         let indent = null
         let text
-        if (!option.with_link) {
+        if (!option.withLink) {
           text = data
         } else if (option.withIndent && !row.noIndent) {
           text = link(row._entity + '/' + row.id, data, row._entity)
@@ -38,7 +45,7 @@ export default class Column {
         } else {
           text = link(row._entity + '/' + row.id, data, row._entity)
         }
-        if (option.linkSameEntityTab && row.nb_child > 0) {
+        if (option.linkSameEntityTab && row.nbChild > 0) {
           text = link(
             row._entity + '/' + row.id + '?tab=' + row._entity + 's',
             data,
@@ -86,8 +93,8 @@ export default class Column {
   }
   static parentEntity() {
     return {
-      data: 'parent_name',
-      name: 'parent_entity',
+      data: 'parentName',
+      name: 'parentEntity',
       title: Render.icon('entity') + 'Partie de',
       defaultContent: '',
       hasLongText: true,
@@ -96,23 +103,23 @@ export default class Column {
       render: (data, type, row) => {
         if (!data) return ''
         if (type === 'sort' || type === 'export' || type === 'filter') {
-          return `${row.parent_entity_clean} | ${row.parent_name}`
+          return `${row.parentEntityClean} | ${row.parentName}`
         }
         return wrapLongText(`
-          <span class="icon icon_${row.parent_entity}">
+          <span class="icon icon_${row.parentEntity}">
             <i class="fas fa-${
-              entityToIcon[row.parent_entity] || row.parent_entity
+              entityToIcon[row.parentEntity] || row.parentEntity
             }"></i>
           </span>
           <span>${link(
-            `${row.parent_entity}/${row.parent_entity_id}`,
-            row.parent_name,
-            row.parent_entity,
+            `${row.parentEntity}/${row.parent_entity_id}`,
+            row.parentName,
+            row.parentEntity,
           )}</span>`)
       },
     }
   }
-  static folder(folderIdVar = 'folder_id', folderNameVar = 'folder_name') {
+  static folder(folderIdVar = 'folder_id', folderNameVar = 'folderName') {
     const render = (data, type, row) => {
       const folderId = row[folderIdVar]
       const folderName = row[folderNameVar]
@@ -138,7 +145,7 @@ export default class Column {
       tooltip: 'Dossier',
       render: (data, type, row) => {
         if (!data) return ''
-        return wrapLongText(link('folder/' + data, row.folder_name))
+        return wrapLongText(link('folder/' + data, row.folderName))
       },
     }
   }
@@ -146,7 +153,7 @@ export default class Column {
     const render = isMobile ? Render.firstParent : Render.parentsIndent
     return {
       data: 'parents',
-      title: Render.icon(`folder_tree_${entity}`) + 'Partie de',
+      title: Render.icon(`folderTree${capitalize(entity)}`) + 'Partie de',
       hasLongText: true,
       tooltip: 'Eléments parents',
       render,
@@ -154,7 +161,7 @@ export default class Column {
   }
   static datasetType() {
     return {
-      data: 'type_clean',
+      data: 'typeClean',
       title: Render.icon('type') + 'Type',
       defaultContent: '',
       name: 'type',
@@ -164,7 +171,7 @@ export default class Column {
   }
   static datatype() {
     return {
-      data: 'type_clean',
+      data: 'typeClean',
       title: Render.icon('type') + 'Type',
       defaultContent: '',
       name: 'type',
@@ -197,10 +204,10 @@ export default class Column {
   static owner() {
     const render = (data, type, row) =>
       isMobile
-        ? wrapLongText(link(`institution/${row.owner_id}`, row.owner_name))
+        ? wrapLongText(link(`institution/${row.owner_id}`, row.ownerName))
         : Render.withParentsFromId('institution', row.owner_id, type)
     return {
-      data: 'owner_name',
+      data: 'ownerName',
       title: Render.icon('institution') + entityNames.owner,
       defaultContent: '',
       hasLongText: true,
@@ -211,10 +218,10 @@ export default class Column {
   static manager() {
     const render = (data, type, row) =>
       isMobile
-        ? wrapLongText(link(`institution/${row.manager_id}`, row.manager_name))
+        ? wrapLongText(link(`institution/${row.manager_id}`, row.managerName))
         : Render.withParentsFromId('institution', row.manager_id, type)
     return {
-      data: 'manager_name',
+      data: 'managerName',
       title: Render.icon('institution') + entityNames.manager,
       defaultContent: '',
       hasLongText: true,
@@ -243,7 +250,7 @@ export default class Column {
   }
   static nbValues(nbValueMax) {
     return {
-      data: 'nb_value',
+      data: 'nbValue',
       name: 'value',
       title: Render.icon('value') + 'Nb',
       defaultContent: '',
@@ -254,7 +261,7 @@ export default class Column {
   }
   static valuesPreview() {
     return {
-      data: 'values_preview',
+      data: 'valuesPreview',
       title: Render.icon('value') + 'Valeurs',
       hasLongText: true,
       defaultContent: '',
@@ -284,7 +291,7 @@ export default class Column {
   }
   static freq() {
     return {
-      data: 'freq_preview',
+      data: 'freqPreview',
       title: Render.icon('freq') + 'Fréquence',
       defaultContent: '',
       hasLongText: true,
@@ -311,7 +318,7 @@ export default class Column {
   }
   static nbSources(nbSourcesMax, entity) {
     return {
-      data: 'source_ids',
+      data: 'sourceIds',
       title: Render.icon('nbSource') + 'In',
       filterType: 'input',
       defaultContent: '',
@@ -328,7 +335,7 @@ export default class Column {
   }
   static nbDerived(nbDerivedMax, entity) {
     return {
-      data: 'derived_ids',
+      data: 'derivedIds',
       title: Render.icon('nbDerived') + 'Out',
       filterType: 'input',
       defaultContent: '',
@@ -366,7 +373,7 @@ export default class Column {
   }
   static nextUpdate() {
     return {
-      data: 'next_update_date',
+      data: 'nextUpdateDate',
       name: 'next_update',
       defaultContent: '',
       title: Render.icon('date') + 'Prochaine',
@@ -432,7 +439,7 @@ export default class Column {
   static period() {
     return {
       data: 'period',
-      title: Render.icon('date_range') + 'Période',
+      title: Render.icon('dateRange') + 'Période',
       defaultContent: '',
       tooltip: 'Période couverte par les données',
       render: (data, type, row) => {
@@ -447,7 +454,7 @@ export default class Column {
   static startDate() {
     return {
       data: 'start_date',
-      title: Render.icon('date_range') + 'Début',
+      title: Render.icon('dateRange') + 'Début',
       defaultContent: '',
       dateType: 'start',
       filterType: 'input',
@@ -462,7 +469,7 @@ export default class Column {
   static endDate() {
     return {
       data: 'end_date',
-      title: Render.icon('date_range') + 'Fin',
+      title: Render.icon('dateRange') + 'Fin',
       defaultContent: '',
       dateType: 'end',
       filterType: 'input',
@@ -476,7 +483,7 @@ export default class Column {
   }
   static dataset(parentName) {
     return {
-      data: 'dataset_name',
+      data: 'datasetName',
       title: Render.icon('dataset') + 'Dataset',
       hasLongText: true,
       tooltip: 'Dataset',
@@ -498,7 +505,7 @@ export default class Column {
   static docPath() {
     return {
       data: 'path',
-      name: 'doc_path',
+      name: 'docPath',
       title: Render.icon('link') + 'Lien',
       defaultContent: '',
       hasLongText: true,
@@ -510,10 +517,10 @@ export default class Column {
   }
   static nbDoc(entity, total, withName = false) {
     return {
-      data: 'docs_recursive',
+      data: 'docsRecursive',
       title:
         Render.icon('doc') +
-        (withName ? 'Docs' : "<span class='hidden'>nb_docs</span>"),
+        (withName ? 'Docs' : "<span class='hidden'>nbDocs</span>"),
       filterType: 'input',
       defaultContent: '',
       fromLength: true,
@@ -528,8 +535,8 @@ export default class Column {
   }
   static nbDocRecursive(entity, total) {
     return {
-      data: 'nb_doc_recursive',
-      title: Render.icon('doc') + "<span class='hidden'>nb_docs</span>",
+      data: 'nbDocRecursive',
+      title: Render.icon('doc') + "<span class='hidden'>nbDocs</span>",
       filterType: 'input',
       tooltip: 'Nombre de docs',
       render: (data, type, row) => {
@@ -544,9 +551,10 @@ export default class Column {
     if (!linkPath) linkPath = entity + '/'
     const entityPlural = pluralize(entity)
     return {
-      data: 'nb_child_recursive',
+      data: 'nbChildRecursive',
       title:
-        Render.icon(entity) + `<span class='hidden'>nb_${entityPlural}</span>`,
+        Render.icon(entity) +
+        `<span class='hidden'>nb${capitalize(entityPlural)}</span>`,
       filterType: 'input',
       tooltip: "Nombre d'éléments de type " + entity,
       render: (data, type, row) => {
@@ -559,8 +567,8 @@ export default class Column {
   }
   static nbFolderRecursive(entity, total) {
     return {
-      data: 'nb_folder_recursive',
-      title: Render.icon('folder') + "<span class='hidden'>nb_folders</span>",
+      data: 'nbFolderRecursive',
+      title: Render.icon('folder') + "<span class='hidden'>nbFolders</span>",
       filterType: 'input',
       tooltip: 'Nombre de dossiers',
       render: (data, type, row) => {
@@ -573,8 +581,8 @@ export default class Column {
   }
   static nbDatasetRecursive(entity, total) {
     return {
-      data: 'nb_dataset_recursive',
-      title: Render.icon('dataset') + "<span class='hidden'>nb_datasets</span>",
+      data: 'nbDatasetRecursive',
+      title: Render.icon('dataset') + "<span class='hidden'>nbDatasets</span>",
       filterType: 'input',
       tooltip: 'Nombre de datasets',
       render: (data, type, row) => {
@@ -592,9 +600,9 @@ export default class Column {
     if (!('showTitle' in option)) option.showTitle = false
     const title = option.showTitle
       ? 'Variables'
-      : `<span class='hidden'>nb_variables</span>`
+      : `<span class='hidden'>nbVariables</span>`
     return {
-      data: 'nb_variable' + (option.recursive ? '_recursive' : ''),
+      data: 'nbVariable' + (option.recursive ? 'Recursive' : ''),
       title: Render.icon('variable') + title,
       name: 'variable',
       filterType: 'input',

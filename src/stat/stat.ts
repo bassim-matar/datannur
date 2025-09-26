@@ -127,7 +127,7 @@ function addNumeric(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
   ) as ValueEntry[]
   if (attribut.type === 'string')
     histogramValues = mergeZeroEmpty(histogramValues)
-  if (attribut.rangeType === 'time_ago')
+  if (attribut.rangeType === 'timeAgo')
     histogramValues = prepareTimeAgo(histogramValues)
   return histogramValues
 }
@@ -250,6 +250,7 @@ export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
     values = addNonExclusive(items, attribut)
   } else if (attribut.withHtml) {
     values = addWithHtml(items, attribut)
+    if (attribut.subtype) totalValue = items.filter(attribut.subtype).length
   } else if (attribut.subtype) {
     values = addSubtype(items, attribut)
     totalValue = items.filter(attribut.subtype).length

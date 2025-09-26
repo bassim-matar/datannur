@@ -19,7 +19,7 @@
       (a, b) =>
         b.lineageType?.localeCompare(a.lineageType) ||
         filterPos[a.type] - filterPos[b.type] ||
-        a.folder_name.localeCompare(b.folder_name) ||
+        a.folderName.localeCompare(b.folderName) ||
         a.name.localeCompare(b.name),
     )
   }
@@ -31,20 +31,20 @@
   let nbSourcesMax = 0
   let nbDerivedMax = 0
   for (const dataset of datasets) {
-    if (dataset.nb_variable > nbVariableMax) {
-      nbVariableMax = dataset.nb_variable
+    if (dataset.nbVariable > nbVariableMax) {
+      nbVariableMax = dataset.nbVariable
     }
     if (dataset.nb_row > nbRowMax) {
       nbRowMax = dataset.nb_row
     }
-    if (dataset.docs_recursive?.length > nbDocMax) {
-      nbDocMax = dataset.docs_recursive?.length
+    if (dataset.docsRecursive?.length > nbDocMax) {
+      nbDocMax = dataset.docsRecursive?.length
     }
-    if (dataset.source_ids?.size > nbSourcesMax) {
-      nbSourcesMax = dataset.source_ids.size
+    if (dataset.sourceIds?.size > nbSourcesMax) {
+      nbSourcesMax = dataset.sourceIds.size
     }
-    if (dataset.derived_ids?.size > nbDerivedMax) {
-      nbDerivedMax = dataset.derived_ids.size
+    if (dataset.derivedIds?.size > nbDerivedMax) {
+      nbDerivedMax = dataset.derivedIds.size
     }
   }
 

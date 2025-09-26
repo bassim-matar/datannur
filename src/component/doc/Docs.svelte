@@ -12,10 +12,10 @@
   let tagMax = 0
 
   for (const doc of docs) {
-    if (doc.nb_institution > institutionMax) institutionMax = doc.nb_institution
-    if (doc.nb_folder > folderMax) folderMax = doc.nb_folder
-    if (doc.nb_dataset > datasetMax) datasetMax = doc.nb_dataset
-    if (doc.nb_tag > tagMax) tagMax = doc.nb_tag
+    if (doc.nbInstitution > institutionMax) institutionMax = doc.nbInstitution
+    if (doc.nbFolder > folderMax) folderMax = doc.nbFolder
+    if (doc.nbDataset > datasetMax) datasetMax = doc.nbDataset
+    if (doc.nbTag > tagMax) tagMax = doc.nbTag
   }
 
   const docsSorted = [...docs]
@@ -35,7 +35,7 @@
     Column.description(),
     {
       data: 'type',
-      name: 'doc_type',
+      name: 'docType',
       title: Render.icon('type') + 'Type',
       defaultContent: '',
       filterType: 'select',
@@ -54,10 +54,10 @@
     }),
     Column.inherited(),
     {
-      data: 'nb_institution',
+      data: 'nbInstitution',
       title:
         Render.icon('institution') +
-        "<span class='hidden'>nb_institutions</span>",
+        "<span class='hidden'>nbInstitutions</span>",
       filterType: 'input',
       tooltip: "Nombre d'institutions",
       render: (data, type, row) => {
@@ -68,8 +68,8 @@
       },
     },
     {
-      data: 'nb_folder',
-      title: Render.icon('folder') + "<span class='hidden'>nb_folder</span>",
+      data: 'nbFolder',
+      title: Render.icon('folder') + "<span class='hidden'>nbFolders</span>",
       filterType: 'input',
       tooltip: 'Nombre de dossiers',
       render: (data, type, row) => {
@@ -80,8 +80,8 @@
       },
     },
     {
-      data: 'nb_tag',
-      title: Render.icon('tag') + "<span class='hidden'>nb_tag</span>",
+      data: 'nbTag',
+      title: Render.icon('tag') + "<span class='hidden'>nbTags</span>",
       filterType: 'input',
       tooltip: 'Nombre de mots clés',
       render: (data, type, row) => {
@@ -92,8 +92,8 @@
       },
     },
     {
-      data: 'nb_dataset',
-      title: Render.icon('dataset') + "<span class='hidden'>nb_dataset</span>",
+      data: 'nbDataset',
+      title: Render.icon('dataset') + "<span class='hidden'>nbDatasets</span>",
       filterType: 'input',
       tooltip: 'Nombre de datasets',
       render: (data, type, row) => {

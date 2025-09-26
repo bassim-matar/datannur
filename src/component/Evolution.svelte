@@ -58,7 +58,7 @@
     return [
       Column.favorite(),
       {
-        data: 'type_clean',
+        data: 'typeClean',
         title: Render.icon('type'),
         defaultContent: '',
         name: 'evolution_type',

@@ -52,7 +52,6 @@ export function getNbSticky(columns) {
   if (window.innerWidth > 1023) {
     for (const column of columns) {
       if (column.name === 'entity') nbSticky += 1
-      if (column.name === 'id') nbSticky += 1
       if (column.name === 'isFavorite') nbSticky += 1
       if (column.name === 'name') nbSticky += 1
       if (column.name === 'evolution_type') nbSticky += 1

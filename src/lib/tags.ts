@@ -1,4 +1,5 @@
 import db from '@db'
+import { capitalize } from '@lib/util'
 
 export default class Tags {
   static getFromEntities(entities) {
@@ -7,9 +8,9 @@ export default class Tags {
 
     let tags = JSON.parse(JSON.stringify(tagsDb))
     for (const tag of tags) {
-      tag.nb_institution = 0
-      tag.nb_folder = 0
-      tag.nb_dataset = 0
+      tag.nbInstitution = 0
+      tag.nbFolder = 0
+      tag.nbDataset = 0
       tagsById[tag.id] = tag
     }
 
@@ -17,7 +18,7 @@ export default class Tags {
       if (!items) return
       for (const item of items) {
         for (const tag of item.tags) {
-          tagsById[tag.id]['nb_' + entity]++
+          tagsById[tag.id]['nb' + capitalize(entity)]++
         }
       }
     }
@@ -26,12 +27,12 @@ export default class Tags {
     incrementTagItemNb(entities.datasets, 'dataset')
 
     for (const tag of tags) {
-      tag.nb_institution = tagsById[tag.id].nb_institution
-      tag.nb_folder = tagsById[tag.id].nb_folder
-      tag.nb_dataset = tagsById[tag.id].nb_dataset
+      tag.nbInstitution = tagsById[tag.id].nbInstitution
+      tag.nbFolder = tagsById[tag.id].nbFolder
+      tag.nbDataset = tagsById[tag.id].nbDataset
     }
     tags = tags.filter(
-      tag => tag.nb_institution > 0 || tag.nb_folder > 0 || tag.nb_dataset > 0,
+      tag => tag.nbInstitution > 0 || tag.nbFolder > 0 || tag.nbDataset > 0,
     )
     return tags
   }

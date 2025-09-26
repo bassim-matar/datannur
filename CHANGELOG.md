@@ -8,7 +8,7 @@
 - fix: search bar height debonce with no result
 - fix: clean up head elements before mounting app
 - refactor: replace app_version meta tag with `__APP_VERSION__` constant
-- refactor: enforce PascalCase for class names and camelCase for methods, functions and variables
+- refactor: enforce PascalCase for class names and camelCase for methods, functions variables and properties
 - refactor: enforce prefer-const, no-unused-vars, no-undef and no-explicit-any elint rules
 - refactor: enforce noImplicitThis and strictFunctionTypes ts rules
 - refactor: avoid svelte class name from variable name

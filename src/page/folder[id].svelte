@@ -18,7 +18,7 @@
 
   let { folder } = $props()
 
-  const docs = folder.docs_recursive
+  const docs = folder.docsRecursive
 
   const folders = db.getAllChilds('folder', folder.id)
   makeParentsRelative(folder.id, folders)
@@ -47,7 +47,7 @@
     .getAll('evolution')
     .filter(
       evo =>
-        (evo.parent_entity === 'modality' &&
+        (evo.parentEntity === 'modality' &&
           modalitiesId.has(evo.parent_entity_id)) ||
         (evo.entity === 'modality' && modalitiesId.has(evo.id)) ||
         (evo.entity === 'variable' && variablesId.has(evo.id)) ||

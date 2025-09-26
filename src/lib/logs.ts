@@ -47,7 +47,7 @@ export default class Logs {
     for (const logSource of this.logs) {
       const log = { ...logSource }
 
-      log.action_name = log.action
+      log.actionName = log.action
       log.element = log.entity
 
       if (log.entity_id) {
@@ -67,35 +67,30 @@ export default class Logs {
         log.elementLink = log.entity
       }
 
-      const actionConfig = {
-        search_bar: { text: 'Rechercher', icon: 'search' },
-        load_page: { text: 'Charger la page', icon: 'page' },
-        add_fav: { text: 'Ajouter le favoris', icon: 'favorite' },
-        remove_fav: { text: 'Supprimer le favoris', icon: 'favorite' },
-        select_tab: { text: "Sélectionner l'onglet", icon: 'tab' },
-        toggle_dark_mode_btn_on: {
-          text: 'Activer le mode sombre',
-          icon: 'moon',
-        },
-        toggle_dark_mode_btn_off: {
-          text: 'Activer le mode clair',
-          icon: 'sun',
-        },
-        open_table_download: {
-          text: 'Ouvrir les options de téléchargement',
-          icon: 'download',
-        },
-        close_table_download: {
-          text: 'Fermer les options de téléchargement',
-          icon: 'downloadClose',
-        },
-      }
+      const actionConfig = new Map([
+        ['search_bar', ['Rechercher', 'search']],
+        ['load_page', ['Charger la page', 'page']],
+        ['add_fav', ['Ajouter le favoris', 'favorite']],
+        ['remove_fav', ['Supprimer le favoris', 'favorite']],
+        ['select_tab', ["Sélectionner l'onglet", 'tab']],
+        ['toggle_dark_mode_btn_on', ['Activer le mode sombre', 'moon']],
+        ['toggle_dark_mode_btn_off', ['Activer le mode clair', 'sun']],
+        [
+          'open_table_download',
+          ['Ouvrir les options de téléchargement', 'download'],
+        ],
+        [
+          'close_table_download',
+          ['Fermer les options de téléchargement', 'downloadClose'],
+        ],
+      ])
 
-      if (log.action in actionConfig) {
-        const config = actionConfig[log.action]
-        log.actionReadable = config.text
-        log.actionIcon = config.icon
-        log.action = Render.icon(config.icon) + config.text
+      const config = actionConfig.get(log.action)
+      if (config) {
+        const [text, icon] = config
+        log.actionReadable = text
+        log.actionIcon = icon
+        log.action = Render.icon(icon) + text
       }
       let iconName = log.entity
       if (!(iconName in entityToIcon) && iconName in this.allTabsIconValue)

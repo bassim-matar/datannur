@@ -14,7 +14,7 @@
     .filter(
       evo =>
         (evo.entity === 'modality' && evo.id === modality.id) ||
-        (evo.parent_entity === 'modality' &&
+        (evo.parentEntity === 'modality' &&
           evo.parent_entity_id === modality.id),
     )
 

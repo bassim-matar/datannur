@@ -29,10 +29,10 @@
     isMeta={dataset.isMeta}
   />
   <TagsInfo tags={dataset.tags} />
-  {#if dataset.type_clean}
+  {#if dataset.typeClean}
     <tr>
       <td><Icon type="type" /> Type</td>
-      <td>{dataset.type_clean}</td>
+      <td>{dataset.typeClean}</td>
     </tr>
   {/if}
   <RowInfo nbRow={dataset.nb_row} />
@@ -44,7 +44,7 @@
     />
   {:else}
     <LastUpdateInfo lastUpdateDate={dataset.last_update_date} />
-    <NextUpdateInfo nextUpdateDate={dataset.next_update_date} />
+    <NextUpdateInfo nextUpdateDate={dataset.nextUpdateDate} />
   {/if}
   <FrequencyInfo frequency={dataset.updating_each} />
   <PeriodInfo period={dataset.period} periodDuration={dataset.periodDuration} />

@@ -6,7 +6,7 @@
   let { tagId } = $props()
 
   const name = 'Partie de'
-  const icon = 'folder_tree_tag'
+  const icon = 'folderTreeTag'
 </script>
 
 {#if tagId}

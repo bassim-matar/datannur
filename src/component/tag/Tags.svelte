@@ -21,28 +21,27 @@
   let variableMax = 0
   let levelMax = 0
   for (const tag of tags) {
-    if (db.use.tag_recursive) tag.path_string = getParentPath(tag)
-    if (tag.nb_child_recursive > tagMax) tagMax = tag.nb_child_recursive
-    if (tag.nb_institution_recursive > institutionMax)
-      institutionMax = tag.nb_institution_recursive
-    if (tag.nb_folder_recursive > folderMax) folderMax = tag.nb_folder_recursive
-    if (tag.nb_doc_recursive > docMax) docMax = tag.nb_doc_recursive
-    if (tag.nb_dataset_recursive > datasetMax)
-      datasetMax = tag.nb_dataset_recursive
-    if (tag.nb_variable_recursive > variableMax)
-      variableMax = tag.nb_variable_recursive
+    if (db.use.tagRecursive) tag.pathString = getParentPath(tag)
+    if (tag.nbChildRecursive > tagMax) tagMax = tag.nbChildRecursive
+    if (tag.nbInstitutionRecursive > institutionMax)
+      institutionMax = tag.nbInstitutionRecursive
+    if (tag.nbFolderRecursive > folderMax) folderMax = tag.nbFolderRecursive
+    if (tag.nbDocRecursive > docMax) docMax = tag.nbDocRecursive
+    if (tag.nbDatasetRecursive > datasetMax) datasetMax = tag.nbDatasetRecursive
+    if (tag.nbVariableRecursive > variableMax)
+      variableMax = tag.nbVariableRecursive
     if (tag.parents?.length + 1 > levelMax) levelMax = tag.parents?.length + 1
   }
 
   const tagsSorted = [...tags]
-  if (db.use.tag_recursive) {
-    tagsSorted.sort((a, b) => a.path_string.localeCompare(b.path_string))
+  if (db.use.tagRecursive) {
+    tagsSorted.sort((a, b) => a.pathString.localeCompare(b.pathString))
   }
 
   function defineColumns() {
     let columns = []
     columns.push(Column.favorite())
-    if (db.use.tag_recursive) {
+    if (db.use.tagRecursive) {
       columns.push(
         Column.name('tag', 'Mot clé', {
           withIndent: true,
@@ -56,16 +55,16 @@
     columns.push(Column.id())
     columns.push(Column.description())
 
-    if (db.use.tag_recursive) {
+    if (db.use.tagRecursive) {
       columns.push(Column.parents('tag'))
     }
 
     columns = columns.concat([
       {
-        data: 'nb_institution_recursive',
+        data: 'nbInstitutionRecursive',
         title:
           Render.icon('institution') +
-          "<span class='hidden'>nb_institution</span>",
+          "<span class='hidden'>nbInstitution</span>",
         filterType: 'input',
         tooltip: "Nombre d'institutions",
         render: (data, type, row) => {
@@ -82,7 +81,7 @@
       Column.nbVariable('tag', variableMax, { recursive: true }),
     ])
 
-    if (db.use.tag_recursive) {
+    if (db.use.tagRecursive) {
       columns.push(Column.level(levelMax))
     }
     return columns
@@ -92,7 +91,7 @@
 
   onMount(() => {
     isRecursive =
-      db.use.tag_recursive && ['_index', 'tag', 'tags'].includes($page)
+      db.use.tagRecursive && ['_index', 'tag', 'tags'].includes($page)
     mounted = true
   })
 </script>
