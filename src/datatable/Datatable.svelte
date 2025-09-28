@@ -332,7 +332,7 @@
           border-radius: $rounded-bottom;
           border-top-right-radius: $rounded-size;
         }
-        :global(html.rounded_design .no_first_tab) & {
+        :global(html.rounded_design .no-first-tab) & {
           border-top-left-radius: $rounded-size;
         }
       }
