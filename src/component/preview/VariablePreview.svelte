@@ -1,6 +1,5 @@
 <script lang="ts">
-  import db from '@db'
-  import { tabSelected } from '@lib/store'
+  import { tabSelected, previewCache } from '@lib/store'
   import PreviewManager from '@lib/preview-manager'
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
@@ -29,14 +28,13 @@
         return
       }
 
-      if (db.preview === undefined) db.preview = {}
-      if (!(datasetPreview in db.preview)) {
+      if (!(datasetPreview in $previewCache)) {
         let datasetData = await PreviewManager.load(datasetPreview)
         PreviewManager.cleanKeys(datasetData)
-        db.preview[datasetPreview] = datasetData
+        $previewCache[datasetPreview] = datasetData
       }
       variableData = PreviewManager.getVariableData(
-        db.preview[datasetPreview],
+        $previewCache[datasetPreview],
         variable,
       )
     }

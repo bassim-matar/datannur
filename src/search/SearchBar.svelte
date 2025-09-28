@@ -3,6 +3,7 @@
   import db from '@db'
   import { router } from '@lib/router.svelte.js'
   import {
+    whenAppReady,
     searchValue,
     headerOpen,
     onPageSearch,
@@ -148,7 +149,7 @@
     if ($onPageSearch) selectInput()
   })
 
-  db.loaded.then(() => {
+  $whenAppReady.then(() => {
     initSearchRecent()
     dbInitied = true
   })

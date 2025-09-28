@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { footerVisible } from '@lib/store'
+  import { whenAppReady, footerVisible } from '@lib/store'
   import { getDatetime, getTimeAgo } from '@lib/time'
   import Loading from '@frame/Loading.svelte'
   import Icon from '@layout/Icon.svelte'
@@ -32,7 +32,7 @@
     }
   }
 
-  db.loaded.then(() => {
+  $whenAppReady.then(() => {
     contactEmail = db.getConfig('contact_email') as string
     lastUpdate.state = 'loaded'
     const lastModifTimestamp = db.getLastModifTimestamp()

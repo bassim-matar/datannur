@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+add: whenAppReady instead of db.loaded and refactor db.use and db.preview
+
 ## 0.12.10 (2024-09-26)
 
 - add: DOMPurify for HTML sanitization

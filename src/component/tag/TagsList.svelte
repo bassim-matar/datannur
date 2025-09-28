@@ -11,7 +11,7 @@
         tagsTree[tag.id] = { ...tag, children: {} }
       }
     })
-    if (!db.use.tagRecursive) {
+    if (!db.useRecursive.tag) {
       return tagsTree
     }
     tags.forEach(tag => {

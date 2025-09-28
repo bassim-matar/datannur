@@ -1,6 +1,6 @@
 <script lang="ts">
-  import db from '@db'
   import {
+    whenAppReady,
     nbFavorite,
     headerOpen,
     isSmallMenu,
@@ -39,7 +39,7 @@
     elem?.click()
   }
 
-  db.loaded.then(() => (loading = false))
+  $whenAppReady.then(() => (loading = false))
 </script>
 
 <svelte:window bind:scrollY />

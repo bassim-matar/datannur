@@ -11,7 +11,7 @@
 
 <TableWrapper>
   <IdInfo id={tag.id} />
-  {#if db.use.tagRecursive}
+  {#if db.useRecursive.tag}
     <DeepLevelInfo level={tag.parents.length + 1} />
     {#if tag.parents.length}
       <TagInfo tagId={tag.id} />

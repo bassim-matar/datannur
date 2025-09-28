@@ -14,33 +14,24 @@ interface UserData {
 
 function addEntitiesUsed() {
   db.use = {}
-  for (const entity of [
-    'institution',
-    'folder',
-    'tag',
-    'doc',
-    'dataset',
-    'variable',
-    'modality',
-    'filter',
-  ]) {
-    db.use[entity] = isDbUsing(entity)
-  }
-  if (db.use.institution) {
-    db.use.owner = isDbUsing('owner')
-    db.use.manager = isDbUsing('manager')
-  }
-  if (db.use.tag) {
-    const tags = db.getAll('tag')
-    if (tags.length > 0 && tags[0].parent_id !== undefined) {
-      db.use.tagRecursive = true
+  db.useRecursive = {}
+  for (const entity of Object.keys(db.tables)) {
+    const table = db.tables[entity]
+    if (!Array.isArray(table)) continue
+    if (table.length === 0) continue
+    if (entity.includes('_')) continue
+    db.use[entity] = true
+    const firstItem = table[0]
+    if (
+      firstItem &&
+      typeof firstItem === 'object' &&
+      'parent_id' in firstItem
+    ) {
+      db.useRecursive[entity] = true
     }
   }
 }
 
-function isDbUsing(entity) {
-  return db.getAll(entity).length > 0
-}
 function addTags(entity, item) {
   item.tags = db.getAll('tag', { [entity]: item.id })
 }
@@ -325,7 +316,7 @@ class Process {
       addNb('tag', tag, 'variable')
       addDocs('tag', tag)
       addEntities(tag)
-      if (db.use.tagRecursive) addParents('tag', tag)
+      if (db.useRecursive.tag) addParents('tag', tag)
       addNbChild('tag', tag)
       addNbChildRecursive('tag', tag)
       addNbRecursive('tag', tag, 'institution')
@@ -538,7 +529,6 @@ export function getLocalFilter() {
   const dbFilters = []
   for (const configRow of db.getAll('config')) {
     if (configRow.id?.startsWith('filter_')) {
-      db.use.filter = true
       dbFilters.push({
         id: configRow.value?.split(':')[0]?.trim(),
         name: configRow.value?.split(':')[1]?.trim(),

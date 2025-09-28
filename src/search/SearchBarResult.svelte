@@ -1,6 +1,5 @@
 <script lang="ts">
-  import db from '@db'
-  import { onPageHomepage } from '@lib/store'
+  import { whenAppReady, onPageHomepage } from '@lib/store'
   import { debounce } from '@lib/util'
   import SearchBarResultRow from './SearchBarResultRow.svelte'
 
@@ -49,7 +48,7 @@
     return () => window.removeEventListener('resize', handleResize)
   })
 
-  db.loaded.then(() => (dbLoaded = true))
+  $whenAppReady.then(() => (dbLoaded = true))
 </script>
 
 <div id="search_bar_result_outer">
