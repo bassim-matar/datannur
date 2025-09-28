@@ -26,7 +26,7 @@
   addMinimumDeep(institutions)
   addMinimumDeep(folders)
 
-  if (db.use.tagRecursive) {
+  if (db.useRecursive.tag) {
     makeParentsRelative(0, tags)
     addMinimumDeep(tags)
   }
@@ -61,8 +61,7 @@
     !db.use.doc &&
     !db.use.dataset &&
     !db.use.variable &&
-    !db.use.modality &&
-    !db.use.about
+    !db.use.modality
 
   const nbInstitution = institutions.length
   const nbFolder = folders.length

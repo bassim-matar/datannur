@@ -21,7 +21,7 @@
   let variableMax = 0
   let levelMax = 0
   for (const tag of tags) {
-    if (db.use.tagRecursive) tag.pathString = getParentPath(tag)
+    if (db.useRecursive.tag) tag.pathString = getParentPath(tag)
     if (tag.nbChildRecursive > tagMax) tagMax = tag.nbChildRecursive
     if (tag.nbInstitutionRecursive > institutionMax)
       institutionMax = tag.nbInstitutionRecursive
@@ -34,14 +34,14 @@
   }
 
   const tagsSorted = [...tags]
-  if (db.use.tagRecursive) {
+  if (db.useRecursive.tag) {
     tagsSorted.sort((a, b) => a.pathString.localeCompare(b.pathString))
   }
 
   function defineColumns() {
     let columns = []
     columns.push(Column.favorite())
-    if (db.use.tagRecursive) {
+    if (db.useRecursive.tag) {
       columns.push(
         Column.name('tag', 'Mot clé', {
           withIndent: true,
@@ -55,7 +55,7 @@
     columns.push(Column.id())
     columns.push(Column.description())
 
-    if (db.use.tagRecursive) {
+    if (db.useRecursive.tag) {
       columns.push(Column.parents('tag'))
     }
 
@@ -81,7 +81,7 @@
       Column.nbVariable('tag', variableMax, { recursive: true }),
     ])
 
-    if (db.use.tagRecursive) {
+    if (db.useRecursive.tag) {
       columns.push(Column.level(levelMax))
     }
     return columns
@@ -91,7 +91,7 @@
 
   onMount(() => {
     isRecursive =
-      db.use.tagRecursive && ['_index', 'tag', 'tags'].includes($page)
+      db.useRecursive.tag && ['_index', 'tag', 'tags'].includes($page)
     mounted = true
   })
 </script>

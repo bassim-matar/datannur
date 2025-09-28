@@ -49,9 +49,6 @@ type ExtendedJsonjsdb = Omit<
   Jsonjsdb,
   'get' | 'getAll' | 'foreach' | 'addMeta'
 > & {
-  db: Row
-  loaded: Promise<void>
-  preview: Row
   search: (searchTerm: string) => Promise<SearchResult[]>
   foreach<K extends EntityName>(
     table: K,
@@ -94,11 +91,14 @@ type ExtendedJsonjsdb = Omit<
     dataset?: boolean
     variable?: boolean
     modality?: boolean
-    filter?: boolean
     owner?: boolean
     manager?: boolean
-    tagRecursive?: boolean
-    about?: boolean
+    filter?: boolean
+  }
+  useRecursive: {
+    institution?: boolean
+    folder?: boolean
+    tag?: boolean
   }
 }
 

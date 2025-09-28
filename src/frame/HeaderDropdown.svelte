@@ -1,12 +1,12 @@
 <script lang="ts">
   import db from '@db'
-  import { page } from '@lib/store'
+  import { whenAppReady, page } from '@lib/store'
 
   let { title, pages = [], ifUse = null, children } = $props()
 
   let visible = $state(!ifUse)
 
-  db.loaded.then(() => {
+  $whenAppReady.then(() => {
     if (!ifUse) return
     for (const use of ifUse) {
       if (db.use[use]) visible = true

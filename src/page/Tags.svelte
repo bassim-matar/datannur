@@ -13,7 +13,7 @@
   let keyTab = $state(1)
 
   const tags = db.getAll('tag')
-  if (db.use.tagRecursive) {
+  if (db.useRecursive.tag) {
     makeParentsRelative(0, tags)
     addMinimumDeep(tags)
   }

@@ -4,6 +4,7 @@
   import 'jquery-powertip'
   import db from '@db'
   import {
+    whenAppReady,
     pageHash,
     footerVisible,
     isSmallMenu,
@@ -76,7 +77,7 @@
 
   DarkMode.init(Options)
 
-  db.loaded = (async () => {
+  $whenAppReady = (async () => {
     try {
       let timer = performance.now()
       await MainFilter.init()
@@ -118,7 +119,7 @@
   })()
 
   async function checkFromSearch(pageHashValue) {
-    await db.loaded
+    await $whenAppReady
     const fromSearch = UrlParam.get('from_search')
     if (fromSearch) {
       const entity = pageHashValue
@@ -165,7 +166,8 @@
 
   copyTextListenClick()
 
-  db.loaded.then(() => {
+  $whenAppReady.then(() => {
+    console.log(db)
     const mainBanner = new Image()
     let bannerSrc = db.tableHasId('config', 'banner')
       ? (db.getConfig('banner') as string)
@@ -223,7 +225,7 @@
         <p>Si le problème persiste, contactez le support.</p>
       </div>
     {:else}
-      {#await db.loaded}
+      {#await $whenAppReady}
         <Loading />
       {:then}
         {#if ($isSmallMenu && ($onPageSearch || $onPageHomepage)) || !$isSmallMenu}

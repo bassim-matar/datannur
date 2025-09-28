@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { page, headerOpen } from '@lib/store'
+  import { whenAppReady, page, headerOpen } from '@lib/store'
   import { pluralize } from '@lib/util'
   import { entityNames } from '@lib/constant'
   import Link from '@layout/Link.svelte'
@@ -40,7 +40,7 @@
     }
   }
 
-  db.loaded.then(() => (loading = false))
+  $whenAppReady.then(() => (loading = false))
 </script>
 
 {#if !ifUse || (!loading && db.use[ifUse])}
