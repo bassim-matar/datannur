@@ -26,7 +26,7 @@ function getEvoDeleted() {
 }
 
 function getItem(entity, entityId, evoDeleted) {
-  if (db.tableHasId(entity, entityId)) {
+  if (db.exists(entity, entityId)) {
     const item = db.get(entity, entityId)
     item._deleted = false
     item.parent_entity_id = item[`${parentEntities[entity]}_id`]
@@ -203,12 +203,6 @@ function addValidities(evoDeleted) {
   }
 }
 
-export function evolutionInitialSetup() {
-  const evoDeleted = getEvoDeleted()
-  addHistory(evoDeleted)
-  addValidities(evoDeleted)
-}
-
 function parseDateStandard(dateString) {
   if (dateString.length === 6 && dateString[4] === 't') {
     dateString = convertQuarterToFullDate(dateString, 'start')
@@ -305,4 +299,10 @@ export function highlightDiff(a, b, variable = null) {
   if (isANumber) a = a.toString()
   if (isBNumber) b = b.toString()
   return outputDiffString(a, b)
+}
+
+export function evolutionInitialSetup() {
+  const evoDeleted = getEvoDeleted()
+  addHistory(evoDeleted)
+  addValidities(evoDeleted)
 }

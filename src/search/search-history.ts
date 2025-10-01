@@ -66,7 +66,7 @@ export default class SearchHistory {
     const result = []
     const recentSearch = this.getAll()
     for (const entry of recentSearch) {
-      if (!db.tableHasId(entry.entity, entry.entity_id)) continue
+      if (!db.exists(entry.entity, entry.entity_id)) continue
       const itemData = db.get(entry.entity, entry.entity_id)
       result.push({
         id: itemData.id,
@@ -87,7 +87,7 @@ export default class SearchHistory {
     const recentSearchIds = {}
     const recentSearch = this.getAll()
     for (const [i, entry] of recentSearch.entries()) {
-      if (!db.tableHasId(entry.entity, entry.entity_id)) continue
+      if (!db.exists(entry.entity, entry.entity_id)) continue
       recentSearchIds[`${entry.entity}-${entry.entity_id}`] = i
     }
     return recentSearchIds

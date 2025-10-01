@@ -2,11 +2,8 @@
   import db from '@db'
 
   let result = $state('Loading...')
-
-  db.checkIntegrity().then(res => {
-    console.log(db.db)
-    result = JSON.stringify(res, null, 2)
-  })
+  db.checkIntegrity().then(res => (result = JSON.stringify(res, null, 2)))
+  console.log(db)
 </script>
 
 <section class="section">

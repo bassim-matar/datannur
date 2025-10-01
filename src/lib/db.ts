@@ -1,36 +1,9 @@
 import db from '@db'
-import { getVariableTypeClean, escapeHtmlEntities, capitalize } from '@lib/util'
+import { getVariableTypeClean, capitalize } from '@lib/util'
 import { getPeriod, dateToTimestamp, timestampToDate } from '@lib/time'
 import { getNbValues } from '@lib/render'
 import { entityNames } from '@lib/constant'
 import { evolutionInitialSetup } from '@lib/evolution'
-
-interface UserData {
-  log?: unknown[]
-  favorite?: unknown[]
-  search_history?: unknown[]
-  [key: string]: unknown
-}
-
-function addEntitiesUsed() {
-  db.use = {}
-  db.useRecursive = {}
-  for (const entity of Object.keys(db.tables)) {
-    const table = db.tables[entity]
-    if (!Array.isArray(table)) continue
-    if (table.length === 0) continue
-    if (entity.includes('_')) continue
-    db.use[entity] = true
-    const firstItem = table[0]
-    if (
-      firstItem &&
-      typeof firstItem === 'object' &&
-      'parent_id' in firstItem
-    ) {
-      db.useRecursive[entity] = true
-    }
-  }
-}
 
 function addTags(entity, item) {
   item.tags = db.getAll('tag', { [entity]: item.id })
@@ -42,7 +15,7 @@ function addFavorite(item) {
   item.isFavorite = false
 }
 function addNb(entity, item, entityNb) {
-  item[`nb${capitalize(entityNb)}`] = db.hasNb(entity, item.id, entityNb)
+  item[`nb${capitalize(entityNb)}`] = db.countRelated(entity, item.id, entityNb)
 }
 function addNbRecursive(entity, item, target) {
   item[`nb${capitalize(target)}Recursive`] = getRecursive(
@@ -58,7 +31,7 @@ function addInstitutionNb(institution, entity) {
   ).length
 }
 function addNbChild(entity, item) {
-  item.nbChild = db.hasNb('parent', item.id, entity)
+  item.nbChild = db.countRelated('parent', item.id, entity)
 }
 function addNbChildRecursive(entity, item) {
   const childs = db.getAllChilds(entity, item.id)
@@ -206,14 +179,6 @@ export function getRecursive(entity, itemId, target) {
   const childs = db.getAllChilds(entity, itemId)
   for (const child of childs) items = items.concat(get(child.id))
   return removeDuplicateById(items)
-}
-
-export async function getUserData(): Promise<UserData> {
-  return new Promise(resolve => {
-    db.browser.getAll('user_data/', items =>
-      resolve(items as unknown as UserData),
-    )
-  })
 }
 
 export function getSortByName(a, b) {
@@ -436,7 +401,7 @@ class Process {
         value.modalityName = modality.name
         if (value.value === null) value.value = ''
         else {
-          value.value = escapeHtmlEntities(value.value)
+          value.value = value.value.toString()
         }
       }
       if (!modality.type && modality.variables.length > 0) {
@@ -460,9 +425,9 @@ class Process {
       metaVariable.metaFolder_id = metaDataset.metaFolder_id
       metaVariable.folderName = metaDataset.metaFolder_id as string
       metaVariable.metaLocalisation = ''
-      if (metaVariable.is_in_meta && !metaVariable.is_in_data)
+      if (metaVariable.isInMeta && !metaVariable.isInData)
         metaVariable.metaLocalisation = 'schéma'
-      if (!metaVariable.is_in_meta && metaVariable.is_in_data)
+      if (!metaVariable.isInMeta && metaVariable.isInData)
         metaVariable.metaLocalisation = 'données'
     })
   }
@@ -478,9 +443,9 @@ class Process {
       if (metaDataset.lastUpdateTimestamp)
         metaDataset.lastUpdateTimestamp *= 1000
       metaDataset.metaLocalisation = ''
-      if (metaDataset.is_in_meta && !metaDataset.is_in_data)
+      if (metaDataset.isInMeta && !metaDataset.isInData)
         metaDataset.metaLocalisation = 'schéma'
-      if (!metaDataset.is_in_meta && metaDataset.is_in_data)
+      if (!metaDataset.isInMeta && metaDataset.isInData)
         metaDataset.metaLocalisation = 'données'
     })
   }
@@ -540,7 +505,6 @@ export function getLocalFilter() {
 }
 
 export function dbAddProcessedData() {
-  addEntitiesUsed()
   Process.institution()
   Process.folder()
   Process.tag()

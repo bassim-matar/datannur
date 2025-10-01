@@ -28,7 +28,7 @@
     height = Math.min(realHeight, windowHeight)
   }
 
-  const debouncedUpdateHeight = debounce(updateHeight, 150)
+  const debouncedUpdateHeight = debounce(updateHeight, 200)
 
   $effect(() => {
     void searchValue

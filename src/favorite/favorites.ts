@@ -12,14 +12,14 @@ export default class Favorites {
     if (favorites) {
       this.favorites = favorites
       for (const fav of favorites) {
-        if (!db.tableHasId(fav.entity, fav.entity_id)) continue
+        if (!db.exists(fav.entity, fav.entity_id)) continue
         const item = db.get(fav.entity, fav.entity_id)
         item.isFavorite = true
         item.favorite_timestamp = fav.timestamp
         countNbFavorite += 1
       }
       db.foreach('evolution', evo => {
-        if (!db.tableHasId(evo.entity, evo.entity_id)) return
+        if (!db.exists(evo.entity, evo.entity_id)) return
         const item = db.get(evo.entity, evo.entity_id)
         if (item && 'isFavorite' in item && item.isFavorite)
           evo.isFavorite = true

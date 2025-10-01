@@ -10,7 +10,7 @@
   } = $props()
 
   let loaded = $state(false)
-  const filtersLeft = $state({ 0: 0 })
+  const filtersLeft = $state([0])
 
   function getWidthElemNum(num) {
     const selector = `.header_filter_wrapper .th_${tableId}_${num}`

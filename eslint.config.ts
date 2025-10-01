@@ -23,15 +23,8 @@ const dbSchemaVariables = (() => {
 })()
 
 const allowedProps = [
-  '\\d+',
-  '__[a-zA-Z_]+__',
-  '#',
+  '__APP_VERSION__',
   'FlexSearch',
-  'is_in_data',
-  'is_in_meta',
-  'one_to_one',
-  'one_to_many',
-  'many_to_many',
   'metaDataset_id',
   'metaFolder_id',
   'ADD_TAGS',
@@ -77,24 +70,15 @@ const namingConventionRules = {
     {
       selector: 'variableLike',
       filter: {
-        regex: '^__[A-Z_]+__$',
+        regex: '^__APP_VERSION__$',
         match: true,
       },
       format: null,
-      custom: {
-        regex: '^__[A-Z_]+__$',
-        match: true,
-      },
     },
     {
       selector: 'property',
       format: ['camelCase'],
       leadingUnderscore: 'allow',
-      trailingUnderscore: 'allow',
-      filter: {
-        regex: `^(${allowedProps.join('|')})$`,
-        match: false,
-      },
     },
     {
       selector: 'property',
@@ -117,7 +101,13 @@ export default [
   ...tseslint.configs.recommended,
   ...svelte.configs['flat/recommended'],
   {
-    ignores: ['**/*.json.js', 'app/', 'src/.generated/'],
+    ignores: [
+      '**/*.json.js',
+      'app/',
+      'src/.generated/',
+      'node_modules/',
+      'public/assets/',
+    ],
   },
   {
     files: ['**/*.ts', '**/*.svelte.ts'],

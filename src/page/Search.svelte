@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import db from '@db'
   import { searchValue, pageContentLoaded } from '@lib/store'
   import { UrlParam } from '@lib/url-param'
+  import search from '@search/search'
   import Head from '@frame/Head.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import SearchResult from '@search/SearchResult.svelte'
@@ -63,7 +63,7 @@
       return false
     }
     const valueBefore = $searchValue
-    const allSearchRaw = await db.search($searchValue)
+    const allSearchRaw = await search.find($searchValue)
     isLoading = false
     if ($searchValue !== valueBefore) return false
     searchResultData = SearchHistory.putRecentFirst(allSearchRaw)

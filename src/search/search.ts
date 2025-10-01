@@ -2,9 +2,24 @@ import db from '@db'
 import { whenAppReady } from '@lib/store'
 import { get } from 'svelte/store'
 import { entityNames } from '@lib/constant'
-import { escapeHtmlEntities } from '@lib/util'
+import escapeHtml from 'escape-html'
 import type { Index } from 'flexsearch'
 import type { EntityName, BaseEntity } from '@type'
+
+type EntityData = { name: EntityName; items: Index; data: unknown[] }
+
+type SearchResult = {
+  id: string | number
+  name: string
+  description: string
+  entity: string
+  variable: string
+  isFavorite: boolean
+  folder_id: string | number
+  folderName: string
+  _entity: string
+  _entityClean: string
+}
 
 function ensureFlexsearchLoaded() {
   return new Promise<void>(resolve => {
@@ -51,14 +66,12 @@ export function searchHighlight(value, search) {
   const pattern = `(^|[^a-zA-Z])(${normalizedSearch})`
   const regex = new RegExp(pattern, 'gi')
 
-  return escapeHtmlEntities(value).replace(regex, (match, p1, p2) => {
+  return escapeHtml(value).replace(regex, (match, p1, p2) => {
     return `${p1}<span class="searchHighlight">${p2}</span>`
   })
 }
 
-type EntityData = { name: EntityName; items: Index; data: unknown[] }
-
-export default class Search {
+class Search {
   allSearch: {
     name: string
     entities: EntityData[]
@@ -67,7 +80,7 @@ export default class Search {
 
   constructor() {
     this.allSearch = []
-    this.loading = null
+    this.loading = new Promise<void>(() => {})
   }
   async init() {
     this.loading = (async () => {
@@ -102,9 +115,9 @@ export default class Search {
       }
     })()
   }
-  async search(toSearch) {
+  async find(toSearch): Promise<SearchResult[]> {
     if (this.loading) await this.loading
-    const result = []
+    const result: SearchResult[] = []
     const idsFound = {}
     for (const entity in entityNames) idsFound[entity] = []
     for (const variable of this.allSearch) {
@@ -145,3 +158,5 @@ export default class Search {
     return itemsId
   }
 }
+
+export default new Search()

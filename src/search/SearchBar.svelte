@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import db from '@db'
+  import search from '@search/search'
   import { router } from '@lib/router.svelte.js'
   import {
     whenAppReady,
@@ -46,7 +46,7 @@
       initSearchRecent()
       return false
     }
-    let allSearchRaw = await db.search($searchValue)
+    let allSearchRaw = await search.find($searchValue)
     if ($searchValue === '') return false
     allSearchRaw = SearchHistory.putRecentFirst(allSearchRaw)
     nbResult = allSearchRaw.length

@@ -4,15 +4,13 @@ import defaultBody from '@markdown/main/body.md?raw'
 import defaultMoreInfo from '@markdown/main/more-info.md?raw'
 
 export function getAboutMain() {
-  const banner = db.tableHasId('config', 'banner')
+  const banner = db.exists('config', 'banner')
     ? db.getConfig('banner')
     : defaultBanner
 
-  const body = db.tableHasId('config', 'body')
-    ? db.getConfig('body')
-    : defaultBody
+  const body = db.exists('config', 'body') ? db.getConfig('body') : defaultBody
 
-  const moreInfo = db.tableHasId('config', 'more_info')
+  const moreInfo = db.exists('config', 'more_info')
     ? db.getConfig('more_info')
     : defaultMoreInfo
 

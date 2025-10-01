@@ -20,10 +20,11 @@
   import { isHttp, hasTouchScreen, getIsSmallMenu } from '@lib/util'
   import { UrlParam } from '@lib/url-param'
   import { UrlHash } from '@lib/url-hash'
-  import { dbAddProcessedData, getUserData } from '@lib/db'
+  import { dbAddProcessedData } from '@lib/db'
+  import { loadUserData } from '@lib/user-data'
   import icon from '@img/icon.png'
   import iconDark from '@img/icon-dark.png'
-  import Search from '@search/search'
+  import search from '@search/search'
   import SearchHistory from '@search/search-history'
   import { DarkMode, darkModeTheme } from '@dark-mode/dark-mode'
   import { copyTextListenClick } from '@lib/copy-text'
@@ -100,15 +101,13 @@
       console.log('load db', Math.round(performance.now() - timer) + ' ms')
 
       timer = performance.now()
-      const userData = await getUserData()
+      const userData = await loadUserData()
       db.addMeta(userData, dbSchema as string[][])
       dbAddProcessedData()
       console.log('process db', Math.round(performance.now() - timer) + ' ms')
 
       timer = performance.now()
-      const search = new Search()
       search.init()
-      db.search = async (...args) => await search.search(...args)
       Logs.init(userData.log)
       Favorites.init(userData.favorite)
       SearchHistory.init(userData.search_history, { limit: 100 })
@@ -169,7 +168,7 @@
   $whenAppReady.then(() => {
     console.log(db)
     const mainBanner = new Image()
-    let bannerSrc = db.tableHasId('config', 'banner')
+    let bannerSrc = db.exists('config', 'banner')
       ? (db.getConfig('banner') as string)
       : default_banner
     bannerSrc = bannerSrc?.split('(')[1]?.split(')')[0]

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { tabSelected, previewCache } from '@lib/store'
+  import { tabSelected } from '@lib/store'
+  import PreviewCache from '@lib/preview-cache'
   import PreviewManager from '@lib/preview-manager'
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
@@ -22,19 +23,18 @@
       if (typeof datasetPreview !== 'string') {
         let datasetData = datasetPreview
         variableData = PreviewManager.getVariableData(datasetData, variable)
-        variableData = PreviewManager.addPosition(variableData)
         columns = PreviewManager.getColumns(variableData)
         $tabSelected.nb = variableData.length
         return
       }
 
-      if (!(datasetPreview in $previewCache)) {
+      if (!PreviewCache.has(datasetPreview)) {
         let datasetData = await PreviewManager.load(datasetPreview)
         PreviewManager.cleanKeys(datasetData)
-        $previewCache[datasetPreview] = datasetData
+        PreviewCache.set(datasetPreview, datasetData)
       }
       variableData = PreviewManager.getVariableData(
-        $previewCache[datasetPreview],
+        PreviewCache.get(datasetPreview)!,
         variable,
       )
     }

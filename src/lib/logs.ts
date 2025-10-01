@@ -51,7 +51,7 @@ export default class Logs {
       log.element = log.entity
 
       if (log.entity_id) {
-        if (!db.tableHasId(log.entity, log.entity_id)) continue
+        if (!db.exists(log.entity, log.entity_id)) continue
         const item = db.get(log.entity, log.entity_id)
         if (item) {
           log.element = item.name

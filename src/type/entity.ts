@@ -12,13 +12,13 @@ import type {
 } from './base'
 
 // Extended base entity with relations (defined after Tag and Doc)
-export interface EntityWithRelations extends BaseEntity {
+export type EntityWithRelations = BaseEntity & {
   tags?: Tag[]
   docs?: Doc[]
   docsRecursive?: (Doc & { inherited?: string })[]
 }
 
-export interface Dataset extends EntityWithRelations {
+export type Dataset = EntityWithRelations & {
   folder_id?: string | number
   manager_id?: string | number
   owner_id?: string | number
@@ -47,7 +47,7 @@ export interface Dataset extends EntityWithRelations {
   nextUpdateDate?: string
 }
 
-export interface Variable extends BaseEntity {
+export type Variable = BaseEntity & {
   dataset_id: string | number
   modality_ids?: string
   tag_ids?: string
@@ -86,7 +86,7 @@ export interface Variable extends BaseEntity {
   })[]
 }
 
-export interface Modality extends BaseEntity {
+export type Modality = BaseEntity & {
   folder_id?: string | number
   type?: string
 
@@ -99,7 +99,7 @@ export interface Modality extends BaseEntity {
   nbValue?: number
 }
 
-export interface Folder extends EntityWithRelations {
+export type Folder = EntityWithRelations & {
   parent_id?: string | number
   manager_id?: string | number
   owner_id?: string | number
@@ -127,7 +127,7 @@ export interface Folder extends EntityWithRelations {
   nextUpdateDate?: string
 }
 
-export interface Institution extends EntityWithRelations {
+export type Institution = EntityWithRelations & {
   parent_id?: string | number
   tag_ids?: string
   doc_ids?: string
@@ -146,7 +146,7 @@ export interface Institution extends EntityWithRelations {
   nbVariableRecursive?: number
 }
 
-export interface Tag extends EntityWithRelations {
+export type Tag = EntityWithRelations & {
   parent_id?: string | number
   docIds?: string
 
@@ -168,7 +168,7 @@ export type TagWithChildren = Tag & {
   children?: { [key: string]: TagWithChildren }
 }
 
-export interface Doc extends BaseEntity {
+export type Doc = BaseEntity & {
   path?: string
   type?: string
   last_update?: number
@@ -184,12 +184,12 @@ export interface Doc extends BaseEntity {
 }
 
 // Meta entities (for metadata datasets)
-export interface MetaVariable extends BaseEntity {
+export type MetaVariable = BaseEntity & {
   metaDataset_id: string | number
   type?: string
   values?: unknown[]
-  is_in_meta?: boolean
-  is_in_data?: boolean
+  isInMeta?: boolean
+  isInData?: boolean
 
   // Computed fields
   isMeta?: boolean
@@ -204,10 +204,10 @@ export interface MetaVariable extends BaseEntity {
   key?: string
 }
 
-export interface MetaDataset extends BaseEntity {
+export type MetaDataset = BaseEntity & {
   metaFolder_id: string | number
-  is_in_meta?: boolean
-  is_in_data?: boolean
+  isInMeta?: boolean
+  isInData?: boolean
   lastUpdateTimestamp?: number
 
   // Computed fields
@@ -219,14 +219,14 @@ export interface MetaDataset extends BaseEntity {
   nb_row?: number
 }
 
-export interface MetaFolder extends BaseEntity {
+export type MetaFolder = BaseEntity & {
   // Computed fields
   isMeta?: boolean
   nbDataset?: number
   nbVariable?: number
 }
 
-export interface Evolution {
+export type Evolution = {
   id?: string | number
   entity: EntityName
   entity_id: string | number
@@ -250,7 +250,7 @@ export interface Evolution {
 }
 
 // Entity type mapping for type-safe database operations
-export interface EntityTypeMap {
+export type EntityTypeMap = {
   config: Config
   dataset: Dataset
   variable: Variable
@@ -259,6 +259,8 @@ export interface EntityTypeMap {
   freq: Freq
   folder: Folder
   institution: Institution
+  owner: Institution
+  manager: Institution
   tag: Tag
   doc: Doc
   evolution: Evolution
@@ -271,6 +273,7 @@ export interface EntityTypeMap {
   log: Log
   option: Option
   search_history: SearchHistory
+  parent: BaseEntity
 }
 
 export type EntityName = keyof EntityTypeMap

@@ -1,5 +1,5 @@
-// Base entity interface without circular dependencies
-export interface BaseEntity {
+// Base entity type without circular dependencies
+export type BaseEntity = {
   id: string | number
   name: string
   description?: string
@@ -21,12 +21,12 @@ export interface BaseEntity {
 export type Row = Record<string, unknown>
 
 // Core database entities (no dependencies)
-export interface Config {
+export type Config = {
   id: string
   value: string
 }
 
-export interface Value {
+export type Value = {
   modality_id: string | number
   value: string | null
   description?: string
@@ -35,26 +35,26 @@ export interface Value {
   modalityName?: string
 }
 
-export interface Freq {
+export type Freq = {
   variable_id: string | number
   value: string
   freq: number
 }
 
 // User data entities
-export interface Favorite {
+export type Favorite = {
   id: string | number
   entity_id: string | number
   entity: string
   timestamp: number
 }
 
-export interface FilterActive {
+export type FilterActive = {
   id: string
   is_active: boolean
 }
 
-export interface Log {
+export type Log = {
   id: string | number
   entity_id: string | number
   entity: string
@@ -62,12 +62,12 @@ export interface Log {
   timestamp: number
 }
 
-export interface Option {
+export type Option = {
   id: string
   value: string
 }
 
-export interface SearchHistory {
+export type SearchHistory = {
   id: string | number
   entity_id: string | number
   entity: string
@@ -75,7 +75,7 @@ export interface SearchHistory {
 }
 
 // Filter type for local filters
-export interface Filter {
+export type Filter = {
   id: string
   name: string
 }

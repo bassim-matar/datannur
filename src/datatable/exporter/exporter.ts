@@ -12,10 +12,7 @@ export default class Exporter {
   getLanguage() {
     return {
       copyTitle: 'Copier dans le presse-papier',
-      copySuccess: {
-        1: '1 ligne copiée dans le presse-papier',
-        _: '%d lignes copiées dans le presse-papier',
-      },
+      copySuccess: 'Tableau copié dans le presse-papier',
     }
   }
   getButtons() {
