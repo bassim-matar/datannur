@@ -119,7 +119,7 @@ await Promise.all([
   builder.updateMdDir('md_doc', config.paths.mdPath),
 ])
 if (process.env.NODE_ENV === 'development') {
-  builder.watchDb('db')
+  builder.watchDb(config.paths.dbSourcePath)
 }
 
 export default defineConfig({

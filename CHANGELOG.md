@@ -3,6 +3,7 @@
 ## unreleased
 
 add: whenAppReady instead of db.loaded and refactor db.use and db.preview
+fix: JsonjsdbBuilder.watchDb path
 refactor: db to use only Jsonjsdb methods and props, use type instead of interface for entities
 
 ## 0.12.10 (2024-09-26)
