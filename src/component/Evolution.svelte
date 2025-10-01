@@ -12,6 +12,7 @@
   } from '@lib/constant'
   import Options from '@lib/options'
   import Datatable from '@datatable/Datatable.svelte'
+  import escapeHtml from 'escape-html'
 
   let { evolutions } = $props()
 
@@ -66,9 +67,8 @@
         filterType: 'select',
         tooltip: 'Type de modification',
         render: (data, type, row) => {
-          if (type === 'sort' || type === 'export' || type === 'filter') {
-            return data
-          }
+          if (type !== 'display') return data
+          data = escapeHtml(data)
           return `
           <span class="icon icon_${row.type}" title="${data}">
             <i class="fas fa-${entityToIcon[row.type]}"></i>
@@ -94,10 +94,10 @@
           else if (Column[data.toLowerCase()])
             columnCleanName = Column[data.toLowerCase()]?.name
 
-          if (type === 'sort' || type === 'export' || type === 'filter') {
-            return columnCleanName
-          }
+          if (type !== 'display') return columnCleanName
 
+          data = escapeHtml(data)
+          columnCleanName = escapeHtml(columnCleanName)
           let icon = data
           if (columnIcons[data]) icon = columnIcons[data]
 
@@ -123,12 +123,14 @@
             return ''
           }
           if (row.old_value === row.new_value)
-            return wrapLongText(row.old_value)
+            return wrapLongText(escapeHtml(row.old_value))
 
-          const diff = highlightDiff(row.old_value, row.new_value, row.variable)
-          if (type === 'sort' || type === 'export' || type === 'filter') {
-            return diff
-          }
+          const diff = highlightDiff(
+            escapeHtml(row.old_value),
+            escapeHtml(row.new_value),
+            row.variable,
+          )
+          if (type !== 'display') return diff
           return wrapLongText(diff)
         },
       },
@@ -139,10 +141,8 @@
         filterType: 'select',
         tooltip: 'passé ou futur',
         render: (data, type) => {
-          if (type === 'sort' || type === 'export' || type === 'filter') {
-            return data
-          }
-          return `<span style="display: none;">${data}</span>`
+          if (type !== 'display') return data
+          return `<span style="display: none;">${escapeHtml(data)}</span>`
         },
       },
       Column.timestamp(),

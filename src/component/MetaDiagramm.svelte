@@ -9,9 +9,9 @@
 
   let svgDiagramm = $state<string | null>(null)
 
-  const schema = { ...db.tables.__schema__ }
+  const schema = db.getSchema()
 
-  delete schema.one_to_one
+  delete schema.oneToOne
 
   const direction = isMobile ? 'TB' : 'LR'
   let diagrammDefinition = `flowchart ${direction}\n`
@@ -24,7 +24,7 @@
     return 0
   }
 
-  schema.one_to_many = schema.one_to_many.map((relation: string[]) => {
+  schema.oneToMany = schema.oneToMany.map((relation: string[]) => {
     let otherOne: string | null = null
     if (relation.includes('manager')) otherOne = 'owner'
     else if (relation.includes('owner')) otherOne = 'manager'
@@ -34,31 +34,29 @@
     return relation
   })
 
-  const aloneSet: string[] = []
-  const allTables = [...schema.one_to_many, ...schema.many_to_many]
+  const schemaAlone: string[] = []
+  const allTables = [...schema.oneToMany, ...schema.manyToMany]
   for (const tableRelation of allTables) {
     for (const table of tableRelation) {
       if (table === 'manager' || table === 'owner') {
         continue
       }
-      if (!aloneSet.includes(table)) {
-        aloneSet.push(table)
+      if (!schemaAlone.includes(table)) {
+        schemaAlone.push(table)
       }
     }
   }
 
-  schema.alone = aloneSet
-
-  schema.alone.sort(compareNameDesc)
-  schema.one_to_many.sort(compareNameDesc)
-  schema.many_to_many.sort(compareNameDesc)
+  schemaAlone.sort(compareNameDesc)
+  schema.oneToMany.sort(compareNameDesc)
+  schema.manyToMany.sort(compareNameDesc)
 
   const recursiveEntities = []
-  for (const link of schema.one_to_many) {
+  for (const link of schema.oneToMany) {
     if (link[0] === link[1]) recursiveEntities.push(link[0])
   }
 
-  for (const table of schema.alone) {
+  for (const table of schemaAlone) {
     if (['metaFolder', 'metaDataset', 'metaVariable', 'alias'].includes(table))
       continue
     let entityName = table
@@ -78,7 +76,7 @@
 
   const otherLinks = []
   let separator = ' - '
-  for (const link of schema.one_to_many) {
+  for (const link of schema.oneToMany) {
     if (link.includes('metaDataset')) continue
     if (link[0] === link[1]) continue
     if (link.length > 2) {
@@ -102,7 +100,7 @@
     }
     diagrammDefinition += `${link[0]} --> ${link[1]}\n`
   }
-  for (const link of schema.many_to_many) {
+  for (const link of schema.manyToMany) {
     diagrammDefinition += `${link[0]} <--> ${link[1]}\n`
   }
 

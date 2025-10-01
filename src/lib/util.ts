@@ -71,18 +71,6 @@ export function pluralize(str) {
   return str + 's'
 }
 
-export function escapeHtmlEntities(str) {
-  const htmlEntities = new Map([
-    ['&', '&amp;'],
-    ['<', '&lt;'],
-    ['>', '&gt;'],
-    ['"', '&quot;'],
-    ["'", '&#39;'],
-  ])
-
-  return String(str).replace(/[&<>"']/g, char => htmlEntities.get(char) || char)
-}
-
 export function splitOnLastSeparator(str, separator) {
   const lastIndex = str.lastIndexOf(separator)
   return lastIndex === -1

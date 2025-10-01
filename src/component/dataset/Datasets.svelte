@@ -69,7 +69,7 @@
         Column.metaLocalisation(),
         Column.metaFolder(),
         Column.timestamp({
-          varName: 'last_update_timestamp',
+          varName: 'lastUpdateTimestamp',
           title: 'Mise à jour',
           tooltip: 'Moment de la dernière mise à jour',
         }),

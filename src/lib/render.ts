@@ -1,3 +1,4 @@
+import escapeHtml from 'escape-html'
 import db from '@db'
 import { locale } from '@lib/constant'
 import { copyTextClasses, copyTextMsg } from '@lib/copy-text'
@@ -19,7 +20,18 @@ export function getNbValues(values, row) {
 const separator = ' | '
 
 export default class Render {
+  static shortText(data, type) {
+    if (!data) return ''
+    if (type !== 'display') return data
+    return escapeHtml(data)
+  }
+  static longText(data, type) {
+    if (!data) return ''
+    if (type !== 'display') return data
+    return wrapLongText(escapeHtml(data))
+  }
   static parentsIndent(data, type, row) {
+    if (type !== 'display') return data.slice(-1)[0]?.name
     return Render.tree(row._entity, [...data].reverse(), type)
   }
   static tree(entity, elements, type = 'normal') {
@@ -29,7 +41,11 @@ export default class Render {
       if (!element) continue
       let name = element.name
       if (level > 0 && type === 'export') name = separator + name
-      content += link(entity + '/' + element.id, addIndend(name, level), entity)
+      content += link(
+        entity + '/' + element.id,
+        addIndend(escapeHtml(name), level),
+        entity,
+      )
       level += 1
     }
     return wrapLongText(`<div class="tree">${content}</div>`)
@@ -42,9 +58,12 @@ export default class Render {
     return Render.tree(entity, elements, type)
   }
   static firstParent(data, type, row) {
+    if (type !== 'display') return data.slice(-1)[0]?.name
     if (data.length === 0) return wrapLongText()
     const parent = data.slice(-1)[0]
-    return wrapLongText(link(row._entity + '/' + parent.id, parent.name))
+    return wrapLongText(
+      link(row._entity + '/' + parent.id, escapeHtml(parent.name)),
+    )
   }
   static value(values, type, row) {
     if (!values || values === '' || values.length === 0) return wrapLongText()
@@ -63,7 +82,7 @@ export default class Render {
         valueContent += ' : ' + value.description
       }
       if (i > 0 && type === 'export') valueContent = separator + valueContent
-      content += '<li>' + valueContent + '</li>'
+      content += '<li>' + escapeHtml(valueContent) + '</li>'
       i += 1
     }
     if (nbValues > values.length) {
@@ -97,7 +116,7 @@ export default class Render {
         const freqDisplay = `
         <div class="freq_item_container">
           <div class="freq_background color_freq" style="width: ${percentBackground}%"></div>
-          <span class="freq_value">${freqItem.value}</span>
+          <span class="freq_value">${escapeHtml(freqItem.value)}</span>
           <span class="freq_number">${freqNum}</span>
         </div>`
         freqContent = freqDisplay
@@ -127,7 +146,7 @@ export default class Render {
   }
   static num(data, type = 'normal') {
     if (data === false || data === undefined || data === null) return ''
-    if (['filter', 'sort', 'export'].includes(type)) return data
+    if (type !== 'display') return data
     return data.toLocaleString(locale)
   }
   static numNoEmpty(data, type = 'normal') {
@@ -163,7 +182,7 @@ export default class Render {
     const modalitiesName = []
     for (const modality of modalities) {
       modalitiesName.push(
-        link('modality/' + modality.id, modality.name, 'modality'),
+        link('modality/' + modality.id, escapeHtml(modality.name), 'modality'),
       )
     }
     return wrapLongText(modalitiesName.join(' | '))
@@ -180,7 +199,7 @@ export default class Render {
     const percent = getPercent(nbValues / nbValueMax)
     let content = Render.num(nbValues)
     if (nbValues) {
-      content = link(`${entity}/${row.id}?tab=${tab}`, content)
+      content = link(`${entity}/${row.id}?tab=${tab}`, escapeHtml(content))
     }
     return `${Render.numPercent(content, percent, 'value', type)}`
   }
@@ -212,7 +231,7 @@ export default class Render {
     if (!tags || tags.length === 0) return wrapLongText()
     const tagsName = []
     for (const tag of tags) {
-      tagsName.push(link('tag/' + tag.id, tag.name, 'tag'))
+      tagsName.push(link('tag/' + tag.id, escapeHtml(tag.name), 'tag'))
     }
     return wrapLongText(tagsName.join(' | '))
   }
@@ -233,7 +252,7 @@ export default class Render {
     }
     const timeAgo = getTimeAgo(data, true, true)
     const timestamp = dateToTimestamp(data, 'start')
-    const content = `${timeAgo}<br>${data}${contentAfter}`
+    const content = `${timeAgo}<br>${escapeHtml(data)}${contentAfter}`
     const percent = getPercent((new Date().getTime() - timestamp) / 31536000000)
     const entity = percent < 0 ? 'value' : 'doc'
     const percentAbsInversed = 100 - Math.abs(percent)

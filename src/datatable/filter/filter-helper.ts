@@ -1,4 +1,5 @@
 import jQuery from 'jquery'
+import escapeHtml from 'escape-html'
 import type { Api } from 'datatables.net'
 import { UrlParam } from '@lib/url-param'
 import { dateToTimestamp } from '@lib/time'
@@ -68,7 +69,9 @@ export default class FilterHelper {
             if (val === false) val = 'faux'
             if (typeof val === 'string' && val.includes('span>'))
               val = val.split('span>')[1].trim()
-            options += '<option value="' + val + '">' + val + '</option>'
+            const safeVal = escapeHtml(val)
+            options +=
+              '<option value="' + safeVal + '">' + safeVal + '</option>'
           }
         })
       }

@@ -6,6 +6,7 @@
   import { searchHighlight } from './search'
   import Datatable from '@datatable/Datatable.svelte'
   import Column from '@lib/column'
+  import escapeHtml from 'escape-html'
 
   let { searchValue, searchResultData } = $props()
 
@@ -33,8 +34,9 @@
       defaultContent: '',
       name: 'name',
       tooltip: 'Nom',
-      render: (data, type, row) =>
-        wrapLongText(
+      render: (data, type, row) => {
+        if (type !== 'display') return data
+        return wrapLongText(
           `<strong class="var_main_col">` +
             link(
               row._entity + '/' + row.id + '?from_search=true',
@@ -42,14 +44,16 @@
               row._entity,
             ) +
             `</strong>`,
-        ),
+        )
+      },
     },
     {
       data: 'description',
       title: Render.icon('description') + 'Description',
       defaultContent: '',
       tooltip: 'Description',
-      render: data => {
+      render: (data, type) => {
+        if (type !== 'display') return data
         if ([null, undefined].includes(data)) return wrapLongText()
         return wrapLongText(searchHighlight(data, searchValue))
       },
@@ -60,8 +64,9 @@
       defaultContent: '',
       tooltip: 'Dossier',
       render: (data, type, row) => {
+        if (type !== 'display') return data
         if (!data) return wrapLongText()
-        return wrapLongText(link('folder/' + data, row.folderName))
+        return wrapLongText(link('folder/' + data, escapeHtml(row.folderName)))
       },
     },
     {
@@ -80,7 +85,7 @@
           : `<button style="cursor: pointer; margin: 0;" 
               class="remove_search_item" 
               data-entity_name="${row._entity}"
-              data-item_id="${row.id}"
+              data-item_id="${escapeHtml(row.id)}"
             >
               <i class="fa-solid fa-xmark close"></i>
               <i class="fa-solid fa-clock-rotate-left recent"></i>

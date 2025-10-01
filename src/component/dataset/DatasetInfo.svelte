@@ -38,7 +38,7 @@
   <RowInfo nbRow={dataset.nb_row} />
   {#if dataset.isMeta}
     <LastUpdateInfo
-      lastUpdateDate={dataset.last_update_timestamp}
+      lastUpdateDate={dataset.lastUpdateTimestamp}
       intraday={true}
       fromTimestamp={true}
     />
