@@ -16,7 +16,7 @@
 
   let { evolutions } = $props()
 
-  let evolutionSummary = $state(Options.get('evolution_summary'))
+  let evolutionSummary = $state(Options.get('evolutionSummary'))
 
   function sortEvolutions(toSort) {
     if (toSort.length === 0) return
@@ -62,7 +62,7 @@
         data: 'typeClean',
         title: Render.icon('type'),
         defaultContent: '',
-        name: 'evolution_type',
+        name: 'evolutionType',
         width: '20px',
         filterType: 'select',
         tooltip: 'Type de modification',
@@ -70,7 +70,7 @@
           if (type !== 'display') return data
           data = escapeHtml(data)
           return `
-          <span class="icon icon_${row.type}" title="${data}">
+          <span class="icon icon-${row.type}" title="${data}">
             <i class="fas fa-${entityToIcon[row.type]}"></i>
           </span>
           <span style="display: none;">${data}</span>`
@@ -103,7 +103,7 @@
 
           return `
           <div style="display: flex; align-items: center;">
-            <span class="icon icon_${icon}" title="${data}">
+            <span class="icon icon-${icon}" title="${data}">
               <i class="fas fa-${entityToIcon[icon] || icon}"></i>
             </span>
             <span style="font-size: 13px;">${columnCleanName}</span>
@@ -119,15 +119,15 @@
         filterType: 'input',
         tooltip: 'Valeur de la variable',
         render: (data, type, row) => {
-          if (!row.old_value && !row.new_value) {
+          if (!row.oldValue && !row.newValue) {
             return ''
           }
-          if (row.old_value === row.new_value)
-            return wrapLongText(escapeHtml(row.old_value))
+          if (row.oldValue === row.newValue)
+            return wrapLongText(escapeHtml(row.oldValue))
 
           const diff = highlightDiff(
-            escapeHtml(row.old_value),
-            escapeHtml(row.new_value),
+            escapeHtml(row.oldValue),
+            escapeHtml(row.newValue),
             row.variable,
           )
           if (type !== 'display') return diff

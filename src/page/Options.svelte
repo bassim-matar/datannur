@@ -15,6 +15,6 @@
 </script>
 
 <section class="section">
-  <Title type="option" name="Options" mode="main_title" />
+  <Title type="option" name="Options" mode="mainTitle" />
   <Tabs {tabs} />
 </section>

@@ -50,7 +50,7 @@
     },
     Column.docPath(),
     Column.timestamp({
-      varName: 'last_update',
+      varName: 'lastUpdate',
       title: 'Mise à jour',
       tooltip: 'Date de dernière mise à jour',
     }),

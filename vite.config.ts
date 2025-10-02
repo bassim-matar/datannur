@@ -23,7 +23,7 @@ const config = {
     flexsearchPublic: 'public/assets/external/flexsearch.js',
     jsonjsdbConfig: 'public/data/jsonjsdb-config.html',
     dbPath: 'public/data/db',
-    dbSourcePath: 'public/data/db_source',
+    dbSourcePath: 'public/data/db-source',
     previewPath: 'public/data/dataset',
     mdPath: 'public/data/md',
   },
@@ -53,7 +53,7 @@ async function getAppVersion(): Promise<string> {
 
 function htmlReplace(replacements: [string, string][]) {
   return {
-    name: `html_replace`,
+    name: `htmlReplace`,
     transformIndexHtml: {
       handler: (html: string) => {
         for (const replacement of replacements) {
@@ -72,7 +72,7 @@ function copyFilesToOutDir(files: string[]) {
 }
 
 function afterBuild(callback: () => void) {
-  return { name: 'after_build', apply: 'build' as const, closeBundle: callback }
+  return { name: 'afterBuild', apply: 'build' as const, closeBundle: callback }
 }
 
 function updateRouterIndex(file: string, pageDirFromRouterIndex: string) {
@@ -116,7 +116,7 @@ await builder.setOutputDb(config.paths.dbPath)
 await Promise.all([
   builder.updateDb(config.paths.dbSourcePath),
   builder.updatePreview('preview', config.paths.previewPath),
-  builder.updateMdDir('md_doc', config.paths.mdPath),
+  builder.updateMdDir('md-doc', config.paths.mdPath),
 ])
 if (process.env.NODE_ENV === 'development') {
   builder.watchDb(config.paths.dbSourcePath)
@@ -139,7 +139,7 @@ export default defineConfig({
     rollupOptions: {
       plugins: [
         config.bundleView &&
-          visualizer({ open: true, filename: 'bundle_view.html' }),
+          visualizer({ open: true, filename: 'bundle-view.html' }),
       ],
     },
   },

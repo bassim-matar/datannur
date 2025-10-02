@@ -36,7 +36,7 @@
       display: block;
       white-space: normal;
     }
-    &:global(.open_full) {
+    &:global(.open-full) {
       overflow-y: auto;
     }
   }

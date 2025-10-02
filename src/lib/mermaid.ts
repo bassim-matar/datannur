@@ -95,9 +95,9 @@ export async function mdWithMermaidToHtml(mdWithMermaid) {
       const [mermaidCodeRaw, mardownCode] = aboutPagePart.split(separator)
       let mermaidCode = mermaidAddEntities(mermaidCodeRaw)
       if (isAutoFlowchart) mermaidCode = diagrammDefinition + mermaidCode
-      const diagrammId = 'about_page_diagramm_' + partNum
+      const diagrammId = 'about-page-diagramm-' + partNum
       const { svg } = await window.mermaid.render(diagrammId, mermaidCode)
-      content += `<div class="mermaid_block">${svg}</div>`
+      content += `<div class="mermaid-block">${svg}</div>`
       content += markdownRender(mardownCode)
     }
   }

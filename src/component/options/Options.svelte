@@ -34,7 +34,7 @@
 
   function downloadUserData() {
     const jszip = new JSZip()
-    const dataFolder = jszip.folder('user_data')
+    const dataFolder = jszip.folder('user-data')
     const userData = getUserData()
     for (const [name, data] of Object.entries(userData)) {
       const filename = name + '.json'
@@ -42,35 +42,35 @@
       dataFolder.file(filename, jsonData)
     }
     jszip.generateAsync({ type: 'blob' }).then(function (content) {
-      saveAs(content, 'datannur_user_data.zip')
+      saveAs(content, 'datannur-user-data.zip')
     })
   }
 
-  let openAllRecursive = $state(Options.get('open_all_recursive'))
+  let openAllRecursive = $state(Options.get('openAllRecursive'))
   function updateOpenAllRecursive() {
-    Options.set('open_all_recursive', openAllRecursive)
+    Options.set('openAllRecursive', openAllRecursive)
   }
 
-  let evolutionSummary = $state(Options.get('evolution_summary'))
+  let evolutionSummary = $state(Options.get('evolutionSummary'))
   function updateEvolutionSummary() {
-    Options.set('evolution_summary', evolutionSummary)
+    Options.set('evolutionSummary', evolutionSummary)
   }
 
-  let openAllTab = $state(Options.get('open_all_tab'))
+  let openAllTab = $state(Options.get('openAllTab'))
   function updateOpenAllTab() {
-    Options.set('open_all_tab', openAllTab)
+    Options.set('openAllTab', openAllTab)
   }
 
-  let roundedDesign = $state(Options.get('rounded_design'))
+  let roundedDesign = $state(Options.get('roundedDesign'))
   function updateRoundedDesign() {
-    Options.set('rounded_design', roundedDesign)
-    document.documentElement.classList.toggle('rounded_design')
+    Options.set('roundedDesign', roundedDesign)
+    document.documentElement.classList.toggle('roundedDesign')
   }
 
-  let pageShadowColored = $state(Options.get('page_shadow_colored'))
+  let pageShadowColored = $state(Options.get('pageShadowColored'))
   function updatePageShadowColored() {
-    Options.set('page_shadow_colored', pageShadowColored)
-    document.documentElement.classList.toggle('page_shadow_colored')
+    Options.set('pageShadowColored', pageShadowColored)
+    document.documentElement.classList.toggle('pageShadowColored')
   }
 
   function clearLogs() {
@@ -96,8 +96,8 @@
   })
 </script>
 
-<div class="flex_cols">
-  <div class="flex_col">
+<div class="flex-cols">
+  <div class="flex-col">
     <h5 class="title is-5">Affichage</h5>
     <Switch
       bind:value={openAllRecursive}
@@ -128,7 +128,7 @@
     </div>
   </div>
 
-  <div class="flex_col">
+  <div class="flex-col">
     <h5 class="title is-5">Réinitialiser</h5>
     <Button onclick={clearLogs}>
       Logs <Icon type="log" marginLeft={true} />
@@ -145,7 +145,7 @@
     <Button onclick={clearAll}>Tout</Button>
   </div>
 
-  <div class="flex_col">
+  <div class="flex-col">
     <h5 class="title is-5">Mes données utilisateur</h5>
     <Button onclick={downloadUserData}>
       Exporter <Icon type="download" marginLeft={true} />
@@ -159,7 +159,7 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .flex_cols {
+  .flex-cols {
     justify-content: center;
   }
 

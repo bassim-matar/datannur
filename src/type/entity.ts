@@ -19,22 +19,22 @@ export type EntityWithRelations = BaseEntity & {
 }
 
 export type Dataset = EntityWithRelations & {
-  folder_id?: string | number
-  manager_id?: string | number
-  owner_id?: string | number
-  tag_ids?: string
-  doc_ids?: string
-  data_path?: string
-  delivery_format?: string
+  folderId?: string | number
+  managerId?: string | number
+  ownerId?: string | number
+  tagIds?: string
+  docIds?: string
+  dataPath?: string
+  deliveryFormat?: string
   type?: string
   link?: string
   localisation?: string
-  nb_row?: number
-  start_date?: string
-  end_date?: string
-  last_update_date?: string
-  updating_each?: string
-  no_more_update?: boolean
+  nbRow?: number
+  startDate?: string
+  endDate?: string
+  lastUpdateDate?: string
+  updatingEach?: string
+  noMoreUpdate?: boolean
 
   // Computed fields added during processing
   typeClean?: string
@@ -48,30 +48,30 @@ export type Dataset = EntityWithRelations & {
 }
 
 export type Variable = BaseEntity & {
-  dataset_id: string | number
-  modality_ids?: string
-  tag_ids?: string
-  original_name?: string
+  datasetId: string | number
+  modalityIds?: string
+  tagIds?: string
+  originalName?: string
   key?: string | boolean
-  nb_distinct?: number
-  nb_duplicate?: number
-  nb_missing?: number
+  nbDistinct?: number
+  nbDuplicate?: number
+  nbMissing?: number
   type?: string
-  start_date?: string
-  end_date?: string
-  sourceVar_ids?: string
+  startDate?: string
+  endDate?: string
+  sourceVarIds?: string
 
   // Computed fields added during processing
   typeClean?: string
   num?: number
-  nb_row?: number
+  nbRow?: number
   datasetName?: string
   datasetType?: string
-  folder_id?: string | number
+  folderId?: string | number
   folderName?: string
-  owner_id?: string | number
+  ownerId?: string | number
   ownerName?: string
-  manager_id?: string | number
+  managerId?: string | number
   managerName?: string
   modalities?: Modality[]
   values?: Value[]
@@ -87,7 +87,7 @@ export type Variable = BaseEntity & {
 }
 
 export type Modality = BaseEntity & {
-  folder_id?: string | number
+  folderId?: string | number
   type?: string
 
   // Computed fields added during processing
@@ -100,22 +100,22 @@ export type Modality = BaseEntity & {
 }
 
 export type Folder = EntityWithRelations & {
-  parent_id?: string | number
-  manager_id?: string | number
-  owner_id?: string | number
-  tag_ids?: string
-  doc_ids?: string
-  data_path?: string
-  delivery_format?: string
-  git_code?: string
-  last_update_date?: string
+  parentId?: string | number
+  managerId?: string | number
+  ownerId?: string | number
+  tagIds?: string
+  docIds?: string
+  dataPath?: string
+  deliveryFormat?: string
+  gitCode?: string
+  lastUpdateDate?: string
   localisation?: string
-  metadata_path?: string
-  survey_type?: string
-  start_date?: string
-  end_date?: string
-  updating_each?: string
-  no_more_update?: boolean
+  metadataPath?: string
+  surveyType?: string
+  startDate?: string
+  endDate?: string
+  updatingEach?: string
+  noMoreUpdate?: boolean
 
   // Computed fields added during processing
   ownerName?: string
@@ -128,13 +128,13 @@ export type Folder = EntityWithRelations & {
 }
 
 export type Institution = EntityWithRelations & {
-  parent_id?: string | number
-  tag_ids?: string
-  doc_ids?: string
+  parentId?: string | number
+  tagIds?: string
+  docIds?: string
   email?: string
   phone?: string
-  start_date?: string
-  end_date?: string
+  startDate?: string
+  endDate?: string
 
   // Computed fields added during processing
   nbChild?: number
@@ -147,7 +147,7 @@ export type Institution = EntityWithRelations & {
 }
 
 export type Tag = EntityWithRelations & {
-  parent_id?: string | number
+  parentId?: string | number
   docIds?: string
 
   // Computed fields added during processing
@@ -171,12 +171,12 @@ export type TagWithChildren = Tag & {
 export type Doc = BaseEntity & {
   path?: string
   type?: string
-  last_update?: number
-  last_update_date?: string
+  lastUpdate?: number
+  lastUpdateDate?: string
 
   // Computed fields added during processing
   entity?: string
-  entity_id?: string | number
+  entityId?: string | number
   nbInstitution?: number
   nbFolder?: number
   nbDataset?: number
@@ -185,7 +185,7 @@ export type Doc = BaseEntity & {
 
 // Meta entities (for metadata datasets)
 export type MetaVariable = BaseEntity & {
-  metaDataset_id: string | number
+  metaDatasetId: string | number
   type?: string
   values?: unknown[]
   isInMeta?: boolean
@@ -195,17 +195,17 @@ export type MetaVariable = BaseEntity & {
   isMeta?: boolean
   typeClean?: string
   nbValue?: number
-  dataset_id?: string | number
+  datasetId?: string | number
   datasetName?: string
-  nb_row?: number
-  metaFolder_id?: string | number
+  nbRow?: number
+  metaFolderId?: string | number
   folderName?: string
   metaLocalisation?: string
   key?: string
 }
 
 export type MetaDataset = BaseEntity & {
-  metaFolder_id: string | number
+  metaFolderId: string | number
   isInMeta?: boolean
   isInData?: boolean
   lastUpdateTimestamp?: number
@@ -216,7 +216,7 @@ export type MetaDataset = BaseEntity & {
   folderName?: string
   nbVariable?: number
   metaLocalisation?: string
-  nb_row?: number
+  nbRow?: number
 }
 
 export type MetaFolder = BaseEntity & {
@@ -229,11 +229,11 @@ export type MetaFolder = BaseEntity & {
 export type Evolution = {
   id?: string | number
   entity: EntityName
-  entity_id: string | number
+  entityId: string | number
   type: string
   timestamp: number
   name?: string | number
-  parent_entity_id?: string | number
+  parentEntityId?: string | number
   _deleted?: boolean
   _entity?: string
   _entityClean?: string
@@ -245,7 +245,7 @@ export type Evolution = {
   parentDeleted?: boolean
   isFavorite?: boolean
   date?: string
-  folder_id?: string | number
+  folderId?: string | number
   _toHide?: boolean
 }
 
@@ -269,10 +269,10 @@ export type EntityTypeMap = {
   metaFolder: MetaFolder
   favorite: Favorite
   filter: Filter
-  filter_active: FilterActive
+  filterActive: FilterActive
   log: Log
   option: Option
-  search_history: SearchHistory
+  searchHistory: SearchHistory
   parent: BaseEntity
 }
 

@@ -4,7 +4,7 @@
 
   let { allFav } = $props()
 
-  allFav.sort((a, b) => b.favorite_timestamp - a.favorite_timestamp)
+  allFav.sort((a, b) => b.favoriteTimestamp - a.favoriteTimestamp)
 
   const columns = [
     Column.favorite(),
@@ -12,7 +12,7 @@
     Column.name(),
     Column.description(),
     Column.folderSimple(),
-    Column.timestamp({ varName: 'favorite_timestamp' }),
+    Column.timestamp({ varName: 'favoriteTimestamp' }),
   ]
 </script>
 

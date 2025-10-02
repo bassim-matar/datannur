@@ -1,4 +1,4 @@
-jsonjs.data['accident_route'] = 
+jsonjs.data['accident-route'] = 
 [
   {
     "variable_1": 1,

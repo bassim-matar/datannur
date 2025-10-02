@@ -14,7 +14,7 @@
 
   const base = href === '/' ? '' : getBaseLinkUrl()
 
-  const entityClass = $derived(entity ? `color_entity_${entity}` : '')
+  const entityClass = $derived(entity ? `color-entity-${entity}` : '')
 
   function goToHref(event) {
     if (event.ctrlKey || event.metaKey) return
@@ -56,9 +56,9 @@
   }
 
   @each $entity in $entities {
-    a.color_entity_#{$entity}:hover,
-    a.color_entity_#{$entity}.is-active,
-    a.color_entity_#{$entity}:focus-within {
+    a.color-entity-#{$entity}:hover,
+    a.color-entity-#{$entity}.is-active,
+    a.color-entity-#{$entity}:focus-within {
       color: #{color($entity)} !important;
     }
   }

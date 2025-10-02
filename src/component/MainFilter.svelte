@@ -11,11 +11,11 @@
 
   for (const dbFilter of dbFilters) {
     const filter = dbFilter
-    filter.is_active = true
+    filter.isActive = true
     filters.push(filter)
     for (const savedFilter of savedFilters) {
       if (savedFilter.id === filter.id) {
-        filter.is_active = savedFilter.is_active
+        filter.isActive = savedFilter.isActive
         break
       }
     }
@@ -28,7 +28,7 @@
 
 {#each filters as filter (filter.id)}
   <div class="navbar-item">
-    <Switch bind:value={filter.is_active} change={updateFilterState}>
+    <Switch bind:value={filter.isActive} change={updateFilterState}>
       {filter.name}
     </Switch>
   </div>

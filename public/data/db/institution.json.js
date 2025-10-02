@@ -10,7 +10,7 @@ jsonjs.data['institution'] =
     "start_date": null,
     "end_date": null,
     "tag_ids": null,
-    "doc_ids": "pdf_wiki"
+    "doc_ids": "pdf-wiki"
   },
   {
     "id": "poste",
@@ -43,7 +43,7 @@ jsonjs.data['institution'] =
     "description": "Ce vaste département regroupe des tâches aussi diverses que la santé publique, les affaires sociales, la culture, la statistique publique ou l'égalité entre les sexes.",
     "email": null,
     "phone": null,
-    "start_date": 2012,
+    "start_date": 2013,
     "end_date": 2023,
     "tag_ids": null,
     "doc_ids": null
@@ -262,7 +262,7 @@ jsonjs.data['institution'] =
     "start_date": null,
     "end_date": null,
     "tag_ids": "population, societe, transport",
-    "doc_ids": "pop_com_1"
+    "doc_ids": "pop-com-1"
   },
   {
     "id": "ofs-sys-form",

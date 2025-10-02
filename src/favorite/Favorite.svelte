@@ -32,7 +32,7 @@
 
 <style lang="scss">
   @use '../style/favorite.scss' as *;
-  @include favorite_style;
+  @include favorite-style;
 
   .favorite {
     margin-left: 10px;

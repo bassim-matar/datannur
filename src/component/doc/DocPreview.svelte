@@ -7,20 +7,20 @@
 </script>
 
 <div
-  class="doc_content_wrapper"
-  class:has_pdf_format={doc.type === 'pdf'}
-  class:has_md_format={doc.type === 'md'}
+  class="doc-content-wrapper"
+  class:has-pdf-format={doc.type === 'pdf'}
+  class:has-md-format={doc.type === 'md'}
 >
   <div style="font-weight: bold;">
     <Icon type="search" /> Aperçu
   </div>
 
-  <div class="doc_content_box">
-    <div class="doc_content">
+  <div class="doc-content-box">
+    <div class="doc-content">
       {#if doc.type === 'pdf'}
         <PdfViewer pdf={doc.path} />
       {:else if doc.type === 'md'}
-        <MdFileDynamic docId={doc.id} mode="no_padding" />
+        <MdFileDynamic docId={doc.id} mode="noPadding" />
       {/if}
     </div>
   </div>
@@ -29,49 +29,49 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .doc_content_wrapper {
+  .doc-content-wrapper {
     width: calc(50% - 3px);
     padding: 1em 0.75em;
     box-sizing: border-box;
     display: inline-block;
-    .doc_content_box {
+    .doc-content-box {
       margin-top: 10px;
       overflow: hidden;
     }
 
-    &.has_pdf_format {
-      .doc_content_box {
+    &.has-pdf-format {
+      .doc-content-box {
         border: 1px solid $color-5;
-        .doc_content {
+        .doc-content {
           overflow: auto;
           height: max(100vh - 301px, 170px);
         }
       }
     }
 
-    &.has_md_format {
-      .doc_content {
+    &.has-md-format {
+      .doc-content {
         float: left;
         max-width: 100%;
       }
     }
   }
 
-  :global(html.rounded_design) {
-    .doc_content_box {
+  :global(html.roundedDesign) {
+    .doc-content-box {
       border-radius: $rounded-size;
     }
   }
 
   @media screen and (max-width: 1023px) {
-    .doc_content_wrapper {
+    .doc-content-wrapper {
       display: block;
       width: 100%;
       padding-top: 0;
     }
   }
   @media screen and (max-width: 600px) {
-    .doc_content_wrapper {
+    .doc-content-wrapper {
       padding: 10px;
     }
   }

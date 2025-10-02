@@ -1,334 +1,518 @@
 [
-  ["folder", "dataset", "variable", "description"],
+  ["folder", "dataset", "variable", "description", "storageKey"],
   [
     "data",
     null,
     null,
-    "Base de données principale avec les metadonnées du catalogue"
+    "Base de données principale avec les metadonnées du catalogue",
+    null
   ],
   [
     "data",
     "config",
     null,
-    "information générales, notamment les descriptions des différentes entitées"
+    "information générales, notamment les descriptions des différentes entitées",
+    null
   ],
   [
     "data",
     "config",
     "id",
-    "clé primaire d'un élément de configuration de l'app"
-  ],
-  ["data", "config", "value", "valeur de l'élément de configuration de l'app"],
-  ["data", "dataset", null, "Datasets du catalogue"],
-  ["data", "dataset", "id", "clé primaire du dataset"],
-  ["data", "dataset", "folder_id", "clé du dossier contenant le dataset"],
-  [
-    "data",
-    "dataset",
-    "manager_id",
-    "clé de l'institution gestionnaire du dataset"
+    "clé primaire d'un élément de configuration de l'app",
+    null
   ],
   [
     "data",
-    "dataset",
-    "owner_id",
-    "clé de l'institution fournisseur du dataset"
+    "config",
+    "value",
+    "valeur de l'élément de configuration de l'app",
+    null
   ],
-  ["data", "dataset", "tag_ids", "clés des mots clés liés"],
-  ["data", "dataset", "doc_ids", "clés des docs liés"],
-  ["data", "dataset", "name", "nom du dataset"],
-  ["data", "dataset", "description", "description du dataset"],
-  ["data", "dataset", "data_path", "emplacement du dataset"],
+  ["data", "dataset", null, "Datasets du catalogue", null],
+  ["data", "dataset", "id", "clé primaire du dataset", null],
   [
     "data",
     "dataset",
-    "delivery_format",
-    "Format du dataset livrées (CSV, XML, ...)"
+    "folderId",
+    "clé du dossier contenant le dataset",
+    "folder_id"
+  ],
+  [
+    "data",
+    "dataset",
+    "managerId",
+    "clé de l'institution gestionnaire du dataset",
+    "manager_id"
+  ],
+  [
+    "data",
+    "dataset",
+    "ownerId",
+    "clé de l'institution fournisseur du dataset",
+    "owner_id"
+  ],
+  ["data", "dataset", "tagIds", "clés des mots clés liés", "tag_ids"],
+  ["data", "dataset", "docIds", "clés des docs liés", "doc_ids"],
+  ["data", "dataset", "name", "nom du dataset", null],
+  ["data", "dataset", "description", "description du dataset", null],
+  ["data", "dataset", "dataPath", "emplacement du dataset", "data_path"],
+  [
+    "data",
+    "dataset",
+    "deliveryFormat",
+    "Format du dataset livrées (CSV, XML, ...)",
+    "delivery_format"
   ],
   [
     "data",
     "dataset",
     "type",
-    "type de dataset (utile pour le filtre générale)"
+    "type de dataset (utile pour le filtre générale)",
+    null
   ],
-  ["data", "dataset", "link", "lien vers l'emplacement du dataset"],
+  ["data", "dataset", "link", "lien vers l'emplacement du dataset", null],
   [
     "data",
     "dataset",
     "localisation",
-    "zone géographique concernée par le dataset"
+    "zone géographique concernée par le dataset",
+    null
   ],
-  ["data", "dataset", "nb_row", "nombre de ligne dans le dataset"],
+  ["data", "dataset", "nbRow", "nombre de ligne dans le dataset", "nb_row"],
   [
     "data",
     "dataset",
-    "start_date",
-    "début de la période couverte par le dataset"
+    "startDate",
+    "début de la période couverte par le dataset",
+    "start_date"
   ],
-  ["data", "dataset", "end_date", "fin de la période couverte par le dataset"],
   [
     "data",
     "dataset",
-    "last_update_date",
-    "date de denière mise à jour du dataset"
+    "endDate",
+    "fin de la période couverte par le dataset",
+    "end_date"
   ],
-  ["data", "dataset", "updating_each", "fréquence de mise à jour du dataset"],
   [
     "data",
     "dataset",
-    "no_more_update",
-    "Le dataset n'est plus mis à jour et n'a donc pas de date de prochaine mise à jour"
+    "lastUpdateDate",
+    "date de denière mise à jour du dataset",
+    "last_update_date"
   ],
-  ["data", "doc", null, "Documentation (pdf, md) attachée a un élément"],
-  ["data", "doc", "id", "clé primaire du document"],
-  ["data", "doc", "name", "nom du document"],
-  ["data", "doc", "description", "description du doc"],
-  ["data", "doc", "path", "emplacement du document"],
-  ["data", "doc", "type", "type de document (pdf, md)"],
-  ["data", "doc", "last_update", "timestamp unix de la dernière modification"],
-  ["data", "folder", null, "Dossiers"],
-  ["data", "folder", "id", "clé primaire du dossier"],
-  ["data", "folder", "parent_id", "clé du dossier contenant le dossier"],
+  [
+    "data",
+    "dataset",
+    "updatingEach",
+    "fréquence de mise à jour du dataset",
+    "updating_each"
+  ],
+  [
+    "data",
+    "dataset",
+    "noMoreUpdate",
+    "Le dataset n'est plus mis à jour et n'a donc pas de date de prochaine mise à jour",
+    "no_more_update"
+  ],
+  ["data", "doc", null, "Documentation (pdf, md) attachée a un élément", null],
+  ["data", "doc", "id", "clé primaire du document", null],
+  ["data", "doc", "name", "nom du document", null],
+  ["data", "doc", "description", "description du doc", null],
+  ["data", "doc", "path", "emplacement du document", null],
+  ["data", "doc", "type", "type de document (pdf, md)", null],
+  [
+    "data",
+    "doc",
+    "lastUpdate",
+    "timestamp unix de la dernière modification",
+    "last_update"
+  ],
+  ["data", "folder", null, "Dossiers", null],
+  ["data", "folder", "id", "clé primaire du dossier", null],
   [
     "data",
     "folder",
-    "manager_id",
-    "clé de l'institution gestionnaire du dossier"
+    "parentId",
+    "clé du dossier contenant le dossier",
+    "parent_id"
   ],
-  ["data", "folder", "owner_id", "clé de l'institution fournisseur du dossier"],
-  ["data", "folder", "tag_ids", "clés des mots clés liés"],
-  ["data", "folder", "doc_ids", "clés des docs liés"],
-  ["data", "folder", "name", "nom du dossier"],
-  ["data", "folder", "description", "description du dossier"],
-  ["data", "folder", "data_path", "emplacement du dossier"],
   [
     "data",
     "folder",
-    "delivery_format",
-    "Format des données livrées (CSV, XML, ...)"
+    "managerId",
+    "clé de l'institution gestionnaire du dossier",
+    "manager_id"
   ],
-  ["data", "folder", "git_code", "emplacement du code sur un repo GIT"],
   [
     "data",
     "folder",
-    "last_update_date",
-    "date de denière mise à jour du dossier"
+    "ownerId",
+    "clé de l'institution fournisseur du dossier",
+    "owner_id"
+  ],
+  ["data", "folder", "tagIds", "clés des mots clés liés", "tag_ids"],
+  ["data", "folder", "docIds", "clés des docs liés", "doc_ids"],
+  ["data", "folder", "name", "nom du dossier", null],
+  ["data", "folder", "description", "description du dossier", null],
+  ["data", "folder", "dataPath", "emplacement du dossier", "data_path"],
+  [
+    "data",
+    "folder",
+    "deliveryFormat",
+    "Format des données livrées (CSV, XML, ...)",
+    "delivery_format"
+  ],
+  [
+    "data",
+    "folder",
+    "gitCode",
+    "emplacement du code sur un repo GIT",
+    "git_code"
+  ],
+  [
+    "data",
+    "folder",
+    "lastUpdateDate",
+    "date de denière mise à jour du dossier",
+    "last_update_date"
   ],
   [
     "data",
     "folder",
     "localisation",
-    "zone géographique concernée par le dossier"
-  ],
-  ["data", "folder", "metadata_path", "emplacement des métadonnées du dossier"],
-  [
-    "data",
-    "folder",
-    "survey_type",
-    "type de source (échantillon, registre, ...)"
+    "zone géographique concernée par le dossier",
+    null
   ],
   [
     "data",
     "folder",
-    "start_date",
-    "début de la période couverte par le dossier"
+    "metadataPath",
+    "emplacement des métadonnées du dossier",
+    "metadata_path"
   ],
-  ["data", "folder", "end_date", "fin de la période couverte par le dossier"],
-  ["data", "folder", "updating_each", "fréquence de mise à jour du dossier"],
   [
     "data",
     "folder",
-    "no_more_update",
-    "Le dossier n'est plus mis à jour et n'a donc pas de date de prochaine mise à jour"
+    "surveyType",
+    "type de source (échantillon, registre, ...)",
+    "survey_type"
+  ],
+  [
+    "data",
+    "folder",
+    "startDate",
+    "début de la période couverte par le dossier",
+    "start_date"
+  ],
+  [
+    "data",
+    "folder",
+    "endDate",
+    "fin de la période couverte par le dossier",
+    "end_date"
+  ],
+  [
+    "data",
+    "folder",
+    "updatingEach",
+    "fréquence de mise à jour du dossier",
+    "updating_each"
+  ],
+  [
+    "data",
+    "folder",
+    "noMoreUpdate",
+    "Le dossier n'est plus mis à jour et n'a donc pas de date de prochaine mise à jour",
+    "no_more_update"
   ],
   [
     "data",
     "evolution",
     null,
-    "Historique des changements dans les métadonnées"
+    "Historique des changements dans les métadonnées",
+    null
   ],
   [
     "data",
     "evolution",
     "type",
-    "type de changement (ajout, suppression ou modification)"
+    "type de changement (ajout, suppression ou modification)",
+    null
   ],
   [
     "data",
     "evolution",
     "entity",
-    "nom de l'entité concernée par le changement"
+    "nom de l'entité concernée par le changement",
+    null
   ],
   [
     "data",
     "evolution",
-    "entity_id",
-    "clé de l'élement concernée par le changement"
+    "entityId",
+    "clé de l'élement concernée par le changement",
+    "entity_id"
   ],
   [
     "data",
     "evolution",
     "name",
-    "nom de l'élément (rempli en cas de suppression)"
+    "nom de l'élément (rempli en cas de suppression)",
+    null
   ],
   [
     "data",
     "evolution",
-    "parent_entity_id",
-    "clé de l'élément parent (rempli en cas de suppression)"
+    "parentEntityId",
+    "clé de l'élément parent (rempli en cas de suppression)",
+    "parent_entity_id"
   ],
-  ["data", "evolution", "variable", "variable concernée par la modification"],
-  ["data", "evolution", "old_value", "valeur avant modification"],
-  ["data", "evolution", "new_value", "valeur après modification"],
-  ["data", "evolution", "timestamp", "timestamp unix du changement"],
+  [
+    "data",
+    "evolution",
+    "variable",
+    "variable concernée par la modification",
+    null
+  ],
+  ["data", "evolution", "oldValue", "valeur avant modification", "old_value"],
+  ["data", "evolution", "newValue", "valeur après modification", "new_value"],
+  ["data", "evolution", "timestamp", "timestamp unix du changement", null],
   [
     "data",
     "institution",
     null,
-    "Institutions, elles peuvent êtres propriétaires ou gestionnaires de dossiers ou de datasets"
+    "Institutions, elles peuvent êtres propriétaires ou gestionnaires de dossiers ou de datasets",
+    null
   ],
-  ["data", "institution", "id", "clé primaire de l'institution"],
-  ["data", "institution", "parent_id", "clé de l'institution parent"],
-  ["data", "institution", "tag_ids", "clés des mots clés liés"],
-  ["data", "institution", "doc_ids", "clés des docs liés"],
-  ["data", "institution", "name", "nom de l'institution"],
-  ["data", "institution", "description", "description de l'institution"],
-  ["data", "institution", "email", "email de l'institution"],
-  ["data", "institution", "phone", "numéro de téléphone de l'institution"],
+  ["data", "institution", "id", "clé primaire de l'institution", null],
   [
     "data",
     "institution",
-    "start_date",
-    "début de la période couverte par l'institution"
+    "parentId",
+    "clé de l'institution parent",
+    "parent_id"
+  ],
+  ["data", "institution", "tagIds", "clés des mots clés liés", "tag_ids"],
+  ["data", "institution", "docIds", "clés des docs liés", "doc_ids"],
+  ["data", "institution", "name", "nom de l'institution", null],
+  ["data", "institution", "description", "description de l'institution", null],
+  ["data", "institution", "email", "email de l'institution", null],
+  [
+    "data",
+    "institution",
+    "phone",
+    "numéro de téléphone de l'institution",
+    null
   ],
   [
     "data",
     "institution",
-    "end_date",
-    "fin de la période couverte par l'institution"
-  ],
-  ["data", "modality", null, "Modalité"],
-  ["data", "modality", "id", "clé primaire de la modalité"],
-  ["data", "modality", "folder_id", "clé du dossier"],
-  ["data", "modality", "name", "nom de la modalité"],
-  ["data", "modality", "description", "description de la modalité"],
-  ["data", "modality", "type", "datatype de la modalité"],
-  ["data", "tag", null, "Mots clés"],
-  ["data", "tag", "id", "clé primaire du mot clé"],
-  ["data", "tag", "parent_id", "clé du mot clé parent"],
-  ["data", "tag", "doc_ids", "clés des docs liés"],
-  ["data", "tag", "name", "nom du mot clé"],
-  ["data", "tag", "description", "description du mot clé"],
-  ["data", "value", null, "Valeurs et leur description au sein d'une modalité"],
-  ["data", "value", "modality_id", "clé de la modalité"],
-  ["data", "value", "value", "valeur"],
-  ["data", "value", "description", "description de valeur"],
-  ["data", "variable", null, "Variables contenues dans les datasets"],
-  ["data", "variable", "id", "clé primaire de la variable"],
-  ["data", "variable", "dataset_id", "clé du dataset contenant la variable"],
-  ["data", "variable", "modality_ids", "clé des modalités liées"],
-  ["data", "variable", "tag_ids", "clés des mots clés liés"],
-  ["data", "variable", "name", "nom de la variable"],
-  ["data", "variable", "original_name", "nom d'origine de la variable"],
-  ["data", "variable", "description", "description de la variable"],
-  ["data", "variable", "key", "est ou fait parti d'une clé unique"],
-  [
-    "data",
-    "variable",
-    "nb_distinct",
-    "nombre de valeurs distinctes contenues dans la variable"
+    "startDate",
+    "début de la période couverte par l'institution",
+    "start_date"
   ],
   [
     "data",
-    "variable",
-    "nb_duplicate",
-    "nombre de valeurs répétées contenues dans la variable"
+    "institution",
+    "endDate",
+    "fin de la période couverte par l'institution",
+    "end_date"
   ],
+  ["data", "modality", null, "Modalité", null],
+  ["data", "modality", "id", "clé primaire de la modalité", null],
+  ["data", "modality", "folderId", "clé du dossier", "folder_id"],
+  ["data", "modality", "name", "nom de la modalité", null],
+  ["data", "modality", "description", "description de la modalité", null],
+  ["data", "modality", "type", "datatype de la modalité", null],
+  ["data", "tag", null, "Mots clés", null],
+  ["data", "tag", "id", "clé primaire du mot clé", null],
+  ["data", "tag", "parentId", "clé du mot clé parent", "parent_id"],
+  ["data", "tag", "docIds", "clés des docs liés", "doc_ids"],
+  ["data", "tag", "name", "nom du mot clé", null],
+  ["data", "tag", "description", "description du mot clé", null],
+  [
+    "data",
+    "value",
+    null,
+    "Valeurs et leur description au sein d'une modalité",
+    null
+  ],
+  ["data", "value", "modalityId", "clé de la modalité", "modality_id"],
+  ["data", "value", "value", "valeur", null],
+  ["data", "value", "description", "description de valeur", null],
+  ["data", "variable", null, "Variables contenues dans les datasets", null],
+  ["data", "variable", "id", "clé primaire de la variable", null],
   [
     "data",
     "variable",
-    "nb_missing",
-    "nombre de valeurs manquantes contenues dans la variable"
-  ],
-  ["data", "variable", "type", "datatype de la variable"],
-  [
-    "data",
-    "variable",
-    "start_date",
-    "début de la période couverte par la variable"
+    "datasetId",
+    "clé du dataset contenant la variable",
+    "dataset_id"
   ],
   [
     "data",
     "variable",
-    "end_date",
-    "fin de la période couverte par la variable"
+    "modalityIds",
+    "clé des modalités liées",
+    "modality_ids"
+  ],
+  ["data", "variable", "tagIds", "clés des mots clés liés", "tag_ids"],
+  ["data", "variable", "name", "nom de la variable", null],
+  [
+    "data",
+    "variable",
+    "originalName",
+    "nom d'origine de la variable",
+    "original_name"
+  ],
+  ["data", "variable", "description", "description de la variable", null],
+  ["data", "variable", "key", "est ou fait parti d'une clé unique", null],
+  [
+    "data",
+    "variable",
+    "nbDistinct",
+    "nombre de valeurs distinctes contenues dans la variable",
+    "nb_distinct"
   ],
   [
     "data",
     "variable",
-    "sourceVar_ids",
-    "liste des clés des variables sources (lineage)"
+    "nbDuplicate",
+    "nombre de valeurs répétées contenues dans la variable",
+    "nb_duplicate"
   ],
-  ["data", "freq", null, "Fréquences des valeurs pour chaque variable"],
-  ["data", "freq", "variable_id", "clé de la variable concernée"],
-  ["data", "freq", "value", "valeur dont on compte la fréquence"],
+  [
+    "data",
+    "variable",
+    "nbMissing",
+    "nombre de valeurs manquantes contenues dans la variable",
+    "nb_missing"
+  ],
+  ["data", "variable", "type", "datatype de la variable", null],
+  [
+    "data",
+    "variable",
+    "startDate",
+    "début de la période couverte par la variable",
+    "start_date"
+  ],
+  [
+    "data",
+    "variable",
+    "endDate",
+    "fin de la période couverte par la variable",
+    "end_date"
+  ],
+  [
+    "data",
+    "variable",
+    "sourceVarIds",
+    "liste des clés des variables sources (lineage)",
+    "sourceVar_ids"
+  ],
+  ["data", "freq", null, "Fréquences des valeurs pour chaque variable", null],
+  ["data", "freq", "variableId", "clé de la variable concernée", "variable_id"],
+  ["data", "freq", "value", "valeur dont on compte la fréquence", null],
   [
     "data",
     "freq",
     "freq",
-    "nombre d'occurrences de cette valeur dans la variable"
+    "nombre d'occurrences de cette valeur dans la variable",
+    null
   ],
   [
-    "user_data",
+    "userData",
     null,
     null,
-    "Base de données personnelle stockée dans le navigateur web de l'utilisateur"
+    "Base de données personnelle stockée dans le navigateur web de l'utilisateur",
+    null
   ],
-  ["user_data", "favorite", null, "Elements mis en favoris par l'utilisteur"],
-  ["user_data", "favorite", "id", "clé primaire du favoris"],
-  ["user_data", "favorite", "entity_id", "clé de l'élément favoris"],
-  ["user_data", "favorite", "entity", "nom de l'entité de l'element favoris"],
-  ["user_data", "favorite", "timestamp", "timestamp unix de l'ajout du favori"],
-  ["user_data", "filter_active", null, "Etat de chaque filtre (actif ou non)"],
-  ["user_data", "filter_active", "id", "clé primaire du filtre"],
-  ["user_data", "filter_active", "is_active", "état du filtre (actif ou non)"],
   [
-    "user_data",
+    "userData",
+    "favorite",
+    null,
+    "Elements mis en favoris par l'utilisteur",
+    null
+  ],
+  ["userData", "favorite", "id", "clé primaire du favoris", null],
+  ["userData", "favorite", "entityId", "clé de l'élément favoris", "entity_id"],
+  [
+    "userData",
+    "favorite",
+    "entity",
+    "nom de l'entité de l'element favoris",
+    null
+  ],
+  [
+    "userData",
+    "favorite",
+    "timestamp",
+    "timestamp unix de l'ajout du favori",
+    null
+  ],
+  [
+    "userData",
+    "filterActive",
+    null,
+    "Etat de chaque filtre (actif ou non)",
+    null
+  ],
+  ["userData", "filterActive", "id", "clé primaire du filtre", null],
+  [
+    "userData",
+    "filterActive",
+    "isActive",
+    "état du filtre (actif ou non)",
+    "is_active"
+  ],
+  [
+    "userData",
     "log",
     null,
-    "Logs produits par l'utilisateur en utilisant l'application"
+    "Logs produits par l'utilisateur en utilisant l'application",
+    null
   ],
-  ["user_data", "log", "id", "clé primaire du log"],
+  ["userData", "log", "id", "clé primaire du log", null],
   [
-    "user_data",
+    "userData",
     "log",
-    "entity_id",
-    "clé de l'élément concernée par l'action de l'utilisateur"
+    "entityId",
+    "clé de l'élément concernée par l'action de l'utilisateur",
+    "entity_id"
   ],
   [
-    "user_data",
+    "userData",
     "log",
     "entity",
-    "entité concernée par l'action de l'utilisateur"
+    "entité concernée par l'action de l'utilisateur",
+    null
   ],
-  ["user_data", "log", "action", "action faite par l'utilisateur"],
+  ["userData", "log", "action", "action faite par l'utilisateur", null],
   [
-    "user_data",
+    "userData",
     "log",
     "timestamp",
-    "timestamp unix de l'action de l'utilisateur"
+    "timestamp unix de l'action de l'utilisateur",
+    null
   ],
-  ["user_data", "option", null, "Options définies par l'utilisateur"],
-  ["user_data", "option", "id", "clé primaire de l'option"],
-  ["user_data", "option", "value", "valeur de l'option"],
-  ["user_data", "search_history", null, "Historique de recherche"],
-  ["user_data", "search_history", "id", "clé primaire de la recherche"],
-  ["user_data", "search_history", "entity_id", "clé de l'élément recherché"],
-  ["user_data", "search_history", "entity", "entité recherchée"],
+  ["userData", "option", null, "Options définies par l'utilisateur", null],
+  ["userData", "option", "id", "clé primaire de l'option", null],
+  ["userData", "option", "value", "valeur de l'option", null],
+  ["userData", "searchHistory", null, "Historique de recherche", null],
+  ["userData", "searchHistory", "id", "clé primaire de la recherche", null],
   [
-    "user_data",
-    "search_history",
+    "userData",
+    "searchHistory",
+    "entityId",
+    "clé de l'élément recherché",
+    "entity_id"
+  ],
+  ["userData", "searchHistory", "entity", "entité recherchée", null],
+  [
+    "userData",
+    "searchHistory",
     "timestamp",
-    "timestamp unix du moment de la recherche"
+    "timestamp unix du moment de la recherche",
+    null
   ]
 ]

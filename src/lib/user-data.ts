@@ -3,7 +3,7 @@ import db from '@db'
 interface UserData {
   log?: unknown[]
   favorite?: unknown[]
-  search_history?: unknown[]
+  searchHistory?: unknown[]
   [key: string]: unknown[]
 }
 
@@ -13,7 +13,7 @@ export async function loadUserData(): Promise<UserData> {
   if (userData) return userData
 
   userData = await new Promise<UserData>(resolve => {
-    db.browser.getAll('user_data/', items =>
+    db.browser.getAll('userData/', items =>
       resolve(items as unknown as UserData),
     )
   })

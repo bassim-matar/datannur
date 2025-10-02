@@ -47,7 +47,7 @@ jsonjs.data['tag'] =
     "parent_id": "theme_iso",
     "name": "Développement territorial",
     "description": "La naissance de la notion de développement territorial renvoie à de multiples acceptions possibles du développement et relève de diverses définitions possibles du territoire. Il est maintenant admis qu'elle élargit, diversifie et approfondit celles de développement local (Pecqueur (B.), 1989)), de développement régional, d'aménagement du territoire, voire les dépasse.",
-    "doc_ids": "pdf_online, bevnat_info"
+    "doc_ids": "pdf_online, bevnat-info"
   },
   {
     "id": "cadastre_foncier",

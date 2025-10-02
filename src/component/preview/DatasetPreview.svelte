@@ -26,7 +26,7 @@
     }
     datasetData = PreviewCache.get(datasetPreview)!
     datasetData = datasetData.map(obj => {
-      delete obj._row_num
+      delete obj._rowNum
       return obj
     })
     columns = PreviewManager.getColumns(datasetData)
@@ -37,7 +37,7 @@
 </script>
 
 {#await loadPreview}
-  <Loading type="tab_body" colorEntity="search" />
+  <Loading type="tabBody" colorEntity="search" />
 {:then}
   {#if datasetData.length > 0}
     <Datatable

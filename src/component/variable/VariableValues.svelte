@@ -26,7 +26,7 @@
           if (!data) return ''
           if (type !== 'display') return data
           return link(
-            'modality/' + row.modality_id,
+            'modality/' + row.modalityId,
             escapeHtml(data),
             'modality',
           )

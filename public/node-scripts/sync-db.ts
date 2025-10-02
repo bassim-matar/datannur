@@ -10,8 +10,8 @@ const root = './data/'
 const builder = new JsonjsdbBuilder()
 await builder.setOutputDb(root + 'db')
 await Promise.all([
-  builder.updateDb(root + '/db_source'),
+  builder.updateDb(root + '/db-source'),
   builder.updatePreview('preview', root + 'dataset'),
-  builder.updateMdDir('md_doc', root + 'md'),
+  builder.updateMdDir('md-doc', root + 'md'),
 ])
-builder.watchDb(root + '/db_source')
+builder.watchDb(root + '/db-source')

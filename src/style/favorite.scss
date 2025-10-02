@@ -1,6 +1,6 @@
 @use 'main.scss' as *;
 
-@mixin favorite_style {
+@mixin favorite-style {
   .favorite {
     cursor: pointer;
     color: $color-4;

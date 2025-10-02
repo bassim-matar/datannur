@@ -31,7 +31,7 @@
   const maxSearchResult = 100
   let navPosition = 0
 
-  SearchHistory.onChange('search_bar', () => searchInputChange())
+  SearchHistory.onChange('searchBar', () => searchInputChange())
 
   function initSearchRecent() {
     allSearch = SearchHistory.getRecentSearch()
@@ -86,7 +86,7 @@
           router.navigate(`/${entity}/${item.id}`)
           SearchHistory.add(entity, item.id)
           isFocusIn = false
-          Logs.add('search_bar', { entity, entity_id: item.id })
+          Logs.add('searchBar', { entity, entityId: item.id })
         }
       })
     }
@@ -120,7 +120,7 @@
     if (navPosition > nbResult) navPosition = nbResult
     if (navPosition > maxSearchResult) navPosition = maxSearchResult
     applyToAllSearch((item, itemNum) => {
-      item.nav_hover = itemNum === navPosition
+      item.navHover = itemNum === navPosition
     })
   }
 
@@ -162,16 +162,16 @@
 <svelte:window onkeydown={windowKeydown} />
 
 <div
-  class="navbar-item header_search_item"
-  class:hidden_by_mobile_menu={isHiddenByMobileMenu}
+  class="navbar-item header-search-item"
+  class:hidden-by-mobile-menu={isHiddenByMobileMenu}
   use:clickOutside={focusout}
 >
   <div
-    class="search_bar_container box_shadow_color shadow_search"
-    class:box_shadow={isFocusIn}
+    class="search-bar-container box-shadow-color shadow-search"
+    class:box-shadow={isFocusIn}
     class:focus={isFocusIn}
     class:homepage={$onPageHomepage}
-    class:page_search={$onPageSearch}
+    class:page-search={$onPageSearch}
   >
     <p class="control has-icons-right">
       <button
@@ -186,7 +186,7 @@
         <i class="fas fa-magnifying-glass"></i>
       </button>
       <input
-        id="header_search_input"
+        id="header-search-input"
         class="input"
         type="text"
         placeholder="Rechercher..."
@@ -201,7 +201,7 @@
         enterkeyhint="search"
       />
       {#if $searchValue !== ''}
-        <span class="btn_clear_input_wrapper">
+        <span class="btn-clear-input-wrapper">
           <BtnClearInput click={clearInput} />
         </span>
       {/if}
@@ -223,12 +223,12 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .header_search_item {
+  .header-search-item {
     padding: 0;
     margin-right: 0px;
     position: initial;
 
-    .search_bar_container {
+    .search-bar-container {
       position: fixed;
       z-index: 40;
       top: 2.5px;
@@ -248,7 +248,7 @@
         border-color: $color-5;
       }
       &.homepage,
-      &.page_search {
+      &.page-search {
         top: 65px;
         left: 3em;
         z-index: 20;
@@ -261,7 +261,7 @@
       }
     }
 
-    #header_search_input {
+    #header-search-input {
       position: relative;
       width: calc(100vw - 730px);
       margin: 0;
@@ -274,14 +274,14 @@
         color: $color-4;
       }
     }
-    .search_bar_container.homepage #header_search_input,
-    .search_bar_container.page_search #header_search_input {
+    .search-bar-container.homepage #header-search-input,
+    .search-bar-container.page-search #header-search-input {
       width: 100%;
       max-width: 100%;
       padding: 10px 20px;
       padding-left: 3.3rem;
     }
-    .btn_clear_input_wrapper {
+    .btn-clear-input-wrapper {
       position: absolute;
       top: 0;
       right: 0;
@@ -306,29 +306,29 @@
     }
   }
 
-  :global(html.rounded_design) {
-    .search_bar_container {
+  :global(html.roundedDesign) {
+    .search-bar-container {
       border-radius: $rounded;
     }
   }
 
-  :global(html.page_shadow_colored) {
-    .header_search_item {
-      .search_bar_container.focus {
+  :global(html.pageShadowColored) {
+    .header-search-item {
+      .search-bar-container.focus {
         border-color: color('search');
       }
     }
   }
 
   @media screen and (max-width: 1023px) {
-    .header_search_item .search_bar_container.homepage {
+    .header-search-item .search-bar-container.homepage {
       left: 50px;
     }
   }
 
   @media screen and (max-width: 600px) {
-    .header_search_item .search_bar_container.homepage,
-    .header_search_item .search_bar_container.page_search {
+    .header-search-item .search-bar-container.homepage,
+    .header-search-item .search-bar-container.page-search {
       left: 0px;
       right: 0px;
       top: 80px;
@@ -336,7 +336,7 @@
     }
   }
 
-  .header_search_item.hidden_by_mobile_menu {
+  .header-search-item.hidden-by-mobile-menu {
     opacity: 0;
     pointer-events: none;
     transition: opacity $transition-basic-1;

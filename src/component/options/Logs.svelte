@@ -17,6 +17,8 @@
     {
       data: 'action',
       title: Render.icon('log') + 'Log',
+      defaultContent: '',
+      filterType: 'select',
       tooltip: 'Action',
       render: (data, type, row) => {
         if (type !== 'display') return row.actionReadable || row.action

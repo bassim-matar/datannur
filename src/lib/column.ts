@@ -47,6 +47,8 @@ export default class Column {
         } else if (option.withIndent && !row.noIndent) {
           text = link(row._entity + '/' + row.id, data, row._entity)
           indent = row?.parentsRelative?.length - row?.minimumDeep
+        } else if (option?.isMeta && entity === 'variable' && row.storageKey) {
+          text = link(row._entity + '/' + row.id, row.storageKey, row._entity)
         } else {
           text = link(row._entity + '/' + row.id, data, row._entity)
         }
@@ -57,7 +59,7 @@ export default class Column {
             row._entity,
           )
         }
-        text = `<strong class="var_main_col">${text}</strong>`
+        text = `<strong class="var-main-col">${text}</strong>`
         if (row._deleted) {
           text = `<span class="deleted">${data}</span>`
         }
@@ -67,7 +69,7 @@ export default class Column {
   }
   static originalName() {
     return {
-      data: 'original_name',
+      data: 'originalName',
       title: Render.icon('name') + "Nom d'origine",
       hasLongText: true,
       filterType: 'input',
@@ -87,7 +89,7 @@ export default class Column {
         if (!data) return ''
         if (type !== 'display') return data
         return `
-          <span class="icon icon_${row._entity}">
+          <span class="icon icon-${row._entity}">
             <i class="fas fa-${entityToIcon[row._entity] || row._entity}"></i>
           </span>
           <span>${escapeHtml(data)}</span>`
@@ -108,20 +110,20 @@ export default class Column {
         if (type !== 'display')
           return `${row.parentEntityClean} | ${row.parentName}`
         return wrapLongText(`
-          <span class="icon icon_${row.parentEntity}">
+          <span class="icon icon-${row.parentEntity}">
             <i class="fas fa-${
               entityToIcon[row.parentEntity] || row.parentEntity
             }"></i>
           </span>
           <span>${link(
-            `${row.parentEntity}/${row.parent_entity_id}`,
+            `${row.parentEntity}/${row.parentEntityId}`,
             escapeHtml(row.parentName),
             row.parentEntity,
           )}</span>`)
       },
     }
   }
-  static folder(folderIdVar = 'folder_id', folderNameVar = 'folderName') {
+  static folder(folderIdVar = 'folderId', folderNameVar = 'folderName') {
     const render = (data, type, row) => {
       const folderId = row[folderIdVar]
       const folderName = row[folderNameVar]
@@ -141,7 +143,7 @@ export default class Column {
   }
   static folderSimple() {
     return {
-      data: 'folder_id',
+      data: 'folderId',
       title: Render.icon('folder') + 'Dossier',
       defaultContent: '',
       hasLongText: true,
@@ -212,9 +214,9 @@ export default class Column {
     const render = (data, type, row) =>
       isMobile
         ? wrapLongText(
-            link(`institution/${row.owner_id}`, escapeHtml(row.ownerName)),
+            link(`institution/${row.ownerId}`, escapeHtml(row.ownerName)),
           )
-        : Render.withParentsFromId('institution', row.owner_id, type)
+        : Render.withParentsFromId('institution', row.ownerId, type)
     return {
       data: 'ownerName',
       title: Render.icon('institution') + entityNames.owner,
@@ -228,9 +230,9 @@ export default class Column {
     const render = (data, type, row) =>
       isMobile
         ? wrapLongText(
-            link(`institution/${row.manager_id}`, escapeHtml(row.managerName)),
+            link(`institution/${row.managerId}`, escapeHtml(row.managerName)),
           )
-        : Render.withParentsFromId('institution', row.manager_id, type)
+        : Render.withParentsFromId('institution', row.managerId, type)
     return {
       data: 'managerName',
       title: Render.icon('institution') + entityNames.manager,
@@ -282,7 +284,7 @@ export default class Column {
   }
   static nbDuplicates() {
     return {
-      data: 'nb_duplicate',
+      data: 'nbDuplicate',
       defaultContent: '',
       filterType: 'input',
       title: Render.icon('duplicate') + 'Doublons',
@@ -292,7 +294,7 @@ export default class Column {
   }
   static nbMissing() {
     return {
-      data: 'nb_missing',
+      data: 'nbMissing',
       defaultContent: '',
       filterType: 'input',
       title: Render.icon('missing') + 'Manquant',
@@ -312,8 +314,8 @@ export default class Column {
   }
   static nbRow(nbRowMax) {
     return {
-      data: 'nb_row',
-      title: Render.icon('nb_row') + 'Lignes',
+      data: 'nbRow',
+      title: Render.icon('nbRow') + 'Lignes',
       filterType: 'input',
       defaultContent: '',
       tooltip: 'Nombre de lignes',
@@ -323,7 +325,7 @@ export default class Column {
         }
         if (!data) return ''
         const percent = getPercent(data / nbRowMax)
-        return `${Render.numPercent(data, percent, 'nb_row', type)}`
+        return `${Render.numPercent(data, percent, 'nbRow', type)}`
       },
     }
   }
@@ -363,7 +365,7 @@ export default class Column {
   }
   static frequency() {
     return {
-      data: 'updating_each',
+      data: 'updatingEach',
       name: 'frequency',
       defaultContent: '',
       filterType: 'select',
@@ -374,8 +376,8 @@ export default class Column {
   }
   static lastUpdate() {
     return {
-      data: 'last_update_date',
-      name: 'last_update',
+      data: 'lastUpdateDate',
+      name: 'lastUpdate',
       defaultContent: '',
       title: Render.icon('date') + 'Mise à jour',
       filterType: 'input',
@@ -386,7 +388,7 @@ export default class Column {
   static nextUpdate() {
     return {
       data: 'nextUpdateDate',
-      name: 'next_update',
+      name: 'nextUpdate',
       defaultContent: '',
       title: Render.icon('date') + 'Prochaine',
       filterType: 'input',
@@ -438,8 +440,8 @@ export default class Column {
   }
   static deliveryFormat() {
     return {
-      data: 'delivery_format',
-      title: Render.icon('delivery_format') + 'Format livraison',
+      data: 'deliveryFormat',
+      title: Render.icon('deliveryFormat') + 'Format livraison',
       defaultContent: '',
       filterType: 'select',
       tooltip: 'Format de livraison des données',
@@ -463,7 +465,7 @@ export default class Column {
   }
   static startDate() {
     return {
-      data: 'start_date',
+      data: 'startDate',
       title: Render.icon('dateRange') + 'Début',
       defaultContent: '',
       dateType: 'start',
@@ -478,7 +480,7 @@ export default class Column {
   }
   static endDate() {
     return {
-      data: 'end_date',
+      data: 'endDate',
       title: Render.icon('dateRange') + 'Fin',
       defaultContent: '',
       dateType: 'end',
@@ -502,15 +504,15 @@ export default class Column {
         if (type !== 'display') return data
         data = escapeHtml(data)
         return wrapLongText(
-          link(parentName + '/' + row[parentName + '_id'], data, 'dataset'),
+          link(parentName + '/' + row[parentName + 'Id'], data, 'dataset'),
         )
       },
     }
   }
   static dataPath() {
     return {
-      data: 'data_path',
-      title: Render.icon('data_path') + 'Emplacement',
+      data: 'dataPath',
+      title: Render.icon('dataPath') + 'Emplacement',
       defaultContent: '',
       tooltip: 'Emplacement des données',
       render: (data, type) => {
@@ -660,7 +662,7 @@ export default class Column {
   }
   static metaFolder() {
     return {
-      data: 'metaFolder_id',
+      data: 'metaFolderId',
       title: Render.icon('folder') + 'Dossier',
       tooltip: 'Dossier',
       render: (data, type) => {

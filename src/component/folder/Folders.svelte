@@ -98,16 +98,16 @@
       Column.manager(),
       Column.localisation(),
       {
-        data: 'survey_type',
-        title: Render.icon('survey_type') + "Type d'enquête",
+        data: 'surveyType',
+        title: Render.icon('surveyType') + "Type d'enquête",
         defaultContent: '',
         tooltip: "Type d'enquête",
         render: Render.shortText,
       },
       Column.deliveryFormat(),
       {
-        data: 'metadata_path',
-        title: Render.icon('metadata_path') + 'Metadonnées',
+        data: 'metadataPath',
+        title: Render.icon('metadataPath') + 'Metadonnées',
         defaultContent: '',
         tooltip: 'Emplacement des métadonnées',
         render: (data, type) => {
@@ -118,8 +118,8 @@
       },
       Column.dataPath(),
       {
-        data: 'git_code',
-        title: Render.icon('git_code') + 'GIT code',
+        data: 'gitCode',
+        title: Render.icon('gitCode') + 'GIT code',
         defaultContent: '',
         tooltip: 'Code source des traitements',
         render: (data, type) => {

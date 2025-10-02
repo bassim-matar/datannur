@@ -18,7 +18,7 @@
   <div class="tree">
     {#each elems as elem, i (elem.id)}
       <Link href="{type}/{elem.id}" entity={type}>
-        <div class="indented_text" style="padding-left: {i * 7}px;">
+        <div class="indented-text" style="padding-left: {i * 7}px;">
           {elem.name}
         </div>
       </Link>

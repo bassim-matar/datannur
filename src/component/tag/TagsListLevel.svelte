@@ -16,21 +16,21 @@
   const typedTag = isTag ? (tag as TagWithChildren) : null
 </script>
 
-<div class="main_tag_list_wrapper">
+<div class="main-tag-list-wrapper">
   {#if isTag && typedTag}
     <span>
       <Link href="tag/{typedTag.id}" entity="tag">{typedTag.name}</Link>
     </span>
   {/if}
   {#if tagChildrenData && tagChildrenData.length > 0}
-    <div class="tags_list_level_wrapper" class:with_indent={isTag}>
+    <div class="tags-list-level-wrapper" class:with-indent={isTag}>
       {#each tagChildrenData as childTag (childTag.id)}
         {#if childTag.children && Object.values(childTag.children).length > 0}
-          <div class="tag_list_level_wrapper">
+          <div class="tag-list-level-wrapper">
             <TagsListLevel tag={childTag} />
           </div>
         {:else}
-          <span class="tag_last_level"><TagsListLevel tag={childTag} /></span>
+          <span class="tag-last-level"><TagsListLevel tag={childTag} /></span>
         {/if}
       {/each}
     </div>
@@ -38,31 +38,31 @@
 </div>
 
 <style lang="scss">
-  .tag_list_level_wrapper {
+  .tag-list-level-wrapper {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px;
     font-weight: bold;
   }
-  .main_tag_list_wrapper {
+  .main-tag-list-wrapper {
     display: flex;
     flex-direction: column;
     gap: 5px;
   }
 
-  .tags_list_level_wrapper {
+  .tags-list-level-wrapper {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px 20px;
-    &.with_indent {
+    &.with-indent {
       margin-left: 10px;
       padding-left: 5px;
     }
   }
 
-  .tag_last_level {
+  .tag-last-level {
     font-weight: normal;
     font-style: italic;
     padding: 0;

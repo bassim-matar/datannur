@@ -13,7 +13,7 @@ import {
 
 export function getNbValues(values, row) {
   if (values && values.length) return values.length
-  if (row.nb_distinct) return row.nb_distinct
+  if (row.nbDistinct) return row.nbDistinct
   return ''
 }
 
@@ -68,13 +68,13 @@ export default class Render {
   static value(values, type, row) {
     if (!values || values === '' || values.length === 0) return wrapLongText()
     const nbValues = row.values.length
-    let entity = 'dataset_id' in row ? 'variable' : 'modality'
+    let entity = 'datasetId' in row ? 'variable' : 'modality'
     let tab = entity === 'variable' ? 'variableValues' : 'values'
     if (row._entity === 'metaVariable') {
       entity = 'metaVariable'
       tab = 'variableMetaValues'
     }
-    let content = '<ul class="ul_value">'
+    let content = '<ul class="ul-value">'
     let i = 0
     for (const value of values) {
       let valueContent = value.value
@@ -102,7 +102,7 @@ export default class Render {
   static freqPreview(freqData, type, row) {
     if (!freqData || freqData.length === 0) return ''
 
-    let content = '<ul class="ul_value">'
+    let content = '<ul class="ul-value">'
     let i = 0
 
     for (const freqItem of freqData) {
@@ -114,10 +114,10 @@ export default class Render {
       let freqContent
       if (type === 'display') {
         const freqDisplay = `
-        <div class="freq_item_container">
-          <div class="freq_background color_freq" style="width: ${percentBackground}%"></div>
-          <span class="freq_value">${escapeHtml(freqItem.value)}</span>
-          <span class="freq_number">${freqNum}</span>
+        <div class="freq-item-container">
+          <div class="freq-background color-freq" style="width: ${percentBackground}%"></div>
+          <span class="freq-value">${escapeHtml(freqItem.value)}</span>
+          <span class="freq-number">${freqNum}</span>
         </div>`
         freqContent = freqDisplay
       } else {
@@ -175,7 +175,7 @@ export default class Render {
     } else {
       classNames = `fas fa-${icon}`
     }
-    return `<span class='icon icon_${entity}'><i class='${classNames}'></i></span>`
+    return `<span class='icon icon-${entity}'><i class='${classNames}'></i></span>`
   }
   static modalitiesName(modalities) {
     if (!modalities || modalities.length === 0) return wrapLongText()
@@ -189,7 +189,7 @@ export default class Render {
   }
   static nbValues(data, type, row, nbValueMax) {
     const nbValues = data
-    let entity = 'dataset_id' in row ? 'variable' : 'modality'
+    let entity = 'datasetId' in row ? 'variable' : 'modality'
     let tab = entity === 'variable' ? 'variableValues' : 'values'
     if (row._entity === 'metaVariable') {
       entity = 'metaVariable'
@@ -205,13 +205,13 @@ export default class Render {
   }
   static nbDuplicate(nbDuplicate, type, row) {
     if (!nbDuplicate) return ''
-    const percent = getPercent(nbDuplicate / row.nb_row)
+    const percent = getPercent(nbDuplicate / row.nbRow)
     return `${Render.numPercent(nbDuplicate, percent, 'duplicate', type)}`
   }
   static nbMissing(nbMissing, type, row, stringify = true) {
-    if (!row.nb_row) return ''
+    if (!row.nbRow) return ''
     if (!nbMissing) return ''
-    const percent = getPercent(nbMissing / row.nb_row)
+    const percent = getPercent(nbMissing / row.nbRow)
     const content = Render.numPercent(nbMissing, percent, 'missing', type, true)
     if (stringify) return `${content}`
     return content
@@ -221,11 +221,11 @@ export default class Render {
     if (!displayValue) return ''
     if (type === 'display' && withPercent) displayValue += ` (${percent}%)`
     return `
-    <div class="num_percent_container">
-      <span class="num_percent color_${colorType} placeholder" style="width: 100%"></span>
-      <span class="num_percent color_${colorType}" style="width: ${percent}%"></span>
+    <div class="num-percent-container">
+      <span class="num-percent color-${colorType} placeholder" style="width: 100%"></span>
+      <span class="num-percent color-${colorType}" style="width: ${percent}%"></span>
     </div>
-    <span class="num_percent_value">${displayValue}</span>`
+    <span class="num-percent-value">${displayValue}</span>`
   }
   static tags(tags) {
     if (!tags || tags.length === 0) return wrapLongText()

@@ -1,27 +1,27 @@
-<div class="loading_dot"></div>
+<div class="loading-dot"></div>
 
 <style lang="scss">
-  .loading_dot:after {
+  .loading-dot:after {
     display: inline-block;
-    animation: loading_dot steps(1, end) 3s infinite;
-    content: "";
+    animation: loading-dot steps(1, end) 3s infinite;
+    content: '';
   }
 
-  @keyframes loading_dot {
+  @keyframes loading-dot {
     0% {
-      content: "...";
+      content: '...';
     }
     25% {
-      content: "..";
+      content: '..';
     }
     50% {
-      content: ".";
+      content: '.';
     }
     75% {
-      content: "..";
+      content: '..';
     }
     100% {
-      content: "...";
+      content: '...';
     }
   }
 </style>

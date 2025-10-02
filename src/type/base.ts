@@ -27,7 +27,7 @@ export type Config = {
 }
 
 export type Value = {
-  modality_id: string | number
+  modalityId: string | number
   value: string | null
   description?: string
 
@@ -36,7 +36,7 @@ export type Value = {
 }
 
 export type Freq = {
-  variable_id: string | number
+  variableId: string | number
   value: string
   freq: number
 }
@@ -44,19 +44,19 @@ export type Freq = {
 // User data entities
 export type Favorite = {
   id: string | number
-  entity_id: string | number
+  entityId: string | number
   entity: string
   timestamp: number
 }
 
 export type FilterActive = {
   id: string
-  is_active: boolean
+  isActive: boolean
 }
 
 export type Log = {
   id: string | number
-  entity_id: string | number
+  entityId: string | number
   entity: string
   action: string
   timestamp: number
@@ -69,7 +69,7 @@ export type Option = {
 
 export type SearchHistory = {
   id: string | number
-  entity_id: string | number
+  entityId: string | number
   entity: string
   timestamp: number
 }

@@ -10,10 +10,10 @@
 
   let variablePreview = []
   let datasetPreview = []
-  let metaDataset = db.get('metaDataset', metaVariable.metaDataset_id)
-  if (metaDataset.metaFolder_id === 'data') {
+  let metaDataset = db.get('metaDataset', metaVariable.metaDatasetId)
+  if (metaDataset.metaFolderId === 'data') {
     datasetPreview = db.tables[metaDataset.name]
-  } else if (metaDataset.metaFolder_id === 'user_data') {
+  } else if (metaDataset.metaFolderId === 'userData') {
     const userData = getUserData()
     datasetPreview = userData?.[metaDataset.name]
   }
@@ -27,6 +27,9 @@
 </script>
 
 <section class="section">
-  <Title type="variable" name={metaVariable.name} />
+  <Title
+    type="variable"
+    name={metaVariable.storageKey ? metaVariable.storageKey : metaVariable.name}
+  />
   <Tabs {tabs} />
 </section>

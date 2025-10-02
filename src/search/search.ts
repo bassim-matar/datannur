@@ -15,7 +15,7 @@ type SearchResult = {
   entity: string
   variable: string
   isFavorite: boolean
-  folder_id: string | number
+  folderId: string | number
   folderName: string
   _entity: string
   _entityClean: string
@@ -104,11 +104,11 @@ class Search {
             if (!('name' in item)) return
             let name = String(item[variable.name] || '')
             if (
-              'original_name' in item &&
-              item.original_name &&
+              'originalName' in item &&
+              item.originalName &&
               variable.name === 'name'
             )
-              name += ` (${item.original_name})`
+              name += ` (${item.originalName})`
             entity.items.add(item.id, removeDiacritics(name))
           })
         }
@@ -125,20 +125,19 @@ class Search {
         const itemsId = await this.getItemsId(toSearch, entity, idsFound)
         for (const itemId of itemsId) {
           const item = db.get(entity.name, itemId) as BaseEntity & {
-            folder_id?: string | number
+            folderId?: string | number
             folderName?: string
-            original_name?: string
+            originalName?: string
           }
           result.push({
             id: item.id,
             name:
-              item.name +
-              (item.original_name ? ` (${item.original_name})` : ''),
+              item.name + (item.originalName ? ` (${item.originalName})` : ''),
             description: item.description || '',
             entity: entity.name,
             variable: variable.name,
             isFavorite: item.isFavorite || false,
-            folder_id: item.folder_id || '',
+            folderId: item.folderId || '',
             folderName: item.folderName || '',
             _entity: item._entity || '',
             _entityClean: entityNames[item._entity as string] || '',

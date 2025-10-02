@@ -27,6 +27,6 @@
 </script>
 
 <section class="section">
-  <Title type="internalView" name="Vue interne" mode="main_title" />
+  <Title type="internalView" name="Vue interne" mode="mainTitle" />
   <Tabs {tabs} />
 </section>

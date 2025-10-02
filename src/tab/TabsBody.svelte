@@ -5,28 +5,28 @@
 
   let { tabs, noFirstTab, isLastTab, activeTabBody, tabsLoaded } = $props()
 
-  let openAllTab = Options.get('open_all_tab')
+  let openAllTab = Options.get('openAllTab')
 </script>
 
 <div
-  class="tabs_body box_shadow box_shadow_color shadow_{$tabSelected.icon}"
+  class="tabs-body box-shadow box-shadow-color shadow-{$tabSelected.icon}"
   class:no-first-tab={noFirstTab}
   class:is-last-tab={isLastTab}
 >
   {#if activeTabBody === 'loading'}
-    <div class="tabs_loading_wrapper">
+    <div class="tabs-loading-wrapper">
       <Loading position="absolute" />
     </div>
   {/if}
   {#each tabs as tab (tab.key)}
     {#if openAllTab || activeTabBody === tab.key || tabsLoaded[tab.key] > 0}
       <div
-        class="tab_component_wrapper {tab.props.class || ''}"
+        class="tab-component-wrapper {tab.props.class || ''}"
         class:visible={activeTabBody === tab.key}
-        class:not_visible={activeTabBody !== tab.key}
+        class:not-visible={activeTabBody !== tab.key}
         class:padding={tab.padding}
-        class:has_footer={tab.footerVisible}
-        class:without_footer={!tab.footerVisible}
+        class:has-footer={tab.footerVisible}
+        class:without-footer={!tab.footerVisible}
       >
         <tab.component {...tab.props} />
       </div>
@@ -37,17 +37,17 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .tabs_body {
+  .tabs-body {
     position: relative;
     background: $background-2;
     border: 1px solid transparent;
     border-color: $color-5;
     transition: border-color 1s;
-    .tabs_loading_wrapper {
+    .tabs-loading-wrapper {
       position: relative;
       height: 150px;
     }
-    .tab_component_wrapper {
+    .tab-component-wrapper {
       left: 0;
       top: 0;
       right: 0;
@@ -56,10 +56,10 @@
       &.padding {
         padding: 3rem 3rem;
       }
-      &.without_footer {
+      &.without-footer {
         max-height: 100%;
       }
-      &.not_visible {
+      &.not-visible {
         position: absolute;
         height: 0px;
         overflow: hidden;
@@ -71,39 +71,39 @@
     }
   }
 
-  :global(html.rounded_design) {
-    .tabs_body {
+  :global(html.roundedDesign) {
+    .tabs-body {
       border-radius: $rounded-bottom;
       border-top-right-radius: $rounded-size;
     }
-    .tabs_body.no-first-tab {
+    .tabs-body.no-first-tab {
       border-top-left-radius: $rounded-size;
     }
-    .tabs_body.is-last-tab {
+    .tabs-body.is-last-tab {
       border-top-right-radius: initial;
     }
   }
 
-  .tabs_body {
+  .tabs-body {
     overflow: hidden;
   }
-  .tabs_body:global(
-    :has(.tab_component_wrapper.visible .datatable_main_wrapper)
+  .tabs-body:global(
+    :has(.tab-component-wrapper.visible .datatable-main-wrapper)
   ) {
     overflow: visible !important;
   }
 
-  :global(html.page_shadow_colored) .tabs_body {
+  :global(html.pageShadowColored) .tabs-body {
     @each $entity in $entities {
-      &.shadow_#{$entity} {
+      &.shadow-#{$entity} {
         border-color: #{color($entity)};
       }
     }
   }
 
   @media screen and (max-width: 600px) {
-    .tabs_body {
-      .tab_component_wrapper.padding {
+    .tabs-body {
+      .tab-component-wrapper.padding {
         padding: 10px;
       }
     }

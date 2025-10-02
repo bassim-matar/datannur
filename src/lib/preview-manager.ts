@@ -47,6 +47,6 @@ export default class PreviewManager {
     if (datasetIdParts.length > 1) {
       path += '/' + datasetIdParts[0]
     }
-    return await db.load(path, datasetPreview)
+    return await db.load(path, datasetPreview, false)
   }
 }

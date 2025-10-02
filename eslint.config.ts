@@ -2,35 +2,8 @@ import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import svelte from 'eslint-plugin-svelte'
 import { browser } from 'globals'
-import { readFileSync } from 'fs'
-import { join } from 'path'
 
-const dbSchemaVariables = (() => {
-  try {
-    const schema = JSON.parse(
-      readFileSync(join(__dirname, 'src', 'db-schema.json'), 'utf-8'),
-    )
-    return [
-      ...new Set(
-        schema.flatMap((row: string[]) =>
-          [row[1], row[2]].filter(item => item?.includes('_')),
-        ),
-      ),
-    ]
-  } catch {
-    return []
-  }
-})()
-
-const allowedProps = [
-  '__APP_VERSION__',
-  'FlexSearch',
-  'metaDataset_id',
-  'metaFolder_id',
-  'ADD_TAGS',
-  'ADD_ATTR',
-  ...dbSchemaVariables,
-]
+const allowedProps = ['__APP_VERSION__', 'FlexSearch', 'ADD_TAGS', 'ADD_ATTR']
 
 const namingConventionRules = {
   '@typescript-eslint/naming-convention': [

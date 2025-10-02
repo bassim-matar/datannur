@@ -30,7 +30,7 @@
   import { copyTextListenClick } from '@lib/copy-text'
   import { addValuesToAttribut } from '@stat/stat'
   import definition from '@stat/attributs-def'
-  import default_banner from '@markdown/main/banner.md?raw'
+  import defaultBanner from '@markdown/main/banner.md?raw'
   import Header from '@frame/Header.svelte'
   import Footer from '@frame/Footer.svelte'
   import Router from '@frame/Router.svelte'
@@ -69,10 +69,10 @@
   Options.loaded = (async () => {
     let timer = performance.now()
     await Options.init()
-    setOptionDefault('rounded_design')
-    setOptionDefault('open_all_recursive')
-    setOptionDefault('evolution_summary', false)
-    setOptionDefault('page_shadow_colored', false)
+    setOptionDefault('roundedDesign')
+    setOptionDefault('openAllRecursive')
+    setOptionDefault('evolutionSummary', false)
+    setOptionDefault('pageShadowColored', false)
     console.log('init option', Math.round(performance.now() - timer) + ' ms')
   })()
 
@@ -110,7 +110,7 @@
       search.init()
       Logs.init(userData.log)
       Favorites.init(userData.favorite)
-      SearchHistory.init(userData.search_history, { limit: 100 })
+      SearchHistory.init(userData.searchHistory, { limit: 100 })
     } catch (e) {
       console.error(e)
       errorLoadingDb = true
@@ -124,7 +124,7 @@
       const entity = pageHashValue
       const entityId = UrlHash.getLevel2()
       SearchHistory.add(entity, entityId)
-      Logs.add('search_bar', { entity, entity_id: entityId })
+      Logs.add('searchBar', { entity, entityId })
       UrlParam.delete('from_search')
       UrlParam.delete('search')
     }
@@ -134,18 +134,18 @@
   pageHash.subscribe(pageHashValue => checkFromSearch(pageHashValue))
 
   if (hasTouchScreen) {
-    document.documentElement.classList.toggle('has_touch_screen')
+    document.documentElement.classList.toggle('has-touch-screen')
   }
 
   const isDark = $darkModeTheme === 'dark'
   const favicon = isDark ? iconDark : icon
 
-  jQuery('body').on('mouseover', '.use_tooltip', function (this: HTMLElement) {
+  jQuery('body').on('mouseover', '.use-tooltip', function (this: HTMLElement) {
     const elem = jQuery(this)
-    if (!elem?.data('powertip_initialized')) {
-      elem?.data('powertip_initialized', true)
+    if (!elem?.data('powertip-initialized')) {
+      elem?.data('powertip-initialized', true)
       elem?.powerTip({
-        placement: elem.hasClass('tooltip_top') ? 'n' : 's',
+        placement: elem.hasClass('tooltip-top') ? 'n' : 's',
         smartPlacement: true,
         mouseOnToPopup: true,
       })
@@ -153,7 +153,7 @@
     }
   })
 
-  jQuery('body').on('click', '.column_stat_btn', function (this: HTMLElement) {
+  jQuery('body').on('click', '.column-stat-btn', function (this: HTMLElement) {
     const attributName = jQuery(this).data('attribut')
     columnStatEntity = jQuery(this).data('entity')
     columnStatAttribut = addValuesToAttribut($currentTabData, {
@@ -170,7 +170,7 @@
     const mainBanner = new Image()
     let bannerSrc = db.exists('config', 'banner')
       ? (db.getConfig('banner') as string)
-      : default_banner
+      : defaultBanner
     bannerSrc = bannerSrc?.split('(')[1]?.split(')')[0]
     mainBanner.src = bannerSrc?.replaceAll('{darkMode}', isDark ? '-dark' : '')
     mainBanner.onload = () => {
@@ -215,9 +215,9 @@
 
 {#await Options.loaded then}
   <Header />
-  <div id="wrapper" class:no_footer={!$footerVisible}>
+  <div id="wrapper" class:no-footer={!$footerVisible}>
     {#if errorLoadingDb}
-      <div class="error_loading_db">
+      <div class="error-loading-db">
         <h2 class="title">Erreur de chargement</h2>
         <p>Erreur durant le chargement de la base de données.</p>
         <p>Veuillez réessayer de charger l'application plus tard.</p>
@@ -231,9 +231,9 @@
           <SearchBar />
         {/if}
         <Router />
-        <div id="db_loaded" style="display: none;"></div>
+        <div id="db-loaded" style="display: none;"></div>
         <div
-          id="page_loaded_route_{pageLoadedRoute}"
+          id="page-loaded-route-{pageLoadedRoute}"
           style="display: none;"
         ></div>
       {/await}
@@ -255,7 +255,7 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .error_loading_db {
+  .error-loading-db {
     position: absolute;
     text-align: center;
     top: 50%;

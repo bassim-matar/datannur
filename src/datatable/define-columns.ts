@@ -49,8 +49,8 @@ export function defineColumns(
       filterType?: string
       width?: string
     } = {
-      data: '_row_num',
-      name: '_row_num',
+      data: '_rowNum',
+      name: '_rowNum',
       title: '#',
       tooltip: 'Numéro de ligne',
       filterType: 'input',
@@ -74,31 +74,31 @@ export function defineColumns(
 
   let bold = ''
   const miniCol = [
-    '_row_num',
+    '_rowNum',
     'level',
     'isFavorite',
-    'search_receht',
-    'evolution_type',
+    'searchRecent',
+    'evolutionType',
   ]
   for (const column of columnsCopy) {
     const key = column.name ? column.name : column.data
-    if (key !== '_row_num' && statExists(entity, key)) {
+    if (key !== '_rowNum' && statExists(entity, key)) {
       const columnStatBtn = `
-        <span class="column_stat_btn icon_stat" data-entity="${entity}" data-attribut="${key}">
+        <span class="column-stat-btn icon-stat" data-entity="${entity}" data-attribut="${key}">
           <i class="fa-solid fa-signal">
         </i></span>`
       if (column.tooltip) column.tooltip += '&nbsp;&nbsp;' + columnStatBtn
       else column.tooltip = columnStatBtn
     }
 
-    if (column.filterType === 'select') column.search_modality = true
+    if (column.filterType === 'select') column.searchModality = true
     if (miniCol.includes(column.name)) {
-      column.loading_max_width = 20
+      column.loadingMaxWidth = 20
       continue
     }
     if (column.hasLongText) {
-      column.loading_width = 274
-      column.loading_max_width = 274
+      column.loadingWidth = 274
+      column.loadingMaxWidth = 274
       continue
     }
     if (column.name === 'name') bold = 'bold'
@@ -106,14 +106,14 @@ export function defineColumns(
     for (const row of data.slice(0, nbRowLoading)) {
       let value = row[column.data]
       if (column.fromLength) value = value.length
-      if (column.data === '_entityClean') value = 'icon_ico,' + value
+      if (column.data === '_entityClean') value = 'icon-ico,' + value
       cells.push(value)
     }
     const cellsWidth =
       Math.round(getTextWidth(cells, `${bold} 16px "Helvetica Neue"`) * 100) /
       100
-    column.loading_width = Math.min(274, cellsWidth)
-    column.loading_max_width = Math.min(274, cellsWidth)
+    column.loadingWidth = Math.min(274, cellsWidth)
+    column.loadingMaxWidth = Math.min(274, cellsWidth)
   }
   return columnsCopy
 }

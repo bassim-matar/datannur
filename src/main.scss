@@ -67,14 +67,14 @@ $icon-colors: (
   'missing': #ae667a,
   'localisation': #ae667a,
   'delete': #ae667a,
-  'end_date': #ae667a,
+  'endDate': #ae667a,
   'stat': #9fb658,
   'entity': #9fb658,
-  'nb_row': #9fb658,
+  'nbRow': #9fb658,
   'diagram': #9fb658,
-  'delivery_format': #9fb658,
+  'deliveryFormat': #9fb658,
   'email': #6a7294,
-  'metadata_path': #6a7294,
+  'metadataPath': #6a7294,
   'favorite': #d9c85d,
   'compare': #d9c85d,
   'sun': #d9c85d,
@@ -91,17 +91,17 @@ $icon-colors: (
   'downloadFile': #5e9381,
   'upload': #5e9381,
   'phone': #5e9381,
-  'survey_type': #5e9381,
-  'data_path': #5e9381,
+  'surveyType': #5e9381,
+  'dataPath': #5e9381,
   'add': #5e9381,
-  'start_date': #5e9381,
+  'startDate': #5e9381,
   'preview': #c6695e,
   'date': #c6695e,
   'frequency': #c6695e,
   'dateRange': #c6695e,
   'duplicate': #c6695e,
   'doc': #e0745c,
-  'git_code': #e0745c,
+  'gitCode': #e0745c,
   'timeAgo': #e0745c,
   'nbSource': #e0745c,
   'md': #579fbd,
@@ -114,7 +114,7 @@ $icon-colors: (
   'colSearch': $color-2,
   'recentSearch': $color-2,
   'functionality': #e0745c,
-  'last_update_date': #e0745c,
+  'lastUpdateDate': #e0745c,
 );
 
 @function color($name) {
@@ -125,7 +125,7 @@ $icon-colors: (
   }
 }
 
-@mixin scrollbar_light() {
+@mixin scrollbar-light() {
   scrollbar-color: $color-4 transparent;
   &::-webkit-scrollbar {
     width: 0.6rem;
@@ -144,7 +144,7 @@ $icon-colors: (
   }
 }
 
-$body_gradient_opacity_hex: 22;
+$body-gradient-opacity-hex: 22;
 
 // transition
 $transition-basic-1: 0.3s ease-out;
@@ -155,7 +155,7 @@ $rounded: $rounded-size;
 $rounded-bottom: 0 0 $rounded-size $rounded-size;
 $rounded-top: $rounded-size $rounded-size 0 0;
 
-$menu_mobile_limit: 1023px;
+$menu-mobile-limit: 1023px;
 
 $entities:
   'institution', 'folder', 'tag', 'dataset', 'variable', 'modality', 'value',

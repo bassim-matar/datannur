@@ -111,9 +111,9 @@
 </script>
 
 {#if !svgDiagramm}
-  <Loading type="tab_body" colorEntity="diagram" />
+  <Loading type="tabBody" colorEntity="diagram" />
 {:else}
-  <div class="tab_inner_tab" use:safeHtmlWithSvg={svgDiagramm}></div>
+  <div class="tab-inner-tab" use:safeHtmlWithSvg={svgDiagramm}></div>
 {/if}
 
 <style lang="scss">
@@ -121,13 +121,13 @@
   @use '../style/mermaid.scss' as *;
   @use '../style/icon.scss' as *;
 
-  .tab_inner_tab {
+  .tab-inner-tab {
     background: $background-2;
     padding: 30px;
     text-align: center;
     :global {
-      @include mermaid_style;
-      @include icon_color;
+      @include mermaid-style;
+      @include icon-color;
 
       .icon {
         margin-right: 0;
@@ -138,8 +138,8 @@
     }
   }
 
-  :global(html.rounded_design) {
-    .tab_inner_tab {
+  :global(html.roundedDesign) {
+    .tab-inner-tab {
       border-radius: $rounded;
     }
   }

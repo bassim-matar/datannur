@@ -35,7 +35,7 @@ export default class FilterHelper {
     })
   }
   initColumn(column, columnNum) {
-    const id = 'datatables_title_' + this.tableId + '_filter_' + columnNum
+    const id = 'datatables-title-' + this.tableId + '-filter-' + columnNum
     const filterElem = jQuery('#' + id)
     const filterContainer = filterElem.parent()
     const columnAttr = column.settings().init().columns[columnNum]
@@ -53,7 +53,7 @@ export default class FilterHelper {
         typeof uniqueValues[1] !== 'object')
     ) {
       let options = '<option value="">- - -</option>'
-      if (column.header().innerHTML.includes('icon_favorite')) {
+      if (column.header().innerHTML.includes('icon-favorite')) {
         for (const val of ['favoris', 'non favoris']) {
           options += '<option value="' + val + '">' + val + '</option>'
         }
@@ -111,8 +111,8 @@ export default class FilterHelper {
     } else {
       filterElem.on('keyup', event => {
         const elem = jQuery(event.target)
-        const clearBtn = elem.parent().children('.btn_clear_input')
-        const searchIcon = elem.parent().children('.search_icon')
+        const clearBtn = elem.parent().children('.btn-clear-input')
+        const searchIcon = elem.parent().children('.search-icon')
         if (elem.val() === '') {
           clearBtn.hide()
           searchIcon.show()
@@ -272,7 +272,7 @@ export default class FilterHelper {
     for (const key in UrlParam.getAllParams()) {
       if (key.startsWith(this.filterTableId + '_')) {
         const colNum = key.split(this.filterTableId + '_')[1]
-        const id = 'datatables_title_' + this.tableId + '_filter_' + colNum
+        const id = 'datatables-title-' + this.tableId + '-filter-' + colNum
         jQuery('#' + id)
           .val('')
           .trigger('keyup')

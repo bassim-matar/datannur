@@ -4,7 +4,7 @@ import { entityNames } from '@lib/constant'
 export default class SearchHistory {
   static limit = 100
   static searchHistory = []
-  static dbKey = 'user_data/search_history'
+  static dbKey = 'userData/searchHistory'
   static onChangeCallbacks: Record<string, () => void> = {}
   static onClearCallback = null
 
@@ -20,7 +20,7 @@ export default class SearchHistory {
     this.searchHistory = this.searchHistory
       .filter(
         searchItem =>
-          searchItem.entity !== entity || searchItem.entity_id !== entityId,
+          searchItem.entity !== entity || searchItem.entityId !== entityId,
       )
       .map(searchItem => {
         searchItem.id = searchEntityId
@@ -31,7 +31,7 @@ export default class SearchHistory {
     this.searchHistory.unshift({
       id: 0,
       entity,
-      entity_id: entityId,
+      entityId,
       timestamp: Date.now(),
     })
     if (this.searchHistory.length > this.limit) {
@@ -49,7 +49,7 @@ export default class SearchHistory {
   static remove(entity, entityId) {
     this.searchHistory = this.searchHistory.filter(
       searchItem =>
-        searchItem.entity !== entity || searchItem.entity_id !== entityId,
+        searchItem.entity !== entity || searchItem.entityId !== entityId,
     )
     this.save()
     this.callOnChange()
@@ -66,8 +66,8 @@ export default class SearchHistory {
     const result = []
     const recentSearch = this.getAll()
     for (const entry of recentSearch) {
-      if (!db.exists(entry.entity, entry.entity_id)) continue
-      const itemData = db.get(entry.entity, entry.entity_id)
+      if (!db.exists(entry.entity, entry.entityId)) continue
+      const itemData = db.get(entry.entity, entry.entityId)
       result.push({
         id: itemData.id,
         name: itemData.name,
@@ -75,7 +75,7 @@ export default class SearchHistory {
         entity: entry.entity,
         isRecent: true,
         isFavorite: itemData.isFavorite,
-        folder_id: itemData.folder_id,
+        folderId: itemData.folderId,
         folderName: itemData.folderName,
         _entity: itemData._entity,
         _entityClean: entityNames[itemData._entity as string],
@@ -87,8 +87,8 @@ export default class SearchHistory {
     const recentSearchIds = {}
     const recentSearch = this.getAll()
     for (const [i, entry] of recentSearch.entries()) {
-      if (!db.exists(entry.entity, entry.entity_id)) continue
-      recentSearchIds[`${entry.entity}-${entry.entity_id}`] = i
+      if (!db.exists(entry.entity, entry.entityId)) continue
+      recentSearchIds[`${entry.entity}-${entry.entityId}`] = i
     }
     return recentSearchIds
   }

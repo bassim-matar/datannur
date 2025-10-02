@@ -1,6 +1,6 @@
 @use 'main.scss' as *;
 
-@mixin exporter_style {
+@mixin exporter-style {
   div.dt-buttons {
     position: absolute;
     right: -45px;
@@ -18,7 +18,7 @@
       border: 0;
       border-radius: 0;
       transition: $transition-basic-1;
-      &.download_button {
+      &.download-button {
         height: 0px;
       }
       &:first-child {

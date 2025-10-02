@@ -27,6 +27,6 @@
 </script>
 
 <section class="section">
-  <Title type="variable" name="Variables" mode="main_title" />
+  <Title type="variable" name="Variables" mode="mainTitle" />
   <Tabs {tabs} />
 </section>

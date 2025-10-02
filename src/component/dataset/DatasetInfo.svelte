@@ -22,10 +22,10 @@
 
 <TableWrapper>
   <IdInfo id={dataset.id} />
-  <InstitutionInfo type="owner" institutionId={dataset.owner_id} />
-  <InstitutionInfo type="manager" institutionId={dataset.manager_id} />
+  <InstitutionInfo type="owner" institutionId={dataset.ownerId} />
+  <InstitutionInfo type="manager" institutionId={dataset.managerId} />
   <FolderInfo
-    folderId={dataset.isMeta ? dataset.metaFolder_id : dataset.folder_id}
+    folderId={dataset.isMeta ? dataset.metaFolderId : dataset.folderId}
     isMeta={dataset.isMeta}
   />
   <TagsInfo tags={dataset.tags} />
@@ -35,7 +35,7 @@
       <td>{dataset.typeClean}</td>
     </tr>
   {/if}
-  <RowInfo nbRow={dataset.nb_row} />
+  <RowInfo nbRow={dataset.nbRow} />
   {#if dataset.isMeta}
     <LastUpdateInfo
       lastUpdateDate={dataset.lastUpdateTimestamp}
@@ -43,19 +43,19 @@
       fromTimestamp={true}
     />
   {:else}
-    <LastUpdateInfo lastUpdateDate={dataset.last_update_date} />
+    <LastUpdateInfo lastUpdateDate={dataset.lastUpdateDate} />
     <NextUpdateInfo nextUpdateDate={dataset.nextUpdateDate} />
   {/if}
-  <FrequencyInfo frequency={dataset.updating_each} />
+  <FrequencyInfo frequency={dataset.updatingEach} />
   <PeriodInfo period={dataset.period} periodDuration={dataset.periodDuration} />
   <LocalisationInfo localisation={dataset.localisation} />
-  <DeliveryFormatInfo deliveryFormat={dataset.delivery_format} />
-  <DataPathInfo dataPath={dataset.data_path} />
+  <DeliveryFormatInfo deliveryFormat={dataset.deliveryFormat} />
+  <DataPathInfo dataPath={dataset.dataPath} />
   {#if dataset.link}
     <tr>
       <td><Icon type="downloadFile" /> Données</td>
       <td>
-        <a href={dataset.link} target="_blanck" class="break_line">
+        <a href={dataset.link} target="_blanck" class="break-line">
           {dataset.link}
         </a>
       </td>

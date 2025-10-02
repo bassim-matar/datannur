@@ -10,11 +10,11 @@
     reloadIncrement,
   } from '@lib/store'
   import { UrlHash } from '@lib/url-hash'
-  import router_index from '@src/.generated/router-index'
+  import routerIndex from '@src/.generated/router-index'
   import type { Row } from '@type'
 
   let entityGlobal = $state('')
-  let route = $state(router_index._loading.component)
+  let route = $state(routerIndex._loading.component)
   let params = $state({})
   let entityId = $state('')
   let pageKey = $derived(`${entityGlobal}___${entityId}___${$reloadIncrement}`)
@@ -29,14 +29,14 @@
   function updateRoute(entity: string, newParams: Row = null) {
     if (newParams) params = newParams
     $pageContentLoaded = false
-    route = router_index[entity].component
+    route = routerIndex[entity].component
     $page = entity
     setTimeout(() => ($pageHash = UrlHash.getLevel1()), 1)
   }
 
   function setRoute(entity) {
     return ctx => {
-      route = router_index._loading.component
+      route = routerIndex._loading.component
       params = {}
       entityId = ''
       window.document.body.setAttribute('page', entity)
@@ -44,28 +44,25 @@
       if (ctx.data.id === undefined) {
         if (ctx.data[0]) ctx.data = {}
         updateRoute(entity, ctx.data)
-        setTimeout(() => Logs.add('load_page', { entity }), 10)
+        setTimeout(() => Logs.add('loadPage', { entity }), 10)
         return false
       }
       entityId = ctx.data.id
       const entityData = db.get(entity, entityId)
       if (entityData) {
         updateRoute(entity, { [entity]: entityData, id: entityId })
-        setTimeout(
-          () => Logs.add('load_page', { entity, entity_id: entityId }),
-          10,
-        )
+        setTimeout(() => Logs.add('loadPage', { entity, entityId }), 10)
       } else {
         updateRoute('_error', { entity })
-        Logs.add('load_page', { entity: '_error' })
+        Logs.add('loadPage', { entity: '_error' })
       }
     }
   }
 
-  if ('_index' in router_index) {
+  if ('_index' in routerIndex) {
     router.on('/', setRoute('_index'))
   }
-  for (const [entityGlobal, { param }] of Object.entries(router_index)) {
+  for (const [entityGlobal, { param }] of Object.entries(routerIndex)) {
     let routeUrl: string | false = false
     if (['_index', '_error', '_loading'].includes(entityGlobal)) continue
     else if (param) routeUrl = `/${entityGlobal}/:${param}`
@@ -75,7 +72,7 @@
       router.on(routeUrl, setRoute(entityGlobal))
     }
   }
-  if ('_error' in router_index) {
+  if ('_error' in routerIndex) {
     router.notFound(setRoute('_error'), {
       before(done) {
         if (isSpaHomepage()) router.resolve('/')

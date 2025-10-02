@@ -12,14 +12,14 @@
   }
 </script>
 
-<div class="header_input_wrapper">
+<div class="header-input-wrapper">
   {#if column.noSearch}
     <span></span>
-  {:else if column.search_modality}
+  {:else if column.searchModality}
     <div class="select">
       <select
-        id="datatables_title_{tableId}_filter_{i}"
-        name="datatables_title_{tableId}_filter_{i}"
+        id="datatables-title-{tableId}-filter-{i}"
+        name="datatables-title-{tableId}-filter-{i}"
         autocomplete="off"
         required
       >
@@ -27,13 +27,13 @@
       </select>
     </div>
   {:else}
-    <i class="fas fa-search search_icon"></i>
+    <i class="fas fa-search search-icon"></i>
     <input
       type="text"
       class="input fontAwesome"
       value=""
-      id="datatables_title_{tableId}_filter_{i}"
-      name="datatables_title_{tableId}_filter_{i}"
+      id="datatables-title-{tableId}-filter-{i}"
+      name="datatables-title-{tableId}-filter-{i}"
       autocomplete="off"
       enterkeyhint="search"
     />
@@ -44,7 +44,7 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .header_input_wrapper {
+  .header-input-wrapper {
     position: relative;
     .fontAwesome {
       font-family: 'Helvetica', FontAwesome, sans-serif;
@@ -92,7 +92,7 @@
         }
       }
 
-      .search_icon {
+      .search-icon {
         position: absolute;
         left: 15px;
         top: 50%;

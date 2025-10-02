@@ -11,11 +11,11 @@
   let metaDatasetVariables = db.getAll('metaVariable', { metaDataset })
 
   let datasetPreview = []
-  if (metaDataset.metaFolder_id === 'data') {
+  if (metaDataset.metaFolderId === 'data') {
     const datasetPreviewRaw = db.getAll(metaDataset.name)
     const keysToKeep = metaDatasetVariables.map(a => a.name)
     datasetPreview = filterKeys(datasetPreviewRaw, keysToKeep)
-  } else if (metaDataset.metaFolder_id === 'user_data') {
+  } else if (metaDataset.metaFolderId === 'userData') {
     const userData = getUserData()
     datasetPreview = userData?.[metaDataset.name]
   }

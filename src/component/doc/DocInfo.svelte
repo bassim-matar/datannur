@@ -18,11 +18,11 @@
   <tr>
     <td><Icon type="link" /> Lien</td>
     <td>
-      <a class="break_line" href={doc.path} target="_blanck">{doc.path}</a>
+      <a class="break-line" href={doc.path} target="_blanck">{doc.path}</a>
     </td>
   </tr>
   <LastUpdateInfo
-    lastUpdateDate={doc.last_update}
+    lastUpdateDate={doc.lastUpdate}
     intraday={true}
     fromTimestamp={true}
   />

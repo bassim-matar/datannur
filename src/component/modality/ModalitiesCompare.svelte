@@ -106,7 +106,7 @@
 </script>
 
 {#if loading && similitutes.length === 0}
-  <Loading type="tab_body" colorEntity="compare" />
+  <Loading type="tabBody" colorEntity="compare" />
 {:else if similitutes.length > 0}
   <Datatable entity="compare" data={similitutes} {columns} sortByName={true} />
 {:else}

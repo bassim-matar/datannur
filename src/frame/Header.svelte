@@ -11,7 +11,7 @@
   import { darkModeTheme } from '@dark-mode/dark-mode'
   import { router } from '@lib/router.svelte.js'
   import logo from '@img/logo.png'
-  import logo_dark from '@img/logo-dark.png'
+  import logoDark from '@img/logo-dark.png'
   import Loading from '@frame/Loading.svelte'
   import MainFilter from '@component/MainFilter.svelte'
   import HeaderDropdown from './HeaderDropdown.svelte'
@@ -22,7 +22,7 @@
   let scrollY = $state(0)
   let loading = $state(true)
 
-  let logoSrc = $derived($darkModeTheme === 'dark' ? logo_dark : logo)
+  let logoSrc = $derived($darkModeTheme === 'dark' ? logoDark : logo)
 
   const toggleHeader = () => ($headerOpen = !$headerOpen)
   const closeMenu = () => ($headerOpen = false)
@@ -34,7 +34,7 @@
       return
     }
     const elem: HTMLElement | null = document.querySelector(
-      '.tabs_container_ul .tab_entity_about a.tab_select_btn',
+      '.tabs-container-ul .tab-entity-about a.tab-select-btn',
     )
     elem?.click()
   }
@@ -46,19 +46,19 @@
 
 <nav
   class="navbar is-fixed-top"
-  class:header_open={$headerOpen}
-  class:header_on_top={scrollY < 10 || $headerOpen}
-  class:box_shadow={scrollY >= 10 && !$headerOpen}
+  class:header-open={$headerOpen}
+  class:header-on-top={scrollY < 10 || $headerOpen}
+  class:box-shadow={scrollY >= 10 && !$headerOpen}
   style="max-height: 48px; min-height: 48px;"
 >
   <div class="navbar-brand">
     <Link href="" className="navbar-item" alternativeAction={clickOnMainLogo}>
-      <img src={logoSrc} class="header_logo" alt="logo" />
+      <img src={logoSrc} class="header-logo" alt="logo" />
     </Link>
 
-    <div class="mobile_right_btn">
+    <div class="mobile-right-btn">
       {#if !$onPageSearch && !$onPageHomepage && !loading}
-        <div class="search_bar_btn_wrapper">
+        <div class="search-bar-btn-wrapper">
           <HeaderLink href="search" pages={['search']}>
             <i class="fas fa-magnifying-glass"></i>
           </HeaderLink>
@@ -78,7 +78,7 @@
 
   <div
     class="navbar-menu"
-    class:box_shadow={$headerOpen}
+    class:box-shadow={$headerOpen}
     class:is-active={$headerOpen}
   >
     <div class="navbar-start">
@@ -134,13 +134,13 @@
         pages={['favorite']}
         icon="favorite"
         info="Favoris"
-        ><span class="visible_on_mobile">Favoris</span><span
-          class="num_style favorite_number">{$nbFavorite}</span
+        ><span class="visible-on-mobile">Favoris</span><span
+          class="num-style favorite-number">{$nbFavorite}</span
         ></HeaderLink
       >
 
       <HeaderLink href="about" pages={['about']} icon="about" info="A propos">
-        <span class="visible_on_mobile">A propos</span>
+        <span class="visible-on-mobile">A propos</span>
       </HeaderLink>
 
       <HeaderLink
@@ -149,7 +149,7 @@
         icon="option"
         info="Options"
       >
-        <span class="visible_on_mobile">Options</span>
+        <span class="visible-on-mobile">Options</span>
       </HeaderLink>
     </div>
 
@@ -171,7 +171,7 @@
     transition:
       border-color $transition-basic-1,
       box-shadow $transition-basic-1;
-    &.header_on_top {
+    &.header-on-top {
       border-color: $background-1;
     }
     .navbar-brand {
@@ -179,7 +179,7 @@
       height: 47px;
       padding-left: 3rem;
       justify-content: space-between;
-      .mobile_right_btn {
+      .mobile-right-btn {
         display: flex;
       }
       :global(a:nth-child(1)) {
@@ -204,19 +204,19 @@
         margin-left: auto;
       }
     }
-    .favorite_number {
+    .favorite-number {
       padding-left: 8px;
       height: 1rem;
     }
   }
 
-  :global(html.rounded_design) {
+  :global(html.roundedDesign) {
     .navbar-menu.is-active {
       border-radius: $rounded-bottom;
     }
   }
 
-  .search_bar_btn_wrapper {
+  .search-bar-btn-wrapper {
     display: none;
     width: 20px;
     z-index: 100;
@@ -226,15 +226,15 @@
     }
   }
 
-  @media screen and (max-width: $menu_mobile_limit) {
-    .search_bar_btn_wrapper {
+  @media screen and (max-width: $menu-mobile-limit) {
+    .search-bar-btn-wrapper {
       display: block;
     }
-    .navbar .navbar-brand .search_bar_btn_wrapper {
+    .navbar .navbar-brand .search-bar-btn-wrapper {
       padding-top: 16px;
     }
     .navbar .navbar-brand {
-      .mobile_right_btn {
+      .mobile-right-btn {
         padding-right: 2rem;
       }
     }
@@ -250,7 +250,7 @@
     .navbar .navbar-brand {
       padding-left: 15px;
       padding-right: 0;
-      .mobile_right_btn {
+      .mobile-right-btn {
         padding-right: 0;
       }
     }
@@ -262,9 +262,9 @@
     }
   }
 
-  .visible_on_mobile {
+  .visible-on-mobile {
     display: none;
-    @media screen and (max-width: $menu_mobile_limit) {
+    @media screen and (max-width: $menu-mobile-limit) {
       display: initial;
     }
   }

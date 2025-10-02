@@ -45,7 +45,7 @@
 </script>
 
 <section class="section">
-  <Title type="institution" name="Institutions" mode="main_title" />
+  <Title type="institution" name="Institutions" mode="mainTitle" />
   {#if showOpenAllSwitch}
     <OpenAllSwitch onChange={value => (keyTab = value)} />
   {/if}

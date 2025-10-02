@@ -33,10 +33,10 @@
         if (type === 'display') {
           const freqNum = Render.num(data, type)
           return `
-          <div class="freq_item_container">
-            <div class="freq_background color_freq" style="width: ${percentBackground}%"></div>
-            <span class="freq_number">${escapeHtml(freqNum)}</span>
-            <span class="freq_percent">${percentDisplay}%</span>
+          <div class="freq-item-container">
+            <div class="freq-background color-freq" style="width: ${percentBackground}%"></div>
+            <span class="freq-number">${escapeHtml(freqNum)}</span>
+            <span class="freq-percent">${percentDisplay}%</span>
           </div>`
         }
 

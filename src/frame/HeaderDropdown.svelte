@@ -19,7 +19,7 @@
     <div class="navbar-link" class:is-active={pages.includes($page)}>
       <span>{title}</span>
     </div>
-    <div class="navbar-dropdown box_shadow">
+    <div class="navbar-dropdown box-shadow">
       {@render children?.()}
     </div>
   </div>
@@ -50,13 +50,13 @@
     background: $background-1;
   }
 
-  :global(.header_open) {
-    .navbar-dropdown.box_shadow {
+  :global(.header-open) {
+    .navbar-dropdown.box-shadow {
       box-shadow: none;
     }
   }
 
-  :global(html.rounded_design) {
+  :global(html.roundedDesign) {
     .navbar-dropdown {
       border-radius: $rounded-bottom;
     }

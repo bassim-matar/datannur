@@ -14,7 +14,7 @@
 <TableWrapper>
   <IdInfo id={institution.id} />
   <DeepLevelInfo level={institution.parents.length + 1} />
-  {#if institution.parent_id}
+  {#if institution.parentId}
     <InstitutionInfo institutionId={institution.id} isSelf={true} />
   {/if}
   <TagsInfo tags={institution.tags} />

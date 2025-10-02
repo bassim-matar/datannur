@@ -1,9 +1,9 @@
 @use 'main.scss';
 
-@mixin icon_color {
+@mixin icon-color {
   @each $name, $color in main.$icon-colors {
-    .icon_#{$name},
-    .icon_#{$name} i {
+    .icon-#{$name},
+    .icon-#{$name} i {
       color: $color;
     }
   }

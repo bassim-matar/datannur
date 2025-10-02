@@ -19,7 +19,7 @@
 
   onMount(() => {
     masonry = new MiniMasonry({
-      container: '.all_stat_container',
+      container: '.all-stat-container',
       baseWidth: Math.min(documentWidth - 20, 300),
       gutter: 20,
       ultimateGutter: 20,
@@ -80,24 +80,24 @@
   <div class="btns">
     <button
       class="button"
-      class:box_shadow={showAll}
-      class:box_shadow_color={showAll}
+      class:box-shadow={showAll}
+      class:box-shadow-color={showAll}
       style="color: {showAll ? getColor('entity') : ''}"
       onclick={clickShowAll}
     >
       <Icon type="entity" />
-      <span class="btn_select_entity_name">Tout</span>
+      <span class="btn-select-entity-name">Tout</span>
     </button>
     {#each entities as entity (entity.entity)}
       <button
-        class="button shadow_{entity.entity}"
+        class="button shadow-{entity.entity}"
         class:active={visible[entity.entity]}
-        class:box_shadow_color={visible[entity.entity]}
+        class:box-shadow-color={visible[entity.entity]}
         style="color: {visible[entity.entity] ? getColor(entity.entity) : ''}"
         onclick={() => show(entity.entity)}
       >
         <Icon type={entity.entity} />
-        <span class="btn_select_entity_name">
+        <span class="btn-select-entity-name">
           {entityNames[entity.entity]}
         </span>
       </button>
@@ -105,13 +105,13 @@
   </div>
 {/if}
 
-<div class="main_wrapper" class:homepage={$onPageHomepage}>
+<div class="main-wrapper" class:homepage={$onPageHomepage}>
   <div
-    class="all_stat_container_wrappper"
+    class="all-stat-container-wrapper"
     class:no-btns={!hasBtns}
     class:has-btns={hasBtns}
   >
-    <div class="all_stat_container" class:loading>
+    <div class="all-stat-container" class:loading>
       {#each entities as entity (entity.entity)}
         {#if visible[entity.entity] || showAll}
           {#each entity.attributs as attribut (attribut.key)}
@@ -126,24 +126,24 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .main_wrapper.homepage .all_stat_container_wrappper {
+  .main-wrapper.homepage .all-stat-container-wrapper {
     max-height: max(calc(100vh - 270px), 80px);
   }
 
-  .all_stat_container_wrappper {
+  .all-stat-container-wrapper {
     position: relative;
     width: 100%;
     height: auto;
     overflow: scroll;
     background: $background-2;
-    @include scrollbar_light();
+    @include scrollbar-light();
 
     &.has-btns {
       background: $background-1;
     }
   }
 
-  .all_stat_container {
+  .all-stat-container {
     margin: 20px auto;
     position: relative;
     opacity: 1;
@@ -159,7 +159,7 @@
     padding: 4px 0;
     overflow-x: auto;
     white-space: nowrap;
-    @include scrollbar_light();
+    @include scrollbar-light();
     .button {
       float: left;
       margin: 5px;
@@ -179,12 +179,12 @@
     }
   }
 
-  :global(html.rounded_design) {
-    .main_wrapper {
+  :global(html.roundedDesign) {
+    .main-wrapper {
       overflow: hidden;
       border-bottom-right-radius: $rounded;
     }
-    .all_stat_container_wrappper {
+    .all-stat-container-wrapper {
       border-bottom-left-radius: $rounded;
       &.no-btns {
         border-radius: $rounded;
@@ -192,18 +192,18 @@
     }
   }
 
-  :global(html.page_shadow_colored .box_shadow.box_shadow_color) {
+  :global(html.pageShadowColored .box-shadow.box-shadow-color) {
     .btns .button {
       @each $entity in $entities {
-        &.active.shadow_#{$entity} {
+        &.active.shadow-#{$entity} {
           text-shadow: 0 0 10px #{color($entity)};
         }
       }
     }
   }
 
-  @media screen and (max-width: $menu_mobile_limit) {
-    .main_wrapper.homepage .all_stat_container_wrappper {
+  @media screen and (max-width: $menu-mobile-limit) {
+    .main-wrapper.homepage .all-stat-container-wrapper {
       max-height: max(calc(100vh - 250px), 80px);
     }
   }
@@ -216,7 +216,7 @@
         padding-right: 0;
         margin-left: 0;
         margin-right: 0;
-        .btn_select_entity_name {
+        .btn-select-entity-name {
           display: none;
         }
       }

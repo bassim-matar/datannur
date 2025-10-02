@@ -9,7 +9,7 @@
   })
 </script>
 
-<div class="table_wrapper" class:no-max-height={noMaxHeight}>
+<div class="table-wrapper" class:no-max-height={noMaxHeight}>
   <table class="table is-striped">
     <tbody>
       {@render children?.()}
@@ -20,7 +20,7 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .table_wrapper {
+  .table-wrapper {
     display: inline-block;
     vertical-align: top;
     width: calc(50% - 3px);
@@ -28,7 +28,7 @@
     overflow: hidden;
     padding: 0.5em 0;
 
-    :global(html.rounded_design) & {
+    :global(html.roundedDesign) & {
       border-bottom-left-radius: $rounded;
     }
 
@@ -49,24 +49,24 @@
     }
   }
 
-  .table_wrapper {
+  .table-wrapper {
     tbody :global(td:first-child) {
       font-weight: bold;
     }
   }
 
   @media screen and (max-width: 1023px) {
-    .table_wrapper {
+    .table-wrapper {
       display: block;
       width: 100%;
-      :global(html.rounded_design) & {
+      :global(html.roundedDesign) & {
         border-bottom-right-radius: $rounded;
       }
     }
   }
 
   @media screen and (max-width: 600px) {
-    .table_wrapper {
+    .table-wrapper {
       max-height: none;
       overflow-y: auto;
       .table :global(tr) {

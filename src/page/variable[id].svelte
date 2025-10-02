@@ -7,12 +7,12 @@
 
   let { variable } = $props()
 
-  const dataset = db.get('dataset', variable.dataset_id)
+  const dataset = db.get('dataset', variable.datasetId)
   let variablePreview: false | object = false
   if (dataset.link) {
     variablePreview = {
       variable: variable.name,
-      dataset_id: dataset.link ? dataset.id : false,
+      datasetId: dataset.link ? dataset.id : false,
     }
   }
 

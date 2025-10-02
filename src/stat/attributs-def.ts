@@ -19,13 +19,13 @@ export default {
   frequency: {
     name: 'Fréquence',
     type: 'category',
-    variable: 'updating_each',
+    variable: 'updatingEach',
   },
-  last_update: {
+  lastUpdate: {
     icon: 'timeAgo',
     name: 'Mise à jour',
     type: 'numeric',
-    variable: 'last_update_date',
+    variable: 'lastUpdateDate',
     rangeType: 'timeAgo',
     parseDate: true,
   },
@@ -33,7 +33,7 @@ export default {
     icon: 'timeAgo',
     name: 'Mise à jour',
     type: 'numeric',
-    variable: 'last_update',
+    variable: 'lastUpdate',
     rangeType: 'timeAgo',
   },
   type: {
@@ -49,7 +49,7 @@ export default {
   },
   modality: {
     name: 'Nombre de modalités',
-    type: 'category_ordered',
+    type: 'categoryOrdered',
     getValue: x => x.modalities?.length,
   },
   entity: {
@@ -67,14 +67,14 @@ export default {
     type: 'numeric',
     getValue: x => x.values?.length,
   },
-  nb_row: {
+  nbRow: {
     name: 'Nombre de lignes',
     type: 'numeric',
-    variable: 'nb_row',
+    variable: 'nbRow',
   },
   level: {
     name: "Niveau de l'arborecence",
-    type: 'category_ordered',
+    type: 'categoryOrdered',
     getValue: x => x.parentsRelative?.length + 1,
   },
   localisation: {
@@ -94,21 +94,21 @@ export default {
     nbRange: 1,
     getValue: x => x.phone?.length,
   },
-  survey_type: {
+  surveyType: {
     name: "Type d'enquête",
     type: 'category',
-    variable: 'survey_type',
+    variable: 'surveyType',
   },
-  delivery_format: {
+  deliveryFormat: {
     name: 'Format de livraison',
     type: 'category',
-    variable: 'delivery_format',
+    variable: 'deliveryFormat',
   },
-  metadata_path: {
+  metadataPath: {
     name: 'Metadonnées',
     type: 'string',
     nbRange: 1,
-    getValue: x => x.metadata_path?.length,
+    getValue: x => x.metadataPath?.length,
   },
   docPath: {
     name: 'Lien',
@@ -116,11 +116,11 @@ export default {
     nbRange: 1,
     getValue: x => x.path?.length,
   },
-  git_code: {
+  gitCode: {
     name: 'Repo GIT',
     type: 'string',
     nbRange: 1,
-    getValue: x => x.git_code?.length,
+    getValue: x => x.gitCode?.length,
   },
   actionReadable: {
     icon: 'log',
@@ -138,7 +138,7 @@ export default {
       icon: 'elementIcon',
       link: 'elementLink',
     },
-    subtype: x => x.actionName === 'load_page',
+    subtype: x => x.actionName === 'loadPage',
   },
   tab: {
     name: "Sélectionner l'onglet",
@@ -147,7 +147,7 @@ export default {
       icon: 'elementIcon',
       link: 'elementLink',
     },
-    subtype: x => x.actionName === 'select_tab',
+    subtype: x => x.actionName === 'selectTab',
   },
   search: {
     name: 'Rechercher',
@@ -156,7 +156,7 @@ export default {
       icon: 'elementIcon',
       link: 'elementLink',
     },
-    subtype: x => x.actionName === 'search_bar',
+    subtype: x => x.actionName === 'searchBar',
   },
   timeAgo: {
     name: 'Moment',

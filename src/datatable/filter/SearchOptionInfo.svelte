@@ -1,4 +1,4 @@
-<h2 class="popup_title">options de recherche</h2>
+<h2 class="popup-title">options de recherche</h2>
 <table>
   <tbody>
     <tr>
@@ -33,7 +33,7 @@
 </table>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   table {
     width: 100%;
@@ -44,7 +44,7 @@
     }
   }
 
-  .popup_title {
+  .popup-title {
     font-weight: bold;
     font-size: 18px;
   }

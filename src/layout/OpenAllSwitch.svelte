@@ -4,17 +4,17 @@
 
   let { onChange = () => {} } = $props()
 
-  let openAllRecursive = $state(Options.get('open_all_recursive'))
+  let openAllRecursive = $state(Options.get('openAllRecursive'))
 
   function updateOpenAllRecursive() {
-    Options.set('open_all_recursive', openAllRecursive, () => {
+    Options.set('openAllRecursive', openAllRecursive, () => {
       onChange(openAllRecursive)
     })
   }
 </script>
 
 <div
-  class="open_all_wrapper use_tooltip"
+  class="open-all-wrapper use-tooltip"
   title="Afficher les éléments imbriqués"
 >
   <Switch
@@ -27,14 +27,14 @@
 </div>
 
 <style lang="scss">
-  .open_all_wrapper {
+  .open-all-wrapper {
     position: absolute;
     top: 135px;
     right: 0px;
     z-index: 2;
   }
   @media screen and (max-width: 600px) {
-    .open_all_wrapper {
+    .open-all-wrapper {
       top: 40px;
       left: 5px;
       right: auto;

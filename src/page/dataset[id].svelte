@@ -31,10 +31,9 @@
     .filter(
       evo =>
         (evo.entity === 'dataset' && evo.id === dataset.id) ||
-        (evo.parentEntity === 'dataset' &&
-          evo.parent_entity_id === dataset.id) ||
+        (evo.parentEntity === 'dataset' && evo.parentEntityId === dataset.id) ||
         (evo.parentEntity === 'modality' &&
-          modalitiesId.has(evo.parent_entity_id)) ||
+          modalitiesId.has(evo.parentEntityId)) ||
         (evo.entity === 'modality' && modalitiesId.has(evo.id)),
     )
 

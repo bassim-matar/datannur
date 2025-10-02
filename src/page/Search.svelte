@@ -38,7 +38,7 @@
     noRecentSearch,
   )
 
-  SearchHistory.onChange('search_page', () => searchInputChange())
+  SearchHistory.onChange('searchPage', () => searchInputChange())
 
   function setTabKey() {
     recentSearchChange = !recentSearchChange
@@ -123,7 +123,7 @@
       <input
         class="input"
         type="text"
-        name="search_page_input"
+        name="search-page-input"
         bind:value={$searchValue}
         autocomplete="off"
         enterkeyhint="search"

@@ -16,7 +16,7 @@
       <div class="close-btn">
         <BtnClearInput click={closePopup} mode="normal" />
       </div>
-      <div class="main_content">
+      <div class="main-content">
         {@render children?.()}
       </div>
     </div>
@@ -50,7 +50,7 @@
     overflow: auto;
     width: auto;
     height: auto;
-    :global(html.dark_mode) & {
+    :global(html.dark-mode) & {
       box-shadow: 0 8px 16px rgba(0, 0, 0, 1);
     }
   }
@@ -61,7 +61,7 @@
     right: 0px;
   }
 
-  .main_content {
+  .main-content {
     margin-top: 10px;
   }
 </style>

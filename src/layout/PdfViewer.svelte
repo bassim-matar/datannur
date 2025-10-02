@@ -13,7 +13,7 @@
   urlMobile += window.location.origin + '/' + url
 </script>
 
-<div class="iframe_wrapper">
+<div class="iframe-wrapper">
   {#if loading}
     <Loading position="relative" colorEntity="doc" />
   {/if}
@@ -34,7 +34,7 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .iframe_wrapper {
+  .iframe-wrapper {
     position: relative;
     padding: 0;
     overflow: hidden;

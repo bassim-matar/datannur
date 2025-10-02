@@ -14,8 +14,7 @@
     .filter(
       evo =>
         (evo.entity === 'modality' && evo.id === modality.id) ||
-        (evo.parentEntity === 'modality' &&
-          evo.parent_entity_id === modality.id),
+        (evo.parentEntity === 'modality' && evo.parentEntityId === modality.id),
     )
 
   const tabs = tabsHelper({ modality, values, variables, evolutions })

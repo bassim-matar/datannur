@@ -96,7 +96,7 @@
                 <Link href={`metaDataset/${relation[0].split(' (')[0]}`}
                   >{relation[0]}</Link
                 >
-                <span class="use_tooltip" title={relationType.type.tooltip}>
+                <span class="use-tooltip" title={relationType.type.tooltip}>
                   <Icon type={relationType.type.symbol} marginRight={false} />
                 </span>
                 <Link href={`metaDataset/${relation[1].split(' (')[0]}`}

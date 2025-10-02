@@ -39,7 +39,7 @@ function addNbChildRecursive(entity, item) {
 }
 function addName(item, entity, alias = '') {
   if (!alias) alias = entity
-  const itemId = item[`${alias}_id`]
+  const itemId = item[`${alias}Id`]
   let itemName = ''
   if (itemId !== null && itemId !== undefined)
     itemName = db.get(entity, itemId)?.name as string
@@ -59,40 +59,40 @@ function addEntities(item) {
 }
 function addPeriod(item) {
   item.period = ''
-  if (item.start_date && item.start_date === item.end_date)
-    item.period = item.start_date
-  else if (item.start_date && item.end_date) {
-    item.periodDuration = getPeriod(item.start_date, item.end_date, true)
-    item.period = `${item.start_date} - ${item.end_date}`
-  } else if (item.start_date) item.period = `dès ${item.start_date}`
-  else if (item.end_date) item.period = `jusqu'à ${item.end_date}`
+  if (item.startDate && item.startDate === item.endDate)
+    item.period = item.startDate
+  else if (item.startDate && item.endDate) {
+    item.periodDuration = getPeriod(item.startDate, item.endDate, true)
+    item.period = `${item.startDate} - ${item.endDate}`
+  } else if (item.startDate) item.period = `dès ${item.startDate}`
+  else if (item.endDate) item.period = `jusqu'à ${item.endDate}`
 }
 
 function addDocs(entity, item) {
   item.docs = db.getAll('doc', { [entity]: item.id })
   for (const doc of item.docs) {
     doc.entity = entity
-    doc.entity_id = item.id
+    doc.entityId = item.id
   }
 }
 
 function variableAddDatasetInfo(variable) {
-  const dataset = db.get('dataset', variable.dataset_id)
+  const dataset = db.get('dataset', variable.datasetId)
   if (!dataset) return
-  variable.nb_row = dataset.nb_row
+  variable.nbRow = dataset.nbRow
   variable.datasetName = dataset.name
   variable.datasetType = dataset.type
   variable.folderName = ''
   if (db.use.folder) {
-    variable.folder_id = dataset.folder_id
+    variable.folderId = dataset.folderId
     variable.folderName = dataset.folderName
   }
   if (db.use.owner) {
-    variable.owner_id = dataset.owner_id
+    variable.ownerId = dataset.ownerId
     variable.ownerName = dataset.ownerName
   }
   if (db.use.manager) {
-    variable.manager_id = dataset.manager_id
+    variable.managerId = dataset.managerId
     variable.managerName = dataset.managerName
   }
 }
@@ -103,10 +103,10 @@ function addEntity(item, entity) {
 }
 
 function addSourceVar(variable) {
-  if (!variable.sourceVar_ids) return false
+  if (!variable.sourceVarIds) return false
   variable.sourceIds = []
-  const dataset = db.get('dataset', variable.dataset_id)
-  for (const sourceVarIdRaw of variable.sourceVar_ids.split(',')) {
+  const dataset = db.get('dataset', variable.datasetId)
+  for (const sourceVarIdRaw of variable.sourceVarIds.split(',')) {
     const sourceVarId = sourceVarIdRaw.trim()
     const sourceVar = db.get('variable', sourceVarId.trim())
     if (!sourceVar) continue
@@ -116,11 +116,11 @@ function addSourceVar(variable) {
 
     if (dataset) {
       if (!dataset.sourceIds) dataset.sourceIds = new Set()
-      if (dataset.id !== sourceVar.dataset_id) {
-        dataset.sourceIds.add(sourceVar.dataset_id)
+      if (dataset.id !== sourceVar.datasetId) {
+        dataset.sourceIds.add(sourceVar.datasetId)
       }
     }
-    const sourceDataset = db.get('dataset', sourceVar.dataset_id)
+    const sourceDataset = db.get('dataset', sourceVar.datasetId)
     if (sourceDataset) {
       if (!sourceDataset.derivedIds) sourceDataset.derivedIds = new Set()
       if (sourceDataset.id !== dataset.id) {
@@ -131,10 +131,9 @@ function addSourceVar(variable) {
 }
 
 function addNextUpdate(item) {
-  if (!item.last_update_date || !item.updating_each || item.no_more_update)
-    return
+  if (!item.lastUpdateDate || !item.updatingEach || item.noMoreUpdate) return
   let diff
-  const updatingEach = item.updating_each.toLowerCase()
+  const updatingEach = item.updatingEach.toLowerCase()
   if (updatingEach === 'quotidienne') diff = 24 * 3600
   else if (updatingEach === 'hebdomadaire') diff = 7 * (24 * 3600)
   else if (updatingEach === 'mensuelle') diff = 30 * (24 * 3600)
@@ -147,7 +146,7 @@ function addNextUpdate(item) {
   else if (updatingEach === 'quinquennale') diff = 5 * (365 * 24 * 3600)
 
   if (diff) {
-    const lastUpdate = dateToTimestamp(item.last_update_date)
+    const lastUpdate = dateToTimestamp(item.lastUpdateDate)
     item.nextUpdateDate = timestampToDate(lastUpdate + diff * 1000)
   }
 }
@@ -218,7 +217,7 @@ export function addMinimumDeep(items, noDeep = false, noIndent = false) {
 
 export function getLineage(entity, elem, lineageType) {
   const lineage = []
-  const lineageIds = elem[`${lineageType}_ids`]
+  const lineageIds = elem[`${lineageType}Ids`]
   if (!lineageIds) return lineage
   for (const id of lineageIds) {
     const item = db.get(entity, id)
@@ -327,10 +326,10 @@ class Process {
       addNb('doc', doc, 'dataset')
       addNb('doc', doc, 'tag')
       addEntities(doc)
-      if (doc.last_update) doc.last_update *= 1000
-      doc.last_update_date = ''
-      if (doc.last_update) {
-        doc.last_update_date = new Date(doc.last_update)
+      if (doc.lastUpdate) doc.lastUpdate *= 1000
+      doc.lastUpdateDate = ''
+      if (doc.lastUpdate) {
+        doc.lastUpdateDate = new Date(doc.lastUpdate)
           .toISOString()
           .slice(0, 10)
           .replaceAll('-', '/')
@@ -355,7 +354,7 @@ class Process {
       variable.typeClean = getVariableTypeClean(variable.type)
       variableAddDatasetInfo(variable)
       const nbValues = getNbValues(variable.values, variable)
-      variable.nb_distinct = nbValues
+      variable.nbDistinct = nbValues
       variable.nbValue = nbValues
       addSourceVar(variable)
       if (variable.key) variable.key = 'oui'
@@ -381,9 +380,9 @@ class Process {
         variable.freqPreview = []
       }
 
-      if (!nbValues || !variable.nb_duplicate) return
-      variable.nb_duplicate = Math.max(variable.nb_row - nbValues, 0)
-      if (variable.nb_missing) variable.nb_duplicate -= variable.nb_missing
+      if (!nbValues || !variable.nbDuplicate) return
+      variable.nbDuplicate = Math.max(variable.nbRow - nbValues, 0)
+      if (variable.nbMissing) variable.nbDuplicate -= variable.nbMissing
     })
   }
   static modality() {
@@ -418,12 +417,12 @@ class Process {
       metaVariable.nbValue = getNbValues(metaVariable.values, metaVariable)
       if (metaVariable.name === 'id') metaVariable.key = 'oui'
 
-      const metaDataset = db.get('metaDataset', metaVariable.metaDataset_id)
-      metaVariable.dataset_id = metaDataset.id
+      const metaDataset = db.get('metaDataset', metaVariable.metaDatasetId)
+      metaVariable.datasetId = metaDataset.id
       metaVariable.datasetName = metaDataset.name
-      metaVariable.nb_row = metaDataset.nb_row
-      metaVariable.metaFolder_id = metaDataset.metaFolder_id
-      metaVariable.folderName = metaDataset.metaFolder_id as string
+      metaVariable.nbRow = metaDataset.nbRow
+      metaVariable.metaFolderId = metaDataset.metaFolderId
+      metaVariable.folderName = metaDataset.metaFolderId as string
       metaVariable.metaLocalisation = ''
       if (metaVariable.isInMeta && !metaVariable.isInData)
         metaVariable.metaLocalisation = 'schéma'
@@ -435,8 +434,8 @@ class Process {
     db.foreach('metaDataset', metaDataset => {
       addEntity(metaDataset, 'metaDataset')
       metaDataset.isMeta = true
-      metaDataset.folder = { id: metaDataset.metaFolder_id }
-      metaDataset.folderName = metaDataset.metaFolder_id as string
+      metaDataset.folder = { id: metaDataset.metaFolderId }
+      metaDataset.folderName = metaDataset.metaFolderId as string
       addVariableNum(metaDataset, 'metaDataset', 'metaVariable')
       const metaVariables = db.getAll('metaVariable', { metaDataset })
       metaDataset.nbVariable = metaVariables.length

@@ -1,4 +1,4 @@
-export const copyTextClasses = 'copyclip break_line use_tooltip'
+export const copyTextClasses = 'copyclip break-line use-tooltip'
 export const copyTextMsg = "cliquer pour copier l'élement"
 const copyTextMsgCopied = 'copié dans le presse-papier !'
 

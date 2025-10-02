@@ -18,7 +18,7 @@
       variableData = variablePreview
     } else {
       variable = PreviewManager.cleanKeys(variable)
-      datasetPreview = variablePreview.dataset_id
+      datasetPreview = variablePreview.datasetId
       $tabSelected.nb = 0
       if (typeof datasetPreview !== 'string') {
         let datasetData = datasetPreview
@@ -46,7 +46,7 @@
 </script>
 
 {#await loadPreview}
-  <Loading type="tab_body" colorEntity="search" />
+  <Loading type="tabBody" colorEntity="search" />
 {:then}
   <Datatable
     entity="preview"

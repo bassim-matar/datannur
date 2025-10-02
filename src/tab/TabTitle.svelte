@@ -18,7 +18,7 @@
   }
 
   onMount(() => {
-    const selector = `.tab_li_${tab.key}`
+    const selector = `.tab-li-${tab.key}`
     const elem = document.querySelector(selector) as HTMLLIElement
     minWidth = elem.offsetWidth
     if (minWidth > 500) minWidth = 0
@@ -38,53 +38,45 @@
 </script>
 
 <li
-  class="tab_li_{tab.key} tab_entity_{tab.icon} shadow_{$tabSelected.icon}"
+  class="tab-li-{tab.key} tab-entity-{tab.icon} shadow-{$tabSelected.icon}"
   class:is-active={activeTab === tab.key}
-  class:not_active={activeTab !== tab.key}
+  class:not-active={activeTab !== tab.key}
   style="min-width: {minWidth}px;"
 >
-  <div class="rounded_wrapper left">
+  <div class="rounded-wrapper left">
     <div class="rounded left"></div>
   </div>
-  <div class="rounded_wrapper right">
+  <div class="rounded-wrapper right">
     <div class="rounded right"></div>
   </div>
 
-  <a
-    href={null}
-    onclick={() => selectTab(tab)}
-    class="tab_select_btn"
-    class:is_loaded={tabNb > 0 ||
-      tabNb === undefined ||
-      tabNb === '?' ||
-      (tabNb?.length > 0 && tabNb !== '...')}
-  >
+  <a href={null} onclick={() => selectTab(tab)} class="tab-select-btn">
     <div>
       {#if tabNb !== undefined}
         {#if tabNb === '...'}
           <Loading type="tab" colorEntity={tab.icon} />
         {:else if tabNb === parseInt(tabNb)}
-          <span class="num_style tab_visible">
+          <span class="num-style tab-visible">
             <Number number={tabNb} />
           </span>
         {:else}
-          <span class="num_style tab_visible">{tabNb}</span>
+          <span class="num-style tab-visible">{tabNb}</span>
         {/if}
       {/if}
     </div>
 
     <div>
-      <span class="tab_visible icon_wrapper">
+      <span class="tab-visible icon-wrapper">
         <Icon type={tab.icon} marginRight={false} mode="compact" />
       </span>
       <span>
         {#if tabNb !== undefined && tabNb !== '...' && tabNb !== parseInt(tabNb)}
-          <span class="percent_wrapper">
+          <span class="percent-wrapper">
             <span class="percent" style="width: {100 - toPercent(tabNb)}%"
             ></span>
           </span>
         {/if}
-        <span class="tab_visible tab_name">
+        <span class="tab-visible tab-name">
           {tab.name}
         </span>
       </span>
@@ -95,7 +87,7 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .tab_visible {
+  .tab-visible {
     position: relative;
     z-index: 2;
   }
@@ -106,10 +98,10 @@
     height: 38px;
     &.is-active {
       border-color: $color-5;
-      a.tab_select_btn {
+      a.tab-select-btn {
         background: $background-2;
         z-index: 2;
-        .percent_wrapper {
+        .percent-wrapper {
           position: absolute;
           top: 0;
           left: 0;
@@ -128,7 +120,7 @@
       }
     }
   }
-  a.tab_select_btn {
+  a.tab-select-btn {
     position: relative;
     border: 0;
     justify-content: left;
@@ -137,7 +129,7 @@
     padding-top: 10px;
     font-size: 14px;
     flex-direction: column;
-    .num_style {
+    .num-style {
       font-size: 12px;
       display: block;
       line-height: 0px;
@@ -145,7 +137,7 @@
       padding-left: 8px;
       text-align: center;
     }
-    .icon_wrapper {
+    .icon-wrapper {
       height: 24px;
       :global(.icon) {
         margin-left: 8px;
@@ -161,8 +153,8 @@
 
   li {
     @each $entity in $entities {
-      &.tab_entity_#{$entity} {
-        a.tab_select_btn:hover {
+      &.tab-entity-#{$entity} {
+        a.tab-select-btn:hover {
           color: #{color($entity)} !important;
         }
       }
@@ -170,8 +162,8 @@
   }
   li.is-active {
     @each $entity in $entities {
-      &.tab_entity_#{$entity} {
-        a.tab_select_btn {
+      &.tab-entity-#{$entity} {
+        a.tab-select-btn {
           color: #{color($entity)} !important;
         }
       }
@@ -179,18 +171,18 @@
   }
 
   @each $entity in $entities {
-    .tab_entity_#{$entity} {
-      .percent_wrapper {
+    .tab-entity-#{$entity} {
+      .percent-wrapper {
         background: #{color($entity)};
       }
     }
   }
 
-  :global(html.rounded_design) {
-    a.tab_select_btn {
+  :global(html.roundedDesign) {
+    a.tab-select-btn {
       border-radius: $rounded-top;
     }
-    li.not_active a.tab_select_btn:hover {
+    li.not-active a.tab-select-btn:hover {
       border-radius: $rounded-size;
       border-bottom-color: transparent;
     }
@@ -198,7 +190,7 @@
     li.is-active {
       position: relative;
       border-radius: $rounded-top;
-      .rounded_wrapper {
+      .rounded-wrapper {
         content: '';
         position: absolute;
         height: 20px;
@@ -230,44 +222,44 @@
         }
       }
 
-      a.tab_select_btn {
-        .percent_wrapper {
+      a.tab-select-btn {
+        .percent-wrapper {
           border-top-left-radius: 20px;
           border-top-right-radius: 20px;
         }
       }
     }
     :global(.tabs:not(.no-first-tab)) {
-      li.is-active .rounded_wrapper.left {
+      li.is-active .rounded-wrapper.left {
         display: none;
       }
     }
     :global(.tabs.is-last-tab) {
-      li.is-active .rounded_wrapper.right {
+      li.is-active .rounded-wrapper.right {
         display: none;
       }
     }
   }
 
-  :global(html.page_shadow_colored) {
+  :global(html.pageShadowColored) {
     li {
       @each $entity in $entities {
-        &.tab_entity_#{$entity} {
-          a.tab_select_btn:hover {
+        &.tab-entity-#{$entity} {
+          a.tab-select-btn:hover {
             color: #{color($entity)} !important;
           }
         }
 
-        &.shadow_#{$entity} {
+        &.shadow-#{$entity} {
           &.is-active {
             border-color: #{color($entity)};
 
-            a.tab_select_btn {
+            a.tab-select-btn {
               color: #{color($entity)};
             }
-            .rounded_wrapper .rounded,
-            .rounded_wrapper .rounded.left,
-            .rounded_wrapper .rounded.right {
+            .rounded-wrapper .rounded,
+            .rounded-wrapper .rounded.left,
+            .rounded-wrapper .rounded.right {
               border-color: #{color($entity)};
             }
           }
@@ -277,7 +269,7 @@
   }
 
   @media screen and (max-width: 600px) {
-    .tab_name {
+    .tab-name {
       display: none;
     }
   }

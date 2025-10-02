@@ -43,7 +43,7 @@
       lastUpdate.absolute = getDatetime(timestamp)
       currentInterval = setInterval(updateLastModif, interval)
     } else {
-      lastUpdate.state = 'not_found'
+      lastUpdate.state = 'notFound'
     }
   })
 </script>
@@ -53,7 +53,7 @@
     <div class="footer-content">
       <div>
         <a href="https://datannur.com" target="_blanck">
-          © {year} dat<span class="main_color">a</span>nnur
+          © {year} dat<span class="main-color">a</span>nnur
         </a>
       </div>
       {#if __APP_VERSION__}
@@ -91,7 +91,7 @@
       {:else if lastUpdate.state === 'loaded'}
         <div>
           <span
-            class="break_line use_tooltip tooltip_top"
+            class="break-line use-tooltip tooltip-top"
             title={lastUpdate.absolute}
           >
             actualisé {lastUpdate.relative}
@@ -132,7 +132,7 @@
         margin: 0.3rem 0.75rem;
       }
 
-      .main_color {
+      .main-color {
         color: $color-3;
         text-shadow: 0 0 10px;
       }

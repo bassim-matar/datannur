@@ -26,7 +26,7 @@
   const getWidth = selector => document.querySelector(selector)?.offsetWidth
 
   function isTabsOverflow() {
-    return getWidth('.tabs_container_ul') + 30 > getWidth('#tabs_container')
+    return getWidth('.tabs-container-ul') + 30 > getWidth('#tabs-container')
   }
 
   function checkIfLastTab() {
@@ -61,7 +61,7 @@
     setFooter(tab)
     $tabSelected = tab
     centerActiveTab()
-    Logs.add('select_tab', { entity: tabKey })
+    Logs.add('selectTab', { entity: tabKey })
     if (tabs[0].key === tabKey) {
       UrlParam.delete('tab')
     } else {
@@ -79,7 +79,7 @@
 
   function centerActiveTab() {
     setTimeout(() => {
-      const liActive = '#tabs_container ul.tabs_container_ul li.is-active'
+      const liActive = '#tabs-container ul.tabs-container-ul li.is-active'
       const li: HTMLLIElement | null = document.querySelector(liActive)
       if (!li || !ul) return
       const position = ul.offsetWidth / 2 - li.offsetWidth / 2
@@ -127,7 +127,7 @@
 <svelte:window onresize={onResize} />
 
 <div
-  id="tabs_container"
+  id="tabs-container"
   class="tabs is-boxed"
   class:no-first-tab={noFirstTab}
   class:is-last-tab={isLastTab}
@@ -135,7 +135,7 @@
   bind:this={ul}
 >
   {#key tabsTitleKey}
-    <ul class="tabs_container_ul">
+    <ul class="tabs-container-ul">
       {#each tabs as tab (tab.key)}
         <TabTitle {tab} bind:activeTab {selectTab} />
       {/each}
@@ -153,7 +153,7 @@
     overflow-x: auto;
     z-index: 1;
     position: relative;
-    @include scrollbar_light();
+    @include scrollbar-light();
 
     & > ul {
       flex-grow: 0;
@@ -164,12 +164,12 @@
 
   .tabs.has-reverse-scroll {
     transform: rotateX(180deg);
-    .tabs_container_ul {
+    .tabs-container-ul {
       transform: rotateX(180deg);
     }
   }
 
-  :global(html.has_touch_screen) {
+  :global(html.has-touch-screen) {
     .tabs {
       scrollbar-width: none;
       -ms-overflow-style: none;
