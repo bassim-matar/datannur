@@ -12,31 +12,28 @@ export default class Exporter {
   getLanguage() {
     return {
       copyTitle: 'Copier dans le presse-papier',
-      copySuccess: {
-        1: '1 ligne copiée dans le presse-papier',
-        _: '%d lignes copiées dans le presse-papier',
-      },
+      copySuccess: 'Tableau copié dans le presse-papier',
     }
   }
   getButtons() {
     const filename = this.id
     return [
       {
-        text: '<span class="icon icon_download main"><i class="fas fa-cloud-download-alt"></i></span>',
+        text: '<span class="icon icon-download main"><i class="fas fa-cloud-download-alt"></i></span>',
         action: () => this.toggleMainBtn(),
         footer: false,
       },
       {
-        text: '<span class="icon icon_download"><i class="fas fa-copy"></i></span>copie',
-        className: 'download_button',
+        text: '<span class="icon icon-download"><i class="fas fa-copy"></i></span>copie',
+        className: 'download-button',
         extend: 'copy',
         title: '',
         exportOptions: { orthogonal: 'export' },
         footer: false,
       },
       {
-        text: '<span class="icon icon_download"><i class="fas fa-file-csv"></i></span>csv',
-        className: 'download_button',
+        text: '<span class="icon icon-download"><i class="fas fa-file-csv"></i></span>csv',
+        className: 'download-button',
         extend: 'csvHtml5',
         fieldSeparator: ';',
         extension: '.csv',
@@ -46,8 +43,8 @@ export default class Exporter {
         footer: false,
       },
       {
-        text: '<span class="icon icon_download"><i class="fas fa-file-excel"></i></span>excel',
-        className: 'download_button',
+        text: '<span class="icon icon-download"><i class="fas fa-file-excel"></i></span>excel',
+        className: 'download-button',
         extend: 'excel',
         filename,
         title: '',
@@ -64,11 +61,11 @@ export default class Exporter {
     if (isOpen === 'true') {
       applyToElements(btns, element => element.classList.remove('open'))
       mainBtn.setAttribute('is-open', 'false')
-      Logs.add('close_table_download')
+      Logs.add('closeTableDownload')
     } else {
       applyToElements(btns, element => element.classList.add('open'))
       mainBtn.setAttribute('is-open', 'true')
-      Logs.add('open_table_download')
+      Logs.add('openTableDownload')
     }
   }
 }

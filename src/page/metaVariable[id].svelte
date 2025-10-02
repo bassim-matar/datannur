@@ -1,20 +1,21 @@
 <script lang="ts">
   import db from '@db'
   import { filterKeys } from '@lib/db'
+  import { getUserData } from '@lib/user-data'
+  import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
-  import { tabsHelper } from '@tab/tabs-helper'
-  import type { Row } from '@type'
 
   let { metaVariable } = $props()
 
   let variablePreview = []
-  let datasetPreview: Row[] = []
-  let metaDataset = db.get('metaDataset', metaVariable.metaDataset_id)
-  if (metaDataset.name in db.tables) {
-    datasetPreview = db.tables[metaDataset.name] as Row[]
-  } else if (metaDataset.name in db.tables.__user_data__) {
-    datasetPreview = db.tables.__user_data__[metaDataset.name] as Row[]
+  let datasetPreview = []
+  let metaDataset = db.get('metaDataset', metaVariable.metaDatasetId)
+  if (metaDataset.metaFolderId === 'data') {
+    datasetPreview = db.tables[metaDataset.name]
+  } else if (metaDataset.metaFolderId === 'userData') {
+    const userData = getUserData()
+    datasetPreview = userData?.[metaDataset.name]
   }
   variablePreview = filterKeys(datasetPreview, [metaVariable.name])
 
@@ -26,6 +27,9 @@
 </script>
 
 <section class="section">
-  <Title type="variable" name={metaVariable.name} />
+  <Title
+    type="variable"
+    name={metaVariable.storageKey ? metaVariable.storageKey : metaVariable.name}
+  />
   <Tabs {tabs} />
 </section>

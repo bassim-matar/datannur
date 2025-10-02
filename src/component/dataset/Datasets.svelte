@@ -34,8 +34,8 @@
     if (dataset.nbVariable > nbVariableMax) {
       nbVariableMax = dataset.nbVariable
     }
-    if (dataset.nb_row > nbRowMax) {
-      nbRowMax = dataset.nb_row
+    if (dataset.nbRow > nbRowMax) {
+      nbRowMax = dataset.nbRow
     }
     if (dataset.docsRecursive?.length > nbDocMax) {
       nbDocMax = dataset.docsRecursive?.length
@@ -69,7 +69,7 @@
         Column.metaLocalisation(),
         Column.metaFolder(),
         Column.timestamp({
-          varName: 'last_update_timestamp',
+          varName: 'lastUpdateTimestamp',
           title: 'Mise à jour',
           tooltip: 'Moment de la dernière mise à jour',
         }),

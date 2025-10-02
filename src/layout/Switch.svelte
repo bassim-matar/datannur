@@ -14,7 +14,7 @@
 
 <div class="field {slotPosition}">
   <input
-    id="checkbox_{id}"
+    id="checkbox-{id}"
     type="checkbox"
     class="switch is-rounded is-outlined {size}"
     class:tree-switch={treeSwitch}
@@ -22,8 +22,8 @@
     bind:checked={value}
     onchange={change}
   />
-  <label for="checkbox_{id}">
-    <div class="slot_wrapper">
+  <label for="checkbox-{id}">
+    <div class="slot-wrapper">
       {@render children?.()}
     </div>
   </label>
@@ -33,7 +33,7 @@
   @use 'main.scss' as *;
 
   .field.left {
-    .slot_wrapper {
+    .slot-wrapper {
       position: absolute;
       left: 15px;
       top: 30px;

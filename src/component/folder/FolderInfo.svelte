@@ -23,37 +23,37 @@
   <IdInfo id={folder.id} />
   {#if !folder.isMeta}
     <DeepLevelInfo level={folder.parents.length + 1} />
-    {#if folder.parent_id}
+    {#if folder.parentId}
       <FolderInfo folderId={folder.id} isSelf={true} />
     {/if}
-    <InstitutionInfo type="owner" institutionId={folder.owner_id} />
-    <InstitutionInfo type="manager" institutionId={folder.manager_id} />
+    <InstitutionInfo type="owner" institutionId={folder.ownerId} />
+    <InstitutionInfo type="manager" institutionId={folder.managerId} />
     <TagsInfo tags={folder.tags} />
-    <LastUpdateInfo lastUpdateDate={folder.last_update_date} />
+    <LastUpdateInfo lastUpdateDate={folder.lastUpdateDate} />
     <NextUpdateInfo nextUpdateDate={folder.nextUpdateDate} />
-    <FrequencyInfo frequency={folder.updating_each} />
+    <FrequencyInfo frequency={folder.updatingEach} />
     <PeriodInfo period={folder.period} periodDuration={folder.periodDuration} />
     <LocalisationInfo localisation={folder.localisation} />
-    {#if folder.survey_type}
+    {#if folder.surveyType}
       <tr>
-        <td><Icon type="survey_type" /> Type d'enquête</td>
-        <td>{folder.survey_type}</td>
+        <td><Icon type="surveyType" /> Type d'enquête</td>
+        <td>{folder.surveyType}</td>
       </tr>
     {/if}
-    <DeliveryFormatInfo deliveryFormat={folder.delivery_format} />
-    {#if folder.metadata_path}
+    <DeliveryFormatInfo deliveryFormat={folder.deliveryFormat} />
+    {#if folder.metadataPath}
       <tr>
-        <td><Icon type="metadata_path" /> Metadonnées</td>
-        <td><CopyText text={folder.metadata_path} /></td>
+        <td><Icon type="metadataPath" /> Metadonnées</td>
+        <td><CopyText text={folder.metadataPath} /></td>
       </tr>
     {/if}
-    <DataPathInfo dataPath={folder.data_path} />
-    {#if folder.git_code}
+    <DataPathInfo dataPath={folder.dataPath} />
+    {#if folder.gitCode}
       <tr>
-        <td><Icon type="git_code" /> GIT code</td>
+        <td><Icon type="gitCode" /> GIT code</td>
         <td>
-          <a href={folder.git_code} target="_blanck" class="break_line">
-            {folder.git_code}
+          <a href={folder.gitCode} target="_blanck" class="break-line">
+            {folder.gitCode}
           </a>
         </td>
       </tr>

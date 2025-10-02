@@ -20,6 +20,6 @@
 </script>
 
 <section class="section">
-  <Title type="modality" name="Modalités" mode="main_title" />
+  <Title type="modality" name="Modalités" mode="mainTitle" />
   <Tabs {tabs} />
 </section>

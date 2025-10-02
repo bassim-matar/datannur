@@ -4,17 +4,17 @@
 
   let { onChange = () => {} } = $props()
 
-  let evolutionSummary = $state(Options.get('evolution_summary'))
+  let evolutionSummary = $state(Options.get('evolutionSummary'))
 
   function updateEvolutionSummary() {
-    Options.set('evolution_summary', evolutionSummary, () => {
-      onChange('evolution_summary' + String(evolutionSummary))
+    Options.set('evolutionSummary', evolutionSummary, () => {
+      onChange('evolutionSummary' + String(evolutionSummary))
     })
   }
 </script>
 
 <div
-  class="evolution_summary_wrapper use_tooltip"
+  class="evolution-summary-wrapper use-tooltip"
   title="Afficher les évolultions de façon résumée"
 >
   <Switch
@@ -28,14 +28,14 @@
 </div>
 
 <style lang="scss">
-  .evolution_summary_wrapper {
+  .evolution-summary-wrapper {
     position: absolute;
     top: 135px;
     right: 0px;
     z-index: 2;
   }
   @media screen and (max-width: 600px) {
-    .evolution_summary_wrapper {
+    .evolution-summary-wrapper {
       top: 40px;
       left: 5px;
       right: auto;

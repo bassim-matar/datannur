@@ -7,6 +7,7 @@
   import Column from '@lib/column'
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
+  import escapeHtml from 'escape-html'
 
   let { tags } = $props()
 
@@ -69,7 +70,11 @@
         tooltip: "Nombre d'institutions",
         render: (data, type, row) => {
           if (!data) return ''
-          const content = link('tag/' + row.id + '?tab=institutions', data)
+          if (type !== 'display') return data
+          const content = link(
+            'tag/' + row.id + '?tab=institutions',
+            escapeHtml(data),
+          )
           const percent = getPercent(data / institutionMax)
           return `${Render.numPercent(content, percent, 'institution', type)}`
         },

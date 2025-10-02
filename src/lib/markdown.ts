@@ -12,16 +12,16 @@ renderer.link = ({ href, title, text }) => {
     title.includes('new_tab')
   ) {
     target = 'target="_blank" rel="noopener"'
-    return `<a href="${href}" ${target} class="basic_link" title="${title}">${text}</a>`
+    return `<a href="${href}" ${target} class="basic-link" title="${title}">${text}</a>`
   }
 
   const base = getBaseLinkUrl()
-  return `<a href="${base}${href}" data-href="${href}" class="basic_link internal-link" title="${title}">${text}</a>`
+  return `<a href="${base}${href}" data-href="${href}" class="basic-link internal-link" title="${title}">${text}</a>`
 }
 
 renderer.image = function ({ href, text }) {
   if (!text) text = ''
-  if (text.includes('no_caption')) {
+  if (text.includes('no-caption')) {
     return `<img src="${href}" alt="${text}" />`
   }
   return `<figure>

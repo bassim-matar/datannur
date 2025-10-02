@@ -1,7 +1,8 @@
 <script lang="ts">
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
-  import { getPercent, wrapLongText } from '@lib/util'
+  import { getPercent } from '@lib/util'
+  import escapeHtml from 'escape-html'
 
   let { freq } = $props()
 
@@ -16,7 +17,7 @@
       data: 'value',
       title: Render.icon('value') + 'Valeur',
       tooltip: 'Valeur de la variable',
-      render: wrapLongText,
+      render: Render.longText,
     })
 
     columns.push({
@@ -32,10 +33,10 @@
         if (type === 'display') {
           const freqNum = Render.num(data, type)
           return `
-          <div class="freq_item_container">
-            <div class="freq_background color_freq" style="width: ${percentBackground}%"></div>
-            <span class="freq_number">${freqNum}</span>
-            <span class="freq_percent">${percentDisplay}%</span>
+          <div class="freq-item-container">
+            <div class="freq-background color-freq" style="width: ${percentBackground}%"></div>
+            <span class="freq-number">${escapeHtml(freqNum)}</span>
+            <span class="freq-percent">${percentDisplay}%</span>
           </div>`
         }
 

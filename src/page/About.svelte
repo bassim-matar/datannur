@@ -14,6 +14,6 @@
 </script>
 
 <section class="section">
-  <Title type="about" name="A propos" mode="main_title" />
+  <Title type="about" name="A propos" mode="mainTitle" />
   <Tabs {tabs} />
 </section>

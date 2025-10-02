@@ -43,12 +43,12 @@
   let tagsTree = buildTree(tags)
 </script>
 
-<div class="tags_wrapper">
+<div class="tags-wrapper">
   <TagsListLevel tag={{ children: tagsTree }} />
 </div>
 
 <style lang="scss">
-  .tags_wrapper {
+  .tags-wrapper {
     display: flex;
     flex-direction: column;
     gap: 5px;

@@ -43,7 +43,7 @@
 </script>
 
 <section class="section">
-  <Title type="folder" name="Dossiers" mode="main_title" />
+  <Title type="folder" name="Dossiers" mode="mainTitle" />
   {#if showOpenAllSwitch}
     <OpenAllSwitch onChange={value => (keyTab = value)} />
   {/if}

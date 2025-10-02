@@ -13,14 +13,14 @@ export class DarkMode {
     this.options.loaded.then(() => {
       let theme = 'light'
       if (defaultTheme === 'dark') {
-        document.documentElement.classList.add('dark_mode')
+        document.documentElement.classList.add('dark-mode')
         theme = 'dark'
       }
-      if (this.options.get('dark_mode') === 'dark') {
-        document.documentElement.classList.add('dark_mode')
+      if (this.options.get('darkMode') === 'dark') {
+        document.documentElement.classList.add('dark-mode')
         theme = 'dark'
-      } else if (this.options.get('dark_mode') === 'light') {
-        document.documentElement.classList.remove('dark_mode')
+      } else if (this.options.get('darkMode') === 'light') {
+        document.documentElement.classList.remove('dark-mode')
         theme = 'light'
       }
       darkModeTheme.set(theme)
@@ -28,10 +28,10 @@ export class DarkMode {
   }
 
   static toggle() {
-    document.documentElement.classList.toggle('dark_mode')
+    document.documentElement.classList.toggle('dark-mode')
     darkModeTheme.update(theme => {
       const newTheme = theme === 'dark' ? 'light' : 'dark'
-      this.options.set('dark_mode', newTheme)
+      this.options.set('darkMode', newTheme)
       return newTheme
     })
   }

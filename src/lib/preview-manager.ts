@@ -1,6 +1,6 @@
 import db from '@db'
-import { wrapLongText } from '@lib/util'
 import Render from '@lib/render'
+import escapeHtml from 'escape-html'
 
 export default class PreviewManager {
   static cleanKeys(data) {
@@ -17,23 +17,14 @@ export default class PreviewManager {
       }
     }
   }
-  static addPosition(data) {
-    const newData = []
-    let position = 0
-    for (const row of data) {
-      position += 1
-      newData.push({ '#': position, ...row })
-    }
-    return newData
-  }
   static getColumns(data) {
     const cols = []
     for (const [key, value] of Object.entries(data[0])) {
       let render
       if (typeof value === 'number') {
-        render = data => Render.num(data)
+        render = data => Render.num(escapeHtml(data))
       } else {
-        render = data => wrapLongText(data)
+        render = Render.longText
       }
       cols.push({ data: key, title: key, defaultContent: '', render })
     }
@@ -56,6 +47,6 @@ export default class PreviewManager {
     if (datasetIdParts.length > 1) {
       path += '/' + datasetIdParts[0]
     }
-    return await db.load(path, datasetPreview)
+    return await db.load(path, datasetPreview, false)
   }
 }

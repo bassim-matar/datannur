@@ -4,7 +4,7 @@ export function modalityCompareWorker(param) {
     for (const modality1 of modalitiesToCompare) {
       const nbValue = modality1.valuesClean.length
       for (const modality2 of modalitiesToCompare) {
-        if (modality1.modality_id === modality2.modality_id) continue
+        if (modality1.modalityId === modality2.modalityId) continue
         let nbSimilitude = 0
         for (const value1 of modality1.valuesClean) {
           if (modality2.valuesClean.includes(value1)) nbSimilitude += 1
@@ -12,10 +12,10 @@ export function modalityCompareWorker(param) {
         const ratio = nbSimilitude / nbValue
         if (ratio > 0.5) {
           similitutes.push({
-            modality1Id: modality1.modality_id,
-            modality2Id: modality2.modality_id,
-            modality1FolderId: modality1.folder_id,
-            modality2FolderId: modality2.folder_id,
+            modality1Id: modality1.modalityId,
+            modality2Id: modality2.modalityId,
+            modality1FolderId: modality1.folderId,
+            modality2FolderId: modality2.folderId,
             modality1Name: modality1.name,
             modality2Name: modality2.name,
             modality1FolderName: modality1.folderName,
@@ -48,12 +48,12 @@ export function modalityCompareWorker(param) {
       valuesClean.push(valueClean)
     }
     modalitiesToCompare.push({
-      modality_id: modality.id,
+      modalityId: modality.id,
       valuesClean,
       name: modality.name,
       type: modality.typeClean,
       nbVariable: modality.variables.length,
-      folder_id: modality.folder_id,
+      folderId: modality.folderId,
       folderName: modality.folderName,
     })
   }

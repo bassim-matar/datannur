@@ -2,42 +2,8 @@ import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import svelte from 'eslint-plugin-svelte'
 import { browser } from 'globals'
-import { readFileSync } from 'fs'
-import { join } from 'path'
 
-const dbSchemaVariables = (() => {
-  try {
-    const schema = JSON.parse(
-      readFileSync(join(__dirname, 'src', 'db-schema.json'), 'utf-8'),
-    )
-    return [
-      ...new Set(
-        schema.flatMap((row: string[]) =>
-          [row[1], row[2]].filter(item => item?.includes('_')),
-        ),
-      ),
-    ]
-  } catch {
-    return []
-  }
-})()
-
-const allowedProps = [
-  '\\d+',
-  '__[a-zA-Z_]+__',
-  '#',
-  'FlexSearch',
-  'is_in_data',
-  'is_in_meta',
-  'one_to_one',
-  'one_to_many',
-  'many_to_many',
-  'metaDataset_id',
-  'metaFolder_id',
-  'ADD_TAGS',
-  'ADD_ATTR',
-  ...dbSchemaVariables,
-]
+const allowedProps = ['__APP_VERSION__', 'FlexSearch', 'ADD_TAGS', 'ADD_ATTR']
 
 const namingConventionRules = {
   '@typescript-eslint/naming-convention': [
@@ -77,24 +43,15 @@ const namingConventionRules = {
     {
       selector: 'variableLike',
       filter: {
-        regex: '^__[A-Z_]+__$',
+        regex: '^__APP_VERSION__$',
         match: true,
       },
       format: null,
-      custom: {
-        regex: '^__[A-Z_]+__$',
-        match: true,
-      },
     },
     {
       selector: 'property',
       format: ['camelCase'],
       leadingUnderscore: 'allow',
-      trailingUnderscore: 'allow',
-      filter: {
-        regex: `^(${allowedProps.join('|')})$`,
-        match: false,
-      },
     },
     {
       selector: 'property',
@@ -117,7 +74,13 @@ export default [
   ...tseslint.configs.recommended,
   ...svelte.configs['flat/recommended'],
   {
-    ignores: ['**/*.json.js', 'app/', 'src/.generated/'],
+    ignores: [
+      '**/*.json.js',
+      'app/',
+      'src/.generated/',
+      'node_modules/',
+      'public/assets/',
+    ],
   },
   {
     files: ['**/*.ts', '**/*.svelte.ts'],

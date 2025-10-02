@@ -30,7 +30,7 @@
   let nbSourcesMax = 0
   let nbDerivedMax = 0
   for (const variable of variables) {
-    nbRowMax = Math.max(nbRowMax, variable.nb_row)
+    nbRowMax = Math.max(nbRowMax, variable.nbRow)
     nbValueMax = Math.max(nbValueMax, variable.nbValue)
     nbSourcesMax = Math.max(nbSourcesMax, variable.sourceIds?.length || 0)
     nbDerivedMax = Math.max(nbDerivedMax, variable.derivedIds?.length || 0)

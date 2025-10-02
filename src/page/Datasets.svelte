@@ -27,6 +27,6 @@
 </script>
 
 <section class="section">
-  <Title type="dataset" name="Datasets" mode="main_title" />
+  <Title type="dataset" name="Datasets" mode="mainTitle" />
   <Tabs {tabs} />
 </section>

@@ -37,7 +37,7 @@
 </script>
 
 <section class="section">
-  <Title type="tag" name="Mots clés" mode="main_title" />
+  <Title type="tag" name="Mots clés" mode="mainTitle" />
   {#if showOpenAllSwitch}
     <OpenAllSwitch onChange={value => (keyTab = value)} />
   {/if}

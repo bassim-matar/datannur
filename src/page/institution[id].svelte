@@ -58,7 +58,7 @@
         (evo.entity === 'variable' && variablesId.has(evo.id)) ||
         (evo.entity === 'modality' && modalitiesId.has(evo.id)) ||
         (evo.parentEntity === 'modality' &&
-          modalitiesId.has(evo.parent_entity_id)),
+          modalitiesId.has(evo.parentEntityId)),
     )
 
   const stat = [

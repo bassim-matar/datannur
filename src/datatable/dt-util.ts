@@ -54,7 +54,7 @@ export function getNbSticky(columns) {
       if (column.name === 'entity') nbSticky += 1
       if (column.name === 'isFavorite') nbSticky += 1
       if (column.name === 'name') nbSticky += 1
-      if (column.name === 'evolution_type') nbSticky += 1
+      if (column.name === 'evolutionType') nbSticky += 1
     }
   }
   return nbSticky
@@ -63,7 +63,7 @@ export function getNbSticky(columns) {
 export function getCleanData(data, sortByName, isRecursive, isBig) {
   function getHasFilterRecursive() {
     const hash = UrlHash.getAll()
-    const openAllRecursive = Options.get('open_all_recursive')
+    const openAllRecursive = Options.get('openAllRecursive')
     return hash !== 'favorite' && !openAllRecursive
   }
 
@@ -83,7 +83,7 @@ export function getCleanData(data, sortByName, isRecursive, isBig) {
     }
     rowNum += 1
     const copyRows = { ...rows }
-    copyRows._row_num = rowNum
+    copyRows._rowNum = rowNum
     newData.push(copyRows)
   }
   return newData

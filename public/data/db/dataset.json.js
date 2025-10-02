@@ -37,8 +37,8 @@ jsonjs.data['dataset'] =
     "end_date": "2023/12",
     "localisation": "Suisse",
     "delivery_format": "xlsx",
-    "link": "data/dataset/dataset_2.xlsx",
-    "data_path": "data/dataset/dataset_2.xlsx",
+    "link": "data/dataset/dataset-2.xlsx",
+    "data_path": "data/dataset/dataset-2.xlsx",
     "tag_ids": null,
     "doc_ids": null
   },
@@ -61,7 +61,7 @@ jsonjs.data['dataset'] =
     "link": null,
     "data_path": null,
     "tag_ids": "personal_data, sensible_data, sante, population",
-    "doc_ids": "pdf_wiki, pdf_online"
+    "doc_ids": "pdf-wiki, pdf_online"
   },
   {
     "id": "temperature_moy",

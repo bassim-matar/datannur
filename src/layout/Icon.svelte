@@ -16,9 +16,11 @@
 
 {#if type}
   <span
-    class="icon icon_{type} {mode}"
-    class:no_margin_right={!marginRight}
-    class:with_margin_left={marginLeft}
+    class="icon icon-{type} {mode}"
+    class:no-margin-right={!marginRight}
+    class:with-margin-left={marginLeft}
+    class:main-title={mode === 'mainTitle'}
+    class:compact={mode === 'compact'}
   >
     <i class={classNames}></i>
   </span>
@@ -34,13 +36,13 @@
     width: auto;
     min-width: 1.5rem;
     transition: $transition-basic-1;
-    &.no_margin_right {
+    &.no-margin-right {
       margin-right: auto;
     }
-    &.with_margin_left {
+    &.with-margin-left {
       margin-left: 10px;
     }
-    &.main_title {
+    &.main-title {
       width: 30px;
     }
     &.compact {

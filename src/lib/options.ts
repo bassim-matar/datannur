@@ -9,7 +9,7 @@ export default class Options {
 
   static init() {
     return new Promise<void>(resolve => {
-      this.dbKey = 'user_data/option'
+      this.dbKey = 'userData/option'
       this.options = []
       db.browser.get(this.dbKey).then(options => {
         if (options) {

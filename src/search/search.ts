@@ -2,9 +2,24 @@ import db from '@db'
 import { whenAppReady } from '@lib/store'
 import { get } from 'svelte/store'
 import { entityNames } from '@lib/constant'
-import { escapeHtmlEntities } from '@lib/util'
+import escapeHtml from 'escape-html'
 import type { Index } from 'flexsearch'
 import type { EntityName, BaseEntity } from '@type'
+
+type EntityData = { name: EntityName; items: Index; data: unknown[] }
+
+type SearchResult = {
+  id: string | number
+  name: string
+  description: string
+  entity: string
+  variable: string
+  isFavorite: boolean
+  folderId: string | number
+  folderName: string
+  _entity: string
+  _entityClean: string
+}
 
 function ensureFlexsearchLoaded() {
   return new Promise<void>(resolve => {
@@ -51,14 +66,12 @@ export function searchHighlight(value, search) {
   const pattern = `(^|[^a-zA-Z])(${normalizedSearch})`
   const regex = new RegExp(pattern, 'gi')
 
-  return escapeHtmlEntities(value).replace(regex, (match, p1, p2) => {
+  return escapeHtml(value).replace(regex, (match, p1, p2) => {
     return `${p1}<span class="searchHighlight">${p2}</span>`
   })
 }
 
-type EntityData = { name: EntityName; items: Index; data: unknown[] }
-
-export default class Search {
+class Search {
   allSearch: {
     name: string
     entities: EntityData[]
@@ -67,7 +80,7 @@ export default class Search {
 
   constructor() {
     this.allSearch = []
-    this.loading = null
+    this.loading = new Promise<void>(() => {})
   }
   async init() {
     this.loading = (async () => {
@@ -91,20 +104,20 @@ export default class Search {
             if (!('name' in item)) return
             let name = String(item[variable.name] || '')
             if (
-              'original_name' in item &&
-              item.original_name &&
+              'originalName' in item &&
+              item.originalName &&
               variable.name === 'name'
             )
-              name += ` (${item.original_name})`
+              name += ` (${item.originalName})`
             entity.items.add(item.id, removeDiacritics(name))
           })
         }
       }
     })()
   }
-  async search(toSearch) {
+  async find(toSearch): Promise<SearchResult[]> {
     if (this.loading) await this.loading
-    const result = []
+    const result: SearchResult[] = []
     const idsFound = {}
     for (const entity in entityNames) idsFound[entity] = []
     for (const variable of this.allSearch) {
@@ -112,20 +125,19 @@ export default class Search {
         const itemsId = await this.getItemsId(toSearch, entity, idsFound)
         for (const itemId of itemsId) {
           const item = db.get(entity.name, itemId) as BaseEntity & {
-            folder_id?: string | number
+            folderId?: string | number
             folderName?: string
-            original_name?: string
+            originalName?: string
           }
           result.push({
             id: item.id,
             name:
-              item.name +
-              (item.original_name ? ` (${item.original_name})` : ''),
+              item.name + (item.originalName ? ` (${item.originalName})` : ''),
             description: item.description || '',
             entity: entity.name,
             variable: variable.name,
             isFavorite: item.isFavorite || false,
-            folder_id: item.folder_id || '',
+            folderId: item.folderId || '',
             folderName: item.folderName || '',
             _entity: item._entity || '',
             _entityClean: entityNames[item._entity as string] || '',
@@ -145,3 +157,5 @@ export default class Search {
     return itemsId
   }
 }
+
+export default new Search()

@@ -250,7 +250,7 @@ jsonjs.data['folder'] =
     "data_path": null,
     "git_code": null,
     "tag_ids": null,
-    "doc_ids": "tourisme_exemple"
+    "doc_ids": "tourisme-exemple"
   },
   {
     "id": "11-mobilite",
@@ -281,7 +281,7 @@ jsonjs.data['folder'] =
     "name": "12 - Monnaie, banques, assurances",
     "description": "Données sur les banques, les assurances et la monnaie.",
     "start_date": 2020,
-    "end_date": 2023,
+    "end_date": 2024,
     "localisation": null,
     "survey_type": null,
     "delivery_format": null,
@@ -502,7 +502,7 @@ jsonjs.data['folder'] =
     "data_path": null,
     "git_code": "https://www.bfs.admin.ch/bfs/fr/home/statistiques/population/enquetes/statpop.assetdetail.21644016.html",
     "tag_ids": "personal_data, population, societe",
-    "doc_ids": "statpop_info"
+    "doc_ids": "statpop-info"
   },
   {
     "id": "bevnat",
@@ -523,6 +523,6 @@ jsonjs.data['folder'] =
     "data_path": "/bfs/fr/home/statistiques/population/enquetes/bevnat.html",
     "git_code": null,
     "tag_ids": "personal_data, sensible_data, population",
-    "doc_ids": "bevnat_info, bevnat_variable"
+    "doc_ids": "bevnat-info, bevnat-variable"
   }
 ]

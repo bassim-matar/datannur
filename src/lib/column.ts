@@ -1,3 +1,4 @@
+import escapeHtml from 'escape-html'
 import {
   isMobile,
   link,
@@ -19,7 +20,10 @@ export default class Column {
       tooltip: 'Identifiant unique',
       filterType: 'input',
       hasLongText: true,
-      render: Render.copyCell,
+      render: (data, type) => {
+        data = escapeHtml(data)
+        return Render.copyCell(data, type)
+      },
     }
   }
   static name(entity = null, name = null, option = null) {
@@ -35,6 +39,7 @@ export default class Column {
       filterType: 'input',
       hasLongText: true,
       render: (data, type, row) => {
+        data = escapeHtml(data)
         let indent = null
         let text
         if (!option.withLink) {
@@ -42,6 +47,8 @@ export default class Column {
         } else if (option.withIndent && !row.noIndent) {
           text = link(row._entity + '/' + row.id, data, row._entity)
           indent = row?.parentsRelative?.length - row?.minimumDeep
+        } else if (option?.isMeta && entity === 'variable' && row.storageKey) {
+          text = link(row._entity + '/' + row.id, row.storageKey, row._entity)
         } else {
           text = link(row._entity + '/' + row.id, data, row._entity)
         }
@@ -52,7 +59,7 @@ export default class Column {
             row._entity,
           )
         }
-        text = `<strong class="var_main_col">${text}</strong>`
+        text = `<strong class="var-main-col">${text}</strong>`
         if (row._deleted) {
           text = `<span class="deleted">${data}</span>`
         }
@@ -62,12 +69,12 @@ export default class Column {
   }
   static originalName() {
     return {
-      data: 'original_name',
+      data: 'originalName',
       title: Render.icon('name') + "Nom d'origine",
       hasLongText: true,
       filterType: 'input',
       tooltip: "Nom d'origine avant renommage",
-      render: data => wrapLongText(data),
+      render: Render.longText,
     }
   }
   static entity() {
@@ -80,14 +87,12 @@ export default class Column {
       filterType: 'select',
       render: (data, type, row) => {
         if (!data) return ''
-        if (type === 'sort' || type === 'export' || type === 'filter') {
-          return data
-        }
+        if (type !== 'display') return data
         return `
-          <span class="icon icon_${row._entity}">
+          <span class="icon icon-${row._entity}">
             <i class="fas fa-${entityToIcon[row._entity] || row._entity}"></i>
           </span>
-          <span>${data}</span>`
+          <span>${escapeHtml(data)}</span>`
       },
     }
   }
@@ -102,29 +107,29 @@ export default class Column {
       filterType: 'input',
       render: (data, type, row) => {
         if (!data) return ''
-        if (type === 'sort' || type === 'export' || type === 'filter') {
+        if (type !== 'display')
           return `${row.parentEntityClean} | ${row.parentName}`
-        }
         return wrapLongText(`
-          <span class="icon icon_${row.parentEntity}">
+          <span class="icon icon-${row.parentEntity}">
             <i class="fas fa-${
               entityToIcon[row.parentEntity] || row.parentEntity
             }"></i>
           </span>
           <span>${link(
-            `${row.parentEntity}/${row.parent_entity_id}`,
-            row.parentName,
+            `${row.parentEntity}/${row.parentEntityId}`,
+            escapeHtml(row.parentName),
             row.parentEntity,
           )}</span>`)
       },
     }
   }
-  static folder(folderIdVar = 'folder_id', folderNameVar = 'folderName') {
+  static folder(folderIdVar = 'folderId', folderNameVar = 'folderName') {
     const render = (data, type, row) => {
       const folderId = row[folderIdVar]
       const folderName = row[folderNameVar]
+      if (type !== 'display') return folderName
       return isMobile
-        ? wrapLongText(link('folder/' + folderId, folderName))
+        ? wrapLongText(link('folder/' + folderId, escapeHtml(folderName)))
         : Render.withParentsFromId('folder', folderId, type)
     }
     return {
@@ -138,14 +143,15 @@ export default class Column {
   }
   static folderSimple() {
     return {
-      data: 'folder_id',
+      data: 'folderId',
       title: Render.icon('folder') + 'Dossier',
       defaultContent: '',
       hasLongText: true,
       tooltip: 'Dossier',
       render: (data, type, row) => {
         if (!data) return ''
-        return wrapLongText(link('folder/' + data, row.folderName))
+        if (type !== 'display') return row.folderName
+        return wrapLongText(link('folder/' + data, escapeHtml(row.folderName)))
       },
     }
   }
@@ -154,6 +160,7 @@ export default class Column {
     return {
       data: 'parents',
       title: Render.icon(`folderTree${capitalize(entity)}`) + 'Partie de',
+      defaultContent: '',
       hasLongText: true,
       tooltip: 'Eléments parents',
       render,
@@ -167,6 +174,7 @@ export default class Column {
       name: 'type',
       filterType: 'select',
       tooltip: 'Type de dataset',
+      render: Render.shortText,
     }
   }
   static datatype() {
@@ -177,6 +185,7 @@ export default class Column {
       name: 'type',
       filterType: 'select',
       tooltip: 'Type de données',
+      render: Render.shortText,
     }
   }
   static description() {
@@ -187,7 +196,7 @@ export default class Column {
       hasLongText: true,
       filterType: 'input',
       tooltip: 'Description',
-      render: data => wrapLongText(data),
+      render: Render.longText,
     }
   }
   static tag() {
@@ -204,8 +213,10 @@ export default class Column {
   static owner() {
     const render = (data, type, row) =>
       isMobile
-        ? wrapLongText(link(`institution/${row.owner_id}`, row.ownerName))
-        : Render.withParentsFromId('institution', row.owner_id, type)
+        ? wrapLongText(
+            link(`institution/${row.ownerId}`, escapeHtml(row.ownerName)),
+          )
+        : Render.withParentsFromId('institution', row.ownerId, type)
     return {
       data: 'ownerName',
       title: Render.icon('institution') + entityNames.owner,
@@ -218,8 +229,10 @@ export default class Column {
   static manager() {
     const render = (data, type, row) =>
       isMobile
-        ? wrapLongText(link(`institution/${row.manager_id}`, row.managerName))
-        : Render.withParentsFromId('institution', row.manager_id, type)
+        ? wrapLongText(
+            link(`institution/${row.managerId}`, escapeHtml(row.managerName)),
+          )
+        : Render.withParentsFromId('institution', row.managerId, type)
     return {
       data: 'managerName',
       title: Render.icon('institution') + entityNames.manager,
@@ -245,7 +258,7 @@ export default class Column {
       title: Render.icon('value') + 'Valeur',
       hasLongText: true,
       tooltip: 'Valeur',
-      render: data => wrapLongText(data),
+      render: Render.longText,
     }
   }
   static nbValues(nbValueMax) {
@@ -271,7 +284,7 @@ export default class Column {
   }
   static nbDuplicates() {
     return {
-      data: 'nb_duplicate',
+      data: 'nbDuplicate',
       defaultContent: '',
       filterType: 'input',
       title: Render.icon('duplicate') + 'Doublons',
@@ -281,7 +294,7 @@ export default class Column {
   }
   static nbMissing() {
     return {
-      data: 'nb_missing',
+      data: 'nbMissing',
       defaultContent: '',
       filterType: 'input',
       title: Render.icon('missing') + 'Manquant',
@@ -301,8 +314,8 @@ export default class Column {
   }
   static nbRow(nbRowMax) {
     return {
-      data: 'nb_row',
-      title: Render.icon('nb_row') + 'Lignes',
+      data: 'nbRow',
+      title: Render.icon('nbRow') + 'Lignes',
       filterType: 'input',
       defaultContent: '',
       tooltip: 'Nombre de lignes',
@@ -312,7 +325,7 @@ export default class Column {
         }
         if (!data) return ''
         const percent = getPercent(data / nbRowMax)
-        return `${Render.numPercent(data, percent, 'nb_row', type)}`
+        return `${Render.numPercent(data, percent, 'nbRow', type)}`
       },
     }
   }
@@ -352,18 +365,19 @@ export default class Column {
   }
   static frequency() {
     return {
-      data: 'updating_each',
+      data: 'updatingEach',
       name: 'frequency',
       defaultContent: '',
       filterType: 'select',
       title: Render.icon('frequency') + 'Fréquence',
       tooltip: 'Fréquence de mise à jour',
+      render: Render.shortText,
     }
   }
   static lastUpdate() {
     return {
-      data: 'last_update_date',
-      name: 'last_update',
+      data: 'lastUpdateDate',
+      name: 'lastUpdate',
       defaultContent: '',
       title: Render.icon('date') + 'Mise à jour',
       filterType: 'input',
@@ -374,7 +388,7 @@ export default class Column {
   static nextUpdate() {
     return {
       data: 'nextUpdateDate',
-      name: 'next_update',
+      name: 'nextUpdate',
       defaultContent: '',
       title: Render.icon('date') + 'Prochaine',
       filterType: 'input',
@@ -421,19 +435,17 @@ export default class Column {
       title: Render.icon('localisation') + 'Localisation',
       defaultContent: '',
       tooltip: 'Localisation géographique des données',
-      render: data => {
-        if (!data) return ''
-        return data
-      },
+      render: Render.shortText,
     }
   }
   static deliveryFormat() {
     return {
-      data: 'delivery_format',
-      title: Render.icon('delivery_format') + 'Format livraison',
+      data: 'deliveryFormat',
+      title: Render.icon('deliveryFormat') + 'Format livraison',
       defaultContent: '',
       filterType: 'select',
       tooltip: 'Format de livraison des données',
+      render: Render.shortText,
     }
   }
   static period() {
@@ -445,15 +457,15 @@ export default class Column {
       render: (data, type, row) => {
         if (!data) return ''
         if (type !== 'display') return data
-        let text = data
-        if (row.periodDuration) text += '<br>' + row.periodDuration
+        let text = escapeHtml(data)
+        if (row.periodDuration) text += '<br>' + escapeHtml(row.periodDuration)
         return text
       },
     }
   }
   static startDate() {
     return {
-      data: 'start_date',
+      data: 'startDate',
       title: Render.icon('dateRange') + 'Début',
       defaultContent: '',
       dateType: 'start',
@@ -468,7 +480,7 @@ export default class Column {
   }
   static endDate() {
     return {
-      data: 'end_date',
+      data: 'endDate',
       title: Render.icon('dateRange') + 'Fin',
       defaultContent: '',
       dateType: 'end',
@@ -487,19 +499,28 @@ export default class Column {
       title: Render.icon('dataset') + 'Dataset',
       hasLongText: true,
       tooltip: 'Dataset',
-      render: (data, type, row) =>
-        wrapLongText(
-          link(parentName + '/' + row[parentName + '_id'], data, 'dataset'),
-        ),
+      render: (data, type, row) => {
+        if (!data) return ''
+        if (type !== 'display') return data
+        data = escapeHtml(data)
+        return wrapLongText(
+          link(parentName + '/' + row[parentName + 'Id'], data, 'dataset'),
+        )
+      },
     }
   }
   static dataPath() {
     return {
-      data: 'data_path',
-      title: Render.icon('data_path') + 'Emplacement',
+      data: 'dataPath',
+      title: Render.icon('dataPath') + 'Emplacement',
       defaultContent: '',
       tooltip: 'Emplacement des données',
-      render: Render.copyCell,
+      render: (data, type) => {
+        if (!data) return ''
+        if (type !== 'display') return data
+        data = escapeHtml(data)
+        return Render.copyCell(data, type)
+      },
     }
   }
   static docPath() {
@@ -510,7 +531,10 @@ export default class Column {
       defaultContent: '',
       hasLongText: true,
       tooltip: 'Emplacement du doc',
-      render: data => {
+      render: (data, type) => {
+        if (!data) return ''
+        if (type !== 'display') return data
+        data = escapeHtml(data)
         return wrapLongText(`<a href="${data}" target="_blanck">${data}</a>`)
       },
     }
@@ -527,6 +551,7 @@ export default class Column {
       tooltip: 'Nombre de docs',
       render: (data, type, row) => {
         if (!data.length) return ''
+        if (type !== 'display') return data.length
         const content = link(entity + '/' + row.id + '?tab=docs', data.length)
         const percent = getPercent(data.length / total)
         return `${Render.numPercent(content, percent, 'doc', type)}`
@@ -541,7 +566,11 @@ export default class Column {
       tooltip: 'Nombre de docs',
       render: (data, type, row) => {
         if (!data) return ''
-        const content = link(entity + '/' + row.id + '?tab=docs', data)
+        if (type !== 'display') return data
+        const content = link(
+          entity + '/' + row.id + '?tab=docs',
+          escapeHtml(data),
+        )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'doc', type)}`
       },
@@ -559,7 +588,11 @@ export default class Column {
       tooltip: "Nombre d'éléments de type " + entity,
       render: (data, type, row) => {
         if (!data) return ''
-        const content = link(linkPath + row.id + `?tab=${entityPlural}`, data)
+        if (type !== 'display') return data
+        const content = link(
+          linkPath + row.id + `?tab=${entityPlural}`,
+          escapeHtml(data),
+        )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, entity, type)}`
       },
@@ -573,7 +606,11 @@ export default class Column {
       tooltip: 'Nombre de dossiers',
       render: (data, type, row) => {
         if (!data) return ''
-        const content = link(`${entity}/${row.id}?tab=folders`, data)
+        if (type !== 'display') return data
+        const content = link(
+          `${entity}/${row.id}?tab=folders`,
+          escapeHtml(data),
+        )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'folder', type)}`
       },
@@ -587,7 +624,11 @@ export default class Column {
       tooltip: 'Nombre de datasets',
       render: (data, type, row) => {
         if (!data) return ''
-        const content = link(entity + '/' + row.id + '?tab=datasets', data)
+        if (type !== 'display') return data
+        const content = link(
+          entity + '/' + row.id + '?tab=datasets',
+          escapeHtml(data),
+        )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'dataset', type)}`
       },
@@ -609,9 +650,10 @@ export default class Column {
       tooltip: 'Nombre de variables',
       render: (data, type, row) => {
         if (!data) return ''
+        if (type !== 'display') return data
         const content = link(
           option.linkPath + row.id + `?tab=${option.tab}`,
-          data,
+          escapeHtml(data),
         )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'variable', type)}`
@@ -620,10 +662,15 @@ export default class Column {
   }
   static metaFolder() {
     return {
-      data: 'metaFolder_id',
+      data: 'metaFolderId',
       title: Render.icon('folder') + 'Dossier',
       tooltip: 'Dossier',
-      render: data => link('metaFolder/' + data, data),
+      render: (data, type) => {
+        if (!data) return ''
+        if (type !== 'display') return data
+        data = escapeHtml(data)
+        return link('metaFolder/' + data, data)
+      },
     }
   }
   static timestamp(options = null) {
@@ -673,7 +720,7 @@ export default class Column {
       tooltip: 'Clé primaire ou partie de clé primaire',
       render: (data, type) => {
         if (!data) return ''
-        if (type === 'filter' || type === 'sort') return data
+        if (type !== 'display') return data
         return `<i class="fas fa-key"></i>`
       },
     }
@@ -685,10 +732,7 @@ export default class Column {
       filterType: 'select',
       defaultContent: '',
       tooltip: 'Localisation (dans les données ou dans le schéma',
-      render: data => {
-        if (!data) return ''
-        return data
-      },
+      render: Render.shortText,
     }
   }
   static inherited() {
@@ -697,6 +741,7 @@ export default class Column {
       title: Render.icon('diagram') + 'Hérité',
       defaultContent: '',
       tooltip: "Element direct (vide) ou hérité d'un sous-élément (hérité)",
+      render: Render.shortText,
     }
   }
   static lineageType() {

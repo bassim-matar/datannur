@@ -3,6 +3,7 @@
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
   import { link } from '@lib/util'
+  import escapeHtml from 'escape-html'
 
   let { variableValues, isMeta = false } = $props()
 
@@ -21,8 +22,15 @@
         data: 'modalityName',
         title: Render.icon('modality') + 'modalité',
         tooltip: 'Modalité',
-        render: (data, type, row) =>
-          link('modality/' + row.modality_id, data, 'modality'),
+        render: (data, type, row) => {
+          if (!data) return ''
+          if (type !== 'display') return data
+          return link(
+            'modality/' + row.modalityId,
+            escapeHtml(data),
+            'modality',
+          )
+        },
       })
     }
     columns.push(Column.value())

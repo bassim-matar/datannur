@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import db from '@db'
   import { searchValue, pageContentLoaded } from '@lib/store'
   import { UrlParam } from '@lib/url-param'
+  import search from '@search/search'
   import Head from '@frame/Head.svelte'
   import Tabs from '@tab/Tabs.svelte'
   import SearchResult from '@search/SearchResult.svelte'
@@ -38,7 +38,7 @@
     noRecentSearch,
   )
 
-  SearchHistory.onChange('search_page', () => searchInputChange())
+  SearchHistory.onChange('searchPage', () => searchInputChange())
 
   function setTabKey() {
     recentSearchChange = !recentSearchChange
@@ -63,7 +63,7 @@
       return false
     }
     const valueBefore = $searchValue
-    const allSearchRaw = await db.search($searchValue)
+    const allSearchRaw = await search.find($searchValue)
     isLoading = false
     if ($searchValue !== valueBefore) return false
     searchResultData = SearchHistory.putRecentFirst(allSearchRaw)
@@ -123,7 +123,7 @@
       <input
         class="input"
         type="text"
-        name="search_page_input"
+        name="search-page-input"
         bind:value={$searchValue}
         autocomplete="off"
         enterkeyhint="search"

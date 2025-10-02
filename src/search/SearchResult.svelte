@@ -6,6 +6,7 @@
   import { searchHighlight } from './search'
   import Datatable from '@datatable/Datatable.svelte'
   import Column from '@lib/column'
+  import escapeHtml from 'escape-html'
 
   let { searchValue, searchResultData } = $props()
 
@@ -14,11 +15,11 @@
     const datatableSearch = jQuery('table#' + tableId + '._datatables')
     datatableSearch.on(
       'click',
-      '.remove_search_item',
+      '.remove-search-item',
       function (this: HTMLElement) {
         const elem = jQuery(this)
-        const entityName = elem.data('entity_name')
-        const itemId = elem.data('item_id')
+        const entityName = elem.data('entity-name')
+        const itemId = elem.data('item-id')
         SearchHistory.remove(entityName, itemId)
       },
     )
@@ -33,41 +34,45 @@
       defaultContent: '',
       name: 'name',
       tooltip: 'Nom',
-      render: (data, type, row) =>
-        wrapLongText(
-          `<strong class="var_main_col">` +
+      render: (data, type, row) => {
+        if (type !== 'display') return data
+        return wrapLongText(
+          `<strong class="var-main-col">` +
             link(
               row._entity + '/' + row.id + '?from_search=true',
               `${searchHighlight(data, searchValue)}`,
               row._entity,
             ) +
             `</strong>`,
-        ),
+        )
+      },
     },
     {
       data: 'description',
       title: Render.icon('description') + 'Description',
       defaultContent: '',
       tooltip: 'Description',
-      render: data => {
+      render: (data, type) => {
+        if (type !== 'display') return data
         if ([null, undefined].includes(data)) return wrapLongText()
         return wrapLongText(searchHighlight(data, searchValue))
       },
     },
     {
-      data: 'folder_id',
+      data: 'folderId',
       title: Render.icon('folder') + 'Dossier',
       defaultContent: '',
       tooltip: 'Dossier',
       render: (data, type, row) => {
+        if (type !== 'display') return data
         if (!data) return wrapLongText()
-        return wrapLongText(link('folder/' + data, row.folderName))
+        return wrapLongText(link('folder/' + data, escapeHtml(row.folderName)))
       },
     },
     {
       data: 'id',
       title: "<span class='hidden'>Recent search</span>",
-      name: 'search_recent',
+      name: 'searchRecent',
       defaultContent: '',
       noSearch: true,
       width: '20px',
@@ -78,9 +83,9 @@
         return !row.isRecent
           ? ''
           : `<button style="cursor: pointer; margin: 0;" 
-              class="remove_search_item" 
-              data-entity_name="${row._entity}"
-              data-item_id="${row.id}"
+              class="remove-search-item" 
+              data-entity-name="${row._entity}"
+              data-item-id="${escapeHtml(row.id)}"
             >
               <i class="fa-solid fa-xmark close"></i>
               <i class="fa-solid fa-clock-rotate-left recent"></i>
@@ -91,7 +96,7 @@
 </script>
 
 {#if searchResultData.length > 0}
-  <div class="search_page_result_wrapper">
+  <div class="search-page-result-wrapper">
     <Datatable entity="search" data={searchResultData} {columns} {initied} />
   </div>
 {/if}
@@ -99,8 +104,8 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .search_page_result_wrapper {
-    :global(.remove_search_item) {
+  .search-page-result-wrapper {
+    :global(.remove-search-item) {
       margin: 0;
       position: relative;
       width: 16px;
@@ -108,27 +113,27 @@
       vertical-align: middle;
       color: $color-2;
     }
-    :global(.remove_search_item > .fa-solid) {
+    :global(.remove-search-item > .fa-solid) {
       transition: opacity $transition-basic-1;
       position: absolute;
       top: 0;
       left: 0;
       margin: auto;
     }
-    :global(.remove_search_item > .recent) {
+    :global(.remove-search-item > .recent) {
       opacity: 1;
     }
-    :global(.remove_search_item > .close) {
+    :global(.remove-search-item > .close) {
       opacity: 0;
       padding-right: 1px;
     }
-    :global(tr:hover .remove_search_item > .recent) {
+    :global(tr:hover .remove-search-item > .recent) {
       opacity: 0;
     }
-    :global(tr:hover .remove_search_item > .close) {
+    :global(tr:hover .remove-search-item > .close) {
       opacity: 1;
     }
-    :global(.remove_search_item:hover > .close) {
+    :global(.remove-search-item:hover > .close) {
       text-shadow: 0 0 10px;
     }
   }

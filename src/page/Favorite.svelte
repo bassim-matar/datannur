@@ -66,7 +66,7 @@
     type="favorite"
     name="Favoris"
     isFavoritePage={true}
-    mode="main_title"
+    mode="mainTitle"
   />
   <Tabs {tabs} />
 </section>

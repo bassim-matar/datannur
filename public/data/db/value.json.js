@@ -193,7 +193,7 @@ jsonjs.data['value'] =
   {
     "modality_id": "langue_sigle",
     "value": "ZZ",
-    "description": "xyz2"
+    "description": "xyz33"
   },
   {
     "modality_id": "oui_non",

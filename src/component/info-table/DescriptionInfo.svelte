@@ -25,7 +25,7 @@
       </td>
     </tr>
   {:else}
-    <div class="description_wrapper" class:inside-table={insideTable}>
+    <div class="description-wrapper" class:inside-table={insideTable}>
       <div style="font-weight: bold;">
         <Icon type="description" /> Description
       </div>
@@ -35,7 +35,7 @@
 {/if}
 
 <style lang="scss">
-  .description_wrapper {
+  .description-wrapper {
     width: calc(50% - 3px);
     padding: 1em 0.75em;
     box-sizing: border-box;
@@ -53,14 +53,14 @@
     }
   }
   @media screen and (max-width: 1023px) {
-    .description_wrapper {
+    .description-wrapper {
       display: block;
       width: 100%;
       padding-top: 0;
     }
   }
   @media screen and (max-width: 600px) {
-    .description_wrapper {
+    .description-wrapper {
       .content {
         padding-top: 0px;
         padding-right: 5px;

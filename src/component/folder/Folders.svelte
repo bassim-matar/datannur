@@ -4,6 +4,7 @@
   import Column from '@lib/column'
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
+  import escapeHtml from 'escape-html'
 
   let { folders, isMeta = false } = $props()
 
@@ -59,7 +60,7 @@
             if (!data) return ''
             const content = link(
               folderPath + row.id + '?tab=metaDatasets',
-              data,
+              escapeHtml(data),
             )
             const percent = getPercent(data / datasetMax)
             return `${Render.numPercent(content, percent, 'dataset', type)}`
@@ -97,29 +98,36 @@
       Column.manager(),
       Column.localisation(),
       {
-        data: 'survey_type',
-        title: Render.icon('survey_type') + "Type d'enquête",
+        data: 'surveyType',
+        title: Render.icon('surveyType') + "Type d'enquête",
         defaultContent: '',
         tooltip: "Type d'enquête",
+        render: Render.shortText,
       },
       Column.deliveryFormat(),
       {
-        data: 'metadata_path',
-        title: Render.icon('metadata_path') + 'Metadonnées',
+        data: 'metadataPath',
+        title: Render.icon('metadataPath') + 'Metadonnées',
         defaultContent: '',
         tooltip: 'Emplacement des métadonnées',
-        render: Render.copyCell,
+        render: (data, type) => {
+          if (!data) return ''
+          if (type !== 'display') return data
+          return Render.copyCell(escapeHtml(data), type)
+        },
       },
       Column.dataPath(),
       {
-        data: 'git_code',
-        title: Render.icon('git_code') + 'GIT code',
+        data: 'gitCode',
+        title: Render.icon('gitCode') + 'GIT code',
         defaultContent: '',
         tooltip: 'Code source des traitements',
-        render: data =>
-          wrapLongText(
-            data ? `<a href="${data}" target="_blanck">${data}</a>` : '',
-          ),
+        render: (data, type) => {
+          if (!data) return ''
+          if (type !== 'display') return data
+          data = escapeHtml(data)
+          return wrapLongText(`<a href="${data}" target="_blanck">${data}</a>`)
+        },
       },
       Column.level(levelMax),
     ]

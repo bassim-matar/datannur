@@ -11,7 +11,7 @@
 
   onDestroy(() => clearInterval(loadingTimer))
 
-  if (type === 'tab_body') {
+  if (type === 'tabBody') {
     position = 'absolute'
     withHeight = true
   } else if (type === 'mini') {
@@ -27,7 +27,7 @@
 {/if}
 
 <div
-  class="loading {type} color_entity_{colorEntity}"
+  class="loading {type} color-entity-{colorEntity}"
   style="position: {position};"
 >
   <div class="inner one"></div>
@@ -45,10 +45,10 @@
     --loader-color: #{$color-3};
   }
 
-  :global(html.page_shadow_colored) {
+  :global(html.pageShadowColored) {
     .loading {
       @each $entity in $entities {
-        &.color_entity_#{$entity} {
+        &.color-entity-#{$entity} {
           --loader-color: #{color($entity)};
         }
       }

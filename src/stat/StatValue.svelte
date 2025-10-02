@@ -10,8 +10,8 @@
   const percent = getPercent(value.count / totalValue)
 </script>
 
-<div class="value_box">
-  <div class="value_text">
+<div class="value-box">
+  <div class="value-text">
     <div
       class="cell readable extendable"
       onmouseenter={extendable.open}
@@ -35,7 +35,7 @@
     <div class="cell percent">{percent}%</div>
   </div>
   <div
-    class="percent_background"
+    class="percent-background"
     style="width: {percent}%; background: {mainColor};"
   ></div>
 </div>
@@ -43,12 +43,12 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .value_box {
+  .value-box {
     position: relative;
     padding: 5px 10px;
     width: 100%;
     text-align: right;
-    .percent_background {
+    .percent-background {
       position: absolute;
       top: 10px;
       left: 0;
@@ -58,7 +58,7 @@
       border-radius: $rounded;
       pointer-events: none;
     }
-    .value_text {
+    .value-text {
       position: relative;
       z-index: 2;
       .cell {

@@ -7,6 +7,7 @@
   import { modalityCompareWorker } from '@lib/modality-compare-worker'
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
+  import escapeHtml from 'escape-html'
 
   let { modalitiesCompare } = $props()
 
@@ -41,14 +42,21 @@
       data: 'modality1Id',
       title: Render.icon('modality') + 'Modalité',
       tooltip: 'Nom de la modalité 1',
-      render: (data, type, row) =>
-        link('modality/' + data, row.modality1Name, 'modality'),
+      render: (data, type, row) => {
+        if (type !== 'display') return row.modality2Name
+        return link(
+          'modality/' + data,
+          escapeHtml(row.modality1Name),
+          'modality',
+        )
+      },
     },
     Column.folder('modality1FolderId', 'modality1FolderName'),
     {
       data: 'modality1Type',
       title: Render.icon('type') + 'Type',
       tooltip: 'Type de la modalité 1',
+      render: Render.shortText,
     },
     {
       data: 'modality1NbValue',
@@ -66,14 +74,21 @@
       data: 'modality2Id',
       title: Render.icon('modality') + 'Similaire à',
       tooltip: 'Nom de la modalité 2',
-      render: (data, type, row) =>
-        link('modality/' + data, row.modality2Name, 'modality'),
+      render: (data, type, row) => {
+        if (type !== 'display') return row.modality2Name
+        return link(
+          'modality/' + data,
+          escapeHtml(row.modality2Name),
+          'modality',
+        )
+      },
     },
     Column.folder('modality2FolderId', 'modality2FolderName'),
     {
       data: 'modality2Type',
       title: Render.icon('type') + 'Type',
       tooltip: 'Type de la modalité 2',
+      render: Render.shortText,
     },
     {
       data: 'modality2NbValue',
@@ -91,7 +106,7 @@
 </script>
 
 {#if loading && similitutes.length === 0}
-  <Loading type="tab_body" colorEntity="compare" />
+  <Loading type="tabBody" colorEntity="compare" />
 {:else if similitutes.length > 0}
   <Datatable entity="compare" data={similitutes} {columns} sortByName={true} />
 {:else}

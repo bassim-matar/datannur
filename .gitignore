@@ -1,6 +1,6 @@
 .DS_Store
 ~$*
-bundle-visualizer.html
+bundle-view.html
 /node_modules/
 /app/
 /deploy.config.json

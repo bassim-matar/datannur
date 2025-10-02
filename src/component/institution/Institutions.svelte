@@ -4,6 +4,7 @@
   import Column from '@lib/column'
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
+  import escapeHtml from 'escape-html'
 
   let { institutions } = $props()
 
@@ -61,9 +62,12 @@
       defaultContent: '',
       title: Render.icon('email') + 'Email',
       tooltip: 'Email de contact',
-      render: data => {
+      render: (data, type) => {
+        if (!data) return ''
+        if (type !== 'display') return data
+        data = escapeHtml(data)
         return wrapLongText(
-          data ? `<a href="mailto:${data}" target="_blanck" >${data}</a>` : '',
+          `<a href="mailto:${data}" target="_blanck" >${data}</a>`,
         )
       },
     },
@@ -72,8 +76,12 @@
       defaultContent: '',
       title: Render.icon('phone') + 'Téléphone',
       tooltip: 'Téléphone de contact',
-      render: data =>
-        data ? `<a href="tel:${data}" target="_blanck" >${data}</a>` : '',
+      render: (data, type) => {
+        if (!data) return ''
+        if (type !== 'display') return data
+        data = escapeHtml(data)
+        return `<a href="tel:${data}" target="_blanck" >${data}</a>`
+      },
     },
     Column.startDate(),
     Column.endDate(),

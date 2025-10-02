@@ -12,29 +12,29 @@ import type {
 } from './base'
 
 // Extended base entity with relations (defined after Tag and Doc)
-export interface EntityWithRelations extends BaseEntity {
+export type EntityWithRelations = BaseEntity & {
   tags?: Tag[]
   docs?: Doc[]
   docsRecursive?: (Doc & { inherited?: string })[]
 }
 
-export interface Dataset extends EntityWithRelations {
-  folder_id?: string | number
-  manager_id?: string | number
-  owner_id?: string | number
-  tag_ids?: string
-  doc_ids?: string
-  data_path?: string
-  delivery_format?: string
+export type Dataset = EntityWithRelations & {
+  folderId?: string | number
+  managerId?: string | number
+  ownerId?: string | number
+  tagIds?: string
+  docIds?: string
+  dataPath?: string
+  deliveryFormat?: string
   type?: string
   link?: string
   localisation?: string
-  nb_row?: number
-  start_date?: string
-  end_date?: string
-  last_update_date?: string
-  updating_each?: string
-  no_more_update?: boolean
+  nbRow?: number
+  startDate?: string
+  endDate?: string
+  lastUpdateDate?: string
+  updatingEach?: string
+  noMoreUpdate?: boolean
 
   // Computed fields added during processing
   typeClean?: string
@@ -47,31 +47,31 @@ export interface Dataset extends EntityWithRelations {
   nextUpdateDate?: string
 }
 
-export interface Variable extends BaseEntity {
-  dataset_id: string | number
-  modality_ids?: string
-  tag_ids?: string
-  original_name?: string
+export type Variable = BaseEntity & {
+  datasetId: string | number
+  modalityIds?: string
+  tagIds?: string
+  originalName?: string
   key?: string | boolean
-  nb_distinct?: number
-  nb_duplicate?: number
-  nb_missing?: number
+  nbDistinct?: number
+  nbDuplicate?: number
+  nbMissing?: number
   type?: string
-  start_date?: string
-  end_date?: string
-  sourceVar_ids?: string
+  startDate?: string
+  endDate?: string
+  sourceVarIds?: string
 
   // Computed fields added during processing
   typeClean?: string
   num?: number
-  nb_row?: number
+  nbRow?: number
   datasetName?: string
   datasetType?: string
-  folder_id?: string | number
+  folderId?: string | number
   folderName?: string
-  owner_id?: string | number
+  ownerId?: string | number
   ownerName?: string
-  manager_id?: string | number
+  managerId?: string | number
   managerName?: string
   modalities?: Modality[]
   values?: Value[]
@@ -86,8 +86,8 @@ export interface Variable extends BaseEntity {
   })[]
 }
 
-export interface Modality extends BaseEntity {
-  folder_id?: string | number
+export type Modality = BaseEntity & {
+  folderId?: string | number
   type?: string
 
   // Computed fields added during processing
@@ -99,23 +99,23 @@ export interface Modality extends BaseEntity {
   nbValue?: number
 }
 
-export interface Folder extends EntityWithRelations {
-  parent_id?: string | number
-  manager_id?: string | number
-  owner_id?: string | number
-  tag_ids?: string
-  doc_ids?: string
-  data_path?: string
-  delivery_format?: string
-  git_code?: string
-  last_update_date?: string
+export type Folder = EntityWithRelations & {
+  parentId?: string | number
+  managerId?: string | number
+  ownerId?: string | number
+  tagIds?: string
+  docIds?: string
+  dataPath?: string
+  deliveryFormat?: string
+  gitCode?: string
+  lastUpdateDate?: string
   localisation?: string
-  metadata_path?: string
-  survey_type?: string
-  start_date?: string
-  end_date?: string
-  updating_each?: string
-  no_more_update?: boolean
+  metadataPath?: string
+  surveyType?: string
+  startDate?: string
+  endDate?: string
+  updatingEach?: string
+  noMoreUpdate?: boolean
 
   // Computed fields added during processing
   ownerName?: string
@@ -127,14 +127,14 @@ export interface Folder extends EntityWithRelations {
   nextUpdateDate?: string
 }
 
-export interface Institution extends EntityWithRelations {
-  parent_id?: string | number
-  tag_ids?: string
-  doc_ids?: string
+export type Institution = EntityWithRelations & {
+  parentId?: string | number
+  tagIds?: string
+  docIds?: string
   email?: string
   phone?: string
-  start_date?: string
-  end_date?: string
+  startDate?: string
+  endDate?: string
 
   // Computed fields added during processing
   nbChild?: number
@@ -146,8 +146,8 @@ export interface Institution extends EntityWithRelations {
   nbVariableRecursive?: number
 }
 
-export interface Tag extends EntityWithRelations {
-  parent_id?: string | number
+export type Tag = EntityWithRelations & {
+  parentId?: string | number
   docIds?: string
 
   // Computed fields added during processing
@@ -168,15 +168,15 @@ export type TagWithChildren = Tag & {
   children?: { [key: string]: TagWithChildren }
 }
 
-export interface Doc extends BaseEntity {
+export type Doc = BaseEntity & {
   path?: string
   type?: string
-  last_update?: number
-  last_update_date?: string
+  lastUpdate?: number
+  lastUpdateDate?: string
 
   // Computed fields added during processing
   entity?: string
-  entity_id?: string | number
+  entityId?: string | number
   nbInstitution?: number
   nbFolder?: number
   nbDataset?: number
@@ -184,30 +184,30 @@ export interface Doc extends BaseEntity {
 }
 
 // Meta entities (for metadata datasets)
-export interface MetaVariable extends BaseEntity {
-  metaDataset_id: string | number
+export type MetaVariable = BaseEntity & {
+  metaDatasetId: string | number
   type?: string
   values?: unknown[]
-  is_in_meta?: boolean
-  is_in_data?: boolean
+  isInMeta?: boolean
+  isInData?: boolean
 
   // Computed fields
   isMeta?: boolean
   typeClean?: string
   nbValue?: number
-  dataset_id?: string | number
+  datasetId?: string | number
   datasetName?: string
-  nb_row?: number
-  metaFolder_id?: string | number
+  nbRow?: number
+  metaFolderId?: string | number
   folderName?: string
   metaLocalisation?: string
   key?: string
 }
 
-export interface MetaDataset extends BaseEntity {
-  metaFolder_id: string | number
-  is_in_meta?: boolean
-  is_in_data?: boolean
+export type MetaDataset = BaseEntity & {
+  metaFolderId: string | number
+  isInMeta?: boolean
+  isInData?: boolean
   lastUpdateTimestamp?: number
 
   // Computed fields
@@ -216,24 +216,24 @@ export interface MetaDataset extends BaseEntity {
   folderName?: string
   nbVariable?: number
   metaLocalisation?: string
-  nb_row?: number
+  nbRow?: number
 }
 
-export interface MetaFolder extends BaseEntity {
+export type MetaFolder = BaseEntity & {
   // Computed fields
   isMeta?: boolean
   nbDataset?: number
   nbVariable?: number
 }
 
-export interface Evolution {
+export type Evolution = {
   id?: string | number
   entity: EntityName
-  entity_id: string | number
+  entityId: string | number
   type: string
   timestamp: number
   name?: string | number
-  parent_entity_id?: string | number
+  parentEntityId?: string | number
   _deleted?: boolean
   _entity?: string
   _entityClean?: string
@@ -245,12 +245,12 @@ export interface Evolution {
   parentDeleted?: boolean
   isFavorite?: boolean
   date?: string
-  folder_id?: string | number
+  folderId?: string | number
   _toHide?: boolean
 }
 
 // Entity type mapping for type-safe database operations
-export interface EntityTypeMap {
+export type EntityTypeMap = {
   config: Config
   dataset: Dataset
   variable: Variable
@@ -259,6 +259,8 @@ export interface EntityTypeMap {
   freq: Freq
   folder: Folder
   institution: Institution
+  owner: Institution
+  manager: Institution
   tag: Tag
   doc: Doc
   evolution: Evolution
@@ -267,10 +269,11 @@ export interface EntityTypeMap {
   metaFolder: MetaFolder
   favorite: Favorite
   filter: Filter
-  filter_active: FilterActive
+  filterActive: FilterActive
   log: Log
   option: Option
-  search_history: SearchHistory
+  searchHistory: SearchHistory
+  parent: BaseEntity
 }
 
 export type EntityName = keyof EntityTypeMap

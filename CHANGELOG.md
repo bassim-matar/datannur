@@ -2,7 +2,11 @@
 
 ## unreleased
 
-add: whenAppReady instead of db.loaded and refactor db.use and db.preview
+- add: whenAppReady instead of db.loaded and refactor db.use and db.preview
+- add: escapeHtml on all datatables columns render to prevent XSS
+- fix: JsonjsdbBuilder.watchDb path
+- refactor: db to use only Jsonjsdb methods and props, use type instead of interface for entities
+- refactor: enforce camelCase for all attributes and use kebab-case for scss
 
 ## 0.12.10 (2024-09-26)
 

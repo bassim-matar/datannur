@@ -25,7 +25,7 @@
   let separator = ' | '
   const entityName = entityNames[type]
 
-  if (mode !== 'main_title') {
+  if (mode !== 'mainTitle') {
     title = entityName + separator + name
   }
 
@@ -46,14 +46,14 @@
 
 <Head {title} />
 
-<div class="fitty_wrapper">
+<div class="fitty-wrapper">
   <div>
     <h1 class="title" class:not-item-page={!itemPage}>
-      <Icon {type} mode="main_title" />
-      {#if mode !== 'main_title'}
+      <Icon {type} mode="mainTitle" />
+      {#if mode !== 'mainTitle'}
         <span>{entityName}</span>
         {#if info}
-          <button class="title_info" onclick={toggleInfo}>{info}</button>
+          <button class="title-info" onclick={toggleInfo}>{info}</button>
         {/if}
         {#if id}
           <Favorite {type} {id} {isFavorite} />
@@ -61,10 +61,10 @@
           <span class="separator">{separator}</span>
         {/if}
       {/if}
-      <span class="title_name fitty"
+      <span class="title-name fitty"
         >{name}
         {#if isFavoritePage}
-          <span class="num_style big">{$nbFavorite}</span>
+          <span class="num-style big">{$nbFavorite}</span>
         {/if}
       </span>
     </h1>
@@ -72,7 +72,7 @@
 </div>
 
 <style lang="scss">
-  .fitty_wrapper {
+  .fitty-wrapper {
     width: 100%;
     height: 80px;
     display: flex;
@@ -85,7 +85,7 @@
       margin: auto;
     }
   }
-  .title_info {
+  .title-info {
     font-style: italic;
     cursor: pointer;
     margin: 0;
@@ -94,7 +94,7 @@
   }
 
   @media screen and (max-width: 600px) {
-    .fitty_wrapper {
+    .fitty-wrapper {
       padding-left: 20px;
       padding-right: 20px;
       .fitty {
@@ -107,10 +107,10 @@
         padding: 0;
       }
     }
-    .title_name {
+    .title-name {
       display: block;
     }
-    .title_info {
+    .title-info {
       font-size: 1rem;
     }
     .title.not-item-page {

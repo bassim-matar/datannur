@@ -21,7 +21,7 @@ interface Config {
 
 const configFile = './data/static-make.config.json'
 const indexFile = './index.html'
-const entryPoint = './index_static-make.html'
+const entryPoint = './index-static-make.html'
 
 async function waitUntilReady(url: string, maxAttempts = 30, delayMs = 200) {
   for (let i = 0; i < maxAttempts; i++) {
@@ -193,7 +193,7 @@ async function capturePage(page: Page, route: string, level: number) {
   }, route)
   try {
     await page.waitForSelector(
-      `#page_loaded_route_${route.replaceAll('/', '___')}`,
+      `#page-loaded-route_${route.replaceAll('/', '___')}`,
       { timeout: 10000, state: 'attached' },
     )
 

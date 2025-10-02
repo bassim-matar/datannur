@@ -71,18 +71,6 @@ export function pluralize(str) {
   return str + 's'
 }
 
-export function escapeHtmlEntities(str) {
-  const htmlEntities = new Map([
-    ['&', '&amp;'],
-    ['<', '&lt;'],
-    ['>', '&gt;'],
-    ['"', '&quot;'],
-    ["'", '&#39;'],
-  ])
-
-  return String(str).replace(/[&<>"']/g, char => htmlEntities.get(char) || char)
-}
-
 export function splitOnLastSeparator(str, separator) {
   const lastIndex = str.lastIndexOf(separator)
   return lastIndex === -1
@@ -95,21 +83,21 @@ export function link(href, content, entity = null) {
   const onclick = `window.goToHref(event, '${href}')`
   let specialClass = ''
   if (entity) {
-    specialClass = `class="color_entity_${entity}"`
+    specialClass = `class="color-entity-${entity}"`
   }
   return `<a href="${base}${href}" onclick="${onclick}" ${specialClass}>${content}</a>`
 }
 
 export function addIndend(text, indent) {
   const style = `padding-left: ${indent * 7}px;`
-  return `<div class="indented_text" style="${style}">${text}</div>`
+  return `<div class="indented-text" style="${style}">${text}</div>`
 }
 
 export function wrapLongText(text = null, indent = null) {
   if (text === undefined || text === null || text === '')
-    return `<div class="long_text_empty"></div>`
+    return `<div class="long-text_empty"></div>`
   if (indent) text = addIndend(text, indent)
-  return `<div class="long_text">${text}</div>`
+  return `<div class="long-text">${text}</div>`
 }
 
 export function debounce<T extends (...args: unknown[]) => unknown>(
@@ -135,7 +123,7 @@ export function clickOutside(node, callback) {
       if (callback) {
         callback(event)
       } else {
-        node.dispatchEvent(new CustomEvent('click_outside', node))
+        node.dispatchEvent(new CustomEvent('clickOutside', node))
       }
     }
   }

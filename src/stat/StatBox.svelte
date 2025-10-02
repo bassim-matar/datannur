@@ -11,7 +11,7 @@
 </script>
 
 <div
-  class="stat_box box_shadow box_shadow_color shadow_{entity}"
+  class="stat-box box-shadow box-shadow-color shadow-{entity}"
   class:from-popup={fromPopup}
   style="background: {mainColor}44;"
 >
@@ -22,7 +22,7 @@
     <Icon type={attribut.icon || attribut.key} />
     {attribut.name}
   </h2>
-  <div class="values_wrapper">
+  <div class="values-wrapper">
     <div class="values">
       {#each attribut.values as value, i (i)}
         <StatValue {value} {totalValue} {mainColor} />
@@ -35,13 +35,13 @@
   @use 'main.scss' as *;
   @use '../style/icon.scss' as *;
 
-  .stat_box {
+  .stat-box {
     :global {
-      @include icon_color;
+      @include icon-color;
     }
   }
 
-  .stat_box {
+  .stat-box {
     position: absolute;
     min-height: 0;
     margin-bottom: 0;
@@ -51,7 +51,7 @@
     &.from-popup {
       position: relative;
     }
-    :global(html.rounded_design) & {
+    :global(html.roundedDesign) & {
       border-radius: $rounded;
     }
     .title {
@@ -68,14 +68,14 @@
     .values {
       overflow: auto;
       max-height: 400px;
-      @include scrollbar_light();
+      @include scrollbar-light();
     }
   }
 
-  :global(html.page_shadow_colored .box_shadow.box_shadow_color) {
-    .stat_box {
+  :global(html.pageShadowColored .box-shadow.box-shadow-color) {
+    .stat-box {
       @each $entity in $entities {
-        &.shadow_#{$entity} {
+        &.shadow-#{$entity} {
           border: 1px solid #{color($entity)};
         }
       }

@@ -7,7 +7,7 @@
 
 {#if nbRow}
   <tr>
-    <td><Icon type="nb_row" /> Lignes</td>
+    <td><Icon type="nbRow" /> Lignes</td>
     <td>{Render.num(nbRow)}</td>
   </tr>
 {/if}

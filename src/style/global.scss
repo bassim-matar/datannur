@@ -33,7 +33,7 @@ html {
   --color-log: #{color('log')};
   --color-entity: #{color('entity')};
 }
-html.dark_mode {
+html.dark-mode {
   --background-1: #{$background-1-dark};
   --background-2: #{$background-2-dark};
   --background-3: #{$background-3-dark};
@@ -65,8 +65,8 @@ html {
   background: $background-1;
   height: 100%;
   padding: 0;
-  @include scrollbar_light();
-  &.dark_mode {
+  @include scrollbar-light();
+  &.dark-mode {
     color-scheme: dark;
   }
 }
@@ -123,7 +123,7 @@ button {
   transition: border-color $transition-basic-1;
 }
 
-.basic_link {
+.basic-link {
   color: $color-3;
   &:hover {
     text-decoration: underline;
@@ -143,16 +143,16 @@ button {
 .section {
   padding-top: 25px;
   padding-bottom: 25px;
-  .no_footer & {
+  .no-footer & {
     padding-bottom: 0;
   }
 }
 
-.flex_cols {
+.flex-cols {
   display: flex;
   gap: 50px;
   flex-wrap: wrap;
-  .flex_col {
+  .flex-col {
     display: flex;
     flex-direction: column;
     width: 300px;
@@ -160,7 +160,7 @@ button {
   }
 }
 
-.num_style {
+.num-style {
   font-weight: bold;
   font-size: 0.8rem;
   &.big {
@@ -172,22 +172,22 @@ img[alt^='main-banner'] {
   width: 100%;
   aspect-ratio: var(--main-banner-width) / var(--main-banner-height);
 }
-img[alt$='special_main_color'] {
+img[alt$='special-main-color'] {
   filter: string.unquote('invert(32%)') sepia(59%) saturate(1382%)
     hue-rotate(206deg) brightness(95%) contrast(87%);
 }
-html.dark_mode img[alt$='special_main_color'] {
+html.dark-mode img[alt$='special-main-color'] {
   filter: string.unquote('invert(68%)') sepia(8%) saturate(3575%)
     hue-rotate(179deg) brightness(88%) contrast(103%);
 }
 
-.break_line {
+.break-line {
   word-break: break-all;
 }
 
-html.rounded_design {
-  p > img:not([alt*='not_rounded']),
-  figure > img:not([alt*='not_rounded']),
+html.roundedDesign {
+  p > img:not([alt*='not-rounded']),
+  figure > img:not([alt*='not-rounded']),
   .button {
     border-radius: $rounded;
   }
@@ -215,17 +215,17 @@ figcaption {
   margin-right: 10px;
 }
 
-.box_shadow {
+.box-shadow {
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
-  html.dark_mode & {
+  html.dark-mode & {
     box-shadow: 0 8px 8px rgba(0, 0, 0, 1);
   }
 }
 
-html.page_shadow_colored .box_shadow.box_shadow_color {
+html.pageShadowColored .box-shadow.box-shadow-color {
   @each $entity in $entities {
-    &.shadow_#{$entity} {
-      box-shadow: 0 8px 8px #{color($entity)}#{$body_gradient_opacity_hex};
+    &.shadow-#{$entity} {
+      box-shadow: 0 8px 8px #{color($entity)}#{$body-gradient-opacity-hex};
     }
   }
 }
@@ -238,15 +238,15 @@ html.page_shadow_colored .box_shadow.box_shadow_color {
 }
 
 #powerTip {
-  .column_stat_btn {
+  .column-stat-btn {
     cursor: pointer;
   }
-  .icon_stat i {
+  .icon-stat i {
     color: color('stat');
   }
 }
 
-html.dark_mode {
+html.dark-mode {
   strong,
   .table,
   .table thead th,
@@ -306,7 +306,7 @@ html.dark_mode {
     padding-left: 5px;
     padding-right: 5px;
   }
-  .num_style {
+  .num-style {
     &.big {
       font-size: 1.2rem;
     }

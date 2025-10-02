@@ -10,10 +10,10 @@
   } = $props()
 
   let loaded = $state(false)
-  const filtersLeft = $state({ 0: 0 })
+  const filtersLeft = $state([0])
 
   function getWidthElemNum(num) {
-    const selector = `.header_filter_wrapper .th_${tableId}_${num}`
+    const selector = `.header-filter-wrapper .th-${tableId}-${num}`
     return document.querySelector(selector)?.getBoundingClientRect().width
   }
 
@@ -42,18 +42,18 @@
   })
 </script>
 
-<tr class="header_filter_wrapper">
+<tr class="header-filter-wrapper">
   {#each columns as column, i (`${column.data}/${column.title}`)}
     {#if i < nbSticky}
       <th
-        class="header_filter_th th_{tableId}_{i} sticky"
+        class="header-filter-th th-{tableId}-{i} sticky"
         class:dtfc-fixed-left={i + 1 === nbSticky}
         style={`left: ${filtersLeft[i]}px`}
       >
         <FilterInput {tableId} {i} {column} />
       </th>
     {:else}
-      <th class="header_filter_th">
+      <th class="header-filter-th">
         <FilterInput {tableId} {i} {column} />
       </th>
     {/if}
@@ -63,8 +63,8 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .header_filter_wrapper {
-    .header_filter_th {
+  .header-filter-wrapper {
+    .header-filter-th {
       padding: 0;
       margin: 0;
       border-bottom: 0;

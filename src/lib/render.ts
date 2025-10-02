@@ -1,3 +1,4 @@
+import escapeHtml from 'escape-html'
 import db from '@db'
 import { locale } from '@lib/constant'
 import { copyTextClasses, copyTextMsg } from '@lib/copy-text'
@@ -12,14 +13,25 @@ import {
 
 export function getNbValues(values, row) {
   if (values && values.length) return values.length
-  if (row.nb_distinct) return row.nb_distinct
+  if (row.nbDistinct) return row.nbDistinct
   return ''
 }
 
 const separator = ' | '
 
 export default class Render {
+  static shortText(data, type) {
+    if (!data) return ''
+    if (type !== 'display') return data
+    return escapeHtml(data)
+  }
+  static longText(data, type) {
+    if (!data) return ''
+    if (type !== 'display') return data
+    return wrapLongText(escapeHtml(data))
+  }
   static parentsIndent(data, type, row) {
+    if (type !== 'display') return data.slice(-1)[0]?.name
     return Render.tree(row._entity, [...data].reverse(), type)
   }
   static tree(entity, elements, type = 'normal') {
@@ -29,7 +41,11 @@ export default class Render {
       if (!element) continue
       let name = element.name
       if (level > 0 && type === 'export') name = separator + name
-      content += link(entity + '/' + element.id, addIndend(name, level), entity)
+      content += link(
+        entity + '/' + element.id,
+        addIndend(escapeHtml(name), level),
+        entity,
+      )
       level += 1
     }
     return wrapLongText(`<div class="tree">${content}</div>`)
@@ -42,20 +58,23 @@ export default class Render {
     return Render.tree(entity, elements, type)
   }
   static firstParent(data, type, row) {
+    if (type !== 'display') return data.slice(-1)[0]?.name
     if (data.length === 0) return wrapLongText()
     const parent = data.slice(-1)[0]
-    return wrapLongText(link(row._entity + '/' + parent.id, parent.name))
+    return wrapLongText(
+      link(row._entity + '/' + parent.id, escapeHtml(parent.name)),
+    )
   }
   static value(values, type, row) {
     if (!values || values === '' || values.length === 0) return wrapLongText()
     const nbValues = row.values.length
-    let entity = 'dataset_id' in row ? 'variable' : 'modality'
+    let entity = 'datasetId' in row ? 'variable' : 'modality'
     let tab = entity === 'variable' ? 'variableValues' : 'values'
     if (row._entity === 'metaVariable') {
       entity = 'metaVariable'
       tab = 'variableMetaValues'
     }
-    let content = '<ul class="ul_value">'
+    let content = '<ul class="ul-value">'
     let i = 0
     for (const value of values) {
       let valueContent = value.value
@@ -63,7 +82,7 @@ export default class Render {
         valueContent += ' : ' + value.description
       }
       if (i > 0 && type === 'export') valueContent = separator + valueContent
-      content += '<li>' + valueContent + '</li>'
+      content += '<li>' + escapeHtml(valueContent) + '</li>'
       i += 1
     }
     if (nbValues > values.length) {
@@ -83,7 +102,7 @@ export default class Render {
   static freqPreview(freqData, type, row) {
     if (!freqData || freqData.length === 0) return ''
 
-    let content = '<ul class="ul_value">'
+    let content = '<ul class="ul-value">'
     let i = 0
 
     for (const freqItem of freqData) {
@@ -95,10 +114,10 @@ export default class Render {
       let freqContent
       if (type === 'display') {
         const freqDisplay = `
-        <div class="freq_item_container">
-          <div class="freq_background color_freq" style="width: ${percentBackground}%"></div>
-          <span class="freq_value">${freqItem.value}</span>
-          <span class="freq_number">${freqNum}</span>
+        <div class="freq-item-container">
+          <div class="freq-background color-freq" style="width: ${percentBackground}%"></div>
+          <span class="freq-value">${escapeHtml(freqItem.value)}</span>
+          <span class="freq-number">${freqNum}</span>
         </div>`
         freqContent = freqDisplay
       } else {
@@ -127,7 +146,7 @@ export default class Render {
   }
   static num(data, type = 'normal') {
     if (data === false || data === undefined || data === null) return ''
-    if (['filter', 'sort', 'export'].includes(type)) return data
+    if (type !== 'display') return data
     return data.toLocaleString(locale)
   }
   static numNoEmpty(data, type = 'normal') {
@@ -156,21 +175,21 @@ export default class Render {
     } else {
       classNames = `fas fa-${icon}`
     }
-    return `<span class='icon icon_${entity}'><i class='${classNames}'></i></span>`
+    return `<span class='icon icon-${entity}'><i class='${classNames}'></i></span>`
   }
   static modalitiesName(modalities) {
     if (!modalities || modalities.length === 0) return wrapLongText()
     const modalitiesName = []
     for (const modality of modalities) {
       modalitiesName.push(
-        link('modality/' + modality.id, modality.name, 'modality'),
+        link('modality/' + modality.id, escapeHtml(modality.name), 'modality'),
       )
     }
     return wrapLongText(modalitiesName.join(' | '))
   }
   static nbValues(data, type, row, nbValueMax) {
     const nbValues = data
-    let entity = 'dataset_id' in row ? 'variable' : 'modality'
+    let entity = 'datasetId' in row ? 'variable' : 'modality'
     let tab = entity === 'variable' ? 'variableValues' : 'values'
     if (row._entity === 'metaVariable') {
       entity = 'metaVariable'
@@ -180,19 +199,19 @@ export default class Render {
     const percent = getPercent(nbValues / nbValueMax)
     let content = Render.num(nbValues)
     if (nbValues) {
-      content = link(`${entity}/${row.id}?tab=${tab}`, content)
+      content = link(`${entity}/${row.id}?tab=${tab}`, escapeHtml(content))
     }
     return `${Render.numPercent(content, percent, 'value', type)}`
   }
   static nbDuplicate(nbDuplicate, type, row) {
     if (!nbDuplicate) return ''
-    const percent = getPercent(nbDuplicate / row.nb_row)
+    const percent = getPercent(nbDuplicate / row.nbRow)
     return `${Render.numPercent(nbDuplicate, percent, 'duplicate', type)}`
   }
   static nbMissing(nbMissing, type, row, stringify = true) {
-    if (!row.nb_row) return ''
+    if (!row.nbRow) return ''
     if (!nbMissing) return ''
-    const percent = getPercent(nbMissing / row.nb_row)
+    const percent = getPercent(nbMissing / row.nbRow)
     const content = Render.numPercent(nbMissing, percent, 'missing', type, true)
     if (stringify) return `${content}`
     return content
@@ -202,17 +221,17 @@ export default class Render {
     if (!displayValue) return ''
     if (type === 'display' && withPercent) displayValue += ` (${percent}%)`
     return `
-    <div class="num_percent_container">
-      <span class="num_percent color_${colorType} placeholder" style="width: 100%"></span>
-      <span class="num_percent color_${colorType}" style="width: ${percent}%"></span>
+    <div class="num-percent-container">
+      <span class="num-percent color-${colorType} placeholder" style="width: 100%"></span>
+      <span class="num-percent color-${colorType}" style="width: ${percent}%"></span>
     </div>
-    <span class="num_percent_value">${displayValue}</span>`
+    <span class="num-percent-value">${displayValue}</span>`
   }
   static tags(tags) {
     if (!tags || tags.length === 0) return wrapLongText()
     const tagsName = []
     for (const tag of tags) {
-      tagsName.push(link('tag/' + tag.id, tag.name, 'tag'))
+      tagsName.push(link('tag/' + tag.id, escapeHtml(tag.name), 'tag'))
     }
     return wrapLongText(tagsName.join(' | '))
   }
@@ -233,7 +252,7 @@ export default class Render {
     }
     const timeAgo = getTimeAgo(data, true, true)
     const timestamp = dateToTimestamp(data, 'start')
-    const content = `${timeAgo}<br>${data}${contentAfter}`
+    const content = `${timeAgo}<br>${escapeHtml(data)}${contentAfter}`
     const percent = getPercent((new Date().getTime() - timestamp) / 31536000000)
     const entity = percent < 0 ? 'value' : 'doc'
     const percentAbsInversed = 100 - Math.abs(percent)

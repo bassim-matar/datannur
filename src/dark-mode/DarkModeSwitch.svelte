@@ -8,8 +8,8 @@
 
   function toggle() {
     DarkMode.toggle()
-    if ($darkModeTheme === 'dark') Logs.add('toggle_dark_mode_btn_off')
-    else Logs.add('toggle_dark_mode_btn_on')
+    if ($darkModeTheme === 'dark') Logs.add('toggleDarkModeBtnOff')
+    else Logs.add('toggleDarkModeBtnOn')
   }
 
   let day = $derived($darkModeTheme === 'dark' ? '' : 'day')
@@ -20,7 +20,7 @@
   id="checkbox_{id}"
   onclick={toggle}
   class="tdnn {day}"
-  aria-label="dark_mode"
+  aria-label="dark-mode"
 >
   <div class="moon {sun}"></div>
 </button>

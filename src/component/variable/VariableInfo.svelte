@@ -18,14 +18,14 @@
 
 <TableWrapper>
   <IdInfo id={variable.id} />
-  {#if variable.original_name}
+  {#if variable.originalName}
     <tr>
       <td>
         <Icon type="name" />
         Nom d'origine
       </td>
       <td>
-        {variable.original_name}
+        {variable.originalName}
       </td>
     </tr>
   {/if}
@@ -35,7 +35,7 @@
       Dataset
     </td>
     <td>
-      <Link href="{parentName}/{variable.dataset_id}" entity="dataset"
+      <Link href="{parentName}/{variable.datasetId}" entity="dataset"
         >{variable.datasetName}</Link
       >
     </td>
@@ -66,8 +66,8 @@
     period={variable.period}
     periodDuration={variable.periodDuration}
   />
-  <RowInfo nbRow={variable.nb_row} />
-  {#if variable.nb_missing > 0}
+  <RowInfo nbRow={variable.nbRow} />
+  {#if variable.nbMissing > 0}
     <tr>
       <td>
         <Icon type="missing" />
@@ -76,13 +76,13 @@
       <td>
         <PercentBar
           type="missing"
-          value={variable.nb_missing}
-          nbRow={variable.nb_row}
+          value={variable.nbMissing}
+          nbRow={variable.nbRow}
         />
       </td>
     </tr>
   {/if}
-  {#if variable.nb_duplicate > 0}
+  {#if variable.nbDuplicate > 0}
     <tr>
       <td>
         <Icon type="duplicate" />
@@ -91,13 +91,13 @@
       <td>
         <PercentBar
           type="duplicate"
-          value={variable.nb_duplicate}
-          nbRow={variable.nb_row}
+          value={variable.nbDuplicate}
+          nbRow={variable.nbRow}
         />
       </td>
     </tr>
   {/if}
-  {#if variable.nb_distinct > 0}
+  {#if variable.nbDistinct > 0}
     <tr>
       <td>
         <Icon type="value" />
@@ -106,8 +106,8 @@
       <td>
         <PercentBar
           type="value"
-          value={variable.nb_distinct}
-          nbRow={variable.nb_row}
+          value={variable.nbDistinct}
+          nbRow={variable.nbRow}
         />
       </td>
     </tr>

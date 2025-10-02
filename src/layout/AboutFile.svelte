@@ -37,7 +37,7 @@
   })
 </script>
 
-<div class="about_file_wrapper" class:homepage={$onPageHomepage}>
+<div class="about-file-wrapper" class:homepage={$onPageHomepage}>
   {#if useMermaid}
     <div class="content" use:safeHtmlWithSvg={htmlContent}></div>
     {#if !htmlContentLoaded}
@@ -53,7 +53,7 @@
   @use '../style/mermaid.scss' as *;
   @use '../style/icon.scss' as *;
 
-  .about_file_wrapper {
+  .about-file-wrapper {
     :global {
       p img {
         width: 100%;
@@ -70,10 +70,10 @@
     margin: auto;
 
     :global {
-      @include icon_color;
-      @include mermaid_style;
+      @include icon-color;
+      @include mermaid-style;
 
-      .mermaid_block {
+      .mermaid-block {
         text-align: center;
         margin-bottom: 40px;
         .icon {
@@ -86,8 +86,8 @@
     }
   }
 
-  @media screen and (max-width: $menu_mobile_limit) {
-    .about_file_wrapper.homepage {
+  @media screen and (max-width: $menu-mobile-limit) {
+    .about-file-wrapper.homepage {
       max-height: max(calc(100vh - 175px), 80px);
     }
   }

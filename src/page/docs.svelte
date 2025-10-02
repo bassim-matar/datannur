@@ -18,6 +18,6 @@
 </script>
 
 <section class="section">
-  <Title type="doc" name="Docs" mode="main_title" />
+  <Title type="doc" name="Docs" mode="mainTitle" />
   <Tabs {tabs} />
 </section>

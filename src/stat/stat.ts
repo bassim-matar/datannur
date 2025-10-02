@@ -254,7 +254,7 @@ export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
   } else if (attribut.subtype) {
     values = addSubtype(items, attribut)
     totalValue = items.filter(attribut.subtype).length
-  } else if (attribut.type === 'category_ordered') {
+  } else if (attribut.type === 'categoryOrdered') {
     values = addCategory(items, attribut, 'start')
     values.reverse()
   } else {

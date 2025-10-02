@@ -28,7 +28,7 @@
     height = Math.min(realHeight, windowHeight)
   }
 
-  const debouncedUpdateHeight = debounce(updateHeight, 150)
+  const debouncedUpdateHeight = debounce(updateHeight, 200)
 
   $effect(() => {
     void searchValue
@@ -51,21 +51,21 @@
   $whenAppReady.then(() => (dbLoaded = true))
 </script>
 
-<div id="search_bar_result_outer">
+<div id="search-bar-result-outer">
   <div
-    id="search_bar_result_wrapper"
+    id="search-bar-result-wrapper"
     class:is-open={isOpen}
     class:has-scroll-bar={hasScrollBar}
     style="--height: {height}px"
   >
-    <div class="table_wrapper" bind:this={tableWrapper}>
+    <div class="table-wrapper" bind:this={tableWrapper}>
       {#if dbLoaded}
         <table class="table is-striped">
           <tbody>
             {#if searchValue === '' && nbResult > 0}
               <tr>
                 <td colspan="3">
-                  <div class="nb_result">
+                  <div class="nb-result">
                     {nbResult} recherche{plural} récente{plural}
                   </div>
                 </td>
@@ -75,7 +75,7 @@
             {#if searchValue !== ''}
               <tr>
                 <td colspan="3">
-                  <div class="nb_result">
+                  <div class="nb-result">
                     {nbResult} résultat{plural}
                   </div>
                 </td>
@@ -99,16 +99,16 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  #search_bar_result_outer {
+  #search-bar-result-outer {
     position: relative;
     overflow: hidden;
   }
 
-  #search_bar_result_wrapper {
+  #search-bar-result-wrapper {
     height: 0px;
     overflow-y: hidden;
     transition: height $transition-basic-1;
-    @include scrollbar_light();
+    @include scrollbar-light();
     &.is-open {
       height: var(--height);
     }
@@ -125,7 +125,7 @@
     }
   }
 
-  .nb_result {
+  .nb-result {
     width: 100%;
     font-size: 14px;
   }

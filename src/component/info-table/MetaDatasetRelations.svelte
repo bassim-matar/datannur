@@ -22,20 +22,20 @@
     relations: [string, string][]
   }
 
-  const schema = structuredClone(db.tables.__schema__)
+  const schema = db.getSchema()
 
   const relationTypes: RelationType[] = [
-    { name: 'one_to_one', symbol: 'minus', tooltip: 'one to one' },
-    { name: 'one_to_many', symbol: 'arrow-right-long', tooltip: 'one to many' },
+    { name: 'oneToOne', symbol: 'minus', tooltip: 'one to one' },
+    { name: 'oneToMany', symbol: 'arrow-right-long', tooltip: 'one to many' },
     {
-      name: 'many_to_many',
+      name: 'manyToMany',
       symbol: 'arrows-left-right',
       tooltip: 'many to many',
     },
   ]
 
   const aliases: Alias[] = []
-  for (const relation of schema.one_to_one) {
+  for (const relation of schema.oneToOne) {
     for (const alias of schema.aliases) {
       if (relation[0] === alias) {
         aliases.push({
@@ -53,7 +53,7 @@
     type,
     relations: schema[type.name].filter(relation => {
       if (datasetHasAlias) {
-        if (type.name === 'one_to_one' && relation.includes(datasetId))
+        if (type.name === 'oneToOne' && relation.includes(datasetId))
           return false
 
         for (const alias of aliases) {
@@ -96,7 +96,7 @@
                 <Link href={`metaDataset/${relation[0].split(' (')[0]}`}
                   >{relation[0]}</Link
                 >
-                <span class="use_tooltip" title={relationType.type.tooltip}>
+                <span class="use-tooltip" title={relationType.type.tooltip}>
                   <Icon type={relationType.type.symbol} marginRight={false} />
                 </span>
                 <Link href={`metaDataset/${relation[1].split(' (')[0]}`}

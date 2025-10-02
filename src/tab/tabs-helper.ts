@@ -29,7 +29,7 @@ function getNbStat(stat: unknown[], attributs: Record<string, unknown[]>) {
 
 function getTab(key: string, value: unknown) {
   if (!(key in allTabs)) {
-    console.error('tabs_helper():', key, 'not found')
+    console.error('tabsHelper():', key, 'not found')
     return false
   }
   const tab = allTabs[key] as TabConfig
@@ -37,7 +37,7 @@ function getTab(key: string, value: unknown) {
   if (
     ([null, undefined, false].includes(value as null | undefined | boolean) ||
       (Array.isArray(value) && value.length === 0)) &&
-    !tab.without_prop
+    !tab.withoutProp
   )
     return false
 
@@ -61,7 +61,7 @@ function getTab(key: string, value: unknown) {
   } else if (value !== '') {
     tab.props![key] = value
   }
-  if (tab.without_num) {
+  if (tab.withoutNum) {
     tab.nb = undefined
   }
   if (tab.loadAsync) tab.nb = '?'

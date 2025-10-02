@@ -4,6 +4,7 @@
   import Render from '@lib/render'
   import Column from '@lib/column'
   import { entityNames } from '@lib/constant'
+  import escapeHTML from 'escape-html'
 
   let { logs } = $props()
 
@@ -16,12 +17,15 @@
     {
       data: 'action',
       title: Render.icon('log') + 'Log',
+      defaultContent: '',
+      filterType: 'select',
       tooltip: 'Action',
       render: (data, type, row) => {
+        if (type !== 'display') return row.actionReadable || row.action
         let content = ''
         if (row.actionIcon) content += Render.icon(row.actionIcon)
-        if (row.actionReadable) content += ' ' + row.actionReadable
-        else content += ' ' + row.action
+        if (row.actionReadable) content += ' ' + escapeHTML(row.actionReadable)
+        else content += ' ' + escapeHTML(row.action)
         return wrapLongText(data ? content : '')
       },
     },
@@ -32,14 +36,17 @@
       defaultContent: '',
       tooltip: 'Element impliqué',
       render: (data, type, row) => {
+        if (!data) return ''
+        if (type !== 'display') return data
+        data = escapeHTML(data)
         let content = ''
-        if (row.elementIcon) content += Render.icon(row.elementIcon)
+        if (row.elementIcon) content += Render.icon(escapeHTML(row.elementIcon))
         if (row.elementLink) {
-          content += link(row.elementLink, row.element)
+          content += link(row.elementLink, data)
         } else {
-          content += ' ' + row.element
+          content += ' ' + data
         }
-        return wrapLongText(data ? content : '')
+        return wrapLongText(content)
       },
     },
     Column.timestamp(),

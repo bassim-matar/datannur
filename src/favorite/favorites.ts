@@ -3,7 +3,7 @@ import Logs from '@lib/logs'
 import { nbFavorite } from '@lib/store'
 
 export default class Favorites {
-  static dbKey = 'user_data/favorite'
+  static dbKey = 'userData/favorite'
   static favorites = []
 
   static init(favorites) {
@@ -12,15 +12,15 @@ export default class Favorites {
     if (favorites) {
       this.favorites = favorites
       for (const fav of favorites) {
-        if (!db.tableHasId(fav.entity, fav.entity_id)) continue
-        const item = db.get(fav.entity, fav.entity_id)
+        if (!db.exists(fav.entity, fav.entityId)) continue
+        const item = db.get(fav.entity, fav.entityId)
         item.isFavorite = true
-        item.favorite_timestamp = fav.timestamp
+        item.favoriteTimestamp = fav.timestamp
         countNbFavorite += 1
       }
       db.foreach('evolution', evo => {
-        if (!db.tableHasId(evo.entity, evo.entity_id)) return
-        const item = db.get(evo.entity, evo.entity_id)
+        if (!db.exists(evo.entity, evo.entityId)) return
+        const item = db.get(evo.entity, evo.entityId)
         if (item && 'isFavorite' in item && item.isFavorite)
           evo.isFavorite = true
       })
@@ -38,12 +38,12 @@ export default class Favorites {
   static add(entity, entityId) {
     const id = entity + '/' + entityId
     const timestamp = Date.now()
-    this.favorites.push({ id, entity, entity_id: entityId, timestamp })
+    this.favorites.push({ id, entity, entityId, timestamp })
     this.save()
     const item = db.get(entity, entityId)
     item.isFavorite = true
-    item.favorite_timestamp = timestamp
-    Logs.add('add_fav', { entity, entity_id: entityId })
+    item.favoriteTimestamp = timestamp
+    Logs.add('addFav', { entity, entityId })
     nbFavorite.update(n => n + 1)
   }
   static remove(entity, entityId) {
@@ -52,7 +52,7 @@ export default class Favorites {
     this.save()
     const item = db.get(entity, entityId)
     item.isFavorite = false
-    Logs.add('remove_fav', { entity, entity_id: entityId })
+    Logs.add('removeFav', { entity, entityId })
     nbFavorite.update(n => n - 1)
   }
 }

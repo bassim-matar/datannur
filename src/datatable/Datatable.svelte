@@ -90,8 +90,8 @@
 
   const clickableRows = ![
     'value',
-    'dataset_preview',
-    'variable_preview',
+    'datasetPreview',
+    'variablePreview',
     'preview',
     'log',
   ].includes(entity)
@@ -136,7 +136,7 @@
         buttons,
         destroy: true,
         language: {
-          zeroRecords: '<span class="no_result">Aucun résultat</span>',
+          zeroRecords: '<span class="no-result">Aucun résultat</span>',
           buttons: exporter.getLanguage(),
         } as ConfigLanguage,
         initComplete: function () {
@@ -154,8 +154,8 @@
         datatableUpdateDraw += 1
       })
       domTable = jQuery('table#' + tableId + '._datatables')
-      domTable.on('mouseenter', '.long_text', extendable.open)
-      domTable.on('mouseleave', '.long_text', extendable.closeTwoLines)
+      domTable.on('mouseenter', '.long-text', extendable.open)
+      domTable.on('mouseleave', '.long-text', extendable.closeTwoLines)
 
       domTable.on(
         'click',
@@ -172,8 +172,8 @@
             ) {
               return false
             }
-            jQuery(this).parent().find('.var_main_col')[0]?.click()
-            jQuery(this).parent().find('.var_main_col a')[0]?.click()
+            jQuery(this).parent().find('.var-main-col')[0]?.click()
+            jQuery(this).parent().find('.var-main-col a')[0]?.click()
           }, 1)
         },
       )
@@ -226,8 +226,8 @@
 </Popup>
 
 {#if loading}
-  <div class="datatable_main_wrapper dt_loading">
-    <div class="datatables_outer visible dt-container dt_loading_outer">
+  <div class="datatable-main-wrapper dt-loading">
+    <div class="datatables-outer visible dt-container dt-loading-outer">
       <div class="dt-scroll" style="--max-height: {maxHeightLoad}">
         <table
           class="_datatables table is-striped dataTable"
@@ -238,10 +238,10 @@
               {#each columnsCopy as column, i (`${column.data}/${column.title}`)}
                 <th
                   class="sorting"
-                  class:sorting_asc={i === 0}
-                  class:first_col={i === 0}
-                  style="min-width: {column.loading_width}px; 
-                    width: {column.loading_max_width}px;"
+                  class:sorting-asc={i === 0}
+                  class:first-col={i === 0}
+                  style="min-width: {column.loadingWidth}px; 
+                    width: {column.loadingMaxWidth}px;"
                 >
                   <span use:safeHtml={column.title}></span>
                   <span class="dt-column-order"></span>
@@ -250,7 +250,7 @@
             </tr>
           </thead>
           {#if isBig}
-            <thead class="loading_filter_wrapper">
+            <thead class="loading-filter-wrapper">
               <Filter columns={columnsCopy} />
             </thead>
           {/if}
@@ -258,8 +258,8 @@
             {#each Array(nbRowLoading).keys() as i (i)}
               <tr>
                 {#each columnsCopy as column, j (`${column.data}/${column.title}`)}
-                  <td class:first_col={j === 0} class:first_row={i === 0}>
-                    {#if column.data === '_row_num'}
+                  <td class:first-col={j === 0} class:first-row={i === 0}>
+                    {#if column.data === '_rowNum'}
                       {i + 1}
                     {:else if column.data === 'isFavorite'}
                       <span class="icon favorite">
@@ -279,9 +279,9 @@
   </div>
 {/if}
 
-<div class="datatable_main_wrapper">
+<div class="datatable-main-wrapper">
   {#if data.length > 0}
-    <div class="datatables_outer" class:visible={!loading}>
+    <div class="datatables-outer" class:visible={!loading}>
       <FilterInfoBox {nbActiveFilter} click={() => filter.removeAll()} />
       <table
         id={tableId}
@@ -294,8 +294,8 @@
             {#each columnsCopy as column, i (`${column.data}/${column.title}`)}
               <th
                 title={column.tooltip}
-                class:first_col={i === 0}
-                class="use_tooltip"
+                class:first-col={i === 0}
+                class="use-tooltip"
               ></th>
             {/each}
           </tr>
@@ -324,22 +324,22 @@
   @use '../style/icon.scss' as *;
   @use '../style/favorite.scss' as *;
 
-  .datatable_main_wrapper {
+  .datatable-main-wrapper {
     text-align: left;
     :global {
       .dt-scroll {
-        :global(html.rounded_design) & {
+        :global(html.roundedDesign) & {
           border-radius: $rounded-bottom;
           border-top-right-radius: $rounded-size;
         }
-        :global(html.rounded_design .no_first_tab) & {
+        :global(html.roundedDesign .no-first-tab) & {
           border-top-left-radius: $rounded-size;
         }
       }
     }
   }
 
-  .dt_loading {
+  .dt-loading {
     .dt-scroll {
       max-height: var(--max-height);
 
@@ -350,12 +350,12 @@
       td {
         height: 65px;
         vertical-align: middle;
-        &.first_row {
+        &.first-row {
           height: 67px;
           padding-top: 10px;
         }
       }
-      .loading_filter_wrapper {
+      .loading-filter-wrapper {
         position: sticky;
         bottom: 0;
         left: 0;
@@ -389,7 +389,7 @@
     }
   }
 
-  .datatable_main_wrapper {
+  .datatable-main-wrapper {
     :global {
       .dt-scroll-foot {
         display: none;
@@ -397,11 +397,11 @@
     }
   }
 
-  .datatable_main_wrapper {
+  .datatable-main-wrapper {
     :global {
-      @include exporter_style;
-      @include favorite_style;
-      @include icon_color;
+      @include exporter-style;
+      @include favorite-style;
+      @include icon-color;
 
       table.dataTable th.dt-type-numeric,
       table.dataTable th.dt-type-date,
@@ -410,7 +410,7 @@
         text-align: left;
       }
 
-      .datatables_outer {
+      .datatables-outer {
         &:not(.visible) {
           opacity: 0;
           height: 0;
@@ -447,7 +447,7 @@
 
         table.dataTable.dtfc-scrolling-left tr > .dtfc-fixed-left::after {
           box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.2);
-          :global(html.dark_mode) & {
+          :global(html.dark-mode) & {
             box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 1);
           }
         }
@@ -459,7 +459,7 @@
           overflow: hidden;
           .dt-scroll-body {
             width: auto !important;
-            @include scrollbar_light();
+            @include scrollbar-light();
           }
           .dt-scroll-body,
           .dt-scroll-body table {
@@ -538,16 +538,16 @@
           &.is-striped > tbody > tr:nth-child(2n) {
             background-color: $background-2;
           }
-          tbody > tr:has(span.icon_add) > .dtfc-fixed-left {
+          tbody > tr:has(span.icon-add) > .dtfc-fixed-left {
             background-color: $background-green-filled;
           }
-          tbody > tr:has(span.icon_delete) > .dtfc-fixed-left {
+          tbody > tr:has(span.icon-delete) > .dtfc-fixed-left {
             background-color: $background-red-filled;
           }
-          tbody > tr:has(span.icon_add) {
+          tbody > tr:has(span.icon-add) {
             background-color: $background-green-filled !important;
           }
-          tbody > tr:has(span.icon_delete) {
+          tbody > tr:has(span.icon-delete) {
             background-color: $background-red-filled !important;
           }
           thead td,
@@ -560,7 +560,7 @@
           tbody > tr > td,
           th {
             white-space: nowrap;
-            &.first_col {
+            &.first-col {
               min-width: 50px;
             }
           }
@@ -569,13 +569,13 @@
             text-align: left;
             vertical-align: middle;
           }
-          .ul_value {
+          .ul-value {
             padding-left: 20px;
             list-style: initial;
             min-width: 100px;
           }
-          .type_icon,
-          .icon_type {
+          .type-icon,
+          .icon-type {
             font-weight: bold;
             color: $color-type;
           }
@@ -585,7 +585,7 @@
           }
           .dt-empty {
             padding: 0.1px;
-            .no_result {
+            .no-result {
               position: fixed;
               left: (calc(50% - 50px));
               margin-top: -12px;
@@ -595,14 +595,14 @@
           td {
             position: relative;
             @each $entity in $entities {
-              a.color_entity_#{$entity}:hover,
-              a.color_entity_#{$entity}.is-active,
-              a.color_entity_#{$entity}:focus-within {
+              a.color-entity-#{$entity}:hover,
+              a.color-entity-#{$entity}.is-active,
+              a.color-entity-#{$entity}:focus-within {
                 color: #{color($entity)} !important;
               }
             }
 
-            .num_percent_container {
+            .num-percent-container {
               position: absolute;
               border-radius: $rounded;
               overflow: hidden;
@@ -611,7 +611,7 @@
               bottom: 10px;
               right: 5px;
             }
-            .num_percent_value {
+            .num-percent-value {
               position: absolute;
               top: 0;
               left: 0;
@@ -620,7 +620,7 @@
               transform: translateY(-50%);
               text-align: center;
             }
-            .num_percent {
+            .num-percent {
               position: absolute;
               top: 0px;
               left: 0;
@@ -632,7 +632,7 @@
                 opacity: 0.1;
               }
             }
-            .freq_item_container {
+            .freq-item-container {
               position: relative;
               display: flex;
               justify-content: space-between;
@@ -642,7 +642,7 @@
               border-radius: $rounded;
               overflow: hidden;
 
-              .freq_background {
+              .freq-background {
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -650,24 +650,24 @@
                 border-radius: $rounded;
                 opacity: 0.2;
                 pointer-events: none;
-                &.color_freq {
+                &.color-freq {
                   background: color('freq');
                 }
               }
 
-              .freq_value,
-              .freq_number {
+              .freq-value,
+              .freq-number {
                 position: relative;
                 z-index: 1;
               }
 
-              .freq_percent {
+              .freq-percent {
                 position: relative;
                 z-index: 1;
                 margin-left: auto;
               }
             }
-            .num_percent {
+            .num-percent {
               position: absolute;
               top: 0px;
               left: 0;
@@ -678,49 +678,49 @@
               &.placeholder {
                 opacity: 0.1;
               }
-              &.color_missing {
+              &.color-missing {
                 background: color('missing');
               }
-              &.color_duplicate {
+              &.color-duplicate {
                 background: color('duplicate');
               }
-              &.color_freq {
+              &.color-freq {
                 background: color('freq');
               }
-              &.color_value {
+              &.color-value {
                 background: color('value');
               }
-              &.color_institution {
+              &.color-institution {
                 background: color('institution');
               }
-              &.color_folder {
+              &.color-folder {
                 background: color('folder');
               }
-              &.color_tag {
+              &.color-tag {
                 background: color('tag');
               }
-              &.color_doc {
+              &.color-doc {
                 background: color('doc');
               }
-              &.color_dataset {
+              &.color-dataset {
                 background: color('dataset');
               }
-              &.color_variable {
+              &.color-variable {
                 background: color('variable');
               }
-              &.color_nb_row {
-                background: color('nb_row');
+              &.color-nbRow {
+                background: color('nbRow');
               }
-              &.color_value {
+              &.color-value {
                 background: color('value');
               }
-              &.color_nbSource {
+              &.color-nbSource {
                 background: color('nbSource');
               }
-              &.color_nbDerived {
+              &.color-nbDerived {
                 background: color('nbDerived');
               }
-              &.color_key {
+              &.color-key {
                 background: color('key');
               }
             }
@@ -730,16 +730,16 @@
             font-style: italic;
             font-size: 14px;
           }
-          td div.long_text_empty {
+          td div.long-text-empty {
             width: 250px;
           }
-          td span.highlight_diff_add {
+          td span.highlight-diff-add {
             background: $background-green;
           }
-          td span.highlight_diff_delete {
+          td span.highlight-diff-delete {
             background: $background-red;
           }
-          td div.long_text {
+          td div.long-text {
             padding: 1px auto;
             display: -webkit-box;
             flex-direction: column;
@@ -762,19 +762,19 @@
             overflow: hidden;
             text-overflow: ellipsis;
             text-align: left;
-            .indented_text {
+            .indented-text {
               width: 100%;
               box-sizing: border-box;
               margin: auto;
             }
-            a:nth-child(2) .indented_text {
+            a:nth-child(2) .indented-text {
               display: block;
             }
             &.open {
               white-space: normal;
               display: block;
             }
-            &.open_full {
+            &.open-full {
               overflow-y: auto;
             }
           }
@@ -787,24 +787,24 @@
           tbody > tr:hover > td.dtfc-fixed-left {
             background: $color-6;
           }
-          tbody > tr:hover:has(span.icon_delete) > td:not(.dt-empty),
-          tbody > tr:hover:has(span.icon_delete) > td.dtfc-fixed-left {
+          tbody > tr:hover:has(span.icon-delete) > td:not(.dt-empty),
+          tbody > tr:hover:has(span.icon-delete) > td.dtfc-fixed-left {
             background: $background-red-filled;
           }
-          tbody > tr:hover:has(span.icon_add) > td:not(.dt-empty),
-          tbody > tr:hover:has(span.icon_add) > td.dtfc-fixed-left {
+          tbody > tr:hover:has(span.icon-add) > td:not(.dt-empty),
+          tbody > tr:hover:has(span.icon-add) > td.dtfc-fixed-left {
             background: $background-green-filled;
           }
 
-          tbody > tr:hover > td .var_main_col,
-          tbody > tr:hover > td .long_text:has(.var_main_col) {
+          tbody > tr:hover > td .var-main-col,
+          tbody > tr:hover > td .long-text:has(.var-main-col) {
             color: $color-3;
           }
 
-          tbody > tr:hover > td .var_main_col,
-          tbody > tr:hover > td .long_text:has(.var_main_col) {
+          tbody > tr:hover > td .var-main-col,
+          tbody > tr:hover > td .long-text:has(.var-main-col) {
             @each $entity in $entities {
-              a.color_entity_#{$entity} {
+              a.color-entity-#{$entity} {
                 color: #{color($entity)} !important;
               }
             }
@@ -812,7 +812,7 @@
         }
 
         @media screen and (max-width: 600px) {
-          div.dt-buttons .search_option {
+          div.dt-buttons .search-option {
             position: fixed;
             top: 40px;
             right: 52px;

@@ -1,13 +1,13 @@
 <script lang="ts">
-  let { click, mode = "normal" } = $props()
+  let { click, mode = 'normal' } = $props()
 </script>
 
-<button onclick={click} class="btn_clear_input {mode}" aria-label="clear_input">
+<button onclick={click} class="btn-clear-input {mode}" aria-label="clear-input">
   <i class="fa-solid fa-xmark"></i>
 </button>
 
 <style lang="scss">
-  @use "main.scss" as *;
+  @use 'main.scss' as *;
 
   button {
     position: absolute;

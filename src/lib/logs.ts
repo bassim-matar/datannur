@@ -4,7 +4,7 @@ import { allTabsIcon } from '@lib/store'
 import { entityToIcon } from '@lib/constant'
 
 export default class Logs {
-  static dbKey = 'user_data/log'
+  static dbKey = 'userData/log'
   static logs = []
   static onChangeCallback = () => {}
   static allTabsIconValue = {}
@@ -37,7 +37,7 @@ export default class Logs {
       id: this.logs.length + 1,
       action,
       entity: log?.entity || '',
-      entity_id: log?.entity_id || '',
+      entityId: log?.entityId || '',
       timestamp: Date.now(),
     })
     this.save()
@@ -50,12 +50,12 @@ export default class Logs {
       log.actionName = log.action
       log.element = log.entity
 
-      if (log.entity_id) {
-        if (!db.tableHasId(log.entity, log.entity_id)) continue
-        const item = db.get(log.entity, log.entity_id)
+      if (log.entityId) {
+        if (!db.exists(log.entity, log.entityId)) continue
+        const item = db.get(log.entity, log.entityId)
         if (item) {
           log.element = item.name
-          log.elementLink = log.entity + '/' + log.entity_id
+          log.elementLink = log.entity + '/' + log.entityId
         }
       } else if (log.entity === 'log') {
         log.elementLink = 'options?tab=logs'
@@ -63,24 +63,24 @@ export default class Logs {
         log.entity = 'homepage'
         log.element = log.entity
         log.elementLink = '/'
-      } else if (log.action === 'load_page') {
+      } else if (log.action === 'loadPage') {
         log.elementLink = log.entity
       }
 
       const actionConfig = new Map([
-        ['search_bar', ['Rechercher', 'search']],
-        ['load_page', ['Charger la page', 'page']],
-        ['add_fav', ['Ajouter le favoris', 'favorite']],
-        ['remove_fav', ['Supprimer le favoris', 'favorite']],
-        ['select_tab', ["Sélectionner l'onglet", 'tab']],
-        ['toggle_dark_mode_btn_on', ['Activer le mode sombre', 'moon']],
-        ['toggle_dark_mode_btn_off', ['Activer le mode clair', 'sun']],
+        ['searchBar', ['Rechercher', 'search']],
+        ['loadPage', ['Charger la page', 'page']],
+        ['addFav', ['Ajouter le favoris', 'favorite']],
+        ['removeFav', ['Supprimer le favoris', 'favorite']],
+        ['selectTab', ["Sélectionner l'onglet", 'tab']],
+        ['toggleDarkModeBtnOn', ['Activer le mode sombre', 'moon']],
+        ['toggleDarkModeBtnOff', ['Activer le mode clair', 'sun']],
         [
-          'open_table_download',
+          'openTableDownload',
           ['Ouvrir les options de téléchargement', 'download'],
         ],
         [
-          'close_table_download',
+          'closeTableDownload',
           ['Fermer les options de téléchargement', 'downloadClose'],
         ],
       ])

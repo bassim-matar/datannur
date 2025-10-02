@@ -12,7 +12,7 @@
   function clickLink(entityName, itemId) {
     setTimeout(() => {
       SearchHistory.add(entityName, itemId)
-      Logs.add('search_bar', { entity: entityName, entity_id: itemId })
+      Logs.add('searchBar', { entity: entityName, entityId: itemId })
       isFocusIn = false
     }, 10)
   }
@@ -23,7 +23,7 @@
   }
 </script>
 
-<tr class:nav-hover={item.nav_hover}>
+<tr class:nav-hover={item.navHover}>
   <td style="width: 20px;">
     <div>
       <Icon type={item.entity} />
@@ -45,7 +45,7 @@
       click={() => clickLink(item.entity, item.id)}
       entity={item.entity}
     >
-      <div class="long_text">
+      <div class="long-text">
         {#if searchValue === ''}
           {item.name}
         {:else}
@@ -57,7 +57,7 @@
   {#if searchValue === '' || item.isRecent}
     <td style="width: 20px;">
       <button
-        class="btn_delete_item"
+        class="btn-delete-item"
         style="cursor: pointer;"
         onclick={() => removeItem(item.entity, item.id)}
         aria-label="Remove item from recent search"
@@ -79,7 +79,7 @@
   td {
     border: 0;
   }
-  .long_text {
+  .long-text {
     word-break: break-word;
     width: 100%;
     :global(.searchHighlight) {
@@ -88,7 +88,7 @@
     }
   }
 
-  .btn_delete_item {
+  .btn-delete-item {
     margin: 0;
     position: relative;
     width: 20px;

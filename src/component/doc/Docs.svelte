@@ -3,6 +3,7 @@
   import Render from '@lib/render'
   import { link, getPercent } from '@lib/util'
   import Datatable from '@datatable/Datatable.svelte'
+  import escapeHtml from 'escape-html'
 
   let { docs } = $props()
 
@@ -42,13 +43,14 @@
       tooltip: 'Type de fichier (markdown ou pdf)',
       render: (data, type) => {
         if (!data) return ''
-        if (['filter', 'sort', 'export'].includes(type)) return data
+        if (type !== 'display') return data
+        data = escapeHtml(data)
         return `${data} ${Render.icon(data)}`
       },
     },
     Column.docPath(),
     Column.timestamp({
-      varName: 'last_update',
+      varName: 'lastUpdate',
       title: 'Mise à jour',
       tooltip: 'Date de dernière mise à jour',
     }),
@@ -62,7 +64,10 @@
       tooltip: "Nombre d'institutions",
       render: (data, type, row) => {
         if (!data) return ''
-        const content = link('doc/' + row.id + '?tab=institutions', data)
+        const content = link(
+          'doc/' + row.id + '?tab=institutions',
+          escapeHtml(data),
+        )
         const percent = getPercent(data / institutionMax)
         return `${Render.numPercent(content, percent, 'institution', type)}`
       },
@@ -74,7 +79,7 @@
       tooltip: 'Nombre de dossiers',
       render: (data, type, row) => {
         if (!data) return ''
-        const content = link('doc/' + row.id + '?tab=folders', data)
+        const content = link('doc/' + row.id + '?tab=folders', escapeHtml(data))
         const percent = getPercent(data / folderMax)
         return `${Render.numPercent(content, percent, 'folder', type)}`
       },
@@ -86,7 +91,7 @@
       tooltip: 'Nombre de mots clés',
       render: (data, type, row) => {
         if (!data) return ''
-        const content = link('doc/' + row.id + '?tab=tags', data)
+        const content = link('doc/' + row.id + '?tab=tags', escapeHtml(data))
         const percent = getPercent(data / tagMax)
         return `${Render.numPercent(content, percent, 'tag', type)}`
       },
@@ -98,7 +103,10 @@
       tooltip: 'Nombre de datasets',
       render: (data, type, row) => {
         if (!data) return ''
-        const content = link('doc/' + row.id + '?tab=datasets', data)
+        const content = link(
+          'doc/' + row.id + '?tab=datasets',
+          escapeHtml(data),
+        )
         const percent = getPercent(data / datasetMax)
         return `${Render.numPercent(content, percent, 'dataset', type)}`
       },

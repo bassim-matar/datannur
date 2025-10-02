@@ -1,19 +1,19 @@
 jsonjs.data['doc'] = 
 [
   {
-    "id": "pdf_wiki",
+    "id": "pdf-wiki",
     "type": "pdf",
     "name": "pdf_wiki",
     "description": "pdf wiki",
-    "path": "data/pdf/pdf_wiki.pdf",
+    "path": "data/pdf/pdf-wiki.pdf",
     "last_update": 1716215962
   },
   {
-    "id": "tourisme_exemple",
+    "id": "tourisme-exemple",
     "type": "md",
     "name": "Tourisme exemple",
     "description": "Tourisme exemple",
-    "path": "data/md/tourisme_exemple.md",
+    "path": "data/md/tourisme-exemple.md",
     "last_update": 1716231182
   },
   {
@@ -25,35 +25,35 @@ jsonjs.data['doc'] =
     "last_update": null
   },
   {
-    "id": "bevnat_info",
+    "id": "bevnat-info",
     "type": "pdf",
     "name": "BEVNAT: Fiche signalétique",
     "description": "BEVNAT: Fiche signalétique",
-    "path": "data/pdf/bevnat_info.pdf",
+    "path": "data/pdf/bevnat-info.pdf",
     "last_update": 1706219962
   },
   {
-    "id": "statpop_info",
+    "id": "statpop-info",
     "type": "pdf",
     "name": "STATPOP: Fiche signalétique",
     "description": "STATPOP: Fiche signalétique",
-    "path": "data/pdf/statpop_info.pdf",
+    "path": "data/pdf/statpop-info.pdf",
     "last_update": 1606212962
   },
   {
-    "id": "bevnat_variable",
+    "id": "bevnat-variable",
     "type": "pdf",
     "name": "BEVNAT: Liste des variables",
     "description": "BEVNAT: Liste des variables",
-    "path": "data/pdf/bevnat_variable.pdf",
+    "path": "data/pdf/bevnat-variable.pdf",
     "last_update": 1606212963
   },
   {
-    "id": "pop_com_1",
+    "id": "pop-com-1",
     "type": "pdf",
     "name": "Communiqué de presse population",
     "description": "Communiqué de presse population",
-    "path": "data/pdf/pop_com_1.pdf",
+    "path": "data/pdf/pop-com-1.pdf",
     "last_update": 1724323867
   }
 ]
