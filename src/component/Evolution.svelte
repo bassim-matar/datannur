@@ -89,15 +89,24 @@
         render: (data, type) => {
           if (!data) return ''
 
+          let columnCleanNameLine2 = ''
           let columnCleanName = data
           if (columnCleanNames[data]) columnCleanName = columnCleanNames[data]
           else if (Column[data.toLowerCase()])
             columnCleanName = Column[data.toLowerCase()]?.name
 
-          if (type !== 'display') return columnCleanName
+          if (Array.isArray(columnCleanName))
+            [columnCleanName, columnCleanNameLine2] = columnCleanName
+
+          if (type !== 'display') {
+            return columnCleanName + columnCleanNameLine2
+              ? ' ' + columnCleanNameLine2
+              : ''
+          }
 
           data = escapeHtml(data)
           columnCleanName = escapeHtml(columnCleanName)
+          columnCleanNameLine2 = escapeHtml(columnCleanNameLine2)
           let icon = data
           if (columnIcons[data]) icon = columnIcons[data]
 
@@ -106,7 +115,10 @@
             <span class="icon icon-${icon}" title="${data}">
               <i class="fas fa-${entityToIcon[icon] || icon}"></i>
             </span>
-            <span style="font-size: 13px;">${columnCleanName}</span>
+            <span style="font-size: 13px;">
+              ${columnCleanName}
+              ${columnCleanNameLine2 ? `<br>${columnCleanNameLine2}` : ''}
+            </span>
           </div>`
         },
       },

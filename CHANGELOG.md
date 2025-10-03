@@ -3,6 +3,7 @@
 ## unreleased
 
 - fix: stat addNumeric() `item[attribut.variable]` must be true not just type of string
+- fix: evolution col variable with `<br>`
 
 ## 0.13.0 (2024-10-02)
 
