@@ -96,7 +96,7 @@ export default class Histogram {
       }
 
       if (!foundMatch) {
-        console.log(`error count_groups_values() !foundMatch`, value)
+        console.error(`Histogram.addCount() !foundMatch`, value)
       }
     }
 

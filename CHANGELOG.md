@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- fix: stat addNumeric() `item[attribut.variable]` must be true not just type of string
+
 ## 0.13.0 (2024-10-02)
 
 - add: whenAppReady instead of db.loaded and refactor db.use and db.preview

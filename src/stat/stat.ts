@@ -111,6 +111,7 @@ function addNumeric(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
     } else if (
       attribut.parseDate &&
       attribut.variable &&
+      item[attribut.variable] &&
       typeof item[attribut.variable] === 'string'
     ) {
       rawValues.push(Date.parse(item[attribut.variable] as string))

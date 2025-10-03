@@ -51,6 +51,7 @@ const pageNames = [
   'variable/dep_sante___variable_4',
   'variable/ser_pub_loc___variable_3',
   'modality/canton_sigle',
+  '?tab=stat',
 ]
 
 describe('UI tests', () => {
