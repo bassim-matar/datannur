@@ -50,12 +50,12 @@ export const evolutionTypes = {
 export const columnCleanNames = {
   startDate: 'Validité début',
   endDate: 'Validité fin',
-  lastUpdate: 'Dernière<br>mise à jour',
-  lastUpdateDate: 'Dernière<br>mise à jour',
-  nextUpdateDate: 'Prochaine<br>mise à jour',
+  lastUpdate: ['Dernière', 'mise à jour'],
+  lastUpdateDate: ['Dernière', 'mise à jour'],
+  nextUpdateDate: ['Prochaine', 'mise à jour'],
   name: 'Nom',
   description: 'Description',
-  updatingEach: 'Fréquence<br>de mise à jour',
+  updatingEach: ['Fréquence', 'de mise à jour'],
 }
 
 export const columnIcons = {
