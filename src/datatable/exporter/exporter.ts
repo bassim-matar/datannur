@@ -1,4 +1,6 @@
 import Logs from '@lib/logs'
+import { ensureJszipLoaded } from '@lib/util'
+import DataTable from 'datatables.net-bm'
 
 function applyToElements(selector, apply) {
   document.querySelectorAll(selector).forEach(apply)
@@ -42,17 +44,35 @@ export default class Exporter {
         exportOptions: { orthogonal: 'export' },
         footer: false,
       },
-      {
-        text: '<span class="icon icon-download"><i class="fas fa-file-excel"></i></span>excel',
-        className: 'download-button',
-        extend: 'excel',
-        filename,
-        title: '',
-        exportOptions: { orthogonal: 'export' },
-        footer: false,
-      },
     ]
   }
+
+  getExcelButton() {
+    const filename = this.id
+    return {
+      text: '<span class="icon icon-download"><i class="fas fa-file-excel"></i></span>excel',
+      className: 'download-button',
+      extend: 'excelHtml5',
+      filename,
+      title: '',
+      exportOptions: { orthogonal: 'export' },
+      footer: false,
+    }
+  }
+  async ensureExcelReady(onReady?: () => void) {
+    await ensureJszipLoaded()
+    DataTable.Buttons.jszip(window.JSZip)
+    if (onReady) onReady()
+  }
+
+  addExcelButton(datatable) {
+    try {
+      datatable.button().add(3, this.getExcelButton())
+    } catch (e) {
+      console.warn('Could not add Excel button:', e)
+    }
+  }
+
   toggleMainBtn() {
     const tableId = `#${this.id}_wrapper`
     const btns = `${tableId} .buttons-html5`

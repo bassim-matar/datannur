@@ -1,5 +1,6 @@
 import db from '@db'
 import { whenAppReady } from '@lib/store'
+import { ensureScriptLoaded } from '@lib/util'
 import { get } from 'svelte/store'
 import { entityNames } from '@lib/constant'
 import escapeHtml from 'escape-html'
@@ -19,19 +20,6 @@ type SearchResult = {
   folderName: string
   _entity: string
   _entityClean: string
-}
-
-function ensureFlexsearchLoaded() {
-  return new Promise<void>(resolve => {
-    const flexsearchSrc = `assets/external/flexsearch.js?v=${__APP_VERSION__}`
-    if (document.querySelector(`script[src="${flexsearchSrc}"]`)) {
-      resolve()
-      return
-    }
-    const script = document.createElement('script')
-    const scriptAttributes = { src: flexsearchSrc, onload: resolve }
-    document.head.appendChild(Object.assign(script, scriptAttributes))
-  })
 }
 
 function removeDiacritics(str) {
@@ -84,7 +72,7 @@ class Search {
   }
   async init() {
     this.loading = (async () => {
-      await ensureFlexsearchLoaded()
+      await ensureScriptLoaded('assets/external/flexsearch.js')
       await get(whenAppReady)
       const variables = ['name', 'description']
       for (const variable of variables) {

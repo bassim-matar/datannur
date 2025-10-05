@@ -1,6 +1,5 @@
 <script lang="ts">
   import jQuery from 'jquery'
-  import JSZip from 'jszip'
   import DataTable from 'datatables.net-bm'
   import type { Config, ConfigLanguage } from 'datatables.net'
   import 'datatables.net-buttons-bm'
@@ -59,8 +58,6 @@
 
   DatatablesTimer.start()
   DatatablesLoading.start()
-
-  DataTable.Buttons.jszip(JSZip)
 
   let datatable = null
   let domTable = null
@@ -193,6 +190,12 @@
       if (DatatablesLoading.finished) {
         $allTablesLoaded = true
       }
+
+      exporter.ensureExcelReady(() => {
+        if (datatable) {
+          exporter.addExcelButton(datatable)
+        }
+      })
     }, 1)
   })
 

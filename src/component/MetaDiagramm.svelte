@@ -1,9 +1,8 @@
 <script lang="ts">
   import db from '@db'
-  import { isMobile, urlPrefix } from '@lib/util'
+  import { isMobile, urlPrefix, ensureMermaidLoaded } from '@lib/util'
   import { entityNames } from '@lib/constant'
   import Render from '@lib/render'
-  import { ensureMermaidLoaded } from '@lib/mermaid'
   import Loading from '@frame/Loading.svelte'
   import { safeHtmlWithSvg } from '@lib/html-sanitizer'
 
@@ -104,7 +103,7 @@
     diagrammDefinition += `${link[0]} <--> ${link[1]}\n`
   }
 
-  ensureMermaidLoaded(async () => {
+  ensureMermaidLoaded().then(async () => {
     const { svg } = await window.mermaid.render('diagramm', diagrammDefinition)
     svgDiagramm = svg
   })

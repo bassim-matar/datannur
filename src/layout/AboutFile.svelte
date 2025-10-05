@@ -4,7 +4,8 @@
   import { pageContentLoaded, onPageHomepage } from '@lib/store'
   import { darkModeTheme } from '@dark-mode/dark-mode'
   import Loading from '@frame/Loading.svelte'
-  import { ensureMermaidLoaded, mdWithMermaidToHtml } from '@lib/mermaid'
+  import { ensureMermaidLoaded } from '@lib/util'
+  import { mdWithMermaidToHtml } from '@lib/mermaid'
   import { safeHtmlWithSvg } from '@lib/html-sanitizer'
 
   let { aboutFile } = $props()
@@ -23,7 +24,7 @@
 
   $effect(() => {
     if (useMermaid) {
-      ensureMermaidLoaded(async () => {
+      ensureMermaidLoaded().then(async () => {
         if (!mdContent) return
         htmlContent = await mdWithMermaidToHtml(mdContent)
         htmlContentLoaded = true
