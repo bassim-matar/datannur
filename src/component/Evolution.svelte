@@ -99,9 +99,10 @@
             [columnCleanName, columnCleanNameLine2] = columnCleanName
 
           if (type !== 'display') {
-            return columnCleanName + columnCleanNameLine2
-              ? ' ' + columnCleanNameLine2
-              : ''
+            return (
+              columnCleanName +
+              (columnCleanNameLine2 ? ' ' + columnCleanNameLine2 : '')
+            )
           }
 
           data = escapeHtml(data)
@@ -134,12 +135,15 @@
           if (!row.oldValue && !row.newValue) {
             return ''
           }
-          if (row.oldValue === row.newValue)
-            return wrapLongText(escapeHtml(row.oldValue))
+
+          const oldValue = row.oldValue === null ? '' : row.oldValue
+          const newValue = row.newValue === null ? '' : row.newValue
+
+          if (oldValue === newValue) return wrapLongText(escapeHtml(oldValue))
 
           const diff = highlightDiff(
-            escapeHtml(row.oldValue),
-            escapeHtml(row.newValue),
+            escapeHtml(oldValue),
+            escapeHtml(newValue),
             row.variable,
           )
           if (type !== 'display') return diff
