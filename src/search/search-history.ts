@@ -1,21 +1,30 @@
 import db from '@db'
 import { entityNames } from '@lib/constant'
+import type { EntityName } from '@type'
+import type { SearchResult } from './search'
+
+export type SearchHistoryEntry = {
+  entity: string
+  entityId: string | number
+  timestamp: number
+  id: number
+}
 
 export default class SearchHistory {
   static limit = 100
-  static searchHistory = []
+  static searchHistory: SearchHistoryEntry[] = []
   static dbKey = 'userData/searchHistory'
   static onChangeCallbacks: Record<string, () => void> = {}
-  static onClearCallback = null
+  static onClearCallback: (() => void) | null = null
 
-  static init(searchHistory, option) {
-    this.limit = option.limit || 100
-    this.searchHistory = searchHistory || []
+  static init(searchHistory: SearchHistoryEntry[], option = { limit: 100 }) {
+    this.limit = option.limit
+    this.searchHistory = searchHistory ?? []
   }
   static getAll() {
     return this.searchHistory
   }
-  static add(entity, entityId) {
+  static add(entity: string, entityId: string | number) {
     let searchEntityId = 1
     this.searchHistory = this.searchHistory
       .filter(
@@ -46,7 +55,7 @@ export default class SearchHistory {
   static save() {
     db.browser.set(this.dbKey, this.searchHistory)
   }
-  static remove(entity, entityId) {
+  static remove(entity: string, entityId: string | number) {
     this.searchHistory = this.searchHistory.filter(
       searchItem =>
         searchItem.entity !== entity || searchItem.entityId !== entityId,
@@ -59,53 +68,65 @@ export default class SearchHistory {
     this.save()
     if (this.onClearCallback) this.onClearCallback()
   }
-  static onClear(callback) {
+  static onClear(callback: () => void) {
     this.onClearCallback = callback
   }
   static getRecentSearch() {
-    const result = []
+    const result: SearchResult[] = []
     const recentSearch = this.getAll()
     for (const entry of recentSearch) {
-      if (!db.exists(entry.entity, entry.entityId)) continue
-      const itemData = db.get(entry.entity, entry.entityId)
+      if (!db.exists(entry.entity as EntityName, entry.entityId)) continue
+      const itemData = db.get(entry.entity as EntityName, entry.entityId)
+      if (!itemData) continue
+      const data = itemData as SearchResult
       result.push({
-        id: itemData.id,
-        name: itemData.name,
-        description: itemData.description,
+        id: data.id,
+        name: data.name,
+        description: data.description,
         entity: entry.entity,
         isRecent: true,
-        isFavorite: itemData.isFavorite,
-        folderId: itemData.folderId,
-        folderName: itemData.folderName,
-        _entity: itemData._entity,
-        _entityClean: entityNames[itemData._entity as string],
+        isFavorite: data.isFavorite,
+        folderId: data.folderId,
+        folderName: data.folderName,
+        _entity: data._entity,
+        _entityClean:
+          entityNames[data._entity as keyof typeof entityNames] ?? '',
       })
     }
     return result
   }
   static getRecentSearchIds() {
-    const recentSearchIds = {}
+    const recentSearchIds: Record<string, number> = {}
     const recentSearch = this.getAll()
     for (const [i, entry] of recentSearch.entries()) {
-      if (!db.exists(entry.entity, entry.entityId)) continue
+      if (!db.exists(entry.entity as EntityName, entry.entityId)) continue
       recentSearchIds[`${entry.entity}-${entry.entityId}`] = i
     }
     return recentSearchIds
   }
-  static putRecentFirst(result) {
+  static putRecentFirst(result: SearchResult[]) {
     const recentIds = this.getRecentSearchIds()
-    const recentSearch = { name: [], description: [] }
+    const recentSearch: {
+      name: SearchResult[]
+      description: SearchResult[]
+    } = { name: [], description: [] }
     for (const item of result) {
-      const key = `${item.entity}-${item.id}`
+      const itemObj = item
+      const key = `${itemObj.entity}-${itemObj.id}`
       if (!(key in recentIds)) continue
-      const itemData = { ...item, isRecent: true, position: recentIds[key] }
+      const itemData = { ...itemObj, isRecent: true, position: recentIds[key] }
       for (const [variable, list] of Object.entries(recentSearch)) {
-        if (item.variable === variable) list.push(itemData)
+        if (itemObj.variable === variable) list.push(itemData)
       }
     }
-    recentSearch.name.sort((a, b) => a.position - b.position)
-    recentSearch.description.sort((a, b) => a.position - b.position)
-    result = result.filter(item => !(`${item.entity}-${item.id}` in recentIds))
+    recentSearch.name.sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
+    recentSearch.description.sort(
+      (a, b) => (a.position ?? 0) - (b.position ?? 0),
+    )
+    result = result.filter(item => {
+      const itemObj = item
+      return !(`${itemObj.entity}-${itemObj.id}` in recentIds)
+    })
     return [...recentSearch.name, ...recentSearch.description, ...result]
   }
   static onChange(key: string, callback: () => void) {

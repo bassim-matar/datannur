@@ -8,9 +8,9 @@
 
   let svgDiagramm = $state<string | null>(null)
 
-  const schema = db.getSchema()
-
-  delete schema.oneToOne
+  const schemaRaw = db.getSchema()
+  const { oneToOne: oneToOneUnused, ...schema } = schemaRaw
+  void oneToOneUnused
 
   const direction = isMobile ? 'TB' : 'LR'
   let diagrammDefinition = `flowchart ${direction}\n`
@@ -50,7 +50,7 @@
   schema.oneToMany.sort(compareNameDesc)
   schema.manyToMany.sort(compareNameDesc)
 
-  const recursiveEntities = []
+  const recursiveEntities: string[] = []
   for (const link of schema.oneToMany) {
     if (link[0] === link[1]) recursiveEntities.push(link[0])
   }
@@ -73,7 +73,7 @@
     diagrammDefinition += `click ${table} href "${urlPrefix}/metaDataset/${table}";\n`
   }
 
-  const otherLinks = []
+  const otherLinks: string[] = []
   let separator = ' - '
   for (const link of schema.oneToMany) {
     if (link.includes('metaDataset')) continue

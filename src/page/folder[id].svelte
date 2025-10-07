@@ -53,7 +53,7 @@
         (evo.entity === 'variable' && variablesId.has(evo.id)) ||
         (evo.entity === 'dataset' && datasetsId.has(evo.id)) ||
         (evo.entity === 'folder' &&
-          (evo.id === folder.id || foldersId.has(evo.id))),
+          (evo.id === folder.id || foldersId.has(evo.id!))),
     )
 
   const stat = [

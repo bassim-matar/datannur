@@ -8,14 +8,14 @@
 
   let { metaVariable } = $props()
 
-  let variablePreview = []
-  let datasetPreview = []
+  let variablePreview: unknown[] = []
+  let datasetPreview: unknown[] = []
   let metaDataset = db.get('metaDataset', metaVariable.metaDatasetId)
-  if (metaDataset.metaFolderId === 'data') {
+  if (metaDataset?.metaFolderId === 'data') {
     datasetPreview = db.tables[metaDataset.name]
-  } else if (metaDataset.metaFolderId === 'userData') {
+  } else if (metaDataset?.metaFolderId === 'userData') {
     const userData = getUserData()
-    datasetPreview = userData?.[metaDataset.name]
+    datasetPreview = userData?.[metaDataset.name] ?? []
   }
   variablePreview = filterKeys(datasetPreview, [metaVariable.name])
 

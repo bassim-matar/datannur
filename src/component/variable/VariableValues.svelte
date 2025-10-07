@@ -4,6 +4,7 @@
   import Datatable from '@datatable/Datatable.svelte'
   import { link } from '@lib/util'
   import escapeHtml from 'escape-html'
+  import type { Column as ColumnType } from '@type'
 
   let { variableValues, isMeta = false } = $props()
 
@@ -16,7 +17,7 @@
   }
 
   function defineColumns() {
-    const columns = []
+    const columns: ColumnType[] = []
     if (!isMeta) {
       columns.push({
         data: 'modalityName',

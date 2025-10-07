@@ -14,7 +14,7 @@
   makeParentsRelative(0, folders)
   addMinimumDeep(folders)
 
-  const tags = db.getAll('tag').filter(tag => tag.nbFolder > 0)
+  const tags = db.getAll('tag').filter(tag => !!tag.nbFolder)
   if (db.useRecursive.tag) {
     makeParentsRelative(false, tags)
     addMinimumDeep(tags, true, true)

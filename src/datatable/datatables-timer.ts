@@ -2,7 +2,7 @@ import { pageContentLoaded } from '@lib/store'
 
 export default class DatatablesTimer {
   static nbLoading = 0
-  static startTime
+  static startTime: number
   static start() {
     this.nbLoading += 1
     this.startTime = performance.now()

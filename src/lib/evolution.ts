@@ -49,7 +49,7 @@ function addHistory(evoDeleted) {
       evo._deleted = item._deleted
       evo.id = item.id
     } else if (evo.entity === 'value') {
-      const [id, value] = splitOnLastSeparator(evo.entityId, '---')
+      const [id, value] = splitOnLastSeparator(String(evo.entityId), '---')
       evo._deleted = true
       if (!evo.parentEntityId) evo.parentEntityId = id
       if (!evo.name) evo.name = value ? value : evo.entityId

@@ -571,5 +571,16 @@ jsonjs.data['evolution'] =
     "old_value": null,
     "new_value": null,
     "name": "<strong>a</strong>"
+  },
+  {
+    "timestamp": 1759778989,
+    "type": "update",
+    "entity": "doc",
+    "entity_id": "bevnat-info",
+    "parent_entity_id": null,
+    "variable": "last_update",
+    "old_value": 1706219962,
+    "new_value": 1706239962,
+    "name": null
   }
 ]

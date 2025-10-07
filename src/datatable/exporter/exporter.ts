@@ -62,15 +62,13 @@ export default class Exporter {
   }
   async ensureExcelReady(onReady?: () => void) {
     await ensureJszipLoaded()
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore - Buttons plugin property not typed
     DataTable.Buttons.jszip(window.JSZip)
     if (onReady) onReady()
   }
 
   addExcelButton(datatable: Api) {
     try {
-      // @ts-expect-error - DataTables button configuration type mismatch
+      // @ts-expect-error - Type mismatch between button config and Buttons API type
       datatable.button().add(3, this.getExcelButton())
     } catch (e) {
       console.warn('Could not add Excel button:', e)

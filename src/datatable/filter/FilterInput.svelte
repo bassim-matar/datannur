@@ -13,9 +13,9 @@
 </script>
 
 <div class="header-input-wrapper">
-  {#if column.noSearch}
+  {#if column.searchType === 'none'}
     <span></span>
-  {:else if column.searchModality}
+  {:else if column.filterType === 'select'}
     <div class="select">
       <select
         id="datatables-title-{tableId}-filter-{i}"

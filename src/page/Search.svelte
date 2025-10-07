@@ -11,10 +11,11 @@
   import aboutSearch from '@markdown/search/about-search.md?raw'
   import noResult from '@markdown/search/no-result.md?raw'
   import noRecentSearch from '@markdown/search/no-recent-search.md?raw'
+  import type { SearchResult as SearchResultType } from '@search/search'
 
   let isLoading = $state(true)
-  let searchResultData = $state([])
-  let tabs = $state([])
+  let searchResultData: SearchResultType[] = $state([])
+  let tabs: unknown[] = $state([])
   let tabKey = $state()
 
   let recentSearchChange = false
@@ -95,9 +96,8 @@
   let isEmptyInput = $derived(['', undefined, null].includes($searchValue))
 
   const urlSearchValue = UrlParam.get('search')
-  if (urlSearchValue !== false && urlSearchValue !== '') {
-    $searchValue = urlSearchValue
-  }
+  if (urlSearchValue) $searchValue = urlSearchValue
+
   setTabKey()
 
   onMount(() => {

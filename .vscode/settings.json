@@ -7,5 +7,6 @@
   "[svelte]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
   },
-  "eslint.validate": ["typescript", "svelte"]
+  "eslint.validate": ["typescript", "svelte"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

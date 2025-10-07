@@ -11,6 +11,7 @@
   import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
   import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
+  import type { AnyEntity } from '@type'
 
   let { tag } = $props()
 
@@ -51,12 +52,12 @@
   withVariables = removeDuplicateById(withVariables)
   withDocs = removeDuplicateById(withDocs)
 
-  function getOpposite(entity, withTagItems, selfId = null) {
+  function getOpposite(entity, withTagItems: AnyEntity[], selfId = null) {
     if (withTagItems.length === 0) return []
-    const all = []
-    const ids = []
+    const all: AnyEntity[] = []
+    const ids: unknown[] = []
     for (let item of withTagItems) {
-      ids.push(item.id)
+      if ('id' in item) ids.push(item.id)
     }
     for (let item of db.getAll(entity)) {
       if (ids.includes(item.id)) continue

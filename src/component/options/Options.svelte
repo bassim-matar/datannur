@@ -37,10 +37,10 @@
     const jszip = new window.JSZip()
     const dataFolder = jszip.folder('user-data')
     const userData = getUserData()
-    for (const [name, data] of Object.entries(userData)) {
+    for (const [name, data] of Object.entries(!!userData)) {
       const filename = name + '.json'
       const jsonData = JSON.stringify(data, null, 2)
-      dataFolder.file(filename, jsonData)
+      dataFolder?.file(filename, jsonData)
     }
     jszip.generateAsync({ type: 'blob' }).then(function (content) {
       saveAs(content, 'datannur-user-data.zip')

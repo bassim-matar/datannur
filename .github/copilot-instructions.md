@@ -44,3 +44,13 @@
 - **Type Safety**: Use proper TypeScript types - avoid `any` type
 - **Consistent Naming**: Use clear, descriptive names for variables, functions, and classes
 - **Single Responsibility**: Each function and class should have a single, well-defined purpose
+
+## TypeScript Strict Mode
+
+- **No Type Workarounds**: Never use `any`, `@ts-ignore`, `@ts-expect-error`, or `eslint-disable` to bypass TypeScript errors
+- **Proper Type Casting**: Use explicit type assertions (`as Type`) only when absolutely necessary and you're certain of the type
+- **Handle Undefined/Null**: Always handle `undefined` and `null` cases properly with optional chaining (`?.`), nullish coalescing (`??`), or explicit checks
+- **Fix Root Cause**: When encountering TypeScript errors, fix the underlying issue rather than suppressing the error
+- **Strict Typing**: Prefer specific types over generic ones - use `Record<string, unknown>`, `string[]`, etc. instead of `any` or `unknown` when possible
+- **Type Guards**: Use type guards and type narrowing to handle union types safely
+- **Proper Generics**: Define and use generic types when working with reusable functions or components

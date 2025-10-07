@@ -11,8 +11,8 @@
     "baseUrl": ".",
     "strict": false,
     "noImplicitAny": false,
-    "strictNullChecks": false,
-    "strictPropertyInitialization": false,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "paths": {

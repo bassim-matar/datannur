@@ -1,3 +1,7 @@
+import type { ConfigColumns } from 'datatables.net'
+
+export type NullableNumber = number | null | undefined | false
+
 // Base entity type without circular dependencies
 export type BaseEntity = {
   id: string | number
@@ -8,6 +12,7 @@ export type BaseEntity = {
   _entity?: string
   _entityClean?: string
   isFavorite?: boolean
+  favoriteTimestamp?: number
   parents?: BaseEntity[]
   parentsRelative?: BaseEntity[]
   entities?: { name: string; nb: number }[]
@@ -78,4 +83,15 @@ export type SearchHistory = {
 export type Filter = {
   id: string
   name: string
+  isActive?: boolean
+}
+
+export type Column = ConfigColumns & {
+  tooltip?: string
+  filterType?: string
+  hasLongText?: boolean
+  dateType?: string
+  fromLength?: boolean
+  loadingWidth?: number
+  loadingMaxWidth?: number
 }

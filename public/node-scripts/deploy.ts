@@ -32,7 +32,7 @@ console.log(`🚀 Deploying to ${config.name}`)
 try {
   const deleteFlag = config.syncOption?.delete ? '--delete' : ''
   const excludes = config.ignore
-    .map(pattern => `--exclude='${pattern}'`)
+    .map((pattern: string) => `--exclude='${pattern}'`)
     .join(' ')
   const sshCmd = `ssh -i ${config.privateKeyPath} -p ${config.port}`
 

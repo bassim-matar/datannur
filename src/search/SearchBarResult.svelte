@@ -12,7 +12,7 @@
     selectInput,
   } = $props()
 
-  let tableWrapper: HTMLDivElement = $state()
+  let tableWrapper: HTMLDivElement | undefined = $state()
   let height = $state(0)
   let hasScrollBar = $state(false)
   let dbLoaded = $state(false)

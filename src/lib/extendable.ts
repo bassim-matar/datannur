@@ -5,9 +5,13 @@ const delayBeforeOpen = 200
 const openDuration = 300
 const closeDuration = 600
 
+interface ExtendableElement extends HTMLElement {
+  mouseEnterTimeout?: ReturnType<typeof setTimeout> | null
+}
+
 export const extendable = {
-  mouseEnterTimeout: null,
-  open() {
+  mouseEnterTimeout: null as ReturnType<typeof setTimeout> | null,
+  open(this: ExtendableElement) {
     const elem = jQuery(this)
     elem.stop()
     this.mouseEnterTimeout = setTimeout(() => {
@@ -17,11 +21,14 @@ export const extendable = {
       })
     }, delayBeforeOpen)
   },
-  close(elemRef, minHeight = 25) {
-    clearTimeout(elemRef.mouseEnterTimeout)
-    const elem = jQuery(elemRef)
+  close(this: ExtendableElement, minHeight = 25) {
+    if (this.mouseEnterTimeout) {
+      clearTimeout(this.mouseEnterTimeout)
+    }
+    const elem = jQuery(this)
     if (!elem.hasClass('open')) return false
     const elemHeight = elem.height()
+    if (!elemHeight) return false
     const duration = (elemHeight / maxHeight) * closeDuration
     elem.removeClass('open-full')
     elem.css({ maxHeight: elemHeight + 'px' })
@@ -29,10 +36,10 @@ export const extendable = {
       elem.removeClass('open')
     })
   },
-  closeOneLine() {
-    return extendable.close(this, 25)
+  closeOneLine(this: ExtendableElement) {
+    return extendable.close.call(this, 25)
   },
-  closeTwoLines() {
-    return extendable.close(this, 50)
+  closeTwoLines(this: ExtendableElement) {
+    return extendable.close.call(this, 50)
   },
 }

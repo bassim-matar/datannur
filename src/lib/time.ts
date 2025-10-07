@@ -1,6 +1,9 @@
 import { locale } from '@lib/constant'
 
-export function convertQuarterToFullDate(completeDate, mode = 'start') {
+export function convertQuarterToFullDate(
+  completeDate: string,
+  mode: 'start' | 'end' = 'start',
+): string {
   const quarter = completeDate[5]
   completeDate = completeDate.slice(0, 4)
   if (mode === 'start') {
@@ -19,7 +22,10 @@ export function convertQuarterToFullDate(completeDate, mode = 'start') {
   return completeDate
 }
 
-export function dateToTimestamp(date, mode = 'start') {
+export function dateToTimestamp(
+  date: string,
+  mode: 'start' | 'end' = 'start',
+): number {
   let completeDate = date
   if (!completeDate) return 0
   if (completeDate.length === 4) {
@@ -37,7 +43,7 @@ export function dateToTimestamp(date, mode = 'start') {
   return Date.parse(completeDate)
 }
 
-export function timestampToDate(timestamp) {
+export function timestampToDate(timestamp: number): string {
   const date = new Date(timestamp)
   return date.toISOString().slice(0, 10).replaceAll('-', '/')
 }
@@ -57,7 +63,7 @@ const divisions: {
   { amount: Number.POSITIVE_INFINITY, name: 'years', localName: 'an' },
 ]
 
-export function getDatetime(timestamp, withSecond = false) {
+export function getDatetime(timestamp: number, withSecond = false): string {
   const date = new Date(timestamp)
 
   const year = date.getFullYear()
@@ -75,13 +81,13 @@ export function getDatetime(timestamp, withSecond = false) {
 }
 
 export function getTimeAgo(
-  date,
+  date: string | number,
   parse = false,
   day = false,
   dateNow = new Date(),
 ) {
   if (!date) return ''
-  if (parse) date = Date.parse(date)
+  if (parse && typeof date === 'string') date = Date.parse(date)
   if (day) dateNow.setHours(0, 0, 0, 0)
   let duration = (Number(date) - Number(dateNow)) / 1000
   if (day && duration === 0) return "aujourd'hui"
@@ -91,27 +97,35 @@ export function getTimeAgo(
     }
     duration /= division.amount
   }
+  return ''
 }
 
-export function getPeriod(start, end, parse = false) {
+export function getPeriod(
+  start: string | number,
+  end: string | number,
+  parse = false,
+) {
   if (!start || !end) return ''
   if (parse) {
-    if (start.length === 4) start += '/01'
-    if (start.length === 7) start += '/01'
-    if (end.length === 4) end += '/12'
-    if (end.length === 7) end += '/30'
-    if (start.length === 6 && start[4] === 't') {
-      start = convertQuarterToFullDate(start, 'start')
+    let startStr = String(start)
+    let endStr = String(end)
+
+    if (startStr.length === 4) startStr += '/01'
+    if (startStr.length === 7) startStr += '/01'
+    if (endStr.length === 4) endStr += '/12'
+    if (endStr.length === 7) endStr += '/30'
+    if (startStr.length === 6 && startStr[4] === 't') {
+      startStr = convertQuarterToFullDate(startStr, 'start')
     }
-    if (end.length === 6 && end[4] === 't') {
-      end = convertQuarterToFullDate(end, 'end')
+    if (endStr.length === 6 && endStr[4] === 't') {
+      endStr = convertQuarterToFullDate(endStr, 'end')
     }
-    start = Date.parse(start)
-    end = Date.parse(end)
+    start = Date.parse(startStr)
+    end = Date.parse(endStr)
     if (end - start < 10 * 24 * 3600 * 1000) end += 1 * 24 * 3600 * 1000
     else end += 3 * 24 * 3600 * 1000
   }
-  let duration = (end - start) / 1000
+  let duration = (Number(end) - Number(start)) / 1000
   for (const division of divisions) {
     if (Math.abs(duration) < division.amount) {
       const roundDuration = Math.round(duration)
@@ -121,4 +135,5 @@ export function getPeriod(start, end, parse = false) {
     }
     duration /= division.amount
   }
+  return ''
 }

@@ -28,13 +28,14 @@
     "verify": "npm run check && npm run test"
   },
   "devDependencies": {
-    "@eslint/js": "^9.36.0",
+    "@eslint/js": "^9.37.0",
     "@rollup/plugin-alias": "^5.1.1",
     "@sveltejs/vite-plugin-svelte": "^6.2.1",
     "@types/escape-html": "^1.0.4",
+    "@types/jquery": "^3.5.33",
     "@types/serve-handler": "^6.1.4",
     "autoprefixer": "^10.4.21",
-    "eslint": "^9.36.0",
+    "eslint": "^9.37.0",
     "eslint-plugin-svelte": "^3.12.4",
     "jiti": "^2.6.1",
     "jsonjsdb-builder": "^0.5.5",

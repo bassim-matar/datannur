@@ -5,7 +5,7 @@ import alias from '@rollup/plugin-alias'
 import FullReload from 'vite-plugin-full-reload'
 import { defineConfig } from 'vitest/config'
 import { visualizer } from 'rollup-plugin-visualizer'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { svelte, type Options } from '@sveltejs/vite-plugin-svelte'
 import { JsonjsdbBuilder, jsonjsdbAddConfig } from 'jsonjsdb-builder'
 import svelteConfig from './svelte.config.js'
 
@@ -151,7 +151,7 @@ export default defineConfig({
     jsonjsdbAddConfig(config.paths.jsonjsdbConfig),
     updateRouterIndex(config.paths.routerIndex, '../page'),
     alias({ entries: aliases }),
-    svelte(svelteConfig),
+    svelte(svelteConfig as Options),
     htmlReplace([
       [' crossorigin ', ' '],
       [` type="module" src="./`, ` defer src="./`],

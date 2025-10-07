@@ -1,11 +1,7 @@
 import jQuery from 'jquery'
 import escapeHtml from 'escape-html'
-import type {
-  Api,
-  ApiColumnMethods,
-  ConfigColumns,
-  InternalSettings,
-} from 'datatables.net'
+import type { Api, ApiColumnMethods, InternalSettings } from 'datatables.net'
+import type { Column } from '@type'
 import { UrlParam } from '@lib/url-param'
 import { dateToTimestamp } from '@lib/time'
 
@@ -48,11 +44,9 @@ export default class FilterHelper {
     const filterElem = jQuery('#' + id)
     const filterContainer = filterElem.parent()
     const columnAttr = column.settings().init().columns?.[columnNum] as
-      | ConfigColumns
+      | Column
       | undefined
-    // @ts-expect-error - Custom properties added to DataTables columns
     const columnDateType = columnAttr?.dateType
-    // @ts-expect-error - Custom properties added to DataTables columns
     const filterType = columnAttr?.filterType
     let uniqueValues = column.data().unique()
 

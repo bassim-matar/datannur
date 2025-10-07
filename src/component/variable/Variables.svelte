@@ -6,7 +6,6 @@
   let { variables, isMeta = false } = $props()
 
   const variablesSorted = [...variables]
-  const parentName = isMeta ? 'metaDataset' : 'dataset'
   const metaPath = isMeta ? 'metaVariable/' : false
 
   function sortVariables(toSort) {
@@ -57,7 +56,7 @@
       return [
         ...base,
         Column.metaLocalisation(),
-        Column.dataset(parentName),
+        Column.dataset(isMeta),
         Column.metaFolder(),
       ]
     }
@@ -65,7 +64,7 @@
       Column.favorite(),
       ...base,
       Column.modality(),
-      Column.dataset(parentName),
+      Column.dataset(isMeta),
       Column.folder(),
       Column.owner(),
       Column.manager(),

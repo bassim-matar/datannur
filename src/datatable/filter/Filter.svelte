@@ -14,7 +14,8 @@
 
   function getWidthElemNum(num) {
     const selector = `.header-filter-wrapper .th-${tableId}-${num}`
-    return document.querySelector(selector)?.getBoundingClientRect().width
+    const elem = document.querySelector(selector)
+    return elem ? elem.getBoundingClientRect().width : 0
   }
 
   function updateStickyWidth() {

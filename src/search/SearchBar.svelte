@@ -15,11 +15,12 @@
   import BtnClearInput from '@layout/BtnClearInput.svelte'
   import SearchHistory from './search-history'
   import SearchBarResult from './SearchBarResult.svelte'
+  import type { SearchResult } from './search'
 
   let isFocusIn = $state(false)
-  let inputElement: HTMLInputElement = $state()
+  let inputElement: HTMLInputElement | undefined = $state()
   let nbResult = $state(0)
-  let allSearch = $state([])
+  let allSearch: SearchResult[] = $state([])
   let dbInitied = $state(false)
   let searchValueDebounced = $state($searchValue)
 
@@ -129,16 +130,16 @@
   }
 
   function selectInput() {
-    inputElement.focus()
+    inputElement?.focus()
     isFocusIn = true
   }
 
   function windowKeydown(e) {
     const focusedElement = window.document.activeElement
     const isInputFocused =
-      focusedElement.tagName === 'INPUT' ||
-      focusedElement.tagName === 'TEXTAREA' ||
-      focusedElement.tagName === 'SELECT'
+      focusedElement?.tagName === 'INPUT' ||
+      focusedElement?.tagName === 'TEXTAREA' ||
+      focusedElement?.tagName === 'SELECT'
     if (e.key === '/' && !isFocusIn && !isInputFocused && !$onPageSearch) {
       e.preventDefault()
       selectInput()

@@ -8,6 +8,7 @@
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
   import escapeHtml from 'escape-html'
+  import type { Column as ColumnType } from '@type'
 
   let { tags } = $props()
 
@@ -40,7 +41,7 @@
   }
 
   function defineColumns() {
-    let columns = []
+    let columns: ColumnType[] = []
     columns.push(Column.favorite())
     if (db.useRecursive.tag) {
       columns.push(
@@ -96,7 +97,7 @@
 
   onMount(() => {
     isRecursive =
-      db.useRecursive.tag && ['_index', 'tag', 'tags'].includes($page)
+      !!db.useRecursive.tag && ['_index', 'tag', 'tags'].includes($page)
     mounted = true
   })
 </script>

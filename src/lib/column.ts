@@ -10,9 +10,10 @@ import {
 import { getTimeAgo, getDatetime, dateToTimestamp } from '@lib/time'
 import { entityNames, entityToIcon } from '@lib/constant'
 import Render from '@lib/render'
+import type { Column as ColumnType } from '@type'
 
 export default class Column {
-  static id() {
+  static id(): ColumnType {
     return {
       data: 'id',
       title: Render.icon('internalId') + 'Identifiant',
@@ -26,10 +27,18 @@ export default class Column {
       },
     }
   }
-  static name(entity = null, name = null, option = null) {
+  static name(
+    entity = '',
+    name = '',
+    option: {
+      withLink?: boolean
+      withIndent?: boolean
+      isMeta?: boolean
+      linkSameEntityTab?: boolean
+    } = {},
+  ): ColumnType {
     const icon = entity || 'name'
     const titleName = name || 'Nom'
-    if (option === null) option = {}
     if (!('withLink' in option)) option.withLink = true
     return {
       data: 'name',
@@ -40,7 +49,7 @@ export default class Column {
       hasLongText: true,
       render: (data, type, row) => {
         data = escapeHtml(data)
-        let indent = null
+        let indent = 0
         let text
         if (!option.withLink) {
           text = data
@@ -67,7 +76,7 @@ export default class Column {
       },
     }
   }
-  static originalName() {
+  static originalName(): ColumnType {
     return {
       data: 'originalName',
       title: Render.icon('name') + "Nom d'origine",
@@ -77,7 +86,7 @@ export default class Column {
       render: Render.longText,
     }
   }
-  static entity() {
+  static entity(): ColumnType {
     return {
       data: '_entityClean',
       name: 'entity',
@@ -88,15 +97,18 @@ export default class Column {
       render: (data, type, row) => {
         if (!data) return ''
         if (type !== 'display') return data
+        if (!row._entity)
+          return '<span class="unknown-entity">Unknown Entity</span>'
+        const entity = row._entity as keyof typeof entityNames
         return `
-          <span class="icon icon-${row._entity}">
-            <i class="fas fa-${entityToIcon[row._entity] || row._entity}"></i>
+          <span class="icon icon-${entity}">
+            <i class="fas fa-${entityToIcon[entity] || entity}"></i>
           </span>
           <span>${escapeHtml(data)}</span>`
       },
     }
   }
-  static parentEntity() {
+  static parentEntity(): ColumnType {
     return {
       data: 'parentName',
       name: 'parentEntity',
@@ -109,11 +121,12 @@ export default class Column {
         if (!data) return ''
         if (type !== 'display')
           return `${row.parentEntityClean} | ${row.parentName}`
+        if (!row.parentEntity)
+          return '<span class="unknown-entity">Unknown Entity</span>'
+        const entity = row.parentEntity as keyof typeof entityNames
         return wrapLongText(`
-          <span class="icon icon-${row.parentEntity}">
-            <i class="fas fa-${
-              entityToIcon[row.parentEntity] || row.parentEntity
-            }"></i>
+          <span class="icon icon-${entity}">
+            <i class="fas fa-${entityToIcon[entity] || entity}"></i>
           </span>
           <span>${link(
             `${row.parentEntity}/${row.parentEntityId}`,
@@ -123,8 +136,11 @@ export default class Column {
       },
     }
   }
-  static folder(folderIdVar = 'folderId', folderNameVar = 'folderName') {
-    const render = (data, type, row) => {
+  static folder(
+    folderIdVar = 'folderId',
+    folderNameVar = 'folderName',
+  ): ColumnType {
+    const render: ColumnType['render'] = (data, type, row) => {
       const folderId = row[folderIdVar]
       const folderName = row[folderNameVar]
       if (type !== 'display') return folderName
@@ -141,7 +157,7 @@ export default class Column {
       render,
     }
   }
-  static folderSimple() {
+  static folderSimple(): ColumnType {
     return {
       data: 'folderId',
       title: Render.icon('folder') + 'Dossier',
@@ -155,7 +171,7 @@ export default class Column {
       },
     }
   }
-  static parents(entity) {
+  static parents(entity: keyof typeof entityNames): ColumnType {
     const render = isMobile ? Render.firstParent : Render.parentsIndent
     return {
       data: 'parents',
@@ -166,7 +182,7 @@ export default class Column {
       render,
     }
   }
-  static datasetType() {
+  static datasetType(): ColumnType {
     return {
       data: 'typeClean',
       title: Render.icon('type') + 'Type',
@@ -177,7 +193,7 @@ export default class Column {
       render: Render.shortText,
     }
   }
-  static datatype() {
+  static datatype(): ColumnType {
     return {
       data: 'typeClean',
       title: Render.icon('type') + 'Type',
@@ -188,7 +204,7 @@ export default class Column {
       render: Render.shortText,
     }
   }
-  static description() {
+  static description(): ColumnType {
     return {
       data: 'description',
       defaultContent: '',
@@ -199,7 +215,7 @@ export default class Column {
       render: Render.longText,
     }
   }
-  static tag() {
+  static tag(): ColumnType {
     return {
       data: 'tags',
       title: Render.icon('tag') + 'Mots clés',
@@ -210,8 +226,8 @@ export default class Column {
       render: Render.tags,
     }
   }
-  static owner() {
-    const render = (data, type, row) =>
+  static owner(): ColumnType {
+    const render: ColumnType['render'] = (data, type, row) =>
       isMobile
         ? wrapLongText(
             link(`institution/${row.ownerId}`, escapeHtml(row.ownerName)),
@@ -226,8 +242,8 @@ export default class Column {
       render,
     }
   }
-  static manager() {
-    const render = (data, type, row) =>
+  static manager(): ColumnType {
+    const render: ColumnType['render'] = (data, type, row) =>
       isMobile
         ? wrapLongText(
             link(`institution/${row.managerId}`, escapeHtml(row.managerName)),
@@ -242,7 +258,7 @@ export default class Column {
       render,
     }
   }
-  static modality() {
+  static modality(): ColumnType {
     return {
       data: 'modalities',
       title: Render.icon('modality') + 'Modalité',
@@ -251,7 +267,7 @@ export default class Column {
       render: Render.modalitiesName,
     }
   }
-  static value() {
+  static value(): ColumnType {
     return {
       data: 'value',
       defaultContent: '',
@@ -261,7 +277,7 @@ export default class Column {
       render: Render.longText,
     }
   }
-  static nbValues(nbValueMax) {
+  static nbValues(nbValueMax: number): ColumnType {
     return {
       data: 'nbValue',
       name: 'value',
@@ -272,7 +288,7 @@ export default class Column {
       render: (data, type, row) => Render.nbValues(data, type, row, nbValueMax),
     }
   }
-  static valuesPreview() {
+  static valuesPreview(): ColumnType {
     return {
       data: 'valuesPreview',
       title: Render.icon('value') + 'Valeurs',
@@ -282,7 +298,7 @@ export default class Column {
       render: Render.value,
     }
   }
-  static nbDuplicates() {
+  static nbDuplicates(): ColumnType {
     return {
       data: 'nbDuplicate',
       defaultContent: '',
@@ -292,17 +308,17 @@ export default class Column {
       render: Render.nbDuplicate,
     }
   }
-  static nbMissing() {
+  static nbMissing(): ColumnType {
     return {
       data: 'nbMissing',
       defaultContent: '',
       filterType: 'input',
       title: Render.icon('missing') + 'Manquant',
       tooltip: 'Nombre de valeurs manquantes',
-      render: Render.nbMissing,
+      render: Render.nbMissing as ColumnType['render'],
     }
   }
-  static freq() {
+  static freq(): ColumnType {
     return {
       data: 'freqPreview',
       title: Render.icon('freq') + 'Fréquence',
@@ -312,7 +328,7 @@ export default class Column {
       render: Render.freqPreview,
     }
   }
-  static nbRow(nbRowMax) {
+  static nbRow(nbRowMax: number): ColumnType {
     return {
       data: 'nbRow',
       title: Render.icon('nbRow') + 'Lignes',
@@ -329,7 +345,10 @@ export default class Column {
       },
     }
   }
-  static nbSources(nbSourcesMax, entity) {
+  static nbSources(
+    nbSourcesMax: number,
+    entity: keyof typeof entityNames,
+  ): ColumnType {
     return {
       data: 'sourceIds',
       title: Render.icon('nbSource') + 'In',
@@ -346,7 +365,10 @@ export default class Column {
       },
     }
   }
-  static nbDerived(nbDerivedMax, entity) {
+  static nbDerived(
+    nbDerivedMax: number,
+    entity: keyof typeof entityNames,
+  ): ColumnType {
     return {
       data: 'derivedIds',
       title: Render.icon('nbDerived') + 'Out',
@@ -363,7 +385,7 @@ export default class Column {
       },
     }
   }
-  static frequency() {
+  static frequency(): ColumnType {
     return {
       data: 'updatingEach',
       name: 'frequency',
@@ -374,7 +396,7 @@ export default class Column {
       render: Render.shortText,
     }
   }
-  static lastUpdate() {
+  static lastUpdate(): ColumnType {
     return {
       data: 'lastUpdateDate',
       name: 'lastUpdate',
@@ -385,7 +407,7 @@ export default class Column {
       render: (data, type, row) => Render.datetime(data, type, row),
     }
   }
-  static nextUpdate() {
+  static nextUpdate(): ColumnType {
     return {
       data: 'nextUpdateDate',
       name: 'nextUpdate',
@@ -397,7 +419,7 @@ export default class Column {
         Render.datetime(data, type, row, { estimation: true }),
     }
   }
-  static favorite() {
+  static favorite(): ColumnType {
     return {
       data: 'isFavorite',
       title: Render.icon('favorite') + "<span class='hidden'>favorite</span>",
@@ -408,8 +430,9 @@ export default class Column {
       render: Render.favorite,
     }
   }
-  static level(levelMax = null) {
-    let render = (data, type, row) => row.parents?.length + 1
+  static level(levelMax = 0): ColumnType {
+    let render: ColumnType['render'] = (data, type, row) =>
+      row.parents?.length + 1
     if (levelMax) {
       render = (data, type, row) => {
         const value = row.parents?.length + 1
@@ -429,7 +452,7 @@ export default class Column {
       render,
     }
   }
-  static localisation() {
+  static localisation(): ColumnType {
     return {
       data: 'localisation',
       title: Render.icon('localisation') + 'Localisation',
@@ -438,7 +461,7 @@ export default class Column {
       render: Render.shortText,
     }
   }
-  static deliveryFormat() {
+  static deliveryFormat(): ColumnType {
     return {
       data: 'deliveryFormat',
       title: Render.icon('deliveryFormat') + 'Format livraison',
@@ -448,7 +471,7 @@ export default class Column {
       render: Render.shortText,
     }
   }
-  static period() {
+  static period(): ColumnType {
     return {
       data: 'period',
       title: Render.icon('dateRange') + 'Période',
@@ -463,7 +486,7 @@ export default class Column {
       },
     }
   }
-  static startDate() {
+  static startDate(): ColumnType {
     return {
       data: 'startDate',
       title: Render.icon('dateRange') + 'Début',
@@ -478,7 +501,7 @@ export default class Column {
       },
     }
   }
-  static endDate() {
+  static endDate(): ColumnType {
     return {
       data: 'endDate',
       title: Render.icon('dateRange') + 'Fin',
@@ -493,7 +516,8 @@ export default class Column {
       },
     }
   }
-  static dataset(parentName) {
+  static dataset(isMeta: boolean): ColumnType {
+    const entity = isMeta ? 'metaDataset' : 'dataset'
     return {
       data: 'datasetName',
       title: Render.icon('dataset') + 'Dataset',
@@ -504,12 +528,12 @@ export default class Column {
         if (type !== 'display') return data
         data = escapeHtml(data)
         return wrapLongText(
-          link(parentName + '/' + row[parentName + 'Id'], data, 'dataset'),
+          link(entity + '/' + row[entity + 'Id'], data, 'dataset'),
         )
       },
     }
   }
-  static dataPath() {
+  static dataPath(): ColumnType {
     return {
       data: 'dataPath',
       title: Render.icon('dataPath') + 'Emplacement',
@@ -523,7 +547,7 @@ export default class Column {
       },
     }
   }
-  static docPath() {
+  static docPath(): ColumnType {
     return {
       data: 'path',
       name: 'docPath',
@@ -539,7 +563,11 @@ export default class Column {
       },
     }
   }
-  static nbDoc(entity, total, withName = false) {
+  static nbDoc(
+    entity: keyof typeof entityNames,
+    total: number,
+    withName = false,
+  ): ColumnType {
     return {
       data: 'docsRecursive',
       title:
@@ -558,7 +586,10 @@ export default class Column {
       },
     }
   }
-  static nbDocRecursive(entity, total) {
+  static nbDocRecursive(
+    entity: keyof typeof entityNames,
+    total: number,
+  ): ColumnType {
     return {
       data: 'nbDocRecursive',
       title: Render.icon('doc') + "<span class='hidden'>nbDocs</span>",
@@ -576,7 +607,11 @@ export default class Column {
       },
     }
   }
-  static nbChildRecursive(entity, total, linkPath = null) {
+  static nbChildRecursive(
+    entity: keyof typeof entityNames,
+    total: number,
+    linkPath = '',
+  ): ColumnType {
     if (!linkPath) linkPath = entity + '/'
     const entityPlural = pluralize(entity)
     return {
@@ -598,7 +633,10 @@ export default class Column {
       },
     }
   }
-  static nbFolderRecursive(entity, total) {
+  static nbFolderRecursive(
+    entity: keyof typeof entityNames,
+    total: number,
+  ): ColumnType {
     return {
       data: 'nbFolderRecursive',
       title: Render.icon('folder') + "<span class='hidden'>nbFolders</span>",
@@ -616,7 +654,10 @@ export default class Column {
       },
     }
   }
-  static nbDatasetRecursive(entity, total) {
+  static nbDatasetRecursive(
+    entity: keyof typeof entityNames,
+    total: number,
+  ): ColumnType {
     return {
       data: 'nbDatasetRecursive',
       title: Render.icon('dataset') + "<span class='hidden'>nbDatasets</span>",
@@ -634,8 +675,16 @@ export default class Column {
       },
     }
   }
-  static nbVariable(entity, total, option) {
-    if (!option) option = {}
+  static nbVariable(
+    entity: keyof typeof entityNames,
+    total: number,
+    option: {
+      linkPath?: string
+      tab?: string
+      showTitle?: boolean
+      recursive?: boolean
+    } = {},
+  ): ColumnType {
     if (!('linkPath' in option)) option.linkPath = entity + '/'
     if (!('tab' in option)) option.tab = 'variables'
     if (!('showTitle' in option)) option.showTitle = false
@@ -660,7 +709,7 @@ export default class Column {
       },
     }
   }
-  static metaFolder() {
+  static metaFolder(): ColumnType {
     return {
       data: 'metaFolderId',
       title: Render.icon('folder') + 'Dossier',
@@ -673,8 +722,9 @@ export default class Column {
       },
     }
   }
-  static timestamp(options = null) {
-    if (!options) options = {}
+  static timestamp(
+    options: { varName?: string; title?: string; tooltip?: string } = {},
+  ): ColumnType {
     if (!('varName' in options)) options.varName = 'timestamp'
     if (!('title' in options)) options.title = 'Moment'
     if (!('tooltip' in options)) options.tooltip = "moment de l'ajout"
@@ -699,7 +749,7 @@ export default class Column {
 
         let timeAgo = getTimeAgo(data)
 
-        if (timeAgo.length > 18) {
+        if (timeAgo && timeAgo.length > 18) {
           timeAgo = `<span style="font-size: 12px";>${timeAgo}</span>`
         }
 
@@ -711,7 +761,7 @@ export default class Column {
       },
     }
   }
-  static isKey() {
+  static isKey(): ColumnType {
     return {
       data: 'key',
       title: Render.icon('key') + 'Clé',
@@ -725,7 +775,7 @@ export default class Column {
       },
     }
   }
-  static metaLocalisation() {
+  static metaLocalisation(): ColumnType {
     return {
       data: 'metaLocalisation',
       title: Render.icon('localisation') + 'Localisation',
@@ -735,7 +785,7 @@ export default class Column {
       render: Render.shortText,
     }
   }
-  static inherited() {
+  static inherited(): ColumnType {
     return {
       data: 'inherited',
       title: Render.icon('diagram') + 'Hérité',
@@ -744,7 +794,7 @@ export default class Column {
       render: Render.shortText,
     }
   }
-  static lineageType() {
+  static lineageType(): ColumnType {
     return {
       data: 'lineageType',
       title: Render.icon('diagram') + 'Relation',

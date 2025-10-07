@@ -2,7 +2,7 @@ export class UrlParam {
   static getAppMode() {
     return appMode
   }
-  static get(key) {
+  static get(key: string) {
     let hash = window.location.hash
     if (appMode === 'static_render') hash = window.location.search
     if (!hash.includes('?')) {
@@ -14,10 +14,10 @@ export class UrlParam {
     const urlParams = new URLSearchParams(paramsString)
     return urlParams.get(key)
   }
-  static set(key, value) {
+  static set(key: string, value: string | null) {
     this.edit(key, value, 'set')
   }
-  static delete(key) {
+  static delete(key: string) {
     this.edit(key, null, 'delete')
   }
   static reset() {
@@ -28,15 +28,15 @@ export class UrlParam {
       if (appMode === 'static_render') hash = ''
     }
     const url = loc.protocol + '//' + loc.host + loc.pathname + hash
-    window.history.replaceState(null, null, url)
+    window.history.replaceState(null, '', url)
   }
-  static edit(key, value, mode) {
+  static edit(key: string, value: string | null, mode: 'set' | 'delete') {
     const loc = window.location
     let hash
     const paramsString = loc.href.split('?')[1]
     const params = new URLSearchParams(paramsString)
     if (mode === 'set') {
-      params.set(key, value)
+      params.set(key, String(value))
     } else if (mode === 'delete') {
       params.delete(key)
     }
@@ -54,7 +54,7 @@ export class UrlParam {
     if (params.toString() !== '') {
       urlWithParams += '?' + params.toString()
     }
-    window.history.replaceState(null, null, urlWithParams)
+    window.history.replaceState(null, '', urlWithParams)
   }
   static getAllParams() {
     let hash = window.location.hash
@@ -62,7 +62,7 @@ export class UrlParam {
     if (!hash.includes('?')) return {}
     const paramsString = hash.split('?')[1]
     const urlParams = new URLSearchParams(paramsString)
-    const paramsObj = {}
+    const paramsObj: Record<string, string> = {}
     urlParams.forEach((value, key) => {
       paramsObj[key] = value
     })

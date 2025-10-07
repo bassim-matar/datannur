@@ -7,6 +7,7 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Column from '@lib/column'
   import escapeHtml from 'escape-html'
+  import type { Column as ColumnType } from '@type'
 
   let { searchValue, searchResultData } = $props()
 
@@ -25,7 +26,7 @@
     )
   }
 
-  const columns = [
+  const columns: ColumnType[] = [
     Column.favorite(),
     Column.entity(),
     {
@@ -74,7 +75,7 @@
       title: "<span class='hidden'>Recent search</span>",
       name: 'searchRecent',
       defaultContent: '',
-      noSearch: true,
+      filterType: 'none',
       width: '20px',
       render: (data, type, row) => {
         if (type === 'sort' || type === 'export') {

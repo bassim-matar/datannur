@@ -2,59 +2,49 @@ import Render from '@lib/render'
 import { getTimeAgo } from '@lib/time'
 import Histogram from './histogram'
 import { attributs } from './attributs'
+import type { Attribut } from './attributs-def'
 
-interface ValueEntry {
+type ValueType = number | string | '__empty__'
+
+type ValueEntry = {
   count: number
-  start?: unknown
+  start: ValueType
+  end?: ValueType
+  readable?: string
   icon?: string
   link?: string
 }
 
-interface Attribut {
-  name?: string
-  type?: string
-  variable?: string
-  getValue?: (item: DatabaseItem) => unknown
-  parseDate?: boolean
-  nbRange?: number
-  rangeType?: string
-  nonExclusive?: string
-  subtype?: (item: DatabaseItem) => boolean
-  icon?: string
-  key?: string
-  withHtml?: {
-    text: string
-    icon?: string
-    link?: string | null
-  }
-}
-
 type DatabaseItem = Record<string, unknown>
 
-function getValueReadable(start, end) {
+function getValueReadable(start: ValueType, end: ValueType | undefined) {
   if (start === 0 || start === end) return Render.num(start)
   return `${Render.num(start)} - ${Render.num(end)}`
 }
 
-function addReadableValues(values, type) {
+function addReadableValues(values: ValueEntry[], type: string) {
   for (const value of values) {
     if (value.start === '__empty__') {
       value.readable = 'vide / manquant'
       continue
     }
     if (!['numeric', 'string'].includes(type)) {
-      value.readable = value.start
+      value.readable = String(value.start)
       continue
     }
     value.readable = getValueReadable(value.start, value.end)
     if (type === 'string') {
-      value.readable += ' caractère' + (value.start > 1 ? 's' : '')
+      value.readable +=
+        ' caractère' + (parseInt(value.start as string) > 1 ? 's' : '')
     }
   }
   return values
 }
 
-function getValuesSorted(values: Record<string, ValueEntry>, sortBy = 'count') {
+function getValuesSorted(
+  values: Record<string, ValueEntry>,
+  sortBy: 'start' | 'count' = 'count',
+) {
   const list = Object.entries(values)
   const sorted = list.map(([start, valueEntry]) => ({
     start,
@@ -63,15 +53,18 @@ function getValuesSorted(values: Record<string, ValueEntry>, sortBy = 'count') {
     link: valueEntry.link,
   }))
   sorted.sort((a, b) => {
-    if (a['start'] === '__empty__') return -1
-    if (b['start'] === '__empty__') return 1
-    return b[sortBy] - a[sortBy]
+    if (a.start === '__empty__') return -1
+    if (b.start === '__empty__') return 1
+    if (sortBy === 'count') return b.count - a.count
+    const aVal = typeof a.start === 'number' ? a.start : 0
+    const bVal = typeof b.start === 'number' ? b.start : 0
+    return bVal - aVal
   })
 
   return sorted
 }
 
-function mergeZeroEmpty(values) {
+function mergeZeroEmpty(values: ValueEntry[]) {
   if (values[0]?.start === '__empty__' && values[1]?.start === 0) {
     values[0].count += values[1].count
     values.splice(1, 1)
@@ -81,16 +74,16 @@ function mergeZeroEmpty(values) {
   return values
 }
 
-function prepareTimeAgo(values) {
-  const newValues: { start: unknown; end: unknown; count: number }[] = []
-  let emptyValue = null
+function prepareTimeAgo(values: ValueEntry[]) {
+  const newValues: ValueEntry[] = []
+  let emptyValue: ValueEntry | null = null
   for (const value of values) {
     if (value.start === '__empty__') {
       emptyValue = value
     } else {
       newValues.push({
-        start: getTimeAgo(value.end),
-        end: getTimeAgo(value.start),
+        start: getTimeAgo(value.end ?? ''),
+        end: getTimeAgo(value.start ?? ''),
         count: value.count,
       })
     }
@@ -101,13 +94,12 @@ function prepareTimeAgo(values) {
 }
 
 function addNumeric(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
-  const rawValues: (string | number)[] = []
+  const rawValues: (number | null | undefined)[] = []
   for (const item of items) {
     if (attribut.getValue) {
       const val = attribut.getValue(item)
-      if (typeof val === 'string' || typeof val === 'number') {
-        rawValues.push(val)
-      }
+      if (typeof val === 'number' || val === undefined) rawValues.push(val)
+      else console.warn('addNumeric() getValue() is not a number', val)
     } else if (
       attribut.parseDate &&
       attribut.variable &&
@@ -117,9 +109,8 @@ function addNumeric(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
       rawValues.push(Date.parse(item[attribut.variable] as string))
     } else if (attribut.variable) {
       const val = item[attribut.variable]
-      if (typeof val === 'string' || typeof val === 'number') {
-        rawValues.push(val)
-      }
+      if (typeof val === 'number' || val === null) rawValues.push(val)
+      else console.warn('addNumeric() attribut.variable is not a number', val)
     }
   }
   let histogramValues = Histogram.get(
@@ -162,13 +153,13 @@ function addNonExclusive(
 function addCategory(
   items: DatabaseItem[],
   attribut: Attribut,
-  sortBy = 'count',
+  sortBy: 'start' | 'count' = 'count',
 ): ValueEntry[] {
   const set = new Set<string>()
   const values: Record<string, ValueEntry> = {}
   const hasGetter = 'getValue' in attribut
   for (const item of items) {
-    let value: unknown
+    let value
     if (hasGetter && attribut.getValue) {
       value = attribut.getValue(item)
     } else if (attribut.variable) {
@@ -177,16 +168,18 @@ function addCategory(
       continue
     }
     if (
-      [false, null, undefined, NaN, ''].includes(
-        value as string | number | boolean | null | undefined,
-      )
+      value === false ||
+      value === null ||
+      value === undefined ||
+      Number.isNaN(value) ||
+      value === ''
     )
       value = '__empty__'
     const key = String(value)
     if (set.has(key)) {
       values[key].count += 1
     } else {
-      values[key] = { start: value, count: 1 }
+      values[key] = { start: value as ValueType, count: 1 }
       set.add(key)
     }
   }
@@ -203,7 +196,7 @@ function addSubtype(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
     if (set.has(key)) {
       values[key].count += 1
     } else {
-      values[key] = { start: value, count: 1 }
+      values[key] = { start: value as ValueType, count: 1 }
       set.add(key)
     }
   }
@@ -222,16 +215,16 @@ function addWithHtml(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
     const value = attribut.withHtml?.text ? item[attribut.withHtml?.text] : ''
     const icon = attribut.withHtml?.icon
       ? (item[attribut.withHtml?.icon] as string)
-      : null
+      : undefined
     const link = attribut.withHtml?.link
       ? (item[attribut.withHtml?.link] as string)
-      : null
+      : undefined
     const key = String(value)
     if (set.has(key)) {
       values[key].count += 1
     } else {
       values[key] = {
-        start: value,
+        start: value as ValueType,
         count: 1,
         icon: icon,
         link: link,
@@ -267,7 +260,7 @@ export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
     [0, '0', '__empty__'].includes(values[0].start as string | number)
   )
     return
-  values = addReadableValues(values, attribut.type || '')
+  values = addReadableValues(values, attribut.type ?? '')
   return { ...attribut, values, totalValue: totalValue }
 }
 
@@ -284,5 +277,6 @@ export function addValues(items: DatabaseItem[], attributs: Attribut[]) {
 }
 
 export function statExists(entity: string, attribut: string): boolean {
-  return attributs[entity]?.includes(attribut)
+  if (!(entity in attributs)) return false
+  return attributs[entity as keyof typeof attributs].includes(attribut)
 }

@@ -19,13 +19,13 @@ export default class Options {
       })
     })
   }
-  static getOption(id) {
+  static getOption(id: string) {
     return this.options.find(element => element.id === id)
   }
-  static get(id) {
+  static get(id: string) {
     return this.getOption(id)?.value
   }
-  static set(id, value, callback = () => {}) {
+  static set(id: string, value: unknown, callback = () => {}) {
     const option = this.getOption(id)
     if (option) option.value = value
     else this.options.push({ id, value })

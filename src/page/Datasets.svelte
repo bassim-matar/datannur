@@ -7,7 +7,7 @@
   import aboutFile from '@markdown/about-dataset.md?raw'
 
   const datasets = db.getAll('dataset')
-  const tags = db.getAll('tag').filter(tag => tag.nbDataset > 0)
+  const tags = db.getAll('tag').filter(tag => !!tag.nbDataset)
   if (db.useRecursive.tag) {
     makeParentsRelative(false, tags)
     addMinimumDeep(tags, true, true)
