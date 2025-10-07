@@ -3,17 +3,6 @@ import Render from '@lib/render'
 import { urlPrefix } from '@lib/util'
 import markdownRender from '@lib/markdown'
 
-export function ensureMermaidLoaded(callback) {
-  const mermaidSrc = `assets/external/mermaid.min.js?v=${__APP_VERSION__}`
-  if (document.querySelector(`script[src="${mermaidSrc}"]`)) {
-    callback()
-    return
-  }
-  const script = document.createElement('script')
-  const scriptAttributes = { src: mermaidSrc, onload: () => callback() }
-  document.head.appendChild(Object.assign(script, scriptAttributes))
-}
-
 function mermaidAddEntities(code) {
   let codePrefix = null
   const codePrefixesSearch = ['flowchart LR', 'flowchart TB']

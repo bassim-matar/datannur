@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import JSZip from 'jszip'
   import { saveAs } from 'file-saver'
   import db from '@db'
   import { pageContentLoaded } from '@lib/store'
@@ -9,7 +8,7 @@
   import Favorites from '@favorite/favorites'
   import SearchHistory from '@search/search-history'
   import Icon from '@layout/Icon.svelte'
-  import { resetColsSearchCache } from '@lib/util'
+  import { resetColsSearchCache, ensureJszipLoaded } from '@lib/util'
   import { getUserData } from '@lib/user-data'
   import { UrlParam } from '@lib/url-param'
   import Switch from '@layout/Switch.svelte'
@@ -18,7 +17,8 @@
   import Button from '@layout/Button.svelte'
 
   async function importUserData(zipFile) {
-    const jszip = new JSZip()
+    await ensureJszipLoaded()
+    const jszip = new window.JSZip()
     const zip = await jszip.loadAsync(zipFile)
     for (const file of Object.values(zip.files)) {
       if (file.dir) continue
@@ -32,8 +32,9 @@
     }, 100)
   }
 
-  function downloadUserData() {
-    const jszip = new JSZip()
+  async function downloadUserData() {
+    await ensureJszipLoaded()
+    const jszip = new window.JSZip()
     const dataFolder = jszip.folder('user-data')
     const userData = getUserData()
     for (const [name, data] of Object.entries(userData)) {

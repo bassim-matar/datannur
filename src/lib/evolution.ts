@@ -259,7 +259,7 @@ function outputDiffString(oldVal, newVal) {
 export function highlightDiff(a, b, variable = null) {
   if (!a && !b) return ''
 
-  if (variable === 'lastUpdate') {
+  if (variable === 'last_update') {
     a = timestampToDate(a * 1000)
     b = timestampToDate(b * 1000)
   }
@@ -267,8 +267,8 @@ export function highlightDiff(a, b, variable = null) {
   a = a ? a.toString() : ''
   b = b ? b.toString() : ''
 
-  let oldDate = null
-  let newDate = null
+  let oldDate: Date | null = null
+  let newDate: Date | null = null
   const isANumber = !isNaN(a) && a !== ''
   const isBNumber = !isNaN(b) && b !== ''
 
