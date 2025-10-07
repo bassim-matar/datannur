@@ -1,8 +1,9 @@
 import Logs from '@lib/logs'
 import { ensureJszipLoaded } from '@lib/util'
 import DataTable from 'datatables.net-bm'
+import type { Api } from 'datatables.net'
 
-function applyToElements(selector, apply) {
+function applyToElements(selector: string, apply: (element: Element) => void) {
   document.querySelectorAll(selector).forEach(apply)
 }
 
@@ -61,12 +62,15 @@ export default class Exporter {
   }
   async ensureExcelReady(onReady?: () => void) {
     await ensureJszipLoaded()
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - Buttons plugin property not typed
     DataTable.Buttons.jszip(window.JSZip)
     if (onReady) onReady()
   }
 
-  addExcelButton(datatable) {
+  addExcelButton(datatable: Api) {
     try {
+      // @ts-expect-error - DataTables button configuration type mismatch
       datatable.button().add(3, this.getExcelButton())
     } catch (e) {
       console.warn('Could not add Excel button:', e)
@@ -77,6 +81,7 @@ export default class Exporter {
     const tableId = `#${this.id}_wrapper`
     const btns = `${tableId} .buttons-html5`
     const mainBtn = document.querySelector(`${tableId} .dt-buttons`)
+    if (!mainBtn) return
     const isOpen = mainBtn.getAttribute('is-open')
     if (isOpen === 'true') {
       applyToElements(btns, element => element.classList.remove('open'))

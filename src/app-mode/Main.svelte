@@ -144,11 +144,15 @@
     const elem = jQuery(this)
     if (!elem?.data('powertip-initialized')) {
       elem?.data('powertip-initialized', true)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore - powerTip jQuery plugin not typed
       elem?.powerTip({
         placement: elem.hasClass('tooltip-top') ? 'n' : 's',
         smartPlacement: true,
         mouseOnToPopup: true,
       })
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore - powerTip jQuery plugin not typed
       elem?.powerTip('show')
     }
   })
