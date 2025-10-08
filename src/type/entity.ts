@@ -10,6 +10,7 @@ import type {
   SearchHistory,
   Filter,
 } from './base'
+import { parentEntities, evolutionTypes } from '../lib/constant'
 
 // Extended base entity with relations (defined after Tag and Doc)
 export type EntityWithRelations = BaseEntity & {
@@ -230,17 +231,20 @@ export type MetaFolder = BaseEntity & {
 
 export type Evolution = {
   id?: string | number
-  entity: EntityName
+  entity: MainEntityName
   entityId: string | number
-  type: string
+  type: keyof typeof evolutionTypes
   timestamp: number
-  name?: string | number
+  name?: string
   parentEntityId?: string | number
+  oldValue?: string
+  newValue?: string
+  variable?: string
   _deleted?: boolean
-  _entity?: string
+  _entity?: MainEntityName
   _entityClean?: string
   typeClean?: string
-  parentEntity?: EntityName
+  parentEntity?: MainEntityName
   parentEntityClean?: string
   time?: string
   parentName?: string
@@ -281,6 +285,15 @@ export type EntityTypeMap = {
 
 export type EntityName = keyof EntityTypeMap
 export type AnyEntity = EntityTypeMap[EntityName]
+
+export type MainEntityName = keyof typeof parentEntities
+export type MainEntityTypeMap = Pick<EntityTypeMap, MainEntityName>
+export type MainEntity = MainEntityTypeMap[MainEntityName]
+
+export type MainEntityItem = MainEntity & {
+  _deleted: boolean
+  parentEntityId?: string | number
+}
 
 export type FavoritableEntityName =
   | 'institution'

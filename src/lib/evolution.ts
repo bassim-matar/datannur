@@ -1,5 +1,4 @@
 import db from '@db'
-import type { EntityName } from '@type'
 import { entityNames, evolutionTypes, parentEntities } from '@lib/constant'
 import {
   dateToTimestamp,
@@ -9,41 +8,59 @@ import {
 import { diffWords } from 'diff'
 import { getPeriod } from '@lib/time'
 import { splitOnLastSeparator } from '@lib/util'
+import type {
+  Evolution,
+  MainEntity,
+  MainEntityName,
+  MainEntityItem,
+} from '@type'
+
+type EvolutionDeleted = {
+  [K in MainEntityName]?: {
+    [entityId: string | number]: Evolution
+  }
+}
 
 const arrowRight = `<i class="fas fa-arrow-right"></i>`
 
 function getEvoDeleted() {
-  const evoDeleted = {}
+  const evoDeleted: EvolutionDeleted = {}
   db.foreach('evolution', evo => {
     if (evo.type === 'delete') {
       if (!(evo.entity in evoDeleted)) {
         evoDeleted[evo.entity] = {}
       }
-      evoDeleted[evo.entity][evo.entityId] = evo
+      evoDeleted[evo.entity]![evo.entityId] = evo
     }
   })
   return evoDeleted
 }
 
-function getItem(entity, entityId, evoDeleted) {
+function getItem(
+  entity: MainEntityName,
+  entityId: string | number | undefined,
+  evoDeleted: EvolutionDeleted,
+): MainEntityItem | null {
+  if (!entityId) return null
+
   if (db.exists(entity, entityId)) {
     const item = db.get(entity, entityId)
-    item._deleted = false
-    item.parentEntityId = item[`${parentEntities[entity]}Id`]
-    return item
+    if (!item) return null
+    const parentKey = `${parentEntities[entity]}Id` as keyof typeof item
+    const parentEntityId = item[parentKey] as string | number | undefined
+    return { ...item, _deleted: false, parentEntityId } as MainEntityItem
   }
+
   const item = evoDeleted[entity]?.[entityId]
-  if (item) {
-    item._deleted = true
-    return item
-  }
-  return null
+  if (!item) return null
+
+  return { ...item, _deleted: true } as MainEntityItem
 }
 
-function addHistory(evoDeleted) {
+function addHistory(evoDeleted: EvolutionDeleted) {
   db.foreach('evolution', evo => {
     const item = getItem(evo.entity, evo.entityId, evoDeleted)
-    if (item && item.name) {
+    if (item && 'name' in item && item.name) {
       evo.name = item.name
       evo.parentEntityId = item.parentEntityId
       evo._deleted = item._deleted
@@ -52,17 +69,18 @@ function addHistory(evoDeleted) {
       const [id, value] = splitOnLastSeparator(String(evo.entityId), '---')
       evo._deleted = true
       if (!evo.parentEntityId) evo.parentEntityId = id
-      if (!evo.name) evo.name = value ? value : evo.entityId
+      if (!evo.name) evo.name = value ? value : String(evo.entityId)
     } else {
-      evo.name = evo.entityId
+      evo.name = String(evo.entityId)
       evo._deleted = true
       evo._toHide = true
     }
 
-    const parentEntity =
+    const parentEntity = (
       parentEntities[evo.entity] === 'parent'
         ? evo.entity
         : parentEntities[evo.entity]
+    ) as MainEntityName
 
     evo._entity = evo.entity
     evo._entityClean = entityNames[evo.entity]
@@ -73,7 +91,8 @@ function addHistory(evoDeleted) {
     evo.time = evo.timestamp > Date.now() ? 'Futur' : 'Passé'
 
     const parentItem = getItem(evo.parentEntity, evo.parentEntityId, evoDeleted)
-    evo.parentName = parentItem?.name
+    evo.parentName =
+      parentItem && 'name' in parentItem ? parentItem.name : undefined
     evo.parentDeleted = parentItem?._deleted
     evo.isFavorite = false
 
@@ -84,38 +103,56 @@ function addHistory(evoDeleted) {
   db.tables.evolution = db.tables.evolution?.filter(evo => !evo._toHide)
 }
 
-function getFolderId(entity, entityData, parentItem) {
-  if (entity === 'folder') {
-    return entityData?.id
-  } else if (entity === 'dataset') {
-    return entityData?.folderId
-  } else if (entity === 'variable') {
-    return parentItem?.folderId
-  } else if (entity === 'modality') {
-    return entityData?.folderId
-  } else if (entity === 'value') {
-    return parentItem?.folderId
+function getFolderId(
+  entity: MainEntityName,
+  entityData: MainEntityItem | null,
+  parentItem: MainEntityItem | null,
+) {
+  if (entity === 'folder' && entityData && 'id' in entityData) {
+    return entityData.id
+  } else if (entity === 'dataset' && entityData && 'folderId' in entityData) {
+    return entityData.folderId
+  } else if (entity === 'variable' && parentItem && 'folderId' in parentItem) {
+    return parentItem.folderId
+  } else if (entity === 'modality' && entityData && 'folderId' in entityData) {
+    return entityData.folderId
+  } else if (entity === 'value' && parentItem && 'folderId' in parentItem) {
+    return parentItem.folderId
   }
-  return null
+  return undefined
 }
 
-function addValidity(validities, type, entity, entityData, evoDeleted) {
-  const parentEntity =
-    parentEntities[entity] === 'parent' ? entity : parentEntities[entity]
-  const parentItem = getItem(
-    parentEntity,
-    entityData[`${parentEntities[entity]}Id`],
-    evoDeleted,
-  )
+function addValidity(
+  validities: Evolution[],
+  type: keyof typeof evolutionTypes,
+  entity: MainEntityName,
+  entityData: MainEntity,
+  evoDeleted: EvolutionDeleted,
+) {
+  if (!entityData || !('id' in entityData)) return
 
+  const parentEntityValue = parentEntities[entity]
+  const parentEntity = (
+    parentEntityValue === 'parent' ? entity : parentEntityValue
+  ) as MainEntityName
+
+  const parentKey = `${parentEntityValue}Id` as keyof MainEntity
+  const parentEntityId =
+    parentKey in entityData
+      ? (entityData[parentKey] as string | number | undefined)
+      : undefined
+
+  const parentItem = getItem(parentEntity, parentEntityId, evoDeleted)
+
+  const entityRecord = entityData as unknown as Record<string, unknown>
   const timestamp = dateToTimestamp(
-    entityData[type],
+    entityRecord[type] as string,
     type === 'startDate' ? 'start' : 'end',
   )
 
   if (!timestamp) {
     console.error(
-      `Invalid date format for ${type} in ${entity} with id ${entityData.id}, value = ${entityData[type]}`,
+      `Invalid date format for ${type} in ${entity} with id ${entityRecord.id}, value = ${entityRecord[type]}`,
     )
     return
   }
@@ -125,7 +162,7 @@ function addValidity(validities, type, entity, entityData, evoDeleted) {
   let typeClean = 'Autre'
   if (type in evolutionTypes) typeClean = evolutionTypes[type]
 
-  const folderId = getFolderId(entity, entityData, parentItem)
+  const folderId = getFolderId(entity, entityData as MainEntityItem, parentItem)
 
   validities.push({
     id: entityData.id,
@@ -135,12 +172,16 @@ function addValidity(validities, type, entity, entityData, evoDeleted) {
     entityId: entityData.id,
     parentEntity: parentEntity,
     parentEntityClean: entityNames[parentEntity],
-    parentEntityId: entityData[`${parentEntities[entity]}Id`],
-    parentName: parentItem?.name,
+    parentEntityId: entityRecord[`${parentEntities[entity]}Id`] as
+      | string
+      | number
+      | undefined,
+    parentName:
+      parentItem && 'name' in parentItem ? parentItem.name : undefined,
     name: entityData.name,
     type,
-    oldValue: entityData[type],
-    newValue: entityData[type],
+    oldValue: entityRecord[type] as string | undefined,
+    newValue: entityRecord[type] as string | undefined,
     variable: type,
     typeClean: typeClean,
     timestamp,
@@ -151,9 +192,9 @@ function addValidity(validities, type, entity, entityData, evoDeleted) {
   })
 }
 
-function addValidities(evoDeleted) {
-  const validities = []
-  const entities = Object.keys(parentEntities) as EntityName[]
+function addValidities(evoDeleted: EvolutionDeleted) {
+  const validities: Evolution[] = []
+  const entities = Object.keys(parentEntities) as MainEntityName[]
   for (const entity of entities) {
     const tableData = db.tables[entity]
     if (
@@ -199,12 +240,12 @@ function addValidities(evoDeleted) {
   }
 }
 
-function parseDateStandard(dateString) {
+function parseDateStandard(dateString: string) {
   if (dateString.length === 6 && dateString[4] === 't') {
     dateString = convertQuarterToFullDate(dateString, 'start')
   }
   const parts = dateString.split('/')
-  if (parts.length === 2) parts.push(1)
+  if (parts.length === 2) parts.push('1')
   if (parts.length !== 3) return null
   const [year, month, day] = parts.map(Number)
   if (year > 0 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
@@ -213,7 +254,7 @@ function parseDateStandard(dateString) {
   return null
 }
 
-function outputDiffNumber(oldVal, newVal) {
+function outputDiffNumber(oldVal: number, newVal: number) {
   const diff = newVal - oldVal
   const percentageChange =
     oldVal !== 0 ? ((diff / oldVal) * 100).toFixed(1) : '∞'
@@ -227,8 +268,15 @@ function outputDiffNumber(oldVal, newVal) {
   `
 }
 
-function outputDiffDate(oldDate, newDate, oldDateString, newDateString) {
-  const diffDays = Math.ceil((newDate - oldDate) / (1000 * 60 * 60 * 24))
+function outputDiffDate(
+  oldDate: Date,
+  newDate: Date,
+  oldDateString: string,
+  newDateString: string,
+) {
+  const diffDays = Math.ceil(
+    (newDate.getTime() - oldDate.getTime()) / (1000 * 60 * 60 * 24),
+  )
   const diffClass =
     diffDays > 0 ? 'highlight-diff-add' : 'highlight-diff-delete'
 
@@ -241,7 +289,7 @@ function outputDiffDate(oldDate, newDate, oldDateString, newDateString) {
   }${diffRelative}</span>`
 }
 
-function outputDiffString(oldVal, newVal) {
+function outputDiffString(oldVal: string, newVal: string) {
   const diff = diffWords(oldVal, newVal)
   return diff
     .map(part => {
@@ -256,45 +304,48 @@ function outputDiffString(oldVal, newVal) {
     .join('')
 }
 
-export function highlightDiff(a, b, variable = null) {
+export function highlightDiff(
+  a: unknown,
+  b: unknown,
+  variable: string | null = null,
+) {
   if (!a && !b) return ''
 
   if (variable === 'last_update') {
-    a = timestampToDate(a * 1000)
-    b = timestampToDate(b * 1000)
+    a = timestampToDate((a as number) * 1000)
+    b = timestampToDate((b as number) * 1000)
   }
 
-  a = a ? a.toString() : ''
-  b = b ? b.toString() : ''
+  const aStr = a ? a.toString() : ''
+  const bStr = b ? b.toString() : ''
 
   let oldDate: Date | null = null
   let newDate: Date | null = null
-  const isANumber = !isNaN(a) && a !== ''
-  const isBNumber = !isNaN(b) && b !== ''
+  const isANumber = !isNaN(Number(aStr)) && aStr !== ''
+  const isBNumber = !isNaN(Number(bStr)) && bStr !== ''
 
   if (!isANumber) {
-    oldDate = parseDateStandard(a)
+    oldDate = parseDateStandard(aStr)
   } else {
-    a = parseFloat(a)
-    if (a > 1800 && a < 2100) {
-      oldDate = new Date(a, 0, 1)
+    const aNum = parseFloat(aStr)
+    if (aNum > 1800 && aNum < 2100) {
+      oldDate = new Date(aNum, 0, 1)
     }
   }
 
   if (!isBNumber) {
-    newDate = parseDateStandard(b)
+    newDate = parseDateStandard(bStr)
   } else {
-    b = parseFloat(b)
-    if (b > 1800 && b < 2100) {
-      newDate = new Date(b, 0, 1)
+    const bNum = parseFloat(bStr)
+    if (bNum > 1800 && bNum < 2100) {
+      newDate = new Date(bNum, 0, 1)
     }
   }
 
-  if (oldDate && newDate) return outputDiffDate(oldDate, newDate, a, b)
-  if (isANumber && isBNumber) return outputDiffNumber(a, b)
-  if (isANumber) a = a.toString()
-  if (isBNumber) b = b.toString()
-  return outputDiffString(a, b)
+  if (oldDate && newDate) return outputDiffDate(oldDate, newDate, aStr, bStr)
+  if (isANumber && isBNumber)
+    return outputDiffNumber(parseFloat(aStr), parseFloat(bStr))
+  return outputDiffString(aStr, bStr)
 }
 
 export function evolutionInitialSetup() {
