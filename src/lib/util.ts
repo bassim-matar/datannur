@@ -178,9 +178,6 @@ export function ensureScriptLoaded(scriptPath: string) {
     document.head.appendChild(script)
   })
 }
-export function ensureJszipLoaded() {
-  return ensureScriptLoaded('assets/external/jszip.min.js')
-}
 export function ensureMermaidLoaded() {
   return ensureScriptLoaded('assets/external/mermaid.min.js')
 }

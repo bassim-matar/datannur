@@ -1,6 +1,7 @@
 <script lang="ts">
   import jQuery from 'jquery'
   import DataTable from 'datatables.net-bm'
+  import JSZip from 'jszip'
   import type { Config, ConfigLanguage } from 'datatables.net'
   import 'datatables.net-buttons-bm'
   import 'datatables.net-buttons/js/buttons.html5.mjs'
@@ -38,6 +39,7 @@
   import Popup from '@layout/Popup.svelte'
   import SearchOptionInfo from './filter/SearchOptionInfo.svelte'
   import LoadingDot from '@layout/LoadingDot.svelte'
+  import type { Api } from 'datatables.net'
 
   let {
     entity,
@@ -56,10 +58,12 @@
   let nbActiveFilter = $state(0)
   let isPopupSearchOptionOpen = $state(false)
 
+  DataTable.Buttons.jszip(JSZip)
+
   DatatablesTimer.start()
   DatatablesLoading.start()
 
-  let datatable
+  let datatable: Api
   let domTable: ReturnType<typeof jQuery> | null = null
 
   const isBig = data.length > isBigLimit
@@ -193,12 +197,6 @@
       if (DatatablesLoading.finished) {
         $allTablesLoaded = true
       }
-
-      exporter.ensureExcelReady(() => {
-        if (datatable) {
-          exporter.addExcelButton(datatable)
-        }
-      })
     }, 1)
   })
 
