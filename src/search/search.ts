@@ -5,29 +5,40 @@ import { get } from 'svelte/store'
 import { entityNames } from '@lib/constant'
 import escapeHtml from 'escape-html'
 import type { Index } from 'flexsearch'
-import type { EntityName, BaseEntity } from '@type'
+import type { BaseEntity } from '@type'
 
-type EntityData = { name: EntityName; items: Index; data: unknown[] }
+type EntityData = {
+  name: keyof typeof entityNames
+  items: Index
+  data: unknown[]
+}
 
-type SearchResult = {
+type VariableName = 'name' | 'description'
+
+export type SearchResult = {
   id: string | number
   name: string
   description: string
   entity: string
-  variable: string
+  variable?: VariableName
   isFavorite: boolean
   folderId: string | number
   folderName: string
   _entity: string
   _entityClean: string
+  isRecent?: boolean
+  position?: number
 }
 
-function removeDiacritics(str) {
-  if (typeof str !== 'string') return str
+function removeDiacritics(str: string | undefined) {
+  if (typeof str !== 'string') {
+    console.warn('removeDiacritics() input is not a string', str)
+    return ''
+  }
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
 
-const charMap = {
+const charMap: Record<string, string> = {
   a: '[aâäà]',
   e: '[eéèêë]',
   i: '[iîï]',
@@ -36,7 +47,7 @@ const charMap = {
   c: '[cç]',
 }
 
-export function searchHighlight(value, search) {
+export function searchHighlight(value: string, search: string | null) {
   if (!search || search.trim() === '') return value
 
   const normalizedSearch = removeDiacritics(search)
@@ -61,7 +72,7 @@ export function searchHighlight(value, search) {
 
 class Search {
   allSearch: {
-    name: string
+    name: VariableName
     entities: EntityData[]
   }[]
   loading: Promise<void> | null
@@ -74,12 +85,12 @@ class Search {
     this.loading = (async () => {
       await ensureScriptLoaded('assets/external/flexsearch.js')
       await get(whenAppReady)
-      const variables = ['name', 'description']
+      const variables: VariableName[] = ['name', 'description']
       for (const variable of variables) {
-        const entitiesData = []
+        const entitiesData: EntityData[] = []
         for (const entity in entityNames) {
           entitiesData.push({
-            name: entity,
+            name: entity as keyof typeof entityNames,
             items: new window.FlexSearch.Index({ tokenize: 'forward' }),
             data: [],
           })
@@ -89,8 +100,8 @@ class Search {
       for (const variable of this.allSearch) {
         for (const entity of variable.entities) {
           db.foreach(entity.name, item => {
-            if (!('name' in item)) return
-            let name = String(item[variable.name] || '')
+            if (!('name' in item) || item.id === undefined) return
+            let name = String(item[variable.name] ?? '')
             if (
               'originalName' in item &&
               item.originalName &&
@@ -103,10 +114,10 @@ class Search {
       }
     })()
   }
-  async find(toSearch): Promise<SearchResult[]> {
+  async find(toSearch: string): Promise<SearchResult[]> {
     if (this.loading) await this.loading
     const result: SearchResult[] = []
-    const idsFound = {}
+    const idsFound: Record<string, unknown[]> = {}
     for (const entity in entityNames) idsFound[entity] = []
     for (const variable of this.allSearch) {
       for (const entity of variable.entities) {
@@ -121,21 +132,26 @@ class Search {
             id: item.id,
             name:
               item.name + (item.originalName ? ` (${item.originalName})` : ''),
-            description: item.description || '',
+            description: item.description ?? '',
             entity: entity.name,
             variable: variable.name,
             isFavorite: item.isFavorite || false,
-            folderId: item.folderId || '',
-            folderName: item.folderName || '',
-            _entity: item._entity || '',
-            _entityClean: entityNames[item._entity as string] || '',
+            folderId: item.folderId ?? '',
+            folderName: item.folderName ?? '',
+            _entity: item._entity ?? '',
+            _entityClean:
+              entityNames[item._entity as keyof typeof entityNames] ?? '',
           })
         }
       }
     }
     return result
   }
-  async getItemsId(toSearch, entity, idsFound) {
+  async getItemsId(
+    toSearch: string,
+    entity: EntityData,
+    idsFound: Record<string, unknown[]>,
+  ) {
     entity.data = []
     const normalizedSearch = removeDiacritics(toSearch)
     if (!normalizedSearch) return []

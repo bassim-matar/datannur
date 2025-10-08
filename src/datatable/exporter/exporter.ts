@@ -1,7 +1,4 @@
 import Logs from '@lib/logs'
-import { ensureJszipLoaded } from '@lib/util'
-import DataTable from 'datatables.net-bm'
-import type { Api } from 'datatables.net'
 
 function applyToElements(selector: string, apply: (element: Element) => void) {
   document.querySelectorAll(selector).forEach(apply)
@@ -45,36 +42,16 @@ export default class Exporter {
         exportOptions: { orthogonal: 'export' },
         footer: false,
       },
+      {
+        text: '<span class="icon icon-download"><i class="fas fa-file-excel"></i></span>excel',
+        className: 'download-button',
+        extend: 'excelHtml5',
+        filename,
+        title: '',
+        exportOptions: { orthogonal: 'export' },
+        footer: false,
+      },
     ]
-  }
-
-  getExcelButton() {
-    const filename = this.id
-    return {
-      text: '<span class="icon icon-download"><i class="fas fa-file-excel"></i></span>excel',
-      className: 'download-button',
-      extend: 'excelHtml5',
-      filename,
-      title: '',
-      exportOptions: { orthogonal: 'export' },
-      footer: false,
-    }
-  }
-  async ensureExcelReady(onReady?: () => void) {
-    await ensureJszipLoaded()
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore - Buttons plugin property not typed
-    DataTable.Buttons.jszip(window.JSZip)
-    if (onReady) onReady()
-  }
-
-  addExcelButton(datatable: Api) {
-    try {
-      // @ts-expect-error - DataTables button configuration type mismatch
-      datatable.button().add(3, this.getExcelButton())
-    } catch (e) {
-      console.warn('Could not add Excel button:', e)
-    }
   }
 
   toggleMainBtn() {

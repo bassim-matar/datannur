@@ -2,14 +2,29 @@ import db from '@db'
 import Render from '@lib/render'
 import { allTabsIcon } from '@lib/store'
 import { entityToIcon } from '@lib/constant'
+import type { EntityName } from '@type'
+
+export type Log = {
+  id: number
+  action: string
+  entity: string
+  entityId: string | number
+  timestamp: number
+  actionName?: string
+  actionReadable?: string
+  actionIcon?: string
+  element?: string | number
+  elementIcon?: string
+  elementLink?: string
+}
 
 export default class Logs {
   static dbKey = 'userData/log'
-  static logs = []
+  static logs: Log[] = []
   static onChangeCallback = () => {}
-  static allTabsIconValue = {}
+  static allTabsIconValue: Record<string, { icon: string }> = {}
 
-  static init(logs) {
+  static init(logs: Log[] | null) {
     this.logs = []
     if (logs) this.logs = logs
     this.onChangeCallback = () => {}
@@ -22,7 +37,7 @@ export default class Logs {
     db.browser.set(this.dbKey, this.logs)
     this.onChangeCallback()
   }
-  static onChange(callback) {
+  static onChange(callback: () => void) {
     this.onChangeCallback = callback
   }
   static offChange() {
@@ -32,18 +47,24 @@ export default class Logs {
     this.logs = []
     this.save()
   }
-  static add(action, log = null) {
+  static add(
+    action: string,
+    log: {
+      entity?: EntityName | string
+      entityId?: string | number
+    } | null = null,
+  ) {
     this.logs.unshift({
       id: this.logs.length + 1,
       action,
-      entity: log?.entity || '',
-      entityId: log?.entityId || '',
+      entity: log?.entity ?? '',
+      entityId: log?.entityId ?? '',
       timestamp: Date.now(),
     })
     this.save()
   }
   static getAll() {
-    const logs = []
+    const logs: unknown[] = []
     for (const logSource of this.logs) {
       const log = { ...logSource }
 
@@ -51,9 +72,9 @@ export default class Logs {
       log.element = log.entity
 
       if (log.entityId) {
-        if (!db.exists(log.entity, log.entityId)) continue
-        const item = db.get(log.entity, log.entityId)
-        if (item) {
+        if (db.exists(log.entity as EntityName, log.entityId)) continue
+        const item = db.get(log.entity as EntityName, log.entityId)
+        if (item && 'name' in item) {
           log.element = item.name
           log.elementLink = log.entity + '/' + log.entityId
         }

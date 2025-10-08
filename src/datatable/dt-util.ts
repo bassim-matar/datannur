@@ -2,16 +2,17 @@ import { UrlHash } from '@lib/url-hash'
 import Options from '@lib/options'
 import { getSortByName } from '@lib/db'
 import { getPercent } from '@lib/util'
-import type { Row } from '@type'
+import type { AnyEntity, Column } from '@type'
+import type { Api } from 'datatables.net'
 
-export function isShortTable(dt) {
+export function isShortTable(dt: Api) {
   return (
     dt?.page?.info()?.recordsDisplay > 0 &&
     dt?.page?.info()?.recordsDisplay < 11
   )
 }
 
-export function fixColumnsWidth(dt) {
+export function fixColumnsWidth(dt: Api) {
   if (!dt) return false
   dt.columns()
     .header()
@@ -21,21 +22,25 @@ export function fixColumnsWidth(dt) {
     })
 }
 
-export function elemHasClickable(target, container, selector) {
+export function elemHasClickable(
+  target: HTMLElement,
+  container: HTMLElement,
+  selector: string,
+) {
   while (target && target !== container) {
     if (target.matches(selector)) return true
-    target = target.parentNode
+    target = target.parentNode as HTMLElement
   }
   return false
 }
 
-export function getTableId(entity) {
+export function getTableId(entity: string) {
   const hash = UrlHash.getAll()
   const tableId = hash.replaceAll('/', '___').replace(/[^a-z0-9_\-,. ]/gi, '')
   return tableId + '___' + entity
 }
 
-export function getNbItem(dt, cleanData) {
+export function getNbItem(dt: Api, cleanData: AnyEntity[]) {
   const separator = '|'
   const nbTotal = cleanData.length
   const nbItemDisplay = dt?.page?.info()?.recordsDisplay
@@ -47,7 +52,7 @@ export function getNbItem(dt, cleanData) {
   }
 }
 
-export function getNbSticky(columns) {
+export function getNbSticky(columns: Column[]) {
   let nbSticky = 1
   if (window.innerWidth > 1023) {
     for (const column of columns) {
@@ -60,7 +65,12 @@ export function getNbSticky(columns) {
   return nbSticky
 }
 
-export function getCleanData(data, sortByName, isRecursive, isBig) {
+export function getCleanData(
+  data: AnyEntity[],
+  sortByName: boolean,
+  isRecursive: boolean,
+  isBig: boolean,
+) {
   function getHasFilterRecursive() {
     const hash = UrlHash.getAll()
     const openAllRecursive = Options.get('openAllRecursive')
@@ -69,7 +79,7 @@ export function getCleanData(data, sortByName, isRecursive, isBig) {
 
   const hasFilterRecursive = isRecursive && isBig && getHasFilterRecursive()
   const tempData = [...data]
-  const newData: Row[] = []
+  const newData: (AnyEntity & { _rowNum: number })[] = []
   if (sortByName) {
     tempData.sort(getSortByName)
   }
@@ -77,14 +87,16 @@ export function getCleanData(data, sortByName, isRecursive, isBig) {
   for (const rows of tempData) {
     if (
       hasFilterRecursive &&
+      'parentsRelative' in rows &&
+      'minimumDeep' in rows &&
+      rows.parentsRelative &&
+      rows.minimumDeep !== undefined &&
       rows.parentsRelative.length - rows.minimumDeep !== 0
     ) {
       continue
     }
     rowNum += 1
-    const copyRows = { ...rows }
-    copyRows._rowNum = rowNum
-    newData.push(copyRows)
+    newData.push({ ...rows, _rowNum: rowNum })
   }
   return newData
 }

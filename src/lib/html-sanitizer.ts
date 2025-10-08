@@ -48,7 +48,7 @@ export function sanitizeHtmlWithSvg(html: string): string {
   return sanitizedHtml.replace(
     /PRESERVED_FOREIGN_OBJECT_(\d+)/g,
     (match, index) => {
-      const content = foreignObjects[parseInt(index)] || ''
+      const content = foreignObjects[parseInt(index)] ?? ''
       return DOMPurify.sanitize(content, {
         ADD_TAGS: ['div', 'span', 'p', 'i', 'strong', 'br'],
         ADD_ATTR: ['class', 'style', 'xmlns'],
@@ -81,7 +81,7 @@ export function safeHtml(node: HTMLElement, html: string) {
   attachGlobalListener()
 
   function update(newHtml: string) {
-    node.innerHTML = sanitizeHtml(newHtml || '')
+    node.innerHTML = sanitizeHtml(newHtml ?? '')
   }
 
   update(html)
@@ -92,7 +92,7 @@ export function safeHtmlWithSvg(node: HTMLElement, html: string) {
   attachGlobalListener()
 
   function update(newHtml: string) {
-    node.innerHTML = sanitizeHtmlWithSvg(newHtml || '')
+    node.innerHTML = sanitizeHtmlWithSvg(newHtml ?? '')
   }
 
   update(html)

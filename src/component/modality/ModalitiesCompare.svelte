@@ -8,10 +8,11 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
   import escapeHtml from 'escape-html'
+  import type { Column as ColumnType } from '@type'
 
   let { modalitiesCompare } = $props()
 
-  let similitutes = $state([])
+  let similitutes: unknown[] = $state([])
   let loading = $state(true)
 
   ;(async () => {
@@ -21,16 +22,16 @@
       return
     }
     modalitiesCompare = db.getAll('modality')
-    similitutes = (await worker(
+    similitutes = await worker(
       { modalitiesCompare, limit: 50000 },
       modalityCompareWorker,
-    )) as unknown[]
+    )
     $modalitiesSimilitutes = similitutes
     loading = false
     if (similitutes.length === 0) $tabSelected.nb = 0
   })()
 
-  const columns = [
+  const columns: ColumnType[] = [
     {
       data: 'ratio',
       title: Render.icon('compare') + 'Similitude',

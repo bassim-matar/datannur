@@ -52,7 +52,7 @@
     .filter(
       evo =>
         (evo.entity === 'institution' &&
-          (evo.id === institution.id || institutionsId.has(evo.id))) ||
+          (evo.id === institution.id || institutionsId.has(evo.id!))) ||
         (evo.entity === 'folder' && foldersId.has(evo.id)) ||
         (evo.entity === 'dataset' && datasetsId.has(evo.id)) ||
         (evo.entity === 'variable' && variablesId.has(evo.id)) ||

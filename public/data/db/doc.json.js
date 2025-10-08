@@ -30,7 +30,7 @@ jsonjs.data['doc'] =
     "name": "BEVNAT: Fiche signalétique",
     "description": "BEVNAT: Fiche signalétique",
     "path": "data/pdf/bevnat-info.pdf",
-    "last_update": 1706219962
+    "last_update": 1706239962
   },
   {
     "id": "statpop-info",

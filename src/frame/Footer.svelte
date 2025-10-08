@@ -20,7 +20,7 @@
   let currentInterval
   let interval = 1000
   function updateLastModif() {
-    lastUpdate.relative = getTimeAgo(lastUpdate.value * 1000)
+    lastUpdate.relative = getTimeAgo(lastUpdate.value * 1000) ?? ''
     if (
       interval === 1000 &&
       !lastUpdate.relative.includes('seconde') &&
@@ -39,7 +39,7 @@
     if (lastModifTimestamp) lastUpdate.value = lastModifTimestamp
     if (lastUpdate.value) {
       const timestamp = lastUpdate.value * 1000
-      lastUpdate.relative = getTimeAgo(timestamp)
+      lastUpdate.relative = getTimeAgo(timestamp) ?? ''
       lastUpdate.absolute = getDatetime(timestamp)
       currentInterval = setInterval(updateLastModif, interval)
     } else {

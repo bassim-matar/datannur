@@ -1,12 +1,23 @@
 import db from '@db'
 import { capitalize } from '@lib/util'
+import type { Tag, EntityWithRelations } from '@type'
+
+type TagWithCounts = Tag & {
+  nbInstitution: number
+  nbFolder: number
+  nbDataset: number
+}
 
 export default class Tags {
-  static getFromEntities(entities) {
+  static getFromEntities(entities: {
+    institutions?: EntityWithRelations[]
+    folders?: EntityWithRelations[]
+    datasets?: EntityWithRelations[]
+  }) {
     const tagsDb = db.getAll('tag')
-    const tagsById = {}
+    const tagsById: Record<string | number, TagWithCounts> = {}
 
-    let tags = JSON.parse(JSON.stringify(tagsDb))
+    const tags: TagWithCounts[] = JSON.parse(JSON.stringify(tagsDb))
     for (const tag of tags) {
       tag.nbInstitution = 0
       tag.nbFolder = 0
@@ -14,11 +25,19 @@ export default class Tags {
       tagsById[tag.id] = tag
     }
 
-    function incrementTagItemNb(items, entity) {
+    function incrementTagItemNb(
+      items: EntityWithRelations[] | undefined,
+      entity: string,
+    ) {
       if (!items) return
       for (const item of items) {
+        if (!item.tags) continue
         for (const tag of item.tags) {
-          tagsById[tag.id]['nb' + capitalize(entity)]++
+          const tagWithCount = tagsById[tag.id]
+          if (tagWithCount) {
+            const key = ('nb' + capitalize(entity)) as keyof TagWithCounts
+            ;(tagWithCount[key] as number)++
+          }
         }
       }
     }
@@ -31,9 +50,9 @@ export default class Tags {
       tag.nbFolder = tagsById[tag.id].nbFolder
       tag.nbDataset = tagsById[tag.id].nbDataset
     }
-    tags = tags.filter(
-      tag => tag.nbInstitution > 0 || tag.nbFolder > 0 || tag.nbDataset > 0,
+    return tags.filter(
+      (tag: TagWithCounts) =>
+        tag.nbInstitution > 0 || tag.nbFolder > 0 || tag.nbDataset > 0,
     )
-    return tags
   }
 }

@@ -4,20 +4,20 @@
   import { tabsHelper } from '@tab/tabs-helper'
   import Tabs from '@tab/Tabs.svelte'
   import Title from '@layout/Title.svelte'
+  import type { Modality } from '@type'
 
   let { id } = $props()
   const dataset = db.get('dataset', id)
 
   let datasetVariables = db.getAll('variable', { dataset })
-  dataset.nbVariable = datasetVariables.length
+  if (dataset) dataset.nbVariable = datasetVariables.length
 
-  let modalities = []
-  for (const variable of datasetVariables) {
-    modalities = modalities.concat(variable.modalities)
-  }
+  let modalities: Modality[] = datasetVariables.flatMap(
+    variable => variable.modalities ?? [],
+  )
   modalities = removeDuplicateById(modalities)
 
-  let datasetPreview = dataset.link ? dataset.id : false
+  let datasetPreview = dataset?.link ? dataset.id : false
 
   const modalitiesId = new Set(modalities.map(item => item.id))
 
@@ -30,22 +30,26 @@
     .getAll('evolution')
     .filter(
       evo =>
-        (evo.entity === 'dataset' && evo.id === dataset.id) ||
-        (evo.parentEntity === 'dataset' && evo.parentEntityId === dataset.id) ||
+        (evo.entity === 'dataset' && evo.id === dataset?.id) ||
+        (evo.parentEntity === 'dataset' &&
+          evo.parentEntityId === dataset?.id) ||
         (evo.parentEntity === 'modality' &&
+          evo.parentEntityId !== undefined &&
           modalitiesId.has(evo.parentEntityId)) ||
-        (evo.entity === 'modality' && modalitiesId.has(evo.id)),
+        (evo.entity === 'modality' &&
+          evo.id !== undefined &&
+          modalitiesId.has(evo.id)),
     )
 
   const stat = [
-    { entity: 'doc', items: dataset.docs },
+    { entity: 'doc', items: dataset?.docs },
     { entity: 'variable', items: datasetVariables },
     { entity: 'modality', items: modalities },
   ]
 
   let tabs = tabsHelper({
     dataset,
-    docs: dataset.docs,
+    docs: dataset?.docs,
     datasets,
     datasetVariables,
     modalities,
@@ -56,6 +60,6 @@
 </script>
 
 <section class="section">
-  <Title type="dataset" name={dataset.name} id={dataset.id} />
+  <Title type="dataset" name={dataset?.name} id={dataset?.id} />
   <Tabs {tabs} />
 </section>

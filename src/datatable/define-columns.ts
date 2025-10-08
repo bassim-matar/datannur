@@ -1,31 +1,32 @@
 import { entityNames } from '@lib/constant'
 import { link } from '@lib/util'
 import { statExists } from '@stat/stat'
-import type { ConfigColumns } from 'datatables.net'
+import type { AnyEntity, Column as ColumnType } from '@type'
 
-function filterEmptyColumns(columns, items) {
-  const hasProp = {}
+function filterEmptyColumns(columns: ColumnType[], items: AnyEntity[]) {
+  const hasProp: Record<string, boolean> = {}
   for (const item of items) {
     for (const key of Object.keys(item)) {
       if (key === 'id' || key === 'isFavorite') {
         hasProp[key] = true
         continue
       }
-      const value = item[key]
+      const value = (item as Record<string, unknown>)[key]
       if (Array.isArray(value)) {
         if (value.length > 0) hasProp[key] = true
       } else if (value) hasProp[key] = true
     }
   }
-  const filterColumns = columns.filter(column => column.data in hasProp)
+  const filterColumns = columns.filter(column => String(column.data) in hasProp)
   return filterColumns
 }
 
-function getTextWidth(lines, font) {
+function getTextWidth(lines: string[], font: string) {
+  let maxWidth = 0
   const canvas = document.createElement('canvas')
   const context = canvas.getContext('2d')
+  if (!context) return maxWidth
   context.font = font
-  let maxWidth = 0
   for (const line of lines) {
     const metrics = context.measureText(line)
     maxWidth = Math.max(maxWidth, metrics.width)
@@ -34,21 +35,17 @@ function getTextWidth(lines, font) {
 }
 
 export function defineColumns(
-  columns,
-  data,
-  entity,
-  keepAllCols,
-  metaPath,
-  nbRowLoading,
+  columns: ColumnType[],
+  data: AnyEntity[],
+  entity: keyof typeof entityNames,
+  keepAllCols: boolean,
+  metaPath: string,
+  nbRowLoading = 50,
 ) {
   let columnsCopy = columns.map(obj => ({ ...obj }))
 
   if (columnsCopy[0]?.title !== '#') {
-    const colNumerotation: ConfigColumns & {
-      tooltip?: string
-      filterType?: string
-      width?: string
-    } = {
+    const colNumerotation: ColumnType = {
       data: '_rowNum',
       name: '_rowNum',
       title: '#',
@@ -81,7 +78,7 @@ export function defineColumns(
     'evolutionType',
   ]
   for (const column of columnsCopy) {
-    const key = column.name ? column.name : column.data
+    const key = column.name ? column.name : (column.data as string)
     if (key !== '_rowNum' && statExists(entity, key)) {
       const columnStatBtn = `
         <span class="column-stat-btn icon-stat" data-entity="${entity}" data-attribut="${key}">
@@ -91,8 +88,7 @@ export function defineColumns(
       else column.tooltip = columnStatBtn
     }
 
-    if (column.filterType === 'select') column.searchModality = true
-    if (miniCol.includes(column.name)) {
+    if (column.name && miniCol.includes(column.name)) {
       column.loadingMaxWidth = 20
       continue
     }
@@ -102,12 +98,13 @@ export function defineColumns(
       continue
     }
     if (column.name === 'name') bold = 'bold'
-    const cells = []
+    const cells: string[] = []
     for (const row of data.slice(0, nbRowLoading)) {
-      let value = row[column.data]
-      if (column.fromLength) value = value.length
+      let value = (row as Record<string, unknown>)[column.data as string]
+      if ('fromLength' in column && column.fromLength && Array.isArray(value))
+        value = value.length
       if (column.data === '_entityClean') value = 'icon-ico,' + value
-      cells.push(value)
+      cells.push(String(value))
     }
     const cellsWidth =
       Math.round(getTextWidth(cells, `${bold} 16px "Helvetica Neue"`) * 100) /

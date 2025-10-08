@@ -1,15 +1,37 @@
-export default {
+type DatabaseItem = Record<string, unknown>
+
+export type Attribut = {
+  name?: string
+  type?: string
+  variable?: string
+  getValue?: (item: DatabaseItem) => unknown
+  parseDate?: boolean
+  nbRange?: number
+  rangeType?: string
+  nonExclusive?: string
+  subtype?: (item: DatabaseItem) => boolean
+  icon?: string
+  key?: string
+  withHtml?: {
+    text: string
+    icon?: string
+    link?: string | null
+  }
+}
+
+const attributsDef: Record<string, Attribut> = {
   name: {
     name: 'Nom',
     type: 'string',
     nbRange: 5,
-    getValue: x => x.name?.length,
+    getValue: x => (typeof x.name === 'string' ? x.name.length : 0),
   },
   description: {
     name: 'Description',
     type: 'string',
     nbRange: 5,
-    getValue: x => x.description?.length,
+    getValue: x =>
+      typeof x.description === 'string' ? x.description.length : 0,
   },
   tag: {
     name: 'Mots clés',
@@ -50,7 +72,7 @@ export default {
   modality: {
     name: 'Nombre de modalités',
     type: 'categoryOrdered',
-    getValue: x => x.modalities?.length,
+    getValue: x => (Array.isArray(x.modalities) ? x.modalities.length : 0),
   },
   entity: {
     name: 'Entités',
@@ -65,7 +87,7 @@ export default {
   value: {
     name: 'Nombre de valeurs',
     type: 'numeric',
-    getValue: x => x.values?.length,
+    getValue: x => (Array.isArray(x.values) ? x.values.length : 0),
   },
   nbRow: {
     name: 'Nombre de lignes',
@@ -75,7 +97,8 @@ export default {
   level: {
     name: "Niveau de l'arborecence",
     type: 'categoryOrdered',
-    getValue: x => x.parentsRelative?.length + 1,
+    getValue: x =>
+      Array.isArray(x.parentsRelative) ? x.parentsRelative.length + 1 : 1,
   },
   localisation: {
     name: 'Localisation',
@@ -86,13 +109,13 @@ export default {
     name: 'Email',
     type: 'string',
     nbRange: 1,
-    getValue: x => x.email?.length,
+    getValue: x => (typeof x.email === 'string' ? x.email.length : 0),
   },
   phone: {
     name: 'Téléphone',
     type: 'string',
     nbRange: 1,
-    getValue: x => x.phone?.length,
+    getValue: x => (typeof x.phone === 'string' ? x.phone.length : 0),
   },
   surveyType: {
     name: "Type d'enquête",
@@ -108,19 +131,20 @@ export default {
     name: 'Metadonnées',
     type: 'string',
     nbRange: 1,
-    getValue: x => x.metadataPath?.length,
+    getValue: x =>
+      typeof x.metadataPath === 'string' ? x.metadataPath.length : 0,
   },
   docPath: {
     name: 'Lien',
     type: 'string',
     nbRange: 1,
-    getValue: x => x.path?.length,
+    getValue: x => (typeof x.path === 'string' ? x.path.length : 0),
   },
   gitCode: {
     name: 'Repo GIT',
     type: 'string',
     nbRange: 1,
-    getValue: x => x.gitCode?.length,
+    getValue: x => (typeof x.gitCode === 'string' ? x.gitCode.length : 0),
   },
   actionReadable: {
     icon: 'log',
@@ -165,3 +189,5 @@ export default {
     rangeType: 'timeAgo',
   },
 }
+
+export default attributsDef

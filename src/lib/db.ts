@@ -1,9 +1,18 @@
 import db from '@db'
 import { getVariableTypeClean, capitalize } from '@lib/util'
 import { getPeriod, dateToTimestamp, timestampToDate } from '@lib/time'
-import { getNbValues } from '@lib/render'
 import { entityNames } from '@lib/constant'
 import { evolutionInitialSetup } from '@lib/evolution'
+import type { Doc, EntityTypeMap, Filter, Value } from '@type'
+
+function getNbValues(
+  values: Value[],
+  row: EntityTypeMap['variable' | 'modality' | 'metaVariable'],
+) {
+  if (values && values.length) return values.length
+  if ('nbDistinct' in row && row.nbDistinct) return row.nbDistinct
+  return 0
+}
 
 function addTags(entity, item) {
   item.tags = db.getAll('tag', { [entity]: item.id })
@@ -43,7 +52,7 @@ function addName(item, entity, alias = '') {
   let itemName = ''
   if (itemId !== null && itemId !== undefined)
     itemName = db.get(entity, itemId)?.name as string
-  item[`${alias}Name`] = itemName || ''
+  item[`${alias}Name`] = itemName ?? ''
 }
 function addVariableNum(dataset, entity, variableEntity) {
   const variables = db.getAll(variableEntity, { [entity]: dataset.id })
@@ -123,7 +132,7 @@ function addSourceVar(variable) {
     const sourceDataset = db.get('dataset', sourceVar.datasetId)
     if (sourceDataset) {
       if (!sourceDataset.derivedIds) sourceDataset.derivedIds = new Set()
-      if (sourceDataset.id !== dataset.id) {
+      if (dataset && sourceDataset.id !== dataset.id) {
         sourceDataset.derivedIds.add(dataset.id)
       }
     }
@@ -216,7 +225,7 @@ export function addMinimumDeep(items, noDeep = false, noIndent = false) {
 }
 
 export function getLineage(entity, elem, lineageType) {
-  const lineage = []
+  const lineage: unknown[] = []
   const lineageIds = elem[`${lineageType}Ids`]
   if (!lineageIds) return lineage
   for (const id of lineageIds) {
@@ -381,7 +390,7 @@ class Process {
       }
 
       if (!nbValues || !variable.nbDuplicate) return
-      variable.nbDuplicate = Math.max(variable.nbRow - nbValues, 0)
+      variable.nbDuplicate = Math.max((variable.nbRow || 0) - nbValues, 0)
       if (variable.nbMissing) variable.nbDuplicate -= variable.nbMissing
     })
   }
@@ -414,20 +423,24 @@ class Process {
       addEntity(metaVariable, 'metaVariable')
       metaVariable.isMeta = true
       metaVariable.typeClean = getVariableTypeClean(metaVariable.type)
-      metaVariable.nbValue = getNbValues(metaVariable.values, metaVariable)
+      metaVariable.nbValue = getNbValues(
+        metaVariable.values ?? [],
+        metaVariable,
+      )
       if (metaVariable.name === 'id') metaVariable.key = 'oui'
-
-      const metaDataset = db.get('metaDataset', metaVariable.metaDatasetId)
-      metaVariable.datasetId = metaDataset.id
-      metaVariable.datasetName = metaDataset.name
-      metaVariable.nbRow = metaDataset.nbRow
-      metaVariable.metaFolderId = metaDataset.metaFolderId
-      metaVariable.folderName = metaDataset.metaFolderId as string
       metaVariable.metaLocalisation = ''
       if (metaVariable.isInMeta && !metaVariable.isInData)
         metaVariable.metaLocalisation = 'schéma'
       if (!metaVariable.isInMeta && metaVariable.isInData)
         metaVariable.metaLocalisation = 'données'
+
+      const metaDataset = db.get('metaDataset', metaVariable.metaDatasetId)
+      if (!metaDataset) return
+      metaVariable.datasetId = metaDataset.id
+      metaVariable.datasetName = metaDataset.name
+      metaVariable.nbRow = metaDataset.nbRow
+      metaVariable.metaFolderId = metaDataset.metaFolderId
+      metaVariable.folderName = metaDataset.metaFolderId as string
     })
   }
   static metaDataset() {
@@ -455,8 +468,9 @@ class Process {
       const metaDatasets = db.getAll('metaDataset', { metaFolder })
       metaFolder.nbDataset = metaDatasets.length
       metaFolder.nbVariable = 0
-      for (const metaDataset of metaDatasets)
-        metaFolder.nbVariable += metaDataset.nbVariable
+      for (const metaDataset of metaDatasets) {
+        metaFolder.nbVariable += metaDataset.nbVariable || 0
+      }
     })
   }
 
@@ -469,7 +483,7 @@ function addDocRecursive() {
   for (const entity of ['institution', 'folder', 'dataset', 'tag'] as const) {
     db.foreach(entity, item => {
       item.docsRecursive = []
-      let docs = []
+      let docs: Doc[] = []
       if (entity === 'institution') {
         const childs = getRecursive(entity, item.id, entity)
         for (const child of childs) docs = docs.concat(child.docs)
@@ -482,7 +496,7 @@ function addDocRecursive() {
       }
       if (docs.length > 1) docs = removeDuplicateById(docs)
       for (const doc of docs) {
-        item.docsRecursive.push({ ...doc, inherited: 'hérité' })
+        item.docsRecursive?.push({ ...doc, inherited: 'hérité' })
       }
       if (item.docs) item.docsRecursive = item.docsRecursive.concat(item.docs)
     })
@@ -490,7 +504,7 @@ function addDocRecursive() {
 }
 
 export function getLocalFilter() {
-  const dbFilters = []
+  const dbFilters: Filter[] = []
   for (const configRow of db.getAll('config')) {
     if (configRow.id?.startsWith('filter_')) {
       dbFilters.push({

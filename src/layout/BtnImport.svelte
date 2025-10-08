@@ -1,18 +1,18 @@
 <script lang="ts">
-  import Button from "@layout/Button.svelte"
+  import Button from '@layout/Button.svelte'
 
   let { onImport, children } = $props()
 
-  let fileinput: HTMLInputElement = $state()
+  let fileinput: HTMLInputElement | undefined = $state()
 
   const onFileSelected = e => {
     let file = e.target.files[0]
-    let filename = fileinput.value.split("\\").slice(-1)[0]
+    let filename = fileinput?.value.split('\\').slice(-1)[0]
     onImport(file, filename)
   }
 </script>
 
-<Button onclick={() => fileinput.click()}>
+<Button onclick={() => fileinput?.click()}>
   {@render children?.()}
 </Button>
 

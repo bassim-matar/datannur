@@ -10,14 +10,14 @@
 
   let metaDatasetVariables = db.getAll('metaVariable', { metaDataset })
 
-  let datasetPreview = []
+  let datasetPreview: unknown[] = []
   if (metaDataset.metaFolderId === 'data') {
     const datasetPreviewRaw = db.getAll(metaDataset.name)
     const keysToKeep = metaDatasetVariables.map(a => a.name)
     datasetPreview = filterKeys(datasetPreviewRaw, keysToKeep)
   } else if (metaDataset.metaFolderId === 'userData') {
     const userData = getUserData()
-    datasetPreview = userData?.[metaDataset.name]
+    datasetPreview = userData?.[metaDataset.name] ?? []
   }
 
   let tabs = tabsHelper({

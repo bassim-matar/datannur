@@ -21,7 +21,7 @@
   {#each tabs as tab (tab.key)}
     {#if openAllTab || activeTabBody === tab.key || tabsLoaded[tab.key] > 0}
       <div
-        class="tab-component-wrapper {tab.props.class || ''}"
+        class="tab-component-wrapper {tab.props.class ?? ''}"
         class:visible={activeTabBody === tab.key}
         class:not-visible={activeTabBody !== tab.key}
         class:padding={tab.padding}

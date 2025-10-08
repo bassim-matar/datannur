@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { saveAs } from 'file-saver'
+  import JSZip from 'jszip'
   import db from '@db'
   import { pageContentLoaded } from '@lib/store'
   import Options from '@lib/options'
@@ -8,7 +9,7 @@
   import Favorites from '@favorite/favorites'
   import SearchHistory from '@search/search-history'
   import Icon from '@layout/Icon.svelte'
-  import { resetColsSearchCache, ensureJszipLoaded } from '@lib/util'
+  import { resetColsSearchCache } from '@lib/util'
   import { getUserData } from '@lib/user-data'
   import { UrlParam } from '@lib/url-param'
   import Switch from '@layout/Switch.svelte'
@@ -17,8 +18,7 @@
   import Button from '@layout/Button.svelte'
 
   async function importUserData(zipFile) {
-    await ensureJszipLoaded()
-    const jszip = new window.JSZip()
+    const jszip = new JSZip()
     const zip = await jszip.loadAsync(zipFile)
     for (const file of Object.values(zip.files)) {
       if (file.dir) continue
@@ -33,14 +33,13 @@
   }
 
   async function downloadUserData() {
-    await ensureJszipLoaded()
-    const jszip = new window.JSZip()
+    const jszip = new JSZip()
     const dataFolder = jszip.folder('user-data')
     const userData = getUserData()
-    for (const [name, data] of Object.entries(userData)) {
+    for (const [name, data] of Object.entries(!!userData)) {
       const filename = name + '.json'
       const jsonData = JSON.stringify(data, null, 2)
-      dataFolder.file(filename, jsonData)
+      dataFolder?.file(filename, jsonData)
     }
     jszip.generateAsync({ type: 'blob' }).then(function (content) {
       saveAs(content, 'datannur-user-data.zip')

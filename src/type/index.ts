@@ -2,6 +2,7 @@
 export type {
   BaseEntity,
   Config,
+  NullableNumber,
   Value,
   Freq,
   Favorite,
@@ -11,6 +12,7 @@ export type {
   SearchHistory,
   Filter,
   Row,
+  Column,
 } from './base'
 
 // Entity types (business logic)
@@ -24,6 +26,7 @@ export type {
   Tag,
   TagWithChildren,
   Doc,
+  FreqPreview,
   MetaVariable,
   MetaDataset,
   MetaFolder,
@@ -31,6 +34,9 @@ export type {
   AnyEntity,
   EntityTypeMap,
   EntityName,
+  FavoritableEntityName,
+  FavoritableEntityMap,
+  FavoritableEntity,
 } from './entity'
 
 // Global declarations are auto-imported

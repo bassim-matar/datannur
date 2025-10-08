@@ -1,4 +1,5 @@
 import definition from './attributs-def'
+import type { Attribut } from './attributs-def'
 
 export const attributs = {
   institution: ['tag', 'email', 'phone', 'level', 'name', 'description'],
@@ -33,7 +34,7 @@ export const attributs = {
   log: ['actionReadable', 'page', 'tab', 'search', 'timeAgo'],
 }
 
-const attributsFilled = {}
+const attributsFilled: Record<string, Attribut[]> = {}
 for (const [entity, value] of Object.entries(attributs)) {
   attributsFilled[entity] = value.map(key => {
     if (!(key in definition)) console.error(`key ${key} not found`)

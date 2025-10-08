@@ -47,6 +47,11 @@ export type Dataset = EntityWithRelations & {
   nextUpdateDate?: string
 }
 
+export type FreqPreview = Freq & {
+  total: number
+  max: number
+}
+
 export type Variable = BaseEntity & {
   datasetId: string | number
   modalityIds?: string
@@ -80,10 +85,7 @@ export type Variable = BaseEntity & {
   sourceIds?: (string | number)[]
   derivedIds?: (string | number)[]
   hasFreq?: boolean
-  freqPreview?: (Freq & {
-    total?: number
-    max?: number
-  })[]
+  freqPreview?: FreqPreview[]
 }
 
 export type Modality = BaseEntity & {
@@ -187,7 +189,7 @@ export type Doc = BaseEntity & {
 export type MetaVariable = BaseEntity & {
   metaDatasetId: string | number
   type?: string
-  values?: unknown[]
+  values?: Value[]
   isInMeta?: boolean
   isInData?: boolean
 
@@ -244,6 +246,7 @@ export type Evolution = {
   parentName?: string
   parentDeleted?: boolean
   isFavorite?: boolean
+  favoriteTimestamp?: number
   date?: string
   folderId?: string | number
   _toHide?: boolean
@@ -278,3 +281,14 @@ export type EntityTypeMap = {
 
 export type EntityName = keyof EntityTypeMap
 export type AnyEntity = EntityTypeMap[EntityName]
+
+export type FavoritableEntityName =
+  | 'institution'
+  | 'folder'
+  | 'tag'
+  | 'doc'
+  | 'dataset'
+  | 'variable'
+  | 'modality'
+export type FavoritableEntityMap = Pick<EntityTypeMap, FavoritableEntityName>
+export type FavoritableEntity = FavoritableEntityMap[FavoritableEntityName]

@@ -4,40 +4,48 @@
   import PreviewManager from '@lib/preview-manager'
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
+  import type { Row, Column } from '@type'
 
   let { variablePreview } = $props()
 
-  let variableData = $state([])
-  let columns = $state([])
-
-  let variable = variablePreview.variable
-  let datasetPreview: string | null = null
+  let variableData: Row[] = $state([])
+  let columns: Column[] = $state([])
 
   async function getLoadPreview() {
-    if (variablePreview.variable === undefined) {
-      variableData = variablePreview
-    } else {
-      variable = PreviewManager.cleanKeys(variable)
-      datasetPreview = variablePreview.datasetId
-      $tabSelected.nb = 0
-      if (typeof datasetPreview !== 'string') {
-        let datasetData = datasetPreview
-        variableData = PreviewManager.getVariableData(datasetData, variable)
-        columns = PreviewManager.getColumns(variableData)
-        $tabSelected.nb = variableData.length
-        return
-      }
-
-      if (!PreviewCache.has(datasetPreview)) {
-        let datasetData = await PreviewManager.load(datasetPreview)
-        PreviewManager.cleanKeys(datasetData)
-        PreviewCache.set(datasetPreview, datasetData)
-      }
-      variableData = PreviewManager.getVariableData(
-        PreviewCache.get(datasetPreview)!,
-        variable,
-      )
+    // Case 1: variablePreview is already the data
+    if (!variablePreview.variable) {
+      variableData = variablePreview as Row[]
+      columns = PreviewManager.getColumns(variableData)
+      $tabSelected.nb = variableData.length
+      return
     }
+
+    // Case 2: variablePreview has variable and datasetId
+    const variable = PreviewManager.cleanKeys(
+      variablePreview.variable,
+    ) as string
+    const datasetPreview = variablePreview.datasetId
+
+    $tabSelected.nb = 0
+
+    // Case 2a: datasetPreview is already loaded data (not a string ID)
+    if (typeof datasetPreview !== 'string') {
+      const datasetData = datasetPreview as Row[]
+      variableData = PreviewManager.getVariableData(datasetData, variable)
+      columns = PreviewManager.getColumns(variableData)
+      $tabSelected.nb = variableData.length
+      return
+    }
+
+    // Case 2b: datasetPreview is a string ID, need to load
+    if (!PreviewCache.has(datasetPreview)) {
+      const datasetData = (await PreviewManager.load(datasetPreview)) as Row[]
+      PreviewManager.cleanKeys(datasetData)
+      PreviewCache.set(datasetPreview, datasetData)
+    }
+
+    const cachedData = PreviewCache.get(datasetPreview) as Row[]
+    variableData = PreviewManager.getVariableData(cachedData, variable)
     columns = PreviewManager.getColumns(variableData)
     $tabSelected.nb = variableData.length
   }

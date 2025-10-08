@@ -234,7 +234,7 @@ async function generateStaticSite(routes: string[], startTime: Date) {
   } catch (error) {
     console.error('Failed to process routes', error)
   } finally {
-    const cleanupPromises = []
+    const cleanupPromises: Promise<void>[] = []
     if (browser) cleanupPromises.push(browser.close())
     if (server) cleanupPromises.push(stopServer(server))
 

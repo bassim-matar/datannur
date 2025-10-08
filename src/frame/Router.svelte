@@ -26,7 +26,7 @@
     )
   }
 
-  function updateRoute(entity: string, newParams: Row = null) {
+  function updateRoute(entity: string, newParams: Row | null = null) {
     if (newParams) params = newParams
     $pageContentLoaded = false
     route = routerIndex[entity].component

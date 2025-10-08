@@ -12,6 +12,7 @@ export function copyTextListenClick() {
     const text = target.textContent.trim()
     await navigator.clipboard.writeText(text)
     const tooltip = document.getElementById('powerTip')
+    if (!tooltip) return false
     tooltip.textContent = copyTextMsgCopied
     setTimeout(() => (tooltip.textContent = copyTextMsg), 1000)
   })

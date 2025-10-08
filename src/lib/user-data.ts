@@ -4,7 +4,7 @@ interface UserData {
   log?: unknown[]
   favorite?: unknown[]
   searchHistory?: unknown[]
-  [key: string]: unknown[]
+  [key: string]: unknown[] | undefined
 }
 
 let userData: UserData | null = null

@@ -3,6 +3,7 @@
   import Datatable from '@datatable/Datatable.svelte'
   import { getPercent } from '@lib/util'
   import escapeHtml from 'escape-html'
+  import type { Column as ColumnType } from '@type'
 
   let { freq } = $props()
 
@@ -11,7 +12,7 @@
   const maxFreq = freqSorted.length > 0 ? freqSorted[0].freq : 1
 
   function defineColumns() {
-    const columns = []
+    const columns: ColumnType[] = []
 
     columns.push({
       data: 'value',

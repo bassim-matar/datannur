@@ -3,8 +3,8 @@ import Render from '@lib/render'
 import { urlPrefix } from '@lib/util'
 import markdownRender from '@lib/markdown'
 
-function mermaidAddEntities(code) {
-  let codePrefix = null
+function mermaidAddEntities(code: string) {
+  let codePrefix = ''
   const codePrefixesSearch = ['flowchart LR', 'flowchart TB']
   for (const codePrefixSearch of codePrefixesSearch) {
     if (
@@ -25,7 +25,7 @@ function mermaidAddEntities(code) {
   )
 
   for (const entity of Object.keys(entityToIcon)) {
-    const entityCleanName = entityNames[entity]
+    const entityCleanName = entityNames[entity as keyof typeof entityNames]
     code = code.replaceAll(`-- ${entity} -->`, `-- ${entityCleanName} -->`)
 
     if (!code.includes('$' + entity)) continue
@@ -53,11 +53,11 @@ function mermaidAddEntities(code) {
   return code
 }
 
-export async function mdWithMermaidToHtml(mdWithMermaid) {
+export async function mdWithMermaidToHtml(mdWithMermaid: string) {
   let content = ''
   const direction = 'TB'
   const diagrammDefinition = `flowchart ${direction}\n`
-  const aboutPageParts = []
+  const aboutPageParts: string[] = []
   for (const partLevel1 of mdWithMermaid.split('mermaid(')) {
     for (const partLevel2 of partLevel1.split('```mermaid')) {
       aboutPageParts.push(partLevel2)
@@ -66,7 +66,7 @@ export async function mdWithMermaidToHtml(mdWithMermaid) {
 
   if (aboutPageParts.length === 1) {
     content += aboutPageParts[0]
-    return
+    return content
   }
   let partNum = 0
   for (const aboutPagePart of aboutPageParts) {

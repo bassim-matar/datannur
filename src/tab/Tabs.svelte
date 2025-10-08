@@ -11,14 +11,14 @@
   let { tabs } = $props()
 
   let isMobile = getIsMobile()
-  let allKeys = []
+  let allKeys: unknown[] = []
   let hasReverseScroll = !isFirefox
 
   let activeTab = $state(tabs[0]?.key)
   let activeTabBody = $state(tabs[0]?.key)
   let tabsLoaded = $state({ activeTab: 1 })
   let tabsTitleKey = $state(isMobile)
-  let ul: HTMLDivElement | null = $state()
+  let ul: HTMLDivElement | undefined = $state()
   let isLastTab = $state()
 
   let noFirstTab = $derived(activeTab !== tabs[0]?.key)

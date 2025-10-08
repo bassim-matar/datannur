@@ -1,6 +1,7 @@
 <script lang="ts">
   import jQuery from 'jquery'
   import DataTable from 'datatables.net-bm'
+  import JSZip from 'jszip'
   import type { Config, ConfigLanguage } from 'datatables.net'
   import 'datatables.net-buttons-bm'
   import 'datatables.net-buttons/js/buttons.html5.mjs'
@@ -38,6 +39,7 @@
   import Popup from '@layout/Popup.svelte'
   import SearchOptionInfo from './filter/SearchOptionInfo.svelte'
   import LoadingDot from '@layout/LoadingDot.svelte'
+  import type { Api } from 'datatables.net'
 
   let {
     entity,
@@ -56,11 +58,13 @@
   let nbActiveFilter = $state(0)
   let isPopupSearchOptionOpen = $state(false)
 
+  DataTable.Buttons.jszip(JSZip)
+
   DatatablesTimer.start()
   DatatablesLoading.start()
 
-  let datatable = null
-  let domTable = null
+  let datatable: Api
+  let domTable: ReturnType<typeof jQuery> | null = null
 
   const isBig = data.length > isBigLimit
   const maxHeightValue = 275
@@ -151,13 +155,16 @@
         datatableUpdateDraw += 1
       })
       domTable = jQuery('table#' + tableId + '._datatables')
-      domTable.on('mouseenter', '.long-text', extendable.open)
-      domTable.on('mouseleave', '.long-text', extendable.closeTwoLines)
+      if (domTable) {
+        domTable.on('mouseenter', '.long-text', function () {
+          extendable.open.call(this)
+        })
+        domTable.on('mouseleave', '.long-text', function () {
+          extendable.closeTwoLines.call(this)
+        })
 
-      domTable.on(
-        'click',
-        'td',
-        function (this: HTMLElement, event: MouseEvent) {
+        domTable.on('click', 'td', event => {
+          const target = event.currentTarget as HTMLElement
           setTimeout(() => {
             const clickableElems =
               'a, button, input, select, .copyclip, .favorite'
@@ -165,15 +172,15 @@
             if (
               isMobile ||
               !domTable ||
-              elemHasClickable(event.target, this, clickableElems)
+              elemHasClickable(event.target, target, clickableElems)
             ) {
               return false
             }
-            jQuery(this).parent().find('.var-main-col')[0]?.click()
-            jQuery(this).parent().find('.var-main-col a')[0]?.click()
+            jQuery(target).parent().find('.var-main-col')[0]?.click()
+            jQuery(target).parent().find('.var-main-col a')[0]?.click()
           }, 1)
-        },
-      )
+        })
+      }
 
       initFavorite(tableId, datatable)
       initied()
@@ -190,12 +197,6 @@
       if (DatatablesLoading.finished) {
         $allTablesLoaded = true
       }
-
-      exporter.ensureExcelReady(() => {
-        if (datatable) {
-          exporter.addExcelButton(datatable)
-        }
-      })
     }, 1)
   })
 
@@ -246,7 +247,7 @@
                   style="min-width: {column.loadingWidth}px; 
                     width: {column.loadingMaxWidth}px;"
                 >
-                  <span use:safeHtml={column.title}></span>
+                  <span use:safeHtml={column.title ?? ''}></span>
                   <span class="dt-column-order"></span>
                 </th>
               {/each}

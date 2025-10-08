@@ -50,35 +50,38 @@ export function getIsSmallMenu() {
 export const hasTouchScreen =
   'ontouchstart' in window || navigator.maxTouchPoints > 0
 
-export function getPercent(value) {
+export function getPercent(value: number) {
   return Math.min(Math.round(value * 1000) / 10, 100)
 }
 
-export function getVariableTypeClean(type) {
-  return varTypes[type] || '???'
+export function getVariableTypeClean(type: string | undefined) {
+  if (!type || !(type in varTypes)) return '???'
+  return varTypes[type as keyof typeof varTypes]
 }
 
-export function entityToIconName(type) {
-  return type in entityToIcon ? entityToIcon[type] : type
+export function entityToIconName(type: string) {
+  return type in entityToIcon
+    ? entityToIcon[type as keyof typeof entityToIcon]
+    : type
 }
 
-export function getColor(entity) {
+export function getColor(entity: string) {
   return getComputedStyle(document.body).getPropertyValue(`--color-${entity}`)
 }
 
-export function pluralize(str) {
+export function pluralize(str: string) {
   if (str.endsWith('y')) return str.slice(0, -1) + 'ies'
   return str + 's'
 }
 
-export function splitOnLastSeparator(str, separator) {
+export function splitOnLastSeparator(str: string, separator: string) {
   const lastIndex = str.lastIndexOf(separator)
   return lastIndex === -1
     ? [str, '']
     : [str.slice(0, lastIndex), str.slice(lastIndex + separator.length)]
 }
 
-export function link(href, content, entity = null) {
+export function link(href: string, content: string, entity = '') {
   const base = getBaseLinkUrl()
   const onclick = `window.goToHref(event, '${href}')`
   let specialClass = ''
@@ -88,12 +91,12 @@ export function link(href, content, entity = null) {
   return `<a href="${base}${href}" onclick="${onclick}" ${specialClass}>${content}</a>`
 }
 
-export function addIndend(text, indent) {
+export function addIndend(text: string, indent: number) {
   const style = `padding-left: ${indent * 7}px;`
   return `<div class="indented-text" style="${style}">${text}</div>`
 }
 
-export function wrapLongText(text = null, indent = null) {
+export function wrapLongText(text = '', indent = 0) {
   if (text === undefined || text === null || text === '')
     return `<div class="long-text_empty"></div>`
   if (indent) text = addIndend(text, indent)
@@ -104,7 +107,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number,
 ) {
-  let timeout
+  let timeout: ReturnType<typeof setTimeout> | undefined
   return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
     clearTimeout(timeout)
     timeout = setTimeout(() => func.apply(this, args), wait)
@@ -117,13 +120,20 @@ export function resetColsSearchCache() {
     .forEach(x => localStorage.removeItem(x))
 }
 
-export function clickOutside(node, callback) {
-  const handleClick = event => {
-    if (node && !node.contains(event.target) && !event.defaultPrevented) {
+export function clickOutside(
+  node: HTMLElement,
+  callback?: (event: MouseEvent) => void,
+) {
+  const handleClick = (event: MouseEvent) => {
+    if (
+      node &&
+      !node.contains(event.target as Node) &&
+      !event.defaultPrevented
+    ) {
       if (callback) {
         callback(event)
       } else {
-        node.dispatchEvent(new CustomEvent('clickOutside', node))
+        node.dispatchEvent(new CustomEvent('clickOutside'))
       }
     }
   }
@@ -135,10 +145,13 @@ export function clickOutside(node, callback) {
   }
 }
 
-export async function worker(params, callback) {
+export async function worker<TParams, TResult>(
+  params: TParams,
+  callback: (data: TParams) => TResult,
+): Promise<TResult> {
   return new Promise(resolve => {
-    function workerFunction(callback) {
-      onmessage = e => postMessage(callback(e.data))
+    function workerFunction(cb: (data: TParams) => TResult) {
+      onmessage = (e: MessageEvent) => postMessage(cb(e.data))
     }
     const workerApi = new Worker(
       URL.createObjectURL(
@@ -148,7 +161,7 @@ export async function worker(params, callback) {
       ),
     )
     workerApi.postMessage(params)
-    workerApi.onmessage = e => resolve(e.data)
+    workerApi.onmessage = (e: MessageEvent) => resolve(e.data as TResult)
   })
 }
 
@@ -164,9 +177,6 @@ export function ensureScriptLoaded(scriptPath: string) {
     script.onload = () => resolve()
     document.head.appendChild(script)
   })
-}
-export function ensureJszipLoaded() {
-  return ensureScriptLoaded('assets/external/jszip.min.js')
 }
 export function ensureMermaidLoaded() {
   return ensureScriptLoaded('assets/external/mermaid.min.js')

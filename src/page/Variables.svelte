@@ -7,7 +7,7 @@
   import aboutFile from '@markdown/about-variable.md?raw'
 
   const variables = db.getAll('variable')
-  const tags = db.getAll('tag').filter(tag => tag.nbVariable > 0)
+  const tags = db.getAll('tag').filter(tag => !!tag.nbVariable)
   if (db.useRecursive.tag) {
     makeParentsRelative(false, tags)
     addMinimumDeep(tags, true, true)

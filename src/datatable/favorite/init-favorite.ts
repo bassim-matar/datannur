@@ -1,7 +1,8 @@
 import jQuery from 'jquery'
 import Favorites from '@favorite/favorites'
+import type { Api } from 'datatables.net'
 
-export default function initFavorite(tableId, datatable) {
+export default function initFavorite(tableId: string, datatable: Api) {
   const jqueryFavorite = jQuery('table#' + tableId + '._datatables')
   jqueryFavorite.on('click', '.icon.favorite', function (this: HTMLElement) {
     const elem = jQuery(this)

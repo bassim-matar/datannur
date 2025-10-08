@@ -1,6 +1,23 @@
-export function modalityCompareWorker(param) {
-  function getSimilitudes(modalitiesToCompare, limit = null) {
-    const similitutes = []
+import type { Modality } from '@type'
+type ModalityToCompare = {
+  modalityId: string | number
+  valuesClean: unknown[]
+  name: string
+  type: string
+  nbVariable: number
+  folderId: string | number
+  folderName: string
+}
+
+export function modalityCompareWorker(param: {
+  modalitiesCompare: Modality[]
+  limit: number | null
+}) {
+  function getSimilitudes(
+    modalitiesToCompare: ModalityToCompare[],
+    limit: number | null = null,
+  ) {
+    const similitutes: { [key: string]: unknown; ratio: number }[] = []
     for (const modality1 of modalitiesToCompare) {
       const nbValue = modality1.valuesClean.length
       for (const modality2 of modalitiesToCompare) {
@@ -36,11 +53,13 @@ export function modalityCompareWorker(param) {
   }
 
   const limit = param.limit
-  const modalitiesToCompare = []
+  const modalitiesToCompare: ModalityToCompare[] = []
   for (const modality of param.modalitiesCompare) {
-    const valuesClean = []
+    if (!modality.values) continue
+    const valuesClean: unknown[] = []
     for (let i = 0; i < modality.values.length; i++) {
       const value = modality.values[i]
+      if (value.value === null || value.value === undefined) continue
       let valueClean = value.value.toString().toLowerCase()
       if (value.description !== null && value.description !== undefined) {
         valueClean += '___' + value.description.toString().toLowerCase()
@@ -51,10 +70,10 @@ export function modalityCompareWorker(param) {
       modalityId: modality.id,
       valuesClean,
       name: modality.name,
-      type: modality.typeClean,
-      nbVariable: modality.variables.length,
-      folderId: modality.folderId,
-      folderName: modality.folderName,
+      type: modality.typeClean ?? '',
+      nbVariable: modality.variables?.length ?? 0,
+      folderId: modality.folderId ?? '',
+      folderName: '',
     })
   }
   const similitutes = getSimilitudes(modalitiesToCompare, limit)

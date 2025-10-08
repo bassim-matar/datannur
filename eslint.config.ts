@@ -3,13 +3,7 @@ import tseslint from 'typescript-eslint'
 import svelte from 'eslint-plugin-svelte'
 import { browser } from 'globals'
 
-const allowedProps = [
-  '__APP_VERSION__',
-  'FlexSearch',
-  'JSZip',
-  'ADD_TAGS',
-  'ADD_ATTR',
-]
+const allowedProps = ['__APP_VERSION__', 'FlexSearch', 'ADD_TAGS', 'ADD_ATTR']
 
 const namingConventionRules = {
   '@typescript-eslint/naming-convention': [

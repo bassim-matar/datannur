@@ -1,7 +1,15 @@
+type ValueType = number | string | '__empty__'
+
+type ValueEntry = {
+  start: ValueType
+  end: ValueType
+  count: number
+}
+
 export default class Histogram {
-  static getRanges(data, numGroups = 12) {
-    const cleanedData = data.filter(
-      value =>
+  static getRanges(data: (number | null | undefined)[], numGroups = 12) {
+    const cleanedData: number[] = data.filter(
+      (value): value is number =>
         value !== null &&
         value !== undefined &&
         typeof value !== 'string' &&
@@ -9,8 +17,8 @@ export default class Histogram {
     )
 
     const ranges = [
-      { start: '__empty__', end: '__empty__' },
-      { start: 0, end: 0 },
+      { start: '__empty__', end: '__empty__', count: 0 },
+      { start: 0, end: 0, count: 0 },
     ]
 
     if (cleanedData.length === 0) return ranges
@@ -20,11 +28,11 @@ export default class Histogram {
     const minValue = cleanedData[0]
     const maxValue = cleanedData[cleanedData.length - 1]
 
-    function fromLog(value) {
+    function fromLog(value: number) {
       return Math.pow(10, value)
     }
 
-    function toLog(value) {
+    function toLog(value: number) {
       return Math.log10(value)
     }
 
@@ -44,6 +52,7 @@ export default class Histogram {
       ranges.push({
         start: groupMinValue,
         end: groupMaxValue,
+        count: 0,
       })
 
       currentLogMinValue = groupLogMaxValue
@@ -54,13 +63,14 @@ export default class Histogram {
     ranges.push({
       start: Math.round(lastGroupMinValue),
       end: Math.round(lastGroupMaxValue),
+      count: 0,
     })
 
     return ranges
   }
 
-  static addCount(ranges, data) {
-    let histogram = []
+  static addCount(ranges: ValueEntry[], data: (number | null | undefined)[]) {
+    let histogram: ValueEntry[] = []
     for (const range of ranges) {
       histogram.push({
         start: range.start,
@@ -79,7 +89,7 @@ export default class Histogram {
             foundMatch = true
             break
           }
-        } else if (value === null || value === undefined || value === '') {
+        } else if (value === null || value === undefined) {
           if (
             histogramObj.start === '__empty__' &&
             histogramObj.end === '__empty__'
@@ -88,7 +98,12 @@ export default class Histogram {
             foundMatch = true
             break
           }
-        } else if (value >= histogramObj.start && value <= histogramObj.end) {
+        } else if (
+          typeof histogramObj.start === 'number' &&
+          typeof histogramObj.end === 'number' &&
+          value >= histogramObj.start &&
+          value <= histogramObj.end
+        ) {
           histogramObj.count++
           foundMatch = true
           break
@@ -109,7 +124,7 @@ export default class Histogram {
     return histogram
   }
 
-  static get(allValues, nbRange) {
+  static get(allValues: (number | null | undefined)[], nbRange: number) {
     const ranges = this.getRanges(allValues, nbRange)
     return this.addCount(ranges, allValues)
   }

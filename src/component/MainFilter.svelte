@@ -3,8 +3,9 @@
   import MainFilter from '@lib/main-filter'
   import Switch from '@layout/Switch.svelte'
   import Button from '@layout/Button.svelte'
+  import type { Filter } from '@type'
 
-  let filters = $state([])
+  let filters: Filter[] = $state([])
 
   const savedFilters = MainFilter.get()
   const dbFilters = getLocalFilter()

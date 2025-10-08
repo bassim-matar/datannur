@@ -39,6 +39,9 @@
   import StatBox from '@stat/StatBox.svelte'
   import SearchBar from '@search/SearchBar.svelte'
   import dbSchema from '@src/db-schema.json'
+  import type { SearchHistoryEntry } from '@search/search-history'
+  import type { Log } from '@lib/logs'
+  import type { Favorite } from '@favorite/favorites'
 
   let errorLoadingDb = $state(false)
   let pageLoadedRoute = $state('')
@@ -54,7 +57,7 @@
     $isSmallMenu = getIsSmallMenu()
   }
 
-  function setOptionDefault(key, value = true) {
+  function setOptionDefault(key: string, value = true) {
     let optionValue = Options.get(key)
     if (optionValue === undefined) {
       optionValue = value
@@ -76,7 +79,7 @@
     console.log('init option', Math.round(performance.now() - timer) + ' ms')
   })()
 
-  DarkMode.init(Options)
+  DarkMode.init()
 
   $whenAppReady = (async () => {
     try {
@@ -108,16 +111,18 @@
 
       timer = performance.now()
       search.init()
-      Logs.init(userData.log)
-      Favorites.init(userData.favorite)
-      SearchHistory.init(userData.searchHistory, { limit: 100 })
+      Logs.init(userData.log as Log[] | null)
+      Favorites.init(userData.favorite as Favorite[])
+      SearchHistory.init(userData.searchHistory as SearchHistoryEntry[], {
+        limit: 100,
+      })
     } catch (e) {
       console.error(e)
       errorLoadingDb = true
     }
   })()
 
-  async function checkFromSearch(pageHashValue) {
+  async function checkFromSearch(pageHashValue: string) {
     await $whenAppReady
     const fromSearch = UrlParam.get('from_search')
     if (fromSearch) {
@@ -144,15 +149,13 @@
     const elem = jQuery(this)
     if (!elem?.data('powertip-initialized')) {
       elem?.data('powertip-initialized', true)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore - powerTip jQuery plugin not typed
+      // @ts-expect-error - powerTip is a jQuery plugin
       elem?.powerTip({
         placement: elem.hasClass('tooltip-top') ? 'n' : 's',
         smartPlacement: true,
         mouseOnToPopup: true,
       })
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore - powerTip jQuery plugin not typed
+      // @ts-expect-error - powerTip is a jQuery plugin
       elem?.powerTip('show')
     }
   })
