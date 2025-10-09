@@ -1,6 +1,5 @@
 import { UrlHash } from '@lib/url-hash'
 import Options from '@lib/options'
-import { getSortByName } from '@lib/db'
 import { getPercent } from '@lib/util'
 import type { AnyEntity, Column } from '@type'
 import type { Api } from 'datatables.net'
@@ -81,7 +80,11 @@ export function getCleanData(
   const tempData = [...data]
   const newData: (AnyEntity & { _rowNum: number })[] = []
   if (sortByName) {
-    tempData.sort(getSortByName)
+    tempData.sort((a, b) => {
+      const aName = ('name' in a ? a.name : '') ?? ''
+      const bName = ('name' in b ? b.name : '') ?? ''
+      return aName.localeCompare(bName)
+    })
   }
   let rowNum = 0
   for (const rows of tempData) {

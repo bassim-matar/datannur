@@ -101,8 +101,8 @@ export function getTimeAgo(
 }
 
 export function getPeriod(
-  start: string | number,
-  end: string | number,
+  start: string | number | Date,
+  end: string | number | Date,
   parse = false,
 ) {
   if (!start || !end) return ''

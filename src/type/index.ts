@@ -17,6 +17,11 @@ export type {
 
 // Entity types (business logic)
 export type {
+  WithRecursiveParent,
+  WithTags,
+  WithDocs,
+  WithFavorite,
+  WithPeriod,
   EntityWithRelations,
   Dataset,
   Variable,
@@ -34,9 +39,28 @@ export type {
   AnyEntity,
   EntityTypeMap,
   EntityName,
+  ParentableEntityName,
+  ParentableEntityTypeMap,
+  ParentableEntity,
+  ParentableEntityItem,
   FavoritableEntityName,
   FavoritableEntityMap,
   FavoritableEntity,
+  TaguableEntityName,
+  TaguableEntityMap,
+  TaguableEntity,
+  RecursiveEntityName,
+  RecursiveEntityMap,
+  RecursiveEntity,
+  DocableEntityName,
+  DocableEntityMap,
+  DocableEntity,
+  PeriodableEntityName,
+  PeriodableEntityMap,
+  PeriodableEntity,
+  MainEntity,
+  MainEntityName,
+  MainEntityMap,
 } from './entity'
 
 // Global declarations are auto-imported

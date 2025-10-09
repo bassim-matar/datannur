@@ -13,7 +13,7 @@
   let keyTab = $state(1)
 
   const institutions = db.getAll('institution')
-  makeParentsRelative(0, institutions)
+  makeParentsRelative(false, institutions)
   addMinimumDeep(institutions)
 
   const tags = db.getAll('tag').filter(tag => !!tag.nbInstitution)

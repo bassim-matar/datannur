@@ -2,13 +2,13 @@ import db from '@db'
 import { whenAppReady } from '@lib/store'
 import { ensureScriptLoaded } from '@lib/util'
 import { get } from 'svelte/store'
-import { entityNames } from '@lib/constant'
+import { mainEntityNames } from '@lib/constant'
 import escapeHtml from 'escape-html'
 import type { Index } from 'flexsearch'
-import type { BaseEntity } from '@type'
+import type { MainEntity, MainEntityName } from '@type'
 
 type EntityData = {
-  name: keyof typeof entityNames
+  name: MainEntityName
   items: Index
   data: unknown[]
 }
@@ -88,9 +88,9 @@ class Search {
       const variables: VariableName[] = ['name', 'description']
       for (const variable of variables) {
         const entitiesData: EntityData[] = []
-        for (const entity in entityNames) {
+        for (const entity in mainEntityNames) {
           entitiesData.push({
-            name: entity as keyof typeof entityNames,
+            name: entity as MainEntityName,
             items: new window.FlexSearch.Index({ tokenize: 'forward' }),
             data: [],
           })
@@ -118,12 +118,12 @@ class Search {
     if (this.loading) await this.loading
     const result: SearchResult[] = []
     const idsFound: Record<string, unknown[]> = {}
-    for (const entity in entityNames) idsFound[entity] = []
+    for (const entity in mainEntityNames) idsFound[entity] = []
     for (const variable of this.allSearch) {
       for (const entity of variable.entities) {
         const itemsId = await this.getItemsId(toSearch, entity, idsFound)
         for (const itemId of itemsId) {
-          const item = db.get(entity.name, itemId) as BaseEntity & {
+          const item = db.get(entity.name, itemId) as MainEntity & {
             folderId?: string | number
             folderName?: string
             originalName?: string
@@ -140,7 +140,8 @@ class Search {
             folderName: item.folderName ?? '',
             _entity: item._entity ?? '',
             _entityClean:
-              entityNames[item._entity as keyof typeof entityNames] ?? '',
+              mainEntityNames[item._entity as keyof typeof mainEntityNames] ??
+              '',
           })
         }
       }

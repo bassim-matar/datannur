@@ -21,10 +21,12 @@
 
   const modalitiesId = new Set(modalities.map(item => item.id))
 
-  const datasets = [
-    ...getLineage('dataset', dataset, 'source'),
-    ...getLineage('dataset', dataset, 'derived'),
-  ]
+  const datasets = dataset
+    ? [
+        ...getLineage('dataset', dataset, 'source'),
+        ...getLineage('dataset', dataset, 'derived'),
+      ]
+    : []
 
   const evolutions = db
     .getAll('evolution')

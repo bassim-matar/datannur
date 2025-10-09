@@ -11,7 +11,7 @@
   import aboutFile from '@markdown/about-folder.md?raw'
 
   const folders = db.getAll('folder')
-  makeParentsRelative(0, folders)
+  makeParentsRelative(false, folders)
   addMinimumDeep(folders)
 
   const tags = db.getAll('tag').filter(tag => !!tag.nbFolder)

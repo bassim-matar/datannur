@@ -1,10 +1,10 @@
 import db from '@db'
 
 interface UserData {
-  log?: unknown[]
-  favorite?: unknown[]
-  searchHistory?: unknown[]
-  [key: string]: unknown[] | undefined
+  log?: Record<string, unknown>[]
+  favorite?: Record<string, unknown>[]
+  searchHistory?: Record<string, unknown>[]
+  [key: string]: Record<string, unknown>[] | undefined
 }
 
 let userData: UserData | null = null

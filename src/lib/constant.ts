@@ -1,20 +1,24 @@
 export const locale = 'fr'
 export const isBigLimit = 5
 
-export const entityNames = {
+export const mainEntityNames = {
   institution: 'Institution',
-  owner: 'Fournisseur',
-  manager: 'Gestionnaire',
   folder: 'Dossier',
   tag: 'Mot clé',
   doc: 'Doc',
   dataset: 'Dataset',
   variable: 'Variable',
   modality: 'Modalité',
+} as const
+
+export const entityNames = {
+  ...mainEntityNames,
+  owner: 'Fournisseur',
+  manager: 'Gestionnaire',
   value: 'Valeur',
   freq: 'Fréquence',
   log: 'Log',
-}
+} as const
 
 export const parentEntities = {
   institution: 'parent',
@@ -26,7 +30,7 @@ export const parentEntities = {
   modality: 'folder',
   value: 'modality',
   freq: 'variable',
-}
+} as const
 
 export const varTypes = {
   integer: 'nombre',
@@ -35,7 +39,7 @@ export const varTypes = {
   boolean: 'booléen',
   date: 'date',
   other: 'autre',
-}
+} as const
 
 export const evolutionTypes = {
   add: 'Ajout',
@@ -45,7 +49,7 @@ export const evolutionTypes = {
   endDate: 'Validité fin',
   lastUpdateDate: 'Dernière mise à jour',
   nextUpdateDate: 'Prochaine mise à jour',
-}
+} as const
 
 export const columnCleanNames = {
   startDate: 'Validité début',
@@ -56,12 +60,12 @@ export const columnCleanNames = {
   name: 'Nom',
   description: 'Description',
   updatingEach: ['Fréquence', 'de mise à jour'],
-}
+} as const
 
 export const columnIcons = {
   updatingEach: 'frequency',
   lastUpdate: 'lastUpdateDate',
-}
+} as const
 
 export const entityToIcon = {
   institution: 'university',
@@ -134,4 +138,4 @@ export const entityToIcon = {
   nbSource: 'arrow-up',
   nbDerived: 'arrow-down',
   freq: 'chart-bar',
-}
+} as const
