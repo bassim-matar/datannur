@@ -37,6 +37,7 @@ const pageNames = [
   'favorite',
   'options',
   'about',
+  '?tab=evolutions',
   'search/?search=folder',
   'meta',
   'metaFolder/data',

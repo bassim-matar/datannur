@@ -1,10 +1,10 @@
 import db from '@db'
 import { entityNames } from '@lib/constant'
-import type { EntityName } from '@type'
+import type { EntityName, MainEntityName } from '@type'
 import type { SearchResult } from './search'
 
 export type SearchHistoryEntry = {
-  entity: string
+  entity: MainEntityName
   entityId: string | number
   timestamp: number
   id: number
@@ -24,7 +24,7 @@ export default class SearchHistory {
   static getAll() {
     return this.searchHistory
   }
-  static add(entity: string, entityId: string | number) {
+  static add(entity: MainEntityName, entityId: string | number) {
     let searchEntityId = 1
     this.searchHistory = this.searchHistory
       .filter(
@@ -55,7 +55,7 @@ export default class SearchHistory {
   static save() {
     db.browser.set(this.dbKey, this.searchHistory)
   }
-  static remove(entity: string, entityId: string | number) {
+  static remove(entity: MainEntityName, entityId: string | number) {
     this.searchHistory = this.searchHistory.filter(
       searchItem =>
         searchItem.entity !== entity || searchItem.entityId !== entityId,

@@ -8,30 +8,39 @@
   import Favorite from '@favorite/Favorite.svelte'
   import { onMount } from 'svelte'
   import type { MouseEventHandler } from 'svelte/elements'
+  import type { MainEntityName } from '@type'
 
   let {
     type,
     name,
     mode = 'normal',
-    id = null,
+    id,
     info = '',
-    toggleInfo = (() => {}) as MouseEventHandler<HTMLButtonElement>,
+    toggleInfo = () => {},
     isFavoritePage = false,
+  }: {
+    type: string
+    name: string
+    mode?: string
+    id?: string | number
+    info?: string
+    toggleInfo?: MouseEventHandler<HTMLButtonElement>
+    isFavoritePage?: boolean
   } = $props()
 
   let title = $state(name)
   let isFavorite = $state(false)
 
   let separator = ' | '
-  const entityName = entityNames[type]
+  const entityName = entityNames[type as MainEntityName]
 
   if (mode !== 'mainTitle') {
     title = entityName + separator + name
   }
 
   if (id) {
-    const item: { isFavorite: boolean } = db.get(type, id)
-    isFavorite = item.isFavorite
+    const item = db.get(type as MainEntityName, id)
+    isFavorite = item?.isFavorite ?? false
   }
 
   let itemPage = id ? true : false

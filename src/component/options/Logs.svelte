@@ -5,15 +5,16 @@
   import Column from '@lib/column'
   import { entityNames } from '@lib/constant'
   import escapeHTML from 'escape-html'
+  import type { Log, Column as ColumnType } from '@type'
 
-  let { logs } = $props()
+  let { logs }: { logs: Log[] } = $props()
 
   for (const log of logs) {
     log._entityClean = log.entity ? entityNames[log.entity] : ''
     log._entity = log.entity
   }
 
-  let columns = [
+  let columns: ColumnType[] = [
     {
       data: 'action',
       title: Render.icon('log') + 'Log',

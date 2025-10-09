@@ -11,7 +11,7 @@
   import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
   import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
-  import type { AnyEntity } from '@type'
+  import type { MainEntity, MainEntityName, Tag } from '@type'
 
   let { tag } = $props()
 
@@ -24,7 +24,7 @@
   let docs
   let datasets
   let variables
-  let tags
+  let tags: Tag[] = []
 
   let withInstitutions = db.getAll('institution', { tag })
   let withFolders = db.getAll('folder', { tag })
@@ -52,9 +52,13 @@
   withVariables = removeDuplicateById(withVariables)
   withDocs = removeDuplicateById(withDocs)
 
-  function getOpposite(entity, withTagItems: AnyEntity[], selfId = null) {
+  function getOpposite(
+    entity: MainEntityName,
+    withTagItems: MainEntity[],
+    selfId = null,
+  ) {
     if (withTagItems.length === 0) return []
-    const all: AnyEntity[] = []
+    const all: MainEntity[] = []
     const ids: unknown[] = []
     for (let item of withTagItems) {
       if ('id' in item) ids.push(item.id)
@@ -106,10 +110,12 @@
         evo =>
           (evo.entity === 'tag' && evo.id === tag.id) ||
           (evo.parentEntity === 'tag' && evo.parentEntityId === tag.id) ||
-          (evo.entity === 'variable' && variablesId.has(evo.id)) ||
-          (evo.entity === 'dataset' && datasetsId.has(evo.id)) ||
-          (evo.entity === 'folder' && foldersId.has(evo.id)) ||
-          (evo.entity === 'institution' && institutionsId.has(evo.id)),
+          (evo.entity === 'variable' && evo.id && variablesId.has(evo.id)) ||
+          (evo.entity === 'dataset' && evo.id && datasetsId.has(evo.id)) ||
+          (evo.entity === 'folder' && evo.id && foldersId.has(evo.id)) ||
+          (evo.entity === 'institution' &&
+            evo.id &&
+            institutionsId.has(evo.id)),
       )
 
     const stat = [
@@ -156,7 +162,7 @@
     toggleInfo={toggleOpposite}
   />
   {#if showOpenAllSwitch}
-    <OpenAllSwitch onChange={value => (keyTab = value)} />
+    <OpenAllSwitch onChange={(value: boolean) => (keyTab = Number(value))} />
   {/if}
   {#key Number(opposite) + keyTab}
     <Tabs {tabs} />

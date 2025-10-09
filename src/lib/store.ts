@@ -11,11 +11,16 @@ export const footerVisible = writable(true)
 export const pageContentLoaded = writable(false)
 export const modalitiesSimilitutes = writable([] as unknown[])
 export const nbFavorite = writable(0)
-export const tabSelected = writable({ icon: '', key: '', nb: 0 })
 export const allTabsIcon = writable({})
-export const allTabs = writable({ stat: {} as Row })
+export const allTabs = writable({} as { [key: string]: Row })
 export const allTablesLoaded = writable(false)
 export const searchValue = writable('')
 export const reloadIncrement = writable(0)
 export const currentTabData = writable([] as Row[])
 export const whenAppReady = writable<Promise<void>>(new Promise(() => {}))
+export const tabSelected = writable({
+  icon: '',
+  key: '',
+  nb: 0,
+  footerVisible: true,
+})

@@ -62,6 +62,6 @@
 </script>
 
 <section class="section">
-  <Title type="dataset" name={dataset?.name} id={dataset?.id} />
+  <Title type="dataset" name={dataset?.name ?? ''} id={dataset?.id} />
   <Tabs {tabs} />
 </section>

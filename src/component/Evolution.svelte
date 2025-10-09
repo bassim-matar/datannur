@@ -13,25 +13,24 @@
   import Options from '@lib/options'
   import Datatable from '@datatable/Datatable.svelte'
   import escapeHtml from 'escape-html'
+  import { evolutionTypes } from '@lib/constant'
+  import type { Evolution, Column as ColumnType } from '@type'
 
-  let { evolutions } = $props()
+  let { evolutions }: { evolutions: Evolution[] } = $props()
 
   let evolutionSummary = $state(Options.get('evolutionSummary'))
 
-  function sortEvolutions(toSort) {
+  function sortEvolutions(toSort: Evolution[]) {
     if (toSort.length === 0) return
     toSort.sort((a, b) => b.timestamp - a.timestamp)
   }
 
-  function filterEvolutions(toFilter) {
-    if (toFilter.length === 0) return
-
+  function filterEvolutions(toFilter: Evolution[]) {
+    if (toFilter.length === 0) return []
     const detailEntities = ['dataset', 'variable', 'modality', 'value', 'freq']
-
     const mainRows = toFilter.filter(
       evo => !detailEntities.includes(evo.entity),
     )
-
     return mainRows
   }
 
@@ -55,7 +54,7 @@
 
   sortEvolutions(evolutionsSorted)
 
-  function defineColumns() {
+  function defineColumns(): ColumnType[] {
     return [
       Column.favorite(),
       {
@@ -69,9 +68,10 @@
         render: (data, type, row) => {
           if (type !== 'display') return data
           data = escapeHtml(data)
+          const evolutionType = row.type as keyof typeof evolutionTypes
           return `
-          <span class="icon icon-${row.type}" title="${data}">
-            <i class="fas fa-${entityToIcon[row.type]}"></i>
+          <span class="icon icon-${evolutionType}" title="${data}">
+            <i class="fas fa-${entityToIcon[evolutionType]}"></i>
           </span>
           <span style="display: none;">${data}</span>`
         },
@@ -89,11 +89,20 @@
         render: (data, type) => {
           if (!data) return ''
 
+          const dataStr = String(data)
           let columnCleanNameLine2 = ''
-          let columnCleanName = data
-          if (columnCleanNames[data]) columnCleanName = columnCleanNames[data]
-          else if (Column[data.toLowerCase()])
-            columnCleanName = Column[data.toLowerCase()]?.name
+          let columnCleanName: string | readonly string[] | string[] = dataStr
+
+          const cleanName =
+            columnCleanNames[dataStr as keyof typeof columnCleanNames]
+          if (cleanName) {
+            columnCleanName = cleanName
+          } else {
+            const col = Column[dataStr.toLowerCase() as keyof typeof Column]
+            if (col && typeof col === 'object' && 'name' in col) {
+              columnCleanName = (col.name as string | string[]) ?? dataStr
+            }
+          }
 
           if (Array.isArray(columnCleanName))
             [columnCleanName, columnCleanNameLine2] = columnCleanName
@@ -105,20 +114,21 @@
             )
           }
 
-          data = escapeHtml(data)
-          columnCleanName = escapeHtml(columnCleanName)
-          columnCleanNameLine2 = escapeHtml(columnCleanNameLine2)
-          let icon = data
-          if (columnIcons[data]) icon = columnIcons[data]
+          const dataEscaped = escapeHtml(dataStr)
+          const columnCleanNameEscaped = escapeHtml(String(columnCleanName))
+          const columnCleanNameLine2Escaped = escapeHtml(columnCleanNameLine2)
+          let icon = dataStr
+          if (columnIcons[dataStr as keyof typeof columnIcons])
+            icon = columnIcons[dataStr as keyof typeof columnIcons]
 
           return `
           <div style="display: flex; align-items: center;">
-            <span class="icon icon-${icon}" title="${data}">
-              <i class="fas fa-${entityToIcon[icon] || icon}"></i>
+            <span class="icon icon-${icon}" title="${dataEscaped}">
+              <i class="fas fa-${entityToIcon[icon as keyof typeof entityToIcon] ?? icon}"></i>
             </span>
             <span style="font-size: 13px;">
-              ${columnCleanName}
-              ${columnCleanNameLine2 ? `<br>${columnCleanNameLine2}` : ''}
+              ${columnCleanNameEscaped}
+              ${columnCleanNameLine2Escaped ? `<br>${columnCleanNameLine2Escaped}` : ''}
             </span>
           </div>`
         },

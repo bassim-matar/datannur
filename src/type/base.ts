@@ -49,14 +49,6 @@ export type FilterActive = {
   isActive: boolean
 }
 
-export type Log = {
-  id: string | number
-  entityId: string | number
-  entity: string
-  action: string
-  timestamp: number
-}
-
 export type Option = {
   id: string
   value: string

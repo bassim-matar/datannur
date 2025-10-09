@@ -77,9 +77,9 @@ export default [
     ignores: [
       '**/*.json.js',
       'app/',
-      'src/.generated/',
       'node_modules/',
       'public/assets/',
+      'src/.generated/',
     ],
   },
   {
