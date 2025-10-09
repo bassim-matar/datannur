@@ -2,7 +2,17 @@
 
 ## Project Structure
 
-**datannur** is a portable client-side data catalog that runs without a server. Key architectural aspects:
+**datannur**### 5. Handle Optional/Nullable Values
+
+- **ALWAYS** handle `undefined` and `null` cases with:
+  - Nullish coalescing: `value ?? defaultValue`
+  - Optional chaining: `obj?.prop?.nested`
+  - Type guards when needed: `if (value !== undefined)`
+- **NEVER** ignore optional properties - handle them explicitly and concisely
+
+### 6. No Type Workarounds
+
+- **NEVER** use `any`, `@ts-ignore`, `@ts-expect-error`, or `eslint-disable` to bypass TypeScript errorsble client-side data catalog that runs without a server. Key architectural aspects:
 
 - **Svelte 5 + TypeScript + Vite** stack with custom plugins
 - **Client-side database**: Uses jsonjsdb (.json.js files) for browser-based relational data
@@ -45,12 +55,43 @@
 - **Consistent Naming**: Use clear, descriptive names for variables, functions, and classes
 - **Single Responsibility**: Each function and class should have a single, well-defined purpose
 
-## TypeScript Strict Mode
+## TypeScript Best Practices - ALWAYS PRIORITIZE THESE SOLUTIONS
 
-- **No Type Workarounds**: Never use `any`, `@ts-ignore`, `@ts-expect-error`, or `eslint-disable` to bypass TypeScript errors
-- **Proper Type Casting**: Use explicit type assertions (`as Type`) only when absolutely necessary and you're certain of the type
-- **Handle Undefined/Null**: Always handle `undefined` and `null` cases properly with optional chaining (`?.`), nullish coalescing (`??`), or explicit checks
-- **Fix Root Cause**: When encountering TypeScript errors, fix the underlying issue rather than suppressing the error
-- **Strict Typing**: Prefer specific types over generic ones - use `Record<string, unknown>`, `string[]`, etc. instead of `any` or `unknown` when possible
-- **Type Guards**: Use type guards and type narrowing to handle union types safely
-- **Proper Generics**: Define and use generic types when working with reusable functions or components
+### 1. Prefer Concise Built-in Solutions
+
+- **ALWAYS prefer** nullish coalescing (`??`), optional chaining (`?.`), and modern operators over verbose checks
+- **Example**: Use `arr.flatMap(x => x.items ?? [])` instead of `arr.flatMap(x => x.items).filter(x => x !== undefined)`
+- **Example**: Use `value ?? defaultValue` instead of `value !== undefined ? value : defaultValue`
+
+### 2. Prefer Concise Type Syntax
+
+- **ALWAYS prefer** `T[]` over `Array<T>` for arrays
+- **ALWAYS prefer** `{ [key: string]: Type }` over `Record<string, Type>` for object types
+- **Example**: Use `string[]` instead of `Array<string>`
+- **Example**: Use `{ [id: string]: number }` instead of `Record<string, number>`
+- **Example**: Use `(Entity & { extra: string })[]` instead of `Array<Entity & { extra: string }>`
+
+### 3. Fix Types at the Source
+
+- **ALWAYS** fix type definitions at their source rather than adding casts or workarounds at usage sites
+- **Example**: If `UserData` values are wrong, fix the interface definition, not cast everywhere
+- **Example**: Use generics to preserve types through function chains rather than casting results
+
+### 4. Type Safety Without Casts
+
+- **AVOID** type assertions (`as Type`) - they bypass type checking
+- **PREFER** type guards, narrowing, and proper type definitions
+- **USE** generics to preserve type information through transformations
+- **Example**: `function removeDuplicateById<T extends MainEntity>(items: T[]): T[]` preserves exact type
+
+### 5. Handle Optional/Nullable Values
+
+- **ALWAYS** handle `undefined` and `null` cases with:
+  - Nullish coalescing: `value ?? defaultValue`
+  - Optional chaining: `obj?.prop?.nested`
+  - Type guards when needed: `if (value !== undefined)`
+- **NEVER** ignore optional properties - handle them explicitly and concisely
+
+### 5. No Type Workarounds
+
+- **NEVER** use `any`, `@ts-ignore`, `@ts-expect-error`, or `eslint-disable` to bypass TypeScript errors
