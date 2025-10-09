@@ -12,179 +12,219 @@ import type {
 } from './base'
 import { parentEntities, evolutionTypes } from '../lib/constant'
 
-// Extended base entity with relations (defined after Tag and Doc)
+// Composable type fragments for entity properties
+export type WithRecursiveParent<T = BaseEntity> = {
+  parentId?: string | number
+  parents?: T[]
+  parentsRelative?: T[]
+  minimumDeep?: number
+  noIndent?: boolean
+}
+
+export type WithTags = {
+  tagIds?: string
+  tags?: Tag[]
+}
+
+export type WithDocs = {
+  docIds?: string
+  docs?: Doc[]
+  docsRecursive?: (Doc & { inherited?: string })[]
+}
+
+export type WithFavorite = {
+  isFavorite?: boolean
+  favoriteTimestamp?: number
+}
+
+export type WithPeriod = {
+  startDate?: string
+  endDate?: string
+  period?: string
+  periodDuration?: string
+}
+
+export type WithLineage = {
+  sourceIds?: Set<string | number>
+  derivedIds?: Set<string | number>
+}
+
+// Legacy type for backward compatibility
 export type EntityWithRelations = BaseEntity & {
   tags?: Tag[]
   docs?: Doc[]
   docsRecursive?: (Doc & { inherited?: string })[]
 }
 
-export type Dataset = EntityWithRelations & {
-  folderId?: string | number
-  managerId?: string | number
-  ownerId?: string | number
-  tagIds?: string
-  docIds?: string
-  dataPath?: string
-  deliveryFormat?: string
-  type?: string
-  link?: string
-  localisation?: string
-  nbRow?: number
-  startDate?: string
-  endDate?: string
-  lastUpdateDate?: string
-  updatingEach?: string
-  noMoreUpdate?: boolean
+export type Dataset = BaseEntity &
+  WithTags &
+  WithDocs &
+  WithFavorite &
+  WithPeriod &
+  WithLineage & {
+    folderId?: string | number
+    managerId?: string | number
+    ownerId?: string | number
+    dataPath?: string
+    deliveryFormat?: string
+    type?: string
+    link?: string
+    localisation?: string
+    nbRow?: number
+    lastUpdateDate?: string
+    updatingEach?: string
+    noMoreUpdate?: boolean
 
-  // Computed fields added during processing
-  typeClean?: string
-  folderName?: string
-  ownerName?: string
-  managerName?: string
-  nbVariable?: number
-  sourceIds?: Set<string | number>
-  derivedIds?: Set<string | number>
-  nextUpdateDate?: string
-}
+    // Computed fields added during processing
+    typeClean?: string
+    folderName?: string
+    ownerName?: string
+    managerName?: string
+    nbVariable?: number
+    nextUpdateDate?: string
+  }
 
 export type FreqPreview = Freq & {
   total: number
   max: number
 }
 
-export type Variable = BaseEntity & {
-  datasetId: string | number
-  modalityIds?: string
-  tagIds?: string
-  originalName?: string
-  key?: string | boolean
-  nbDistinct?: number
-  nbDuplicate?: number
-  nbMissing?: number
-  type?: string
-  startDate?: string
-  endDate?: string
-  sourceVarIds?: string
+export type Variable = BaseEntity &
+  WithTags &
+  WithFavorite &
+  WithPeriod &
+  WithLineage & {
+    datasetId: string | number
+    modalityIds?: string
+    originalName?: string
+    key?: string | boolean
+    nbDistinct?: number
+    nbDuplicate?: number
+    nbMissing?: number
+    type?: string
+    sourceVarIds?: string
 
-  // Computed fields added during processing
-  typeClean?: string
-  num?: number
-  nbRow?: number
-  datasetName?: string
-  datasetType?: string
-  folderId?: string | number
-  folderName?: string
-  ownerId?: string | number
-  ownerName?: string
-  managerId?: string | number
-  managerName?: string
-  modalities?: Modality[]
-  values?: Value[]
-  valuesPreview?: Value[]
-  nbValue?: number
-  sourceIds?: (string | number)[]
-  derivedIds?: (string | number)[]
-  hasFreq?: boolean
-  freqPreview?: FreqPreview[]
-}
+    // Computed fields added during processing
+    typeClean?: string
+    num?: number
+    nbRow?: number
+    datasetName?: string
+    datasetType?: string
+    folderId?: string | number
+    folderName?: string
+    ownerId?: string | number
+    ownerName?: string
+    managerId?: string | number
+    managerName?: string
+    modalities?: Modality[]
+    values?: Value[]
+    valuesPreview?: Value[]
+    nbValue?: number
+    hasFreq?: boolean
+    freqPreview?: FreqPreview[]
+  }
 
-export type Modality = BaseEntity & {
-  folderId?: string | number
-  type?: string
+export type Modality = BaseEntity &
+  WithFavorite & {
+    folderId?: string | number
+    type?: string
 
-  // Computed fields added during processing
-  typeClean?: string
-  nbVariable?: number
-  variables?: Variable[]
-  values?: Value[]
-  valuesPreview?: Value[]
-  nbValue?: number
-}
+    // Computed fields added during processing
+    folderName?: string
+    typeClean?: string
+    nbVariable?: number
+    variables?: Variable[]
+    values?: Value[]
+    valuesPreview?: Value[]
+    nbValue?: number
+  }
 
-export type Folder = EntityWithRelations & {
-  parentId?: string | number
-  managerId?: string | number
-  ownerId?: string | number
-  tagIds?: string
-  docIds?: string
-  dataPath?: string
-  deliveryFormat?: string
-  gitCode?: string
-  lastUpdateDate?: string
-  localisation?: string
-  metadataPath?: string
-  surveyType?: string
-  startDate?: string
-  endDate?: string
-  updatingEach?: string
-  noMoreUpdate?: boolean
+export type Folder = BaseEntity &
+  WithRecursiveParent &
+  WithTags &
+  WithDocs &
+  WithFavorite &
+  WithPeriod & {
+    managerId?: string | number
+    ownerId?: string | number
+    dataPath?: string
+    deliveryFormat?: string
+    gitCode?: string
+    lastUpdateDate?: string
+    localisation?: string
+    metadataPath?: string
+    surveyType?: string
+    updatingEach?: string
+    noMoreUpdate?: boolean
 
-  // Computed fields added during processing
-  ownerName?: string
-  managerName?: string
-  nbChild?: number
-  nbChildRecursive?: number
-  nbDatasetRecursive?: number
-  nbVariableRecursive?: number
-  nextUpdateDate?: string
-}
+    // Computed fields added during processing
+    ownerName?: string
+    managerName?: string
+    nbChild?: number
+    nbChildRecursive?: number
+    nbDatasetRecursive?: number
+    nbVariableRecursive?: number
+    nextUpdateDate?: string
+  }
 
-export type Institution = EntityWithRelations & {
-  parentId?: string | number
-  tagIds?: string
-  docIds?: string
-  email?: string
-  phone?: string
-  startDate?: string
-  endDate?: string
+export type Institution = BaseEntity &
+  WithRecursiveParent &
+  WithTags &
+  WithDocs &
+  WithFavorite &
+  WithPeriod & {
+    email?: string
+    phone?: string
 
-  // Computed fields added during processing
-  nbChild?: number
-  nbChildRecursive?: number
-  nbFolder?: number
-  nbDataset?: number
-  nbFolderRecursive?: number
-  nbDatasetRecursive?: number
-  nbVariableRecursive?: number
-}
+    // Computed fields added during processing
+    nbChild?: number
+    nbChildRecursive?: number
+    nbFolder?: number
+    nbDataset?: number
+    nbFolderRecursive?: number
+    nbDatasetRecursive?: number
+    nbVariableRecursive?: number
+  }
 
-export type Tag = EntityWithRelations & {
-  parentId?: string | number
-  docIds?: string
-
-  // Computed fields added during processing
-  nbInstitution?: number
-  nbFolder?: number
-  nbDataset?: number
-  nbVariable?: number
-  nbChild?: number
-  nbChildRecursive?: number
-  nbInstitutionRecursive?: number
-  nbFolderRecursive?: number
-  nbDocRecursive?: number
-  nbDatasetRecursive?: number
-  nbVariableRecursive?: number
-}
+export type Tag = BaseEntity &
+  WithRecursiveParent &
+  WithDocs &
+  WithFavorite & {
+    // Computed fields added during processing
+    entities?: { name: string; nb: number }[]
+    nbInstitution?: number
+    nbFolder?: number
+    nbDataset?: number
+    nbVariable?: number
+    nbChild?: number
+    nbChildRecursive?: number
+    nbInstitutionRecursive?: number
+    nbFolderRecursive?: number
+    nbDocRecursive?: number
+    nbDatasetRecursive?: number
+    nbVariableRecursive?: number
+  }
 
 export type TagWithChildren = Tag & {
   children?: { [key: string]: TagWithChildren }
 }
 
-export type Doc = BaseEntity & {
-  path?: string
-  type?: string
-  lastUpdate?: number
-  lastUpdateDate?: string
+export type Doc = BaseEntity &
+  WithFavorite & {
+    path?: string
+    type?: string
+    lastUpdate?: number
+    lastUpdateDate?: string
 
-  // Computed fields added during processing
-  entity?: string
-  entityId?: string | number
-  nbInstitution?: number
-  nbFolder?: number
-  nbDataset?: number
-  nbTag?: number
-}
+    // Computed fields added during processing
+    entities?: { name: string; nb: number }[]
+    entity?: string
+    entityId?: string | number
+    nbInstitution?: number
+    nbFolder?: number
+    nbDataset?: number
+    nbTag?: number
+  }
 
 // Meta entities (for metadata datasets)
 export type MetaVariable = BaseEntity & {
@@ -195,6 +235,7 @@ export type MetaVariable = BaseEntity & {
   isInData?: boolean
 
   // Computed fields
+  num?: number
   isMeta?: boolean
   typeClean?: string
   nbValue?: number
@@ -231,7 +272,7 @@ export type MetaFolder = BaseEntity & {
 
 export type Evolution = {
   id?: string | number
-  entity: MainEntityName
+  entity: ParentableEntityName
   entityId: string | number
   type: keyof typeof evolutionTypes
   timestamp: number
@@ -241,10 +282,10 @@ export type Evolution = {
   newValue?: string
   variable?: string
   _deleted?: boolean
-  _entity?: MainEntityName
+  _entity?: ParentableEntityName
   _entityClean?: string
   typeClean?: string
-  parentEntity?: MainEntityName
+  parentEntity?: ParentableEntityName
   parentEntityClean?: string
   time?: string
   parentName?: string
@@ -256,20 +297,22 @@ export type Evolution = {
   _toHide?: boolean
 }
 
-// Entity type mapping for type-safe database operations
-export type EntityTypeMap = {
-  config: Config
+export type MainEntityMap = {
+  institution: Institution
+  folder: Folder
+  tag: Tag
+  doc: Doc
   dataset: Dataset
   variable: Variable
   modality: Modality
+}
+
+export type EntityTypeMap = MainEntityMap & {
+  config: Config
   value: Value
   freq: Freq
-  folder: Folder
-  institution: Institution
   owner: Institution
   manager: Institution
-  tag: Tag
-  doc: Doc
   evolution: Evolution
   metaVariable: MetaVariable
   metaDataset: MetaDataset
@@ -286,22 +329,47 @@ export type EntityTypeMap = {
 export type EntityName = keyof EntityTypeMap
 export type AnyEntity = EntityTypeMap[EntityName]
 
-export type MainEntityName = keyof typeof parentEntities
-export type MainEntityTypeMap = Pick<EntityTypeMap, MainEntityName>
-export type MainEntity = MainEntityTypeMap[MainEntityName]
+export type MainEntityName = keyof MainEntityMap
+export type MainEntity = MainEntityMap[MainEntityName]
 
-export type MainEntityItem = MainEntity & {
+export type ParentableEntityName = keyof typeof parentEntities
+export type ParentableEntityTypeMap = Pick<EntityTypeMap, ParentableEntityName>
+export type ParentableEntity = ParentableEntityTypeMap[ParentableEntityName]
+
+export type ParentableEntityItem = ParentableEntity & {
   _deleted: boolean
   parentEntityId?: string | number
 }
 
-export type FavoritableEntityName =
-  | 'institution'
-  | 'folder'
-  | 'tag'
-  | 'doc'
-  | 'dataset'
-  | 'variable'
-  | 'modality'
+// Auto-generated entity capability types using conditional types
+export type FavoritableEntityName = {
+  [K in keyof EntityTypeMap]: EntityTypeMap[K] extends WithFavorite ? K : never
+}[keyof EntityTypeMap]
 export type FavoritableEntityMap = Pick<EntityTypeMap, FavoritableEntityName>
 export type FavoritableEntity = FavoritableEntityMap[FavoritableEntityName]
+
+export type TaguableEntityName = {
+  [K in keyof EntityTypeMap]: EntityTypeMap[K] extends WithTags ? K : never
+}[keyof EntityTypeMap]
+export type TaguableEntityMap = Pick<EntityTypeMap, TaguableEntityName>
+export type TaguableEntity = TaguableEntityMap[TaguableEntityName]
+
+export type RecursiveEntityName = {
+  [K in keyof EntityTypeMap]: EntityTypeMap[K] extends WithRecursiveParent
+    ? K
+    : never
+}[keyof EntityTypeMap]
+export type RecursiveEntityMap = Pick<EntityTypeMap, RecursiveEntityName>
+export type RecursiveEntity = RecursiveEntityMap[RecursiveEntityName]
+
+export type DocableEntityName = {
+  [K in keyof EntityTypeMap]: EntityTypeMap[K] extends WithDocs ? K : never
+}[keyof EntityTypeMap]
+export type DocableEntityMap = Pick<EntityTypeMap, DocableEntityName>
+export type DocableEntity = DocableEntityMap[DocableEntityName]
+
+export type PeriodableEntityName = {
+  [K in keyof EntityTypeMap]: EntityTypeMap[K] extends WithPeriod ? K : never
+}[keyof EntityTypeMap]
+export type PeriodableEntityMap = Pick<EntityTypeMap, PeriodableEntityName>
+export type PeriodableEntity = PeriodableEntityMap[PeriodableEntityName]

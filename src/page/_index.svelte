@@ -21,13 +21,13 @@
   const docs = db.getAll('doc')
   const evolutions = db.getAll('evolution')
 
-  makeParentsRelative(0, institutions)
-  makeParentsRelative(0, folders)
+  makeParentsRelative(false, institutions)
+  makeParentsRelative(false, folders)
   addMinimumDeep(institutions)
   addMinimumDeep(folders)
 
   if (db.useRecursive.tag) {
-    makeParentsRelative(0, tags)
+    makeParentsRelative(false, tags)
     addMinimumDeep(tags)
   }
 

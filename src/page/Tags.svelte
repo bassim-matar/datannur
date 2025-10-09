@@ -14,7 +14,7 @@
 
   const tags = db.getAll('tag')
   if (db.useRecursive.tag) {
-    makeParentsRelative(0, tags)
+    makeParentsRelative(false, tags)
     addMinimumDeep(tags)
   }
 

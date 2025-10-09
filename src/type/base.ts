@@ -2,24 +2,14 @@ import type { ConfigColumns } from 'datatables.net'
 
 export type NullableNumber = number | null | undefined | false
 
-// Base entity type without circular dependencies
 export type BaseEntity = {
   id: string | number
   name: string
   description?: string
 
-  // Fields added during processing in db.ts
+  // Computed fields added during processing
   _entity?: string
   _entityClean?: string
-  isFavorite?: boolean
-  favoriteTimestamp?: number
-  parents?: BaseEntity[]
-  parentsRelative?: BaseEntity[]
-  entities?: { name: string; nb: number }[]
-  period?: string
-  periodDuration?: string
-  minimumDeep?: number
-  noIndent?: boolean
 }
 
 // General types

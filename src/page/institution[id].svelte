@@ -34,7 +34,7 @@
     db.getAll('variable', { dataset }),
   )
 
-  let modalities = variables.flatMap(variable => variable.modalities)
+  let modalities = variables.flatMap(variable => variable.modalities ?? [])
   modalities = removeDuplicateById(modalities)
 
   const tags = Tags.getFromEntities({ institutions, folders, datasets })
@@ -53,11 +53,12 @@
       evo =>
         (evo.entity === 'institution' &&
           (evo.id === institution.id || institutionsId.has(evo.id!))) ||
-        (evo.entity === 'folder' && foldersId.has(evo.id)) ||
-        (evo.entity === 'dataset' && datasetsId.has(evo.id)) ||
-        (evo.entity === 'variable' && variablesId.has(evo.id)) ||
-        (evo.entity === 'modality' && modalitiesId.has(evo.id)) ||
+        (evo.entity === 'folder' && evo.id && foldersId.has(evo.id)) ||
+        (evo.entity === 'dataset' && evo.id && datasetsId.has(evo.id)) ||
+        (evo.entity === 'variable' && evo.id && variablesId.has(evo.id)) ||
+        (evo.entity === 'modality' && evo.id && modalitiesId.has(evo.id)) ||
         (evo.parentEntity === 'modality' &&
+          evo.parentEntityId &&
           modalitiesId.has(evo.parentEntityId)),
     )
 

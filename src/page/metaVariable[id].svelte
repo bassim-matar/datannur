@@ -8,8 +8,8 @@
 
   let { metaVariable } = $props()
 
-  let variablePreview: unknown[] = []
-  let datasetPreview: unknown[] = []
+  let variablePreview: Record<string, unknown>[] = []
+  let datasetPreview: Record<string, unknown>[] = []
   let metaDataset = db.get('metaDataset', metaVariable.metaDatasetId)
   if (metaDataset?.metaFolderId === 'data') {
     datasetPreview = db.tables[metaDataset.name]

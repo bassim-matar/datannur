@@ -10,13 +10,13 @@ import { getPeriod } from '@lib/time'
 import { splitOnLastSeparator } from '@lib/util'
 import type {
   Evolution,
-  MainEntity,
-  MainEntityName,
-  MainEntityItem,
+  ParentableEntity,
+  ParentableEntityName,
+  ParentableEntityItem,
 } from '@type'
 
 type EvolutionDeleted = {
-  [K in MainEntityName]?: {
+  [K in ParentableEntityName]?: {
     [entityId: string | number]: Evolution
   }
 }
@@ -37,10 +37,10 @@ function getEvoDeleted() {
 }
 
 function getItem(
-  entity: MainEntityName,
+  entity: ParentableEntityName,
   entityId: string | number | undefined,
   evoDeleted: EvolutionDeleted,
-): MainEntityItem | null {
+): ParentableEntityItem | null {
   if (!entityId) return null
 
   if (db.exists(entity, entityId)) {
@@ -48,13 +48,13 @@ function getItem(
     if (!item) return null
     const parentKey = `${parentEntities[entity]}Id` as keyof typeof item
     const parentEntityId = item[parentKey] as string | number | undefined
-    return { ...item, _deleted: false, parentEntityId } as MainEntityItem
+    return { ...item, _deleted: false, parentEntityId } as ParentableEntityItem
   }
 
   const item = evoDeleted[entity]?.[entityId]
   if (!item) return null
 
-  return { ...item, _deleted: true } as MainEntityItem
+  return { ...item, _deleted: true } as ParentableEntityItem
 }
 
 function addHistory(evoDeleted: EvolutionDeleted) {
@@ -80,7 +80,7 @@ function addHistory(evoDeleted: EvolutionDeleted) {
       parentEntities[evo.entity] === 'parent'
         ? evo.entity
         : parentEntities[evo.entity]
-    ) as MainEntityName
+    ) as ParentableEntityName
 
     evo._entity = evo.entity
     evo._entityClean = entityNames[evo.entity]
@@ -104,9 +104,9 @@ function addHistory(evoDeleted: EvolutionDeleted) {
 }
 
 function getFolderId(
-  entity: MainEntityName,
-  entityData: MainEntityItem | null,
-  parentItem: MainEntityItem | null,
+  entity: ParentableEntityName,
+  entityData: ParentableEntityItem | null,
+  parentItem: ParentableEntityItem | null,
 ) {
   if (entity === 'folder' && entityData && 'id' in entityData) {
     return entityData.id
@@ -125,8 +125,8 @@ function getFolderId(
 function addValidity(
   validities: Evolution[],
   type: keyof typeof evolutionTypes,
-  entity: MainEntityName,
-  entityData: MainEntity,
+  entity: ParentableEntityName,
+  entityData: ParentableEntity,
   evoDeleted: EvolutionDeleted,
 ) {
   if (!entityData || !('id' in entityData)) return
@@ -134,9 +134,9 @@ function addValidity(
   const parentEntityValue = parentEntities[entity]
   const parentEntity = (
     parentEntityValue === 'parent' ? entity : parentEntityValue
-  ) as MainEntityName
+  ) as ParentableEntityName
 
-  const parentKey = `${parentEntityValue}Id` as keyof MainEntity
+  const parentKey = `${parentEntityValue}Id` as keyof ParentableEntity
   const parentEntityId =
     parentKey in entityData
       ? (entityData[parentKey] as string | number | undefined)
@@ -162,7 +162,11 @@ function addValidity(
   let typeClean = 'Autre'
   if (type in evolutionTypes) typeClean = evolutionTypes[type]
 
-  const folderId = getFolderId(entity, entityData as MainEntityItem, parentItem)
+  const folderId = getFolderId(
+    entity,
+    entityData as ParentableEntityItem,
+    parentItem,
+  )
 
   validities.push({
     id: entityData.id,
@@ -194,7 +198,7 @@ function addValidity(
 
 function addValidities(evoDeleted: EvolutionDeleted) {
   const validities: Evolution[] = []
-  const entities = Object.keys(parentEntities) as MainEntityName[]
+  const entities = Object.keys(parentEntities) as ParentableEntityName[]
   for (const entity of entities) {
     const tableData = db.tables[entity]
     if (
