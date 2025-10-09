@@ -16,14 +16,17 @@
 
   let activeTab = $state(tabs[0]?.key)
   let activeTabBody = $state(tabs[0]?.key)
-  let tabsLoaded = $state({ activeTab: 1 })
+  let tabsLoaded: { [key: string]: number } = $state({ activeTab: 1 })
   let tabsTitleKey = $state(isMobile)
   let ul: HTMLDivElement | undefined = $state()
   let isLastTab = $state()
 
   let noFirstTab = $derived(activeTab !== tabs[0]?.key)
 
-  const getWidth = selector => document.querySelector(selector)?.offsetWidth
+  function getWidth(selector: string) {
+    const elem: HTMLElement | null = document.querySelector(selector)
+    return elem?.offsetWidth ?? 0
+  }
 
   function isTabsOverflow() {
     return getWidth('.tabs-container-ul') + 30 > getWidth('#tabs-container')
@@ -45,7 +48,7 @@
     }
   }
 
-  function loadTab(tabKey) {
+  function loadTab(tabKey: string) {
     if (!allKeys.includes(tabKey)) return
     activeTab = tabKey
     activeTabBody = tabKey
@@ -55,7 +58,7 @@
     tabsLoaded[tabKey] += 1
   }
 
-  function selectTab(tab) {
+  function selectTab(tab: typeof $tabSelected) {
     const tabKey = tab.key
     loadTab(tabKey)
     setFooter(tab)
@@ -69,7 +72,7 @@
     }
   }
 
-  function setFooter(tab) {
+  function setFooter(tab: typeof $tabSelected) {
     if (tab.footerVisible === false) {
       $footerVisible = false
       return

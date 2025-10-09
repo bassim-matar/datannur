@@ -5,6 +5,7 @@
 - fix: stat addNumeric() `item[attribut.variable]` must be true not just type of string
 - fix: evolution col variable with `<br>`
 - fix: evolution variable two rows and null value
+- refactor: enforce noImplicitAny on ts files
 
 ## 0.13.0 (2024-10-02)
 

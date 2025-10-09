@@ -82,6 +82,8 @@ function updateRouterIndex(file: string, pageDirFromRouterIndex: string) {
     name: 'update-router-index',
     async buildStart() {
       let imports = ''
+      let type = `\nimport type { Component } from 'svelte'`
+      type += `\ntype RouteConfig = { component: Component<any>; param?: string }\n`
       let content = `\nexport default {`
       const files = await fs.readdir(config.paths.pageDir)
       for (const file of files) {
@@ -90,15 +92,15 @@ function updateRouterIndex(file: string, pageDirFromRouterIndex: string) {
         const moduleName = filename.split('[')[0]
         const routeName =
           moduleName.charAt(0).toLowerCase() + moduleName.slice(1)
-        let param: string | false = false
+        let param = ''
         if (filename.includes('['))
-          param = `"${filename.split('[')[1].split(']')[0]}"`
+          param = `, param: "${filename.split('[')[1].split(']')[0]}"`
         const modulePath = `${pageDirFromRouterIndex}/${filename}.svelte`
         imports += `import ${moduleName} from "${modulePath}"\n`
-        content += `\n  ${routeName}: { component: ${moduleName}, param: ${param} },`
+        content += `\n  ${routeName}: { component: ${moduleName}${param} },`
       }
-      content += '\n}\n'
-      await fs.writeFile(file, imports + content, 'utf8')
+      content += '\n} as const satisfies Record<string, RouteConfig>\n'
+      await fs.writeFile(file, imports + type + content, 'utf8')
     },
   }
 }

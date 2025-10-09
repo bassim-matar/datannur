@@ -6,10 +6,11 @@
   import { searchHighlight } from './search'
   import { safeHtml } from '@lib/html-sanitizer'
   import Favorite from '@favorite/Favorite.svelte'
+  import type { MainEntityName } from '@type'
 
   let { item, searchValue, isFocusIn = $bindable(), selectInput } = $props()
 
-  function clickLink(entityName, itemId) {
+  function clickLink(entityName: MainEntityName, itemId: string | number) {
     setTimeout(() => {
       SearchHistory.add(entityName, itemId)
       Logs.add('searchBar', { entity: entityName, entityId: itemId })
@@ -17,7 +18,7 @@
     }, 10)
   }
 
-  function removeItem(entityName, itemId) {
+  function removeItem(entityName: MainEntityName, itemId: string | number) {
     SearchHistory.remove(entityName, itemId)
     selectInput()
   }

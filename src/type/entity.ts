@@ -5,12 +5,22 @@ import type {
   Config,
   Favorite,
   FilterActive,
-  Log,
   Option,
   SearchHistory,
   Filter,
 } from './base'
-import { parentEntities, evolutionTypes } from '../lib/constant'
+import { parentEntities, evolutionTypes } from '@lib/constant'
+
+export type Log = {
+  id: string | number
+  entityId: string | number
+  entity: MainEntityName
+  action: string
+  timestamp: number
+  // Computed fields added during processing
+  _entity?: string
+  _entityClean?: string
+}
 
 // Composable type fragments for entity properties
 export type WithRecursiveParent<T = BaseEntity> = {
@@ -249,6 +259,7 @@ export type MetaVariable = BaseEntity & {
 }
 
 export type MetaDataset = BaseEntity & {
+  name: EntityName
   metaFolderId: string | number
   isInMeta?: boolean
   isInData?: boolean

@@ -10,11 +10,11 @@
   let tabNb = $state(tab.nb)
   let minWidth = $state(0)
 
-  function toPercent(value) {
+  function toPercent(value: string) {
     const separator = '|'
-    const splited = value.split(separator)
-    if (splited.length === 1) return false
-    return splited[1].split('%')[0]
+    const splited = String(value).split(separator)
+    if (splited.length === 1) return 0
+    return parseFloat(splited[1].split('%')[0]) || 0
   }
 
   onMount(() => {

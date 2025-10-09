@@ -16,6 +16,7 @@
   import SearchHistory from './search-history'
   import SearchBarResult from './SearchBarResult.svelte'
   import type { SearchResult } from './search'
+  import type { MainEntityName } from '@src/type'
 
   let isFocusIn = $state(false)
   let inputElement: HTMLInputElement | undefined = $state()
@@ -75,10 +76,23 @@
     selectInput()
   }
 
-  function keyup(e) {
+  function applyToAllSearch(
+    callback: (
+      item: SearchResult,
+      itemNum: number,
+      entity: MainEntityName,
+    ) => void,
+  ) {
+    let itemNum = 0
+    for (const item of allSearch) {
+      itemNum += 1
+      callback(item, itemNum, item.entity)
+    }
+  }
+
+  function keyup(e: KeyboardEvent) {
     isFocusIn = true
-    const code = e.keyCode ? e.keyCode : e.which
-    if (code !== 13) return
+    if (e.key !== 'Enter') return
     if (navPosition === 0) {
       goToPageSearch()
     } else {
@@ -93,29 +107,20 @@
     }
   }
 
-  function keydown(e) {
-    const code = e.keyCode ? e.keyCode : e.which
-    if (code === 40) {
+  function keydown(e: KeyboardEvent) {
+    if (e.key === 'ArrowDown') {
       updateNavPosition(1)
-    } else if (code === 38) {
+    } else if (e.key === 'ArrowUp') {
       updateNavPosition(-1)
     }
-    if (code === 38 || code === 40) {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       isFocusIn = true
       e.preventDefault()
       return false
     }
   }
 
-  function applyToAllSearch(callback) {
-    let itemNum = 0
-    for (const item of allSearch) {
-      itemNum += 1
-      callback(item, itemNum, item.entity)
-    }
-  }
-
-  function updateNavPosition(move) {
+  function updateNavPosition(move: -1 | 1) {
     navPosition += move
     if (navPosition < 0) navPosition = 0
     if (navPosition > nbResult) navPosition = nbResult
@@ -134,7 +139,7 @@
     isFocusIn = true
   }
 
-  function windowKeydown(e) {
+  function windowKeydown(e: KeyboardEvent) {
     const focusedElement = window.document.activeElement
     const isInputFocused =
       focusedElement?.tagName === 'INPUT' ||

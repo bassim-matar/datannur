@@ -42,6 +42,7 @@
   import type { SearchHistoryEntry } from '@search/search-history'
   import type { Log } from '@lib/logs'
   import type { Favorite } from '@favorite/favorites'
+  import type { MainEntityName } from '@src/type'
 
   let errorLoadingDb = $state(false)
   let pageLoadedRoute = $state('')
@@ -126,7 +127,7 @@
     await $whenAppReady
     const fromSearch = UrlParam.get('from_search')
     if (fromSearch) {
-      const entity = pageHashValue
+      const entity = pageHashValue as MainEntityName
       const entityId = UrlHash.getLevel2()
       SearchHistory.add(entity, entityId)
       Logs.add('searchBar', { entity, entityId })

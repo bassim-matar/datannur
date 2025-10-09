@@ -19,7 +19,7 @@ export type SearchResult = {
   id: string | number
   name: string
   description: string
-  entity: string
+  entity: MainEntityName
   variable?: VariableName
   isFavorite: boolean
   folderId: string | number
@@ -28,6 +28,7 @@ export type SearchResult = {
   _entityClean: string
   isRecent?: boolean
   position?: number
+  navHover?: boolean
 }
 
 function removeDiacritics(str: string | undefined) {

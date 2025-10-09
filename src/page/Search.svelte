@@ -20,7 +20,7 @@
 
   let recentSearchChange = false
 
-  function makeTab(name, icon, key, aboutFile) {
+  function makeTab(name: string, icon: string, key: string, aboutFile: string) {
     return {
       name,
       icon,
@@ -104,7 +104,7 @@
     $pageContentLoaded = true
   })
 
-  let searchTimeout
+  let searchTimeout: ReturnType<typeof setTimeout>
 
   $effect(() => {
     void $searchValue
