@@ -108,7 +108,8 @@ function addNumeric(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
     ) {
       rawValues.push(Date.parse(item[attribut.variable] as string))
     } else if (attribut.variable) {
-      const val = item[attribut.variable]
+      let val = item[attribut.variable]
+      if (val === '') val = null
       if (typeof val === 'number' || val === null) rawValues.push(val)
       else console.warn('addNumeric() attribut.variable is not a number', val)
     }
@@ -250,7 +251,6 @@ export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
     totalValue = items.filter(attribut.subtype).length
   } else if (attribut.type === 'categoryOrdered') {
     values = addCategory(items, attribut, 'start')
-    values.reverse()
   } else {
     values = addCategory(items, attribut)
   }

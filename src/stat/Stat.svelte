@@ -134,7 +134,7 @@
     position: relative;
     width: 100%;
     height: auto;
-    overflow: scroll;
+    overflow: auto;
     background: $background-2;
     @include scrollbar-light();
 
