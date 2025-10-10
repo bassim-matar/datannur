@@ -2,21 +2,7 @@ import db from '@db'
 import Render from '@lib/render'
 import { allTabsIcon } from '@lib/store'
 import { entityToIcon } from '@lib/constant'
-import type { EntityName } from '@type'
-
-export type Log = {
-  id: number
-  action: string
-  entity: string
-  entityId: string | number
-  timestamp: number
-  actionName?: string
-  actionReadable?: string
-  actionIcon?: string
-  element?: string | number
-  elementIcon?: string
-  elementLink?: string
-}
+import type { Log, EntityName } from '@type'
 
 export default class Logs {
   static dbKey = 'userData/log'
@@ -64,7 +50,7 @@ export default class Logs {
     this.save()
   }
   static getAll() {
-    const logs: unknown[] = []
+    const logs: Log[] = []
     for (const logSource of this.logs) {
       const log = { ...logSource }
 
@@ -72,7 +58,7 @@ export default class Logs {
       log.element = log.entity
 
       if (log.entityId) {
-        if (db.exists(log.entity as EntityName, log.entityId)) continue
+        if (!db.exists(log.entity as EntityName, log.entityId)) continue
         const item = db.get(log.entity as EntityName, log.entityId)
         if (item && 'name' in item) {
           log.element = item.name

@@ -12,12 +12,17 @@ import type {
 import { parentEntities, evolutionTypes } from '@lib/constant'
 
 export type Log = {
-  id: string | number
-  entityId: string | number
-  entity: MainEntityName
+  id: number
   action: string
+  entity: string
+  entityId: string | number
   timestamp: number
-  // Computed fields added during processing
+  actionName?: string
+  actionReadable?: string
+  actionIcon?: string
+  element?: string | number
+  elementIcon?: string
+  elementLink?: string
   _entity?: string
   _entityClean?: string
 }

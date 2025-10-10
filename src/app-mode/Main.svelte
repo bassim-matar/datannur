@@ -40,9 +40,8 @@
   import SearchBar from '@search/SearchBar.svelte'
   import dbSchema from '@src/db-schema.json'
   import type { SearchHistoryEntry } from '@search/search-history'
-  import type { Log } from '@lib/logs'
   import type { Favorite } from '@favorite/favorites'
-  import type { MainEntityName } from '@src/type'
+  import type { Log, MainEntityName } from '@src/type'
 
   let errorLoadingDb = $state(false)
   let pageLoadedRoute = $state('')

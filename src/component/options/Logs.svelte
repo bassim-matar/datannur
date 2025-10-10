@@ -10,7 +10,9 @@
   let { logs }: { logs: Log[] } = $props()
 
   for (const log of logs) {
-    log._entityClean = log.entity ? entityNames[log.entity] : ''
+    log._entityClean = log.entity
+      ? entityNames[log.entity as keyof typeof entityNames]
+      : ''
     log._entity = log.entity
   }
 
