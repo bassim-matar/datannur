@@ -251,7 +251,6 @@ export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
     totalValue = items.filter(attribut.subtype).length
   } else if (attribut.type === 'categoryOrdered') {
     values = addCategory(items, attribut, 'start')
-    values.reverse()
   } else {
     values = addCategory(items, attribut)
   }
