@@ -108,7 +108,8 @@ function addNumeric(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
     ) {
       rawValues.push(Date.parse(item[attribut.variable] as string))
     } else if (attribut.variable) {
-      const val = item[attribut.variable]
+      let val = item[attribut.variable]
+      if (val === '') val = null
       if (typeof val === 'number' || val === null) rawValues.push(val)
       else console.warn('addNumeric() attribut.variable is not a number', val)
     }
