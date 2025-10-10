@@ -28,6 +28,21 @@ function getNbValues(
   return 0
 }
 
+function addEntities(item: EntityTypeMap['tag' | 'doc']) {
+  if (!item) return
+  item.entities = []
+  if (item.nbInstitution && item.nbInstitution > 0)
+    item.entities.push({ name: 'institution', nb: item.nbInstitution })
+  if (item.nbFolder && item.nbFolder > 0)
+    item.entities.push({ name: 'folder', nb: item.nbFolder })
+  if (item.nbDataset && item.nbDataset > 0)
+    item.entities.push({ name: 'dataset', nb: item.nbDataset })
+  if ('nbVariable' in item && item.nbVariable && item.nbVariable > 0)
+    item.entities.push({ name: 'variable', nb: item.nbVariable })
+  if ('nbTag' in item && item.nbTag && item.nbTag > 0)
+    item.entities.push({ name: 'tag', nb: item.nbTag })
+}
+
 function addName(item: MainEntity, entity: MainEntityName, alias = '') {
   if (!alias) alias = entity
   const itemIdField = `${alias}Id` as keyof MainEntity
@@ -300,6 +315,7 @@ class Process {
       tag.nbDocRecursive = getRecursive('tag', tag.id, 'doc').length
       tag.nbDatasetRecursive = getRecursive('tag', tag.id, 'dataset').length
       tag.nbVariableRecursive = getRecursive('tag', tag.id, 'variable').length
+      addEntities(tag)
     })
   }
   static dataset() {
@@ -347,6 +363,7 @@ class Process {
           .slice(0, 10)
           .replaceAll('-', '/')
       }
+      addEntities(doc)
     })
   }
   static variable() {
