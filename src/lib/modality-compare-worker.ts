@@ -73,7 +73,7 @@ export function modalityCompareWorker(param: {
       type: modality.typeClean ?? '',
       nbVariable: modality.variables?.length ?? 0,
       folderId: modality.folderId ?? '',
-      folderName: '',
+      folderName: modality.folderName ?? '',
     })
   }
   const similitutes = getSimilitudes(modalitiesToCompare, limit)
