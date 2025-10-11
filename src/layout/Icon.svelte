@@ -12,6 +12,9 @@
   const classNames = $derived(
     icon.startsWith('fa-brands') ? icon : `fas fa-${icon}`,
   )
+
+  let isWithSvg = $state(false)
+  if (['github', 'md'].includes(type)) isWithSvg = true
 </script>
 
 {#if type}
@@ -21,8 +24,13 @@
     class:with-margin-left={marginLeft}
     class:main-title={mode === 'mainTitle'}
     class:compact={mode === 'compact'}
+    class:svg-icon={isWithSvg}
   >
-    <i class={classNames}></i>
+    {#if isWithSvg}
+      <svg><use href={`#icon-${icon}`} /></svg>
+    {:else}
+      <i class={classNames}></i>
+    {/if}
   </span>
 {/if}
 
@@ -36,6 +44,14 @@
     width: auto;
     min-width: 1.5rem;
     transition: $transition-basic-1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &.svg-icon {
+      vertical-align: middle;
+    }
+
     &.no-margin-right {
       margin-right: auto;
     }
@@ -47,6 +63,12 @@
     }
     &.compact {
       min-width: auto;
+    }
+
+    svg {
+      width: 1em;
+      height: 1em;
+      fill: currentColor;
     }
   }
 
