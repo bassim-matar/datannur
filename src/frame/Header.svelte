@@ -8,7 +8,6 @@
     onPageSearch,
   } from '@lib/store'
   import { appMode } from '@lib/util'
-  import { darkModeTheme } from '@dark-mode/dark-mode'
   import { router } from '@lib/router.svelte.js'
   import logo from '@img/logo.png'
   import logoDark from '@img/logo-dark.png'
@@ -21,8 +20,6 @@
 
   let scrollY = $state(0)
   let loading = $state(true)
-
-  let logoSrc = $derived($darkModeTheme === 'dark' ? logoDark : logo)
 
   const toggleHeader = () => ($headerOpen = !$headerOpen)
   const closeMenu = () => ($headerOpen = false)
@@ -53,7 +50,8 @@
 >
   <div class="navbar-brand">
     <Link href="" className="navbar-item" alternativeAction={clickOnMainLogo}>
-      <img src={logoSrc} class="header-logo" alt="logo" />
+      <img src={logo} class="header-logo logo-light" alt="logo" />
+      <img src={logoDark} class="header-logo logo-dark" alt="logo" />
     </Link>
 
     <div class="mobile-right-btn">
@@ -189,6 +187,20 @@
       img {
         height: 20px;
         transition: $transition-basic-1;
+      }
+      .logo-light {
+        display: block;
+      }
+      .logo-dark {
+        display: none;
+      }
+      :global(html.dark-mode) & {
+        .logo-light {
+          display: none;
+        }
+        .logo-dark {
+          display: block;
+        }
       }
       .navbar-burger:hover {
         background: none;

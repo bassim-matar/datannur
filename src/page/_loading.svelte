@@ -1,16 +1,15 @@
 <script lang="ts">
-  import { darkModeTheme } from '@dark-mode/dark-mode'
   import logo from '@img/logo.png'
   import logoDark from '@img/logo-dark.png'
   import Head from '@frame/Head.svelte'
 
   let title = 'Chargement...'
-  let logoSrc = $derived($darkModeTheme === 'dark' ? logoDark : logo)
 </script>
 
 <Head {title} />
 
-<img class="loading-logo" src={logoSrc} alt="logo" />
+<img class="loading-logo logo-light" src={logo} alt="logo" />
+<img class="loading-logo logo-dark" src={logoDark} alt="logo" />
 
 <style lang="scss">
   .loading-logo {
@@ -19,5 +18,19 @@
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 300px;
+  }
+  .logo-light {
+    display: block;
+  }
+  .logo-dark {
+    display: none;
+  }
+  :global(html.dark-mode) {
+    .logo-light {
+      display: none;
+    }
+    .logo-dark {
+      display: block;
+    }
   }
 </style>
