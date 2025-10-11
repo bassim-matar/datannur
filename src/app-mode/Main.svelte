@@ -38,7 +38,7 @@
   import Loading from '@page/_loading.svelte'
   import StatBox from '@stat/StatBox.svelte'
   import SearchBar from '@search/SearchBar.svelte'
-  import dbSchema from '@src/db-schema.json'
+  import dbSchema from '@src/assets/db-schema.json'
   import type { SearchHistoryEntry } from '@search/search-history'
   import type { Favorite } from '@favorite/favorites'
   import type { Log, MainEntityName } from '@src/type'
