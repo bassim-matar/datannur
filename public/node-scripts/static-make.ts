@@ -193,7 +193,7 @@ async function capturePage(page: Page, route: string, level: number) {
   }, route)
   try {
     await page.waitForSelector(
-      `#page-loaded-route_${route.replaceAll('/', '___')}`,
+      `#page-loaded-route-${route.replaceAll('/', '___')}`,
       { timeout: 10000, state: 'attached' },
     )
 

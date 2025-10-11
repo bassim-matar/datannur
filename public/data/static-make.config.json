@@ -1,6 +1,6 @@
 {
   "domain": "https://example.com",
-  "index_seo": false,
+  "indexSeo": false,
   "appPath": ".",
   "outDir": "static",
   "dbMetaPath": "data/db",
