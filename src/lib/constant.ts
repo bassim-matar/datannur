@@ -68,6 +68,8 @@ export const columnIcons = {
 } as const
 
 export const entityToIcon = {
+  md: 'md',
+  github: 'github',
   institution: 'university',
   owner: 'university',
   manager: 'university',
@@ -99,8 +101,6 @@ export const entityToIcon = {
   upload: 'cloud-arrow-up',
   downloadClose: 'cloud-arrow-down fa-rotate-180',
   pdf: 'file-pdf',
-  md: 'fa-brands fa-markdown',
-  github: 'fa-brands fa-github',
   compare: 'object-ungroup',
   option: 'gear',
   diagram: 'diagram-project',

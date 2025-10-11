@@ -196,8 +196,11 @@ export default class Render {
       </span>`
   }
   static icon(entity: string) {
-    let classNames
     const icon = entityToIconName(entity)
+    if (['md'].includes(entity)) {
+      return `<span class='icon svg-icon icon-${entity}'> <svg><use href="#icon-${icon}" /></svg> </span>`
+    }
+    let classNames = ''
     if (icon.startsWith('fa-brands')) {
       classNames = icon
     } else {

@@ -340,6 +340,14 @@
           border-top-left-radius: $rounded-size;
         }
       }
+      .svg-icon {
+        vertical-align: middle;
+        svg {
+          width: 1em;
+          height: 1em;
+          fill: currentColor;
+        }
+      }
     }
   }
 

@@ -6,7 +6,6 @@
   import '@src/style/from-bulma/table.scss'
   import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
   import '@fortawesome/fontawesome-free/css/solid.min.css'
-  import '@fortawesome/fontawesome-free/css/brands.min.css'
   import 'datatables.net-bm/css/dataTables.bulma.min.css'
   import 'datatables.net-buttons-bm/css/buttons.bulma.min.css'
   import 'datatables.net-fixedcolumns-bm/css/fixedColumns.bulma.min.css'
@@ -14,10 +13,13 @@
   import 'datatables.net-scroller-bm/css/scroller.bulma.min.css'
   import 'jquery-powertip/dist/css/jquery.powertip.min.css'
   import '@src/style/global.scss'
+  import IconSprite from '@layout/IconSprite.svelte'
   import CheckDb from '@src/app-mode/CheckDb.svelte'
   import Main from '@src/app-mode/Main.svelte'
   import { appMode } from '@lib/util'
 </script>
+
+<IconSprite />
 
 {#if appMode === 'check_db'}
   <CheckDb />

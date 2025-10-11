@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- change: use svg-sprite for brand icons
 - fix: stat addNumeric() `item[attribut.variable]` must be true not just type of string
 - fix: evolution col variable with `<br>`
 - fix: evolution variable two rows and null value
