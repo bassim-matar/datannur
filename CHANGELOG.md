@@ -3,6 +3,7 @@
 ## unreleased
 
 - change: use svg-sprite for brand icons
+- change: logo handling for light and dark modes in Header, Loading components and main-banner
 - fix: stat addNumeric() `item[attribut.variable]` must be true not just type of string
 - fix: evolution col variable with `<br>`
 - fix: evolution variable two rows and null value

@@ -13,7 +13,7 @@
 </script>
 
 <div class="header-input-wrapper">
-  {#if column.searchType === 'none'}
+  {#if column.filterType === 'none'}
     <span></span>
   {:else if column.filterType === 'select'}
     <div class="select">
