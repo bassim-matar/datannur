@@ -98,9 +98,9 @@ jobs:
             echo "Changelog found for version ${VERSION}"
             # Use multiline output format with proper escaping
             {
-              echo "notes<<'EOF'"
+              echo 'notes<<EOF'
               cat changelog_section.md
-              echo "EOF"
+              echo 'EOF'
             } >> "$GITHUB_OUTPUT"
           fi
 
@@ -135,10 +135,8 @@ jobs:
             # Create stable release
             if [[ -n "${{ steps.changelog.outputs.notes }}" ]]; then
               # Use extracted changelog for stable releases
-              # Write notes to temp file to avoid shell interpretation issues
-              cat > /tmp/release_notes.md << 'NOTES_EOF'
-          ${{ steps.changelog.outputs.notes }}
-          NOTES_EOF
+              # Use printf to avoid shell interpretation of backticks and special chars
+              printf '%s\n' '${{ steps.changelog.outputs.notes }}' > /tmp/release_notes.md
               
               gh release create "${{ steps.release.outputs.tag }}" \
                 --title "datannur ${{ steps.release.outputs.tag }}" \
