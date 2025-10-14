@@ -96,9 +96,9 @@ jobs:
             echo "notes=" >> "$GITHUB_OUTPUT"
           else
             echo "Changelog found for version ${VERSION}"
-            # Use multiline output format
+            # Use multiline output format with proper escaping
             {
-              echo "notes<<EOF"
+              echo "notes<<'EOF'"
               cat changelog_section.md
               echo "EOF"
             } >> "$GITHUB_OUTPUT"
@@ -133,11 +133,16 @@ jobs:
         run: |
           if [[ "${{ steps.release.outputs.type }}" == "stable" ]]; then
             # Create stable release
-            if [[ "${{ steps.changelog.outputs.notes }}" != "" ]]; then
+            if [[ -n "${{ steps.changelog.outputs.notes }}" ]]; then
               # Use extracted changelog for stable releases
+              # Write notes to temp file to avoid shell interpretation issues
+              cat > /tmp/release_notes.md << 'NOTES_EOF'
+          ${{ steps.changelog.outputs.notes }}
+          NOTES_EOF
+              
               gh release create "${{ steps.release.outputs.tag }}" \
                 --title "datannur ${{ steps.release.outputs.tag }}" \
-                --notes "${{ steps.changelog.outputs.notes }}" \
+                --notes-file /tmp/release_notes.md \
                 "${{ steps.release.outputs.asset }}"
             else
               # Stable release without changelog
