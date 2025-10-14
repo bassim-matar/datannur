@@ -129,15 +129,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Write release notes to file
+        if: steps.release.outputs.type == 'stable' && steps.changelog.outputs.notes != ''
+        run: printf '%s' "$NOTES" > /tmp/release_notes.md
+        env:
+          NOTES: ${{ steps.changelog.outputs.notes }}
+
       - name: Create release
         run: |
           if [[ "${{ steps.release.outputs.type }}" == "stable" ]]; then
             # Create stable release
             if [[ -n "${{ steps.changelog.outputs.notes }}" ]]; then
-              # Use extracted changelog for stable releases
-              # Use printf to avoid shell interpretation of backticks and special chars
-              printf '%s\n' '${{ steps.changelog.outputs.notes }}' > /tmp/release_notes.md
-              
+              # Use changelog file created in previous step
               gh release create "${{ steps.release.outputs.tag }}" \
                 --title "datannur ${{ steps.release.outputs.tag }}" \
                 --notes-file /tmp/release_notes.md \
