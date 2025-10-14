@@ -88,20 +88,15 @@ jobs:
           /^## ${VERSION} / { found=1; next }
           /^## / && found { exit }
           found { print }
-          " CHANGELOG.md > changelog_section.md
+          " CHANGELOG.md > /tmp/changelog_section.md
 
           # Check if changelog was found
-          if [ ! -s changelog_section.md ]; then
+          if [ ! -s /tmp/changelog_section.md ]; then
             echo "No changelog found for version ${VERSION}"
-            echo "notes=" >> "$GITHUB_OUTPUT"
+            echo "found=false" >> "$GITHUB_OUTPUT"
           else
             echo "Changelog found for version ${VERSION}"
-            # Use multiline output format with proper escaping
-            {
-              echo 'notes<<EOF'
-              cat changelog_section.md
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
+            echo "found=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Delete existing pre-release
@@ -129,21 +124,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Write release notes to file
-        if: steps.release.outputs.type == 'stable' && steps.changelog.outputs.notes != ''
-        run: printf '%s' "$NOTES" > /tmp/release_notes.md
-        env:
-          NOTES: ${{ steps.changelog.outputs.notes }}
-
       - name: Create release
         run: |
           if [[ "${{ steps.release.outputs.type }}" == "stable" ]]; then
             # Create stable release
-            if [[ -n "${{ steps.changelog.outputs.notes }}" ]]; then
-              # Use changelog file created in previous step
+            if [[ "${{ steps.changelog.outputs.found }}" == "true" ]]; then
+              # Use changelog file created in extract step
               gh release create "${{ steps.release.outputs.tag }}" \
                 --title "datannur ${{ steps.release.outputs.tag }}" \
-                --notes-file /tmp/release_notes.md \
+                --notes-file /tmp/changelog_section.md \
                 "${{ steps.release.outputs.asset }}"
             else
               # Stable release without changelog
