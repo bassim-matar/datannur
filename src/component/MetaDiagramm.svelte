@@ -5,6 +5,7 @@
   import Render from '@lib/render'
   import Loading from '@frame/Loading.svelte'
   import { safeHtmlWithSvg } from '@lib/html-sanitizer'
+  import type { EntityName } from '@type'
 
   let svgDiagramm = $state<string | null>(null)
 
@@ -33,8 +34,11 @@
     return relation
   })
 
-  const schemaAlone: string[] = []
-  const allTables = [...schema.oneToMany, ...schema.manyToMany]
+  const schemaAlone: EntityName[] = []
+  const allTables = [
+    ...schema.oneToMany,
+    ...schema.manyToMany,
+  ] as EntityName[][]
   for (const tableRelation of allTables) {
     for (const table of tableRelation) {
       if (table === 'manager' || table === 'owner') {
@@ -63,7 +67,7 @@
 
     let icon = Render.icon(entityName)
     if (table === 'config') icon = ''
-    const entityCleanName = entityNames[table]
+    const entityCleanName = entityNames[table as keyof typeof entityNames]
 
     let recursiveIcon = ''
     if (recursiveEntities.includes(table))
@@ -84,8 +88,11 @@
       for (let i = 0; i < link.length - 1; i++) {
         if (i === 0) continue
         if (i === link.length - 1) continue
-        if (linkCleanName === '') linkCleanName += entityNames[link[i]]
-        else linkCleanName += separator + entityNames[link[i]]
+        if (linkCleanName === '')
+          linkCleanName += entityNames[link[i] as keyof typeof entityNames]
+        else
+          linkCleanName +=
+            separator + entityNames[link[i] as keyof typeof entityNames]
       }
 
       let reverseName = linkCleanName.split(separator).reverse().join(separator)

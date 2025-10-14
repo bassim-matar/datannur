@@ -2,7 +2,7 @@
   import Icon from '@layout/Icon.svelte'
   import CopyText from '@layout/CopyText.svelte'
 
-  let { dataPath } = $props()
+  let { dataPath }: { dataPath: string | undefined } = $props()
 </script>
 
 {#if dataPath}

@@ -1,10 +1,11 @@
 <script lang="ts">
   import Datatable from '@datatable/Datatable.svelte'
   import Column from '@lib/column'
+  import type { FavoritableEntity } from '@type'
 
-  let { allFav } = $props()
+  let { allFav }: { allFav: FavoritableEntity[] } = $props()
 
-  allFav.sort((a, b) => b.favoriteTimestamp - a.favoriteTimestamp)
+  allFav.sort((a, b) => (b.favoriteTimestamp ?? 0) - (a.favoriteTimestamp ?? 0))
 
   const columns = [
     Column.favorite(),

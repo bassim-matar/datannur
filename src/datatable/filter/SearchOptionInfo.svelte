@@ -1,3 +1,5 @@
+<script lang="ts"></script>
+
 <h2 class="popup-title">options de recherche</h2>
 <table>
   <tbody>

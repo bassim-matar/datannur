@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte'
+
   let {
     value = $bindable(),
     change,
@@ -7,6 +9,14 @@
     minimize = false,
     size = 'medium',
     children = undefined,
+  }: {
+    value?: boolean
+    change?: (e: Event) => void
+    slotPosition?: 'left' | 'right'
+    treeSwitch?: boolean
+    minimize?: boolean
+    size?: 'small' | 'medium' | 'large'
+    children?: Snippet
   } = $props()
 
   let id = window.crypto.randomUUID()

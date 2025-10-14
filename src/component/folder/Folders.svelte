@@ -5,12 +5,14 @@
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
   import escapeHtml from 'escape-html'
+  import type { Folder, Column as ColumnType } from '@type'
 
-  let { folders, isMeta = false } = $props()
+  let { folders, isMeta = false }: { folders: Folder[]; isMeta?: boolean } =
+    $props()
 
   const foldersSorted = [...folders]
   const folderPath = isMeta ? 'metaFolder/' : 'folder/'
-  const metaPath = isMeta ? 'metaFolder' : false
+  const metaPath = isMeta ? 'metaFolder' : undefined
 
   let variableMax = 0
   let datasetMax = 0
@@ -21,33 +23,35 @@
   if (!isMeta) {
     for (const folder of folders) {
       folder.pathString = getParentPath(folder)
-      if (folder.nbDatasetRecursive > datasetMax) {
-        datasetMax = folder.nbDatasetRecursive
+      if (folder.nbDatasetRecursive ?? 0 > datasetMax) {
+        datasetMax = folder.nbDatasetRecursive ?? 0
       }
-      if (folder.nbVariableRecursive > variableMax) {
-        variableMax = folder.nbVariableRecursive
+      if (folder.nbVariableRecursive ?? 0 > variableMax) {
+        variableMax = folder.nbVariableRecursive ?? 0
       }
-      if (folder.nbChildRecursive > folderMax) {
-        folderMax = folder.nbChildRecursive
+      if (folder.nbChildRecursive ?? 0 > folderMax) {
+        folderMax = folder.nbChildRecursive ?? 0
       }
-      if (folder.docsRecursive?.length > nbDocMax) {
-        nbDocMax = folder.docsRecursive?.length
+      if (folder.docsRecursive?.length ?? 0 > nbDocMax) {
+        nbDocMax = folder.docsRecursive?.length ?? 0
       }
-      if (folder.parents?.length + 1 > levelMax) {
-        levelMax = folder.parents?.length + 1
+      if ((folder.parents?.length ?? 0) + 1 > levelMax) {
+        levelMax = (folder.parents?.length ?? 0) + 1
       }
     }
-    foldersSorted.sort((a, b) => a.pathString.localeCompare(b.pathString))
+    foldersSorted.sort((a, b) =>
+      (a.pathString ?? '').localeCompare(b.pathString ?? ''),
+    )
   }
 
   if (isMeta) {
     for (const folder of folders) {
-      datasetMax = Math.max(datasetMax, folder.nbDataset)
-      variableMax = Math.max(variableMax, folder.nbVariable)
+      datasetMax = Math.max(datasetMax, folder.nbDatasetRecursive ?? 0)
+      variableMax = Math.max(variableMax, folder.nbVariableRecursive ?? 0)
     }
   }
 
-  function defineColumns() {
+  function defineColumns(): ColumnType[] {
     if (isMeta) {
       return [
         Column.name('folder', 'Dossiers'),
@@ -56,7 +60,7 @@
           data: 'nbDataset',
           title: Render.icon('dataset') + 'Datasets',
           tooltip: 'Nombre de datasets',
-          render: (data, type, row) => {
+          render: (data, type, row: Folder) => {
             if (!data) return ''
             const content = link(
               folderPath + row.id + '?tab=metaDatasets',
@@ -112,7 +116,7 @@
         tooltip: 'Emplacement des métadonnées',
         render: (data, type) => {
           if (!data) return ''
-          if (type !== 'display') return data
+          if (type !== 'display') return String(data)
           return Render.copyCell(escapeHtml(data), type)
         },
       },
@@ -124,7 +128,7 @@
         tooltip: 'Code source des traitements',
         render: (data, type) => {
           if (!data) return ''
-          if (type !== 'display') return data
+          if (type !== 'display') return String(data)
           data = escapeHtml(data)
           return wrapLongText(`<a href="${data}" target="_blanck">${data}</a>`)
         },

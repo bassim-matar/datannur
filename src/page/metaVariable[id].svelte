@@ -5,8 +5,9 @@
   import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
+  import type { MetaVariable } from '@type'
 
-  let { metaVariable } = $props()
+  let { metaVariable }: { metaVariable: MetaVariable } = $props()
 
   let variablePreview: Record<string, unknown>[] = []
   let datasetPreview: Record<string, unknown>[] = []
@@ -20,7 +21,7 @@
   variablePreview = filterKeys(datasetPreview, [metaVariable.name])
 
   let tabs = tabsHelper({
-    variable: metaVariable,
+    metaVariable,
     variableMetaValues: metaVariable.values,
     variablePreview,
   })

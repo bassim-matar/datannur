@@ -4,8 +4,9 @@
   import { getLineage } from '@lib/db'
   import Title from '@layout/Title.svelte'
   import Tabs from '@tab/Tabs.svelte'
+  import type { Variable } from '@type'
 
-  let { variable } = $props()
+  let { variable }: { variable: Variable } = $props()
 
   const dataset = db.get('dataset', variable.datasetId)
   let variablePreview: false | object = false

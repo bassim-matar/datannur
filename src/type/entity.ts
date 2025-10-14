@@ -11,6 +11,24 @@ import type {
 } from './base'
 import { parentEntities, evolutionTypes } from '@lib/constant'
 
+export type ModalitySimilitute = {
+  modality1Id: string | number
+  modality2Id: string | number
+  modality1FolderId: string | number
+  modality2FolderId: string | number
+  modality1Name: string
+  modality2Name: string
+  modality1FolderName: string
+  modality2FolderName: string
+  modality1Type: string
+  modality2Type: string
+  modality1NbValue: number
+  modality2NbValue: number
+  modality1NbVariable: number
+  modality2NbVariable: number
+  ratio: number
+}
+
 export type Log = {
   id: number
   action: string
@@ -34,6 +52,9 @@ export type WithRecursiveParent<T = BaseEntity> = {
   parentsRelative?: T[]
   minimumDeep?: number
   noIndent?: boolean
+  pathString?: string
+  nbChild?: number
+  nbChildRecursive?: number
 }
 
 export type WithTags = {
@@ -62,9 +83,9 @@ export type WithPeriod = {
 export type WithLineage = {
   sourceIds?: Set<string | number>
   derivedIds?: Set<string | number>
+  lineageType?: 'source' | 'derived'
 }
 
-// Legacy type for backward compatibility
 export type EntityWithRelations = BaseEntity & {
   tags?: Tag[]
   docs?: Doc[]
@@ -175,8 +196,6 @@ export type Folder = BaseEntity &
     // Computed fields added during processing
     ownerName?: string
     managerName?: string
-    nbChild?: number
-    nbChildRecursive?: number
     nbDatasetRecursive?: number
     nbVariableRecursive?: number
     nextUpdateDate?: string
@@ -192,8 +211,6 @@ export type Institution = BaseEntity &
     phone?: string
 
     // Computed fields added during processing
-    nbChild?: number
-    nbChildRecursive?: number
     nbFolder?: number
     nbDataset?: number
     nbFolderRecursive?: number
@@ -211,8 +228,6 @@ export type Tag = BaseEntity &
     nbFolder?: number
     nbDataset?: number
     nbVariable?: number
-    nbChild?: number
-    nbChildRecursive?: number
     nbInstitutionRecursive?: number
     nbFolderRecursive?: number
     nbDocRecursive?: number
@@ -239,22 +254,28 @@ export type Doc = BaseEntity &
     nbFolder?: number
     nbDataset?: number
     nbTag?: number
+    inherited?: string
   }
 
 // Meta entities (for metadata datasets)
-export type MetaVariable = BaseEntity & {
-  metaDatasetId: string | number
+export type MetaVariable = Omit<BaseEntity, 'id'> & {
+  id: string
+  metaDatasetId: string
+  storageKey: string
   type?: string
   values?: Value[]
   isInMeta?: boolean
   isInData?: boolean
+  nbDistinct: number
+  nbDuplicate: number
+  nbMissing: number
 
   // Computed fields
   num?: number
   isMeta?: boolean
   typeClean?: string
   nbValue?: number
-  datasetId?: string | number
+  datasetId?: string
   datasetName?: string
   nbRow?: number
   metaFolderId?: string | number
@@ -263,15 +284,17 @@ export type MetaVariable = BaseEntity & {
   key?: string
 }
 
-export type MetaDataset = BaseEntity & {
+export type MetaDataset = Omit<BaseEntity, 'id' | 'description'> & {
+  id: string
   name: EntityName
-  metaFolderId: string | number
-  isInMeta?: boolean
-  isInData?: boolean
-  lastUpdateTimestamp?: number
+  description: string
+  metaFolderId: string
+  isInMeta: boolean
+  isInData: boolean
+  lastUpdateTimestamp: number
 
   // Computed fields
-  isMeta?: boolean
+  isMeta?: true
   folder?: { id: string | number }
   folderName?: string
   nbVariable?: number
@@ -279,14 +302,15 @@ export type MetaDataset = BaseEntity & {
   nbRow?: number
 }
 
-export type MetaFolder = BaseEntity & {
+export type MetaFolder = Omit<BaseEntity, 'id'> & {
+  id: string
   // Computed fields
   isMeta?: boolean
   nbDataset?: number
   nbVariable?: number
 }
 
-export type Evolution = {
+export type Evolution = WithFavorite & {
   id?: string | number
   entity: ParentableEntityName
   entityId: string | number
@@ -306,8 +330,6 @@ export type Evolution = {
   time?: string
   parentName?: string
   parentDeleted?: boolean
-  isFavorite?: boolean
-  favoriteTimestamp?: number
   date?: string
   folderId?: string | number
   _toHide?: boolean

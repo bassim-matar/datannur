@@ -1,8 +1,13 @@
 <script lang="ts">
   import { clickOutside } from '@lib/util'
   import BtnClearInput from '@layout/BtnClearInput.svelte'
+  import type { Snippet } from 'svelte'
 
-  let { isOpen = $bindable(false), onClose = () => {}, children } = $props()
+  let {
+    isOpen = $bindable(false),
+    onClose = () => {},
+    children,
+  }: { isOpen?: boolean; onClose?: () => void; children?: Snippet } = $props()
 
   function closePopup() {
     isOpen = false

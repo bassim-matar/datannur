@@ -4,8 +4,13 @@
   import { locale } from '@lib/constant'
   import Icon from '@layout/Icon.svelte'
   import Link from '@layout/Link.svelte'
+  import type { ValueEntry } from './stat'
 
-  let { value, totalValue, mainColor } = $props()
+  let {
+    value,
+    totalValue,
+    mainColor,
+  }: { value: ValueEntry; totalValue: number; mainColor: string } = $props()
 
   const percent = getPercent(value.count / totalValue)
 </script>

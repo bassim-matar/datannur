@@ -4,9 +4,9 @@
   import MdContent from '@layout/MdContent.svelte'
   import Loading from '@frame/Loading.svelte'
 
-  let { docId, mode = 'classic' } = $props()
+  let { docId, mode = 'classic' }: { docId: string; mode?: string } = $props()
 
-  let content = $state()
+  let content = $state('')
   let loading = $state(true)
 
   onMount(async () => {

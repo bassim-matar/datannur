@@ -3,8 +3,18 @@
   import { getColor } from '@lib/util'
   import { entityNames } from '@lib/constant'
   import StatValue from './StatValue.svelte'
+  import type { AttributWithValues } from './stat'
+  import type { MainEntityName } from '@type'
 
-  let { entity, attribut, fromPopup = false } = $props()
+  let {
+    entity,
+    attribut,
+    fromPopup = false,
+  }: {
+    entity: MainEntityName | 'log'
+    attribut: AttributWithValues
+    fromPopup?: boolean
+  } = $props()
 
   const totalValue = attribut.totalValue
   const mainColor = getColor(entity)
@@ -19,7 +29,7 @@
     <Icon type={entity} />
     {entityNames[entity]}
     <span class="separator"></span>
-    <Icon type={attribut.icon || attribut.key} />
+    <Icon type={attribut.icon ?? attribut.key ?? ''} />
     {attribut.name}
   </h2>
   <div class="values-wrapper">

@@ -2,7 +2,7 @@
   import Icon from '@layout/Icon.svelte'
   import CopyText from '@layout/CopyText.svelte'
 
-  let { id } = $props()
+  let { id }: { id: string | number | undefined } = $props()
 </script>
 
 <tr>

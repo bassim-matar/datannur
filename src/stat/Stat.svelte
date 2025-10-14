@@ -8,14 +8,22 @@
   import attributs from './attributs'
   import { addValues } from './stat'
   import StatBox from './StatBox.svelte'
+  import type { AttributWithValues } from './stat'
+  import type { MainEntity, Log, MainEntityName } from '@type'
 
-  let { stat } = $props()
+  type Stat = {
+    entity: MainEntityName | 'log'
+    items: (MainEntity | Log)[]
+    attributs?: AttributWithValues[]
+  }
+
+  let { stat }: { stat: Stat[] } = $props()
 
   let showAll = $state(true)
-  let visible = $state({})
+  let visible: { [key: string]: boolean } = $state({})
   let loading = $state(false)
 
-  let masonry
+  let masonry: MiniMasonry | undefined = undefined
 
   onMount(() => {
     masonry = new MiniMasonry({
@@ -28,14 +36,14 @@
   })
 
   onDestroy(() => {
-    masonry.destroy()
+    masonry?.destroy()
   })
 
-  function updateNbItemVisible(entities) {
+  function updateNbItemVisible(entities: Stat[]) {
     let nbItemVisible = 0
     for (const entity of entities) {
       if (visible[entity.entity] || showAll) {
-        nbItemVisible += entity.attributs.length
+        nbItemVisible += entity.attributs?.length ?? 0
       }
     }
     $allTabs.stat.nb = nbItemVisible
@@ -45,13 +53,13 @@
     updateNbItemVisible(entities)
     loading = true
     setTimeout(() => {
-      masonry.layout()
-      masonry.layout()
+      masonry?.layout()
+      masonry?.layout()
       setTimeout(() => (loading = false), 100)
     }, 1)
   }
 
-  function show(entity) {
+  function show(entity: MainEntityName | 'log') {
     for (const key in visible) {
       visible[key] = key === entity
     }

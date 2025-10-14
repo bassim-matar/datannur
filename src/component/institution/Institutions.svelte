@@ -5,8 +5,9 @@
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
   import escapeHtml from 'escape-html'
+  import type { Institution, Column as ColumnType } from '@type'
 
-  let { institutions } = $props()
+  let { institutions }: { institutions: Institution[] } = $props()
 
   const isRecursive = true
 
@@ -18,30 +19,32 @@
   let levelMax = 0
   for (const institution of institutions) {
     institution.pathString = getParentPath(institution)
-    if (institution.nbChildRecursive > institutionMax) {
-      institutionMax = institution.nbChildRecursive
+    if (institution.nbChildRecursive ?? 0 > institutionMax) {
+      institutionMax = institution.nbChildRecursive ?? 0
     }
-    if (institution.nbFolderRecursive > folderMax) {
-      folderMax = institution.nbFolderRecursive
+    if (institution.nbFolderRecursive ?? 0 > folderMax) {
+      folderMax = institution.nbFolderRecursive ?? 0
     }
-    if (institution.nbDatasetRecursive > datasetMax) {
-      datasetMax = institution.nbDatasetRecursive
+    if (institution.nbDatasetRecursive ?? 0 > datasetMax) {
+      datasetMax = institution.nbDatasetRecursive ?? 0
     }
-    if (institution.docsRecursive.length > nbDocMax) {
-      nbDocMax = institution.docsRecursive.length
+    if (institution.docsRecursive?.length ?? 0 > nbDocMax) {
+      nbDocMax = institution.docsRecursive?.length ?? 0
     }
-    if (institution.nbVariableRecursive > variableMax) {
-      variableMax = institution.nbVariableRecursive
+    if (institution.nbVariableRecursive ?? 0 > variableMax) {
+      variableMax = institution.nbVariableRecursive ?? 0
     }
-    if (institution.parents?.length + 1 > levelMax) {
-      levelMax = institution.parents?.length + 1
+    if ((institution.parents?.length ?? 0) + 1 > levelMax) {
+      levelMax = (institution.parents?.length ?? 0) + 1
     }
   }
 
   const institutionsSorted = [...institutions]
-  institutionsSorted.sort((a, b) => a.pathString.localeCompare(b.pathString))
+  institutionsSorted.sort((a, b) =>
+    (a.pathString ?? '').localeCompare(b.pathString ?? ''),
+  )
 
-  const columns = [
+  const columns: ColumnType[] = [
     Column.favorite(),
     Column.name('institution', 'Institution', {
       withIndent: true,
@@ -64,7 +67,7 @@
       tooltip: 'Email de contact',
       render: (data, type) => {
         if (!data) return ''
-        if (type !== 'display') return data
+        if (type !== 'display') return String(data)
         data = escapeHtml(data)
         return wrapLongText(
           `<a href="mailto:${data}" target="_blanck" >${data}</a>`,
@@ -78,7 +81,7 @@
       tooltip: 'Téléphone de contact',
       render: (data, type) => {
         if (!data) return ''
-        if (type !== 'display') return data
+        if (type !== 'display') return String(data)
         data = escapeHtml(data)
         return `<a href="tel:${data}" target="_blanck" >${data}</a>`
       },

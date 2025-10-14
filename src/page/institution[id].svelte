@@ -14,8 +14,9 @@
   import Title from '@layout/Title.svelte'
   import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
   import EvolutionSummarySwitch from '@layout/EvolutionSummarySwitch.svelte'
+  import type { Institution } from '@type'
 
-  let { institution } = $props()
+  let { institution }: { institution: Institution } = $props()
 
   let keyTab = $state(1)
 
@@ -99,12 +100,10 @@
 <section class="section">
   <Title type="institution" name={institution.name} id={institution.id} />
   {#if showOpenAllSwitch}
-    <OpenAllSwitch onChange={(value: boolean) => (keyTab = Number(value))} />
+    <OpenAllSwitch onChange={() => keyTab++} />
   {/if}
   {#if showEvolutionSummarySwitch}
-    <EvolutionSummarySwitch
-      onChange={(value: boolean) => (keyTab = Number(value))}
-    />
+    <EvolutionSummarySwitch onChange={() => keyTab++} />
   {/if}
   {#key keyTab}
     <Tabs {tabs} />

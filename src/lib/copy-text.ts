@@ -8,11 +8,11 @@ export function copyTextListenClick() {
       !(target instanceof HTMLElement) ||
       !target.classList.contains('copyclip')
     )
-      return false
+      return
     const text = target.textContent.trim()
     await navigator.clipboard.writeText(text)
     const tooltip = document.getElementById('powerTip')
-    if (!tooltip) return false
+    if (!tooltip) return
     tooltip.textContent = copyTextMsgCopied
     setTimeout(() => (tooltip.textContent = copyTextMsg), 1000)
   })

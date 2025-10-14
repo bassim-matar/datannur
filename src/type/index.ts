@@ -16,6 +16,7 @@ export type {
 
 // Entity types (business logic)
 export type {
+  ModalitySimilitute,
   WithRecursiveParent,
   WithTags,
   WithDocs,

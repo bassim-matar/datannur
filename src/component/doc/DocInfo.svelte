@@ -5,28 +5,35 @@
   import DocPreview from './DocPreview.svelte'
   import LastUpdateInfo from '@info-table/LastUpdateInfo.svelte'
   import DescriptionInfo from '@info-table/DescriptionInfo.svelte'
+  import type { Doc } from '@type'
 
-  let { doc } = $props()
+  let { doc }: { doc: Doc } = $props()
 </script>
 
 <TableWrapper>
   <IdInfo id={doc.id} />
-  <tr>
-    <td><Icon type="type" /> Type</td>
-    <td>{doc.type} <Icon type={doc.type} /></td>
-  </tr>
+  {#if doc.type}
+    <tr>
+      <td><Icon type="type" /> Type</td>
+      <td>{doc.type} <Icon type={doc.type} /></td>
+    </tr>
+  {/if}
   <tr>
     <td><Icon type="link" /> Lien</td>
     <td>
       <a class="break-line" href={doc.path} target="_blanck">{doc.path}</a>
     </td>
   </tr>
-  <LastUpdateInfo
-    lastUpdateDate={doc.lastUpdate}
-    intraday={true}
-    fromTimestamp={true}
-  />
-  <DescriptionInfo description={doc.description} insideTable={true} />
+  {#if doc.lastUpdate}
+    <LastUpdateInfo
+      lastUpdateDate={doc.lastUpdate}
+      intraday={true}
+      fromTimestamp={true}
+    />
+  {/if}
+  {#if doc.description}
+    <DescriptionInfo description={doc.description} insideTable={true} />
+  {/if}
 </TableWrapper>
 
 <DocPreview {doc} />

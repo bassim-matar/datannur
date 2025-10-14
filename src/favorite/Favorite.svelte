@@ -1,7 +1,20 @@
 <script lang="ts">
   import Favorites from './favorites'
+  import type { FavoritableEntityName } from '@type'
 
-  let { type, id, isFavorite, isMeta = false, noMargin = false } = $props()
+  let {
+    type,
+    id,
+    isFavorite,
+    isMeta = false,
+    noMargin = false,
+  }: {
+    type: FavoritableEntityName
+    id: string | number
+    isFavorite: boolean
+    isMeta?: boolean
+    noMargin?: boolean
+  } = $props()
 
   let clicked = $state(false)
 

@@ -1,22 +1,31 @@
 <script lang="ts">
   import { router } from '@lib/router.svelte.js'
   import { getBaseLinkUrl } from '@lib/util'
+  import type { Snippet } from 'svelte'
 
   let {
     href,
     className = '',
-    click = () => false,
+    click = () => {},
     isActive = () => false,
     alternativeAction = null,
     entity = '',
     children,
+  }: {
+    href: string
+    className?: string
+    click?: (event: MouseEvent) => void
+    isActive?: () => boolean
+    alternativeAction?: (() => void) | null
+    entity?: string
+    children?: Snippet
   } = $props()
 
   const base = href === '/' ? '' : getBaseLinkUrl()
 
   const entityClass = $derived(entity ? `color-entity-${entity}` : '')
 
-  function goToHref(event) {
+  function goToHref(event: MouseEvent) {
     if (event.ctrlKey || event.metaKey) return
     event.preventDefault()
     if (alternativeAction) {
@@ -26,7 +35,7 @@
     router.navigate(href)
   }
 
-  function onClickEvent(event) {
+  function onClickEvent(event: MouseEvent) {
     click(event)
     goToHref(event)
   }

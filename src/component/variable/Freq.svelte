@@ -3,9 +3,9 @@
   import Datatable from '@datatable/Datatable.svelte'
   import { getPercent } from '@lib/util'
   import escapeHtml from 'escape-html'
-  import type { Column as ColumnType } from '@type'
+  import type { Freq, Column as ColumnType } from '@type'
 
-  let { freq } = $props()
+  let { freq }: { freq: Freq[] } = $props()
 
   const freqSorted = [...freq].sort((a, b) => (b.freq || 0) - (a.freq || 0))
   const totalFreq = freq.reduce((sum, item) => sum + (item.freq || 0), 0)

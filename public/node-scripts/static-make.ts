@@ -70,13 +70,13 @@ async function getEntitiesRoutes(dbMetaPath: string) {
     const data = await fs.promises.readFile(filePath, 'utf8')
     const index = data.indexOf('=')
     const jsonPart = index !== -1 ? data.substring(index + 1).trim() : ''
-    let json = JSON.parse(jsonPart)
+    let json = JSON.parse(jsonPart) as unknown[][] | Row[]
 
     if (json.length > 0 && Array.isArray(json[0])) {
-      json = arrayToObject(json)
+      json = arrayToObject(json as unknown[][])
     }
 
-    for (const row of json) {
+    for (const row of json as Row[]) {
       routes.push(`${entity}/${row.id}`)
     }
   }
@@ -98,8 +98,8 @@ async function loadConfig(): Promise<Config | null> {
   try {
     const rawConfig = JSON.parse(
       await fs.promises.readFile(configFile, 'utf-8'),
-    )
-    return rawConfig as Config
+    ) as Config
+    return rawConfig
   } catch (error) {
     console.error('Failed to read or parse', configFile, error)
     return null
@@ -122,7 +122,6 @@ async function createIndexFile() {
     await fs.promises.writeFile(entryPoint, index)
   } catch (error) {
     console.error('Failed to read or parse', indexFile, error)
-    return null
   }
 }
 
@@ -209,7 +208,8 @@ async function capturePage(page: Page, route: string, level: number) {
 }
 
 async function generateStaticSite(routes: string[], startTime: Date) {
-  let server: http.Server | undefined, browser: Browser | undefined
+  let server: http.Server | undefined = undefined
+  let browser: Browser | undefined = undefined
   await createIndexFile()
   try {
     server = await startServer(entryPoint, config.port)

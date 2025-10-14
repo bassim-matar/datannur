@@ -2,8 +2,21 @@
   import Options from '@lib/options'
   import Loading from '@frame/Loading.svelte'
   import { tabSelected } from '@lib/store'
+  import type { Tab } from '@tab/tabs-helper'
 
-  let { tabs, noFirstTab, isLastTab, activeTabBody, tabsLoaded } = $props()
+  let {
+    tabs,
+    noFirstTab,
+    isLastTab,
+    activeTabBody,
+    tabsLoaded,
+  }: {
+    tabs: Tab[]
+    noFirstTab: boolean
+    isLastTab: boolean
+    activeTabBody: string
+    tabsLoaded: Record<string, number>
+  } = $props()
 
   let openAllTab = Options.get('openAllTab')
 </script>
@@ -24,7 +37,6 @@
         class="tab-component-wrapper {tab.props.class ?? ''}"
         class:visible={activeTabBody === tab.key}
         class:not-visible={activeTabBody !== tab.key}
-        class:padding={tab.padding}
         class:has-footer={tab.footerVisible}
         class:without-footer={!tab.footerVisible}
       >
@@ -97,14 +109,6 @@
     @each $entity in $entities {
       &.shadow-#{$entity} {
         border-color: #{color($entity)};
-      }
-    }
-  }
-
-  @media screen and (max-width: 600px) {
-    .tabs-body {
-      .tab-component-wrapper.padding {
-        padding: 10px;
       }
     }
   }

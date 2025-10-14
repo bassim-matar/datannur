@@ -12,10 +12,11 @@
   import noResult from '@markdown/search/no-result.md?raw'
   import noRecentSearch from '@markdown/search/no-recent-search.md?raw'
   import type { SearchResult as SearchResultType } from '@search/search'
+  import type { Tab } from '@tab/tabs-helper'
 
   let isLoading = $state(true)
   let searchResultData: SearchResultType[] = $state([])
-  let tabs: unknown[] = $state([])
+  let tabs: Tab[] = $state([])
   let tabKey = $state()
 
   let recentSearchChange = false
@@ -61,12 +62,12 @@
     if ($searchValue === '') {
       UrlParam.delete('search')
       initSearchRecent()
-      return false
+      return
     }
     const valueBefore = $searchValue
     const allSearchRaw = await search.find($searchValue)
     isLoading = false
-    if ($searchValue !== valueBefore) return false
+    if ($searchValue !== valueBefore) return
     searchResultData = SearchHistory.putRecentFirst(allSearchRaw)
     setTabs()
   }
@@ -104,7 +105,7 @@
     $pageContentLoaded = true
   })
 
-  let searchTimeout: ReturnType<typeof setTimeout>
+  let searchTimeout: ReturnType<typeof setTimeout> | undefined = undefined
 
   $effect(() => {
     void $searchValue

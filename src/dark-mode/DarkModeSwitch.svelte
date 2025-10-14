@@ -2,7 +2,7 @@
   import Logs from '@lib/logs'
   import { DarkMode, darkModeTheme } from '@dark-mode/dark-mode'
 
-  let { label = null } = $props()
+  let { label = '' }: { label?: string } = $props()
 
   let id = window.crypto.randomUUID()
 

@@ -2,6 +2,7 @@
   import { whenAppReady, onPageHomepage } from '@lib/store'
   import { debounce } from '@lib/util'
   import SearchBarResultRow from './SearchBarResultRow.svelte'
+  import type { SearchResult } from './search'
 
   let {
     isOpen,
@@ -10,6 +11,13 @@
     searchValue,
     isFocusIn = $bindable(),
     selectInput,
+  }: {
+    isOpen: boolean
+    nbResult: number
+    allSearch: SearchResult[]
+    searchValue: string
+    isFocusIn: boolean
+    selectInput: () => void
   } = $props()
 
   let tableWrapper: HTMLDivElement | undefined = $state()

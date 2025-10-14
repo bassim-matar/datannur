@@ -6,7 +6,7 @@
   import Loading from '@frame/Loading.svelte'
   import type { Row, Column } from '@type'
 
-  let { datasetPreview } = $props()
+  let { datasetPreview }: { datasetPreview: Row[] | string } = $props()
 
   let datasetData: Row[] = $state([])
   let columns: Column[] = $state([])
@@ -16,7 +16,7 @@
 
     // Case 1: datasetPreview is already loaded data (not a string ID)
     if (typeof datasetPreview !== 'string') {
-      datasetData = datasetPreview as Row[]
+      datasetData = datasetPreview
       columns = PreviewManager.getColumns(datasetData)
       $tabSelected.nb = datasetData.length
       return
@@ -24,17 +24,17 @@
 
     // Case 2: datasetPreview is a string ID, need to load
     if (!PreviewCache.has(datasetPreview)) {
-      const loadedData = (await PreviewManager.load(datasetPreview)) as Row[]
+      const loadedData = await PreviewManager.load(datasetPreview)
       PreviewManager.cleanKeys(loadedData)
       PreviewCache.set(datasetPreview, [...loadedData])
     }
 
-    const cachedData = PreviewCache.get(datasetPreview) as Row[]
+    const cachedData = PreviewCache.get(datasetPreview)
     // Remove _rowNum property from each row
     datasetData = cachedData.map(obj => {
       const { _rowNum: rowNum, ...rest } = obj
       void rowNum
-      return rest
+      return rest as Row
     })
 
     columns = PreviewManager.getColumns(datasetData)

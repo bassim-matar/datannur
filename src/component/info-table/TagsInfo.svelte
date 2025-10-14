@@ -1,8 +1,9 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
-  import TagsList from "@component/tag/TagsList.svelte"
+  import Icon from '@layout/Icon.svelte'
+  import TagsList from '@component/tag/TagsList.svelte'
+  import type { Tag } from '@type'
 
-  let { tags } = $props()
+  let { tags }: { tags: Tag[] } = $props()
 </script>
 
 {#if tags && tags.length > 0}

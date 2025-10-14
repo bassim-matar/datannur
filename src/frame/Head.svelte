@@ -1,5 +1,6 @@
 <script lang="ts">
-  let { title, description = title } = $props()
+  let { title, description = title }: { title: string; description?: string } =
+    $props()
 </script>
 
 <svelte:head>

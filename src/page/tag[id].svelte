@@ -8,22 +8,31 @@
     removeDuplicateById,
   } from '@lib/db'
   import Tabs from '@tab/Tabs.svelte'
-  import { tabsHelper } from '@tab/tabs-helper'
+  import { tabsHelper, type Tab } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
   import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
-  import type { MainEntity, MainEntityName, Tag } from '@type'
+  import type {
+    MainEntityName,
+    Tag,
+    Institution,
+    Folder,
+    Doc,
+    Dataset,
+    Variable,
+    MainEntityMap,
+  } from '@type'
 
-  let { tag } = $props()
+  let { tag }: { tag: Tag } = $props()
 
   let opposite = $state(false)
-  let tabs = $state()
+  let tabs: Tab[] = $state([])
   let keyTab = $state(-1)
 
-  let institutions
-  let folders
-  let docs
-  let datasets
-  let variables
+  let institutions: Institution[] = []
+  let folders: Folder[] = []
+  let docs: Doc[] = []
+  let datasets: Dataset[] = []
+  let variables: Variable[] = []
   let tags: Tag[] = []
 
   let withInstitutions = db.getAll('institution', { tag })
@@ -52,13 +61,13 @@
   withVariables = removeDuplicateById(withVariables)
   withDocs = removeDuplicateById(withDocs)
 
-  function getOpposite(
-    entity: MainEntityName,
-    withTagItems: MainEntity[],
-    selfId = null,
+  function getOpposite<T extends MainEntityName>(
+    entity: T,
+    withTagItems: MainEntityMap[T][],
+    selfId?: string | number,
   ) {
     if (withTagItems.length === 0) return []
-    const all: MainEntity[] = []
+    const all: MainEntityMap[T][] = []
     const ids: unknown[] = []
     for (let item of withTagItems) {
       if ('id' in item) ids.push(item.id)
@@ -162,7 +171,7 @@
     toggleInfo={toggleOpposite}
   />
   {#if showOpenAllSwitch}
-    <OpenAllSwitch onChange={(value: boolean) => (keyTab = Number(value))} />
+    <OpenAllSwitch onChange={() => keyTab++} />
   {/if}
   {#key Number(opposite) + keyTab}
     <Tabs {tabs} />

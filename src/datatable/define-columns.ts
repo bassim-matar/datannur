@@ -1,9 +1,9 @@
 import { entityNames } from '@lib/constant'
 import { link } from '@lib/util'
 import { statExists } from '@stat/stat'
-import type { AnyEntity, Column as ColumnType } from '@type'
+import type { Row, Column as ColumnType } from '@type'
 
-function filterEmptyColumns(columns: ColumnType[], items: AnyEntity[]) {
+function filterEmptyColumns(columns: ColumnType[], items: Row[]) {
   const hasProp: Record<string, boolean> = {}
   for (const item of items) {
     for (const key of Object.keys(item)) {
@@ -36,13 +36,13 @@ function getTextWidth(lines: string[], font: string) {
 
 export function defineColumns(
   columns: ColumnType[],
-  data: AnyEntity[],
+  data: Row[],
   entity: keyof typeof entityNames,
   keepAllCols: boolean,
-  metaPath: string,
+  metaPath: string | undefined,
   nbRowLoading = 50,
 ) {
-  let columnsCopy = columns.map(obj => ({ ...obj }))
+  let columnsCopy = columns.map(obj => ({ ...obj })) as ColumnType[]
 
   if (columnsCopy[0]?.title !== '#') {
     const colNumerotation: ColumnType = {
@@ -55,11 +55,11 @@ export function defineColumns(
     }
     if (entity in entityNames) {
       if (metaPath) {
-        colNumerotation.render = (data, type, row) => {
-          return link(metaPath + row.id, data)
+        colNumerotation.render = (data, type, row: Row) => {
+          return link(metaPath + '/' + row.id, data)
         }
       } else {
-        colNumerotation.render = (data, type, row) => {
+        colNumerotation.render = (data, type, row: Row) => {
           return link(entity + '/' + row.id, data)
         }
       }

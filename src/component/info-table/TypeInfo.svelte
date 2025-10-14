@@ -1,10 +1,12 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
+  import Icon from '@layout/Icon.svelte'
 
-  let { type } = $props()
+  let { type }: { type: string | undefined } = $props()
 </script>
 
-<tr>
-  <td><Icon type="type" /> Type</td>
-  <td>{type}</td>
-</tr>
+{#if type}
+  <tr>
+    <td><Icon type="type" /> Type</td>
+    <td>{type}</td>
+  </tr>
+{/if}

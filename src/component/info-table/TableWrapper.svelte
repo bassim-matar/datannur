@@ -1,8 +1,14 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, type Snippet } from 'svelte'
   import { pageContentLoaded } from '@lib/store'
 
-  let { noMaxHeight = true, children } = $props()
+  let {
+    noMaxHeight = true,
+    children,
+  }: {
+    noMaxHeight?: boolean
+    children?: Snippet
+  } = $props()
 
   onMount(() => {
     $pageContentLoaded = true

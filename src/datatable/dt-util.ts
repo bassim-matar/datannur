@@ -1,7 +1,7 @@
 import { UrlHash } from '@lib/url-hash'
 import Options from '@lib/options'
 import { getPercent } from '@lib/util'
-import type { AnyEntity, Column } from '@type'
+import type { Row, Column } from '@type'
 import type { Api } from 'datatables.net'
 
 export function isShortTable(dt: Api) {
@@ -12,10 +12,10 @@ export function isShortTable(dt: Api) {
 }
 
 export function fixColumnsWidth(dt: Api) {
-  if (!dt) return false
+  if (!dt) return
   dt.columns()
     .header()
-    .each(function (header) {
+    .each(function (header: HTMLElement) {
       const columnWith = header.getBoundingClientRect().width
       header.style.minWidth = `${columnWith}px`
     })
@@ -39,7 +39,7 @@ export function getTableId(entity: string) {
   return tableId + '___' + entity
 }
 
-export function getNbItem(dt: Api, cleanData: AnyEntity[]) {
+export function getNbItem(dt: Api, cleanData: Row[]) {
   const separator = '|'
   const nbTotal = cleanData.length
   const nbItemDisplay = dt?.page?.info()?.recordsDisplay
@@ -65,7 +65,7 @@ export function getNbSticky(columns: Column[]) {
 }
 
 export function getCleanData(
-  data: AnyEntity[],
+  data: Row[],
   sortByName: boolean,
   isRecursive: boolean,
   isBig: boolean,
@@ -78,11 +78,11 @@ export function getCleanData(
 
   const hasFilterRecursive = isRecursive && isBig && getHasFilterRecursive()
   const tempData = [...data]
-  const newData: (AnyEntity & { _rowNum: number })[] = []
+  const newData: (Row & { _rowNum: number })[] = []
   if (sortByName) {
     tempData.sort((a, b) => {
-      const aName = ('name' in a ? a.name : '') ?? ''
-      const bName = ('name' in b ? b.name : '') ?? ''
+      const aName = (('name' in a ? a.name : '') ?? '') as string
+      const bName = (('name' in b ? b.name : '') ?? '') as string
       return aName.localeCompare(bName)
     })
   }
@@ -92,9 +92,9 @@ export function getCleanData(
       hasFilterRecursive &&
       'parentsRelative' in rows &&
       'minimumDeep' in rows &&
-      rows.parentsRelative &&
-      rows.minimumDeep !== undefined &&
-      rows.parentsRelative.length - rows.minimumDeep !== 0
+      ((rows.parentsRelative as unknown[])?.length ?? 0) -
+        ((rows.minimumDeep as number) ?? 0) !==
+        0
     ) {
       continue
     }

@@ -1,5 +1,6 @@
 <script lang="ts">
   import FilterInput from './FilterInput.svelte'
+  import type { Column } from '@type'
 
   let {
     columns,
@@ -7,12 +8,18 @@
     loading = true,
     nbSticky = 1,
     datatableUpdateDraw = 0,
+  }: {
+    columns: Column[]
+    tableId?: string
+    loading?: boolean
+    nbSticky?: number
+    datatableUpdateDraw?: number
   } = $props()
 
   let loaded = $state(false)
   const filtersLeft = $state([0])
 
-  function getWidthElemNum(num) {
+  function getWidthElemNum(num: number) {
     const selector = `.header-filter-wrapper .th-${tableId}-${num}`
     const elem = document.querySelector(selector)
     return elem ? elem.getBoundingClientRect().width : 0

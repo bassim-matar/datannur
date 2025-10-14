@@ -136,7 +136,7 @@ export default class Render {
       const freqNum = Render.num(freqItem.freq, type)
       const percentText = type === 'display' ? ` (${percentDisplay}%)` : ''
 
-      let freqContent
+      let freqContent = ''
       if (type === 'display') {
         const freqDisplay = `
         <div class="freq-item-container">

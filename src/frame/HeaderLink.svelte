@@ -5,6 +5,8 @@
   import { entityNames } from '@lib/constant'
   import Link from '@layout/Link.svelte'
   import Icon from '@layout/Icon.svelte'
+  import type { Snippet } from 'svelte'
+  import type { MainEntityName } from '@type'
 
   let {
     href = $bindable(''),
@@ -15,6 +17,15 @@
     standard = '',
     info = '',
     children = null,
+  }: {
+    href?: string
+    icon?: string
+    className?: string
+    pages?: string[]
+    ifUse?: keyof typeof db.use | null
+    standard?: MainEntityName | ''
+    info?: string
+    children?: Snippet | null
   } = $props()
 
   let standardReadable = $state('')

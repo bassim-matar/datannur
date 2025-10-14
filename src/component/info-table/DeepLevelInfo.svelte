@@ -1,10 +1,12 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
+  import Icon from '@layout/Icon.svelte'
 
-  let { level } = $props()
+  let { level }: { level: number | undefined } = $props()
 </script>
 
-<tr>
-  <td><Icon type="level" /> Niveau</td>
-  <td>{level}</td>
-</tr>
+{#if level !== undefined}
+  <tr>
+    <td><Icon type="level" /> Niveau</td>
+    <td>{level}</td>
+  </tr>
+{/if}

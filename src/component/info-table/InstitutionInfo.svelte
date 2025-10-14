@@ -4,7 +4,15 @@
   import Breadcrumb from '@component/Breadcrumb.svelte'
   import ExtendableText from '@layout/ExtendableText.svelte'
 
-  let { institutionId, type = 'institution', isSelf = false } = $props()
+  let {
+    institutionId,
+    type = 'institution',
+    isSelf = false,
+  }: {
+    institutionId: string | number | undefined
+    type?: 'institution' | 'owner' | 'manager'
+    isSelf?: boolean
+  } = $props()
 
   const name = isSelf ? 'Partie de' : entityNames[type]
   const icon = isSelf ? 'folderTreeInstitution' : 'institution'

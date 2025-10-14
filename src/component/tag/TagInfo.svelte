@@ -5,17 +5,22 @@
   import IdInfo from '@info-table/IdInfo.svelte'
   import TagInfo from '@info-table/TagInfo.svelte'
   import DeepLevelInfo from '@info-table/DeepLevelInfo.svelte'
+  import type { Tag } from '@type'
 
-  let { tag } = $props()
+  let { tag }: { tag: Tag } = $props()
 </script>
 
 <TableWrapper>
   <IdInfo id={tag.id} />
   {#if db.useRecursive.tag}
-    <DeepLevelInfo level={tag.parents.length + 1} />
-    {#if tag.parents.length}
+    {#if tag.parents}
+      <DeepLevelInfo level={tag.parents?.length + 1} />
+    {/if}
+    {#if tag.parents?.length}
       <TagInfo tagId={tag.id} />
     {/if}
   {/if}
 </TableWrapper>
-<DescriptionInfo description={tag.description} />
+{#if tag.description}
+  <DescriptionInfo description={tag.description} />
+{/if}

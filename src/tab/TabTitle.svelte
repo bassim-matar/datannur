@@ -4,8 +4,13 @@
   import Loading from '@frame/Loading.svelte'
   import Number from '@layout/Number.svelte'
   import { onMount } from 'svelte'
+  import type { Tab } from './tabs-helper'
 
-  let { tab, activeTab = $bindable(), selectTab } = $props()
+  let {
+    tab,
+    activeTab = $bindable(),
+    selectTab,
+  }: { tab: Tab; activeTab: string; selectTab: (tab: Tab) => void } = $props()
 
   let tabNb = $state(tab.nb)
   let minWidth = $state(0)
@@ -55,7 +60,7 @@
       {#if tabNb !== undefined}
         {#if tabNb === '...'}
           <Loading type="tab" colorEntity={tab.icon} />
-        {:else if tabNb === parseInt(tabNb)}
+        {:else if tabNb === (typeof tabNb === 'number' ? tabNb : parseInt(tabNb))}
           <span class="num-style tab-visible">
             <Number number={tabNb} />
           </span>
@@ -70,9 +75,11 @@
         <Icon type={tab.icon} marginRight={false} mode="compact" />
       </span>
       <span>
-        {#if tabNb !== undefined && tabNb !== '...' && tabNb !== parseInt(tabNb)}
+        {#if tabNb !== undefined && tabNb !== '...' && tabNb !== (typeof tabNb === 'number' ? tabNb : parseInt(tabNb))}
           <span class="percent-wrapper">
-            <span class="percent" style="width: {100 - toPercent(tabNb)}%"
+            <span
+              class="percent"
+              style="width: {100 - toPercent(String(tabNb))}%"
             ></span>
           </span>
         {/if}

@@ -7,8 +7,9 @@
   import Logs from '@lib/logs'
   import TabsBody from '@tab/TabsBody.svelte'
   import TabTitle from '@tab/TabTitle.svelte'
+  import type { Tab } from './tabs-helper'
 
-  let { tabs } = $props()
+  let { tabs }: { tabs: Tab[] } = $props()
 
   let isMobile = getIsMobile()
   let allKeys: unknown[] = []
@@ -19,7 +20,7 @@
   let tabsLoaded: { [key: string]: number } = $state({ activeTab: 1 })
   let tabsTitleKey = $state(isMobile)
   let ul: HTMLDivElement | undefined = $state()
-  let isLastTab = $state()
+  let isLastTab = $state(false)
 
   let noFirstTab = $derived(activeTab !== tabs[0]?.key)
 
@@ -58,7 +59,7 @@
     tabsLoaded[tabKey] += 1
   }
 
-  function selectTab(tab: typeof $tabSelected) {
+  function selectTab(tab: Tab) {
     const tabKey = tab.key
     loadTab(tabKey)
     setFooter(tab)
@@ -72,12 +73,13 @@
     }
   }
 
-  function setFooter(tab: typeof $tabSelected) {
+  function setFooter(tab: Tab) {
     if (tab.footerVisible === false) {
       $footerVisible = false
       return
     }
-    $footerVisible = tab.footerVisible || tab.nb < isBigLimit
+    $footerVisible =
+      tab.footerVisible || (typeof tab.nb === 'number' && tab.nb < isBigLimit)
   }
 
   function centerActiveTab() {

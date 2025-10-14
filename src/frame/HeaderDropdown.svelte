@@ -1,8 +1,19 @@
 <script lang="ts">
   import db from '@db'
   import { whenAppReady, page } from '@lib/store'
+  import type { Snippet } from 'svelte'
 
-  let { title, pages = [], ifUse = null, children } = $props()
+  let {
+    title,
+    pages = [],
+    ifUse = null,
+    children,
+  }: {
+    title: string
+    pages?: string[]
+    ifUse?: (keyof typeof db.use)[] | null
+    children?: Snippet
+  } = $props()
 
   let visible = $state(!ifUse)
 

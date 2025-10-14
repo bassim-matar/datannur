@@ -8,11 +8,11 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Loading from '@frame/Loading.svelte'
   import escapeHtml from 'escape-html'
-  import type { Column as ColumnType } from '@type'
+  import type { ModalitySimilitute, Column as ColumnType } from '@type'
 
-  let { modalitiesCompare } = $props()
-
-  let similitutes: unknown[] = $state([])
+  let { modalitiesCompare }: { modalitiesCompare: true } = $props()
+  void modalitiesCompare
+  let similitutes: ModalitySimilitute[] = $state([])
   let loading = $state(true)
 
   ;(async () => {
@@ -21,9 +21,9 @@
       loading = false
       return
     }
-    modalitiesCompare = db.getAll('modality')
+    const modalities = db.getAll('modality')
     similitutes = await worker(
-      { modalitiesCompare, limit: 50000 },
+      { modalitiesCompare: modalities, limit: 50000 },
       modalityCompareWorker,
     )
     $modalitiesSimilitutes = similitutes
@@ -43,8 +43,8 @@
       data: 'modality1Id',
       title: Render.icon('modality') + 'Modalité',
       tooltip: 'Nom de la modalité 1',
-      render: (data, type, row) => {
-        if (type !== 'display') return row.modality2Name
+      render: (data, type, row: ModalitySimilitute) => {
+        if (type !== 'display') return String(row.modality2Name)
         return link(
           'modality/' + data,
           escapeHtml(row.modality1Name),
@@ -75,8 +75,8 @@
       data: 'modality2Id',
       title: Render.icon('modality') + 'Similaire à',
       tooltip: 'Nom de la modalité 2',
-      render: (data, type, row) => {
-        if (type !== 'display') return row.modality2Name
+      render: (data, type, row: ModalitySimilitute) => {
+        if (type !== 'display') return String(row.modality2Name)
         return link(
           'modality/' + data,
           escapeHtml(row.modality2Name),

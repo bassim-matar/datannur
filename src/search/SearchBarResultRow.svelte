@@ -7,8 +7,19 @@
   import { safeHtml } from '@lib/html-sanitizer'
   import Favorite from '@favorite/Favorite.svelte'
   import type { MainEntityName } from '@type'
+  import type { SearchResult } from './search'
 
-  let { item, searchValue, isFocusIn = $bindable(), selectInput } = $props()
+  let {
+    item,
+    searchValue,
+    isFocusIn = $bindable(),
+    selectInput,
+  }: {
+    item: SearchResult
+    searchValue: string
+    isFocusIn: boolean
+    selectInput: () => void
+  } = $props()
 
   function clickLink(entityName: MainEntityName, itemId: string | number) {
     setTimeout(() => {

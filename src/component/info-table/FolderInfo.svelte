@@ -4,7 +4,15 @@
   import ExtendableText from '@layout/ExtendableText.svelte'
   import Link from '@layout/Link.svelte'
 
-  let { folderId, isSelf = false, isMeta = false } = $props()
+  let {
+    folderId,
+    isSelf = false,
+    isMeta = false,
+  }: {
+    folderId: string | number | undefined
+    isSelf?: boolean
+    isMeta?: boolean
+  } = $props()
 
   const name = isSelf ? 'Partie de' : 'Dossier'
   const icon = isSelf ? 'folderTreeFolder' : 'folder'

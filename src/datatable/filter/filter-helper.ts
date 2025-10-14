@@ -48,7 +48,7 @@ export default class FilterHelper {
       | undefined
     const columnDateType = columnAttr?.dateType
     const filterType = columnAttr?.filterType
-    let uniqueValues = column.data().unique()
+    const uniqueValues = column.data().unique().toArray() as unknown[]
 
     if (
       filterType === 'select' ||
@@ -65,22 +65,24 @@ export default class FilterHelper {
           options += '<option value="' + val + '">' + val + '</option>'
         }
       } else {
-        uniqueValues = uniqueValues.map(val =>
-          [null, undefined].includes(val) ? '' : val,
-        )
-        uniqueValues.sort().each(function (val) {
+        const values = uniqueValues
+          .map(val => (val === null || val === undefined ? '' : val))
+          .sort()
+
+        for (let val of values) {
           if (val === '') {
             options += '<option value="__empty__"></option>'
           } else {
             if (val === true) val = 'vrai'
-            if (val === false) val = 'faux'
-            if (typeof val === 'string' && val.includes('span>'))
+            else if (val === false) val = 'faux'
+            else if (typeof val === 'string' && val.includes('span>'))
               val = val.split('span>')[1].trim()
-            const safeVal = escapeHtml(val)
+
+            const safeVal = escapeHtml(String(val))
             options +=
               '<option value="' + safeVal + '">' + safeVal + '</option>'
           }
-        })
+        }
       }
       const select = jQuery(
         `<select required name="${id}" id="${id}">${options}</select>`,
@@ -189,7 +191,7 @@ export default class FilterHelper {
     const dt = jQuery.fn.dataTable
     this.filters[columnNum] = dt.ext.search.length
     dt.ext.search.push((settings: InternalSettings, data: string[]) => {
-      if (settings.nTable.id !== this.tableId) return true
+      if ((settings.nTable as HTMLTableElement).id !== this.tableId) return true
       if (!search || search.slice(1).trim() === '') return true
       const value = data[columnNum].replaceAll(' ', '')
       const searchValue = search.slice(1).trim()
@@ -233,7 +235,7 @@ export default class FilterHelper {
       'DataTables_history_search_' + this.tableId,
     )
     if (!jsonStr) return null
-    return JSON.parse(jsonStr)
+    return JSON.parse(jsonStr) as FilterHistory
   }
   getFilterHistory(colNum: number) {
     const colData = this.historySearch?.columns[colNum]

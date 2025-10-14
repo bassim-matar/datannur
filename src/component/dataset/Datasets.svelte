@@ -2,24 +2,26 @@
   import { getLocalFilter } from '@lib/db'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
+  import type { Dataset } from '@type'
 
-  let { datasets, isMeta = false } = $props()
+  let { datasets, isMeta = false }: { datasets: Dataset[]; isMeta?: boolean } =
+    $props()
 
   const datasetPath = isMeta ? 'metaDataset/' : 'dataset/'
   const tabVariables = isMeta ? 'metaDatasetVariables' : 'datasetVariables'
-  const metaPath = isMeta ? 'metaDataset' : null
+  const metaPath = isMeta ? 'metaDataset' : undefined
   const datasetsSorted = [...datasets]
 
-  function sortDatasets(toSort) {
+  function sortDatasets(toSort: Dataset[]) {
     if (toSort.length === 0) return
     const dbFilters = getLocalFilter()
-    const filterPos = {}
-    for (const i in dbFilters) filterPos[dbFilters[i].id] = i
+    const filterPos: { [key: string]: number } = {}
+    dbFilters.forEach((filter, i) => (filterPos[filter.id] = i))
     toSort.sort(
       (a, b) =>
-        b.lineageType?.localeCompare(a.lineageType) ||
-        filterPos[a.type] - filterPos[b.type] ||
-        a.folderName.localeCompare(b.folderName) ||
+        (b.lineageType ?? '').localeCompare(a.lineageType ?? '') ||
+        (filterPos[a.type ?? ''] ?? 0) - (filterPos[b.type ?? ''] ?? 0) ||
+        (a.folderName ?? '').localeCompare(b.folderName ?? '') ||
         a.name.localeCompare(b.name),
     )
   }
@@ -31,20 +33,20 @@
   let nbSourcesMax = 0
   let nbDerivedMax = 0
   for (const dataset of datasets) {
-    if (dataset.nbVariable > nbVariableMax) {
-      nbVariableMax = dataset.nbVariable
+    if (dataset.nbVariable ?? 0 > nbVariableMax) {
+      nbVariableMax = dataset.nbVariable ?? 0
     }
-    if (dataset.nbRow > nbRowMax) {
-      nbRowMax = dataset.nbRow
+    if (dataset.nbRow ?? 0 > nbRowMax) {
+      nbRowMax = dataset.nbRow ?? 0
     }
-    if (dataset.docsRecursive?.length > nbDocMax) {
-      nbDocMax = dataset.docsRecursive?.length
+    if (dataset.docsRecursive?.length ?? 0 > nbDocMax) {
+      nbDocMax = dataset.docsRecursive?.length ?? 0
     }
-    if (dataset.sourceIds?.size > nbSourcesMax) {
-      nbSourcesMax = dataset.sourceIds.size
+    if (dataset.sourceIds?.size ?? 0 > nbSourcesMax) {
+      nbSourcesMax = dataset.sourceIds?.size ?? 0
     }
-    if (dataset.derivedIds?.size > nbDerivedMax) {
-      nbDerivedMax = dataset.derivedIds.size
+    if (dataset.derivedIds?.size ?? 0 > nbDerivedMax) {
+      nbDerivedMax = dataset.derivedIds?.size ?? 0
     }
   }
 

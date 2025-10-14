@@ -1,18 +1,27 @@
 import { allTabs } from '@tab/all-tabs'
 import attributs from '@stat/attributs'
 import type { Row } from '@type'
+import type { Component } from 'svelte'
 
-interface TabConfig {
-  key?: string
-  nb?: number | string
-  props?: Row
+export type TabConfig = {
+  name: string
+  icon: string
+  /* eslint-disable-next-line */
+  component: Component<any>
   isMeta?: boolean
   metaKey?: string
   withoutProp?: boolean
   loadAsync?: boolean
   withoutNum?: boolean
   useAboutFile?: boolean
-  [key: string]: unknown
+  footerVisible?: boolean
+}
+
+export type Tab = TabConfig & {
+  key: string
+  props: Row
+  nb?: number | string
+  footerVisible?: boolean
 }
 
 function getNbStat(stat: unknown[], attributs: Record<string, unknown[]>) {
@@ -32,12 +41,12 @@ function getTab(key: string, value: unknown) {
     console.error('tabsHelper():', key, 'not found')
     return false
   }
-  const tab = allTabs[key] as TabConfig
+  const config = allTabs[key]
 
   if (
     ([null, undefined, false].includes(value as null | undefined | boolean) ||
       (Array.isArray(value) && value.length === 0)) &&
-    !tab.withoutProp
+    !config.withoutProp
   )
     return false
 
@@ -50,23 +59,24 @@ function getTab(key: string, value: unknown) {
     if (total === 0) return false
   }
 
-  tab.key = key
-  tab.nb = undefined
+  const tab: Tab = { ...config, key, props: {} }
+
   if (Array.isArray(value) || (typeof value === 'object' && value !== null))
     tab.nb = (value as unknown[]).length
-  tab.props = {}
-  if (tab.isMeta) {
-    tab.props!.isMeta = true
-    tab.props![tab.metaKey!] = value
+
+  if (config.isMeta) {
+    tab.props.isMeta = true
+    tab.props[config.metaKey!] = value
   } else if (value !== '') {
-    tab.props![key] = value
+    tab.props[key] = value
   }
-  if (tab.withoutNum) {
+
+  if (config.withoutNum) {
     tab.nb = undefined
   }
-  if (tab.loadAsync) tab.nb = '?'
+  if (config.loadAsync) tab.nb = '?'
 
-  if (tab.useAboutFile) {
+  if (config.useAboutFile) {
     tab.props = { aboutFile: value }
   }
 
@@ -74,11 +84,13 @@ function getTab(key: string, value: unknown) {
     tab.nb = getNbStat(value as unknown[], attributs)
   }
 
+  if (tab.footerVisible === undefined) tab.footerVisible = false
+
   return tab
 }
 
 export function tabsHelper(items: Row) {
-  const tabs: TabConfig[] = []
+  const tabs: Tab[] = []
   for (const [key, value] of Object.entries(items)) {
     const tab = getTab(key, value)
     if (!tab) continue

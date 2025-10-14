@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
+  import Icon from '@layout/Icon.svelte'
 
-  let { frequency } = $props()
+  let { frequency }: { frequency: string | undefined } = $props()
 </script>
 
 {#if frequency}

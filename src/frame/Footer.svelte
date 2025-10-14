@@ -7,7 +7,7 @@
   import DarkModeSwitch from '@dark-mode/DarkModeSwitch.svelte'
   import HeaderLink from '@frame/HeaderLink.svelte'
 
-  let { menuMobile = false } = $props()
+  let { menuMobile = false }: { menuMobile?: boolean } = $props()
   let contactEmail = $state('loading')
   const lastUpdate = $state({
     state: 'loading',
@@ -17,7 +17,7 @@
   })
   const year = new Date().getFullYear()
 
-  let currentInterval
+  let currentInterval: ReturnType<typeof setInterval> | undefined = undefined
   let interval = 1000
   function updateLastModif() {
     lastUpdate.relative = getTimeAgo(lastUpdate.value * 1000) ?? ''

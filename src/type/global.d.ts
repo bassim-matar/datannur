@@ -1,9 +1,9 @@
 import type { Mermaid } from 'mermaid'
-import type { Flexsearch } from 'flexsearch'
+import type Index from 'flexsearch'
 
 declare global {
   interface Window {
-    FlexSearch: Flexsearch
+    FlexSearch: typeof Index
     mermaid: Mermaid
     goToHref: (event: MouseEvent, href: string) => void
   }

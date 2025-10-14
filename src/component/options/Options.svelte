@@ -16,15 +16,16 @@
   import DarkModeSwitch from '@dark-mode/DarkModeSwitch.svelte'
   import BtnImport from '@layout/BtnImport.svelte'
   import Button from '@layout/Button.svelte'
+  import type { Row } from '@type'
 
-  async function importUserData(zipFile) {
+  async function importUserData(zipFile: File) {
     const jszip = new JSZip()
     const zip = await jszip.loadAsync(zipFile)
     for (const file of Object.values(zip.files)) {
       if (file.dir) continue
       const key = file.name.split('.json')[0]
       const content = await file.async('text')
-      const data = JSON.parse(content)
+      const data = JSON.parse(content) as Row[]
       db.browser.set(key, data)
     }
     setTimeout(() => {
@@ -46,28 +47,28 @@
     })
   }
 
-  let openAllRecursive = $state(Options.get('openAllRecursive'))
+  let openAllRecursive = $state(Options.get('openAllRecursive')) as boolean
   function updateOpenAllRecursive() {
     Options.set('openAllRecursive', openAllRecursive)
   }
 
-  let evolutionSummary = $state(Options.get('evolutionSummary'))
+  let evolutionSummary = $state(Options.get('evolutionSummary')) as boolean
   function updateEvolutionSummary() {
     Options.set('evolutionSummary', evolutionSummary)
   }
 
-  let openAllTab = $state(Options.get('openAllTab'))
+  let openAllTab = $state(Options.get('openAllTab')) as boolean
   function updateOpenAllTab() {
     Options.set('openAllTab', openAllTab)
   }
 
-  let roundedDesign = $state(Options.get('roundedDesign'))
+  let roundedDesign = $state(Options.get('roundedDesign')) as boolean
   function updateRoundedDesign() {
     Options.set('roundedDesign', roundedDesign)
     document.documentElement.classList.toggle('roundedDesign')
   }
 
-  let pageShadowColored = $state(Options.get('pageShadowColored'))
+  let pageShadowColored = $state(Options.get('pageShadowColored')) as boolean
   function updatePageShadowColored() {
     Options.set('pageShadowColored', pageShadowColored)
     document.documentElement.classList.toggle('pageShadowColored')
@@ -160,10 +161,17 @@
   @use 'main.scss' as *;
 
   .flex-cols {
+    padding: 3rem 3rem;
     justify-content: center;
   }
 
   .title {
     text-align: center;
+  }
+
+  @media screen and (max-width: 600px) {
+    .flex-cols {
+      padding: 10px;
+    }
   }
 </style>

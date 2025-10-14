@@ -1,8 +1,13 @@
 <script lang="ts">
   import jQuery from 'jquery'
   import BtnClearInput from '@layout/BtnClearInput.svelte'
+  import type { Column as ColumnType } from '@type'
 
-  let { tableId, i, column } = $props()
+  let {
+    tableId,
+    i,
+    column,
+  }: { tableId: string; i: number; column: ColumnType } = $props()
 
   function clearInput(this: HTMLElement) {
     const input = jQuery(this).parent().children('input')

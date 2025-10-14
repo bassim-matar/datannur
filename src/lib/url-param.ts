@@ -32,7 +32,7 @@ export class UrlParam {
   }
   static edit(key: string, value: string | null, mode: 'set' | 'delete') {
     const loc = window.location
-    let hash
+    let hash = ''
     const paramsString = loc.href.split('?')[1]
     const params = new URLSearchParams(paramsString)
     if (mode === 'set') {

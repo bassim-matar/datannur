@@ -4,8 +4,9 @@
   import IdInfo from '@info-table/IdInfo.svelte'
   import TypeInfo from '@info-table/TypeInfo.svelte'
   import FolderInfo from '@info-table/FolderInfo.svelte'
+  import type { Modality } from '@type'
 
-  let { modality } = $props()
+  let { modality }: { modality: Modality } = $props()
 </script>
 
 <TableWrapper>
@@ -13,4 +14,6 @@
   <TypeInfo type={modality.typeClean} />
   <FolderInfo folderId={modality.folderId} />
 </TableWrapper>
-<DescriptionInfo description={modality.description} />
+{#if modality.description}
+  <DescriptionInfo description={modality.description} />
+{/if}
