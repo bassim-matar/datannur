@@ -1,6 +1,7 @@
 import db from '@db'
 
-type Option = { id: string; value: unknown }
+type Value = boolean | string | number
+type Option = { id: string; value: Value }
 
 export default class Options {
   static loaded: Promise<void>
@@ -25,7 +26,7 @@ export default class Options {
   static get(id: string) {
     return this.getOption(id)?.value
   }
-  static set(id: string, value: unknown, callback = () => {}) {
+  static set(id: string, value: Value, callback = () => {}) {
     const option = this.getOption(id)
     if (option) option.value = value
     else this.options.push({ id, value })

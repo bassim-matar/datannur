@@ -1,3 +1,5 @@
+<script lang="ts"></script>
+
 <div class="loading-dot"></div>
 
 <style lang="scss">

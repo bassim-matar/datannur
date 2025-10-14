@@ -2,14 +2,12 @@
   import Switch from '@layout/Switch.svelte'
   import Options from '@lib/options'
 
-  let { onChange = () => {} } = $props()
+  let { onChange = () => {} }: { onChange: () => void } = $props()
 
-  let evolutionSummary = $state(Options.get('evolutionSummary'))
+  let evolutionSummary = $state(Options.get('evolutionSummary') as boolean)
 
   function updateEvolutionSummary() {
-    Options.set('evolutionSummary', evolutionSummary, () => {
-      onChange('evolutionSummary' + String(evolutionSummary))
-    })
+    Options.set('evolutionSummary', evolutionSummary, () => onChange())
   }
 </script>
 

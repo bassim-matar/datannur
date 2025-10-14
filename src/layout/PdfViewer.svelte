@@ -2,7 +2,7 @@
   import { hasTouchScreen } from '@lib/util'
   import Loading from '@frame/Loading.svelte'
 
-  let { pdf } = $props()
+  let { pdf }: { pdf: string } = $props()
 
   let loading = $state(true)
   let urlMobile = $state(

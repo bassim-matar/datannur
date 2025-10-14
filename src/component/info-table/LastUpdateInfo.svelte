@@ -2,13 +2,21 @@
   import Icon from '@layout/Icon.svelte'
   import { getTimeAgo, getDatetime } from '@lib/time'
 
-  let { lastUpdateDate, intraday = false, fromTimestamp = false } = $props()
+  let {
+    lastUpdateDate,
+    intraday = false,
+    fromTimestamp = false,
+  }: {
+    lastUpdateDate: string | number
+    intraday?: boolean
+    fromTimestamp?: boolean
+  } = $props()
 
   let lastUpdateDateReadable = $state(lastUpdateDate)
   let timeAgo = $state(getTimeAgo(lastUpdateDate, true, !intraday))
 
   if (fromTimestamp) {
-    lastUpdateDateReadable = getDatetime(lastUpdateDate)
+    lastUpdateDateReadable = getDatetime(lastUpdateDate as number)
     timeAgo = getTimeAgo(lastUpdateDate, false, !intraday)
   }
 </script>

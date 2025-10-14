@@ -2,14 +2,12 @@
   import Switch from '@layout/Switch.svelte'
   import Options from '@lib/options'
 
-  let { onChange = () => {} } = $props()
+  let { onChange = () => {} }: { onChange: () => void } = $props()
 
-  let openAllRecursive = $state(Options.get('openAllRecursive'))
+  let openAllRecursive = $state(Options.get('openAllRecursive') as boolean)
 
   function updateOpenAllRecursive() {
-    Options.set('openAllRecursive', openAllRecursive, () => {
-      onChange(openAllRecursive)
-    })
+    Options.set('openAllRecursive', openAllRecursive, () => onChange())
   }
 </script>
 

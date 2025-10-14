@@ -1,5 +1,6 @@
 <script lang="ts">
-  let { click, mode = 'normal' } = $props()
+  let { click, mode = 'normal' }: { click: () => void; mode?: string } =
+    $props()
 </script>
 
 <button onclick={click} class="btn-clear-input {mode}" aria-label="clear-input">

@@ -5,12 +5,13 @@
   import { tabsHelper } from '@tab/tabs-helper'
   import Tabs from '@tab/Tabs.svelte'
   import Title from '@layout/Title.svelte'
+  import type { Row, MetaDataset } from '@type'
 
-  let { metaDataset } = $props()
+  let { metaDataset }: { metaDataset: MetaDataset } = $props()
 
   let metaDatasetVariables = db.getAll('metaVariable', { metaDataset })
 
-  let datasetPreview: unknown[] = []
+  let datasetPreview: Row[] = []
   if (metaDataset.metaFolderId === 'data') {
     const datasetPreviewRaw = db.getAll(metaDataset.name)
     const keysToKeep = metaDatasetVariables.map(a => a.name)
@@ -21,7 +22,7 @@
   }
 
   let tabs = tabsHelper({
-    dataset: metaDataset,
+    metaDataset,
     metaDatasetVariables,
     datasetPreview,
   })

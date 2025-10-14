@@ -3,8 +3,9 @@
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
+  import type { Modality } from '@type'
 
-  let { modality } = $props()
+  let { modality }: { modality: Modality } = $props()
 
   const variables = db.getAll('variable', { modality })
   const values = modality.values

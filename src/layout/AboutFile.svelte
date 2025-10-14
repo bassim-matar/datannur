@@ -8,7 +8,7 @@
   import { mdWithMermaidToHtml } from '@lib/mermaid'
   import { safeHtmlWithSvg } from '@lib/html-sanitizer'
 
-  let { aboutFile } = $props()
+  let { aboutFile }: { aboutFile: string } = $props()
 
   let htmlContent = $state('')
   let htmlContentLoaded = $state(false)

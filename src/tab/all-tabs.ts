@@ -17,6 +17,9 @@ import DocInfo from '@component/doc/DocInfo.svelte'
 import DatasetInfo from '@component/dataset/DatasetInfo.svelte'
 import VariableInfo from '@component/variable/VariableInfo.svelte'
 import ModalityInfo from '@component/modality/ModalityInfo.svelte'
+import MetaFolderInfo from '@component/folder/MetaFolderInfo.svelte'
+import MetaDatasetInfo from '@component/dataset/MetaDatasetInfo.svelte'
+import MetaVariableInfo from '@component/variable/MetaVariableInfo.svelte'
 import MetaDiagramm from '@component/MetaDiagramm.svelte'
 import DatasetPreview from '@component/preview/DatasetPreview.svelte'
 import VariablePreview from '@component/preview/VariablePreview.svelte'
@@ -26,11 +29,10 @@ import AllFav from '@favorite/AllFav.svelte'
 import Options from '@component/options/Options.svelte'
 import Logs from '@component/options/Logs.svelte'
 import Evolution from '@component/Evolution.svelte'
-
 import { allTabsIcon } from '@lib/store'
-import type { Row } from '@type'
+import type { TabConfig } from './tabs-helper'
 
-export const allTabs: Row = {
+export const allTabs: Record<string, TabConfig> = {
   institutions: {
     name: 'Institution',
     icon: 'institution',
@@ -156,7 +158,6 @@ export const allTabs: Row = {
     component: Options,
     withoutNum: true,
     withoutProp: true,
-    padding: true,
     footerVisible: true,
   },
   datasetPreview: {
@@ -190,11 +191,6 @@ export const allTabs: Row = {
     footerVisible: true,
     useAboutFile: true,
   },
-  homepage: { icon: 'home' },
-  meta: { icon: 'internalView' },
-  metaFolder: { icon: 'folder' },
-  metaDataset: { icon: 'dataset' },
-  metaVariable: { icon: 'variable' },
 }
 
 const infoItems = {
@@ -206,9 +202,12 @@ const infoItems = {
   dataset: DatasetInfo,
   variable: VariableInfo,
   modality: ModalityInfo,
+  metaFolder: MetaFolderInfo,
+  metaDataset: MetaDatasetInfo,
+  metaVariable: MetaVariableInfo,
 }
 for (const [key, value] of Object.entries(infoItems)) {
-  ;(allTabs as Row)[key] = {
+  allTabs[key] = {
     name: 'A propos',
     icon: 'about',
     component: value,

@@ -2,24 +2,29 @@
   import { getLocalFilter } from '@lib/db'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
+  import type { Variable } from '@type'
 
-  let { variables, isMeta = false } = $props()
+  let {
+    variables,
+    isMeta = false,
+  }: { variables: Variable[]; isMeta?: boolean } = $props()
 
   const variablesSorted = [...variables]
-  const metaPath = isMeta ? 'metaVariable/' : false
+  const metaPath = isMeta ? 'metaVariable' : undefined
 
-  function sortVariables(toSort) {
+  function sortVariables(toSort: Variable[]) {
     if (toSort.length === 0) return
     const dbFilters = getLocalFilter()
-    const filterPos = {}
-    for (const i in dbFilters) filterPos[dbFilters[i].id] = i
+    const filterPos: { [key: string]: number } = {}
+    dbFilters.forEach((filter, i) => (filterPos[filter.id] = i))
     toSort.sort(
       (a, b) =>
-        b.lineageType?.localeCompare(a.lineageType) ||
-        filterPos[a.datasetType] - filterPos[b.datasetType] ||
-        a.folderName.localeCompare(b.folderName) ||
-        a.datasetName.localeCompare(b.datasetName) ||
-        a.num - b.num,
+        (b.lineageType ?? '').localeCompare(a.lineageType ?? '') ||
+        (filterPos[a.datasetType ?? ''] ?? 0) -
+          (filterPos[b.datasetType ?? ''] ?? 0) ||
+        (a.folderName ?? '').localeCompare(b.folderName ?? '') ||
+        (a.datasetName ?? '').localeCompare(b.datasetName ?? '') ||
+        (a.num ?? 0) - (b.num ?? 0),
     )
   }
   sortVariables(variablesSorted)
@@ -29,10 +34,10 @@
   let nbSourcesMax = 0
   let nbDerivedMax = 0
   for (const variable of variables) {
-    nbRowMax = Math.max(nbRowMax, variable.nbRow)
-    nbValueMax = Math.max(nbValueMax, variable.nbValue)
-    nbSourcesMax = Math.max(nbSourcesMax, variable.sourceIds?.length || 0)
-    nbDerivedMax = Math.max(nbDerivedMax, variable.derivedIds?.length || 0)
+    nbRowMax = Math.max(nbRowMax, variable.nbRow ?? 0)
+    nbValueMax = Math.max(nbValueMax, variable.nbValue ?? 0)
+    nbSourcesMax = Math.max(nbSourcesMax, variable.sourceIds?.size ?? 0)
+    nbDerivedMax = Math.max(nbDerivedMax, variable.derivedIds?.size ?? 0)
   }
 
   function defineColumns() {

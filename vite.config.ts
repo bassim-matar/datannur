@@ -49,7 +49,7 @@ async function getAliases(from: string): Promise<Record<string, string>> {
 
 async function getAppVersion(): Promise<string> {
   const packageJson = await fs.readFile('package.json', 'utf8')
-  const { version } = JSON.parse(packageJson)
+  const { version } = JSON.parse(packageJson) as { version: string }
   return version || '0.0.0'
 }
 

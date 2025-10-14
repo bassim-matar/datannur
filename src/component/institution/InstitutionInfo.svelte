@@ -7,17 +7,22 @@
   import TagsInfo from '@info-table/TagsInfo.svelte'
   import DeepLevelInfo from '@info-table/DeepLevelInfo.svelte'
   import PeriodInfo from '@info-table/PeriodInfo.svelte'
+  import type { Institution } from '@type'
 
-  let { institution } = $props()
+  let { institution }: { institution: Institution } = $props()
 </script>
 
 <TableWrapper>
   <IdInfo id={institution.id} />
-  <DeepLevelInfo level={institution.parents.length + 1} />
+  {#if institution.parents}
+    <DeepLevelInfo level={institution.parents.length + 1} />
+  {/if}
   {#if institution.parentId}
     <InstitutionInfo institutionId={institution.id} isSelf={true} />
   {/if}
-  <TagsInfo tags={institution.tags} />
+  {#if institution.tags}
+    <TagsInfo tags={institution.tags} />
+  {/if}
   {#if institution.email}
     <tr>
       <td><Icon type="email" /> Email</td>
@@ -38,9 +43,13 @@
       </td>
     </tr>
   {/if}
-  <PeriodInfo
-    period={institution.period}
-    periodDuration={institution.periodDuration}
-  />
+  {#if institution.period}
+    <PeriodInfo
+      period={institution.period}
+      periodDuration={institution.periodDuration}
+    />
+  {/if}
 </TableWrapper>
-<DescriptionInfo description={institution.description} />
+{#if institution.description}
+  <DescriptionInfo description={institution.description} />
+{/if}

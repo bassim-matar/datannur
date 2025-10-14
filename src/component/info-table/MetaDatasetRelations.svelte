@@ -12,7 +12,7 @@
   }
 
   interface RelationType {
-    name: string
+    name: 'oneToOne' | 'oneToMany' | 'manyToMany'
     symbol: string
     tooltip: string
   }
@@ -64,7 +64,7 @@
       }
       if (relation.includes(datasetId)) return true
       return false
-    }),
+    }) as [string, string][],
   }))
 
   for (const relationType of relations) {

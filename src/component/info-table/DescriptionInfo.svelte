@@ -3,13 +3,25 @@
   import { safeHtml } from '@lib/html-sanitizer'
   import Icon from '@layout/Icon.svelte'
 
-  let { description, insideTable = false } = $props()
+  let {
+    description,
+    insideTable = false,
+  }: { description: string; insideTable?: boolean } = $props()
 
-  let descriptionHtml = $state(description)
+  let descriptionHtml = $state('')
 
-  if (description) {
-    descriptionHtml = markdownRender(description)
-  }
+  $effect(() => {
+    if (description) {
+      const result = markdownRender(description)
+      if (result instanceof Promise) {
+        result.then((html: string) => {
+          descriptionHtml = html
+        })
+      } else {
+        descriptionHtml = result
+      }
+    }
+  })
 </script>
 
 {#if description}

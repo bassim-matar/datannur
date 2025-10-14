@@ -8,9 +8,9 @@
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
   import escapeHtml from 'escape-html'
-  import type { Column as ColumnType } from '@type'
+  import type { Tag, Column as ColumnType } from '@type'
 
-  let { tags } = $props()
+  let { tags }: { tags: Tag[] } = $props()
 
   let isRecursive = $state(false)
   let mounted = $state(false)
@@ -24,20 +24,25 @@
   let levelMax = 0
   for (const tag of tags) {
     if (db.useRecursive.tag) tag.pathString = getParentPath(tag)
-    if (tag.nbChildRecursive > tagMax) tagMax = tag.nbChildRecursive
-    if (tag.nbInstitutionRecursive > institutionMax)
-      institutionMax = tag.nbInstitutionRecursive
-    if (tag.nbFolderRecursive > folderMax) folderMax = tag.nbFolderRecursive
-    if (tag.nbDocRecursive > docMax) docMax = tag.nbDocRecursive
-    if (tag.nbDatasetRecursive > datasetMax) datasetMax = tag.nbDatasetRecursive
-    if (tag.nbVariableRecursive > variableMax)
-      variableMax = tag.nbVariableRecursive
-    if (tag.parents?.length + 1 > levelMax) levelMax = tag.parents?.length + 1
+    if (tag.nbChildRecursive ?? 0 > tagMax) tagMax = tag.nbChildRecursive ?? 0
+    if (tag.nbInstitutionRecursive ?? 0 > institutionMax)
+      institutionMax = tag.nbInstitutionRecursive ?? 0
+    if (tag.nbFolderRecursive ?? 0 > folderMax)
+      folderMax = tag.nbFolderRecursive ?? 0
+    if (tag.nbDocRecursive ?? 0 > docMax) docMax = tag.nbDocRecursive ?? 0
+    if (tag.nbDatasetRecursive ?? 0 > datasetMax)
+      datasetMax = tag.nbDatasetRecursive ?? 0
+    if (tag.nbVariableRecursive ?? 0 > variableMax)
+      variableMax = tag.nbVariableRecursive ?? 0
+    if ((tag.parents?.length ?? 0) + 1 > levelMax)
+      levelMax = (tag.parents?.length ?? 0) + 1
   }
 
   const tagsSorted = [...tags]
   if (db.useRecursive.tag) {
-    tagsSorted.sort((a, b) => a.pathString.localeCompare(b.pathString))
+    tagsSorted.sort((a, b) =>
+      (a.pathString ?? '').localeCompare(b.pathString ?? ''),
+    )
   }
 
   function defineColumns() {
@@ -69,9 +74,9 @@
           "<span class='hidden'>nbInstitution</span>",
         filterType: 'input',
         tooltip: "Nombre d'institutions",
-        render: (data, type, row) => {
+        render: (data, type, row: Tag) => {
           if (!data) return ''
-          if (type !== 'display') return data
+          if (type !== 'display') return Number(data)
           const content = link(
             'tag/' + row.id + '?tab=institutions',
             escapeHtml(data),

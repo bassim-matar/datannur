@@ -26,9 +26,9 @@ export const extendable = {
       clearTimeout(this.mouseEnterTimeout)
     }
     const elem = jQuery(this)
-    if (!elem.hasClass('open')) return false
+    if (!elem.hasClass('open')) return
     const elemHeight = elem.height()
-    if (!elemHeight) return false
+    if (!elemHeight) return
     const duration = (elemHeight / maxHeight) * closeDuration
     elem.removeClass('open-full')
     elem.css({ maxHeight: elemHeight + 'px' })

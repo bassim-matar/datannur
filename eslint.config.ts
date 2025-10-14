@@ -69,6 +69,16 @@ const globals = {
   __APP_VERSION__: 'readonly',
 }
 
+const strictTypeScriptRules = {
+  '@typescript-eslint/no-unsafe-assignment': 'error',
+  '@typescript-eslint/no-explicit-any': 'error',
+  '@typescript-eslint/no-unsafe-call': 'error',
+  '@typescript-eslint/no-unsafe-return': 'error',
+  '@typescript-eslint/no-unsafe-member-access': 'error',
+  '@typescript-eslint/no-inferrable-types': 'off',
+  'init-declarations': ['error', 'always'],
+} as const
+
 export default [
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -92,7 +102,7 @@ export default [
         project: './tsconfig.json',
       },
     },
-    rules: namingConventionRules,
+    rules: { ...namingConventionRules, ...strictTypeScriptRules },
   },
   {
     files: ['**/*.svelte'],
@@ -100,8 +110,10 @@ export default [
       globals,
       parserOptions: {
         parser: tseslint.parser,
+        projectService: true,
+        extraFileExtensions: ['.svelte'],
       },
     },
-    rules: namingConventionRules,
+    rules: { ...namingConventionRules, ...strictTypeScriptRules },
   },
 ]

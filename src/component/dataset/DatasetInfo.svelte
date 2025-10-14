@@ -14,21 +14,19 @@
   import PeriodInfo from '@info-table/PeriodInfo.svelte'
   import DataPathInfo from '@info-table/DataPathInfo.svelte'
   import DeliveryFormatInfo from '@info-table/DeliveryFormatInfo.svelte'
-  import MetaDatasetRelations from '@info-table/MetaDatasetRelations.svelte'
-  import MetaLocalisationInfo from '@info-table/MetaLocalisationInfo.svelte'
+  import type { Dataset } from '@type'
 
-  let { dataset } = $props()
+  let { dataset }: { dataset: Dataset } = $props()
 </script>
 
 <TableWrapper>
   <IdInfo id={dataset.id} />
   <InstitutionInfo type="owner" institutionId={dataset.ownerId} />
   <InstitutionInfo type="manager" institutionId={dataset.managerId} />
-  <FolderInfo
-    folderId={dataset.isMeta ? dataset.metaFolderId : dataset.folderId}
-    isMeta={dataset.isMeta}
-  />
-  <TagsInfo tags={dataset.tags} />
+  <FolderInfo folderId={dataset.folderId} />
+  {#if dataset.tags}
+    <TagsInfo tags={dataset.tags} />
+  {/if}
   {#if dataset.typeClean}
     <tr>
       <td><Icon type="type" /> Type</td>
@@ -36,18 +34,20 @@
     </tr>
   {/if}
   <RowInfo nbRow={dataset.nbRow} />
-  {#if dataset.isMeta}
-    <LastUpdateInfo
-      lastUpdateDate={dataset.lastUpdateTimestamp}
-      intraday={true}
-      fromTimestamp={true}
-    />
-  {:else}
+  {#if dataset.lastUpdateDate}
     <LastUpdateInfo lastUpdateDate={dataset.lastUpdateDate} />
+  {/if}
+
+  {#if dataset.nextUpdateDate}
     <NextUpdateInfo nextUpdateDate={dataset.nextUpdateDate} />
   {/if}
   <FrequencyInfo frequency={dataset.updatingEach} />
-  <PeriodInfo period={dataset.period} periodDuration={dataset.periodDuration} />
+  {#if dataset.period}
+    <PeriodInfo
+      period={dataset.period}
+      periodDuration={dataset.periodDuration}
+    />
+  {/if}
   <LocalisationInfo localisation={dataset.localisation} />
   <DeliveryFormatInfo deliveryFormat={dataset.deliveryFormat} />
   <DataPathInfo dataPath={dataset.dataPath} />
@@ -61,10 +61,8 @@
       </td>
     </tr>
   {/if}
-  {#if dataset.isMeta}
-    <MetaDatasetRelations datasetId={dataset.id} />
-    <MetaLocalisationInfo metaLocalisation={dataset.metaLocalisation} />
-  {/if}
 </TableWrapper>
 
-<DescriptionInfo description={dataset.description} />
+{#if dataset.description}
+  <DescriptionInfo description={dataset.description} />
+{/if}

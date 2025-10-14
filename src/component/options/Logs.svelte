@@ -23,8 +23,8 @@
       defaultContent: '',
       filterType: 'select',
       tooltip: 'Action',
-      render: (data, type, row) => {
-        if (type !== 'display') return row.actionReadable || row.action
+      render: (data, type, row: Log) => {
+        if (type !== 'display') return String(row.actionReadable || row.action)
         let content = ''
         if (row.actionIcon) content += Render.icon(row.actionIcon)
         if (row.actionReadable) content += ' ' + escapeHTML(row.actionReadable)
@@ -38,9 +38,9 @@
       title: Render.icon('entity') + 'Element',
       defaultContent: '',
       tooltip: 'Element impliqué',
-      render: (data, type, row) => {
+      render: (data, type, row: Log) => {
         if (!data) return ''
-        if (type !== 'display') return data
+        if (type !== 'display') return String(data)
         data = escapeHTML(data)
         let content = ''
         if (row.elementIcon) content += Render.icon(escapeHTML(row.elementIcon))

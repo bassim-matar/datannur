@@ -4,10 +4,10 @@ import escapeHtml from 'escape-html'
 import type { Row, Column } from '@type'
 
 export default class PreviewManager {
-  static cleanKeys(data: string | Row[]): string | undefined {
-    if (typeof data === 'string') {
-      return data.replaceAll('.', '_')
-    }
+  static cleanKey(data: string) {
+    return data.replaceAll('.', '_')
+  }
+  static cleanKeys(data: Row[]) {
     for (const row of data) {
       for (const [key, value] of Object.entries(row)) {
         if (key.includes('.')) {
@@ -21,7 +21,7 @@ export default class PreviewManager {
   static getColumns(data: Row[]): Column[] {
     const cols: Column[] = []
     for (const [key, value] of Object.entries(data[0])) {
-      let render
+      let render: Column['render'] = () => {}
       if (typeof value === 'number') {
         render = (data: unknown) => Render.num(escapeHtml(String(data)))
       } else {
@@ -42,12 +42,12 @@ export default class PreviewManager {
     }
     return variableData
   }
-  static async load(datasetPreview: string) {
+  static async load(datasetId: string) {
     let path = 'preview'
-    const datasetIdParts = datasetPreview.split('-')
+    const datasetIdParts = datasetId.split('-')
     if (datasetIdParts.length > 1) {
       path += '/' + datasetIdParts[0]
     }
-    return await db.load(path, datasetPreview, false)
+    return (await db.load(path, datasetId, false)) as Row[]
   }
 }

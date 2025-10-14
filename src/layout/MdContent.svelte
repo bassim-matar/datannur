@@ -2,7 +2,8 @@
   import markdownRender from '@lib/markdown'
   import { safeHtml } from '@lib/html-sanitizer'
 
-  let { content, mode = 'classic' } = $props()
+  let { content, mode = 'classic' }: { content: string; mode?: string } =
+    $props()
 
   let mdContent = $derived(content ? (markdownRender(content) as string) : '')
 </script>

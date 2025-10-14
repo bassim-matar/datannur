@@ -4,8 +4,9 @@
   import { link, getPercent } from '@lib/util'
   import Datatable from '@datatable/Datatable.svelte'
   import escapeHtml from 'escape-html'
+  import type { Doc, Column as ColumnType } from '@type'
 
-  let { docs } = $props()
+  let { docs }: { docs: Doc[] } = $props()
 
   let institutionMax = 0
   let folderMax = 0
@@ -13,24 +14,26 @@
   let tagMax = 0
 
   for (const doc of docs) {
-    if (doc.nbInstitution > institutionMax) institutionMax = doc.nbInstitution
-    if (doc.nbFolder > folderMax) folderMax = doc.nbFolder
-    if (doc.nbDataset > datasetMax) datasetMax = doc.nbDataset
-    if (doc.nbTag > tagMax) tagMax = doc.nbTag
+    if (doc.nbInstitution ?? 0 > institutionMax)
+      institutionMax = doc.nbInstitution ?? 0
+    if (doc.nbFolder ?? 0 > folderMax) folderMax = doc.nbFolder ?? 0
+    if (doc.nbDataset ?? 0 > datasetMax) datasetMax = doc.nbDataset ?? 0
+    if (doc.nbTag ?? 0 > tagMax) tagMax = doc.nbTag ?? 0
   }
 
   const docsSorted = [...docs]
 
-  function sortDocs(toSort) {
+  function sortDocs(toSort: Doc[]) {
     if (toSort.length === 0) return
     toSort.sort(
       (a, b) =>
-        b.inherited?.localeCompare(a.inherited) || a.name.localeCompare(b.name),
+        (b.inherited ?? '').localeCompare(a.inherited ?? '') ||
+        a.name.localeCompare(b.name),
     )
   }
   sortDocs(docsSorted)
 
-  let columns = [
+  let columns: ColumnType[] = [
     Column.favorite(),
     Column.name('doc', 'Doc'),
     Column.description(),
@@ -43,7 +46,7 @@
       tooltip: 'Type de fichier (markdown ou pdf)',
       render: (data, type) => {
         if (!data) return ''
-        if (type !== 'display') return data
+        if (type !== 'display') return String(data)
         data = escapeHtml(data)
         return `${data} ${Render.icon(data)}`
       },
@@ -62,7 +65,7 @@
         "<span class='hidden'>nbInstitutions</span>",
       filterType: 'input',
       tooltip: "Nombre d'institutions",
-      render: (data, type, row) => {
+      render: (data, type, row: Doc) => {
         if (!data) return ''
         const content = link(
           'doc/' + row.id + '?tab=institutions',
@@ -77,7 +80,7 @@
       title: Render.icon('folder') + "<span class='hidden'>nbFolders</span>",
       filterType: 'input',
       tooltip: 'Nombre de dossiers',
-      render: (data, type, row) => {
+      render: (data, type, row: Doc) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=folders', escapeHtml(data))
         const percent = getPercent(data / folderMax)
@@ -89,7 +92,7 @@
       title: Render.icon('tag') + "<span class='hidden'>nbTags</span>",
       filterType: 'input',
       tooltip: 'Nombre de mots clés',
-      render: (data, type, row) => {
+      render: (data, type, row: Doc) => {
         if (!data) return ''
         const content = link('doc/' + row.id + '?tab=tags', escapeHtml(data))
         const percent = getPercent(data / tagMax)
@@ -101,7 +104,7 @@
       title: Render.icon('dataset') + "<span class='hidden'>nbDatasets</span>",
       filterType: 'input',
       tooltip: 'Nombre de datasets',
-      render: (data, type, row) => {
+      render: (data, type, row: Doc) => {
         if (!data) return ''
         const content = link(
           'doc/' + row.id + '?tab=datasets',

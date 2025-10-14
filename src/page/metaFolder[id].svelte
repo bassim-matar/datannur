@@ -3,8 +3,9 @@
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
+  import type { MetaFolder } from '@type'
 
-  let { metaFolder } = $props()
+  let { metaFolder }: { metaFolder: MetaFolder } = $props()
 
   let metaDatasets = db.getAll('metaDataset', { metaFolder })
 
@@ -12,7 +13,7 @@
     db.getAll('metaVariable', { metaDataset }),
   )
 
-  const tabs = tabsHelper({ folder: metaFolder, metaDatasets, metaVariables })
+  const tabs = tabsHelper({ metaFolder, metaDatasets, metaVariables })
 </script>
 
 <section class="section">

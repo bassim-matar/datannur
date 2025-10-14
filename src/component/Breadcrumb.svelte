@@ -1,14 +1,23 @@
 <script lang="ts">
   import db from '@db'
   import Link from '@layout/Link.svelte'
+  import type { RecursiveEntityName } from '@type'
 
-  let { type, elemId, isSelf = false } = $props()
+  let {
+    type,
+    elemId,
+    isSelf = false,
+  }: {
+    type: RecursiveEntityName
+    elemId: string | number
+    isSelf?: boolean
+  } = $props()
 
   const elems = db.getParents(type, elemId)
 
   if (!isSelf) {
     const current = db.get(type, elemId)
-    elems.push(current)
+    if (current) elems.push(current)
   }
 
   elems.reverse()

@@ -15,49 +15,60 @@
   import CopyText from '@layout/CopyText.svelte'
   import DeliveryFormatInfo from '@info-table/DeliveryFormatInfo.svelte'
   import DeepLevelInfo from '@info-table/DeepLevelInfo.svelte'
+  import type { Folder } from '@type'
 
-  let { folder } = $props()
+  let { folder }: { folder: Folder } = $props()
 </script>
 
 <TableWrapper>
   <IdInfo id={folder.id} />
-  {#if !folder.isMeta}
+  {#if folder.parents}
     <DeepLevelInfo level={folder.parents.length + 1} />
-    {#if folder.parentId}
-      <FolderInfo folderId={folder.id} isSelf={true} />
-    {/if}
-    <InstitutionInfo type="owner" institutionId={folder.ownerId} />
-    <InstitutionInfo type="manager" institutionId={folder.managerId} />
+  {/if}
+  {#if folder.parentId}
+    <FolderInfo folderId={folder.id} isSelf={true} />
+  {/if}
+  <InstitutionInfo type="owner" institutionId={folder.ownerId} />
+  <InstitutionInfo type="manager" institutionId={folder.managerId} />
+  {#if folder.tags}
     <TagsInfo tags={folder.tags} />
+  {/if}
+  {#if folder.lastUpdateDate}
     <LastUpdateInfo lastUpdateDate={folder.lastUpdateDate} />
+  {/if}
+  {#if folder.nextUpdateDate}
     <NextUpdateInfo nextUpdateDate={folder.nextUpdateDate} />
-    <FrequencyInfo frequency={folder.updatingEach} />
+  {/if}
+  <FrequencyInfo frequency={folder.updatingEach} />
+  {#if folder.period}
     <PeriodInfo period={folder.period} periodDuration={folder.periodDuration} />
-    <LocalisationInfo localisation={folder.localisation} />
-    {#if folder.surveyType}
-      <tr>
-        <td><Icon type="surveyType" /> Type d'enquête</td>
-        <td>{folder.surveyType}</td>
-      </tr>
-    {/if}
-    <DeliveryFormatInfo deliveryFormat={folder.deliveryFormat} />
-    {#if folder.metadataPath}
-      <tr>
-        <td><Icon type="metadataPath" /> Metadonnées</td>
-        <td><CopyText text={folder.metadataPath} /></td>
-      </tr>
-    {/if}
-    <DataPathInfo dataPath={folder.dataPath} />
-    {#if folder.gitCode}
-      <tr>
-        <td><Icon type="gitCode" /> GIT code</td>
-        <td>
-          <a href={folder.gitCode} target="_blanck" class="break-line">
-            {folder.gitCode}
-          </a>
-        </td>
-      </tr>
-    {/if}
+  {/if}
+  <LocalisationInfo localisation={folder.localisation} />
+  {#if folder.surveyType}
+    <tr>
+      <td><Icon type="surveyType" /> Type d'enquête</td>
+      <td>{folder.surveyType}</td>
+    </tr>
+  {/if}
+  <DeliveryFormatInfo deliveryFormat={folder.deliveryFormat} />
+  {#if folder.metadataPath}
+    <tr>
+      <td><Icon type="metadataPath" /> Metadonnées</td>
+      <td><CopyText text={folder.metadataPath} /></td>
+    </tr>
+  {/if}
+  <DataPathInfo dataPath={folder.dataPath} />
+  {#if folder.gitCode}
+    <tr>
+      <td><Icon type="gitCode" /> GIT code</td>
+      <td>
+        <a href={folder.gitCode} target="_blanck" class="break-line">
+          {folder.gitCode}
+        </a>
+      </td>
+    </tr>
   {/if}
 </TableWrapper>
-<DescriptionInfo description={folder.description} />
+{#if folder.description}
+  <DescriptionInfo description={folder.description} />
+{/if}

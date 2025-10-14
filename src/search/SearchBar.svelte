@@ -41,15 +41,15 @@
   }
 
   async function searchInputChange() {
-    if ($onPageSearch) return false
+    if ($onPageSearch) return
     searchValueDebounced = $searchValue
     navPosition = 0
     if ($searchValue === '') {
       initSearchRecent()
-      return false
+      return
     }
     let allSearchRaw = await search.find($searchValue)
-    if ($searchValue === '') return false
+    if ($searchValue === '') return
     allSearchRaw = SearchHistory.putRecentFirst(allSearchRaw)
     nbResult = allSearchRaw.length
     allSearch = allSearchRaw.slice(0, maxSearchResult)
@@ -71,7 +71,7 @@
   }
 
   function goToPageSearch() {
-    if ($onPageSearch) return false
+    if ($onPageSearch) return
     router.navigate(`/search?search=${$searchValue}`)
     selectInput()
   }
@@ -116,7 +116,6 @@
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       isFocusIn = true
       e.preventDefault()
-      return false
     }
   }
 

@@ -8,7 +8,7 @@
   import Favorite from '@favorite/Favorite.svelte'
   import { onMount } from 'svelte'
   import type { MouseEventHandler } from 'svelte/elements'
-  import type { MainEntityName } from '@type'
+  import type { FavoritableEntityName, MainEntityName } from '@type'
 
   let {
     type,
@@ -30,6 +30,7 @@
 
   let title = $state(name)
   let isFavorite = $state(false)
+  let entityFavoritable: FavoritableEntityName | undefined = $state()
 
   let separator = ' | '
   const entityName = entityNames[type as MainEntityName]
@@ -41,6 +42,7 @@
   if (id) {
     const item = db.get(type as MainEntityName, id)
     isFavorite = item?.isFavorite ?? false
+    entityFavoritable = type as FavoritableEntityName
   }
 
   let itemPage = id ? true : false
@@ -65,7 +67,7 @@
           <button class="title-info" onclick={toggleInfo}>{info}</button>
         {/if}
         {#if id}
-          <Favorite {type} {id} {isFavorite} />
+          <Favorite type={entityFavoritable!} {id} {isFavorite} />
         {:else}
           <span class="separator">{separator}</span>
         {/if}

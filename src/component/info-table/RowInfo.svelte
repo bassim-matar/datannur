@@ -2,7 +2,7 @@
   import Render from '@lib/render'
   import Icon from '@layout/Icon.svelte'
 
-  let { nbRow } = $props()
+  let { nbRow }: { nbRow: number | undefined } = $props()
 </script>
 
 {#if nbRow}

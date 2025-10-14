@@ -2,8 +2,9 @@
   import Icon from '@layout/Icon.svelte'
   import PdfViewer from '@layout/PdfViewer.svelte'
   import MdFileDynamic from '@layout/MdFileDynamic.svelte'
+  import type { Doc } from '@type'
 
-  let { doc } = $props()
+  let { doc }: { doc: Doc } = $props()
 </script>
 
 <div
@@ -17,10 +18,14 @@
 
   <div class="doc-content-box">
     <div class="doc-content">
-      {#if doc.type === 'pdf'}
+      {#if doc.type === 'pdf' && doc.path}
         <PdfViewer pdf={doc.path} />
-      {:else if doc.type === 'md'}
+      {:else if doc.type === 'md' && typeof doc.id === 'string'}
         <MdFileDynamic docId={doc.id} mode="noPadding" />
+      {:else}
+        <div style="text-align: center; padding-top: 20px;">
+          <p>Impossible de charger le fichier</p>
+        </div>
       {/if}
     </div>
   </div>

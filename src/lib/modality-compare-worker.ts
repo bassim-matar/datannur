@@ -1,4 +1,5 @@
-import type { Modality } from '@type'
+import type { Modality, ModalitySimilitute } from '@type'
+
 type ModalityToCompare = {
   modalityId: string | number
   valuesClean: unknown[]
@@ -17,7 +18,7 @@ export function modalityCompareWorker(param: {
     modalitiesToCompare: ModalityToCompare[],
     limit: number | null = null,
   ) {
-    const similitutes: { [key: string]: unknown; ratio: number }[] = []
+    const similitutes: ModalitySimilitute[] = []
     for (const modality1 of modalitiesToCompare) {
       const nbValue = modality1.valuesClean.length
       for (const modality2 of modalitiesToCompare) {

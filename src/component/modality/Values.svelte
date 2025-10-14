@@ -1,8 +1,9 @@
 <script lang="ts">
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
+  import type { Value } from '@type'
 
-  let { values } = $props()
+  let { values }: { values: Value[] } = $props()
 
   const hasDescription = values.some(value => value.description)
   const columns = [Column.value()]

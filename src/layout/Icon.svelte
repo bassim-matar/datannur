@@ -1,11 +1,17 @@
 <script lang="ts">
   import { entityToIconName } from '@lib/util'
+  import { entityToIcon } from '@lib/constant'
 
   let {
     type,
     marginRight = true,
     marginLeft = false,
     mode = 'normal',
+  }: {
+    type: keyof typeof entityToIcon | string
+    marginRight?: boolean
+    marginLeft?: boolean
+    mode?: 'normal' | 'mainTitle' | 'compact'
   } = $props()
 
   const icon = $derived(entityToIconName(type))

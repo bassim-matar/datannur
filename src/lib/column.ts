@@ -10,7 +10,19 @@ import {
 import { getTimeAgo, getDatetime, dateToTimestamp } from '@lib/time'
 import { entityNames, entityToIcon } from '@lib/constant'
 import Render from '@lib/render'
-import type { Column as ColumnType } from '@type'
+import type {
+  Column as ColumnType,
+  EntityTypeMap,
+  Evolution,
+  FavoritableEntity,
+  MainEntity,
+  MainEntityMap,
+  PeriodableEntity,
+  RecursiveEntity,
+  Tag,
+} from '@type'
+
+type EntityWithInstitution = MainEntityMap['folder' | 'dataset' | 'variable']
 
 export default class Column {
   static id(): ColumnType {
@@ -47,15 +59,27 @@ export default class Column {
       tooltip: 'Nom',
       filterType: 'input',
       hasLongText: true,
-      render: (data, type, row) => {
+      render: (
+        data: string,
+        type: string,
+        row: {
+          id: string | number
+          _entity: string
+          parentsRelative: unknown[]
+          minimumDeep: number
+          storageKey: string
+          nbChild: number
+          [key: string]: unknown
+        },
+      ) => {
         data = escapeHtml(data)
         let indent = 0
-        let text
+        let text = ''
         if (!option.withLink) {
           text = data
         } else if (option.withIndent && !row.noIndent) {
           text = link(row._entity + '/' + row.id, data, row._entity)
-          indent = row?.parentsRelative?.length - row?.minimumDeep
+          indent = row.parentsRelative?.length - row.minimumDeep
         } else if (option?.isMeta && entity === 'variable' && row.storageKey) {
           text = link(row._entity + '/' + row.id, row.storageKey, row._entity)
         } else {
@@ -94,7 +118,7 @@ export default class Column {
       defaultContent: '',
       tooltip: 'Entité',
       filterType: 'select',
-      render: (data, type, row) => {
+      render: (data: string, type: string, row: { _entity: string }) => {
         if (!data) return ''
         if (type !== 'display') return data
         if (!row._entity)
@@ -117,7 +141,7 @@ export default class Column {
       hasLongText: true,
       tooltip: "Partie de l'entité",
       filterType: 'input',
-      render: (data, type, row) => {
+      render: (data, type, row: Evolution) => {
         if (!data) return ''
         if (type !== 'display')
           return `${row.parentEntityClean} | ${row.parentName}`
@@ -137,12 +161,22 @@ export default class Column {
     }
   }
   static folder(
-    folderIdVar = 'folderId',
-    folderNameVar = 'folderName',
+    folderIdVar:
+      | 'folderId'
+      | 'modality1FolderId'
+      | 'modality2FolderId' = 'folderId',
+    folderNameVar:
+      | 'folderName'
+      | 'modality1FolderName'
+      | 'modality2FolderName' = 'folderName',
   ): ColumnType {
-    const render: ColumnType['render'] = (data, type, row) => {
-      const folderId = row[folderIdVar]
-      const folderName = row[folderNameVar]
+    const render: ColumnType['render'] = (
+      data,
+      type,
+      row: Record<string, string | number>,
+    ) => {
+      const folderId: string | number = row[folderIdVar]
+      const folderName = row[folderNameVar] as string
       if (type !== 'display') return folderName
       return isMobile
         ? wrapLongText(link('folder/' + folderId, escapeHtml(folderName)))
@@ -164,8 +198,8 @@ export default class Column {
       defaultContent: '',
       hasLongText: true,
       tooltip: 'Dossier',
-      render: (data, type, row) => {
-        if (!data) return ''
+      render: (data, type, row: FavoritableEntity) => {
+        if (!data || !('folderName' in row)) return ''
         if (type !== 'display') return row.folderName
         return wrapLongText(link('folder/' + data, escapeHtml(row.folderName)))
       },
@@ -227,12 +261,19 @@ export default class Column {
     }
   }
   static owner(): ColumnType {
-    const render: ColumnType['render'] = (data, type, row) =>
-      isMobile
-        ? wrapLongText(
-            link(`institution/${row.ownerId}`, escapeHtml(row.ownerName)),
-          )
-        : Render.withParentsFromId('institution', row.ownerId, type)
+    let render: ColumnType['render'] = () => {}
+    if (isMobile)
+      render = (data, type, row: EntityWithInstitution) => {
+        return wrapLongText(
+          link(`institution/${row.ownerId}`, escapeHtml(row.ownerName)),
+        )
+      }
+    else {
+      render = (data, type, row: EntityWithInstitution) => {
+        if (!row.ownerId) return ''
+        return Render.withParentsFromId('institution', row.ownerId, type)
+      }
+    }
     return {
       data: 'ownerName',
       title: Render.icon('institution') + entityNames.owner,
@@ -243,12 +284,19 @@ export default class Column {
     }
   }
   static manager(): ColumnType {
-    const render: ColumnType['render'] = (data, type, row) =>
-      isMobile
-        ? wrapLongText(
-            link(`institution/${row.managerId}`, escapeHtml(row.managerName)),
-          )
-        : Render.withParentsFromId('institution', row.managerId, type)
+    let render: ColumnType['render'] = () => {}
+    if (isMobile)
+      render = (data, type, row: EntityWithInstitution) => {
+        return wrapLongText(
+          link(`institution/${row.managerId}`, escapeHtml(row.managerName)),
+        )
+      }
+    else {
+      render = (data, type, row: EntityWithInstitution) => {
+        if (!row.managerId) return ''
+        return Render.withParentsFromId('institution', row.managerId, type)
+      }
+    }
     return {
       data: 'managerName',
       title: Render.icon('institution') + entityNames.manager,
@@ -347,7 +395,7 @@ export default class Column {
   }
   static nbSources(
     nbSourcesMax: number,
-    entity: keyof typeof entityNames,
+    entity: 'dataset' | 'variable',
   ): ColumnType {
     return {
       data: 'sourceIds',
@@ -355,19 +403,23 @@ export default class Column {
       filterType: 'input',
       defaultContent: '',
       tooltip: `Nombre de ${entity}s sources (en amont)`,
-      render: (data, type, row) => {
-        if (!data || (!data.length && !data.size)) return ''
-        const nb = data.length || data.size
+      render: (
+        data: Set<string | number>,
+        type,
+        row: MainEntityMap['dataset' | 'variable'],
+      ) => {
+        if (!data || !data.size) return ''
+        const nb = data.size
         if (type !== 'display') return nb
         const percent = getPercent(nb / nbSourcesMax)
-        const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
+        const content = link(`${entity}/${row.id}?tab=${entity}s`, String(nb))
         return `${Render.numPercent(content, percent, 'nbSource', type)}`
       },
     }
   }
   static nbDerived(
     nbDerivedMax: number,
-    entity: keyof typeof entityNames,
+    entity: 'dataset' | 'variable',
   ): ColumnType {
     return {
       data: 'derivedIds',
@@ -375,12 +427,16 @@ export default class Column {
       filterType: 'input',
       defaultContent: '',
       tooltip: `Nombre de ${entity}s dérivées (en aval)`,
-      render: (data, type, row) => {
-        if (!data || (!data.length && !data.size)) return ''
-        const nb = data.length || data.size
+      render: (
+        data: Set<string | number>,
+        type,
+        row: MainEntityMap['dataset' | 'variable'],
+      ) => {
+        if (!data || !data.size) return ''
+        const nb = data.size
         if (type !== 'display') return nb
         const percent = getPercent(nb / nbDerivedMax)
-        const content = link(`${entity}/${row.id}?tab=${entity}s`, nb)
+        const content = link(`${entity}/${row.id}?tab=${entity}s`, String(nb))
         return `${Render.numPercent(content, percent, 'nbDerived', type)}`
       },
     }
@@ -431,11 +487,11 @@ export default class Column {
     }
   }
   static level(levelMax = 0): ColumnType {
-    let render: ColumnType['render'] = (data, type, row) =>
-      row.parents?.length + 1
+    let render: ColumnType['render'] = (data, type, row: RecursiveEntity) =>
+      (row.parents?.length ?? 0) + 1
     if (levelMax) {
-      render = (data, type, row) => {
-        const value = row.parents?.length + 1
+      render = (data, type, row: RecursiveEntity) => {
+        const value = (row.parents?.length ?? 0) + 1
         if (!value) return ''
         const percent = getPercent(value / levelMax)
         return `${Render.numPercent(value, percent, 'key', type)}`
@@ -477,7 +533,7 @@ export default class Column {
       title: Render.icon('dateRange') + 'Période',
       defaultContent: '',
       tooltip: 'Période couverte par les données',
-      render: (data, type, row) => {
+      render: (data: string, type, row: PeriodableEntity) => {
         if (!data) return ''
         if (type !== 'display') return data
         let text = escapeHtml(data)
@@ -494,9 +550,9 @@ export default class Column {
       dateType: 'start',
       filterType: 'input',
       tooltip: 'Date de début de validité',
-      render: (data, type) => {
-        if (!['sort', 'filter'].includes(type)) return data
-        if (!data) data = 1000
+      render: (data: string, type) => {
+        if (type === 'display') return data
+        if (!data) data = '1000'
         return dateToTimestamp(data, 'start')
       },
     }
@@ -509,27 +565,31 @@ export default class Column {
       dateType: 'end',
       filterType: 'input',
       tooltip: 'Date de fin de validité',
-      render: (data, type) => {
-        if (!['sort', 'filter'].includes(type)) return data
-        if (!data) data = 9999
+      render: (data: string, type) => {
+        if (type === 'display') return data
+        if (!data) data = '9999'
         return dateToTimestamp(data, 'end')
       },
     }
   }
   static dataset(isMeta: boolean): ColumnType {
-    const entity = isMeta ? 'metaDataset' : 'dataset'
     return {
       data: 'datasetName',
       title: Render.icon('dataset') + 'Dataset',
       hasLongText: true,
       tooltip: 'Dataset',
-      render: (data, type, row) => {
+      render: (
+        data: string,
+        type,
+        row: EntityTypeMap['variable' | 'metaVariable'],
+      ) => {
         if (!data) return ''
         if (type !== 'display') return data
         data = escapeHtml(data)
-        return wrapLongText(
-          link(entity + '/' + row[entity + 'Id'], data, 'dataset'),
-        )
+        let linkContent = 'dataset/' + row.datasetId
+        if (isMeta && 'metaDatasetId' in row)
+          linkContent = 'metaDataset/' + row.metaDatasetId
+        return wrapLongText(link(linkContent, data, 'dataset'))
       },
     }
   }
@@ -539,7 +599,7 @@ export default class Column {
       title: Render.icon('dataPath') + 'Emplacement',
       defaultContent: '',
       tooltip: 'Emplacement des données',
-      render: (data, type) => {
+      render: (data: string, type) => {
         if (!data) return ''
         if (type !== 'display') return data
         data = escapeHtml(data)
@@ -555,7 +615,7 @@ export default class Column {
       defaultContent: '',
       hasLongText: true,
       tooltip: 'Emplacement du doc',
-      render: (data, type) => {
+      render: (data: string, type) => {
         if (!data) return ''
         if (type !== 'display') return data
         data = escapeHtml(data)
@@ -577,10 +637,17 @@ export default class Column {
       defaultContent: '',
       fromLength: true,
       tooltip: 'Nombre de docs',
-      render: (data, type, row) => {
+      render: (
+        data: unknown[],
+        type,
+        row: MainEntityMap['institution' | 'folder' | 'dataset'],
+      ) => {
         if (!data.length) return ''
         if (type !== 'display') return data.length
-        const content = link(entity + '/' + row.id + '?tab=docs', data.length)
+        const content = link(
+          entity + '/' + row.id + '?tab=docs',
+          String(data.length),
+        )
         const percent = getPercent(data.length / total)
         return `${Render.numPercent(content, percent, 'doc', type)}`
       },
@@ -595,12 +662,12 @@ export default class Column {
       title: Render.icon('doc') + "<span class='hidden'>nbDocs</span>",
       filterType: 'input',
       tooltip: 'Nombre de docs',
-      render: (data, type, row) => {
+      render: (data: number, type, row: Tag) => {
         if (!data) return ''
         if (type !== 'display') return data
         const content = link(
           entity + '/' + row.id + '?tab=docs',
-          escapeHtml(data),
+          escapeHtml(String(data)),
         )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'doc', type)}`
@@ -621,12 +688,12 @@ export default class Column {
         `<span class='hidden'>nb${capitalize(entityPlural)}</span>`,
       filterType: 'input',
       tooltip: "Nombre d'éléments de type " + entity,
-      render: (data, type, row) => {
+      render: (data: number, type, row: RecursiveEntity) => {
         if (!data) return ''
         if (type !== 'display') return data
         const content = link(
           linkPath + row.id + `?tab=${entityPlural}`,
-          escapeHtml(data),
+          escapeHtml(String(data)),
         )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, entity, type)}`
@@ -642,12 +709,12 @@ export default class Column {
       title: Render.icon('folder') + "<span class='hidden'>nbFolders</span>",
       filterType: 'input',
       tooltip: 'Nombre de dossiers',
-      render: (data, type, row) => {
+      render: (data: number, type, row: RecursiveEntity) => {
         if (!data) return ''
         if (type !== 'display') return data
         const content = link(
           `${entity}/${row.id}?tab=folders`,
-          escapeHtml(data),
+          escapeHtml(String(data)),
         )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'folder', type)}`
@@ -663,12 +730,12 @@ export default class Column {
       title: Render.icon('dataset') + "<span class='hidden'>nbDatasets</span>",
       filterType: 'input',
       tooltip: 'Nombre de datasets',
-      render: (data, type, row) => {
+      render: (data: number, type, row: RecursiveEntity) => {
         if (!data) return ''
         if (type !== 'display') return data
         const content = link(
           entity + '/' + row.id + '?tab=datasets',
-          escapeHtml(data),
+          escapeHtml(String(data)),
         )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'dataset', type)}`
@@ -685,24 +752,25 @@ export default class Column {
       recursive?: boolean
     } = {},
   ): ColumnType {
-    if (!('linkPath' in option)) option.linkPath = entity + '/'
     if (!('tab' in option)) option.tab = 'variables'
     if (!('showTitle' in option)) option.showTitle = false
     const title = option.showTitle
       ? 'Variables'
       : `<span class='hidden'>nbVariables</span>`
+    const linkPath =
+      'linkPath' in option && option.linkPath ? option.linkPath : entity + '/'
     return {
       data: 'nbVariable' + (option.recursive ? 'Recursive' : ''),
       title: Render.icon('variable') + title,
       name: 'variable',
       filterType: 'input',
       tooltip: 'Nombre de variables',
-      render: (data, type, row) => {
+      render: (data: number, type, row: MainEntity) => {
         if (!data) return ''
         if (type !== 'display') return data
         const content = link(
-          option.linkPath + row.id + `?tab=${option.tab}`,
-          escapeHtml(data),
+          linkPath + row.id + `?tab=${option.tab}`,
+          escapeHtml(String(data)),
         )
         const percent = getPercent(data / total)
         return `${Render.numPercent(content, percent, 'variable', type)}`
@@ -714,10 +782,10 @@ export default class Column {
       data: 'metaFolderId',
       title: Render.icon('folder') + 'Dossier',
       tooltip: 'Dossier',
-      render: (data, type) => {
+      render: (data: string | number, type) => {
         if (!data) return ''
         if (type !== 'display') return data
-        data = escapeHtml(data)
+        data = escapeHtml(String(data))
         return link('metaFolder/' + data, data)
       },
     }
@@ -735,7 +803,7 @@ export default class Column {
       type: 'num',
       filterType: 'input',
       tooltip: options.tooltip,
-      render: (data, type) => {
+      render: (data: number, type) => {
         if (!data) return ''
         if (type === 'sort') return data
         if (type !== 'display') return getDatetime(data)
@@ -768,7 +836,7 @@ export default class Column {
       defaultContent: '',
       filterType: 'select',
       tooltip: 'Clé primaire ou partie de clé primaire',
-      render: (data, type) => {
+      render: (data: string | boolean, type) => {
         if (!data) return ''
         if (type !== 'display') return data
         return `<i class="fas fa-key"></i>`
@@ -805,6 +873,7 @@ export default class Column {
         if (!data) return ''
         if (data === 'derived') return 'Dérivé'
         if (data === 'source') return 'Source'
+        return ''
       },
     }
   }

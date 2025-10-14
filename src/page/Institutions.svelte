@@ -47,12 +47,10 @@
 <section class="section">
   <Title type="institution" name="Institutions" mode="mainTitle" />
   {#if showOpenAllSwitch}
-    <OpenAllSwitch onChange={(value: boolean) => (keyTab = Number(value))} />
+    <OpenAllSwitch onChange={() => keyTab++} />
   {/if}
   {#if showEvolutionSummarySwitch}
-    <EvolutionSummarySwitch
-      onChange={(value: boolean) => (keyTab = Number(value))}
-    />
+    <EvolutionSummarySwitch onChange={() => keyTab++} />
   {/if}
   {#key keyTab}
     <Tabs {tabs} />

@@ -7,9 +7,13 @@
   import Datatable from '@datatable/Datatable.svelte'
   import Column from '@lib/column'
   import escapeHtml from 'escape-html'
-  import type { Column as ColumnType } from '@type'
+  import type { Column as ColumnType, MainEntityName } from '@type'
+  import type { SearchResult as SearchResultType } from '@search/search'
 
-  let { searchValue, searchResultData } = $props()
+  let {
+    searchValue,
+    searchResultData,
+  }: { searchValue: string; searchResultData: SearchResultType[] } = $props()
 
   function initied() {
     const tableId = 'search___search'
@@ -19,8 +23,8 @@
       '.remove-search-item',
       function (this: HTMLElement) {
         const elem = jQuery(this)
-        const entityName = elem.data('entity-name')
-        const itemId = elem.data('item-id')
+        const entityName = elem.data('entity-name') as MainEntityName
+        const itemId = elem.data('item-id') as string
         SearchHistory.remove(entityName, itemId)
       },
     )
@@ -35,8 +39,8 @@
       defaultContent: '',
       name: 'name',
       tooltip: 'Nom',
-      render: (data, type, row) => {
-        if (type !== 'display') return data
+      render: (data, type, row: SearchResultType) => {
+        if (type !== 'display') return String(data)
         return wrapLongText(
           `<strong class="var-main-col">` +
             link(
@@ -54,7 +58,7 @@
       defaultContent: '',
       tooltip: 'Description',
       render: (data, type) => {
-        if (type !== 'display') return data
+        if (type !== 'display') return String(data)
         if ([null, undefined].includes(data)) return wrapLongText()
         return wrapLongText(searchHighlight(data, searchValue))
       },
@@ -64,8 +68,8 @@
       title: Render.icon('folder') + 'Dossier',
       defaultContent: '',
       tooltip: 'Dossier',
-      render: (data, type, row) => {
-        if (type !== 'display') return data
+      render: (data, type, row: SearchResultType) => {
+        if (type !== 'display') return String(data)
         if (!data) return wrapLongText()
         return wrapLongText(link('folder/' + data, escapeHtml(row.folderName)))
       },
@@ -77,7 +81,7 @@
       defaultContent: '',
       filterType: 'none',
       width: '20px',
-      render: (data, type, row) => {
+      render: (data, type, row: SearchResultType) => {
         if (type === 'sort' || type === 'export') {
           return row.isRecent ? '1' : '0'
         }
@@ -86,7 +90,7 @@
           : `<button style="cursor: pointer; margin: 0;" 
               class="remove-search-item" 
               data-entity-name="${row._entity}"
-              data-item-id="${escapeHtml(row.id)}"
+              data-item-id="${escapeHtml(String(row.id))}"
             >
               <i class="fa-solid fa-xmark close"></i>
               <i class="fa-solid fa-clock-rotate-left recent"></i>

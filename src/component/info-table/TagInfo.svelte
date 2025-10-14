@@ -3,7 +3,7 @@
   import Breadcrumb from '@component/Breadcrumb.svelte'
   import ExtendableText from '@layout/ExtendableText.svelte'
 
-  let { tagId } = $props()
+  let { tagId }: { tagId: string | number | undefined } = $props()
 
   const name = 'Partie de'
   const icon = 'folderTreeTag'

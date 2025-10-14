@@ -17,11 +17,13 @@ export default class Tags {
     const tagsDb = db.getAll('tag')
     const tagsById: Record<string | number, TagWithCounts> = {}
 
-    const tags: TagWithCounts[] = JSON.parse(JSON.stringify(tagsDb))
+    const tags: TagWithCounts[] = tagsDb.map(tag => ({
+      ...tag,
+      nbInstitution: 0,
+      nbFolder: 0,
+      nbDataset: 0,
+    }))
     for (const tag of tags) {
-      tag.nbInstitution = 0
-      tag.nbFolder = 0
-      tag.nbDataset = 0
       tagsById[tag.id] = tag
     }
 

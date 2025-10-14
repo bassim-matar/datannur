@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { locale } from "@lib/constant"
+  import { locale } from '@lib/constant'
 
-  let { number } = $props()
+  let { number }: { number: number } = $props()
 
   let formattedNumber = $derived(number?.toLocaleString(locale))
 </script>

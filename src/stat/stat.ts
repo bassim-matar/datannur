@@ -6,13 +6,18 @@ import type { Attribut } from './attributs-def'
 
 type ValueType = number | string | '__empty__'
 
-type ValueEntry = {
+export type ValueEntry = {
   count: number
   start: ValueType
   end?: ValueType
   readable?: string
   icon?: string
   link?: string
+}
+
+export type AttributWithValues = Attribut & {
+  values: ValueEntry[]
+  totalValue: number
 }
 
 type DatabaseItem = Record<string, unknown>
@@ -109,7 +114,7 @@ function addNumeric(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
       rawValues.push(Date.parse(item[attribut.variable] as string))
     } else if (attribut.variable) {
       let val = item[attribut.variable]
-      if (val === '') val = null
+      if (val === '' || val === undefined) val = null
       if (typeof val === 'number' || val === null) rawValues.push(val)
       else console.warn('addNumeric() attribut.variable is not a number', val)
     }
@@ -160,7 +165,7 @@ function addCategory(
   const values: Record<string, ValueEntry> = {}
   const hasGetter = 'getValue' in attribut
   for (const item of items) {
-    let value
+    let value: unknown | undefined = undefined
     if (hasGetter && attribut.getValue) {
       value = attribut.getValue(item)
     } else if (attribut.variable) {
@@ -236,8 +241,11 @@ function addWithHtml(items: DatabaseItem[], attribut: Attribut): ValueEntry[] {
   return getValuesSorted(values)
 }
 
-export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
-  let values: ValueEntry[]
+export function addValuesToAttribut(
+  items: DatabaseItem[],
+  attribut: Attribut,
+): AttributWithValues | undefined {
+  let values: ValueEntry[] = []
   let totalValue = items.length
   if (attribut.type && ['numeric', 'string'].includes(attribut.type)) {
     values = addNumeric(items, attribut)
@@ -261,14 +269,11 @@ export function addValuesToAttribut(items: DatabaseItem[], attribut: Attribut) {
   )
     return
   values = addReadableValues(values, attribut.type ?? '')
-  return { ...attribut, values, totalValue: totalValue }
+  return { ...attribut, values, totalValue }
 }
 
 export function addValues(items: DatabaseItem[], attributs: Attribut[]) {
-  const attributsWithValues: (Attribut & {
-    values: ValueEntry[]
-    totalValue: number
-  })[] = []
+  const attributsWithValues: AttributWithValues[] = []
   for (const attribut of attributs) {
     const attributWithValues = addValuesToAttribut(items, attribut)
     if (attributWithValues) attributsWithValues.push(attributWithValues)

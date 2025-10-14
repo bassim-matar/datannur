@@ -6,7 +6,7 @@
   import Title from '@layout/Title.svelte'
   import type { Modality } from '@type'
 
-  let { id } = $props()
+  let { id }: { id: string | number } = $props()
   const dataset = db.get('dataset', id)
 
   let datasetVariables = db.getAll('variable', { dataset })

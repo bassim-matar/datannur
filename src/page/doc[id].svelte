@@ -4,8 +4,9 @@
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
+  import type { Doc } from '@type'
 
-  let { doc } = $props()
+  let { doc }: { doc: Doc } = $props()
 
   const institutions = db.getAll('institution', { doc })
   const folders = db.getAll('folder', { doc })

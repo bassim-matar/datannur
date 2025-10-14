@@ -1,7 +1,11 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
 
-  let { type = 'classic', position = 'fixed', colorEntity = '' } = $props()
+  let {
+    type = 'classic',
+    position = 'fixed',
+    colorEntity = '',
+  }: { type?: string; position?: string; colorEntity?: string } = $props()
 
   let withHeight = $state(false)
   let withTimer = $state(true)

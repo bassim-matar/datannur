@@ -15,8 +15,9 @@
   import Title from '@layout/Title.svelte'
   import OpenAllSwitch from '@layout/OpenAllSwitch.svelte'
   import EvolutionSummarySwitch from '@layout/EvolutionSummarySwitch.svelte'
+  import type { Folder } from '@type'
 
-  let { folder } = $props()
+  let { folder }: { folder: Folder } = $props()
 
   const docs = folder.docsRecursive
 
@@ -91,12 +92,10 @@
 <section class="section">
   <Title type="folder" name={folder.name} id={folder.id} />
   {#if showOpenAllSwitch}
-    <OpenAllSwitch onChange={(value: boolean) => (keyTab = Number(value))} />
+    <OpenAllSwitch onChange={() => keyTab++} />
   {/if}
   {#if showEvolutionSummarySwitch}
-    <EvolutionSummarySwitch
-      onChange={(value: boolean) => (keyTab = Number(value))}
-    />
+    <EvolutionSummarySwitch onChange={() => keyTab++} />
   {/if}
   {#key keyTab}
     <Tabs {tabs} />

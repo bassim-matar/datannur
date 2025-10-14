@@ -4,8 +4,8 @@ import type { Browser, Page } from 'playwright'
 
 const baseUrl = new URL('../app/index.html', import.meta.url).href
 
-let browser: Browser
-let page: Page
+let browser: Browser | undefined = undefined
+let page: Page | undefined = undefined
 
 beforeAll(async () => {
   browser = await chromium.launch({ headless: true })
@@ -23,7 +23,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  await browser.close()
+  await browser?.close()
 })
 
 const pageNames = [
@@ -58,8 +58,8 @@ const pageNames = [
 describe('UI tests', () => {
   pageNames.forEach(pageName => {
     it(`should display the main section for page: ${pageName}`, async () => {
-      await page.goto(`${baseUrl}#/${pageName}`)
-      const section = await page.waitForSelector(
+      await page?.goto(`${baseUrl}#/${pageName}`)
+      const section = await page?.waitForSelector(
         'div#wrapper > section.section',
       )
       expect(section).toBeTruthy()

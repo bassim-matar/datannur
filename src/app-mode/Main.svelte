@@ -41,14 +41,15 @@
   import dbSchema from '@src/assets/db-schema.json'
   import type { SearchHistoryEntry } from '@search/search-history'
   import type { Favorite } from '@favorite/favorites'
+  import type { AttributWithValues } from '@stat/stat'
   import type { Log, MainEntityName } from '@src/type'
 
   let errorLoadingDb = $state(false)
   let pageLoadedRoute = $state('')
 
   let isPopupColumnStatOpen = $state(false)
-  let columnStatEntity = $state()
-  let columnStatAttribut = $state()
+  let columnStatEntity: MainEntityName | 'log' | undefined = $state()
+  let columnStatAttribut: AttributWithValues | undefined = $state()
 
   const timer = performance.now()
 
@@ -150,19 +151,21 @@
     if (!elem?.data('powertip-initialized')) {
       elem?.data('powertip-initialized', true)
       // @ts-expect-error - powerTip is a jQuery plugin
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       elem?.powerTip({
         placement: elem.hasClass('tooltip-top') ? 'n' : 's',
         smartPlacement: true,
         mouseOnToPopup: true,
       })
       // @ts-expect-error - powerTip is a jQuery plugin
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       elem?.powerTip('show')
     }
   })
 
   jQuery('body').on('click', '.column-stat-btn', function (this: HTMLElement) {
-    const attributName = jQuery(this).data('attribut')
-    columnStatEntity = jQuery(this).data('entity')
+    const attributName = jQuery(this).data('attribut') as string
+    columnStatEntity = jQuery(this).data('entity') as MainEntityName | 'log'
     columnStatAttribut = addValuesToAttribut($currentTabData, {
       key: attributName,
       ...definition[attributName],
@@ -252,11 +255,13 @@
 {/await}
 
 <Popup bind:isOpen={isPopupColumnStatOpen}>
-  <StatBox
-    entity={columnStatEntity}
-    attribut={columnStatAttribut}
-    fromPopup={true}
-  />
+  {#if columnStatEntity && columnStatAttribut}
+    <StatBox
+      entity={columnStatEntity}
+      attribut={columnStatAttribut}
+      fromPopup={true}
+    />
+  {/if}
 </Popup>
 
 <style lang="scss">

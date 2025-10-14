@@ -107,7 +107,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number,
 ) {
-  let timeout: ReturnType<typeof setTimeout> | undefined
+  let timeout: ReturnType<typeof setTimeout> | undefined = undefined
   return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
     clearTimeout(timeout)
     timeout = setTimeout(() => func.apply(this, args), wait)

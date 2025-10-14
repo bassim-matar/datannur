@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Icon from "@layout/Icon.svelte"
+  import Icon from '@layout/Icon.svelte'
 
-  let { localisation } = $props()
+  let { localisation }: { localisation: string | undefined } = $props()
 </script>
 
 {#if localisation}

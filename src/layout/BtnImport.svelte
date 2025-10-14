@@ -1,14 +1,19 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte'
   import Button from '@layout/Button.svelte'
 
-  let { onImport, children } = $props()
+  let {
+    onImport,
+    children,
+  }: { onImport: (file: File, filename: string) => void; children?: Snippet } =
+    $props()
 
   let fileinput: HTMLInputElement | undefined = $state()
 
-  const onFileSelected = e => {
-    let file = e.target.files[0]
-    let filename = fileinput?.value.split('\\').slice(-1)[0]
-    onImport(file, filename)
+  const onFileSelected = (e: Event & { currentTarget: HTMLInputElement }) => {
+    const file = e.currentTarget.files?.[0]
+    const filename = fileinput?.value.split('\\').slice(-1)[0]
+    if (file && filename) onImport(file, filename)
   }
 </script>
 

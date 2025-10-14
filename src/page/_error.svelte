@@ -3,7 +3,7 @@
   import { footerVisible, pageContentLoaded } from '@lib/store'
   import Error from '@frame/Error.svelte'
 
-  let { entity = 'page' } = $props()
+  let { entity = 'page' }: { entity?: string } = $props()
 
   $footerVisible = true
 

@@ -4,9 +4,12 @@
   import Datatable from '@datatable/Datatable.svelte'
   import { link } from '@lib/util'
   import escapeHtml from 'escape-html'
-  import type { Column as ColumnType } from '@type'
+  import type { Value, Column as ColumnType } from '@type'
 
-  let { variableValues, isMeta = false } = $props()
+  let {
+    variableValues,
+    isMeta = false,
+  }: { variableValues: Value[]; isMeta: boolean } = $props()
 
   let hasDescription = false
   for (const value of variableValues) {
@@ -23,9 +26,9 @@
         data: 'modalityName',
         title: Render.icon('modality') + 'modalité',
         tooltip: 'Modalité',
-        render: (data, type, row) => {
+        render: (data, type, row: Value) => {
           if (!data) return ''
-          if (type !== 'display') return data
+          if (type !== 'display') return String(data)
           return link(
             'modality/' + row.modalityId,
             escapeHtml(data),

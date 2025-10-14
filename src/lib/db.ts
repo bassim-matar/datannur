@@ -106,7 +106,7 @@ function addEntity(item: MainEntity, entity: MainEntityName) {
 }
 
 function addSourceVar(variable: Variable) {
-  if (!variable.sourceVarIds) return false
+  if (!variable.sourceVarIds) return
   variable.sourceIds = new Set()
   const dataset = db.get('dataset', variable.datasetId)
   for (const sourceVarIdRaw of variable.sourceVarIds.split(',')) {
@@ -135,7 +135,7 @@ function addSourceVar(variable: Variable) {
 
 function addNextUpdate(item: EntityTypeMap['dataset' | 'folder']) {
   if (!item.lastUpdateDate || !item.updatingEach || item.noMoreUpdate) return
-  let diff
+  let diff = 0
   const updatingEach = item.updatingEach.toLowerCase()
   if (updatingEach === 'quotidienne') diff = 24 * 3600
   else if (updatingEach === 'hebdomadaire') diff = 7 * (24 * 3600)
@@ -457,7 +457,7 @@ class Process {
 
       const metaDataset = db.get('metaDataset', metaVariable.metaDatasetId)
       if (!metaDataset) return
-      metaVariable.datasetId = metaDataset.id
+      metaVariable.datasetId = metaDataset.id as string
       metaVariable.datasetName = metaDataset.name
       metaVariable.nbRow = metaDataset.nbRow
       metaVariable.metaFolderId = metaDataset.metaFolderId

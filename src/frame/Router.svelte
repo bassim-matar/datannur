@@ -56,7 +56,7 @@
         if (ctx.data[0]) ctx.data = {}
         updateRoute(entity, ctx.data)
         setTimeout(() => Logs.add('loadPage', { entity }), 10)
-        return false
+        return
       }
       entityId = ctx.data.id
       const entityData = db.get(entity as EntityName, entityId)
@@ -85,9 +85,9 @@
   }
   if ('_error' in routerIndex) {
     router.notFound(setRoute('_error'), {
-      before(done) {
+      before: (done: unknown) => {
         if (isSpaHomepage()) router.resolve('/')
-        done()
+        ;(done as () => void)()
       },
     })
   }

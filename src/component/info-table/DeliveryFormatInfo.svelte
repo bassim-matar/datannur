@@ -1,7 +1,7 @@
 <script lang="ts">
   import Icon from '@layout/Icon.svelte'
 
-  let { deliveryFormat } = $props()
+  let { deliveryFormat }: { deliveryFormat: string | undefined } = $props()
 </script>
 
 {#if deliveryFormat}

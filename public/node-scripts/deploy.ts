@@ -3,6 +3,19 @@ import { readFileSync, existsSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
+type DeployConfig = {
+  name: string
+  host: string
+  port: number
+  username: string
+  remotePath: string
+  privateKeyPath: string
+  ignore: string[]
+  syncOption?: {
+    delete?: boolean
+  }
+}
+
 const thisDirname = dirname(fileURLToPath(import.meta.url))
 process.chdir(join(thisDirname, '..'))
 
@@ -25,7 +38,7 @@ if (!configPath) {
   process.exit(1)
 }
 
-const config = JSON.parse(readFileSync(configPath, 'utf8'))
+const config = JSON.parse(readFileSync(configPath, 'utf8')) as DeployConfig
 
 console.log(`🚀 Deploying to ${config.name}`)
 

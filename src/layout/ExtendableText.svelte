@@ -1,7 +1,8 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte'
   import { extendable } from '@lib/extendable'
 
-  let { ...props } = $props()
+  let { ...props }: { class?: string; children?: Snippet } = $props()
 </script>
 
 <div

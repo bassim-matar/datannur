@@ -65,8 +65,8 @@
         width: '20px',
         filterType: 'select',
         tooltip: 'Type de modification',
-        render: (data, type, row) => {
-          if (type !== 'display') return data
+        render: (data, type, row: Evolution) => {
+          if (type !== 'display') return String(data)
           data = escapeHtml(data)
           const evolutionType = row.type as keyof typeof evolutionTypes
           return `
@@ -141,7 +141,7 @@
         name: 'value',
         filterType: 'input',
         tooltip: 'Valeur de la variable',
-        render: (data, type, row) => {
+        render: (data, type, row: Evolution) => {
           if (!row.oldValue && !row.newValue) {
             return ''
           }
@@ -167,7 +167,7 @@
         filterType: 'select',
         tooltip: 'passé ou futur',
         render: (data, type) => {
-          if (type !== 'display') return data
+          if (type !== 'display') return String(data)
           return `<span style="display: none;">${escapeHtml(data)}</span>`
         },
       },

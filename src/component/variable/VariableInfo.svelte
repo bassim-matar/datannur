@@ -9,11 +9,9 @@
   import PercentBar from '@info-table/PercentBar.svelte'
   import PeriodInfo from '@info-table/PeriodInfo.svelte'
   import TagsInfo from '@info-table/TagsInfo.svelte'
-  import MetaLocalisationInfo from '@info-table/MetaLocalisationInfo.svelte'
+  import type { Variable } from '@type'
 
-  let { variable } = $props()
-
-  let parentName = variable.isMeta ? 'metaDataset' : 'dataset'
+  let { variable }: { variable: Variable } = $props()
 </script>
 
 <TableWrapper>
@@ -35,12 +33,14 @@
       Dataset
     </td>
     <td>
-      <Link href="{parentName}/{variable.datasetId}" entity="dataset"
+      <Link href="dataset/{variable.datasetId}" entity="dataset"
         >{variable.datasetName}</Link
       >
     </td>
   </tr>
-  <TagsInfo tags={variable.tags} />
+  {#if variable.tags?.length}
+    <TagsInfo tags={variable.tags} />
+  {/if}
   <TypeInfo type={variable.typeClean} />
   {#if variable.key}
     <tr>
@@ -62,12 +62,14 @@
       {variable.num}
     </td>
   </tr>
-  <PeriodInfo
-    period={variable.period}
-    periodDuration={variable.periodDuration}
-  />
+  {#if variable.period}
+    <PeriodInfo
+      period={variable.period}
+      periodDuration={variable.periodDuration}
+    />
+  {/if}
   <RowInfo nbRow={variable.nbRow} />
-  {#if variable.nbMissing > 0}
+  {#if variable.nbMissing}
     <tr>
       <td>
         <Icon type="missing" />
@@ -82,7 +84,7 @@
       </td>
     </tr>
   {/if}
-  {#if variable.nbDuplicate > 0}
+  {#if variable.nbDuplicate}
     <tr>
       <td>
         <Icon type="duplicate" />
@@ -97,7 +99,7 @@
       </td>
     </tr>
   {/if}
-  {#if variable.nbDistinct > 0}
+  {#if variable.nbDistinct}
     <tr>
       <td>
         <Icon type="value" />
@@ -112,7 +114,7 @@
       </td>
     </tr>
   {/if}
-  {#if variable.modalities?.length > 0}
+  {#if variable.modalities?.length}
     <tr>
       <td>
         <Icon type="modality" />
@@ -133,11 +135,10 @@
       </td>
     </tr>
   {/if}
-  {#if variable.isMeta}
-    <MetaLocalisationInfo metaLocalisation={variable.metaLocalisation} />
-  {/if}
 </TableWrapper>
-<DescriptionInfo description={variable.description} />
+{#if variable.description}
+  <DescriptionInfo description={variable.description} />
+{/if}
 
 <style lang="scss">
   @use 'main.scss' as *;

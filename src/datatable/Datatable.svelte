@@ -39,7 +39,9 @@
   import Popup from '@layout/Popup.svelte'
   import SearchOptionInfo from './filter/SearchOptionInfo.svelte'
   import LoadingDot from '@layout/LoadingDot.svelte'
+  import { entityNames } from '@lib/constant'
   import type { Api } from 'datatables.net'
+  import type { Row, Column } from '@type'
 
   let {
     entity,
@@ -47,9 +49,18 @@
     columns,
     sortByName = false,
     keepAllCols = false,
-    metaPath = null,
+    metaPath = undefined,
     isRecursive = false,
     initied = () => {},
+  }: {
+    entity: string
+    data: Row[]
+    columns: Column[]
+    sortByName?: boolean
+    keepAllCols?: boolean
+    metaPath?: string
+    isRecursive?: boolean
+    initied?: () => void
   } = $props()
 
   let loading = $state(true)
@@ -63,7 +74,7 @@
   DatatablesTimer.start()
   DatatablesLoading.start()
 
-  let datatable: Api
+  let datatable: Api | undefined = undefined
   let domTable: ReturnType<typeof jQuery> | null = null
 
   const isBig = data.length > isBigLimit
@@ -82,7 +93,7 @@
   const columnsCopy = defineColumns(
     columns,
     cleanData,
-    entity,
+    entity as keyof typeof entityNames,
     keepAllCols,
     metaPath,
     nbRowLoading,
@@ -141,15 +152,15 @@
           buttons: exporter.getLanguage(),
         } as ConfigLanguage,
         initComplete: function () {
-          if (!isBig) return false
+          if (!isBig) return
           filter.init(this.api())
         },
       } as Config)
       datatable.on('search.dt', () => {
         if ($allTabs[entity]) {
-          $allTabs[entity].nb = getNbItem(datatable, cleanData)
+          $allTabs[entity].nb = getNbItem(datatable!, cleanData)
         }
-        shortTable = isShortTable(datatable)
+        shortTable = isShortTable(datatable!)
       })
       datatable.on('draw.dt', () => {
         datatableUpdateDraw += 1
@@ -174,7 +185,7 @@
               !domTable ||
               elemHasClickable(event.target, target, clickableElems)
             ) {
-              return false
+              return
             }
             jQuery(target).parent().find('.var-main-col')[0]?.click()
             jQuery(target).parent().find('.var-main-col a')[0]?.click()
