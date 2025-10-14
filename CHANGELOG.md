@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.14.0 (2025-10-15)
 
 - change: use svg-sprite for brand icons
 - change: logo handling for light and dark modes in Header, Loading components and main-banner
@@ -9,7 +9,7 @@
 - fix: evolution variable two rows and null value
 - refactor: enforce strict typescript rules everywhere
 
-## 0.13.0 (2024-10-02)
+## 0.13.0 (2025-10-02)
 
 - add: whenAppReady instead of db.loaded and refactor db.use and db.preview
 - add: escapeHtml on all datatables columns render to prevent XSS
@@ -17,7 +17,7 @@
 - refactor: db to use only Jsonjsdb methods and props, use type instead of interface for entities
 - refactor: enforce camelCase for all attributes and use kebab-case for scss
 
-## 0.12.10 (2024-09-26)
+## 0.12.10 (2025-09-26)
 
 - add: DOMPurify for HTML sanitization
 - fix: folder markdown about_page to about-page
@@ -32,7 +32,7 @@
 - refactor: enhance log handling and HTML rendering in stats components
 - remove: loader on search page
 
-## 0.12.9 (2024-09-23)
+## 0.12.9 (2025-09-23)
 
 - add: community standards docs (code of conduct, security, issue templates, pr templates)
 - add: code quality check on ci
