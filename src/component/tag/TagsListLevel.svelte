@@ -11,6 +11,14 @@
 
   const tagChildrenData: TagWithChildren[] = Object.values(tag.children || {})
 
+  tagChildrenData.sort((a, b) => {
+    const aHasChildren = a.children && Object.keys(a.children).length > 0
+    const bHasChildren = b.children && Object.keys(b.children).length > 0
+    if (aHasChildren && !bHasChildren) return -1
+    if (!aHasChildren && bHasChildren) return 1
+    return (a.name ?? '').localeCompare(b.name ?? '')
+  })
+
   const isTag = 'id' in tag && 'name' in tag
 
   const typedTag = isTag ? (tag as TagWithChildren) : null

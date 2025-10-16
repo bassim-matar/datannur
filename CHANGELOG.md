@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- change: improve sorting logic for tag children in TagsListLevel component
+
 ## 0.14.0 (2025-10-15)
 
 - change: use svg-sprite for brand icons

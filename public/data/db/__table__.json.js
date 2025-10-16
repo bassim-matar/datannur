@@ -14,11 +14,11 @@ jsonjs.data['__table__'] =
   },
   {
     "name": "evolution",
-    "lastModif": 1759950488
+    "lastModif": 1760602650
   },
   {
     "name": "folder",
-    "lastModif": 1759522523
+    "lastModif": 1760602654
   },
   {
     "name": "freq",
@@ -46,6 +46,6 @@ jsonjs.data['__table__'] =
   },
   {
     "name": "__table__",
-    "lastModif": 1760033379
+    "lastModif": 1760602768
   }
 ]
