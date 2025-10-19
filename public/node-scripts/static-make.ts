@@ -189,13 +189,26 @@ function getDbPathFromContent(content: string): string {
   return match ? match[1] : 'data/db'
 }
 
-async function capturePage(page: Page, route: string, level: number) {
+async function capturePage(
+  page: Page,
+  route: string,
+  level: number,
+  isFirstPage = false,
+) {
   const outputPath = route === '' ? 'index.html' : `${route}.html`
   await page.evaluate((route: string) => {
     window.history.pushState({ path: route }, '', route)
     window.dispatchEvent(new PopStateEvent('popstate'))
   }, route)
   try {
+    // For the first page, wait for DB to be loaded before waiting for page content
+    if (isFirstPage) {
+      await page.waitForSelector('#db-loaded', {
+        timeout: 30000,
+        state: 'attached',
+      })
+    }
+
     await page.waitForSelector(
       `#page-loaded-route-${route.replaceAll('/', '___')}`,
       { timeout: 10000, state: 'attached' },
@@ -243,8 +256,10 @@ async function generateStaticSite(routes: string[], startTime: Date) {
   }
   try {
     const page = await initPage(browser)
-    for (const route of routes) {
-      await capturePage(page, route, 1)
+    for (let i = 0; i < routes.length; i++) {
+      const route = routes[i]
+      const isFirstPage = i === 0
+      await capturePage(page, route, 1, isFirstPage)
     }
   } catch (error) {
     console.error('Failed to process routes', error)
