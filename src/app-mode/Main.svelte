@@ -15,16 +15,11 @@
   } from '@lib/store'
   import Options from '@lib/options'
   import Logs from '@lib/logs'
-  import Favorites from '@favorite/favorites'
-  import MainFilter from '@lib/main-filter'
   import { isHttp, hasTouchScreen, getIsSmallMenu } from '@lib/util'
   import { UrlParam } from '@lib/url-param'
   import { UrlHash } from '@lib/url-hash'
-  import { dbAddProcessedData } from '@lib/db'
-  import { loadUserData } from '@lib/user-data'
   import icon from '@img/icon.png'
   import iconDark from '@img/icon-dark.png'
-  import search from '@search/search'
   import SearchHistory from '@search/search-history'
   import { DarkMode, darkModeTheme } from '@dark-mode/dark-mode'
   import { copyTextListenClick } from '@lib/copy-text'
@@ -35,14 +30,11 @@
   import Footer from '@frame/Footer.svelte'
   import Router from '@frame/Router.svelte'
   import Popup from '@layout/Popup.svelte'
-  import Loading from '@page/_loading.svelte'
   import StatBox from '@stat/StatBox.svelte'
   import SearchBar from '@search/SearchBar.svelte'
-  import dbSchema from '@src/assets/db-schema.json'
-  import type { SearchHistoryEntry } from '@search/search-history'
-  import type { Favorite } from '@favorite/favorites'
+  import { initApp } from '@src/app-mode/app-init'
   import type { AttributWithValues } from '@stat/stat'
-  import type { Log, MainEntityName } from '@src/type'
+  import type { MainEntityName } from '@src/type'
 
   let errorLoadingDb = $state(false)
   let pageLoadedRoute = $state('')
@@ -84,39 +76,7 @@
 
   $whenAppReady = (async () => {
     try {
-      let timer = performance.now()
-      await MainFilter.init()
-      const filter = {
-        entity: 'dataset',
-        variable: 'type',
-        values: MainFilter.getTypeToFilter(),
-      }
-      console.log('init filter', Math.round(performance.now() - timer) + ' ms')
-
-      timer = performance.now()
-      const dbOption = {
-        filter,
-        aliases: [
-          { table: 'institution', alias: 'owner' },
-          { table: 'institution', alias: 'manager' },
-        ],
-      }
-      await db.init(dbOption)
-      console.log('load db', Math.round(performance.now() - timer) + ' ms')
-
-      timer = performance.now()
-      const userData = await loadUserData()
-      db.addMeta(userData, dbSchema as string[][])
-      dbAddProcessedData()
-      console.log('process db', Math.round(performance.now() - timer) + ' ms')
-
-      timer = performance.now()
-      search.init()
-      Logs.init(userData.log as Log[] | null)
-      Favorites.init(userData.favorite as Favorite[])
-      SearchHistory.init(userData.searchHistory as SearchHistoryEntry[], {
-        limit: 100,
-      })
+      await initApp()
     } catch (e) {
       console.error(e)
       errorLoadingDb = true
@@ -195,7 +155,10 @@
       )
     }
 
-    console.log('init total', Math.round(performance.now() - timer) + ' ms')
+    console.log(
+      'init complete (with banner)',
+      Math.round(performance.now() - timer) + ' ms',
+    )
   })
 
   const unsubscribe = pageContentLoaded.subscribe(value => {
@@ -234,19 +197,15 @@
         <p>Si le problème persiste, contactez le support.</p>
       </div>
     {:else}
-      {#await $whenAppReady}
-        <Loading />
-      {:then}
-        {#if ($isSmallMenu && ($onPageSearch || $onPageHomepage)) || !$isSmallMenu}
-          <SearchBar />
-        {/if}
-        <Router />
-        <div id="db-loaded" style="display: none;"></div>
-        <div
-          id="page-loaded-route-{pageLoadedRoute}"
-          style="display: none;"
-        ></div>
-      {/await}
+      {#if ($isSmallMenu && ($onPageSearch || $onPageHomepage)) || !$isSmallMenu}
+        <SearchBar />
+      {/if}
+      <Router />
+      <div id="db-loaded" style="display: none;"></div>
+      <div
+        id="page-loaded-route-{pageLoadedRoute}"
+        style="display: none;"
+      ></div>
     {/if}
   </div>
   {#if !$isSmallMenu}

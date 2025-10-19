@@ -1,10 +1,14 @@
-import { mount } from 'svelte'
+import { mount, hydrate } from 'svelte'
 import App from './App.svelte'
+import { initApp } from './app-mode/app-init'
+import { isStaticMode, isSsgRendering } from '@lib/util'
 
 const target = document.getElementById('app')
 if (!target) {
   throw new Error("Could not find target element with id 'app'")
 }
+
+const hasStaticContent = target.children.length > 0
 
 // remove specific static-only head elements
 ;[
@@ -13,9 +17,25 @@ if (!target) {
   'link[rel="manifest"]',
 ].forEach(el => document.querySelector(el)?.remove())
 
-// reset app content
-target.innerHTML = ''
+async function startApp() {
+  if (!target) return
 
-const app = mount(App, { target })
+  if (isStaticMode && hasStaticContent) {
+    if (!isSsgRendering) {
+      try {
+        await initApp()
+      } catch (error) {
+        console.error('Failed to initialize app:', error)
+      }
+    }
+
+    return hydrate(App, { target })
+  } else {
+    target.innerHTML = ''
+    return mount(App, { target })
+  }
+}
+
+const app = startApp()
 
 export default app

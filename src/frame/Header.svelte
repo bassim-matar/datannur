@@ -7,7 +7,7 @@
     onPageHomepage,
     onPageSearch,
   } from '@lib/store'
-  import { appMode } from '@lib/util'
+  import { isSsgRendering } from '@lib/util'
   import { router } from '@lib/router.svelte.js'
   import logo from '@img/logo.png'
   import logoDark from '@img/logo-dark.png'
@@ -152,7 +152,7 @@
     </div>
 
     <div class="navbar-end">
-      {#if $isSmallMenu && appMode !== 'static_render'}
+      {#if $isSmallMenu && !isSsgRendering}
         <Footer menuMobile={true} />
       {/if}
     </div>
