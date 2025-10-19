@@ -38,6 +38,7 @@
 
   let errorLoadingDb = $state(false)
   let pageLoadedRoute = $state('')
+  let dbLoaded = $state(false)
 
   let isPopupColumnStatOpen = $state(false)
   let columnStatEntity: MainEntityName | 'log' | undefined = $state()
@@ -77,6 +78,7 @@
   $whenAppReady = (async () => {
     try {
       await initApp()
+      dbLoaded = true
     } catch (e) {
       console.error(e)
       errorLoadingDb = true
@@ -201,7 +203,9 @@
         <SearchBar />
       {/if}
       <Router />
-      <div id="db-loaded" style="display: none;"></div>
+      {#if dbLoaded}
+        <div id="db-loaded" style="display: none;"></div>
+      {/if}
       <div
         id="page-loaded-route-{pageLoadedRoute}"
         style="display: none;"

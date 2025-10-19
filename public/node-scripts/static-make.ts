@@ -207,6 +207,8 @@ async function capturePage(
         timeout: 30000,
         state: 'attached',
       })
+      // Add extra delay to ensure all rendering is complete
+      await new Promise(resolve => setTimeout(resolve, 500))
     }
 
     await page.waitForSelector(
