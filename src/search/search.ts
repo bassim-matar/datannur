@@ -1,7 +1,5 @@
 import db from '@db'
-import { whenAppReady } from '@lib/store'
 import { ensureScriptLoaded } from '@lib/util'
-import { get } from 'svelte/store'
 import { mainEntityNames } from '@lib/constant'
 import escapeHtml from 'escape-html'
 import type { Index } from 'flexsearch'
@@ -85,7 +83,6 @@ class Search {
   async init() {
     this.loading = (async () => {
       await ensureScriptLoaded('assets/external/flexsearch.js')
-      await get(whenAppReady)
       const variables: VariableName[] = ['name', 'description']
       for (const variable of variables) {
         const entitiesData: EntityData[] = []

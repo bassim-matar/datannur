@@ -5,6 +5,14 @@ export const appMode = UrlParam.getAppMode()
 
 export const isHttp = window.location.protocol.startsWith('http')
 
+export const isSsgRendering =
+  new URLSearchParams(window.location.search).get('app_mode') ===
+  'static_render'
+
+export const isStaticMode = Boolean(
+  document.querySelector('meta[app-mode="static"]'),
+)
+
 function getSubFolder() {
   const url = new URL(window.location.href)
   const pathname = url.pathname.split('/').filter(Boolean)

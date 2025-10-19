@@ -21,8 +21,6 @@ const config = {
     mermaidPublic: 'public/assets/external/mermaid.min.js',
     flexsearchNode: 'node_modules/flexsearch/dist/flexsearch.bundle.min.js',
     flexsearchPublic: 'public/assets/external/flexsearch.js',
-    jszipNode: 'node_modules/jszip/dist/jszip.min.js',
-    jszipPublic: 'public/assets/external/jszip.min.js',
     jsonjsdbConfig: 'public/data/jsonjsdb-config.html',
     dbPath: 'public/data/db',
     dbSourcePath: 'public/data/db-source',
@@ -113,7 +111,6 @@ const [appVersion, aliases] = await Promise.all([
 await Promise.all([
   fs.copyFile(config.paths.mermaidNode, config.paths.mermaidPublic),
   fs.copyFile(config.paths.flexsearchNode, config.paths.flexsearchPublic),
-  fs.copyFile(config.paths.jszipNode, config.paths.jszipPublic),
 ])
 
 const builder = new JsonjsdbBuilder()
