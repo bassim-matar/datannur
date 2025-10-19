@@ -17,9 +17,6 @@ const hasStaticContent = target.children.length > 0
   'link[rel="manifest"]',
 ].forEach(el => document.querySelector(el)?.remove())
 
-// remove jsonjsdb static scripts (only needed during SSG rendering)
-document.querySelectorAll('script[src*="data/db/"]').forEach(el => el.remove())
-
 async function startApp() {
   if (!target) return
 

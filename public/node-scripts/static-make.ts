@@ -184,6 +184,11 @@ async function initPage(browser: Browser) {
   return page
 }
 
+function getDbPathFromContent(content: string): string {
+  const match = content.match(/id="jsonjsdb-config"[^>]+data-path="([^"]+)"/)
+  return match ? match[1] : 'data/db'
+}
+
 async function capturePage(page: Page, route: string, level: number) {
   const outputPath = route === '' ? 'index.html' : `${route}.html`
   await page.evaluate((route: string) => {
@@ -196,7 +201,17 @@ async function capturePage(page: Page, route: string, level: number) {
       { timeout: 10000, state: 'attached' },
     )
 
-    const content = await page.content()
+    let content = await page.content()
+
+    // Remove jsonjsdb static scripts (only needed during SSG, cause errors in production)
+    const dbPath = getDbPathFromContent(content)
+    const escapedDbPath = dbPath.replace(/\//g, '\\/')
+    const scriptPattern = new RegExp(
+      `<script src="${escapedDbPath}\\/[^"]+\\.json\\.js[^"]*"><\\/script>`,
+      'g',
+    )
+    content = content.replace(scriptPattern, '')
+
     writeFileSync(`./${config.outDir}/${outputPath}`, content)
     console.log(`create page: ${route || 'index'}`)
   } catch (error) {
