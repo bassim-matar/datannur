@@ -11,7 +11,7 @@
   import Icon from '@layout/Icon.svelte'
   import { resetColsSearchCache } from '@lib/util'
   import { getUserData } from '@lib/user-data'
-  import { UrlParam } from '@lib/url-param'
+  import { UrlParam } from '@spa-core/url'
   import Switch from '@layout/Switch.svelte'
   import DarkModeSwitch from '@dark-mode/DarkModeSwitch.svelte'
   import BtnImport from '@layout/BtnImport.svelte'

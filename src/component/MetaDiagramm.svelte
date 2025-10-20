@@ -1,6 +1,7 @@
 <script lang="ts">
   import db from '@db'
-  import { isMobile, urlPrefix, ensureMermaidLoaded } from '@lib/util'
+  import { urlPrefix } from '@spa-core/url'
+  import { isMobile, ensureMermaidLoaded } from '@lib/util'
   import { entityNames } from '@lib/constant'
   import Render from '@lib/render'
   import Loading from '@frame/Loading.svelte'

@@ -1,7 +1,7 @@
 import escapeHtml from 'escape-html'
+import { link } from '@spa-core/url'
 import {
   isMobile,
-  link,
   wrapLongText,
   getPercent,
   pluralize,

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import search from '@search/search'
-  import { router } from '@lib/router.svelte.js'
+  import { router } from '@spa-core/router.svelte'
   import {
     whenAppReady,
     searchValue,

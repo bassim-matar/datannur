@@ -16,7 +16,7 @@
   import IconSprite from '@layout/IconSprite.svelte'
   import CheckDb from '@src/app-mode/CheckDb.svelte'
   import Main from '@src/app-mode/Main.svelte'
-  import { appMode } from '@lib/util'
+  import { appMode } from '@spa-core/url'
 </script>
 
 <IconSprite />

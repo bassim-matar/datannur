@@ -7,8 +7,8 @@
     onPageHomepage,
     onPageSearch,
   } from '@lib/store'
-  import { isSsgRendering } from '@lib/util'
-  import { router } from '@lib/router.svelte.js'
+  import { isSsgRendering } from '@spa-core/url'
+  import { router } from '@spa-core/router.svelte'
   import logo from '@img/logo.png'
   import logoDark from '@img/logo-dark.png'
   import Loading from '@frame/Loading.svelte'

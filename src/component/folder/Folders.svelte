@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { link, wrapLongText, getPercent } from '@lib/util'
+  import { link } from '@spa-core/url'
+  import { wrapLongText, getPercent } from '@lib/util'
   import { getParentPath } from '@lib/db'
   import Column from '@lib/column'
   import Render from '@lib/render'

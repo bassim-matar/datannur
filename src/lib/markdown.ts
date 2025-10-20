@@ -1,5 +1,5 @@
 import { marked } from 'marked'
-import { getBaseLinkUrl } from '@lib/util'
+import { getBaseLinkUrl } from '@spa-core/url'
 
 const renderer = new marked.Renderer()
 renderer.link = ({ href, title, text }) => {
