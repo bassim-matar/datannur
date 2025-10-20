@@ -4,6 +4,7 @@
 
 - change: improve sorting logic for tag children in TagsListLevel component
 - refactor: consolidate app initialization logic and improve static rendering handling
+- refactor: centralize in spa-core all URL and routing related code
 
 ## 0.14.0 (2025-10-15)
 
