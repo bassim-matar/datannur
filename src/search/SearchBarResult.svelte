@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onPageHomepage } from '@spa-core/router/router-store'
+  import { onPageHomepage } from 'svelte-fileapp'
   import { whenAppReady } from '@lib/store'
   import { debounce } from '@lib/util'
   import SearchBarResultRow from './SearchBarResultRow.svelte'

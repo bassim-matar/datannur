@@ -12,8 +12,7 @@ import {
   initBuildConfig,
   copyFilesToOutDir,
   copyPaths,
-  copySpaCoreSsg,
-} from './src/spa-core/vite'
+} from 'svelte-fileapp/vite'
 
 const outDir = 'app'
 
@@ -68,7 +67,6 @@ export default defineConfig({
     alias({ entries: aliases }),
     svelte(svelteConfig as Options),
     spaHtmlOptimizations(),
-    copySpaCoreSsg(outDir),
     copyFilesToOutDir(outDir, ['LICENSE.md', 'CHANGELOG.md', 'README.md']),
   ],
 })

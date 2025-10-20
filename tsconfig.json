@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
@@ -29,7 +29,6 @@
       "@markdown/*": ["src/assets/markdown/*"],
       "@page/*": ["src/page/*"],
       "@search/*": ["src/search/*"],
-      "@spa-core/*": ["src/spa-core/*"],
       "@stat/*": ["src/stat/*"],
       "@tab/*": ["src/tab/*"],
       "@type": ["src/type/index.ts"]

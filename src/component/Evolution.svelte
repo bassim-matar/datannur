@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { page } from '@spa-core/router/router-store'
+  import { page } from 'svelte-fileapp'
   import Column from '@lib/column'
   import Render from '@lib/render'
   import { wrapLongText } from '@lib/util'

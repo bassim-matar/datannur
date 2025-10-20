@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { link } from '@spa-core/url'
+  import { link } from 'svelte-fileapp'
   import { wrapLongText } from '@lib/util'
   import Datatable from '@datatable/Datatable.svelte'
   import Render from '@lib/render'

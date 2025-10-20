@@ -1,10 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import search from '@search/search'
-  import { router } from '@spa-core/router/router.svelte'
+  import {
+    router,
+    onPageSearch,
+    onPageHomepage,
+    isSmallMenu,
+  } from 'svelte-fileapp'
   import { whenAppReady, searchValue, headerOpen } from '@lib/store'
-  import { onPageSearch, onPageHomepage } from '@spa-core/router/router-store'
-  import { isSmallMenu } from '@spa-core/browser-utils'
   import { clickOutside, debounce } from '@lib/util'
   import Logs from '@lib/logs'
   import BtnClearInput from '@layout/BtnClearInput.svelte'

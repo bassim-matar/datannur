@@ -3,7 +3,7 @@
   import { modalitiesSimilitutes, tabSelected } from '@lib/store'
   import Column from '@lib/column'
   import Render from '@lib/render'
-  import { link } from '@spa-core/url'
+  import { link } from 'svelte-fileapp'
   import { worker } from '@lib/util'
   import { modalityCompareWorker } from '@lib/modality-compare-worker'
   import Datatable from '@datatable/Datatable.svelte'

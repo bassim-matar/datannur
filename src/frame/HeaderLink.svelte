@@ -1,6 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { page } from '@spa-core/router/router-store'
+  import { page } from 'svelte-fileapp'
   import { whenAppReady, headerOpen } from '@lib/store'
   import { pluralize } from '@lib/util'
   import { entityNames } from '@lib/constant'

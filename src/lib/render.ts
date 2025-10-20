@@ -3,7 +3,7 @@ import db from '@db'
 import { locale } from '@lib/constant'
 import { copyTextClasses, copyTextMsg } from '@lib/copy-text'
 import { getTimeAgo, dateToTimestamp } from '@lib/time'
-import { link } from '@spa-core/url'
+import { link } from 'svelte-fileapp'
 import {
   wrapLongText,
   addIndend,

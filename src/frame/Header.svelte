@@ -1,9 +1,12 @@
 <script lang="ts">
   import { whenAppReady, nbFavorite, headerOpen } from '@lib/store'
-  import { onPageHomepage, onPageSearch } from '@spa-core/router/router-store'
-  import { isSmallMenu } from '@spa-core/browser-utils'
-  import { isSsgRendering } from '@spa-core/url'
-  import { router } from '@spa-core/router/router.svelte'
+  import {
+    onPageHomepage,
+    onPageSearch,
+    isSmallMenu,
+    isSsgRendering,
+    router,
+  } from 'svelte-fileapp'
   import logo from '@img/logo.png'
   import logoDark from '@img/logo-dark.png'
   import Loading from '@frame/Loading.svelte'

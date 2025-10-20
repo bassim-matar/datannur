@@ -1,7 +1,7 @@
 <script lang="ts">
   import Column from '@lib/column'
   import Render from '@lib/render'
-  import { link } from '@spa-core/url'
+  import { link } from 'svelte-fileapp'
   import { getPercent } from '@lib/util'
   import Datatable from '@datatable/Datatable.svelte'
   import escapeHtml from 'escape-html'
