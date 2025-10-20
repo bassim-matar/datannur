@@ -2,38 +2,26 @@
 
 Generic SPA utilities that can be reused in other projects.
 
-## Modules
+## Directory Structure
 
-### `url-param.ts`
-
-Manages URL parameters for both hash-based and path-based routing.
-
-**Features:**
-
-- Handles hash routing (`#/page?param=value`)
-- Handles static mode (SSG with query strings)
-- Type-safe parameter management
-- History API integration
-
-**Usage:**
-
-```typescript
-import { UrlParam } from './spa-core/url-param'
-
-// Initialize (detects app mode)
-UrlParam.init()
-
-// Get app mode
-const mode = UrlParam.getAppMode() // 'spa' | 'static_render'
-
-// Get/set parameters
-const value = UrlParam.get('key')
-UrlParam.set('key', 'value')
-UrlParam.delete('key')
-UrlParam.reset()
-
-// Get all parameters
-const allParams = UrlParam.getAllParams()
+```
+spa-core/
+├── url.ts                      # URL and routing parameters management
+├── app-bootstrap.ts            # App initialization (mount/hydrate)
+├── browser-utils.ts            # Browser detection & responsive utilities
+├── router/                     # Routing system
+│   ├── GenericRouter.svelte    # Main router component
+│   ├── router.svelte.ts        # Navigo router instance
+│   ├── router-helpers.ts       # Route initialization helpers
+│   ├── router-registration.ts  # Route registration logic
+│   └── router-store.ts         # Router-related stores
+├── ssg/                        # Static Site Generation
+│   ├── ssg.ts                  # Core SSG utilities
+│   └── ssg-jsonjsdb.ts         # SSG for jsonjsdb integration
+└── vite/                       # Vite build plugins
+    ├── vite-plugin-router.ts   # Auto-generate router index
+    ├── vite-plugin-html.ts     # HTML transformations
+    └── vite-utils.ts           # Build configuration utilities
 ```
 
 ## Modules Overview
@@ -53,7 +41,72 @@ Complete URL management for SPA applications.
 - `getBaseLinkUrl()` - Get base URL for links
 - `link()` - Generate HTML links
 
-### `router.svelte.ts`
+**Usage:**
+
+```typescript
+import { UrlParam, UrlHash, link } from '@spa-core/url'
+
+// URL parameters
+const value = UrlParam.get('key')
+UrlParam.set('key', 'value')
+
+// Hash routing
+const hash = UrlHash.getLevel1()
+
+// Generate links
+const href = link('page', { id: '123' })
+```
+
+### `app-bootstrap.ts`
+
+Application initialization utilities for Svelte mounting and hydration.
+
+**Exports:**
+
+- `bootstrapApp()` - Mount or hydrate Svelte app based on mode
+- `removeStaticOnlyHeadElements()` - Clean up SSG-only elements
+
+**Usage:**
+
+```typescript
+import { bootstrapApp } from '@spa-core/app-bootstrap'
+import App from './App.svelte'
+
+await bootstrapApp(App, 'app', async () => {
+  // Optional initialization function
+  await initializeDatabase()
+})
+```
+
+### `browser-utils.ts`
+
+Browser and device detection utilities for responsive design.
+
+**Exports:**
+
+- `isFirefox` - Boolean indicating Firefox browser
+- `isMobile` - Boolean for mobile devices (< 600px)
+- `isSmallMenu` - Writable store for small menu state (< 1023px)
+- `documentWidth` - Current document width
+- `hasTouchScreen` - Boolean for touch-capable devices
+- `getIsMobile()` - Function to check if mobile
+- `getIsSmallMenu()` - Function to check if small menu
+
+**Usage:**
+
+```typescript
+import { isMobile, isSmallMenu, hasTouchScreen } from '@spa-core/browser-utils'
+
+if (isMobile) {
+  // Render mobile layout
+}
+
+$: menuCollapsed = $isSmallMenu
+```
+
+### Router (`router/`)
+
+#### `router.svelte.ts`
 
 SPA router integration using Navigo.
 
@@ -69,7 +122,52 @@ SPA router integration using Navigo.
 - Smart reload on same-page navigation
 - External link detection
 
-### `ssg.ts`
+**Usage:**
+
+```typescript
+import { router } from '@spa-core/router/router.svelte'
+
+router.navigate('/about')
+```
+
+#### `GenericRouter.svelte`
+
+Generic router component for SPA applications.
+
+**Usage:**
+
+```svelte
+<script>
+  import GenericRouter from '@spa-core/router/GenericRouter.svelte'
+  import routerIndex from './router-index'
+
+  const store = {
+    page,
+    pageContentLoaded,
+    whenAppReady
+  }
+</script>
+
+<GenericRouter
+  {routerIndex}
+  {store}
+  onRouteChange={handleRouteChange}
+  getEntityData={getEntity}
+/>
+```
+
+#### `router-store.ts`
+
+Router-related Svelte stores.
+
+**Exports:**
+
+- `pageHash` - Current page hash value
+- `pageLoadedRoute` - Last loaded route identifier
+
+### SSG (`ssg/`)
+
+#### `ssg.ts`
 
 Static Site Generation (SSG) utilities for pre-rendering SPA pages.
 
@@ -86,7 +184,7 @@ Static Site Generation (SSG) utilities for pre-rendering SPA pages.
 **Usage:**
 
 ```typescript
-import { generateStaticSite } from '@spa-core/ssg'
+import { generateStaticSite } from '@spa-core/ssg/ssg'
 
 const routes = ['', 'about', 'contact', 'blog/post-1']
 await generateStaticSite(routes, {
@@ -99,7 +197,7 @@ await generateStaticSite(routes, {
 })
 ```
 
-### `ssg-jsonjsdb.ts`
+#### `ssg-jsonjsdb.ts`
 
 SSG utilities for jsonjsdb integration (extends `ssg.ts`).
 
@@ -116,55 +214,34 @@ SSG utilities for jsonjsdb integration (extends `ssg.ts`).
 **Usage (simple - recommended):**
 
 ```typescript
-import { generateJsonjsdbStaticSite } from '@spa-core/ssg-jsonjsdb'
+import { generateJsonjsdbStaticSite } from '@spa-core/ssg/ssg-jsonjsdb'
 
-// One function does everything!
 await generateJsonjsdbStaticSite('./data/static-make.config.json', './public')
 ```
 
-**Usage (granular):**
+### Vite Plugins (`vite/`)
 
-```typescript
-import { generateStaticSite } from '@spa-core/ssg'
-import {
-  getDbMetaPath,
-  getEntitiesRoutes,
-  getDbPathFromContent,
-} from '@spa-core/ssg-jsonjsdb'
-
-const dbPath = await getDbMetaPath('public/data/db')
-const routes = await getEntitiesRoutes(dbPath, ['dataset', 'institution'])
-
-await generateStaticSite(routes, config, {
-  waitForDbSelector: '#db-loaded',
-  dbPathExtractor: getDbPathFromContent,
-})
-```
-
-**Config format (`static-make.config.json`):**
-
-```json
-{
-  "domain": "https://example.com",
-  "indexSeo": true,
-  "appPath": "./app",
-  "outDir": "./dist",
-  "dbMetaPath": "./data/db",
-  "port": 3000,
-  "entities": ["dataset", "institution", "folder"],
-  "routes": ["", "about", "contact"]
-}
-```
-
-### `vite-plugin-router.ts`
+#### `vite-plugin-router.ts`
 
 Vite plugin to auto-generate router index from page files.
 
 **Exports:**
 
-- `updateRouterIndex()` - Generate router configuration
+- `updateRouterIndex()` - Generate router configuration from `src/page/*.svelte`
 
-### `vite-plugin-html.ts`
+**Usage:**
+
+```typescript
+import { updateRouterIndex } from '@spa-core/vite/vite-plugin-router'
+
+export default defineConfig({
+  plugins: [
+    updateRouterIndex('./src/router-index.ts', '../page', './src/page'),
+  ],
+})
+```
+
+#### `vite-plugin-html.ts`
 
 Vite plugin for HTML transformations in SPA build.
 
@@ -173,7 +250,17 @@ Vite plugin for HTML transformations in SPA build.
 - `htmlReplace()` - Generic HTML pattern replacement
 - `spaHtmlOptimizations()` - Pre-configured SPA optimizations
 
-### `vite-utils.ts`
+**Usage:**
+
+```typescript
+import { spaHtmlOptimizations } from '@spa-core/vite/vite-plugin-html'
+
+export default defineConfig({
+  plugins: [spaHtmlOptimizations()],
+})
+```
+
+#### `vite-utils.ts`
 
 Build configuration utilities for Vite projects.
 
@@ -182,15 +269,18 @@ Build configuration utilities for Vite projects.
 - `initBuildConfig()` - Load version and aliases
 - `copyPaths()` - Copy files from source to destination
 - `copyFilesToOutDir()` - Vite plugin to copy files after build
-- `initJsonjsdbBuilder()` - Configure JsonjsdbBuilder
+- `copySpaCoreSsg()` - Copy SSG files to output directory
 - `getAliases()` - Read TypeScript path aliases
 - `getAppVersion()` - Read app version from package.json
-- `afterBuild()` - Run callback after build
 
-## Migration Status
+**Usage:**
 
-- [x] `url-param.ts` - Migrated to `url.ts`
-- [x] `url-hash.ts` - Migrated to `url.ts`
-- [x] `router.svelte.ts` - Migrated to `spa-core/`
-- [x] Vite plugins - Migrated to `spa-core/`
-- [x] SSG utilities - Created `ssg.ts`
+```typescript
+import { initBuildConfig, copySpaCoreSsg } from '@spa-core/vite/vite-utils'
+
+const { appVersion, aliases } = await initBuildConfig()
+
+export default defineConfig({
+  plugins: [copySpaCoreSsg('app')],
+})
+```

@@ -6,19 +6,20 @@
     getInitialComponent,
     updateRouteComponent,
   } from './router-helpers'
-  import { UrlHash, isStaticMode, isSsgRendering } from './url'
+  import { UrlHash, isStaticMode, isSsgRendering } from '../url'
+  import {
+    page,
+    pageContentLoaded,
+    pageHash,
+    pageLoadedRoute,
+  } from './router-store'
   import type { Component } from 'svelte'
   import type { Match } from 'navigo'
   import type { RouterIndex } from './router-registration'
 
   interface Props<T extends string> {
     routerIndex: RouterIndex
-    store: {
-      page: { set: (value: T) => void }
-      pageHash: { set: (value: string) => void }
-      pageContentLoaded: { set: (value: boolean) => void }
-      whenAppReady: Promise<void>
-    }
+    whenAppReady: Promise<void>
     onRouteChange?: (ctx: {
       entity: T
       params: Record<string, unknown>
@@ -31,7 +32,7 @@
 
   let {
     routerIndex,
-    store,
+    whenAppReady,
     onRouteChange,
     getEntityData,
     errorPage = '_error' as T,
@@ -53,7 +54,7 @@
   )
 
   if (isStaticMode && !isSsgRendering) {
-    store.whenAppReady.then(() => {
+    whenAppReady.then(() => {
       if (initialPage !== loadingPage && initialPage in routerIndex) {
         route = routerIndex[initialPage].component
       }
@@ -65,7 +66,7 @@
     newParams: Record<string, unknown> | null = null,
   ) {
     if (newParams) params = newParams
-    store.pageContentLoaded.set(false)
+    pageContentLoaded.set(false)
 
     route = updateRouteComponent(
       routerIndex,
@@ -75,8 +76,18 @@
       route,
     )
 
-    store.page.set(entity)
-    setTimeout(() => store.pageHash.set(UrlHash.getLevel1()), 1)
+    page.set(entity)
+    setTimeout(() => pageHash.set(UrlHash.getLevel1()), 1)
+
+    setTimeout(() => {
+      let route = ''
+      if (window.location.hash) {
+        route = window.location.hash.split('#/')[1]?.split('?')[0] ?? ''
+      } else {
+        route = window.location.pathname.substring(1)
+      }
+      pageLoadedRoute.set(route.replace(/\//g, '___'))
+    }, 1)
   }
 
   function setRoute(entity: T) {
@@ -92,7 +103,7 @@
       window.document.body.setAttribute('page', entity)
 
       if (!routerInitialized) {
-        await store.whenAppReady
+        await whenAppReady
         routerInitialized = true
       }
 
@@ -144,3 +155,8 @@
 {:else}
   <SvelteComponent {...params} />
 {/if}
+
+{#await whenAppReady then}
+  <div id="db-loaded" style="display: none;"></div>
+{/await}
+<div id="page-loaded-route-{$pageLoadedRoute}" style="display: none;"></div>

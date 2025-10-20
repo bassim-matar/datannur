@@ -4,7 +4,6 @@
 
 import fs from 'fs/promises'
 import path from 'path'
-import { JsonjsdbBuilder } from 'jsonjsdb-builder'
 
 interface TsConfig {
   compilerOptions: { paths: Record<string, string[]> }
@@ -81,12 +80,12 @@ export function copySpaCoreSsg(outDir: string) {
     apply: 'build' as const,
     closeBundle: async () => {
       const spaCoreDest = `${outDir}/node-scripts/spa-core`
-      await fs.mkdir(spaCoreDest, { recursive: true })
+      await fs.mkdir(`${spaCoreDest}/ssg`, { recursive: true })
 
-      const files = ['ssg.ts', 'ssg-jsonjsdb.ts']
+      const files = ['index.ts', 'ssg.ts', 'ssg-jsonjsdb.ts']
       await Promise.all(
         files.map(file =>
-          fs.copyFile(`src/spa-core/${file}`, `${spaCoreDest}/${file}`),
+          fs.copyFile(`src/spa-core/ssg/${file}`, `${spaCoreDest}/ssg/${file}`),
         ),
       )
     },
@@ -118,32 +117,4 @@ export async function initBuildConfig(options: BuildConfigOptions = {}) {
  */
 export async function copyPaths(pairs: [string, string][]) {
   return Promise.all(pairs.map(([from, to]) => fs.copyFile(from, to)))
-}
-
-/**
- * Initialize and configure JsonjsdbBuilder instance
- * @param paths - Configuration paths for database, preview, and markdown
- * @param isDevelopment - Whether to watch database in development mode
- * @returns Configured JsonjsdbBuilder instance
- */
-export async function initJsonjsdbBuilder(
-  paths: {
-    dbPath: string
-    dbSourcePath: string
-    previewPath: string
-    mdPath: string
-  },
-  isDevelopment = false,
-) {
-  const builder = new JsonjsdbBuilder()
-  await builder.setOutputDb(paths.dbPath)
-  await Promise.all([
-    builder.updateDb(paths.dbSourcePath),
-    builder.updatePreview('preview', paths.previewPath),
-    builder.updateMdDir('md-doc', paths.mdPath),
-  ])
-  if (isDevelopment) {
-    builder.watchDb(paths.dbSourcePath)
-  }
-  return builder
 }

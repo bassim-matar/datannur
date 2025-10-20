@@ -1,6 +1,7 @@
 <script lang="ts">
   import db from '@db'
-  import { whenAppReady, page, headerOpen } from '@lib/store'
+  import { page } from '@spa-core/router/router-store'
+  import { whenAppReady, headerOpen } from '@lib/store'
   import { pluralize } from '@lib/util'
   import { entityNames } from '@lib/constant'
   import Link from '@layout/Link.svelte'

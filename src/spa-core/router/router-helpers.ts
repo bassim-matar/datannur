@@ -1,4 +1,4 @@
-import { isStaticMode, isSsgRendering } from './url'
+import { isStaticMode, isSsgRendering } from '../url'
 import type { RouterIndex } from './router-registration'
 import type { Component } from 'svelte'
 

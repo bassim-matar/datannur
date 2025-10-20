@@ -9,15 +9,11 @@
   import 'datatables.net-fixedheader-bm'
   import 'datatables.net-scroller-bm'
   import { onMount, onDestroy } from 'svelte'
-  import { isMobile } from '@lib/util'
+  import { isMobile } from '@spa-core/browser-utils'
   import { isBigLimit } from '@lib/constant'
-  import {
-    tabSelected,
-    allTablesLoaded,
-    allTabs,
-    currentTabData,
-  } from '@lib/store'
+  import { tabSelected, allTablesLoaded, allTabs } from '@lib/store'
   import { extendable } from '@lib/extendable'
+  import { setCurrentTabData } from '@lib/tooltip-events'
   import Exporter from './exporter/exporter'
   import FilterHelper from './filter/filter-helper'
   import initFavorite from './favorite/init-favorite'
@@ -220,7 +216,7 @@
       setTimeout(() => {
         datatable?.columns?.adjust()
         datatableUpdateDraw += 1
-        $currentTabData = cleanData
+        setCurrentTabData(cleanData)
       }, 1)
     }
   })

@@ -5,4 +5,4 @@ bundle-view.html
 /app/
 /deploy.config.json
 /public/assets/external/*.js
-/src/.generated/*.ts
+/src/page/.router-index.ts

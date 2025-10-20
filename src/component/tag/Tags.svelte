@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import db from '@db'
-  import { page } from '@lib/store'
+  import { page } from '@spa-core/router/router-store'
   import { getParentPath } from '@lib/db'
   import { link } from '@spa-core/url'
   import { getPercent } from '@lib/util'

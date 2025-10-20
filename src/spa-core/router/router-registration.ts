@@ -1,7 +1,7 @@
 import type Navigo from 'navigo'
 import type { Component } from 'svelte'
 import type { Match } from 'navigo'
-import { isSpaHomepage } from './url'
+import { isSpaHomepage } from '../url'
 
 export type RouteHandler = (ctx?: Match) => Promise<void> | void
 

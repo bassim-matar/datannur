@@ -4,17 +4,16 @@ import FullReload from 'vite-plugin-full-reload'
 import { defineConfig } from 'vitest/config'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { svelte, type Options } from '@sveltejs/vite-plugin-svelte'
-import { jsonjsdbAddConfig } from 'jsonjsdb-builder'
-import { updateRouterIndex } from './src/spa-core/vite-plugin-router'
-import { spaHtmlOptimizations } from './src/spa-core/vite-plugin-html'
+import { initJsonjsdbBuilder } from 'jsonjsdb-builder'
+import svelteConfig from './svelte.config.js'
 import {
+  updateRouterIndex,
+  spaHtmlOptimizations,
   initBuildConfig,
   copyFilesToOutDir,
   copyPaths,
-  initJsonjsdbBuilder,
   copySpaCoreSsg,
-} from './src/spa-core/vite-utils'
-import svelteConfig from './svelte.config.js'
+} from './src/spa-core/vite'
 
 const outDir = 'app'
 
@@ -37,8 +36,9 @@ const builder = await initJsonjsdbBuilder(
     dbSourcePath: 'public/data/db-source',
     previewPath: 'public/data/dataset',
     mdPath: 'public/data/md',
+    configPath: 'public/data/jsonjsdb-config.html',
   },
-  process.env.NODE_ENV === 'development',
+  { isDevelopment: process.env.NODE_ENV === 'development' },
 )
 
 export default defineConfig({
@@ -63,9 +63,8 @@ export default defineConfig({
     },
   },
   plugins: [
-    FullReload(builder.getTableIndexFile()),
-    jsonjsdbAddConfig('public/data/jsonjsdb-config.html'),
-    updateRouterIndex('src/.generated/router-index.ts', '../page', 'src/page'),
+    builder.getVitePlugins(FullReload),
+    updateRouterIndex('src/page'),
     alias({ entries: aliases }),
     svelte(svelteConfig as Options),
     spaHtmlOptimizations(),

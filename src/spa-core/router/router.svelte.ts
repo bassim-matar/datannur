@@ -1,6 +1,6 @@
 import Navigo from 'navigo'
-import { UrlParam } from './url'
-import { page } from '@lib/store'
+import { UrlParam } from '../url'
+import { page } from './router-store'
 
 const staticRender = 'static_render'
 const httpProtocol = 'http'

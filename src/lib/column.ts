@@ -1,12 +1,7 @@
 import escapeHtml from 'escape-html'
 import { link } from '@spa-core/url'
-import {
-  isMobile,
-  wrapLongText,
-  getPercent,
-  pluralize,
-  capitalize,
-} from '@lib/util'
+import { isMobile } from '@spa-core/browser-utils'
+import { wrapLongText, getPercent, pluralize, capitalize } from '@lib/util'
 import { getTimeAgo, getDatetime, dateToTimestamp } from '@lib/time'
 import { entityNames, entityToIcon } from '@lib/constant'
 import Render from '@lib/render'

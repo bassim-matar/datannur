@@ -25,7 +25,7 @@ jsonjs.data['tag'] =
     "id": "sensible_data",
     "parent_id": "data_protection",
     "name": "Données sensibles",
-    "description": "Les données sensibles sont des catégories particulières de données personnelles qui révèlent des informations hautement confidentielles, comme l'origine raciale ou ethnique, les opinions politiques, les croyances religieuses, la santé, la vie sexuelle, ou les données biométriques. Leur traitement est soumis à des règles strictes pour éviter toute discrimination ou atteinte à la vie privée.",
+    "description": "Les données 2 sensibles sont des catégories particulières de données personnelles qui révèlent des informations hautement confidentielles, comme l'origine raciale ou ethnique, les opinions politiques, les croyances religieuses, la santé, la vie sexuelle, ou les données biométriques. Leur traitement est soumis à des règles strictes pour éviter toute discrimination ou atteinte à la vie privée.",
     "doc_ids": "pdf_online"
   },
   {

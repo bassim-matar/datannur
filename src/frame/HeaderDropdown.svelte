@@ -1,6 +1,7 @@
 <script lang="ts">
   import db from '@db'
-  import { whenAppReady, page } from '@lib/store'
+  import { page } from '@spa-core/router/router-store'
+  import { whenAppReady } from '@lib/store'
   import type { Snippet } from 'svelte'
 
   let {
