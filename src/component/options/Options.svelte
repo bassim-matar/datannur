@@ -3,7 +3,7 @@
   import { saveAs } from 'file-saver'
   import JSZip from 'jszip'
   import db from '@db'
-  import { pageContentLoaded } from '@lib/store'
+  import { pageContentLoaded } from '@spa-core/router/router-store'
   import Options from '@lib/options'
   import Logs from '@lib/logs'
   import Favorites from '@favorite/favorites'

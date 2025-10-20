@@ -89,7 +89,7 @@ export default [
       'app/',
       'node_modules/',
       'public/assets/',
-      'src/.generated/',
+      'src/page/.router-index.ts',
     ],
   },
   {

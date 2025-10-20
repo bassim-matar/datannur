@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { footerVisible, pageContentLoaded } from '@lib/store'
+  import { pageContentLoaded } from '@spa-core/router/router-store'
+  import { footerVisible } from '@lib/store'
   import Error from '@frame/Error.svelte'
 
   let { entity = 'page' }: { entity?: string } = $props()

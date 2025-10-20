@@ -579,8 +579,19 @@ jsonjs.data['evolution'] =
     "entity_id": "bevnat-info",
     "parent_entity_id": null,
     "variable": "last_update",
-    "old_value": 1706219962,
-    "new_value": 1706239962,
+    "old_value": "1706219962",
+    "new_value": "1706239962",
+    "name": null
+  },
+  {
+    "timestamp": 1760952632,
+    "type": "update",
+    "entity": "tag",
+    "entity_id": "sensible_data",
+    "parent_entity_id": null,
+    "variable": "description",
+    "old_value": "Les données sensibles sont des catégories particulières de données personnelles qui révèlent des informations hautement confidentielles, comme l'origine raciale ou ethnique, les opinions politiques, les croyances religieuses, la santé, la vie sexuelle, ou les données biométriques. Leur traitement est soumis à des règles strictes pour éviter toute discrimination ou atteinte à la vie privée.",
+    "new_value": "Les données 2 sensibles sont des catégories particulières de données personnelles qui révèlent des informations hautement confidentielles, comme l'origine raciale ou ethnique, les opinions politiques, les croyances religieuses, la santé, la vie sexuelle, ou les données biométriques. Leur traitement est soumis à des règles strictes pour éviter toute discrimination ou atteinte à la vie privée.",
     "name": null
   }
 ]

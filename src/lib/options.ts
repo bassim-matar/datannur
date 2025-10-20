@@ -8,13 +8,16 @@ export default class Options {
   static dbKey: string
   static options: Option[]
 
-  static init() {
-    return new Promise<void>(resolve => {
+  static init(defaults?: { [key: string]: Value }) {
+    this.loaded = new Promise<void>(resolve => {
       this.dbKey = 'userData/option'
       this.options = []
       db.browser.get(this.dbKey).then(options => {
         if (options) {
           this.options = options as Option[]
+        }
+        if (defaults) {
+          this.setDefaults(defaults)
         }
         resolve()
       })
@@ -34,5 +37,18 @@ export default class Options {
   }
   static save(callback = () => {}) {
     db.browser.set(this.dbKey, this.options, callback)
+  }
+
+  static setDefaults(defaults: { [key: string]: Value }, applyToDOM = true) {
+    Object.entries(defaults).forEach(([key, value]) => {
+      let optionValue = this.get(key)
+      if (optionValue === undefined) {
+        optionValue = value
+        this.set(key, value)
+      }
+      if (applyToDOM && optionValue) {
+        document.documentElement.classList.add(key)
+      }
+    })
   }
 }
