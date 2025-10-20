@@ -1,4 +1,4 @@
-import { UrlHash } from '@lib/url-hash'
+import { UrlHash } from '@spa-core/url'
 import Options from '@lib/options'
 import { getPercent } from '@lib/util'
 import type { Row, Column } from '@type'

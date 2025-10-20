@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { tabSelected, footerVisible, allTabs } from '@lib/store'
-  import { UrlParam } from '@lib/url-param'
+  import { UrlParam } from '@spa-core/url'
   import { isFirefox, getIsMobile } from '@lib/util'
   import { isBigLimit } from '@lib/constant'
   import Logs from '@lib/logs'

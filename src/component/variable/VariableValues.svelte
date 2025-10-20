@@ -2,7 +2,7 @@
   import Render from '@lib/render'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
-  import { link } from '@lib/util'
+  import { link } from '@spa-core/url'
   import escapeHtml from 'escape-html'
   import type { Value, Column as ColumnType } from '@type'
 

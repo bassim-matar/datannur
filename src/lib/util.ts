@@ -1,34 +1,4 @@
 import { varTypes, entityToIcon } from '@lib/constant'
-import { UrlParam } from './url-param'
-
-export const appMode = UrlParam.getAppMode()
-
-export const isHttp = window.location.protocol.startsWith('http')
-
-export const isSsgRendering =
-  new URLSearchParams(window.location.search).get('app_mode') ===
-  'static_render'
-
-export const isStaticMode = Boolean(
-  document.querySelector('meta[app-mode="static"]'),
-)
-
-function getSubFolder() {
-  const url = new URL(window.location.href)
-  const pathname = url.pathname.split('/').filter(Boolean)
-  return pathname.length > 0 ? pathname[0] : ''
-}
-const subfolder = getSubFolder()
-export const urlPrefix = (() => {
-  if (appMode === 'static_render') return ''
-  else if (isHttp && subfolder) return '/' + subfolder + '/#'
-  return '#'
-})()
-
-export function getBaseLinkUrl() {
-  if (appMode === 'static_render') return '/'
-  return '#/'
-}
 
 export function capitalize(str: string) {
   if (!str || str.length === 0) return str
@@ -87,16 +57,6 @@ export function splitOnLastSeparator(str: string, separator: string) {
   return lastIndex === -1
     ? [str, '']
     : [str.slice(0, lastIndex), str.slice(lastIndex + separator.length)]
-}
-
-export function link(href: string, content: string, entity = '') {
-  const base = getBaseLinkUrl()
-  const onclick = `window.goToHref(event, '${href}')`
-  let specialClass = ''
-  if (entity) {
-    specialClass = `class="color-entity-${entity}"`
-  }
-  return `<a href="${base}${href}" onclick="${onclick}" ${specialClass}>${content}</a>`
 }
 
 export function addIndend(text: string, indent: number) {

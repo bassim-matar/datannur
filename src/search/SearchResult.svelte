@@ -1,6 +1,7 @@
 <script lang="ts">
   import jQuery from 'jquery'
-  import { wrapLongText, link } from '@lib/util'
+  import { link } from '@spa-core/url'
+  import { wrapLongText } from '@lib/util'
   import Render from '@lib/render'
   import SearchHistory from './search-history'
   import { searchHighlight } from './search'

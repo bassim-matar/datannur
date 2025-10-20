@@ -4,6 +4,8 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -27,6 +29,7 @@
       "@markdown/*": ["src/assets/markdown/*"],
       "@page/*": ["src/page/*"],
       "@search/*": ["src/search/*"],
+      "@spa-core/*": ["src/spa-core/*"],
       "@stat/*": ["src/stat/*"],
       "@tab/*": ["src/tab/*"],
       "@type": ["src/type/index.ts"]

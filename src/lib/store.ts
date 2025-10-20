@@ -18,7 +18,6 @@ export const allTabsIcon = writable({})
 export const allTabs: Writable<{ [key: string]: Tab }> = writable({})
 export const allTablesLoaded = writable(false)
 export const searchValue = writable('')
-export const reloadIncrement = writable(0)
 export const currentTabData: Writable<Row[]> = writable([])
 export const whenAppReady: Writable<Promise<void>> = writable(
   new Promise(() => {}),
