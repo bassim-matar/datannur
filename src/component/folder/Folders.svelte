@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { link } from '@spa-core/url'
+  import { link } from 'svelte-fileapp'
   import { wrapLongText, getPercent } from '@lib/util'
   import { getParentPath } from '@lib/db'
   import Column from '@lib/column'

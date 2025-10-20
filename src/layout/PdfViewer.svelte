@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { hasTouchScreen } from '@spa-core/browser-utils'
+  import { hasTouchScreen } from 'svelte-fileapp'
   import Loading from '@frame/Loading.svelte'
 
   let { pdf }: { pdf: string } = $props()

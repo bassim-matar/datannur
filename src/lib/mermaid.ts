@@ -1,6 +1,6 @@
 import { entityToIcon, entityNames } from '@lib/constant'
 import Render from '@lib/render'
-import { urlPrefix } from '@spa-core/url'
+import { urlPrefix } from 'svelte-fileapp'
 import markdownRender from '@lib/markdown'
 
 function mermaidAddEntities(code: string) {

@@ -9,7 +9,7 @@
   import 'datatables.net-fixedheader-bm'
   import 'datatables.net-scroller-bm'
   import { onMount, onDestroy } from 'svelte'
-  import { isMobile } from '@spa-core/browser-utils'
+  import { isMobile } from 'svelte-fileapp'
   import { isBigLimit } from '@lib/constant'
   import { tabSelected, allTablesLoaded, allTabs } from '@lib/store'
   import { extendable } from '@lib/extendable'

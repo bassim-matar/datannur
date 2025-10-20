@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { router } from '@spa-core/router/router.svelte'
-  import { getBaseLinkUrl } from '@spa-core/url'
+  import { router, getBaseLinkUrl } from 'svelte-fileapp'
   import type { Snippet } from 'svelte'
 
   let {

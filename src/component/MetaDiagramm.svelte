@@ -1,7 +1,6 @@
 <script lang="ts">
   import db from '@db'
-  import { urlPrefix } from '@spa-core/url'
-  import { isMobile } from '@spa-core/browser-utils'
+  import { urlPrefix, isMobile } from 'svelte-fileapp'
   import { ensureMermaidLoaded } from '@lib/util'
   import { entityNames } from '@lib/constant'
   import Render from '@lib/render'

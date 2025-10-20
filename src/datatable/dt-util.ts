@@ -1,4 +1,4 @@
-import { UrlHash } from '@spa-core/url'
+import { UrlHash } from 'svelte-fileapp'
 import Options from '@lib/options'
 import { getPercent } from '@lib/util'
 import type { Row, Column } from '@type'

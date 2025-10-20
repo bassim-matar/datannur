@@ -1,15 +1,20 @@
 <script lang="ts">
   import db from '@db'
   import { whenAppReady, footerVisible } from '@lib/store'
-  import { onPageHomepage, onPageSearch } from '@spa-core/router/router-store'
-  import GenericRouter from '@spa-core/router/GenericRouter.svelte'
+  import {
+    onPageHomepage,
+    onPageSearch,
+    UrlParam,
+    UrlHash,
+    hasTouchScreen,
+    isSmallMenu,
+    isHttp,
+  } from 'svelte-fileapp'
+  import GenericRouter from 'svelte-fileapp/GenericRouter.svelte'
   import routerIndex from '@page/.router-index'
   import Logs from '@lib/logs'
   import SearchHistory from '@search/search-history'
-  import { UrlParam, UrlHash } from '@spa-core/url'
   import Options from '@lib/options'
-  import { hasTouchScreen, isSmallMenu } from '@spa-core/browser-utils'
-  import { isHttp } from '@spa-core/url'
   import icon from '@img/icon.png'
   import iconDark from '@img/icon-dark.png'
   import { DarkMode, darkModeTheme } from '@dark-mode/dark-mode'
@@ -147,7 +152,8 @@
         {routerIndex}
         whenAppReady={$whenAppReady}
         onRouteChange={handleRouteChange}
-        getEntityData={(entity, id) => db.get(entity as EntityName, id)}
+        getEntityData={(entity: string, id: string) =>
+          db.get(entity as EntityName, id)}
       />
     {/if}
   </div>

@@ -1,9 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import db from '@db'
-  import { page } from '@spa-core/router/router-store'
+  import { page, link } from 'svelte-fileapp'
   import { getParentPath } from '@lib/db'
-  import { link } from '@spa-core/url'
   import { getPercent } from '@lib/util'
   import Column from '@lib/column'
   import Render from '@lib/render'
