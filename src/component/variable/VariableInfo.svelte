@@ -38,9 +38,6 @@
       >
     </td>
   </tr>
-  {#if variable.tags?.length}
-    <TagsInfo tags={variable.tags} />
-  {/if}
   <TypeInfo type={variable.typeClean} />
   {#if variable.key}
     <tr>
@@ -134,6 +131,9 @@
         </nav>
       </td>
     </tr>
+  {/if}
+  {#if variable.tags?.length}
+    <TagsInfo tags={variable.tags} />
   {/if}
 </TableWrapper>
 {#if variable.description}

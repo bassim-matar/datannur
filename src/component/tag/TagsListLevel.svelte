@@ -46,33 +46,32 @@
 </div>
 
 <style lang="scss">
+  @use 'main.scss' as *;
+
   .tag-list-level-wrapper {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
+    background: #{color('tag')}22;
+    border-radius: 20px;
+    padding: 5px 15px;
+    margin: 2.5px;
     font-weight: bold;
   }
   .main-tag-list-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 5px;
   }
 
   .tags-list-level-wrapper {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px 20px;
-    &.with-indent {
-      margin-left: 10px;
-      padding-left: 5px;
-    }
   }
 
   .tag-last-level {
     font-weight: normal;
     font-style: italic;
-    padding: 0;
+    padding-right: 20px;
+    &:last-child {
+      padding-right: 0;
+    }
   }
 </style>

@@ -24,9 +24,6 @@
   <InstitutionInfo type="owner" institutionId={dataset.ownerId} />
   <InstitutionInfo type="manager" institutionId={dataset.managerId} />
   <FolderInfo folderId={dataset.folderId} />
-  {#if dataset.tags}
-    <TagsInfo tags={dataset.tags} />
-  {/if}
   {#if dataset.typeClean}
     <tr>
       <td><Icon type="type" /> Type</td>
@@ -60,6 +57,9 @@
         </a>
       </td>
     </tr>
+  {/if}
+  {#if dataset.tags}
+    <TagsInfo tags={dataset.tags} />
   {/if}
 </TableWrapper>
 

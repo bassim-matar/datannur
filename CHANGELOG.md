@@ -2,6 +2,7 @@
 
 ## unreleased
 
+- add: tags hierarchy with color to better visualize tag relationships
 - change: improve sorting logic for tag children in TagsListLevel component
 - refactor: consolidate app initialization logic and improve static rendering handling
 - refactor: externalize to svelte-fileapp for all URL and routing related code
