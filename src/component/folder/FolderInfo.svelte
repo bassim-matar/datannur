@@ -30,9 +30,6 @@
   {/if}
   <InstitutionInfo type="owner" institutionId={folder.ownerId} />
   <InstitutionInfo type="manager" institutionId={folder.managerId} />
-  {#if folder.tags}
-    <TagsInfo tags={folder.tags} />
-  {/if}
   {#if folder.lastUpdateDate}
     <LastUpdateInfo lastUpdateDate={folder.lastUpdateDate} />
   {/if}
@@ -67,6 +64,9 @@
         </a>
       </td>
     </tr>
+  {/if}
+  {#if folder.tags}
+    <TagsInfo tags={folder.tags} />
   {/if}
 </TableWrapper>
 {#if folder.description}

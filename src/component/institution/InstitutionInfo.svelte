@@ -20,9 +20,6 @@
   {#if institution.parentId}
     <InstitutionInfo institutionId={institution.id} isSelf={true} />
   {/if}
-  {#if institution.tags}
-    <TagsInfo tags={institution.tags} />
-  {/if}
   {#if institution.email}
     <tr>
       <td><Icon type="email" /> Email</td>
@@ -48,6 +45,9 @@
       period={institution.period}
       periodDuration={institution.periodDuration}
     />
+  {/if}
+  {#if institution.tags}
+    <TagsInfo tags={institution.tags} />
   {/if}
 </TableWrapper>
 {#if institution.description}
