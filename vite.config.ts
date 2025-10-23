@@ -50,9 +50,12 @@ export default defineConfig({
   css: {
     postcss: { plugins: [autoprefixer] },
     preprocessorOptions: { scss: { loadPaths: ['src'] } },
+    devSourcemap: true,
   },
   build: {
     outDir,
+    sourcemap: true,
+    modulePreload: false,
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       plugins: [
