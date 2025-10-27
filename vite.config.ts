@@ -59,7 +59,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       plugins: [
-        (process.env.BUNDLE_VIEW === 'true' || false) &&
+        process.env.BUNDLE_VIEW === 'true' &&
           visualizer({ open: true, filename: 'bundle-view.html' }),
       ],
     },
