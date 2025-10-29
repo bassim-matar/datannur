@@ -1,4 +1,7 @@
 <script lang="ts">
+  import db from '@db'
+  import InstitutionInfo from '@info-table/InstitutionInfo.svelte'
+  import FolderInfo from '@info-table/FolderInfo.svelte'
   import Link from '@layout/Link.svelte'
   import Icon from '@layout/Icon.svelte'
   import TableWrapper from '@info-table/TableWrapper.svelte'
@@ -12,6 +15,7 @@
   import type { Variable } from '@type'
 
   let { variable }: { variable: Variable } = $props()
+  const dataset = db.get('dataset', variable.datasetId)
 </script>
 
 <TableWrapper>
@@ -26,6 +30,11 @@
         {variable.originalName}
       </td>
     </tr>
+  {/if}
+  {#if dataset}
+    <InstitutionInfo type="owner" institutionId={dataset.ownerId} />
+    <InstitutionInfo type="manager" institutionId={dataset.managerId} />
+    <FolderInfo folderId={dataset.folderId} />
   {/if}
   <tr>
     <td>

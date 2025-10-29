@@ -73,7 +73,6 @@
   copyTextListenClick()
 
   $whenAppReady.then(() => {
-    console.log(db)
     const mainBanner = new Image()
     let bannerSrc = db.exists('config', 'banner')
       ? (db.getConfig('banner') as string)
@@ -96,6 +95,8 @@
       'init complete (with banner)',
       Math.round(performance.now() - timer) + ' ms',
     )
+
+    console.log('db (Jsonjsdb):', db)
   })
 
   function handleRouteChange(ctx: {
