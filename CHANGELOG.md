@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.14.1 (2025-10-29)
 
 - add: tags hierarchy with color to better visualize tag relationships
 - add: source maps of the app
