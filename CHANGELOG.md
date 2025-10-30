@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased (2025-10-30)
+
+- add: jsonjsdb manage both json and json.js files depending on environment
+
 ## 0.14.1 (2025-10-29)
 
 - add: tags hierarchy with color to better visualize tag relationships
