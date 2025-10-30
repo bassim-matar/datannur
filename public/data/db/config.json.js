@@ -1,15 +1,1 @@
-jsonjs.data['config'] = 
-[
-  {
-    "id": "contact_email",
-    "value": "contact@datannur.com"
-  },
-  {
-    "id": "filter_1",
-    "value": "open_data : Open Data"
-  },
-  {
-    "id": "filter_2",
-    "value": "closed_data : Closed Data"
-  }
-]
+jsonjs.data['config'] = [["id","value"],["contact_email","contact@datannur.com"],["filter_1","open_data : Open Data"],["filter_2","closed_data : Closed Data"]]
