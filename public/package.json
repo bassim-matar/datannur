@@ -7,7 +7,14 @@
     "node:ts": "node --experimental-strip-types --disable-warning=ExperimentalWarning",
     "static-make": "npm run node:ts node-scripts/static-make.ts",
     "deploy": "npm run node:ts node-scripts/deploy.ts",
-    "sync-db": "npm run node:ts node-scripts/sync-db.ts"
+    "sync-db": "npm run node:ts node-scripts/sync-db.ts",
+    "validate-schemas": "npm run node:ts node-scripts/validate-schemas.ts",
+    "schema:generate": "npm run node:ts node-scripts/manage-schemas.ts generate",
+    "schema:update": "npm run node:ts node-scripts/manage-schemas.ts update",
+    "schema:reset": "npm run node:ts node-scripts/manage-schemas.ts reset",
+    "openapi:generate": "npm run node:ts node-scripts/generate-openapi.ts",
+    "openapi:generate:dev": "NODE_ENV=development npm run node:ts node-scripts/generate-openapi.ts",
+    "schema:build": "npm run validate-schemas && npm run openapi:generate"
   },
   "dependencies": {
     "@types/serve-handler": "^6.1.4",

@@ -262,6 +262,7 @@ export type MetaVariable = Omit<BaseEntity, 'id'> & {
   id: string
   metaDatasetId: string
   storageKey: string
+  descriptionFr?: string
   type?: string
   values?: Value[]
   isInMeta?: boolean
@@ -292,6 +293,7 @@ export type MetaDataset = Omit<BaseEntity, 'id' | 'description'> & {
   isInMeta: boolean
   isInData: boolean
   lastUpdateTimestamp: number
+  descriptionFr?: string
 
   // Computed fields
   isMeta?: true
@@ -304,6 +306,7 @@ export type MetaDataset = Omit<BaseEntity, 'id' | 'description'> & {
 
 export type MetaFolder = Omit<BaseEntity, 'id'> & {
   id: string
+  descriptionFr?: string
   // Computed fields
   isMeta?: boolean
   nbDataset?: number

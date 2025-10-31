@@ -1,0 +1,25 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/__table__.json",
+  "title": "__table__",
+  "description": "Database index entry tracking a table and its last modification timestamp (array format)",
+  "x-description-fr": "Entrée d'index de la base de données suivant une table et son horodatage de dernière modification (format tableau)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["name", "last_modif"],
+    "additionalProperties": false,
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Table name (entity name)",
+        "x-description-fr": "Nom de la table (nom de l'entité)"
+      },
+      "last_modif": {
+        "type": "integer",
+        "description": "Unix timestamp of last modification",
+        "x-description-fr": "Horodatage Unix de la dernière modification"
+      }
+    }
+  }
+}

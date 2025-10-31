@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dev.datannur.com/schemas/__meta__.json",
+  "title": "__meta__",
+  "description": "Meta-schema defining the allowed JSON Schema subset for Datannur entity schemas",
+  "x-description-fr": "Meta-schema définissant le sous-ensemble JSON Schema autorisé pour les schémas d'entités Datannur",
+  "x-db-description": {
+    "data": "Main database with catalog metadata",
+    "userData": "Personal database stored in the user's web browser"
+  },
+  "x-db-description-fr": {
+    "data": "Base de données principale avec les metadonnées du catalogue",
+    "userData": "Base de données personnelle stockée dans le navigateur web de l'utilisateur"
+  },
+  "type": "object",
+  "required": ["$schema", "$id", "title", "description", "type", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "enum": ["./__meta__.schema.json", "../__meta__.schema.json"],
+      "description": "Datannur meta-schema reference"
+    },
+    "$id": {
+      "type": "string",
+      "pattern": "^https?://[^/]+/schemas/[a-z_]+\\.json$",
+      "description": "Unique schema identifier URL"
+    },
+    "x-db": {
+      "type": "string",
+      "enum": ["data", "userData"],
+      "description": "Database identifier (data or userData)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable schema title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Schema description (English)"
+    },
+    "x-description-fr": {
+      "type": "string",
+      "description": "French translation of description"
+    },
+    "type": {
+      "type": "string",
+      "const": "array",
+      "description": "Must be array (all data files are arrays of objects)"
+    },
+    "items": {
+      "type": "object",
+      "required": ["type", "properties"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "object"
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "boolean",
+          "const": false
+        },
+        "properties": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z_]+$": {
+              "$ref": "#/definitions/property"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "definitions": {
+    "property": {
+      "type": "object",
+      "required": ["type", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["string", "integer", "number", "boolean", "null"]
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["string", "integer", "number", "boolean", "null"]
+              },
+              "minItems": 1
+            }
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "x-description-fr": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "examples": {
+          "type": "array"
+        }
+      }
+    }
+  }
+}

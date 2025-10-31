@@ -9755,5 +9755,16 @@
     "old_value": null,
     "new_value": null,
     "name": null
+  },
+  {
+    "timestamp": 1761859124,
+    "type": "update",
+    "entity": "tag",
+    "entity_id": "images_aeriennes_2",
+    "parent_entity_id": null,
+    "variable": "name",
+    "old_value": "Images aériennes sous partie 2",
+    "new_value": "Images aériennes sous partie 2.1",
+    "name": null
   }
 ]

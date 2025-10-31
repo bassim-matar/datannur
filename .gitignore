@@ -6,3 +6,4 @@ bundle-view.html
 /deploy.config.json
 /public/assets/external/*.js
 /src/page/.router-index.ts
+/src/assets/db-schema.json

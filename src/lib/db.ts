@@ -1,7 +1,7 @@
 import db from '@db'
 import { getVariableTypeClean } from '@lib/util'
 import { getPeriod, dateToTimestamp, timestampToDate } from '@lib/time'
-import { entityNames } from '@lib/constant'
+import { entityNames, locale } from '@lib/constant'
 import { evolutionInitialSetup } from '@lib/evolution'
 import type {
   Doc,
@@ -448,6 +448,11 @@ class Process {
         metaVariable.values ?? [],
         metaVariable,
       )
+
+      if (locale === 'fr' && metaVariable.descriptionFr) {
+        metaVariable.description = metaVariable.descriptionFr
+      }
+
       if (metaVariable.name === 'id') metaVariable.key = 'oui'
       metaVariable.metaLocalisation = ''
       if (metaVariable.isInMeta && !metaVariable.isInData)
@@ -470,6 +475,9 @@ class Process {
       metaDataset.isMeta = true
       metaDataset.folder = { id: metaDataset.metaFolderId }
       metaDataset.folderName = metaDataset.metaFolderId as string
+      if (locale === 'fr' && metaDataset.descriptionFr) {
+        metaDataset.description = metaDataset.descriptionFr
+      }
       addVariableNum(metaDataset, 'metaDataset', 'metaVariable')
       const metaVariables = db.getAll('metaVariable', { metaDataset })
       metaDataset.nbVariable = metaVariables.length
@@ -486,6 +494,9 @@ class Process {
     db.foreach('metaFolder', metaFolder => {
       metaFolder._entity = 'metaFolder'
       metaFolder.isMeta = true
+      if (locale === 'fr' && metaFolder.descriptionFr) {
+        metaFolder.description = metaFolder.descriptionFr
+      }
       const metaDatasets = db.getAll('metaDataset', { metaFolder })
       metaFolder.nbDataset = metaDatasets.length
       metaFolder.nbVariable = 0

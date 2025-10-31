@@ -1,0 +1,41 @@
+{
+  "$schema": "../__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/log.json",
+  "x-db": "userData",
+  "title": "log",
+  "description": "Logs produced by the user while using the application",
+  "x-description-fr": "Logs produits par l'utilisateur en utilisant l'application",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the log",
+        "x-description-fr": "Clé primaire du log"
+      },
+      "entity_id": {
+        "type": "string",
+        "description": "Key of the element affected by user action",
+        "x-description-fr": "Clé de l'élément concernée par l'action de l'utilisateur"
+      },
+      "entity": {
+        "type": "string",
+        "description": "Entity affected by user action",
+        "x-description-fr": "Entité concernée par l'action de l'utilisateur"
+      },
+      "action": {
+        "type": "string",
+        "description": "Action performed by the user",
+        "x-description-fr": "Action faite par l'utilisateur"
+      },
+      "timestamp": {
+        "type": "integer",
+        "description": "Unix timestamp of the user action",
+        "x-description-fr": "Timestamp unix de l'action de l'utilisateur"
+      }
+    }
+  }
+}

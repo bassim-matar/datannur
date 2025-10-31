@@ -7,6 +7,7 @@ import { svelte, type Options } from '@sveltejs/vite-plugin-svelte'
 import { initJsonjsdbBuilder } from 'jsonjsdb-builder'
 import svelteConfig from './svelte.config.js'
 import {
+  bundleSchemas,
   updateRouterIndex,
   spaHtmlOptimizations,
   initBuildConfig,
@@ -65,6 +66,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    bundleSchemas('public/schemas', 'src/assets/db-schema.json'),
     builder.getVitePlugins(FullReload),
     updateRouterIndex('src/page'),
     alias({ entries: aliases }),

@@ -1,0 +1,61 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/evolution.json",
+  "x-db": "data",
+  "title": "evolution",
+  "description": "History of metadata changes",
+  "x-description-fr": "Historique des changements dans les métadonnées",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [],
+    "additionalProperties": false,
+    "properties": {
+      "type": {
+        "type": ["string", "null"],
+        "description": "Type of change (addition, deletion or modification)",
+        "x-description-fr": "Type de changement (ajout, suppression ou modification)"
+      },
+      "entity": {
+        "type": ["string", "null"],
+        "description": "Name of the entity affected by the change",
+        "x-description-fr": "Nom de l'entité concernée par le changement"
+      },
+      "entity_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the element affected by the change",
+        "x-description-fr": "Clé de l'élement concernée par le changement"
+      },
+      "name": {
+        "type": ["string", "null"],
+        "description": "Element name (filled in case of deletion)",
+        "x-description-fr": "Nom de l'élément (rempli en cas de suppression)"
+      },
+      "parent_entity_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the parent element (filled in case of deletion)",
+        "x-description-fr": "Clé de l'élément parent (rempli en cas de suppression)"
+      },
+      "variable": {
+        "type": ["string", "null"],
+        "description": "Variable affected by the modification",
+        "x-description-fr": "Variable concernée par la modification"
+      },
+      "old_value": {
+        "type": ["string", "null"],
+        "description": "Value before modification",
+        "x-description-fr": "Valeur avant modification"
+      },
+      "new_value": {
+        "type": ["string", "null"],
+        "description": "Value after modification",
+        "x-description-fr": "Valeur après modification"
+      },
+      "timestamp": {
+        "type": ["string", "number", "null"],
+        "description": "Unix timestamp of the change",
+        "x-description-fr": "Timestamp unix du changement"
+      }
+    }
+  }
+}

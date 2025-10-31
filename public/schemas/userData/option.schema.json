@@ -1,0 +1,26 @@
+{
+  "$schema": "../__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/option.json",
+  "x-db": "userData",
+  "title": "option",
+  "description": "Options defined by the user",
+  "x-description-fr": "Options définies par l'utilisateur",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the option",
+        "x-description-fr": "Clé primaire de l'option"
+      },
+      "value": {
+        "type": ["string", "null"],
+        "description": "Option value",
+        "x-description-fr": "Valeur de l'option"
+      }
+    }
+  }
+}

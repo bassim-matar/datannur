@@ -1,0 +1,115 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/dataset.json",
+  "x-db": "data",
+  "title": "dataset",
+  "description": "Catalog datasets",
+  "x-description-fr": "Datasets du catalogue",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the dataset",
+        "x-description-fr": "Clé primaire du dataset"
+      },
+      "folder_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the folder containing the dataset",
+        "x-description-fr": "Clé du dossier contenant le dataset"
+      },
+      "manager_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the managing institution",
+        "x-description-fr": "Clé de l'institution gestionnaire du dataset"
+      },
+      "owner_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the data provider institution",
+        "x-description-fr": "Clé de l'institution fournisseur du dataset"
+      },
+      "tag_ids": {
+        "type": ["string", "number", "null"],
+        "description": "Keys of related keywords",
+        "x-description-fr": "Clés des mots clés liés",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      },
+      "doc_ids": {
+        "type": ["string", "number", "null"],
+        "description": "Keys of related documents",
+        "x-description-fr": "Clés des docs liés",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      },
+      "name": {
+        "type": ["string", "null"],
+        "description": "Dataset name",
+        "x-description-fr": "Nom du dataset"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "description": "Dataset description",
+        "x-description-fr": "Description du dataset"
+      },
+      "data_path": {
+        "type": ["string", "null"],
+        "description": "Dataset location",
+        "x-description-fr": "Emplacement du dataset"
+      },
+      "delivery_format": {
+        "type": ["string", "null"],
+        "description": "Delivery format (CSV, XML, ...)",
+        "x-description-fr": "Format du dataset livrées (CSV, XML, ...)"
+      },
+      "type": {
+        "type": ["string", "null"],
+        "description": "Dataset type (useful for general filter)",
+        "x-description-fr": "Type de dataset (utile pour le filtre générale)"
+      },
+      "link": {
+        "type": ["string", "null"],
+        "description": "Link to dataset location",
+        "x-description-fr": "Lien vers l'emplacement du dataset"
+      },
+      "localisation": {
+        "type": ["string", "null"],
+        "description": "Geographic area covered by the dataset",
+        "x-description-fr": "Zone géographique concernée par le dataset"
+      },
+      "nb_row": {
+        "type": ["integer", "null"],
+        "description": "Number of rows in the dataset",
+        "x-description-fr": "Nombre de ligne dans le dataset"
+      },
+      "start_date": {
+        "type": ["string", "number", "null"],
+        "description": "Start of the period covered by the dataset",
+        "x-description-fr": "Début de la période couverte par le dataset"
+      },
+      "end_date": {
+        "type": ["string", "number", "null"],
+        "description": "End of the period covered by the dataset",
+        "x-description-fr": "Fin de la période couverte par le dataset"
+      },
+      "last_update_date": {
+        "type": ["string", "number", "null"],
+        "description": "Last update date of the dataset",
+        "x-description-fr": "Date de denière mise à jour du dataset"
+      },
+      "updating_each": {
+        "type": ["string", "null"],
+        "description": "Dataset update frequency",
+        "x-description-fr": "Fréquence de mise à jour du dataset"
+      },
+      "no_more_update": {
+        "type": ["string", "number", "null"],
+        "description": "Dataset is no longer updated and has no next update date",
+        "x-description-fr": "Le dataset n'est plus mis à jour et n'a donc pas de date de prochaine mise à jour"
+      }
+    }
+  }
+}

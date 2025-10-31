@@ -5,7 +5,9 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "include": ["node-scripts"]
 }

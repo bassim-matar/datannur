@@ -3,6 +3,7 @@
   "include": [
     "assets",
     "node-scripts",
+    "schemas",
     "index.html",
     "LICENSE.md",
     "README.md",

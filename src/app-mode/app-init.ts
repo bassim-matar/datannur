@@ -55,7 +55,7 @@ export function initApp(): Promise<void> {
 
       stepTimer = performance.now()
       const userData = await loadUserData()
-      db.addMeta(userData, dbSchema as string[][])
+      db.addMeta(userData, dbSchema as Record<string, unknown>[])
       dbAddProcessedData()
       console.log(
         'process db',

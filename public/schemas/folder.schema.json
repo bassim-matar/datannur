@@ -1,0 +1,115 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/folder.json",
+  "x-db": "data",
+  "title": "folder",
+  "description": "Folders",
+  "x-description-fr": "Dossiers",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the folder",
+        "x-description-fr": "Clé primaire du dossier"
+      },
+      "parent_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the parent folder",
+        "x-description-fr": "Clé du dossier contenant le dossier"
+      },
+      "manager_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the managing institution",
+        "x-description-fr": "Clé de l'institution gestionnaire du dossier"
+      },
+      "owner_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the data provider institution",
+        "x-description-fr": "Clé de l'institution fournisseur du dossier"
+      },
+      "tag_ids": {
+        "type": ["string", "number", "null"],
+        "description": "Keys of related keywords",
+        "x-description-fr": "Clés des mots clés liés",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      },
+      "doc_ids": {
+        "type": ["string", "number", "null"],
+        "description": "Keys of related documents",
+        "x-description-fr": "Clés des docs liés",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      },
+      "name": {
+        "type": ["string", "null"],
+        "description": "Folder name",
+        "x-description-fr": "Nom du dossier"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "description": "Folder description",
+        "x-description-fr": "Description du dossier"
+      },
+      "data_path": {
+        "type": ["string", "null"],
+        "description": "Folder location",
+        "x-description-fr": "Emplacement du dossier"
+      },
+      "delivery_format": {
+        "type": ["string", "null"],
+        "description": "Delivery format (CSV, XML, ...)",
+        "x-description-fr": "Format des données livrées (CSV, XML, ...)"
+      },
+      "git_code": {
+        "type": ["string", "null"],
+        "description": "Code location on a GIT repo",
+        "x-description-fr": "Emplacement du code sur un repo GIT"
+      },
+      "last_update_date": {
+        "type": ["string", "number", "null"],
+        "description": "Last update date of the folder",
+        "x-description-fr": "Date de denière mise à jour du dossier"
+      },
+      "localisation": {
+        "type": ["string", "null"],
+        "description": "Geographic area covered by the folder",
+        "x-description-fr": "Zone géographique concernée par le dossier"
+      },
+      "metadata_path": {
+        "type": ["string", "null"],
+        "description": "Folder metadata location",
+        "x-description-fr": "Emplacement des métadonnées du dossier"
+      },
+      "survey_type": {
+        "type": ["string", "null"],
+        "description": "Source type (sample, registry, ...)",
+        "x-description-fr": "Type de source (échantillon, registre, ...)"
+      },
+      "start_date": {
+        "type": ["string", "number", "null"],
+        "description": "Start of the period covered by the folder",
+        "x-description-fr": "Début de la période couverte par le dossier"
+      },
+      "end_date": {
+        "type": ["string", "number", "null"],
+        "description": "End of the period covered by the folder",
+        "x-description-fr": "Fin de la période couverte par le dossier"
+      },
+      "updating_each": {
+        "type": ["string", "null"],
+        "description": "Folder update frequency",
+        "x-description-fr": "Fréquence de mise à jour du dossier"
+      },
+      "no_more_update": {
+        "type": ["string", "number", "null"],
+        "description": "Folder is no longer updated and has no next update date",
+        "x-description-fr": "Le dossier n'est plus mis à jour et n'a donc pas de date de prochaine mise à jour"
+      }
+    }
+  }
+}

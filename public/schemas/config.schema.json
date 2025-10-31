@@ -1,0 +1,26 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/config.json",
+  "x-db": "data",
+  "title": "config",
+  "description": "General information, including descriptions of different entities",
+  "x-description-fr": "Information générales, notamment les descriptions des différentes entitées",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of an app configuration element",
+        "x-description-fr": "Clé primaire d'un élément de configuration de l'app"
+      },
+      "value": {
+        "type": ["string", "null"],
+        "description": "Value of the app configuration element",
+        "x-description-fr": "Valeur de l'élément de configuration de l'app"
+      }
+    }
+  }
+}
