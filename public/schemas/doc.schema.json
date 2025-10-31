@@ -1,0 +1,46 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/doc.json",
+  "x-db": "data",
+  "title": "doc",
+  "description": "Documentation (pdf, md) attached to an element",
+  "x-description-fr": "Documentation (pdf, md) attachée a un élément",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the document",
+        "x-description-fr": "Clé primaire du document"
+      },
+      "name": {
+        "type": ["string", "null"],
+        "description": "Document name",
+        "x-description-fr": "Nom du document"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "description": "Document description",
+        "x-description-fr": "Description du doc"
+      },
+      "path": {
+        "type": ["string", "null"],
+        "description": "Document location",
+        "x-description-fr": "Emplacement du document"
+      },
+      "type": {
+        "type": ["string", "null"],
+        "description": "Document type (pdf, md)",
+        "x-description-fr": "Type de document (pdf, md)"
+      },
+      "last_update": {
+        "type": ["string", "number", "null"],
+        "description": "Unix timestamp of the last modification",
+        "x-description-fr": "Timestamp unix de la dernière modification"
+      }
+    }
+  }
+}

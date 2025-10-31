@@ -1,0 +1,971 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "datannur API",
+    "description": "Read-only REST API providing access to datannur database tables. Each endpoint returns a complete table as a JSON array. This is a static file-based API with no server-side processing.",
+    "version": "1.0.0",
+    "x-schemas-hash": "b0753f73",
+    "contact": {
+      "name": "datannur",
+      "url": "https://datannur.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://dev.datannur.com",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/data/db/config.json": {
+      "get": {
+        "summary": "Get all config",
+        "description": "Returns the complete config table as a JSON array",
+        "tags": ["config"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/config"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/dataset.json": {
+      "get": {
+        "summary": "Get all dataset",
+        "description": "Returns the complete dataset table as a JSON array",
+        "tags": ["dataset"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/dataset"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/doc.json": {
+      "get": {
+        "summary": "Get all doc",
+        "description": "Returns the complete doc table as a JSON array",
+        "tags": ["doc"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/doc"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/evolution.json": {
+      "get": {
+        "summary": "Get all evolution",
+        "description": "Returns the complete evolution table as a JSON array",
+        "tags": ["evolution"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/evolution"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/folder.json": {
+      "get": {
+        "summary": "Get all folder",
+        "description": "Returns the complete folder table as a JSON array",
+        "tags": ["folder"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/folder"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/freq.json": {
+      "get": {
+        "summary": "Get all freq",
+        "description": "Returns the complete freq table as a JSON array",
+        "tags": ["freq"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/freq"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/institution.json": {
+      "get": {
+        "summary": "Get all institution",
+        "description": "Returns the complete institution table as a JSON array",
+        "tags": ["institution"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/institution"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/modality.json": {
+      "get": {
+        "summary": "Get all modality",
+        "description": "Returns the complete modality table as a JSON array",
+        "tags": ["modality"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/modality"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/tag.json": {
+      "get": {
+        "summary": "Get all tag",
+        "description": "Returns the complete tag table as a JSON array",
+        "tags": ["tag"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tag"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/value.json": {
+      "get": {
+        "summary": "Get all value",
+        "description": "Returns the complete value table as a JSON array",
+        "tags": ["value"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/value"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    },
+    "/data/db/variable.json": {
+      "get": {
+        "summary": "Get all variable",
+        "description": "Returns the complete variable table as a JSON array",
+        "tags": ["variable"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/variable"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Table not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "config": {
+        "x-db": "data",
+        "title": "config",
+        "description": "General information, including descriptions of different entities",
+        "x-description-fr": "Information générales, notamment les descriptions des différentes entitées",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Primary key of an app configuration element",
+              "x-description-fr": "Clé primaire d'un élément de configuration de l'app"
+            },
+            "value": {
+              "type": ["string", "null"],
+              "description": "Value of the app configuration element",
+              "x-description-fr": "Valeur de l'élément de configuration de l'app"
+            }
+          }
+        }
+      },
+      "dataset": {
+        "x-db": "data",
+        "title": "dataset",
+        "description": "Catalog datasets",
+        "x-description-fr": "Datasets du catalogue",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Primary key of the dataset",
+              "x-description-fr": "Clé primaire du dataset"
+            },
+            "folder_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the folder containing the dataset",
+              "x-description-fr": "Clé du dossier contenant le dataset"
+            },
+            "manager_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the managing institution",
+              "x-description-fr": "Clé de l'institution gestionnaire du dataset"
+            },
+            "owner_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the data provider institution",
+              "x-description-fr": "Clé de l'institution fournisseur du dataset"
+            },
+            "tag_ids": {
+              "type": ["string", "number", "null"],
+              "description": "Keys of related keywords",
+              "x-description-fr": "Clés des mots clés liés",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            },
+            "doc_ids": {
+              "type": ["string", "number", "null"],
+              "description": "Keys of related documents",
+              "x-description-fr": "Clés des docs liés",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            },
+            "name": {
+              "type": ["string", "null"],
+              "description": "Dataset name",
+              "x-description-fr": "Nom du dataset"
+            },
+            "description": {
+              "type": ["string", "null"],
+              "description": "Dataset description",
+              "x-description-fr": "Description du dataset"
+            },
+            "data_path": {
+              "type": ["string", "null"],
+              "description": "Dataset location",
+              "x-description-fr": "Emplacement du dataset"
+            },
+            "delivery_format": {
+              "type": ["string", "null"],
+              "description": "Delivery format (CSV, XML, ...)",
+              "x-description-fr": "Format du dataset livrées (CSV, XML, ...)"
+            },
+            "type": {
+              "type": ["string", "null"],
+              "description": "Dataset type (useful for general filter)",
+              "x-description-fr": "Type de dataset (utile pour le filtre générale)"
+            },
+            "link": {
+              "type": ["string", "null"],
+              "description": "Link to dataset location",
+              "x-description-fr": "Lien vers l'emplacement du dataset"
+            },
+            "localisation": {
+              "type": ["string", "null"],
+              "description": "Geographic area covered by the dataset",
+              "x-description-fr": "Zone géographique concernée par le dataset"
+            },
+            "nb_row": {
+              "type": ["integer", "null"],
+              "description": "Number of rows in the dataset",
+              "x-description-fr": "Nombre de ligne dans le dataset"
+            },
+            "start_date": {
+              "type": ["string", "number", "null"],
+              "description": "Start of the period covered by the dataset",
+              "x-description-fr": "Début de la période couverte par le dataset"
+            },
+            "end_date": {
+              "type": ["string", "number", "null"],
+              "description": "End of the period covered by the dataset",
+              "x-description-fr": "Fin de la période couverte par le dataset"
+            },
+            "last_update_date": {
+              "type": ["string", "number", "null"],
+              "description": "Last update date of the dataset",
+              "x-description-fr": "Date de denière mise à jour du dataset"
+            },
+            "updating_each": {
+              "type": ["string", "null"],
+              "description": "Dataset update frequency",
+              "x-description-fr": "Fréquence de mise à jour du dataset"
+            },
+            "no_more_update": {
+              "type": ["string", "number", "null"],
+              "description": "Dataset is no longer updated and has no next update date",
+              "x-description-fr": "Le dataset n'est plus mis à jour et n'a donc pas de date de prochaine mise à jour"
+            }
+          }
+        }
+      },
+      "doc": {
+        "x-db": "data",
+        "title": "doc",
+        "description": "Documentation (pdf, md) attached to an element",
+        "x-description-fr": "Documentation (pdf, md) attachée a un élément",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Primary key of the document",
+              "x-description-fr": "Clé primaire du document"
+            },
+            "name": {
+              "type": ["string", "null"],
+              "description": "Document name",
+              "x-description-fr": "Nom du document"
+            },
+            "description": {
+              "type": ["string", "null"],
+              "description": "Document description",
+              "x-description-fr": "Description du doc"
+            },
+            "path": {
+              "type": ["string", "null"],
+              "description": "Document location",
+              "x-description-fr": "Emplacement du document"
+            },
+            "type": {
+              "type": ["string", "null"],
+              "description": "Document type (pdf, md)",
+              "x-description-fr": "Type de document (pdf, md)"
+            },
+            "last_update": {
+              "type": ["string", "number", "null"],
+              "description": "Unix timestamp of the last modification",
+              "x-description-fr": "Timestamp unix de la dernière modification"
+            }
+          }
+        }
+      },
+      "evolution": {
+        "x-db": "data",
+        "title": "evolution",
+        "description": "History of metadata changes",
+        "x-description-fr": "Historique des changements dans les métadonnées",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": ["string", "null"],
+              "description": "Type of change (addition, deletion or modification)",
+              "x-description-fr": "Type de changement (ajout, suppression ou modification)"
+            },
+            "entity": {
+              "type": ["string", "null"],
+              "description": "Name of the entity affected by the change",
+              "x-description-fr": "Nom de l'entité concernée par le changement"
+            },
+            "entity_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the element affected by the change",
+              "x-description-fr": "Clé de l'élement concernée par le changement"
+            },
+            "name": {
+              "type": ["string", "null"],
+              "description": "Element name (filled in case of deletion)",
+              "x-description-fr": "Nom de l'élément (rempli en cas de suppression)"
+            },
+            "parent_entity_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the parent element (filled in case of deletion)",
+              "x-description-fr": "Clé de l'élément parent (rempli en cas de suppression)"
+            },
+            "variable": {
+              "type": ["string", "null"],
+              "description": "Variable affected by the modification",
+              "x-description-fr": "Variable concernée par la modification"
+            },
+            "old_value": {
+              "type": ["string", "null"],
+              "description": "Value before modification",
+              "x-description-fr": "Valeur avant modification"
+            },
+            "new_value": {
+              "type": ["string", "null"],
+              "description": "Value after modification",
+              "x-description-fr": "Valeur après modification"
+            },
+            "timestamp": {
+              "type": ["string", "number", "null"],
+              "description": "Unix timestamp of the change",
+              "x-description-fr": "Timestamp unix du changement"
+            }
+          }
+        }
+      },
+      "folder": {
+        "x-db": "data",
+        "title": "folder",
+        "description": "Folders",
+        "x-description-fr": "Dossiers",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Primary key of the folder",
+              "x-description-fr": "Clé primaire du dossier"
+            },
+            "parent_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the parent folder",
+              "x-description-fr": "Clé du dossier contenant le dossier"
+            },
+            "manager_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the managing institution",
+              "x-description-fr": "Clé de l'institution gestionnaire du dossier"
+            },
+            "owner_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the data provider institution",
+              "x-description-fr": "Clé de l'institution fournisseur du dossier"
+            },
+            "tag_ids": {
+              "type": ["string", "number", "null"],
+              "description": "Keys of related keywords",
+              "x-description-fr": "Clés des mots clés liés",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            },
+            "doc_ids": {
+              "type": ["string", "number", "null"],
+              "description": "Keys of related documents",
+              "x-description-fr": "Clés des docs liés",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            },
+            "name": {
+              "type": ["string", "null"],
+              "description": "Folder name",
+              "x-description-fr": "Nom du dossier"
+            },
+            "description": {
+              "type": ["string", "null"],
+              "description": "Folder description",
+              "x-description-fr": "Description du dossier"
+            },
+            "data_path": {
+              "type": ["string", "null"],
+              "description": "Folder location",
+              "x-description-fr": "Emplacement du dossier"
+            },
+            "delivery_format": {
+              "type": ["string", "null"],
+              "description": "Delivery format (CSV, XML, ...)",
+              "x-description-fr": "Format des données livrées (CSV, XML, ...)"
+            },
+            "git_code": {
+              "type": ["string", "null"],
+              "description": "Code location on a GIT repo",
+              "x-description-fr": "Emplacement du code sur un repo GIT"
+            },
+            "last_update_date": {
+              "type": ["string", "number", "null"],
+              "description": "Last update date of the folder",
+              "x-description-fr": "Date de denière mise à jour du dossier"
+            },
+            "localisation": {
+              "type": ["string", "null"],
+              "description": "Geographic area covered by the folder",
+              "x-description-fr": "Zone géographique concernée par le dossier"
+            },
+            "metadata_path": {
+              "type": ["string", "null"],
+              "description": "Folder metadata location",
+              "x-description-fr": "Emplacement des métadonnées du dossier"
+            },
+            "survey_type": {
+              "type": ["string", "null"],
+              "description": "Source type (sample, registry, ...)",
+              "x-description-fr": "Type de source (échantillon, registre, ...)"
+            },
+            "start_date": {
+              "type": ["string", "number", "null"],
+              "description": "Start of the period covered by the folder",
+              "x-description-fr": "Début de la période couverte par le dossier"
+            },
+            "end_date": {
+              "type": ["string", "number", "null"],
+              "description": "End of the period covered by the folder",
+              "x-description-fr": "Fin de la période couverte par le dossier"
+            },
+            "updating_each": {
+              "type": ["string", "null"],
+              "description": "Folder update frequency",
+              "x-description-fr": "Fréquence de mise à jour du dossier"
+            },
+            "no_more_update": {
+              "type": ["string", "number", "null"],
+              "description": "Folder is no longer updated and has no next update date",
+              "x-description-fr": "Le dossier n'est plus mis à jour et n'a donc pas de date de prochaine mise à jour"
+            }
+          }
+        }
+      },
+      "freq": {
+        "x-db": "data",
+        "title": "freq",
+        "description": "Value frequencies for each variable",
+        "x-description-fr": "Fréquences des valeurs pour chaque variable",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [],
+          "additionalProperties": false,
+          "properties": {
+            "variable_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the related variable",
+              "x-description-fr": "Clé de la variable concernée"
+            },
+            "value": {
+              "type": ["string", "null"],
+              "description": "Value whose frequency is counted",
+              "x-description-fr": "Valeur dont on compte la fréquence"
+            },
+            "freq": {
+              "type": ["integer", "null"],
+              "description": "Number of occurrences of this value in the variable",
+              "x-description-fr": "Nombre d'occurrences de cette valeur dans la variable"
+            }
+          }
+        }
+      },
+      "institution": {
+        "x-db": "data",
+        "title": "institution",
+        "description": "Institutions, they can be owners or managers of folders or datasets",
+        "x-description-fr": "Institutions, elles peuvent êtres propriétaires ou gestionnaires de dossiers ou de datasets",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Primary key of the institution",
+              "x-description-fr": "Clé primaire de l'institution"
+            },
+            "parent_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the parent institution",
+              "x-description-fr": "Clé de l'institution parent"
+            },
+            "tag_ids": {
+              "type": ["string", "number", "null"],
+              "description": "Keys of related keywords",
+              "x-description-fr": "Clés des mots clés liés",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            },
+            "doc_ids": {
+              "type": ["string", "number", "null"],
+              "description": "Keys of related documents",
+              "x-description-fr": "Clés des docs liés",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            },
+            "name": {
+              "type": ["string", "null"],
+              "description": "Institution name",
+              "x-description-fr": "Nom de l'institution"
+            },
+            "description": {
+              "type": ["string", "null"],
+              "description": "Institution description",
+              "x-description-fr": "Description de l'institution"
+            },
+            "email": {
+              "type": ["string", "null"],
+              "description": "Institution email",
+              "x-description-fr": "Email de l'institution"
+            },
+            "phone": {
+              "type": ["string", "null"],
+              "description": "Institution phone number",
+              "x-description-fr": "Numéro de téléphone de l'institution"
+            },
+            "start_date": {
+              "type": ["string", "number", "null"],
+              "description": "Start of the period covered by the institution",
+              "x-description-fr": "Début de la période couverte par l'institution"
+            },
+            "end_date": {
+              "type": ["string", "number", "null"],
+              "description": "End of the period covered by the institution",
+              "x-description-fr": "Fin de la période couverte par l'institution"
+            }
+          }
+        }
+      },
+      "modality": {
+        "x-db": "data",
+        "title": "modality",
+        "description": "Modalities",
+        "x-description-fr": "Modalités",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Primary key of the modality",
+              "x-description-fr": "Clé primaire de la modalité"
+            },
+            "folder_id": {
+              "type": ["string", "number", "null"],
+              "description": "Folder key",
+              "x-description-fr": "Clé du dossier"
+            },
+            "name": {
+              "type": ["string", "null"],
+              "description": "Modality name",
+              "x-description-fr": "Nom de la modalité"
+            },
+            "description": {
+              "type": ["string", "null"],
+              "description": "Modality description",
+              "x-description-fr": "Description de la modalité"
+            },
+            "type": {
+              "type": ["string", "null"],
+              "description": "Modality datatype",
+              "x-description-fr": "Datatype de la modalité"
+            }
+          }
+        }
+      },
+      "tag": {
+        "x-db": "data",
+        "title": "tag",
+        "description": "Keywords",
+        "x-description-fr": "Mots clés",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Primary key of the keyword",
+              "x-description-fr": "Clé primaire du mot clé"
+            },
+            "parent_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the parent keyword",
+              "x-description-fr": "Clé du mot clé parent"
+            },
+            "doc_ids": {
+              "type": ["string", "number", "null"],
+              "description": "Keys of related documents",
+              "x-description-fr": "Clés des docs liés",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            },
+            "name": {
+              "type": ["string", "null"],
+              "description": "Keyword name",
+              "x-description-fr": "Nom du mot clé"
+            },
+            "description": {
+              "type": ["string", "null"],
+              "description": "Keyword description",
+              "x-description-fr": "Description du mot clé"
+            }
+          }
+        }
+      },
+      "value": {
+        "x-db": "data",
+        "title": "value",
+        "description": "Values and their description within a modality",
+        "x-description-fr": "Valeurs et leur description au sein d'une modalité",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [],
+          "additionalProperties": false,
+          "properties": {
+            "modality_id": {
+              "type": ["string", "number", "null"],
+              "description": "Modality key",
+              "x-description-fr": "Clé de la modalité"
+            },
+            "value": {
+              "type": ["string", "number", "null"],
+              "description": "Value",
+              "x-description-fr": "Valeur"
+            },
+            "description": {
+              "type": ["string", "null"],
+              "description": "Value description",
+              "x-description-fr": "Description de valeur"
+            }
+          }
+        }
+      },
+      "variable": {
+        "x-db": "data",
+        "title": "variable",
+        "description": "Variables contained in datasets",
+        "x-description-fr": "Variables contenues dans les datasets",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Primary key of the variable",
+              "x-description-fr": "Clé primaire de la variable"
+            },
+            "dataset_id": {
+              "type": ["string", "number", "null"],
+              "description": "Key of the dataset containing the variable",
+              "x-description-fr": "Clé du dataset contenant la variable"
+            },
+            "modality_ids": {
+              "type": ["string", "number", "null"],
+              "description": "Keys of related modalities",
+              "x-description-fr": "Clé des modalités liées",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            },
+            "tag_ids": {
+              "type": ["string", "number", "null"],
+              "description": "Keys of related keywords",
+              "x-description-fr": "Clés des mots clés liés",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            },
+            "name": {
+              "type": ["string", "null"],
+              "description": "Variable name",
+              "x-description-fr": "Nom de la variable"
+            },
+            "original_name": {
+              "type": ["string", "null"],
+              "description": "Original variable name",
+              "x-description-fr": "Nom d'origine de la variable"
+            },
+            "description": {
+              "type": ["string", "null"],
+              "description": "Variable description",
+              "x-description-fr": "Description de la variable"
+            },
+            "key": {
+              "type": ["integer", "null"],
+              "description": "Is or is part of a unique key",
+              "x-description-fr": "Est ou fait parti d'une clé unique"
+            },
+            "nb_distinct": {
+              "type": ["integer", "null"],
+              "description": "Number of distinct values in the variable",
+              "x-description-fr": "Nombre de valeurs distinctes contenues dans la variable"
+            },
+            "nb_duplicate": {
+              "type": ["integer", "null"],
+              "description": "Number of repeated values in the variable",
+              "x-description-fr": "Nombre de valeurs répétées contenues dans la variable"
+            },
+            "nb_missing": {
+              "type": ["integer", "null"],
+              "description": "Number of missing values in the variable",
+              "x-description-fr": "Nombre de valeurs manquantes contenues dans la variable"
+            },
+            "type": {
+              "type": ["string", "null"],
+              "description": "Variable datatype",
+              "x-description-fr": "Datatype de la variable"
+            },
+            "start_date": {
+              "type": ["string", "number", "null"],
+              "description": "Start of the period covered by the variable",
+              "x-description-fr": "Début de la période couverte par la variable"
+            },
+            "end_date": {
+              "type": ["string", "number", "null"],
+              "description": "End of the period covered by the variable",
+              "x-description-fr": "Fin de la période couverte par la variable"
+            },
+            "source_var_ids": {
+              "type": ["string", "number", "null"],
+              "description": "List of source variable keys (lineage)",
+              "x-description-fr": "Liste des clés des variables sources (lineage)",
+              "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+              "examples": ["id1,id2,id3", "single-id", null]
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "config",
+      "description": "General information, including descriptions of different entities"
+    },
+    {
+      "name": "dataset",
+      "description": "Catalog datasets"
+    },
+    {
+      "name": "doc",
+      "description": "Documentation (pdf, md) attached to an element"
+    },
+    {
+      "name": "evolution",
+      "description": "History of metadata changes"
+    },
+    {
+      "name": "folder",
+      "description": "Folders"
+    },
+    {
+      "name": "freq",
+      "description": "Value frequencies for each variable"
+    },
+    {
+      "name": "institution",
+      "description": "Institutions, they can be owners or managers of folders or datasets"
+    },
+    {
+      "name": "modality",
+      "description": "Modalities"
+    },
+    {
+      "name": "tag",
+      "description": "Keywords"
+    },
+    {
+      "name": "value",
+      "description": "Values and their description within a modality"
+    },
+    {
+      "name": "variable",
+      "description": "Variables contained in datasets"
+    }
+  ]
+}

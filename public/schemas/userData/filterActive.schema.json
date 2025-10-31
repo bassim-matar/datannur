@@ -1,0 +1,26 @@
+{
+  "$schema": "../__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/filteractive.json",
+  "x-db": "userData",
+  "title": "filterActive",
+  "description": "State of each filter (active or not)",
+  "x-description-fr": "Etat de chaque filtre (actif ou non)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the filter",
+        "x-description-fr": "Clé primaire du filtre"
+      },
+      "is_active": {
+        "type": "boolean",
+        "description": "Filter state (active or not)",
+        "x-description-fr": "État du filtre (actif ou non)"
+      }
+    }
+  }
+}

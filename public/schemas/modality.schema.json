@@ -1,0 +1,41 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/modality.json",
+  "x-db": "data",
+  "title": "modality",
+  "description": "Modalities",
+  "x-description-fr": "Modalités",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the modality",
+        "x-description-fr": "Clé primaire de la modalité"
+      },
+      "folder_id": {
+        "type": ["string", "number", "null"],
+        "description": "Folder key",
+        "x-description-fr": "Clé du dossier"
+      },
+      "name": {
+        "type": ["string", "null"],
+        "description": "Modality name",
+        "x-description-fr": "Nom de la modalité"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "description": "Modality description",
+        "x-description-fr": "Description de la modalité"
+      },
+      "type": {
+        "type": ["string", "null"],
+        "description": "Modality datatype",
+        "x-description-fr": "Datatype de la modalité"
+      }
+    }
+  }
+}

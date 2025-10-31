@@ -1,0 +1,43 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/tag.json",
+  "x-db": "data",
+  "title": "tag",
+  "description": "Keywords",
+  "x-description-fr": "Mots clés",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the keyword",
+        "x-description-fr": "Clé primaire du mot clé"
+      },
+      "parent_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the parent keyword",
+        "x-description-fr": "Clé du mot clé parent"
+      },
+      "doc_ids": {
+        "type": ["string", "number", "null"],
+        "description": "Keys of related documents",
+        "x-description-fr": "Clés des docs liés",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      },
+      "name": {
+        "type": ["string", "null"],
+        "description": "Keyword name",
+        "x-description-fr": "Nom du mot clé"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "description": "Keyword description",
+        "x-description-fr": "Description du mot clé"
+      }
+    }
+  }
+}

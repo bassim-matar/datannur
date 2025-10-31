@@ -56,6 +56,9 @@ jobs:
       - name: Svelte
         run: npm run svelte-check
 
+      - name: Validate JSON Schemas
+        run: npm run validate-schemas
+
       - name: Tests (unit + UI)
         run: npm run test:no-build
 

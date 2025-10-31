@@ -1,0 +1,97 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/variable.json",
+  "x-db": "data",
+  "title": "variable",
+  "description": "Variables contained in datasets",
+  "x-description-fr": "Variables contenues dans les datasets",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the variable",
+        "x-description-fr": "Clé primaire de la variable"
+      },
+      "dataset_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the dataset containing the variable",
+        "x-description-fr": "Clé du dataset contenant la variable"
+      },
+      "modality_ids": {
+        "type": ["string", "number", "null"],
+        "description": "Keys of related modalities",
+        "x-description-fr": "Clé des modalités liées",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      },
+      "tag_ids": {
+        "type": ["string", "number", "null"],
+        "description": "Keys of related keywords",
+        "x-description-fr": "Clés des mots clés liés",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      },
+      "name": {
+        "type": ["string", "null"],
+        "description": "Variable name",
+        "x-description-fr": "Nom de la variable"
+      },
+      "original_name": {
+        "type": ["string", "null"],
+        "description": "Original variable name",
+        "x-description-fr": "Nom d'origine de la variable"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "description": "Variable description",
+        "x-description-fr": "Description de la variable"
+      },
+      "key": {
+        "type": ["integer", "null"],
+        "description": "Is or is part of a unique key",
+        "x-description-fr": "Est ou fait parti d'une clé unique"
+      },
+      "nb_distinct": {
+        "type": ["integer", "null"],
+        "description": "Number of distinct values in the variable",
+        "x-description-fr": "Nombre de valeurs distinctes contenues dans la variable"
+      },
+      "nb_duplicate": {
+        "type": ["integer", "null"],
+        "description": "Number of repeated values in the variable",
+        "x-description-fr": "Nombre de valeurs répétées contenues dans la variable"
+      },
+      "nb_missing": {
+        "type": ["integer", "null"],
+        "description": "Number of missing values in the variable",
+        "x-description-fr": "Nombre de valeurs manquantes contenues dans la variable"
+      },
+      "type": {
+        "type": ["string", "null"],
+        "description": "Variable datatype",
+        "x-description-fr": "Datatype de la variable"
+      },
+      "start_date": {
+        "type": ["string", "number", "null"],
+        "description": "Start of the period covered by the variable",
+        "x-description-fr": "Début de la période couverte par la variable"
+      },
+      "end_date": {
+        "type": ["string", "number", "null"],
+        "description": "End of the period covered by the variable",
+        "x-description-fr": "Fin de la période couverte par la variable"
+      },
+      "source_var_ids": {
+        "type": ["string", "number", "null"],
+        "description": "List of source variable keys (lineage)",
+        "x-description-fr": "Liste des clés des variables sources (lineage)",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      }
+    }
+  }
+}

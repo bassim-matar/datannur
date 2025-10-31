@@ -1,0 +1,31 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/value.json",
+  "x-db": "data",
+  "title": "value",
+  "description": "Values and their description within a modality",
+  "x-description-fr": "Valeurs et leur description au sein d'une modalité",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [],
+    "additionalProperties": false,
+    "properties": {
+      "modality_id": {
+        "type": ["string", "number", "null"],
+        "description": "Modality key",
+        "x-description-fr": "Clé de la modalité"
+      },
+      "value": {
+        "type": ["string", "number", "null"],
+        "description": "Value",
+        "x-description-fr": "Valeur"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "description": "Value description",
+        "x-description-fr": "Description de valeur"
+      }
+    }
+  }
+}

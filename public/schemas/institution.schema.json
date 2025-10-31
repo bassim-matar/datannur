@@ -1,0 +1,70 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/institution.json",
+  "x-db": "data",
+  "title": "institution",
+  "description": "Institutions, they can be owners or managers of folders or datasets",
+  "x-description-fr": "Institutions, elles peuvent êtres propriétaires ou gestionnaires de dossiers ou de datasets",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the institution",
+        "x-description-fr": "Clé primaire de l'institution"
+      },
+      "parent_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the parent institution",
+        "x-description-fr": "Clé de l'institution parent"
+      },
+      "tag_ids": {
+        "type": ["string", "number", "null"],
+        "description": "Keys of related keywords",
+        "x-description-fr": "Clés des mots clés liés",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      },
+      "doc_ids": {
+        "type": ["string", "number", "null"],
+        "description": "Keys of related documents",
+        "x-description-fr": "Clés des docs liés",
+        "pattern": "^([a-zA-Z0-9_-]+(, ?[a-zA-Z0-9_-]+)*)?$",
+        "examples": ["id1,id2,id3", "single-id", null]
+      },
+      "name": {
+        "type": ["string", "null"],
+        "description": "Institution name",
+        "x-description-fr": "Nom de l'institution"
+      },
+      "description": {
+        "type": ["string", "null"],
+        "description": "Institution description",
+        "x-description-fr": "Description de l'institution"
+      },
+      "email": {
+        "type": ["string", "null"],
+        "description": "Institution email",
+        "x-description-fr": "Email de l'institution"
+      },
+      "phone": {
+        "type": ["string", "null"],
+        "description": "Institution phone number",
+        "x-description-fr": "Numéro de téléphone de l'institution"
+      },
+      "start_date": {
+        "type": ["string", "number", "null"],
+        "description": "Start of the period covered by the institution",
+        "x-description-fr": "Début de la période couverte par l'institution"
+      },
+      "end_date": {
+        "type": ["string", "number", "null"],
+        "description": "End of the period covered by the institution",
+        "x-description-fr": "Fin de la période couverte par l'institution"
+      }
+    }
+  }
+}

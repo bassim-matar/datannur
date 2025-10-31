@@ -22,6 +22,7 @@ export default class Options {
         resolve()
       })
     })
+    return this.loaded
   }
   static getOption(id: string) {
     return this.options.find(element => element.id === id)

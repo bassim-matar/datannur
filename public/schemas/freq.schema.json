@@ -1,0 +1,31 @@
+{
+  "$schema": "./__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/freq.json",
+  "x-db": "data",
+  "title": "freq",
+  "description": "Value frequencies for each variable",
+  "x-description-fr": "Fréquences des valeurs pour chaque variable",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [],
+    "additionalProperties": false,
+    "properties": {
+      "variable_id": {
+        "type": ["string", "number", "null"],
+        "description": "Key of the related variable",
+        "x-description-fr": "Clé de la variable concernée"
+      },
+      "value": {
+        "type": ["string", "null"],
+        "description": "Value whose frequency is counted",
+        "x-description-fr": "Valeur dont on compte la fréquence"
+      },
+      "freq": {
+        "type": ["integer", "null"],
+        "description": "Number of occurrences of this value in the variable",
+        "x-description-fr": "Nombre d'occurrences de cette valeur dans la variable"
+      }
+    }
+  }
+}

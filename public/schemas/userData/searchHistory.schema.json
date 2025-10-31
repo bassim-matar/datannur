@@ -1,0 +1,36 @@
+{
+  "$schema": "../__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/searchhistory.json",
+  "x-db": "userData",
+  "title": "searchHistory",
+  "description": "Search history",
+  "x-description-fr": "Historique de recherche",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the search",
+        "x-description-fr": "Clé primaire de la recherche"
+      },
+      "entity_id": {
+        "type": "string",
+        "description": "Key of the searched element",
+        "x-description-fr": "Clé de l'élément recherché"
+      },
+      "entity": {
+        "type": "string",
+        "description": "Searched entity",
+        "x-description-fr": "Entité recherchée"
+      },
+      "timestamp": {
+        "type": "integer",
+        "description": "Unix timestamp of the search",
+        "x-description-fr": "Timestamp unix du moment de la recherche"
+      }
+    }
+  }
+}

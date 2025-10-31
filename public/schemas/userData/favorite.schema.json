@@ -1,0 +1,36 @@
+{
+  "$schema": "../__meta__.schema.json",
+  "$id": "https://dev.datannur.com/schemas/favorite.json",
+  "x-db": "userData",
+  "title": "favorite",
+  "description": "Elements favorited by the user",
+  "x-description-fr": "Elements mis en favoris par l'utilisateur",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Primary key of the favorite",
+        "x-description-fr": "Clé primaire du favoris"
+      },
+      "entity_id": {
+        "type": "string",
+        "description": "Key of the favorited element",
+        "x-description-fr": "Clé de l'élément favoris"
+      },
+      "entity": {
+        "type": "string",
+        "description": "Entity name of the favorited element",
+        "x-description-fr": "Nom de l'entité de l'element favoris"
+      },
+      "timestamp": {
+        "type": "integer",
+        "description": "Unix timestamp when favorite was added",
+        "x-description-fr": "Timestamp unix de l'ajout du favori"
+      }
+    }
+  }
+}

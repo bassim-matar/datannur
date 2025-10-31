@@ -28,13 +28,7 @@
 - `src/frame/` - UI framework components (Header, Footer, Router)
 - `public/` - Vite public directory (static assets, user data)
 - `public/data/` - User data folder (only folder users modify)
-- `public/data/db/` - Database files in jsonjsdb format (.json.js)
-
-### Key files:
-
-- `src/db.ts` - Database wrapper and schema definitions
-- `src/db-schema.json` - Complete database schema documentation
-- `vite.config.ts` - Custom build configuration with auto-generation plugins
+- `public/data/db/` - Database files in jsonjsdb format (json and json.js)
 
 ## Code Comments Policy
 
