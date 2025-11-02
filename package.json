@@ -31,9 +31,10 @@
     "schema:update": "npm run node:ts -- public/node-scripts/manage-schemas.ts update",
     "schema:update:strict": "npm run node:ts -- public/node-scripts/manage-schemas.ts update --strict",
     "schema:reset": "npm run node:ts -- public/node-scripts/manage-schemas.ts reset",
-    "openapi:generate": "npm run node:ts public/node-scripts/generate-openapi.ts",
-    "openapi:generate:dev": "NODE_ENV=development npm run node:ts public/node-scripts/generate-openapi.ts",
-    "schema:build": "npm run validate-schemas && npm run openapi:generate",
+    "api:generate": "npm run node:ts public/node-scripts/generate-api.ts",
+    "api:generate:dev": "NODE_ENV=development npm run node:ts public/node-scripts/generate-api.ts",
+    "api:dev": "npm run node:ts public/api/nodejs/server.ts",
+    "schema:build": "npm run validate-schemas && npm run api:generate",
     "check": "npm run format:check && npm run lint && npm run type-check && npm run svelte-check && npm run validate-schemas",
     "verify": "npm run check && npm run test"
   },

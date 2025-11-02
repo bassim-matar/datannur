@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# Si le fichier/dossier existe, le servir directement
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Tout le reste va vers PHP
+RewriteRule ^(.*)$ php/index.php [QSA,L]
+
+# Headers CORS
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type"

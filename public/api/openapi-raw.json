@@ -1,10 +1,9 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "datannur API",
-    "description": "Read-only REST API providing access to datannur database tables. Each endpoint returns a complete table as a JSON array. This is a static file-based API with no server-side processing.",
+    "title": "datannur Raw API",
+    "description": "Read-only REST API providing direct access to datannur database JSON files. Each endpoint returns a complete table as a JSON array. This is a static file-based API with no server-side processing.",
     "version": "1.0.0",
-    "x-schemas-hash": "b0753f73",
     "contact": {
       "name": "datannur",
       "url": "https://datannur.com"
@@ -16,12 +15,12 @@
   },
   "servers": [
     {
-      "url": "https://dev.datannur.com",
-      "description": "Production server"
+      "url": "/data/db",
+      "description": "API Server"
     }
   ],
   "paths": {
-    "/data/db/config.json": {
+    "/config.json": {
       "get": {
         "summary": "Get all config",
         "description": "Returns the complete config table as a JSON array",
@@ -43,7 +42,7 @@
         }
       }
     },
-    "/data/db/dataset.json": {
+    "/dataset.json": {
       "get": {
         "summary": "Get all dataset",
         "description": "Returns the complete dataset table as a JSON array",
@@ -65,7 +64,7 @@
         }
       }
     },
-    "/data/db/doc.json": {
+    "/doc.json": {
       "get": {
         "summary": "Get all doc",
         "description": "Returns the complete doc table as a JSON array",
@@ -87,7 +86,7 @@
         }
       }
     },
-    "/data/db/evolution.json": {
+    "/evolution.json": {
       "get": {
         "summary": "Get all evolution",
         "description": "Returns the complete evolution table as a JSON array",
@@ -109,7 +108,7 @@
         }
       }
     },
-    "/data/db/folder.json": {
+    "/folder.json": {
       "get": {
         "summary": "Get all folder",
         "description": "Returns the complete folder table as a JSON array",
@@ -131,7 +130,7 @@
         }
       }
     },
-    "/data/db/freq.json": {
+    "/freq.json": {
       "get": {
         "summary": "Get all freq",
         "description": "Returns the complete freq table as a JSON array",
@@ -153,7 +152,7 @@
         }
       }
     },
-    "/data/db/institution.json": {
+    "/institution.json": {
       "get": {
         "summary": "Get all institution",
         "description": "Returns the complete institution table as a JSON array",
@@ -175,7 +174,7 @@
         }
       }
     },
-    "/data/db/modality.json": {
+    "/modality.json": {
       "get": {
         "summary": "Get all modality",
         "description": "Returns the complete modality table as a JSON array",
@@ -197,7 +196,7 @@
         }
       }
     },
-    "/data/db/tag.json": {
+    "/tag.json": {
       "get": {
         "summary": "Get all tag",
         "description": "Returns the complete tag table as a JSON array",
@@ -219,7 +218,7 @@
         }
       }
     },
-    "/data/db/value.json": {
+    "/value.json": {
       "get": {
         "summary": "Get all value",
         "description": "Returns the complete value table as a JSON array",
@@ -241,7 +240,7 @@
         }
       }
     },
-    "/data/db/variable.json": {
+    "/variable.json": {
       "get": {
         "summary": "Get all variable",
         "description": "Returns the complete variable table as a JSON array",

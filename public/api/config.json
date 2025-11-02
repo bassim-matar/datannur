@@ -1,0 +1,15 @@
+{
+  "dataUrl": "/data/db",
+  "basePath": "/api",
+  "version": "1.0.0",
+  "schemasHash": "b0753f73",
+  "openApiVersion": "3.1.0",
+  "contact": {
+    "name": "datannur",
+    "url": "https://datannur.com"
+  },
+  "license": {
+    "name": "MIT",
+    "url": "https://opensource.org/licenses/MIT"
+  }
+}

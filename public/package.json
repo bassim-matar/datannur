@@ -14,7 +14,8 @@
     "schema:reset": "npm run node:ts node-scripts/manage-schemas.ts reset",
     "openapi:generate": "npm run node:ts node-scripts/generate-openapi.ts",
     "openapi:generate:dev": "NODE_ENV=development npm run node:ts node-scripts/generate-openapi.ts",
-    "schema:build": "npm run validate-schemas && npm run openapi:generate"
+    "schema:build": "npm run validate-schemas && npm run openapi:generate",
+    "api:dev": "npm run node:ts api/nodejs/server.ts"
   },
   "dependencies": {
     "@types/serve-handler": "^6.1.4",
