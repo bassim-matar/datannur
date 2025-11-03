@@ -130,7 +130,7 @@ function generateSchema(
 
     const schema: JSONObject = {
       $schema: './__meta__.schema.json',
-      $id: `${baseUrl}${entityName}.json`,
+      $id: `${baseUrl}${entityName}.schema.json`,
       title: `${entityName.charAt(0).toUpperCase()}${entityName.slice(1)} Collection`,
       description: `${entityName} entities (array format)`,
       type: 'array',
@@ -155,7 +155,7 @@ function generateSchema(
 
     // Update baseUrl if changed
     const currentId = existingSchema!.$id as string
-    const expectedId = `${baseUrl}${entityName}.json`
+    const expectedId = `${baseUrl}${entityName}.schema.json`
     if (currentId !== expectedId) {
       existingSchema!.$id = expectedId
       updated = true

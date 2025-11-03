@@ -1,6 +1,6 @@
 {
   "$schema": "./__meta__.schema.json",
-  "$id": "https://dev.datannur.com/schemas/modality.json",
+  "$id": "https://dev.datannur.com/schemas/modality.schema.json",
   "x-db": "data",
   "title": "modality",
   "description": "Modalities",

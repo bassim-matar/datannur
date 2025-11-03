@@ -35,8 +35,12 @@ set_exception_handler(function($e) {
 });
 
 // Initialize router and database
-$dataPath = __DIR__ . '/../..' . $config['dataUrl'];
-$basePath = $config['basePath'];
+$apiDir = __DIR__ . '/..';
+$dataPath = realpath($apiDir . '/' . $config['dbPath']);
+
+// Detect base path from SCRIPT_NAME (/api/php/index.php -> /api)
+$scriptPath = dirname($_SERVER['SCRIPT_NAME']);
+$basePath = dirname($scriptPath);
 
 $router = new Router($basePath);
 $db = new JsonDatabase($dataPath);

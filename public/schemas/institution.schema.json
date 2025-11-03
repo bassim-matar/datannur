@@ -1,6 +1,6 @@
 {
   "$schema": "./__meta__.schema.json",
-  "$id": "https://dev.datannur.com/schemas/institution.json",
+  "$id": "https://dev.datannur.com/schemas/institution.schema.json",
   "x-db": "data",
   "title": "institution",
   "description": "Institutions, they can be owners or managers of folders or datasets",
