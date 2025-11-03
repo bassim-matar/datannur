@@ -46,8 +46,7 @@ export type OpenAPISchema = {
 }
 
 export type ApiConfig = {
-  dataUrl: string
-  basePath: string
+  dbPath: string
   version: string
   schemasHash: string
   openApiVersion: string
@@ -159,8 +158,7 @@ async function getApiConfig(schemas: Record<string, JsonSchema>) {
     openApiVersion: config.openApiVersion,
     contact: config.contact,
     license: config.license,
-    dataUrl: config.dataUrl,
-    basePath: config.basePath,
+    dbPath: config.dbPath,
   }
 }
 
@@ -257,7 +255,7 @@ async function generateRawAPI(
   openApiVersion: string,
   contact: ApiConfig['contact'],
   license: ApiConfig['license'],
-  dataUrl: string,
+  dbPath: string,
   schemas: Record<string, JsonSchema>,
 ) {
   console.log('\n🔄 Generating Raw API documentation...')
@@ -269,7 +267,7 @@ async function generateRawAPI(
     openApiVersion,
     contact,
     license,
-    serverUrl: dataUrl,
+    serverUrl: dbPath,
     title: 'datannur Raw API',
     description:
       'Read-only REST API providing direct access to datannur database JSON files. Each endpoint returns a complete table as a JSON array. This is a static file-based API with no server-side processing.',
@@ -384,7 +382,6 @@ async function generateRestfulAPI(
   openApiVersion: string,
   contact: ApiConfig['contact'],
   license: ApiConfig['license'],
-  basePath: string,
   schemas: Record<string, JsonSchema>,
 ) {
   console.log('\n🔄 Generating RESTful API documentation...')
@@ -396,7 +393,7 @@ async function generateRestfulAPI(
     openApiVersion,
     contact,
     license,
-    serverUrl: basePath,
+    serverUrl: '.',
     title: 'datannur API',
     description:
       'RESTful API for the datannur data catalog. Provides read-only access to database tables with filtering, pagination, and sorting capabilities.',
@@ -419,19 +416,12 @@ async function generateAPI(): Promise<void> {
     schemas[tableName] = convertJsonSchemaToOpenAPI(schema)
   }
 
-  const { version, openApiVersion, contact, license, dataUrl, basePath } =
+  const { version, openApiVersion, contact, license, dbPath } =
     await getApiConfig(schemas)
 
   await Promise.all([
-    generateRawAPI(version, openApiVersion, contact, license, dataUrl, schemas),
-    generateRestfulAPI(
-      version,
-      openApiVersion,
-      contact,
-      license,
-      basePath,
-      schemas,
-    ),
+    generateRawAPI(version, openApiVersion, contact, license, dbPath, schemas),
+    generateRestfulAPI(version, openApiVersion, contact, license, schemas),
   ])
 
   console.log('\n✅ API documentation generation complete!')

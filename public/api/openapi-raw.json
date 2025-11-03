@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "/data/db",
+      "url": "../data/db",
       "description": "API Server"
     }
   ],

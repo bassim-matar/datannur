@@ -1,6 +1,5 @@
 {
-  "dataUrl": "/data/db",
-  "basePath": "/api",
+  "dbPath": "../data/db",
   "version": "1.0.0",
   "schemasHash": "b0753f73",
   "openApiVersion": "3.1.0",
