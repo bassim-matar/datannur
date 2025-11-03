@@ -1,6 +1,7 @@
 {
   "targetVersion": "latest",
   "include": [
+    "api",
     "assets",
     "node-scripts",
     "schemas",
