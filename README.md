@@ -42,6 +42,9 @@ datannur is a client-side data catalog designed to organize and explore datasets
   - [Static Page Generation](#static-page-generation)
   - [Deployment](#deployment)
   - [URL Rewriting](#url-rewriting)
+- [API Access](#api-access)
+  - [Raw API](#raw-api)
+  - [RESTful API](#restful-api)
 - [Advanced Configuration](#advanced-configuration)
   - [DB Configuration](#db-configuration)
     - [app-name](#app-name)
@@ -293,6 +296,53 @@ The included `.htaccess` file enables:
 - **Static page fallback**: Serves pre-generated HTML when available
 - **HTTPS redirect**: Automatic redirect to secure connection
 - **Caching**: Optimized cache headers for assets
+
+## API Access
+
+datannur provides two read-only API endpoints for programmatic access to your catalog data. Both APIs are automatically generated from your database schemas.
+
+**API documentation:** Available at `/api/api-docs.html` (RESTful) and `/api/api-docs-raw.html` (Raw) in your deployed catalog.
+
+### Raw API
+
+Direct access to database JSON files with no server-side processing.
+
+**Endpoint pattern:** `/data/db/{table}.json`
+
+**Example:**
+
+```
+GET /data/db/dataset.json
+```
+
+Returns the complete table as a JSON array.
+
+### RESTful API
+
+Query-based API with filtering, pagination, and sorting capabilities. Requires a server-side implementation (PHP or Node.js).
+
+**Endpoint patterns:**
+
+- `GET /api/php/{table}` - Get all records (with optional query parameters)
+- `GET /api/php/{table}/{id}` - Get single record by ID
+
+**Query parameters:**
+
+- `_limit`: Limit number of results
+- `_offset`: Offset for pagination
+- `_sort`: Field to sort by
+- `_order`: Sort order (`asc` or `desc`)
+- Additional filters by field name
+
+**Examples:**
+
+```
+GET /api/php/dataset?_limit=10&_sort=name&_order=asc
+GET /api/php/dataset/123
+GET /api/php/dataset?folder_id=5
+```
+
+> **Server requirement:** The RESTful API requires either PHP 7.4+ or Node.js to run. The Raw API works with any static file server.
 
 ## Advanced Configuration
 
