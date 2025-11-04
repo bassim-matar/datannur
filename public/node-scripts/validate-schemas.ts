@@ -7,8 +7,15 @@ const ajv = new Ajv({ allErrors: true, strict: false })
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const publicDir = dirname(scriptDir)
-const schemasDir = join(publicDir, 'schemas')
-const dataDir = join(publicDir, 'data/db')
+
+const packageJson = JSON.parse(
+  readFileSync(join(publicDir, 'package.json'), 'utf-8'),
+) as { datannur: { dbPath: string; schemasPath: string } }
+const dbPath = packageJson.datannur.dbPath
+const schemasPath = packageJson.datannur.schemasPath
+
+const schemasDir = join(publicDir, schemasPath)
+const dataDir = join(publicDir, dbPath)
 
 // Get data schemas (root level)
 const dataSchemaFiles = readdirSync(schemasDir)
@@ -67,7 +74,6 @@ for (const { file, type } of schemaFiles) {
   const entityName = file.replace('.schema.json', '')
   const dataFile = join(dataDir, `${entityName}.json`)
 
-  // Skip userData schemas - they don't have corresponding files in /data/db/
   if (type === 'userData') continue
 
   try {

@@ -5,8 +5,15 @@ import { formatWithPrettier } from './util.ts'
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const publicDir = dirname(scriptDir)
-const schemasDir = join(publicDir, 'schemas')
-const dataDir = join(publicDir, 'data/db')
+
+const packageJson = JSON.parse(
+  readFileSync(join(publicDir, 'package.json'), 'utf-8'),
+) as { datannur: { dbPath: string; schemasPath: string } }
+const dbPath = packageJson.datannur.dbPath
+const schemasPath = packageJson.datannur.schemasPath
+
+const schemasDir = join(publicDir, schemasPath)
+const dataDir = join(publicDir, dbPath)
 const metaSchemaPath = join(schemasDir, '__meta__.schema.json')
 
 type JSONValue = string | number | boolean | null | JSONObject | JSONValue[]
