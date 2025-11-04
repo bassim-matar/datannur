@@ -42,6 +42,7 @@ datannur is a client-side data catalog designed to organize and explore datasets
   - [Static Page Generation](#static-page-generation)
   - [Deployment](#deployment)
   - [URL Rewriting](#url-rewriting)
+- [DCAT-AP-CH Export](#dcat-ap-ch-export)
 - [API Access](#api-access)
   - [Raw API](#raw-api)
   - [RESTful API](#restful-api)
@@ -296,6 +297,35 @@ The included `.htaccess` file enables:
 - **Static page fallback**: Serves pre-generated HTML when available
 - **HTTPS redirect**: Automatic redirect to secure connection
 - **Caching**: Optimized cache headers for assets
+
+## DCAT-AP-CH Export
+
+datannur can export your catalog metadata to DCAT-AP-CH format, making it compatible with [opendata.swiss](https://opendata.swiss) and other semantic web portals.
+
+**Export script:** `python-scripts/export-dcat.py`
+
+**Configuration:** Edit `/data/dcat-export.config.json` to set:
+
+- `catalog_uri`: URI of your catalog
+- `base_uri`: Base URI for generating dataset/publisher URIs
+- `catalog_title`, `catalog_description`, `catalog_publisher`: Catalog metadata
+
+**Usage:**
+
+```bash
+# Export to RDF/XML (default)
+python python-scripts/export-dcat.py
+
+# Export to JSON-LD
+python python-scripts/export-dcat.py json-ld
+```
+
+**Output:** Generated files in `/data/db-semantic/`:
+
+- `dcat.rdf` - RDF/XML format
+- `dcat.jsonld` - JSON-LD format
+
+The export includes automatic SHACL validation to ensure DCAT-AP 2.1.1 compliance.
 
 ## API Access
 

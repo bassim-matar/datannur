@@ -111,14 +111,14 @@ Then use `git cleanup` to automatically switch to main, pull changes, and delete
 
 ### API & Schema Management
 
-| Command                    | Purpose                                       |
-| -------------------------- | --------------------------------------------- |
-| `npm run api:generate`     | Generate OpenAPI specs from schemas           |
-| `npm run schema:generate`  | Generate schemas from data                    |
-| `npm run schema:update`    | Update schemas with new fields                |
-| `npm run schema:build`     | Validate schemas + generate OpenAPI           |
-| `npm run validate-schemas` | Validate all schemas and data files           |
-| `npm run api:dev`          | Start Node.js API dev server on port 3000     |
+| Command                    | Purpose                                   |
+| -------------------------- | ----------------------------------------- |
+| `npm run api:generate`     | Generate OpenAPI specs from schemas       |
+| `npm run schema:generate`  | Generate schemas from data                |
+| `npm run schema:update`    | Update schemas with new fields            |
+| `npm run schema:build`     | Validate schemas + generate OpenAPI       |
+| `npm run validate-schemas` | Validate all schemas and data files       |
+| `npm run api:dev`          | Start Node.js API dev server on port 3000 |
 
 ## Guidelines
 
@@ -172,11 +172,13 @@ Update `README.md` for new visible features.
 datannur provides two API implementations accessing the same JSON database:
 
 **Raw API:**
+
 - Direct file access to `/data/db/*.json` files
 - No server-side processing required
 - OpenAPI spec: `public/api/openapi-raw.json`
 
 **RESTful API:**
+
 - Query-based with filtering, pagination, sorting
 - Two implementations:
   - `public/api/php/` - PHP 7.4+ (production-ready)
@@ -184,6 +186,7 @@ datannur provides two API implementations accessing the same JSON database:
 - OpenAPI spec: `public/api/openapi.json`
 
 **Configuration:**
+
 - API settings in `public/package.json` under `datannur` field:
   - `dbPath`: Database location (relative to `public/`)
   - `schemasPath`: Schemas location (relative to `public/`)
@@ -192,6 +195,7 @@ datannur provides two API implementations accessing the same JSON database:
   - `openApiVersion`: OpenAPI specification version
 
 **Schema-driven:**
+
 - OpenAPI specs auto-generated from JSON schemas in `public/schemas/`
 - Run `npm run schema:build` (from `public/`) to validate and regenerate
 - API version auto-increments when schemas change

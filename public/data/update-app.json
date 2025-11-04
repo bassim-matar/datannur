@@ -12,6 +12,7 @@
     ".htaccess",
     "package.json",
     "manifest.json",
+    "dcat-export.config.template.json",
     "deploy.config.template.json",
     "tsconfig.json"
   ]
