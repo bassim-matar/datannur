@@ -1,4 +1,22 @@
-import vscode from 'vscode'
+import {
+  workspace,
+  window,
+  Uri,
+  lm,
+  LanguageModelToolResult,
+  LanguageModelTextPart,
+  chat,
+  ChatRequestTurn,
+  ChatResponseTurn,
+  ChatResponseMarkdownPart,
+  LanguageModelChatMessage,
+  LanguageModelToolCallPart,
+  LanguageModelToolResultPart,
+} from 'vscode'
+import type {
+  ExtensionContext,
+  LanguageModelToolInvocationOptions,
+} from 'vscode'
 import * as fs from 'fs'
 import * as path from 'path'
 import PromptLoader from './prompts'
@@ -48,12 +66,12 @@ function findDbPath(root: string, relatives: string[]): string | null {
   return null
 }
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
   console.log('🟢 jsonjsdb extension is activating...')
 
-  const workspaceFolder = vscode.workspace.workspaceFolders?.[0]
+  const workspaceFolder = workspace.workspaceFolders?.[0]
   if (!workspaceFolder) {
-    vscode.window.showWarningMessage('No workspace folder open')
+    window.showWarningMessage('No workspace folder open')
     return
   }
 
@@ -76,7 +94,7 @@ export function activate(context: vscode.ExtensionContext) {
   ])
 
   if (!dbPath || !schemasPath) {
-    vscode.window.showErrorMessage('Could not find data/db or schemas folder')
+    window.showErrorMessage('Could not find data/db or schemas folder')
     return
   }
 
@@ -85,28 +103,24 @@ export function activate(context: vscode.ExtensionContext) {
   // Initialize database asynchronously
   db.initialize()
     .then(() => {
-      vscode.window.showInformationMessage('jsonjsdb SQL database loaded!')
+      window.showInformationMessage('jsonjsdb SQL database loaded!')
       console.log('✅ Database ready')
     })
     .catch(error => {
-      vscode.window.showErrorMessage(
+      window.showErrorMessage(
         `Failed to load jsonjsdb: ${error instanceof Error ? error.message : String(error)}`,
       )
     })
 
-  const toolExecuteSql = vscode.lm.registerTool('datannur_execute_sql', {
-    async invoke(
-      options: vscode.LanguageModelToolInvocationOptions<{ sql: string }>,
-    ) {
+  const toolExecuteSql = lm.registerTool('datannur_execute_sql', {
+    async invoke(options: LanguageModelToolInvocationOptions<{ sql: string }>) {
       const sql = options.input.sql ?? ''
       try {
         const result = db.executeQuery(sql)
-        return new vscode.LanguageModelToolResult([
-          new vscode.LanguageModelTextPart(result),
-        ])
+        return new LanguageModelToolResult([new LanguageModelTextPart(result)])
       } catch (error) {
-        return new vscode.LanguageModelToolResult([
-          new vscode.LanguageModelTextPart(
+        return new LanguageModelToolResult([
+          new LanguageModelTextPart(
             `Error: ${error instanceof Error ? error.message : String(error)}`,
           ),
         ])
@@ -114,29 +128,27 @@ export function activate(context: vscode.ExtensionContext) {
     },
   })
 
-  const toolGetStats = vscode.lm.registerTool('datannur_get_stats', {
+  const toolGetStats = lm.registerTool('datannur_get_stats', {
     async invoke() {
-      return new vscode.LanguageModelToolResult([
-        new vscode.LanguageModelTextPart(db.getStats()),
+      return new LanguageModelToolResult([
+        new LanguageModelTextPart(db.getStats()),
       ])
     },
   })
 
-  const toolSearch = vscode.lm.registerTool('datannur_search', {
+  const toolSearch = lm.registerTool('datannur_search', {
     async invoke(
-      options: vscode.LanguageModelToolInvocationOptions<{ query: string }>,
+      options: LanguageModelToolInvocationOptions<{ query: string }>,
     ) {
       const query = options.input.query ?? ''
       try {
         Logger.logSearch(query)
         const result = db.search(query)
         Logger.logResult(result)
-        return new vscode.LanguageModelToolResult([
-          new vscode.LanguageModelTextPart(result),
-        ])
+        return new LanguageModelToolResult([new LanguageModelTextPart(result)])
       } catch (error) {
-        return new vscode.LanguageModelToolResult([
-          new vscode.LanguageModelTextPart(
+        return new LanguageModelToolResult([
+          new LanguageModelTextPart(
             `Error: ${error instanceof Error ? error.message : String(error)}`,
           ),
         ])
@@ -161,7 +173,7 @@ export function activate(context: vscode.ExtensionContext) {
   console.log('✅ datannur tools registered:', ourToolNames)
 
   // Debug: List all tools grouped by prefix
-  const allToolsGrouped = vscode.lm.tools.reduce(
+  const allToolsGrouped = lm.tools.reduce(
     (acc, tool) => {
       const prefix = tool.name.split('_')[0]
       if (!acc[prefix]) acc[prefix] = []
@@ -183,10 +195,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   console.log(
     '🔧 All tools:',
-    vscode.lm.tools.map(t => t.name),
+    lm.tools.map(t => t.name),
   )
 
-  const participant = vscode.chat.createChatParticipant(
+  const participant = chat.createChatParticipant(
     'datannur.catalog',
     async (request, chatContext, stream, token) => {
       Logger.logUserQuestion(request.prompt)
@@ -195,11 +207,11 @@ export function activate(context: vscode.ExtensionContext) {
 
       try {
         // Try Copilot first, then fallback to any available model
-        let models = await vscode.lm.selectChatModels({ vendor: 'copilot' })
+        let models = await lm.selectChatModels({ vendor: 'copilot' })
 
         if (models.length === 0) {
           console.log('ℹ️ No Copilot model found, trying other vendors...')
-          models = await vscode.lm.selectChatModels()
+          models = await lm.selectChatModels()
         }
 
         if (models.length === 0) {
@@ -228,40 +240,34 @@ export function activate(context: vscode.ExtensionContext) {
         )
 
         // Build messages with conversation history
-        let messages: vscode.LanguageModelChatMessage[] = [
-          vscode.LanguageModelChatMessage.User(systemPrompt + '\n\n' + schema),
+        let messages: LanguageModelChatMessage[] = [
+          LanguageModelChatMessage.User(systemPrompt + '\n\n' + schema),
         ]
 
         // Add previous conversation history
         for (const turn of chatContext.history) {
-          if (turn instanceof vscode.ChatRequestTurn) {
-            messages.push(vscode.LanguageModelChatMessage.User(turn.prompt))
-          } else if (turn instanceof vscode.ChatResponseTurn) {
+          if (turn instanceof ChatRequestTurn) {
+            messages.push(LanguageModelChatMessage.User(turn.prompt))
+          } else if (turn instanceof ChatResponseTurn) {
             // Add assistant's previous response
             const response = turn.response
             if (response && response.length > 0) {
               const textParts = response
-                .filter(part => part instanceof vscode.ChatResponseMarkdownPart)
-                .map(
-                  part => (part as vscode.ChatResponseMarkdownPart).value.value,
-                )
+                .filter(part => part instanceof ChatResponseMarkdownPart)
+                .map(part => (part as ChatResponseMarkdownPart).value.value)
                 .join('\n')
               if (textParts) {
-                messages.push(
-                  vscode.LanguageModelChatMessage.Assistant(textParts),
-                )
+                messages.push(LanguageModelChatMessage.Assistant(textParts))
               }
             }
           }
         }
 
         // Add current user message
-        messages.push(vscode.LanguageModelChatMessage.User(request.prompt))
+        messages.push(LanguageModelChatMessage.User(request.prompt))
 
         // Get tools from registered tools
-        const tools = vscode.lm.tools.filter(tool =>
-          ourToolNames.includes(tool.name),
-        )
+        const tools = lm.tools.filter(tool => ourToolNames.includes(tool.name))
 
         Logger.log(
           'TOOLS',
@@ -276,15 +282,15 @@ export function activate(context: vscode.ExtensionContext) {
           const response = await model.sendRequest(messages, { tools }, token)
 
           // Collect tool calls and text from response
-          const toolCalls: vscode.LanguageModelToolCallPart[] = []
+          const toolCalls: LanguageModelToolCallPart[] = []
           let responseText = ''
 
           for await (const fragment of response.stream) {
-            if (fragment instanceof vscode.LanguageModelTextPart) {
+            if (fragment instanceof LanguageModelTextPart) {
               responseText += fragment.value
               fullResponse += fragment.value
               stream.markdown(fragment.value)
-            } else if (fragment instanceof vscode.LanguageModelToolCallPart) {
+            } else if (fragment instanceof LanguageModelToolCallPart) {
               toolCalls.push(fragment)
             }
           }
@@ -304,13 +310,13 @@ export function activate(context: vscode.ExtensionContext) {
             // Build messages with tool calls
             messages = [
               ...messages,
-              vscode.LanguageModelChatMessage.Assistant(toolCalls),
+              LanguageModelChatMessage.Assistant(toolCalls),
             ]
 
             // Invoke each tool and add results to messages
             for (const toolCall of toolCalls) {
               try {
-                const toolResult = await vscode.lm.invokeTool(
+                const toolResult = await lm.invokeTool(
                   toolCall.name,
                   {
                     toolInvocationToken: undefined,
@@ -322,9 +328,7 @@ export function activate(context: vscode.ExtensionContext) {
                 // Log tool result
                 const resultText = toolResult.content
                   .map(part =>
-                    part instanceof vscode.LanguageModelTextPart
-                      ? part.value
-                      : '',
+                    part instanceof LanguageModelTextPart ? part.value : '',
                   )
                   .join('')
                 Logger.log(
@@ -337,8 +341,8 @@ export function activate(context: vscode.ExtensionContext) {
 
                 // Add tool result to messages
                 messages.push(
-                  vscode.LanguageModelChatMessage.User([
-                    new vscode.LanguageModelToolResultPart(
+                  LanguageModelChatMessage.User([
+                    new LanguageModelToolResultPart(
                       toolCall.callId,
                       toolResult.content,
                     ),
@@ -376,7 +380,7 @@ export function activate(context: vscode.ExtensionContext) {
     },
   )
 
-  participant.iconPath = vscode.Uri.joinPath(context.extensionUri, 'icon.png')
+  participant.iconPath = Uri.joinPath(context.extensionUri, 'icon.png')
 
   context.subscriptions.push(participant)
 
