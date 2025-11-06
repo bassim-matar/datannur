@@ -1,0 +1,81 @@
+{
+  "name": "datannur-tool",
+  "displayName": "datannur - Data Catalog Tool",
+  "description": "Query jsonjsdb relational databases using natural language with GitHub Copilot AI",
+  "version": "0.1.0",
+  "publisher": "datannur",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bassim-matar/datannur"
+  },
+  "keywords": [
+    "jsonjsdb",
+    "database",
+    "data catalog",
+    "AI",
+    "copilot",
+    "natural language",
+    "json schema",
+    "data science"
+  ],
+  "engines": {
+    "vscode": "^1.105.0"
+  },
+  "categories": [
+    "AI",
+    "Data Science"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "datannur.catalog",
+        "name": "datannur",
+        "description": "Query jsonjsdb relational database with intelligent natural language",
+        "isSticky": true
+      }
+    ],
+    "languageModelTools": [
+      {
+        "name": "datannur_execute_sql",
+        "displayName": "Execute SQL Query",
+        "modelDescription": "Execute a SQL query against the database and get results. Use standard SQL SELECT syntax. Parameter: sql (string) - the SQL query to execute."
+      },
+      {
+        "name": "datannur_search",
+        "displayName": "Search Database",
+        "modelDescription": "Search across all tables for records matching a text query. Returns matching records from all tables with relevance scores. Parameter: query (string) - the text to search for."
+      },
+      {
+        "name": "datannur_get_stats",
+        "displayName": "Get Database Statistics",
+        "modelDescription": "Get database statistics including total record counts for all tables and other aggregate information about the database."
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "vite build && npm run copy-prompts && npm run copy-sqljs && cp ../src/assets/img/icon.png ./icon.png",
+    "copy-prompts": "mkdir -p out/prompts && cp src/prompts/*.txt out/prompts/",
+    "copy-sqljs": "mkdir -p out/node_modules/sql.js/dist && cp node_modules/sql.js/package.json out/node_modules/sql.js/ && cp node_modules/sql.js/dist/sql-wasm.js out/node_modules/sql.js/dist/ && cp node_modules/sql.js/dist/sql-wasm.wasm out/node_modules/sql.js/dist/",
+    "watch": "vite build --watch",
+    "package": "npm run compile && vsce package --out ../public/vscode-extension.vsix --allow-missing-repository",
+    "reload": "npm run compile && code --command workbench.action.reloadWindow",
+    "lint": "cd .. && eslint vscode-extension/src/**/*.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/sql.js": "^1.4.9",
+    "@types/vscode": "^1.105.0",
+    "@vscode/vsce": "^3.6.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.1"
+  },
+  "dependencies": {
+    "sql.js": "^1.13.0"
+  }
+}

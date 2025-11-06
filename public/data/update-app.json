@@ -12,7 +12,9 @@
     ".htaccess",
     "package.json",
     "manifest.json",
+    "dcat-export.config.template.json",
     "deploy.config.template.json",
-    "tsconfig.json"
+    "tsconfig.json",
+    "vscode-extension.vsix"
   ]
 }

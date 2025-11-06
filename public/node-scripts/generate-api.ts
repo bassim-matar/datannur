@@ -47,17 +47,21 @@ export type OpenAPISchema = {
 
 export type ApiConfig = {
   dbPath: string
-  version: string
+  schemasPath: string
+  apiVersion: string
   schemasHash: string
   openApiVersion: string
-  contact: {
+}
+
+export type PackageJson = {
+  name: string
+  version: string
+  author?: {
     name: string
     url: string
   }
-  license: {
-    name: string
-    url: string
-  }
+  license?: string
+  datannur?: ApiConfig
 }
 
 export type ApiSpec = {
@@ -67,10 +71,24 @@ export type ApiSpec = {
 }
 
 const publicDir = join(dirname(fileURLToPath(import.meta.url)), '..')
-const schemasDir = join(publicDir, 'schemas')
 const apiDir = join(publicDir, 'api')
-const configFile = join(apiDir, 'config.json')
+const packageJsonFile = join(publicDir, 'package.json')
 const ignoreFiles = ['__meta__.schema.json', '__table__.schema.json']
+
+async function getConfig() {
+  const packageJson = JSON.parse(
+    await readFile(packageJsonFile, 'utf-8'),
+  ) as PackageJson
+  const config = packageJson.datannur!
+  if (!config) {
+    throw new Error('Missing "datannur" configuration in package.json')
+  }
+  return {
+    packageJson,
+    config,
+    schemasDir: join(publicDir, config.schemasPath),
+  }
+}
 
 function convertJsonSchemaToOpenAPI(schema: JsonSchema): JsonSchema {
   const openApiSchema = { ...schema }
@@ -130,35 +148,56 @@ function generateApiDocsHTML(
 }
 
 async function getApiConfig(schemas: Record<string, JsonSchema>) {
-  const config = (await JSON.parse(
-    await readFile(configFile, 'utf-8'),
-  )) as ApiConfig
+  const packageJson = (await JSON.parse(
+    await readFile(packageJsonFile, 'utf-8'),
+  )) as PackageJson
+
+  const config = packageJson.datannur!
+  if (!config) {
+    throw new Error('Missing "datannur" configuration in package.json')
+  }
 
   const schemasJson = JSON.stringify(schemas)
   const hash = createHash('sha256').update(schemasJson).digest('hex')
   const currentHash = hash.substring(0, 8)
 
-  let version = config.version
+  let apiVersion = config.apiVersion
   const existingHash = config.schemasHash
 
   if (existingHash !== currentHash) {
-    const [major, minor, patch] = version.split('.').map(Number)
-    version = `${major}.${minor}.${patch + 1}`
+    const [major, minor, patch] = apiVersion.split('.').map(Number)
+    apiVersion = `${major}.${minor}.${patch + 1}`
     console.log(
-      `📋 Schema changes detected (${existingHash} → ${currentHash}), bumping version to ${version}`,
+      `📋 Schema changes detected (${existingHash} → ${currentHash}), bumping API version to ${apiVersion}`,
     )
-    const configContent = { ...config, version, schemasHash: currentHash }
-    await writeFile(configFile, JSON.stringify(configContent, null, 2), 'utf-8')
+    const updatedPackageJson = {
+      ...packageJson,
+      datannur: { ...config, apiVersion, schemasHash: currentHash },
+    }
+    await writeFile(
+      packageJsonFile,
+      JSON.stringify(updatedPackageJson, null, 2),
+      'utf-8',
+    )
   } else {
-    console.log(`📋 No schema changes detected, keeping version ${version}`)
+    console.log(
+      `📋 No schema changes detected, keeping API version ${apiVersion}`,
+    )
   }
 
   return {
-    version,
+    version: apiVersion,
     openApiVersion: config.openApiVersion,
-    contact: config.contact,
-    license: config.license,
+    contact: packageJson.author ?? {
+      name: 'datannur',
+      url: 'https://datannur.com',
+    },
+    license: {
+      name: packageJson.license ?? 'MIT',
+      url: 'https://opensource.org/licenses/MIT',
+    },
     dbPath: config.dbPath,
+    schemasPath: config.schemasPath,
   }
 }
 
@@ -205,8 +244,14 @@ async function saveOpenAPISpec(
   config: {
     version: string
     openApiVersion: string
-    contact: ApiConfig['contact']
-    license: ApiConfig['license']
+    contact: {
+      name: string
+      url: string
+    }
+    license: {
+      name: string
+      url: string
+    }
     serverUrl: string
     title: string
     description: string
@@ -253,8 +298,14 @@ async function saveOpenAPISpec(
 async function generateRawAPI(
   version: string,
   openApiVersion: string,
-  contact: ApiConfig['contact'],
-  license: ApiConfig['license'],
+  contact: {
+    name: string
+    url: string
+  },
+  license: {
+    name: string
+    url: string
+  },
   dbPath: string,
   schemas: Record<string, JsonSchema>,
 ) {
@@ -380,8 +431,14 @@ async function buildRestfulApiSpec(
 async function generateRestfulAPI(
   version: string,
   openApiVersion: string,
-  contact: ApiConfig['contact'],
-  license: ApiConfig['license'],
+  contact: {
+    name: string
+    url: string
+  },
+  license: {
+    name: string
+    url: string
+  },
   schemas: Record<string, JsonSchema>,
 ) {
   console.log('\n🔄 Generating RESTful API documentation...')
@@ -408,6 +465,8 @@ async function generateAPI(): Promise<void> {
 
   await mkdir(apiDir, { recursive: true })
 
+  const { schemasDir } = await getConfig()
+
   const schemaFiles = await getTableSchemas(schemasDir, ignoreFiles)
   const schemas: Record<string, JsonSchema> = {}
   for (const tableName of schemaFiles) {
@@ -419,8 +478,17 @@ async function generateAPI(): Promise<void> {
   const { version, openApiVersion, contact, license, dbPath } =
     await getApiConfig(schemas)
 
+  const dbPathFromApi = `../${dbPath}`
+
   await Promise.all([
-    generateRawAPI(version, openApiVersion, contact, license, dbPath, schemas),
+    generateRawAPI(
+      version,
+      openApiVersion,
+      contact,
+      license,
+      dbPathFromApi,
+      schemas,
+    ),
     generateRestfulAPI(version, openApiVersion, contact, license, schemas),
   ])
 

@@ -2,17 +2,7 @@
 
 ## Project Structure
 
-**datannur**### 5. Handle Optional/Nullable Values
-
-- **ALWAYS** handle `undefined` and `null` cases with:
-  - Nullish coalescing: `value ?? defaultValue`
-  - Optional chaining: `obj?.prop?.nested`
-  - Type guards when needed: `if (value !== undefined)`
-- **NEVER** ignore optional properties - handle them explicitly and concisely
-
-### 6. No Type Workarounds
-
-- **NEVER** use `any`, `@ts-ignore`, `@ts-expect-error`, or `eslint-disable` to bypass TypeScript errorsble client-side data catalog that runs without a server. Key architectural aspects:
+**datannur** is a portable client-side data catalog that runs without a server. Key architectural aspects:
 
 - **Svelte 5 + TypeScript + Vite** stack with custom plugins
 - **Client-side database**: Uses jsonjsdb (.json.js files) for browser-based relational data
@@ -86,6 +76,6 @@
   - Type guards when needed: `if (value !== undefined)`
 - **NEVER** ignore optional properties - handle them explicitly and concisely
 
-### 5. No Type Workarounds
+### 6. No Type Workarounds
 
 - **NEVER** use `any`, `@ts-ignore`, `@ts-expect-error`, or `eslint-disable` to bypass TypeScript errors

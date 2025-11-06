@@ -5,8 +5,15 @@ import { fileURLToPath } from 'url'
 
 const currentDir = dirname(fileURLToPath(import.meta.url))
 const publicDir = join(currentDir, '../..')
-const schemasDir = join(publicDir, 'schemas')
-const dataDir = join(publicDir, 'data/db')
+
+const packageJson = JSON.parse(
+  await readFile(join(publicDir, 'package.json'), 'utf-8'),
+) as { datannur: { dbPath: string; schemasPath: string } }
+const dbPath = packageJson.datannur.dbPath
+const schemasPath = packageJson.datannur.schemasPath
+
+const schemasDir = join(publicDir, schemasPath)
+const dataDir = join(publicDir, dbPath)
 const ignoreSchemas = ['__meta__.schema.json', '__table__.schema.json']
 
 async function loadTables() {

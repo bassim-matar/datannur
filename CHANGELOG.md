@@ -2,9 +2,11 @@
 
 ## unreleased (2025-10-30)
 
+- add: vscode extension with LLM chat participant for natural language database interaction
 - add: jsonjsdb manage both json and json.js files depending on environment
 - add: json schema, openapi and redoc
 - add: api rest in php and nodejs
+- add: dcat-ap-ch export script
 
 ## 0.14.1 (2025-10-29)
 

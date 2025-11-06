@@ -1,10 +1,15 @@
 .DS_Store
 ~$*
+.venv
 bundle-view.html
-/node_modules/
+/**/node_modules/
 /app/
 /deploy.config.json
 /public/assets/external/*.js
 /public/node_modules/
+/public/data/db-semantic/
 /src/page/.router-index.ts
 /src/assets/db-schema.json
+/vscode-extension/out/
+/public/vscode-extension.vsix
+

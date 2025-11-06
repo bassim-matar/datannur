@@ -109,6 +109,40 @@ Then use `git cleanup` to automatically switch to main, pull changes, and delete
 | `npm run check`      | All quality checks (lint + types)    |
 | `npm run verify`     | Complete verification (check + test) |
 
+### API & Schema Management
+
+| Command                    | Purpose                                   |
+| -------------------------- | ----------------------------------------- |
+| `npm run api:generate`     | Generate OpenAPI specs from schemas       |
+| `npm run schema:generate`  | Generate schemas from data                |
+| `npm run schema:update`    | Update schemas with new fields            |
+| `npm run schema:build`     | Validate schemas + generate OpenAPI       |
+| `npm run validate-schemas` | Validate all schemas and data files       |
+| `npm run api:dev`          | Start Node.js API dev server on port 3000 |
+
+### VS Code Extension
+
+The `vscode-extension/` directory contains an optional Model Context Protocol (MCP) tool for querying the catalog via LLM chat interfaces.
+
+**Development:**
+
+```bash
+cd vscode-extension
+npm install
+npm run compile    # Build TypeScript
+npm run watch      # Auto-rebuild on changes
+npm run package    # Create .vsix file
+```
+
+**Features:**
+
+- Natural language queries (French/English) via Copilot Chat or other LLM extensions
+- Semantic search across catalog metadata
+- SQL query generation for complex filters
+- Works with any VS Code LLM provider (GitHub Copilot, Continue, Cody, etc.)
+
+**Privacy:** Only query results are sent to LLM (not full database). Choose cloud (OpenAI, Anthropic) or local models (Ollama).
+
 ## Guidelines
 
 ### Pull Requests
@@ -152,6 +186,42 @@ Update `README.md` for new visible features.
 - `src/frame/` - UI framework (Header, Footer, Router)
 - `public/data/` - User data (only folder users modify)
 - `public/data/db/` - Database files (.json.js format)
+- `public/schemas/` - JSON schemas for data validation
+- `public/api/` - API endpoints (PHP and Node.js implementations)
+- `public/node-scripts/` - Utility scripts (deploy, static generation, schema management)
+
+### API Architecture
+
+datannur provides two API implementations accessing the same JSON database:
+
+**Raw API:**
+
+- Direct file access to `/data/db/*.json` files
+- No server-side processing required
+- OpenAPI spec: `public/api/openapi-raw.json`
+
+**RESTful API:**
+
+- Query-based with filtering, pagination, sorting
+- Two implementations:
+  - `public/api/php/` - PHP 7.4+ (production-ready)
+  - `public/api/nodejs/` - Node.js (development server)
+- OpenAPI spec: `public/api/openapi.json`
+
+**Configuration:**
+
+- API settings in `public/package.json` under `datannur` field:
+  - `dbPath`: Database location (relative to `public/`)
+  - `schemasPath`: Schemas location (relative to `public/`)
+  - `apiVersion`: API version (auto-incremented on schema changes)
+  - `schemasHash`: Schema checksum (auto-managed)
+  - `openApiVersion`: OpenAPI specification version
+
+**Schema-driven:**
+
+- OpenAPI specs auto-generated from JSON schemas in `public/schemas/`
+- Run `npm run schema:build` (from `public/`) to validate and regenerate
+- API version auto-increments when schemas change
 
 ## Releases & Maintenance
 

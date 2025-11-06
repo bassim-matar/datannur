@@ -42,6 +42,10 @@ datannur is a client-side data catalog designed to organize and explore datasets
   - [Static Page Generation](#static-page-generation)
   - [Deployment](#deployment)
   - [URL Rewriting](#url-rewriting)
+- [DCAT-AP-CH Export](#dcat-ap-ch-export)
+- [API Access](#api-access)
+  - [Raw API](#raw-api)
+  - [RESTful API](#restful-api)
 - [Advanced Configuration](#advanced-configuration)
   - [DB Configuration](#db-configuration)
     - [app-name](#app-name)
@@ -63,6 +67,21 @@ datannur is a client-side data catalog designed to organize and explore datasets
 2. **Open** the `index.html` file in your browser
 3. **Explore** the demo metadata to understand how it works
 4. **Replace** the demo metadata in `/data/db/` with your own
+
+## VS Code Extension (Optional)
+
+For users with VS Code and GitHub Copilot, a language model tool is available to query the catalog using natural language:
+
+```bash
+# Install the extension
+code --install-extension vscode-extension.vsix
+
+# Use in Copilot Chat
+#datannur find datasets about health
+#datannur list all variables containing "age"
+```
+
+**Requirements:** VS Code 1.85+ and active GitHub Copilot subscription.
 
 ## Project Structure
 
@@ -293,6 +312,82 @@ The included `.htaccess` file enables:
 - **Static page fallback**: Serves pre-generated HTML when available
 - **HTTPS redirect**: Automatic redirect to secure connection
 - **Caching**: Optimized cache headers for assets
+
+## DCAT-AP-CH Export
+
+datannur can export your catalog metadata to DCAT-AP-CH format, making it compatible with [opendata.swiss](https://opendata.swiss) and other semantic web portals.
+
+**Export script:** `python-scripts/export-dcat.py`
+
+**Configuration:** Edit `/data/dcat-export.config.json` to set:
+
+- `catalog_uri`: URI of your catalog
+- `base_uri`: Base URI for generating dataset/publisher URIs
+- `catalog_title`, `catalog_description`, `catalog_publisher`: Catalog metadata
+
+**Usage:**
+
+```bash
+# Export to RDF/XML (default)
+python python-scripts/export-dcat.py
+
+# Export to JSON-LD
+python python-scripts/export-dcat.py json-ld
+```
+
+**Output:** Generated files in `/data/db-semantic/`:
+
+- `dcat.rdf` - RDF/XML format
+- `dcat.jsonld` - JSON-LD format
+
+The export includes automatic SHACL validation to ensure DCAT-AP 2.1.1 compliance.
+
+## API Access
+
+datannur provides two read-only API endpoints for programmatic access to your catalog data. Both APIs are automatically generated from your database schemas.
+
+**API documentation:** Available at `/api/api-docs.html` (RESTful) and `/api/api-docs-raw.html` (Raw) in your deployed catalog.
+
+### Raw API
+
+Direct access to database JSON files with no server-side processing.
+
+**Endpoint pattern:** `/data/db/{table}.json`
+
+**Example:**
+
+```
+GET /data/db/dataset.json
+```
+
+Returns the complete table as a JSON array.
+
+### RESTful API
+
+Query-based API with filtering, pagination, and sorting capabilities. Requires a server-side implementation (PHP or Node.js).
+
+**Endpoint patterns:**
+
+- `GET /api/php/{table}` - Get all records (with optional query parameters)
+- `GET /api/php/{table}/{id}` - Get single record by ID
+
+**Query parameters:**
+
+- `_limit`: Limit number of results
+- `_offset`: Offset for pagination
+- `_sort`: Field to sort by
+- `_order`: Sort order (`asc` or `desc`)
+- Additional filters by field name
+
+**Examples:**
+
+```
+GET /api/php/dataset?_limit=10&_sort=name&_order=asc
+GET /api/php/dataset/123
+GET /api/php/dataset?folder_id=5
+```
+
+> **Server requirement:** The RESTful API requires either PHP 7.4+ or Node.js to run. The Raw API works with any static file server.
 
 ## Advanced Configuration
 
