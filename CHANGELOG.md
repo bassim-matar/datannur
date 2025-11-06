@@ -1,5 +1,9 @@
 # datannur
 
+## unreleased
+
+- refactor: extension with test and better prompt
+
 ## 0.15.0 (2025-11-06)
 
 - add: jsonjsdb manage both json and json.js files depending on environment

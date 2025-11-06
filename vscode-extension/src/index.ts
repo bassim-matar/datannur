@@ -1,15 +1,14 @@
 import * as vscode from 'vscode'
 import * as fs from 'fs'
 import * as path from 'path'
-import PromptLoader from './prompts'
 import { SqlDatabase } from './sql-database'
 import Logger from './logger'
+import { registerTestCommand } from './test-runner'
 
 function findPath(root: string, relatives: string[]): string | null {
   for (const rel of relatives) {
     const fullPath = path.join(root, rel)
     if (fs.existsSync(fullPath)) {
-      console.log(`✅ Found: ${fullPath}`)
       return fullPath
     }
   }
@@ -23,7 +22,6 @@ function findDbPath(root: string, relatives: string[]): string | null {
       // Check if this folder contains __table__.json directly
       const hasTableFile = fs.existsSync(path.join(fullPath, '__table__.json'))
       if (hasTableFile) {
-        console.log(`✅ Found db: ${fullPath}`)
         return fullPath
       }
 
@@ -39,7 +37,6 @@ function findDbPath(root: string, relatives: string[]): string | null {
           path.join(subdirPath, '__table__.json'),
         )
         if (hasTableFileInSubdir) {
-          console.log(`✅ Found db in subdirectory: ${subdirPath}`)
           return subdirPath
         }
       }
@@ -48,18 +45,110 @@ function findDbPath(root: string, relatives: string[]): string | null {
   return null
 }
 
-export function activate(context: vscode.ExtensionContext): void {
-  console.log('🟢 jsonjsdb extension is activating...')
+function enrichToolResult(toolName: string, resultText: string): string {
+  try {
+    const parsed: unknown = JSON.parse(resultText)
 
+    if (typeof parsed !== 'object' || parsed === null) {
+      return resultText
+    }
+
+    const obj = parsed as Record<string, unknown>
+
+    // Case 1: SQL Error
+    if ('error' in obj) {
+      return JSON.stringify({
+        ...obj,
+        _meta: {
+          status: 'error',
+          interpretation:
+            'Query failed. Check table/column names or simplify the query.',
+          suggestion: 'Review the database schema and try a simpler approach.',
+        },
+      })
+    }
+
+    // Case 2: Empty results (SQL or SEARCH)
+    const rows = 'rows' in obj ? obj.rows : undefined
+    const message = 'message' in obj ? obj.message : undefined
+    if (
+      (Array.isArray(rows) && rows.length === 0) ||
+      (typeof message === 'string' && message.includes('No results found'))
+    ) {
+      return JSON.stringify({
+        ...obj,
+        _meta: {
+          status: 'empty',
+          interpretation: 'Query executed successfully but returned NO DATA.',
+          suggestion:
+            toolName === 'datannur_search'
+              ? 'Try different search terms or broader criteria.'
+              : 'Check IDs, filters, or try different table/column names.',
+          warning:
+            '⚠️ DO NOT invent or assume data that was not returned. If no data was found, explicitly say so.',
+        },
+      })
+    }
+
+    // Case 3: Successful results with data
+    if (Array.isArray(rows) && rows.length > 0) {
+      const count =
+        'count' in obj && typeof obj.count === 'number'
+          ? obj.count
+          : rows.length
+      const meta: Record<string, unknown> = {
+        status: 'success',
+        count,
+        instruction:
+          '⚠️ CRITICAL: Use EXACT values from these rows. Copy names/IDs character-by-character. DO NOT paraphrase or invent data.',
+      }
+
+      // Add interpretation for large result sets
+      if (rows.length >= 50) {
+        meta.interpretation = `Showing ${rows.length} results. May be limited.`
+        meta.suggestion =
+          'Consider adding filters to narrow down results if needed.'
+      }
+
+      return JSON.stringify({ ...obj, _meta: meta })
+    }
+
+    // Case 4: SEARCH with multiple table results
+    if (!('rows' in obj) && !('error' in obj)) {
+      const tableCount = Object.keys(obj).filter(k => k !== 'message').length
+      if (tableCount > 0) {
+        const totalResults = Object.values(obj)
+          .filter(Array.isArray)
+          .reduce((sum: number, arr) => sum + arr.length, 0)
+
+        return JSON.stringify({
+          ...obj,
+          _meta: {
+            status: 'success',
+            tables: tableCount,
+            totalResults,
+            interpretation: `Found results across ${tableCount} table(s).`,
+          },
+        })
+      }
+    }
+
+    // Default: return as is
+    return resultText
+  } catch {
+    // Not JSON or parsing failed - return as is
+    return resultText
+  }
+}
+
+export function activate(context: vscode.ExtensionContext): void {
   const workspaceFolder = vscode.workspace.workspaceFolders?.[0]
   if (!workspaceFolder) {
-    vscode.window.showWarningMessage('No workspace folder open')
     return
   }
 
   const workspaceRoot = workspaceFolder.uri.fsPath
 
-  // Initialize logger (output channel by default, file logging opt-in)
   Logger.initialize(workspaceRoot)
   Logger.log('INIT', 'Extension activating', { workspaceRoot })
 
@@ -76,7 +165,6 @@ export function activate(context: vscode.ExtensionContext): void {
   ])
 
   if (!dbPath || !schemasPath) {
-    vscode.window.showErrorMessage('Could not find data/db or schemas folder')
     return
   }
 
@@ -85,8 +173,7 @@ export function activate(context: vscode.ExtensionContext): void {
   // Initialize database asynchronously
   db.initialize()
     .then(() => {
-      vscode.window.showInformationMessage('jsonjsdb SQL database loaded!')
-      console.log('✅ Database ready')
+      console.log('✅ datannur ready')
     })
     .catch((error: unknown) => {
       vscode.window.showErrorMessage(
@@ -114,14 +201,6 @@ export function activate(context: vscode.ExtensionContext): void {
     },
   } satisfies vscode.LanguageModelTool<{ sql: string }>)
 
-  const toolGetStats = vscode.lm.registerTool('datannur_get_stats', {
-    async invoke(): Promise<vscode.LanguageModelToolResult> {
-      return new vscode.LanguageModelToolResult([
-        new vscode.LanguageModelTextPart(db.getStats()),
-      ])
-    },
-  } satisfies vscode.LanguageModelTool<never>)
-
   const toolSearch = vscode.lm.registerTool('datannur_search', {
     async invoke(
       options: vscode.LanguageModelToolInvocationOptions<{ query: string }>,
@@ -144,47 +223,7 @@ export function activate(context: vscode.ExtensionContext): void {
     },
   } satisfies vscode.LanguageModelTool<{ query: string }>)
 
-  context.subscriptions.push(toolExecuteSql, toolGetStats, toolSearch)
-
-  // List of our tool names for filtering
-  const ourToolNames = [
-    'datannur_execute_sql',
-    'datannur_search',
-    'datannur_get_stats',
-  ]
-
-  Logger.log(
-    'DATANNUR_TOOLS',
-    'Our registered datannur tools',
-    JSON.stringify(ourToolNames),
-  )
-  console.log('✅ datannur tools registered:', ourToolNames)
-
-  // Debug: List all tools grouped by prefix
-  const allToolsGrouped = vscode.lm.tools.reduce<Record<string, string[]>>(
-    (acc, tool) => {
-      const prefix = tool.name.split('_')[0]
-      if (!acc[prefix]) acc[prefix] = []
-      acc[prefix].push(tool.name)
-      return acc
-    },
-    {},
-  )
-
-  console.log('📋 All registered tools by prefix:')
-  Object.keys(allToolsGrouped)
-    .sort()
-    .forEach(prefix => {
-      console.log(
-        `  ${prefix}_ (${allToolsGrouped[prefix].length}):`,
-        allToolsGrouped[prefix],
-      )
-    })
-
-  console.log(
-    '🔧 All tools:',
-    vscode.lm.tools.map(t => t.name),
-  )
+  context.subscriptions.push(toolExecuteSql, toolSearch)
 
   const handler: vscode.ChatRequestHandler = async (
     request: vscode.ChatRequest,
@@ -193,7 +232,6 @@ export function activate(context: vscode.ExtensionContext): void {
     token: vscode.CancellationToken,
   ): Promise<void> => {
     Logger.logUserQuestion(request.prompt)
-    console.log('💬 Chat:', request.prompt)
     stream.progress('Thinking...')
 
     try {
@@ -201,7 +239,6 @@ export function activate(context: vscode.ExtensionContext): void {
       let models = await vscode.lm.selectChatModels({ vendor: 'copilot' })
 
       if (models.length === 0) {
-        console.log('ℹ️ No Copilot model found, trying other vendors...')
         models = await vscode.lm.selectChatModels()
       }
 
@@ -213,30 +250,32 @@ export function activate(context: vscode.ExtensionContext): void {
       }
 
       const model = models[0]
-      console.log(
-        '🤖 Using model:',
-        model.name,
-        model.family,
-        model.version,
-        `(${model.vendor})`,
-      )
 
       // Build conversation with system prompt + schema + history
-      const systemPrompt = PromptLoader.getSystemPrompt()
+      const systemPromptPath = path.join(
+        context.extensionPath,
+        'out',
+        'system-prompt.txt',
+      )
+      const systemPrompt = fs.readFileSync(systemPromptPath, 'utf-8')
       const schema = db.getSqlSchema()
 
-      // Log the system prompt
       Logger.logPrompt(
         systemPrompt + '\n\n' + schema + '\n\nUser: ' + request.prompt,
       )
 
-      // Build messages with conversation history
       let messages: vscode.LanguageModelChatMessage[] = [
-        vscode.LanguageModelChatMessage.User(systemPrompt + '\n\n' + schema),
+        vscode.LanguageModelChatMessage.User(
+          `${systemPrompt}\n\n# Database Schema\n${schema}`,
+        ),
       ]
 
-      // Add previous conversation history
-      for (const turn of chatContext.history) {
+      // Add previous conversation history (limited to last 10 turns to avoid token explosion)
+      // Each turn = 1 request + 1 response, so slice by -20 to get last 10 conversation pairs
+      const maxHistoryTurns = 10
+      const recentHistory = chatContext.history.slice(-(maxHistoryTurns * 2))
+
+      for (const turn of recentHistory) {
         if (turn instanceof vscode.ChatRequestTurn) {
           messages.push(vscode.LanguageModelChatMessage.User(turn.prompt))
         } else if (turn instanceof vscode.ChatResponseTurn) {
@@ -264,13 +303,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
       // Get tools from registered tools
       const tools = vscode.lm.tools.filter(tool =>
-        ourToolNames.includes(tool.name),
-      )
-
-      Logger.log(
-        'TOOLS',
-        'Available tools for this request',
-        JSON.stringify(tools.map(t => t.name)),
+        tool.name.startsWith('datannur_'),
       )
 
       // Send request with tools - LLM can call them as needed
@@ -331,21 +364,38 @@ export function activate(context: vscode.ExtensionContext): void {
                     : '',
                 )
                 .join('')
+
+              // Enrich the result with metadata and interpretations
+              const enrichedResult = enrichToolResult(toolCall.name, resultText)
+
               Logger.log(
                 'TOOL_RESULT',
                 `Result from ${toolCall.name}`,
-                resultText.length > 500
-                  ? `${resultText.substring(0, 500)}... (${resultText.length} chars)`
-                  : resultText,
+                enrichedResult.length > 500
+                  ? `${enrichedResult.substring(0, 500)}... (${enrichedResult.length} chars)`
+                  : enrichedResult,
               )
 
-              // Add tool result to messages
+              // Add anti-hallucination reminder after tool result
+              const antiHallucinationReminder = `\n\n⚠️ CRITICAL INSTRUCTION - READ CAREFULLY:
+
+1. The data above is the ONLY source of truth
+2. You MUST copy names/values EXACTLY character-by-character (no translation, no paraphrasing, no summarizing)
+3. If a dataset is named "Qualité de l'eau potable", say exactly "Qualité de l'eau potable" (not "Water Quality" or "Health Indicators")
+4. If SQL returns 3 rows, list exactly 3 items with their exact names from the 'name' column
+5. If the result is empty, say "No data found" - do NOT guess or invent similar items
+
+FORBIDDEN: Inventing names like "Indicateurs de santé publique" when SQL returned "Qualité de l'eau potable"
+REQUIRED: Exact copy-paste of all names/values from SQL results`
+
+              // Add enriched tool result to messages
               messages.push(
                 vscode.LanguageModelChatMessage.User([
-                  new vscode.LanguageModelToolResultPart(
-                    toolCall.callId,
-                    toolResult.content,
-                  ),
+                  new vscode.LanguageModelToolResultPart(toolCall.callId, [
+                    new vscode.LanguageModelTextPart(
+                      enrichedResult + antiHallucinationReminder,
+                    ),
+                  ]),
                 ]),
               )
             } catch (error) {
@@ -389,13 +439,26 @@ export function activate(context: vscode.ExtensionContext): void {
     handler,
   )
 
-  participant.iconPath = vscode.Uri.joinPath(context.extensionUri, 'icon.png')
+  participant.iconPath = vscode.Uri.joinPath(
+    context.extensionUri,
+    'out',
+    'icon.png',
+  )
 
   context.subscriptions.push(participant)
 
-  console.log('✅ Chat participant registered')
+  // Register test command
+  registerTestCommand(context)
+
+  // Register debug command with captured variables
+  const capturedInfo = { workspaceRoot, dbPath, schemasPath }
+  context.subscriptions.push(
+    vscode.commands.registerCommand('datannur.debugActivation', () => {
+      vscode.window.showInformationMessage(
+        `datannur active\nDB: ${capturedInfo.dbPath}\nSchemas: ${capturedInfo.schemasPath}`,
+      )
+    }),
+  )
 }
 
-export function deactivate() {
-  console.log('🔴 jsonjsdb extension deactivated')
-}
+export function deactivate() {}

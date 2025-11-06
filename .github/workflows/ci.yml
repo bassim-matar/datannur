@@ -72,6 +72,9 @@ jobs:
       - name: Tests (unit + UI)
         run: npm run test:no-build
 
+      - name: Tests (extension)
+        run: npm run test:extension
+
       - name: Compute artifact name
         if: failure()
         id: artifact_name

@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "publisher": "datannur",
   "license": "MIT",
+  "icon": "out/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/bassim-matar/datannur"
@@ -22,20 +23,34 @@
   "engines": {
     "vscode": "^1.105.0"
   },
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguageModelTool:datannur_execute_sql",
+    "onLanguageModelTool:datannur_search"
+  ],
   "categories": [
     "AI",
     "Data Science"
   ],
-  "activationEvents": [
-    "onStartupFinished"
-  ],
-  "main": "./out/extension.js",
+  "main": "./out/index.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "datannur.runLLMTests",
+        "title": "Run LLM Tests",
+        "category": "datannur"
+      },
+      {
+        "command": "datannur.debugActivation",
+        "title": "Debug Activation",
+        "category": "datannur"
+      }
+    ],
     "chatParticipants": [
       {
         "id": "datannur.catalog",
         "name": "datannur",
-        "description": "Query jsonjsdb relational database with intelligent natural language",
+        "description": "Explore your data catalog: search datasets, variables, and metadata using natural language",
         "isSticky": true
       }
     ],
@@ -43,27 +58,22 @@
       {
         "name": "datannur_execute_sql",
         "displayName": "Execute SQL Query",
-        "modelDescription": "Execute a SQL query against the database and get results. Use standard SQL SELECT syntax. Parameter: sql (string) - the SQL query to execute."
+        "modelDescription": "⚠️ CRITICAL: NEVER answer questions about data from memory. ALWAYS call this tool first to get EXACT values from the database. Execute SQL SELECT queries on the data catalog database. Use for: filtering (WHERE), counting (COUNT), aggregating (GROUP BY), joining tables, or any analytical query. Always use LOWER() for case-insensitive text matching. Columns ending with '_id' are foreign keys. Columns ending with '_ids' contain comma-separated IDs (use LIKE '%value%'). Available tables: institution, dataset, variable, doc, folder, tag, modality, freq, evolution, value. Parameter: sql (string) - A valid SQLite SELECT query. Example: SELECT * FROM institution WHERE id = 'ofs-tourisme' to get exact parent_id value."
       },
       {
         "name": "datannur_search",
         "displayName": "Search Database",
-        "modelDescription": "Search across all tables for records matching a text query. Returns matching records from all tables with relevance scores. Parameter: query (string) - the text to search for."
-      },
-      {
-        "name": "datannur_get_stats",
-        "displayName": "Get Database Statistics",
-        "modelDescription": "Get database statistics including total record counts for all tables and other aggregate information about the database."
+        "modelDescription": "⚠️ CRITICAL: NEVER answer questions about data from memory. ALWAYS call this tool first to verify what exists in the database. Search for text across ALL database tables simultaneously. Use when you don't know which table contains the data, or for general exploration by name/description. Returns matching records from multiple tables. Do NOT use for queries by ID (use SQL instead). Parameter: query (string) - Text to search for across all tables. Example: query 'tourisme' to find all tourism-related records."
       }
     ]
   },
   "scripts": {
-    "compile": "vite build && npm run copy-prompts && npm run copy-sqljs && cp ../src/assets/img/icon.png ./icon.png",
-    "copy-prompts": "mkdir -p out/prompts && cp src/prompts/*.txt out/prompts/",
-    "copy-sqljs": "mkdir -p out/node_modules/sql.js/dist && cp node_modules/sql.js/package.json out/node_modules/sql.js/ && cp node_modules/sql.js/dist/sql-wasm.js out/node_modules/sql.js/dist/ && cp node_modules/sql.js/dist/sql-wasm.wasm out/node_modules/sql.js/dist/",
-    "watch": "vite build --watch",
-    "package": "npm run compile && vsce package --out ../public/vscode-extension.vsix --allow-missing-repository",
-    "reload": "npm run compile && code --command workbench.action.reloadWindow",
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "package": "npm run build && vsce package --out ../public/vscode-extension.vsix --allow-missing-repository --dependencies",
+    "install": "npm run package && code --install-extension ../public/vscode-extension.vsix --force",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "cd .. && eslint vscode-extension/src/**/*.ts",
     "type-check": "tsc --noEmit"
   },
@@ -73,7 +83,8 @@
     "@types/vscode": "^1.105.0",
     "@vscode/vsce": "^3.6.2",
     "typescript": "^5.9.3",
-    "vite": "^7.2.1"
+    "vite": "^7.2.1",
+    "vitest": "^4.0.6"
   },
   "dependencies": {
     "sql.js": "^1.13.0"

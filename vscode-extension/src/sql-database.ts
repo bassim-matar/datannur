@@ -35,25 +35,21 @@ export class SqlDatabase {
   ) {}
 
   async initialize(): Promise<void> {
-    console.log('🔄 Initializing SQL.js database...')
-
-    // Load SQL.js
     const sqlJs = await initSqlJs({
       locateFile: (file: string) => {
-        return path.join(__dirname, 'node_modules', 'sql.js', 'dist', file)
+        // In production (VSCode extension): use out/node_modules
+        // In tests: use node_modules directly
+        const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST
+        const basePath = isTest
+          ? path.join(__dirname, '..', 'node_modules', 'sql.js', 'dist')
+          : path.join(__dirname, 'node_modules', 'sql.js', 'dist')
+        return path.join(basePath, file)
       },
     })
 
     this.db = new sqlJs.Database()
-    console.log('✅ SQL.js loaded')
-
-    // Load metadata
     this.loadMetadata()
-
-    // Create tables and load data
     await this.createTablesAndLoadData()
-
-    console.log('✅ SQL database ready')
   }
 
   private loadMetadata(): void {
@@ -68,7 +64,6 @@ export class SqlDatabase {
           name: t.name,
           lastModif: t.last_modif,
         }))
-        console.log(`📋 Found ${this.tableList.length} tables`)
       } catch (error) {
         console.error('Failed to load __table__.json:', error)
       }
@@ -110,8 +105,6 @@ export class SqlDatabase {
         console.error(`Failed to load schema ${file}:`, error)
       }
     }
-
-    console.log(`📚 Loaded ${Object.keys(this.schemas).length} schemas`)
   }
 
   private async createTablesAndLoadData(): Promise<void> {
@@ -137,7 +130,6 @@ export class SqlDatabase {
 
         const createSql = `CREATE TABLE "${tableName}" (${columns.join(', ')})`
         this.db.run(createSql)
-        console.log(`📊 Created table: ${tableName}`)
 
         // Load data
         const data = JSON.parse(
@@ -155,8 +147,6 @@ export class SqlDatabase {
             stmt.run(values)
           })
           stmt.free()
-
-          console.log(`✅ Loaded ${data.length} records into ${tableName}`)
         }
       } catch (error) {
         console.error(`Failed to create/load table ${tableName}:`, error)
@@ -325,44 +315,6 @@ export class SqlDatabase {
     }
   }
 
-  getStats(): string {
-    if (!this.db) return JSON.stringify({ error: 'Database not initialized' })
-
-    try {
-      const result = this.db.exec(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
-      )
-
-      if (result.length === 0) {
-        return JSON.stringify({ totalTables: 0, tables: {} })
-      }
-
-      const tables = result[0].values.map(row => row[0] as string)
-      const stats: { [table: string]: number } = {}
-
-      tables.forEach(table => {
-        const countResult = this.db!.exec(`SELECT COUNT(*) FROM "${table}"`)
-        if (countResult.length > 0) {
-          stats[table] = countResult[0].values[0][0] as number
-        }
-      })
-
-      return JSON.stringify(
-        {
-          totalTables: tables.length,
-          recordCounts: stats,
-          totalRecords: Object.values(stats).reduce((a, b) => a + b, 0),
-        },
-        null,
-        2,
-      )
-    } catch (error) {
-      return JSON.stringify({
-        error: error instanceof Error ? error.message : String(error),
-      })
-    }
-  }
-
   search(query: string): string {
     if (!this.db) {
       return JSON.stringify({ error: 'Database not initialized' })
@@ -399,28 +351,10 @@ export class SqlDatabase {
 
         const allColumns = columnsResult[0].values.map(col => col[1] as string)
 
-        // Define searchable text columns for each table type
-        const searchableColumns: { [key: string]: string[] } = {
-          dataset: ['name', 'description'],
-          variable: ['name', 'description', 'label'],
-          folder: ['name', 'description'],
-          tag: ['name', 'description'],
-          doc: ['name', 'description'],
-          institution: ['name', 'description'],
-          modality: ['name', 'description'],
-          freq: ['name', 'description'],
-          evolution: ['name', 'description'],
-          value: ['name', 'description', 'label'],
-        }
-
-        // Use specific searchable columns if defined, otherwise filter for likely text columns
-        const columnsToSearch =
-          searchableColumns[table] ??
-          allColumns.filter(col =>
-            ['name', 'description', 'label', 'title', 'comment'].some(textCol =>
-              col.toLowerCase().includes(textCol),
-            ),
-          )
+        // Search only in name and description columns (standard across all tables)
+        const columnsToSearch = allColumns.filter(col =>
+          ['name', 'description'].includes(col),
+        )
 
         // If no suitable columns found, skip this table
         if (columnsToSearch.length === 0) return
