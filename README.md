@@ -68,6 +68,21 @@ datannur is a client-side data catalog designed to organize and explore datasets
 3. **Explore** the demo metadata to understand how it works
 4. **Replace** the demo metadata in `/data/db/` with your own
 
+## VS Code Extension (Optional)
+
+For users with VS Code and GitHub Copilot, a language model tool is available to query the catalog using natural language:
+
+```bash
+# Install the extension
+code --install-extension vscode-extension.vsix
+
+# Use in Copilot Chat
+#datannur find datasets about health
+#datannur list all variables containing "age"
+```
+
+**Requirements:** VS Code 1.85+ and active GitHub Copilot subscription.
+
 ## Project Structure
 
 > **📁 Context:** This structure represents the **distributed application** (inside the `app/` folder or downloaded package). For development structure, see the full repository.

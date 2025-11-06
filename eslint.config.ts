@@ -90,6 +90,8 @@ export default [
       'node_modules/',
       'public/assets/',
       'src/page/.router-index.ts',
+      'vscode-extension/out/',
+      'vscode-extension/node_modules/',
     ],
   },
   {

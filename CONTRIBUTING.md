@@ -120,6 +120,29 @@ Then use `git cleanup` to automatically switch to main, pull changes, and delete
 | `npm run validate-schemas` | Validate all schemas and data files       |
 | `npm run api:dev`          | Start Node.js API dev server on port 3000 |
 
+### VS Code Extension
+
+The `vscode-extension/` directory contains an optional Model Context Protocol (MCP) tool for querying the catalog via LLM chat interfaces.
+
+**Development:**
+
+```bash
+cd vscode-extension
+npm install
+npm run compile    # Build TypeScript
+npm run watch      # Auto-rebuild on changes
+npm run package    # Create .vsix file
+```
+
+**Features:**
+
+- Natural language queries (French/English) via Copilot Chat or other LLM extensions
+- Semantic search across catalog metadata
+- SQL query generation for complex filters
+- Works with any VS Code LLM provider (GitHub Copilot, Continue, Cody, etc.)
+
+**Privacy:** Only query results are sent to LLM (not full database). Choose cloud (OpenAI, Anthropic) or local models (Ollama).
+
 ## Guidelines
 
 ### Pull Requests
