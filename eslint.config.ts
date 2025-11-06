@@ -96,12 +96,24 @@ export default [
   },
   {
     files: ['**/*.ts', '**/*.svelte.ts'],
-    ignores: ['eslint.config.ts'],
+    ignores: ['eslint.config.ts', 'vscode-extension/**/*.ts'],
     languageOptions: {
       globals,
       parser: tseslint.parser,
       parserOptions: {
         project: './tsconfig.json',
+      },
+    },
+    rules: { ...namingConventionRules, ...strictTypeScriptRules },
+  },
+  {
+    files: ['vscode-extension/**/*.ts'],
+    ignores: ['vscode-extension/vite.config.ts'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './vscode-extension/tsconfig.json',
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: { ...namingConventionRules, ...strictTypeScriptRules },
