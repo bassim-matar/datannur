@@ -5,3 +5,6 @@ app/data/db/**/*.json
 
 # Build outputs
 vscode-extension/out/
+
+# Dependencies
+vscode-extension/node_modules/

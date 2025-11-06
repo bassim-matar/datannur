@@ -34,5 +34,10 @@
       "@type": ["src/type/index.ts"]
     }
   },
-  "exclude": ["app", "node_modules", "vscode-extension/out"]
+  "exclude": [
+    "app",
+    "node_modules",
+    "vscode-extension/out",
+    "vscode-extension/node_modules"
+  ]
 }
