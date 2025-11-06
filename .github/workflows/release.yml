@@ -17,8 +17,15 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            vscode-extension/package-lock.json
 
       - run: npm ci
+      - name: Install vscode-extension dependencies
+        run: cd vscode-extension && npm ci
+      - name: Build vscode-extension
+        run: npm run build:extension
       - run: npm run build
 
       - name: Get current version
