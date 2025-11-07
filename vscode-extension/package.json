@@ -71,7 +71,7 @@
     "build": "vite build",
     "dev": "vite build --watch",
     "package": "npm run build && vsce package --out ../public/vscode-extension.vsix --allow-missing-repository --dependencies",
-    "install": "npm run package && code --install-extension ../public/vscode-extension.vsix --force",
+    "local-install": "npm run package && code --install-extension ../public/vscode-extension.vsix --force",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "cd .. && eslint vscode-extension/src/**/*.ts",
