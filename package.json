@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:analyze": "BUNDLE_VIEW=true vite build",
-    "build:extension": "cd vscode-extension && npm install && npm run compile && npm run package",
+    "build:extension": "cd vscode-extension && npm install && npm run package",
     "preview": "open-cli app/index.html",
     "serve": "vite preview",
     "test:unit": "vitest run --exclude=test/ui.test.ts",
