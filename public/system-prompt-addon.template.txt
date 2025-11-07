@@ -1,0 +1,37 @@
+# Custom Instructions (Addon Mode)
+
+This file adds ADDITIONAL instructions to the default system prompt.
+The default prompt is preserved, and your instructions are appended.
+
+To use:
+1. Copy this file to `system-prompt-addon.txt` in the same directory
+2. Add your custom instructions below
+3. The extension will automatically append them to the default prompt
+
+## Example custom instructions:
+
+### Language preference
+Always respond in French unless explicitly asked otherwise.
+
+### Domain-specific focus
+When analyzing datasets, prioritize:
+- Data privacy and GDPR compliance
+- Statistical significance
+- Data quality metrics
+
+### Response format preference
+Structure all responses as:
+1. Executive Summary (2-3 sentences)
+2. Detailed Analysis
+3. SQL Queries Used
+4. Recommendations
+
+### Custom terminology
+- Use "jeu de données" instead of "dataset"
+- Use "indicateur" instead of "variable"
+
+---
+
+## Your custom instructions start here:
+
+[Add your instructions below]

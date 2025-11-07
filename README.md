@@ -76,11 +76,31 @@ For users with VS Code and GitHub Copilot, a language model tool is available to
 code --install-extension vscode-extension.vsix
 
 # Use in Copilot Chat
-#datannur find datasets about health
-#datannur list all variables containing "age"
+@datannur find datasets about health
+@datannur count variables by tag
 ```
 
 **Requirements:** VS Code 1.85+ and active GitHub Copilot subscription.
+
+### Customizing the AI Assistant
+
+You can customize the assistant's behavior by creating prompt files in `data/`:
+
+**Option 1 - Add custom instructions** (recommended):
+
+```bash
+cp system-prompt-addon.template.txt data/system-prompt-addon.txt
+# Edit to add language preference, response format, domain focus, etc.
+```
+
+**Option 2 - Replace entire prompt** (advanced):
+
+```bash
+cp system-prompt.template.txt data/system-prompt.txt
+# Full control over system prompt
+```
+
+Changes apply immediately on your next message. Templates are in the `public/` folder.
 
 ## Project Structure
 

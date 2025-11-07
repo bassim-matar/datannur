@@ -41,11 +41,33 @@ FORBIDDEN:
   - Sub-tags of "data_protection":
     SELECT * FROM tag WHERE parent_id = 'data_protection'
 
-**Multiple Relations:**
-- Columns ending with `_ids` contain comma-separated IDs
-  Example: dataset.tag_ids = "personal_data,sensible_data,sante"
-  Query: WHERE tag_ids LIKE '%sante%'
-  Get items: First get _ids value, then query each ID separately
+**Many-to-Many Relations (Junction Tables):**
+- Original `_ids` columns (e.g., dataset.tag_ids) are normalized into junction tables
+- Junction tables are auto-generated and named: {table}_{related_table}
+  Examples: dataset_tag, dataset_institution, variable_tag
+  
+- Use standard SQL JOINs for many-to-many queries:
+  ```sql
+  -- Find all datasets with a specific tag
+  SELECT d.* FROM dataset d
+  JOIN dataset_tag dt ON d.id = dt.dataset_id
+  WHERE dt.tag_id = 'personal_data'
+  
+  -- Count datasets per tag
+  SELECT t.name, COUNT(dt.dataset_id) as dataset_count
+  FROM tag t
+  LEFT JOIN dataset_tag dt ON t.id = dt.tag_id
+  GROUP BY t.id
+  
+  -- Find datasets with multiple specific tags
+  SELECT d.id, d.name FROM dataset d
+  JOIN dataset_tag dt1 ON d.id = dt1.dataset_id AND dt1.tag_id = 'tag1'
+  JOIN dataset_tag dt2 ON d.id = dt2.dataset_id AND dt2.tag_id = 'tag2'
+  ```
+
+- DEPRECATED: Using LIKE on _ids columns still works but prefer JOINs
+  Old way: WHERE tag_ids LIKE '%sante%' ← Imprecise, avoid
+  New way: JOIN dataset_tag ... WHERE tag_id = 'sante' ← Precise, use this
 
 ## TOOL SELECTION STRATEGY
 
@@ -53,6 +75,7 @@ FORBIDDEN:
 ✓ You know the exact ID or filtering by ID
 ✓ Analytical queries (COUNT, GROUP BY, ORDER BY, JOIN)
 ✓ Specific criteria filtering (WHERE column = 'value')
+✓ Many-to-many queries (JOIN junction tables)
 ✓ Counting related items (COUNT ... WHERE dataset_id = 'xxx')
 ✓ Text search within ONE specific table
 ✓ Complex aggregations or calculations

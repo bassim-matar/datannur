@@ -252,21 +252,88 @@ export function activate(context: vscode.ExtensionContext): void {
       const model = models[0]
 
       // Build conversation with system prompt + schema + history
-      const systemPromptPath = path.join(
+      // Re-check for custom prompts (allows hot reload when files are created/deleted)
+      const currentCustomPromptPath = findPath(workspaceRoot, [
+        'data/system-prompt.txt',
+        'public/data/system-prompt.txt',
+        'app/data/system-prompt.txt',
+      ])
+
+      const currentAddonPromptPath = findPath(workspaceRoot, [
+        'data/system-prompt-addon.txt',
+        'public/data/system-prompt-addon.txt',
+        'app/data/system-prompt-addon.txt',
+      ])
+
+      // Use custom prompt if found, otherwise use default
+      const defaultPromptPath = path.join(
         context.extensionPath,
         'out',
         'system-prompt.txt',
       )
-      const systemPrompt = fs.readFileSync(systemPromptPath, 'utf-8')
+      let systemPrompt = currentCustomPromptPath
+        ? fs.readFileSync(currentCustomPromptPath, 'utf-8')
+        : fs.readFileSync(defaultPromptPath, 'utf-8')
+
+      // Security: Limit prompt size to prevent DoS or token overflow
+      const maxPromptSize = 100_000 // 100KB
+      if (systemPrompt.length > maxPromptSize) {
+        console.warn(
+          `⚠️ Custom prompt too large (${systemPrompt.length} chars), using default`,
+        )
+        stream.markdown(
+          `⚠️ Custom prompt file is too large (${systemPrompt.length} chars). Using default prompt instead. Max size: ${maxPromptSize} chars.\n\n`,
+        )
+        systemPrompt = fs.readFileSync(defaultPromptPath, 'utf-8')
+      } else if (currentCustomPromptPath) {
+        console.log(
+          '✅ Using custom system prompt from:',
+          currentCustomPromptPath,
+        )
+      }
+
+      // Append addon prompt if exists
+      if (currentAddonPromptPath) {
+        const addonPrompt = fs.readFileSync(currentAddonPromptPath, 'utf-8')
+        if (addonPrompt.length > maxPromptSize) {
+          console.warn(
+            `⚠️ Addon prompt too large (${addonPrompt.length} chars), skipping`,
+          )
+          stream.markdown(
+            `⚠️ Addon prompt file is too large (${addonPrompt.length} chars). Skipping addon. Max size: ${maxPromptSize} chars.\n\n`,
+          )
+        } else {
+          systemPrompt += '\n\n## CUSTOM INSTRUCTIONS\n\n' + addonPrompt
+          console.log('✅ Added addon prompt from:', currentAddonPromptPath)
+        }
+      }
+
       const schema = db.getSqlSchema()
 
+      // Add current date/time context for temporal queries
+      const now = new Date()
+      const currentContext = `## Current Date & Time
+
+Today is: ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+Current time: ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+ISO format: ${now.toISOString()}
+
+Use this information when users ask about "recent", "this week", "this month", "this year", etc.
+All database timestamps should be compared against this current date/time.`
+
       Logger.logPrompt(
-        systemPrompt + '\n\n' + schema + '\n\nUser: ' + request.prompt,
+        systemPrompt +
+          '\n\n' +
+          currentContext +
+          '\n\n' +
+          schema +
+          '\n\nUser: ' +
+          request.prompt,
       )
 
       let messages: vscode.LanguageModelChatMessage[] = [
         vscode.LanguageModelChatMessage.User(
-          `${systemPrompt}\n\n# Database Schema\n${schema}`,
+          `${systemPrompt}\n\n${currentContext}\n\n# Database Schema\n${schema}`,
         ),
       ]
 
