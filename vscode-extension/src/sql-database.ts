@@ -152,6 +152,110 @@ export class SqlDatabase {
         console.error(`Failed to create/load table ${tableName}:`, error)
       }
     }
+
+    // Create junction tables for many-to-many relationships
+    this.createJunctionTables()
+  }
+
+  private findColumnsEndingWith(
+    suffix: string,
+  ): { table: string; column: string; relatedTable: string }[] {
+    const results: { table: string; column: string; relatedTable: string }[] =
+      []
+
+    for (const [tableName, schema] of Object.entries(this.schemas)) {
+      const properties = schema.items.properties
+
+      for (const columnName of Object.keys(properties)) {
+        if (columnName.endsWith(suffix)) {
+          results.push({
+            table: tableName,
+            column: columnName,
+            relatedTable: columnName.replace(suffix, ''),
+          })
+        }
+      }
+    }
+
+    return results
+  }
+
+  private createJunctionTables(): void {
+    if (!this.db) return
+
+    const junctions = this.findColumnsEndingWith('_ids')
+
+    for (const { table, column, relatedTable } of junctions) {
+      const junctionTable = `${table}_${relatedTable}`
+      const tableIdCol = `${table}_id`
+      const relatedIdCol = `${relatedTable}_id`
+
+      try {
+        // Create junction table
+        this.db.run(`
+          CREATE TABLE "${junctionTable}" (
+            "${tableIdCol}" TEXT NOT NULL,
+            "${relatedIdCol}" TEXT NOT NULL,
+            PRIMARY KEY ("${tableIdCol}", "${relatedIdCol}")
+          )
+        `)
+
+        // Add schema info for getSqlSchema()
+        this.schemas[junctionTable] = {
+          title: `${table} ↔ ${relatedTable} Junction`,
+          description: `Many-to-many relationship between ${table} and ${relatedTable}. Auto-generated from ${table}.${column}.`,
+          items: {
+            required: [tableIdCol, relatedIdCol],
+            properties: {
+              [tableIdCol]: {
+                type: 'string',
+                description: `Foreign key to ${table}.id`,
+              },
+              [relatedIdCol]: {
+                type: 'string',
+                description: `Foreign key to ${relatedTable}.id`,
+              },
+            },
+          },
+        }
+
+        // Populate junction table from _ids column
+        const rows = this.db.exec(`SELECT id, "${column}" FROM "${table}"`)
+
+        if (rows.length > 0 && rows[0].values.length > 0) {
+          const stmt = this.db.prepare(
+            `INSERT INTO "${junctionTable}" ("${tableIdCol}", "${relatedIdCol}") VALUES (?, ?)`,
+          )
+
+          for (const row of rows[0].values) {
+            const id = row[0]
+            const idsString = row[1]
+
+            if (idsString && typeof idsString === 'string') {
+              const ids = idsString
+                .split(',')
+                .map(s => s.trim())
+                .filter(Boolean)
+
+              for (const relatedId of ids) {
+                stmt.run([id, relatedId])
+              }
+            }
+          }
+
+          stmt.free()
+        }
+
+        console.log(
+          `✅ Created junction table: ${junctionTable} (${this.db.exec(`SELECT COUNT(*) FROM "${junctionTable}"`)[0].values[0][0]} rows)`,
+        )
+      } catch (error) {
+        console.error(
+          `Failed to create junction table ${junctionTable}:`,
+          error,
+        )
+      }
+    }
   }
 
   private getSqlType(jsonType: string | string[]): string {
