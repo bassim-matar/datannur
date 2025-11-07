@@ -51,7 +51,6 @@ datannur is a client-side data catalog designed to organize and explore datasets
     - [app-name](#app-name)
     - [path](#path)
     - [db-key (Optional)](#db-key-optional)
-  - [Compact File Format](#compact-file-format)
 - [License](#license)
 
 ## Demo
@@ -115,8 +114,8 @@ Here is the top-level structure:
 datannur uses a client-side relational database powered by [jsonjsdb](https://github.com/bassim-matar/jsonjsdb). Your metadata must be structured as a relational database with specific requirements:
 
 - **Database location**: By default in `/data/db/` folder (see [path](#path) for customization options)
-- **Tables**: Represented by `.json.js` files (one file per table)
-- **Table registry**: `__table__.json.js` file lists all available tables
+- **Tables**: Each table is stored in two files (`.json` and `.json.js`)
+- **Table registry**: `__table__.json` file lists all available tables
 - **Primary keys**: Must be a column named `id`
 - **Foreign keys**: Columns named after the foreign table with `_id` suffix (e.g., `dataset_id`)
 - **Many-to-many relationships**: Two approaches available:
@@ -125,53 +124,62 @@ datannur uses a client-side relational database powered by [jsonjsdb](https://gi
 
 ### File Format Specifications
 
-Each `.json.js` file contains standard JSON data (array of objects) preceded by a JavaScript assignment line:
+Each table is stored in two formats:
 
-```javascript
-jsonjs.data['dataset'] = [
+**`.json` files** - Standard JSON format (source of truth, editable):
+
+```json
+[
   {
-    id: 1,
-    name: 'Example item',
-    description: 'Item description',
+    "id": 1,
+    "name": "Example item",
+    "description": "Item description"
   },
   {
-    id: 2,
-    name: 'Another item',
-    description: 'Another description',
-  },
+    "id": 2,
+    "name": "Another item",
+    "description": "Another description"
+  }
 ]
 ```
 
-The format combines:
+**`.json.js` files** - Compact format (auto-generated, optimized for browser):
 
-- **JavaScript assignment**: `jsonjs.data["table_name"] = `
-- **Standard JSON**: Array of objects with your data
+```javascript
+jsonjs.data['dataset'] = [
+  ['id', 'name', 'description'],
+  [1, 'Example item', 'Item description'],
+  [2, 'Another item', 'Another description'],
+]
+```
+
+> **💡 Note:** Both files are generated automatically by jsonjsdb-builder. Edit only the `.json` files - the `.json.js` files are derived for optimal browser performance
 
 #### Table Registry
 
-The `__table__.json.js` file serves as a registry of all available tables in your database:
+The `__table__.json` file serves as a registry of all available tables in your database:
 
-```javascript
-jsonjs.data['__table__'] = [
+```json
+[
   {
-    name: 'dataset',
-    last_modif: 1753608552,
+    "name": "dataset",
+    "last_modif": 1753608552
   },
   {
-    name: 'folder',
-    last_modif: 1757018090,
+    "name": "folder",
+    "last_modif": 1757018090
   },
   {
-    name: '__table__',
-    last_modif: 1757018100,
-  },
+    "name": "__table__",
+    "last_modif": 1757018100
+  }
 ]
 ```
 
 **Key features:**
 
-- **name**: Table name (must match the corresponding `.json.js` filename)
-- **last_modif**: Unix timestamp of last modification, used for caching optimization
+- **name**: Table name (must match the corresponding `.json` and `.json.js` filenames)
+- **last_modif**: Unix timestamp of last modification (in seconds), used for caching optimization
 - **Special entry**: The `"__table__"` entry tracks the overall metadata update time, displayed in the catalog interface
 
 ### Data Schema Overview
@@ -184,26 +192,26 @@ The catalog supports several entities with flexible relationships. All tables ar
 
 #### Configuration Options
 
-The `config.json.js` file allows you to customize various application settings:
+The `config.json` file allows you to customize various application settings:
 
-```javascript
-jsonjs.data['config'] = [
+```json
+[
   {
-    id: 'contact_email',
-    value: 'contact@yourdomain.com',
+    "id": "contact_email",
+    "value": "contact@yourdomain.com"
   },
   {
-    id: 'filter_1',
-    value: 'open_data : Open Data',
+    "id": "filter_1",
+    "value": "open_data : Open Data"
   },
   {
-    id: 'filter_2',
-    value: 'closed_data : Closed Data',
+    "id": "filter_2",
+    "value": "closed_data : Closed Data"
   },
   {
-    id: 'banner',
-    value: '![main-banner no_caption](data/img/main-banner.png)',
-  },
+    "id": "banner",
+    "value": "![main-banner no_caption](data/img/main-banner.png)"
+  }
 ]
 ```
 
@@ -224,12 +232,12 @@ The "About" content (both homepage tab and dedicated page) is composed of three 
 
 ### Excel to jsonjsdb format
 
-- Use the script `node-scripts/sync-db.ts` to convert Excel files to the required `.json.js` format.
+- Use the script `node-scripts/sync-db.ts` to convert Excel files to both `.json` and `.json.js` formats
 - Run with:
   ```bash
   npm run sync-db
   ```
-- The script supports a watch mode: any changes to your Excel files are automatically detected and converted to `.json.js`, keeping your metadata up to date in real time.
+- The script supports watch mode: any changes to your Excel files are automatically detected and converted, keeping your metadata up to date in real time
 
 ## Updates
 
@@ -441,18 +449,6 @@ The `data-db-key` parameter provides security enhancement against data exfiltrat
 ```
 
 This configuration expects your data files to be in `/data/db/{key}/`, making file paths unpredictable to malicious scripts.
-
-### Compact File Format
-
-For large datasets, you can use a more compact file format (list of lists) to reduce file size and improve loading performance. It can also be minified.
-
-```javascript
-jsonjs.data['table_name'] = [
-  ['id', 'name', 'description'],
-  [1, 'Example item', 'Item description'],
-  [2, 'Another item', 'Another description'],
-]
-```
 
 ## License
 
