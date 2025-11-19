@@ -47,13 +47,12 @@
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) & {
     div.dt-buttons {
       position: fixed;
-      right: 7px;
+      right: calc(7px + var(--chat-width));
       top: 40px;
       width: 40px;
-      z-index: 25;
       &[is-open='true'] {
         background: $background-1;
       }

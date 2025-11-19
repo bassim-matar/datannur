@@ -236,7 +236,7 @@
       z-index: 40;
       top: 2.5px;
       left: 680px;
-      right: 3em;
+      right: calc(3em + var(--chat-width));
       margin-right: 0px;
       overflow: hidden;
       background: $background-2;
@@ -266,7 +266,7 @@
 
     #header-search-input {
       position: relative;
-      width: calc(100vw - 730px);
+      width: calc(var(--app-width) - 730px);
       margin: 0;
       padding-left: 3.3rem;
       background: transparent;
@@ -323,19 +323,19 @@
     }
   }
 
-  @media screen and (max-width: 1023px) {
+  :global(body.mobile) {
     .header-search-item .search-bar-container.homepage {
       left: 50px;
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .header-search-item .search-bar-container.homepage,
     .header-search-item .search-bar-container.page-search {
-      left: 0px;
-      right: 0px;
+      left: 45px;
+      right: calc(45px + var(--chat-width));
       top: 80px;
-      max-width: 100vw;
+      max-width: calc(var(--app-width) - 90px);
     }
   }
 

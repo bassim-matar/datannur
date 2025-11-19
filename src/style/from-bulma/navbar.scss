@@ -1,12 +1,8 @@
-body {
-  padding-top: 3.25rem;
-}
-
 .navbar.is-fixed-top {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  right: var(--chat-width);
   z-index: 30;
 }
 
@@ -131,7 +127,7 @@ a.navbar-item,
   padding-right: 1.5rem;
 }
 
-@media screen and (min-width: 1024px) {
+body.desktop {
   .navbar,
   .navbar-menu,
   .navbar-start,
@@ -191,7 +187,7 @@ a.navbar-item,
   }
 }
 
-@media screen and (max-width: 1023px) {
+body.mobile {
   .navbar-brand .navbar-item,
   .navbar-tabs .navbar-item {
     align-items: center;

@@ -64,14 +64,14 @@
       width: 100%;
     }
   }
-  @media screen and (max-width: 1023px) {
+  :global(body.mobile) {
     .description-wrapper {
       display: block;
       width: 100%;
       padding-top: 0;
     }
   }
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .description-wrapper {
       .content {
         padding-top: 0px;

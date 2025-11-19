@@ -3,10 +3,10 @@
   import {
     onPageHomepage,
     onPageSearch,
-    isSmallMenu,
     isSsgRendering,
     router,
   } from 'svelte-fileapp'
+  import { isMobile } from '@lib/viewport-manager'
   import logo from '@img/logo.png'
   import logoDark from '@img/logo-dark.png'
   import Loading from '@frame/Loading.svelte'
@@ -33,6 +33,12 @@
     )
     elem?.click()
   }
+
+  $effect(() => {
+    if (!$isMobile && $headerOpen) {
+      closeMenu()
+    }
+  })
 
   $whenAppReady.then(() => (loading = false))
 </script>
@@ -150,7 +156,7 @@
     </div>
 
     <div class="navbar-end">
-      {#if $isSmallMenu && !isSsgRendering}
+      {#if $isMobile && !isSsgRendering}
         <Footer menuMobile={true} />
       {/if}
     </div>
@@ -164,6 +170,7 @@
     background: $background-1;
     border-bottom: 1px solid $color-5;
     border-color: $color-5;
+    z-index: 150;
     transition:
       border-color $transition-basic-1,
       box-shadow $transition-basic-1;
@@ -236,7 +243,7 @@
     }
   }
 
-  @media screen and (max-width: $menu-mobile-limit) {
+  :global(body.mobile) {
     .search-bar-btn-wrapper {
       display: block;
     }
@@ -251,12 +258,10 @@
     .navbar-menu {
       padding-left: 1.75rem;
       padding-right: 1.75rem;
-      margin-left: 7px;
-      margin-right: 7px;
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .navbar .navbar-brand {
       padding-left: 15px;
       padding-right: 0;
@@ -272,10 +277,13 @@
     }
   }
 
-  .visible-on-mobile {
-    display: none;
-    @media screen and (max-width: $menu-mobile-limit) {
+  :global(body.mobile) {
+    .visible-on-mobile {
       display: initial;
     }
+  }
+
+  .visible-on-mobile {
+    display: none;
   }
 </style>

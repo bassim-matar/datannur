@@ -157,6 +157,7 @@
     overflow-x: auto;
     z-index: 1;
     position: relative;
+    max-width: var(--app-width);
     @include scrollbar-light();
 
     & > ul {

@@ -2,7 +2,8 @@
   import MiniMasonry from 'minimasonry'
   import { onMount, onDestroy } from 'svelte'
   import Icon from '@layout/Icon.svelte'
-  import { documentWidth, onPageHomepage } from 'svelte-fileapp'
+  import { onPageHomepage } from 'svelte-fileapp'
+  import { documentWidth } from '@lib/viewport-manager'
   import { getColor } from '@lib/util'
   import { entityNames } from '@lib/constant'
   import { allTabs } from '@lib/store'
@@ -29,7 +30,7 @@
   onMount(() => {
     masonry = new MiniMasonry({
       container: '.all-stat-container',
-      baseWidth: Math.min(documentWidth - 20, 300),
+      baseWidth: Math.min($documentWidth - 20, 300),
       gutter: 20,
       ultimateGutter: 20,
     })
@@ -38,6 +39,14 @@
 
   onDestroy(() => {
     masonry?.destroy()
+  })
+
+  $effect(() => {
+    void $documentWidth
+    if (masonry) {
+      masonry.conf.baseWidth = Math.min($documentWidth - 20, 300)
+      updateLayout()
+    }
   })
 
   function updateNbItemVisible(entities: Stat[]) {
@@ -211,13 +220,13 @@
     }
   }
 
-  @media screen and (max-width: $menu-mobile-limit) {
+  :global(body.mobile) {
     .main-wrapper.homepage .all-stat-container-wrapper {
       max-height: max(calc(100vh - 250px), 80px);
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .btns {
       padding-left: 10px;
       .button {

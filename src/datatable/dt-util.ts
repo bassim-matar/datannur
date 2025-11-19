@@ -1,4 +1,5 @@
 import { UrlHash } from 'svelte-fileapp'
+import { viewportManager } from '@lib/viewport-manager'
 import Options from '@lib/options'
 import { getPercent } from '@lib/util'
 import type { Row, Column } from '@type'
@@ -53,7 +54,7 @@ export function getNbItem(dt: Api, cleanData: Row[]) {
 
 export function getNbSticky(columns: Column[]) {
   let nbSticky = 1
-  if (window.innerWidth > 1023) {
+  if (viewportManager.getAppWidth() > 1023) {
     for (const column of columns) {
       if (column.name === 'entity') nbSticky += 1
       if (column.name === 'isFavorite') nbSticky += 1

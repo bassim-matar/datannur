@@ -12,6 +12,7 @@
   import { isMobile } from 'svelte-fileapp'
   import { isBigLimit } from '@lib/constant'
   import { tabSelected, allTablesLoaded, allTabs } from '@lib/store'
+  import { appWidth } from '@lib/viewport-manager'
   import { extendable } from '@lib/extendable'
   import { setCurrentTabData } from '@lib/tooltip-events'
   import Exporter from './exporter/exporter'
@@ -94,7 +95,7 @@
     metaPath,
     nbRowLoading,
   )
-  const nbSticky = getNbSticky(columnsCopy)
+  let nbSticky = $state(getNbSticky(columnsCopy))
 
   const clickableRows = ![
     'value',
@@ -210,6 +211,18 @@
   function onResize() {
     datatable?.columns?.adjust()
   }
+
+  $effect(() => {
+    void $appWidth
+    if (datatable) {
+      const newNbSticky = getNbSticky(columnsCopy)
+
+      if (newNbSticky !== nbSticky) {
+        nbSticky = newNbSticky
+        datatable.fixedColumns().left(newNbSticky)
+      }
+    }
+  })
 
   const tabSelectedUnsubscribe = tabSelected.subscribe(tab => {
     if (tab && [tab.key, tab.icon].includes(entity)) {
@@ -830,11 +843,12 @@
           }
         }
 
-        @media screen and (max-width: 600px) {
+        :global(body.small-mobile) & {
           div.dt-buttons .search-option {
             position: fixed;
-            top: 40px;
-            right: 52px;
+            top: 60px;
+            right: calc(52px + var(--chat-width));
+            z-index: 999;
           }
         }
       }

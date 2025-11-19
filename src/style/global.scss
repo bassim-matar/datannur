@@ -50,16 +50,6 @@ html.dark-mode {
   --color-type: #{$color-3-light};
 }
 
-html,
-body {
-  width: 100%;
-  margin: 0;
-  overflow-y: auto;
-  color: var(--color-1);
-  font-family: 'Helvetica Neue', sans-serif;
-  transition: font-weight $transition-basic-1;
-}
-
 html {
   -webkit-tap-highlight-color: transparent;
   background: $background-1;
@@ -72,11 +62,32 @@ html {
 }
 
 body {
+  font-family:
+    BlinkMacSystemFont,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    Helvetica,
+    Arial,
+    sans-serif;
+  background: $background-1;
+  color: $color-1;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   min-height: 100%;
-  background: $background-1;
   flex-direction: column;
   box-sizing: border-box;
+  width: 100%;
+  transition: font-weight $transition-basic-1;
 }
 
 a {
@@ -301,13 +312,13 @@ html.dark-mode {
   }
 }
 
-@media screen and (min-width: 601px) {
+body:not(.small-mobile) {
   .section {
     padding: 0 3rem;
   }
 }
 
-@media screen and (max-width: 600px) {
+body.small-mobile {
   .section {
     padding: 0;
   }

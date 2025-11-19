@@ -13,6 +13,7 @@
   import 'datatables.net-scroller-bm/css/scroller.bulma.min.css'
   import 'jquery-powertip/dist/css/jquery.powertip.min.css'
   import '@src/style/global.scss'
+  import '@lib/viewport-manager'
   import IconSprite from '@layout/IconSprite.svelte'
   import CheckDb from '@src/app-mode/CheckDb.svelte'
   import Main from '@src/app-mode/Main.svelte'

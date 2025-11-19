@@ -104,7 +104,7 @@
     font-size: 1.5rem;
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .fitty-wrapper {
       padding-left: 20px;
       padding-right: 20px;

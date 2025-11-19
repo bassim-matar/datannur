@@ -87,13 +87,13 @@
     }
   }
 
-  @media screen and (max-width: $menu-mobile-limit) {
+  :global(body.mobile) {
     .about-file-wrapper.homepage {
       max-height: max(calc(100vh - 175px), 80px);
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .content {
       padding: 1.5rem 1.75rem;
     }

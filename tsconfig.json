@@ -26,6 +26,7 @@
       "@img/*": ["src/assets/img/*"],
       "@lib/*": ["src/lib/*"],
       "@layout/*": ["src/layout/*"],
+      "@llm/*": ["src/llm/*"],
       "@markdown/*": ["src/assets/markdown/*"],
       "@page/*": ["src/page/*"],
       "@search/*": ["src/search/*"],
