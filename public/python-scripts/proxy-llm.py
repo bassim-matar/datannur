@@ -173,6 +173,8 @@ class ProxyHandler(BaseHTTPRequestHandler):
             post_data = self.rfile.read(content_length)
             payload = json.loads(post_data.decode("utf-8"))
 
+            print(f"[DEBUG] Chat payload: {json.dumps(payload, indent=2)}")
+
             context = ssl.create_default_context()
             conn = http.client.HTTPSConnection(
                 "api.infomaniak.com", context=context, timeout=None
@@ -195,6 +197,21 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 headers,
             )
             response = conn.getresponse()
+
+            print(f"[DEBUG] Infomaniak response status: {response.status}")
+            print(f"[DEBUG] Infomaniak response headers: {dict(response.getheaders())}")
+
+            # Read response body for error details if status >= 400
+            if response.status >= 400:
+                error_body = response.read().decode("utf-8")
+                print(f"[DEBUG] Infomaniak error response: {error_body}")
+                self.send_response(response.status)
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(error_body.encode())
+                conn.close()
+                return
 
             self.send_response(response.status)
             self.send_header("Access-Control-Allow-Origin", "*")
@@ -224,7 +241,10 @@ class ProxyHandler(BaseHTTPRequestHandler):
                     pass
 
         except Exception as e:
+            import traceback
+
             print(f"Chat error: {e}")
+            print(f"Traceback: {traceback.format_exc()}")
             try:
                 self._send_json_response(500, {"error": str(e)})
             except:

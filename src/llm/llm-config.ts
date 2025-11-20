@@ -99,25 +99,38 @@ export async function setProxyCredentials(
  * Check if credentials are configured in proxy
  */
 export async function checkProxyStatus(): Promise<{
+  available: boolean
   configured: boolean
   error?: string
 }> {
   const proxyURL = defaultLLMConfig.proxyURL
 
   if (!proxyURL) {
-    return { configured: false, error: 'Proxy server not available' }
+    return {
+      available: false,
+      configured: false,
+      error: 'Proxy URL not configured',
+    }
   }
 
   try {
     const response = await fetch(`${proxyURL}/status`)
 
     if (!response.ok) {
-      return { configured: false, error: 'Failed to check status' }
+      return {
+        available: true,
+        configured: false,
+        error: 'Failed to check status',
+      }
     }
 
     const result = (await response.json()) as { configured: boolean }
-    return { configured: result.configured }
-  } catch (error) {
-    return { configured: false, error: `Cannot connect to proxy: ${error}` }
+    return { available: true, configured: result.configured }
+  } catch {
+    return {
+      available: false,
+      configured: false,
+      error: `Cannot connect to proxy server`,
+    }
   }
 }

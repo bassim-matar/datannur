@@ -127,6 +127,17 @@ export async function chatCompletion(
     stream,
   }
 
+  console.log('=== LLM REQUEST PAYLOAD ===')
+  console.log('Model:', payload.model)
+  console.log('Messages:', payload.messages.length)
+  console.log('Tools:', payload.tools?.length ?? 0)
+  console.log(
+    '\nSystem prompt length:',
+    payload.messages[0]?.content?.length ?? 0,
+  )
+  console.log('\nFull payload:', payload)
+  console.log('=== END PAYLOAD ===\n')
+
   const useProxy = !!config.proxyURL
 
   if (!useProxy) {

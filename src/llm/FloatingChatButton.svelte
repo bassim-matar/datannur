@@ -3,15 +3,16 @@
   import { isHttp } from 'svelte-fileapp'
 
   let isOpen = $state(false)
+  let isProxyUp = $state(false)
 
   const toggleChat = () => {
     isOpen = !isOpen
   }
 </script>
 
-<LLMChatPanel bind:isOpen />
+<LLMChatPanel bind:isOpen bind:isProxyUp />
 
-{#if !isOpen && isHttp}
+{#if !isOpen && isHttp && isProxyUp}
   <button
     class="floating-chat-btn"
     onclick={toggleChat}

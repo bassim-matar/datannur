@@ -11,9 +11,8 @@
 import db from '@db'
 import { router } from 'svelte-fileapp'
 import Favorites from '@favorite/favorites'
-import MainFilter from '@lib/main-filter'
 import Search from '@search/search'
-import type { EntityName, Filter } from '@type'
+import type { EntityName } from '@type'
 
 /**
  * Tool definitions for LLM
@@ -23,6 +22,7 @@ import type { EntityName, Filter } from '@type'
 export type LLMTool = {
   name: string
   description: string
+  descriptionFr?: string
   parameters: {
     type: 'object'
     properties: {
@@ -40,6 +40,7 @@ export type LLMTool = {
 const findEntities: LLMTool = {
   name: 'findEntities',
   description: 'Find entities matching criteria. Returns array of entities.',
+  descriptionFr: "Recherche d'entités",
   parameters: {
     type: 'object',
     properties: {
@@ -84,6 +85,7 @@ const findEntities: LLMTool = {
 const getEntity: LLMTool = {
   name: 'getEntity',
   description: 'Get a single entity by ID',
+  descriptionFr: "Détails d'une entité",
   parameters: {
     type: 'object',
     properties: {
@@ -115,6 +117,7 @@ const getEntity: LLMTool = {
 const countEntities: LLMTool = {
   name: 'countEntities',
   description: 'Count entities matching criteria',
+  descriptionFr: "Comptage d'entités",
   parameters: {
     type: 'object',
     properties: {
@@ -156,6 +159,7 @@ const countEntities: LLMTool = {
 const searchInCatalog: LLMTool = {
   name: 'searchInCatalog',
   description: 'Full-text search across datasets and variables',
+  descriptionFr: 'Recherche texte intégral',
   parameters: {
     type: 'object',
     properties: {
@@ -207,6 +211,7 @@ const searchInCatalog: LLMTool = {
 const groupBy: LLMTool = {
   name: 'groupBy',
   description: 'Group entities by field and count occurrences',
+  descriptionFr: 'Groupement et comptage',
   parameters: {
     type: 'object',
     properties: {
@@ -257,6 +262,7 @@ const groupBy: LLMTool = {
 const getStatistics: LLMTool = {
   name: 'getStatistics',
   description: 'Get statistical summary of a numeric field',
+  descriptionFr: 'Statistiques',
   parameters: {
     type: 'object',
     properties: {
@@ -309,6 +315,7 @@ const getRelatedEntities: LLMTool = {
   name: 'getRelatedEntities',
   description:
     'Get entities related to a given entity (e.g., variables of a dataset)',
+  descriptionFr: 'Entités liées',
   parameters: {
     type: 'object',
     properties: {
@@ -376,6 +383,7 @@ const getRelatedEntities: LLMTool = {
 const navigate: LLMTool = {
   name: 'navigate',
   description: 'Navigate to a page in the app',
+  descriptionFr: 'Navigation',
   parameters: {
     type: 'object',
     properties: {
@@ -399,6 +407,7 @@ const navigate: LLMTool = {
 const toggleFavorite: LLMTool = {
   name: 'toggleFavorite',
   description: 'Add or remove entity from favorites',
+  descriptionFr: 'Favoris',
   parameters: {
     type: 'object',
     properties: {
@@ -450,44 +459,6 @@ const toggleFavorite: LLMTool = {
 }
 
 /**
- * Filter tools
- */
-
-const applyFilter: LLMTool = {
-  name: 'applyFilter',
-  description: 'Apply filters to the current view',
-  parameters: {
-    type: 'object',
-    properties: {
-      filters: {
-        type: 'object',
-        description:
-          'Filter configuration (e.g., {type: "panel", period: {start: "2020"}})',
-      },
-    },
-    required: ['filters'],
-  },
-  handler: ((params: { filters: Filter }) => {
-    MainFilter.save([params.filters])
-    return { success: true, filters: params.filters }
-  }) as (params: unknown) => unknown,
-}
-
-const clearFilters: LLMTool = {
-  name: 'clearFilters',
-  description: 'Clear all active filters',
-  parameters: {
-    type: 'object',
-    properties: {},
-    required: [],
-  },
-  handler: (() => {
-    MainFilter.save([])
-    return { success: true }
-  }) as (params: unknown) => unknown,
-}
-
-/**
  * All available tools
  */
 export const llmTools: LLMTool[] = [
@@ -507,10 +478,6 @@ export const llmTools: LLMTool[] = [
 
   // User data tools
   toggleFavorite,
-
-  // Filter tools
-  applyFilter,
-  clearFilters,
 ]
 
 export type ToolDefinition = {
@@ -543,6 +510,20 @@ export function getToolDefinitions(): ToolDefinition[] {
 }
 
 /**
+ * Get display name for a tool
+ */
+export function getToolDisplayName(
+  toolName: string,
+  locale: 'en' | 'fr' = 'fr',
+): string {
+  const tool = llmTools.find(t => t.name === toolName)
+  if (!tool) return toolName
+  return locale === 'fr' && tool.descriptionFr
+    ? tool.descriptionFr
+    : tool.description
+}
+
+/**
  * Execute a tool by name with parameters
  */
 export function executeTool(toolName: string, parameters: unknown): unknown {
@@ -560,108 +541,4 @@ export function executeTool(toolName: string, parameters: unknown): unknown {
       success: false,
     }
   }
-}
-
-/**
- * Get tools documentation for system prompt
- */
-export function getToolsDocumentation(): string {
-  return `
-# Available Tools
-
-You can call these functions to interact with the data catalog:
-
-## Query Tools
-
-**findEntities** - Find entities matching criteria
-- entity: dataset|variable|folder|institution|tag|modality|doc
-- criteria?: object (e.g., {type: "panel", folderId: "123"})
-- limit?: number (default: 50)
-
-**getEntity** - Get single entity by ID
-- entity: dataset|variable|folder|...
-- id: string
-
-**countEntities** - Count matching entities
-- entity: dataset|variable|folder|...
-- criteria?: object
-
-**searchInCatalog** - Full-text search
-- query: string
-- entityType?: dataset|variable|all
-- limit?: number (default: 20)
-
-## Analysis Tools
-
-**groupBy** - Group and count by field
-- entity: dataset|variable|folder|...
-- field: string (e.g., "type", "folderId")
-- criteria?: object
-
-**getStatistics** - Statistical summary of numeric field
-- entity: dataset|variable
-- field: string (e.g., "nbRow", "nbDistinct")
-- criteria?: object
-Returns: {count, sum, mean, min, max, median}
-
-**getRelatedEntities** - Get related entities
-- entityType: dataset|folder|institution
-- entityId: string
-- relationType: variables|datasets|tags|docs
-
-## Navigation Tools
-
-**navigate** - Navigate to page
-- path: string (e.g., "/dataset/123", "/")
-
-## User Data Tools
-
-**toggleFavorite** - Add/remove favorite
-- entity: dataset|variable|folder|...
-- id: string
-- action?: add|remove|toggle
-
-## Filter Tools
-
-**applyFilter** - Apply filters to view
-- filters: object
-
-**clearFilters** - Clear all filters
-
-## Usage Examples
-
-Find panel datasets:
-\`\`\`json
-{
-  "name": "findEntities",
-  "parameters": {
-    "entity": "dataset",
-    "criteria": {"type": "panel"},
-    "limit": 10
-  }
-}
-\`\`\`
-
-Count variables by type:
-\`\`\`json
-{
-  "name": "groupBy",
-  "parameters": {
-    "entity": "variable",
-    "field": "typeClean"
-  }
-}
-\`\`\`
-
-Get dataset statistics:
-\`\`\`json
-{
-  "name": "getStatistics",
-  "parameters": {
-    "entity": "dataset",
-    "field": "nbRow"
-  }
-}
-\`\`\`
-`.trim()
 }

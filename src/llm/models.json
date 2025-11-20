@@ -1,0 +1,32 @@
+[
+  {
+    "id": "qwen3",
+    "name": "Qwen3",
+    "description": "Le plus puissant - Polyvalent",
+    "category": "chat_large"
+  },
+  {
+    "id": "llama3",
+    "name": "Llama 3.3",
+    "description": "Conversations et raisonnement",
+    "category": "chat_large"
+  },
+  {
+    "id": "mistral24b",
+    "name": "Mistral Small 24B",
+    "description": "Vision et analyse d'images",
+    "category": "vision_medium"
+  },
+  {
+    "id": "gemma3n",
+    "name": "Gemma 3n",
+    "description": "Léger et rapide",
+    "category": "omni_small"
+  },
+  {
+    "id": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+    "name": "Qwen3 Coder",
+    "description": "Code, SQL et appels de fonctions",
+    "category": "code_large"
+  }
+]

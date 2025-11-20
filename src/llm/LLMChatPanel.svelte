@@ -1,6 +1,10 @@
 <script lang="ts">
   import { chatStream, transcribeAudio } from '@llm/llm-client'
-  import { buildLLMContext } from '@llm/llm-context'
+  import {
+    getToolDefinitions,
+    executeTool,
+    getToolDisplayName,
+  } from '@llm/llm-tools'
   import {
     isProxyAvailable,
     setProxyCredentials,
@@ -17,12 +21,19 @@
     windowWidth,
   } from '@lib/viewport-manager'
   import type { ChatMessage, TranscriptionResponse } from '@llm/llm-client'
+  import modelsConfig from './models.json'
+  import systemInstructions from './prompt/system-instructions.md?raw'
+  import toolsGuidelines from './prompt/tools-guidelines.md?raw'
+  import schemaDoc from './prompt/schema.md?raw'
 
   let messages = $state<ChatMessage[]>([])
   let input = $state('')
   let loading = $state(false)
   let abortController = $state<AbortController | null>(null)
-  let { isOpen = $bindable(false) } = $props<{ isOpen?: boolean }>()
+  let { isOpen = $bindable(false), isProxyUp = $bindable(false) } = $props<{
+    isOpen?: boolean
+    isProxyUp?: boolean
+  }>()
 
   let apiKey = $state('')
   let productId = $state('')
@@ -40,45 +51,18 @@
   let analyser: AnalyserNode | null = null
   let chatContainer = $state<HTMLElement | null>(null)
   let textareaRef = $state<HTMLTextAreaElement | null>(null)
+  let shouldAutoScroll = $state(true)
+  let chatPanelRef = $state<HTMLElement | null>(null)
+  let lastAssistantMessageRef = $state<HTMLElement | null>(null)
+  let lastAssistantMessageHeight = $state(0)
+  let chatContainerHeight = $state(0)
 
-  const models = [
-    {
-      id: 'qwen3',
-      name: 'Qwen3',
-      description: 'Le plus puissant - Polyvalent',
-      category: 'chat_large',
-    },
-    {
-      id: 'llama3',
-      name: 'Llama 3.3',
-      description: 'Conversations et raisonnement',
-      category: 'chat_large',
-    },
-    {
-      id: 'mistral24b',
-      name: 'Mistral Small 24B',
-      description: "Vision et analyse d'images",
-      category: 'vision_medium',
-    },
-    {
-      id: 'gemma3n',
-      name: 'Gemma 3n',
-      description: 'Léger et rapide',
-      category: 'omni_small',
-    },
-    {
-      id: 'Qwen/Qwen3-Coder-480B-A35B-Instruct',
-      name: 'Qwen3 Coder',
-      description: 'Code, SQL et appels de fonctions',
-      category: 'code_large',
-    },
-    {
-      id: 'swiss-ai/Apertus-70B-Instruct-2509',
-      name: 'Apertus 70B',
-      description: 'Éthique - Conforme AI Act',
-      category: 'chat_medium',
-    },
-  ]
+  const models = modelsConfig as {
+    id: string
+    name: string
+    description: string
+    category: string
+  }[]
   let selectedModel = $state(models[0]!)
   let showModelMenu = $state(false)
 
@@ -102,6 +86,16 @@
       return { ...msg, html: '' }
     }),
   )
+
+  let isExecutingTool = $derived.by(() => {
+    if (!loading) return false
+    const lastMsg = messages[messages.length - 1]
+    return (
+      lastMsg?.role === 'assistant' &&
+      lastMsg.tool_calls &&
+      lastMsg.tool_calls.length > 0
+    )
+  })
 
   $effect(() => {
     checkConfiguration()
@@ -133,13 +127,88 @@
     }
   })
 
+  $effect(() => {
+    if (shouldAutoScroll && chatContainer && loading) {
+      requestAnimationFrame(() => {
+        if (chatContainer) {
+          chatContainer.scrollTop = chatContainer.scrollHeight
+        }
+      })
+    }
+  })
+
+  $effect(() => {
+    if (!chatContainer) return
+
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        chatContainerHeight = entry.contentRect.height
+      }
+    })
+
+    observer.observe(chatContainer)
+
+    return () => {
+      observer.disconnect()
+    }
+  })
+
+  $effect(() => {
+    if (!lastAssistantMessageRef) return
+
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        lastAssistantMessageHeight = entry.contentRect.height
+      }
+    })
+
+    observer.observe(lastAssistantMessageRef)
+
+    return () => {
+      observer.disconnect()
+    }
+  })
+
+  let spacerHeight = $derived(
+    Math.max(0, chatContainerHeight - lastAssistantMessageHeight - 130),
+  )
+
+  function handleScroll(): void {
+    if (!chatContainer) return
+    const threshold = 100
+    const isNearBottom =
+      chatContainer.scrollHeight -
+        chatContainer.scrollTop -
+        chatContainer.clientHeight <
+      threshold
+    shouldAutoScroll = isNearBottom
+  }
+
+  /**
+   * Build complete system prompt for LLM
+   * Includes: instructions, current context, schema, and tools guidelines
+   */
+  function buildSystemPrompt() {
+    return `# DATANNUR DATA CATALOG ASSISTANT
+
+Current datetime: ${new Date().toISOString()}
+
+${systemInstructions}
+
+${schemaDoc}
+
+${toolsGuidelines}`
+  }
+
   async function checkConfiguration(): Promise<void> {
     if (!isProxyAvailable()) {
+      isProxyUp = false
       isConfigured = false
       return
     }
 
     const status = await checkProxyStatus()
+    isProxyUp = status.available
     isConfigured = status.configured
   }
 
@@ -172,27 +241,47 @@
       textareaRef.style.height = 'auto'
     }
 
-    // Scroll to bottom when user sends a message
-    setTimeout(() => {
-      if (chatContainer) {
-        chatContainer.scrollTop = chatContainer.scrollHeight
-      }
-    }, 0)
-
     loading = true
+    shouldAutoScroll = true
+    lastAssistantMessageHeight = 0
     abortController = new AbortController()
+    const currentAbortController = abortController
 
     const assistantMessage: ChatMessage = { role: 'assistant', content: '' }
     messages = [...messages, assistantMessage]
 
+    // Limite à 20 messages (10 échanges)
+    const maxMessages = 20
+    if (messages.length > maxMessages) {
+      messages = messages.slice(-maxMessages)
+    }
+
     try {
-      const context = buildLLMContext({ includeFullData: false })
       const systemMessage: ChatMessage = {
         role: 'system',
-        content: `Stats DB: ${context.stats.nbDataset} datasets, ${context.stats.nbVariable} variables`,
+        content: buildSystemPrompt(),
       }
 
       const allMessages = [systemMessage, ...messages.slice(0, -1)]
+
+      // Estimation tokens (approximation: 1 token ≈ 4 caractères)
+      const estimateTokens = (text: string) => Math.ceil(text.length / 4)
+      const totalTokens = allMessages.reduce((sum, msg) => {
+        const content = msg.content ?? ''
+        const tokens = estimateTokens(content)
+        console.log(
+          `[Tokens] ${msg.role}: ${tokens} tokens (${content.length} chars)`,
+        )
+        return sum + tokens
+      }, 0)
+
+      console.log(
+        '[Send Message] Calling chatStream with',
+        allMessages.length,
+        'messages, ~',
+        totalTokens,
+        'tokens',
+      )
 
       await chatStream(
         allMessages,
@@ -206,7 +295,97 @@
             },
           ]
         },
-        { model: selectedModel.id, signal: abortController.signal },
+        {
+          model: selectedModel.id,
+          signal: currentAbortController.signal,
+          tools: getToolDefinitions(),
+          onToolCall: async toolCall => {
+            try {
+              console.log(
+                '[Tool Call] Calling tool:',
+                toolCall.function.name,
+                'with args:',
+                toolCall.function.arguments,
+              )
+              const toolArgs = JSON.parse(
+                toolCall.function.arguments,
+              ) as Record<string, unknown>
+              const result = await executeTool(toolCall.function.name, toolArgs)
+              console.log('[Tool Call] Result:', result)
+
+              // Update assistant message with tool_calls
+              const lastAssistantIndex = messages.length - 1
+              messages = [
+                ...messages.slice(0, lastAssistantIndex),
+                {
+                  ...messages[lastAssistantIndex]!,
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
+                  tool_calls: [toolCall],
+                },
+              ]
+
+              // Add tool result message
+              messages = [
+                ...messages,
+                {
+                  role: 'tool',
+                  content: JSON.stringify(result),
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
+                  tool_call_id: toolCall.id,
+                  name: toolCall.function.name,
+                },
+              ]
+
+              console.log(
+                '[Tool Call] Messages before second chatStream:',
+                messages.length,
+              )
+
+              // Add new assistant message for the response
+              messages = [
+                ...messages,
+                {
+                  role: 'assistant',
+                  content: '',
+                },
+              ]
+
+              const updatedAllMessages = [
+                systemMessage,
+                ...messages.slice(0, -1),
+              ]
+
+              await chatStream(
+                updatedAllMessages,
+                (chunk: string) => {
+                  const lastIndex = messages.length - 1
+                  messages = [
+                    ...messages.slice(0, lastIndex),
+                    {
+                      ...messages[lastIndex]!,
+                      content: messages[lastIndex]!.content + chunk,
+                    },
+                  ]
+                },
+                {
+                  model: selectedModel.id,
+                  signal: currentAbortController.signal,
+                  tools: getToolDefinitions(),
+                },
+              )
+              console.log('[Tool Call] Second chatStream completed')
+            } catch (toolError) {
+              console.error('Tool execution error:', toolError)
+              messages = [
+                ...messages,
+                {
+                  role: 'assistant',
+                  content: `Erreur lors de l'exécution de l'outil: ${toolError instanceof Error ? toolError.message : String(toolError)}`,
+                },
+              ]
+            }
+          },
+        },
       )
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
@@ -415,7 +594,7 @@
   }
 </script>
 
-<div class="llm-chat-panel" class:open={isOpen}>
+<div class="llm-chat-panel" class:open={isOpen} bind:this={chatPanelRef}>
   <div class="chat-header">
     <button
       class="model-selector"
@@ -541,8 +720,11 @@
     </div>
   {:else}
     <div class="chat-container-wrapper">
-      <div class="fade-top"></div>
-      <div class="chat-container" bind:this={chatContainer}>
+      <div
+        class="chat-container"
+        bind:this={chatContainer}
+        onscroll={handleScroll}
+      >
         {#if messagesWithHtml.length === 0}
           <div class="empty-state">
             <i class="fa-solid fa-comment-dots"></i>
@@ -561,22 +743,65 @@
           </div>
         {/if}
 
-        {#each messagesWithHtml as message, i (i)}
-          <div class="message {message.role}">
+        <div>
+          {#each messagesWithHtml as message, i (i)}
             {#if message.role === 'user'}
-              <div class="user-bubble">
-                <div class="message-content">{message.content}</div>
+              <div class="message {message.role}">
+                <div class="user-bubble">
+                  <div class="message-content">{message.content}</div>
+                </div>
               </div>
-            {:else}
+            {:else if message.role === 'tool'}
+              <div class="message {message.role}">
+                <div class="tool-call-box">
+                  <div class="tool-call-header">
+                    <i class="fa-solid fa-database"></i>
+                    <span>{getToolDisplayName(message.name ?? 'unknown')}</span>
+                  </div>
+                </div>
+              </div>
+            {:else if message.role === 'assistant' && !message.tool_calls && message.content}
               <div
-                class="message-content markdown"
-                use:safeHtml={message.html ?? ''}
-              ></div>
+                class="message {message.role}"
+                bind:this={lastAssistantMessageRef}
+              >
+                <div
+                  class="message-content markdown"
+                  use:safeHtml={message.html ?? ''}
+                ></div>
+              </div>
             {/if}
-          </div>
-        {/each}
+          {/each}
+
+          {#if isExecutingTool}
+            <div class="message assistant">
+              <div class="tool-indicator">
+                <i class="fa-solid fa-database"></i>
+                <span>Interrogation de la base de données...</span>
+              </div>
+            </div>
+          {/if}
+
+          {#if loading && !isExecutingTool && messagesWithHtml.length > 0 && !messagesWithHtml[messagesWithHtml.length - 1]?.content}
+            <div class="message assistant">
+              <div class="loading-indicator">
+                <div class="loading-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          {/if}
+        </div>
+
+        {#if messages.length > 0}
+          <div
+            class="dynamic-spacer"
+            style="min-height: {spacerHeight}px;"
+          ></div>
+        {/if}
       </div>
-      <div class="fade-bottom"></div>
     </div>
 
     <div class="chat-input">
@@ -594,7 +819,7 @@
             }
           }}
           placeholder="Posez votre question..."
-          disabled={loading || isRecording || isProcessing}
+          disabled={isRecording || isProcessing}
           rows="1"
         ></textarea>
         <div class="input-buttons">
@@ -647,7 +872,7 @@
               type="button"
               class="send-btn"
               onclick={sendMessage}
-              disabled={!input.trim()}
+              disabled={!input.trim() || loading}
               aria-label="Envoyer"
             >
               <i class="fa-solid fa-paper-plane"></i>
@@ -676,6 +901,7 @@
     overflow: hidden;
     transform: translateX(100%);
     transition: transform 0.3s ease;
+    overscroll-behavior: contain;
 
     &.open {
       transform: translateX(0);
@@ -846,26 +1072,6 @@
     background: $background-1;
   }
 
-  .fade-top,
-  .fade-bottom {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 40px;
-    pointer-events: none;
-    z-index: 10;
-  }
-
-  .fade-top {
-    top: 0;
-    background: linear-gradient(to bottom, $background-1 0%, transparent 100%);
-  }
-
-  .fade-bottom {
-    bottom: 0;
-    background: linear-gradient(to top, $background-1 0%, transparent 100%);
-  }
-
   .chat-container {
     height: 100%;
     padding: 1.5rem;
@@ -874,6 +1080,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overscroll-behavior: contain;
 
     &::-webkit-scrollbar {
       width: 6px;
@@ -1098,14 +1305,21 @@
     }
   }
 
+  .dynamic-spacer {
+    min-height: 50vh;
+    flex-shrink: 0;
+  }
+
   .message {
-    padding: 0.5rem;
+    padding: 0 0.5rem;
+    margin-bottom: 0;
     animation: slideIn 0.2s ease-out;
 
     &.user {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
+      margin: 10px auto;
     }
 
     .user-bubble {
@@ -1204,6 +1418,110 @@
     &.assistant {
       background: transparent;
     }
+
+    &.tool {
+      background: transparent;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .tool-call-box {
+      display: inline-flex;
+      align-items: center;
+      background: $background-2;
+      border: 1px solid $color-5;
+      border-radius: $rounded;
+      padding: 0.4rem 0.75rem;
+      margin: 0.25rem 0;
+      font-size: 0.85em;
+      color: $color-2;
+      opacity: 0.9;
+
+      .tool-call-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+          font-size: 0.9em;
+          color: $color-3;
+        }
+
+        span {
+          font-weight: 500;
+        }
+      }
+    }
+
+    .tool-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: $background-2;
+      border-radius: $rounded;
+      color: $color-3;
+      font-size: 0.9em;
+      opacity: 0.8;
+      animation: pulse 1.5s ease-in-out infinite;
+
+      i {
+        font-size: 0.85em;
+      }
+    }
+
+    .loading-indicator {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+
+      .loading-dots {
+        display: flex;
+        gap: 0.4rem;
+
+        span {
+          width: 8px;
+          height: 8px;
+          background: $color-3;
+          border-radius: 50%;
+          animation: bounce 1.4s ease-in-out infinite;
+
+          &:nth-child(1) {
+            animation-delay: 0s;
+          }
+
+          &:nth-child(2) {
+            animation-delay: 0.2s;
+          }
+
+          &:nth-child(3) {
+            animation-delay: 0.4s;
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes bounce {
+    0%,
+    80%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    40% {
+      transform: translateY(-10px);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   @keyframes slideIn {
@@ -1237,7 +1555,6 @@
       background: $background-2;
       color: $color-1;
       transition: all 0.15s ease;
-      line-height: 1.5;
       min-height: 44px;
       max-height: 200px;
       height: 44px;
