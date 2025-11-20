@@ -1,5 +1,6 @@
 <script lang="ts">
-  import LLMChatPanel from '@component/llm/LLMChatPanel.svelte'
+  import LLMChatPanel from '@llm/LLMChatPanel.svelte'
+  import { isHttp } from 'svelte-fileapp'
 
   let isOpen = $state(false)
 
@@ -10,7 +11,7 @@
 
 <LLMChatPanel bind:isOpen />
 
-{#if !isOpen}
+{#if !isOpen && isHttp}
   <button
     class="floating-chat-btn"
     onclick={toggleChat}

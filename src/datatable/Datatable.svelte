@@ -843,12 +843,15 @@
           }
         }
 
-        :global(body.small-mobile) & {
-          div.dt-buttons .search-option {
+        div.dt-buttons .search-option {
+          :global(body.small-mobile) & {
             position: fixed;
             top: 60px;
             right: calc(52px + var(--chat-width));
             z-index: 999;
+          }
+          :global(body.window-small-mobile) & {
+            right: 52px;
           }
         }
       }

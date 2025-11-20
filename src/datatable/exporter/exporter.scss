@@ -47,19 +47,26 @@
     }
   }
 
-  :global(body.small-mobile) & {
-    div.dt-buttons {
+  div.dt-buttons {
+    :global(body.small-mobile) & {
       position: fixed;
       right: calc(7px + var(--chat-width));
       top: 40px;
       width: 40px;
       &[is-open='true'] {
         background: $background-1;
+        z-index: 20;
       }
       button.button:has(.fa-magnifying-glass-plus) {
         position: fixed;
         top: 40px;
         right: calc(50px + var(--chat-width));
+      }
+    }
+    :global(body.window-small-mobile) & {
+      right: 7px;
+      button.button:has(.fa-magnifying-glass-plus) {
+        right: 50px;
       }
     }
   }
