@@ -6,6 +6,10 @@
   z-index: 30;
 }
 
+body.window-small-mobile .navbar.is-fixed-top {
+  right: 0;
+}
+
 .navbar-brand {
   align-items: stretch;
   display: flex;

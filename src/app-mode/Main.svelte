@@ -1,14 +1,7 @@
 <script lang="ts">
   import db from '@db'
   import { whenAppReady, footerVisible } from '@lib/store'
-  import {
-    onPageHomepage,
-    onPageSearch,
-    UrlParam,
-    UrlHash,
-    hasTouchScreen,
-    isHttp,
-  } from 'svelte-fileapp'
+  import { UrlParam, UrlHash, hasTouchScreen, isHttp } from 'svelte-fileapp'
   import { isMobile } from '@lib/viewport-manager'
   import GenericRouter from 'svelte-fileapp/GenericRouter.svelte'
   import routerIndex from '@page/.router-index'
@@ -148,9 +141,7 @@
           <p>Si le problème persiste, contactez le support.</p>
         </div>
       {:else}
-        {#if ($isMobile && ($onPageSearch || $onPageHomepage)) || !$isMobile}
-          <SearchBar />
-        {/if}
+        <SearchBar />
         <GenericRouter
           {routerIndex}
           whenAppReady={$whenAppReady}

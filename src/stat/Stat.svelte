@@ -13,6 +13,19 @@
   import type { AttributWithValues } from './stat'
   import type { MainEntity, Log, MainEntityName } from '@type'
 
+  interface MiniMasonryExtended extends MiniMasonry {
+    conf: {
+      baseWidth: number
+      gutter: number
+      ultimateGutter: number
+      container: string | HTMLElement
+      minify?: boolean
+      surroundingGutter?: boolean
+      direction?: 'ltr' | 'rtl'
+      wedge?: boolean
+    }
+  }
+
   type Stat = {
     entity: MainEntityName | 'log'
     items: (MainEntity | Log)[]
@@ -25,7 +38,7 @@
   let visible: { [key: string]: boolean } = $state({})
   let loading = $state(false)
 
-  let masonry: MiniMasonry | undefined = undefined
+  let masonry: MiniMasonryExtended | undefined = undefined
 
   onMount(() => {
     masonry = new MiniMasonry({
@@ -33,7 +46,7 @@
       baseWidth: Math.min($documentWidth - 20, 300),
       gutter: 20,
       ultimateGutter: 20,
-    })
+    }) as MiniMasonryExtended
     updateLayout()
   })
 

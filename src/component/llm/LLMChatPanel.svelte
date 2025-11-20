@@ -13,7 +13,8 @@
   import {
     viewportManager,
     chatPanelWidth,
-    breakpoints,
+    windowBreakpoints,
+    windowWidth,
   } from '@lib/viewport-manager'
   import type { ChatMessage, TranscriptionResponse } from '@llm/llm-client'
 
@@ -107,17 +108,16 @@
   })
 
   $effect(() => {
-    if (typeof window !== 'undefined') {
-      let width = 0
-      if (isOpen) {
-        if (window.innerWidth <= breakpoints.smallMobile) {
-          width = window.innerWidth
-        } else {
-          width = chatPanelWidth as number
-        }
+    let width = 0
+    const currentWindowWidth = $windowWidth
+    if (isOpen) {
+      if (currentWindowWidth <= windowBreakpoints.smallMobile) {
+        width = currentWindowWidth
+      } else {
+        width = chatPanelWidth as number
       }
-      viewportManager.setChatWidth(width)
     }
+    viewportManager.setChatWidth(width)
   })
 
   $effect(() => {
@@ -475,7 +475,18 @@
         <i class="fa-solid fa-key"></i>
         <h3>Configuration</h3>
       </div>
-      <p>Enregistrez vos clés API</p>
+      <p>
+        Enregistrez vos clés API Infomaniak
+        <a
+          href="https://www.infomaniak.com/fr/hebergement/ai-services"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="config-link"
+        >
+          <i class="fa-solid fa-external-link"></i>
+          Obtenir mes clés
+        </a>
+      </p>
       <p class="config-note">
         <i class="fa-solid fa-info-circle"></i>
         Les clés sont stockées de manière sécurisée sur votre machine locale
@@ -954,6 +965,32 @@
       opacity: 0.8;
       font-size: 0.95rem;
       line-height: 1.5;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .config-link {
+      color: $color-3;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+
+      &:hover {
+        background: rgba($color-3, 0.1);
+        border-color: rgba($color-3, 0.3);
+      }
+
+      i {
+        font-size: 0.75rem;
+      }
     }
 
     .config-note {
@@ -1351,12 +1388,15 @@
     }
   }
 
-  :global(body.small-mobile) {
+  :global(body.window-small-mobile) {
     .llm-chat-panel {
       left: 0;
       width: 100%;
       border: 0;
       top: calc(3.25rem + 116px);
+      border-top: 1px solid $color-5;
+      border-top-left-radius: $rounded;
+      border-top-right-radius: $rounded;
     }
   }
 </style>

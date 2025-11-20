@@ -56,6 +56,11 @@
       &[is-open='true'] {
         background: $background-1;
       }
+      button.button:has(.fa-magnifying-glass-plus) {
+        position: fixed;
+        top: 40px;
+        right: calc(50px + var(--chat-width));
+      }
     }
   }
 }

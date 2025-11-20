@@ -4,7 +4,7 @@
   import Loading from '@frame/Loading.svelte'
   import Number from '@layout/Number.svelte'
   import { onMount } from 'svelte'
-  import { chatWidth } from '@lib/viewport-manager'
+  import { chatWidth, appWidth } from '@lib/viewport-manager'
   import type { Tab } from './tabs-helper'
 
   let {
@@ -36,9 +36,12 @@
     if (
       $chatWidth !== undefined &&
       activeTab !== tab.key &&
-      initialMinWidth > 0
+      initialMinWidth > 0 &&
+      $appWidth > 780
     ) {
       minWidth = initialMinWidth
+    } else if ($appWidth <= 780 && activeTab !== tab.key) {
+      minWidth = 0
     }
   })
 

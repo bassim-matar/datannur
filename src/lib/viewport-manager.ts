@@ -1,9 +1,15 @@
-import { writable, derived } from 'svelte/store'
+import { writable, derived, get } from 'svelte/store'
 
 export const chatPanelWidth = 420
 
 export const breakpoints = {
+  tinyMobile: 600,
   smallMobile: chatPanelWidth + 360, // chat width + min app width = 780px
+  mobile: 1023,
+} as const
+
+export const windowBreakpoints = {
+  smallMobile: 780,
   mobile: 1023,
 } as const
 
@@ -16,7 +22,12 @@ class ViewportManager {
   chatWidth = this._chatWidth
   appWidth = derived(
     [this._windowWidth, this._chatWidth],
-    ([$windowWidth, $chatWidth]: [number, number]) => $windowWidth - $chatWidth,
+    ([$windowWidth, $chatWidth]: [number, number]) => {
+      if ($windowWidth <= windowBreakpoints.smallMobile) {
+        return $windowWidth
+      }
+      return $windowWidth - $chatWidth
+    },
   )
 
   isMobile = derived(
@@ -34,18 +45,22 @@ class ViewportManager {
     ($appWidth: number) => $appWidth <= breakpoints.smallMobile,
   )
 
+  isTinyMobile = derived(
+    this.appWidth,
+    ($appWidth: number) => $appWidth <= breakpoints.tinyMobile,
+  )
+
   documentWidth = this.appWidth
+  windowWidth = this._windowWidth
+
+  private unsubscribe?: () => void
 
   constructor() {
     if (typeof window === 'undefined') return
 
-    // Initialize immediately
-    const initialWidth = window.innerWidth
-    this._windowWidth.set(initialWidth)
-
-    this.appWidth.subscribe(($appWidth: number) => {
-      const chatWidthValue = this.getChatWidth()
-      const windowWidthValue = this.getWindowWidth()
+    this.unsubscribe = this.appWidth.subscribe(($appWidth: number) => {
+      const $chatWidth = get(this._chatWidth)
+      const $windowWidth = get(this._windowWidth)
 
       document.documentElement.style.setProperty(
         '--chat-panel-width',
@@ -53,7 +68,7 @@ class ViewportManager {
       )
       document.documentElement.style.setProperty(
         '--chat-width',
-        `${chatWidthValue}px`,
+        `${$chatWidth}px`,
       )
       document.documentElement.style.setProperty(
         '--app-width',
@@ -62,10 +77,19 @@ class ViewportManager {
 
       document.body.classList.toggle(
         'small-mobile',
-        windowWidthValue <= breakpoints.smallMobile,
+        $appWidth <= breakpoints.smallMobile,
+      )
+      document.body.classList.toggle(
+        'tiny-mobile',
+        $appWidth <= breakpoints.tinyMobile,
       )
       document.body.classList.toggle('mobile', $appWidth <= breakpoints.mobile)
       document.body.classList.toggle('desktop', $appWidth > breakpoints.mobile)
+
+      document.body.classList.toggle(
+        'window-small-mobile',
+        $windowWidth <= windowBreakpoints.smallMobile,
+      )
 
       document.body.dataset.appWidth = String($appWidth)
     })
@@ -75,36 +99,12 @@ class ViewportManager {
     })
   }
 
+  destroy() {
+    this.unsubscribe?.()
+  }
+
   setChatWidth(width: number) {
     this._chatWidth.set(width)
-  }
-
-  getChatWidth(): number {
-    let width = 0
-    const unsubscribe = this._chatWidth.subscribe((w: number) => (width = w))
-    unsubscribe()
-    return width
-  }
-
-  getAppWidth(): number {
-    let width = 0
-    const unsubscribe = this.appWidth.subscribe((w: number) => (width = w))
-    unsubscribe()
-    return width
-  }
-
-  getIsMobile(): boolean {
-    let mobile = false
-    const unsubscribe = this.isMobile.subscribe((m: boolean) => (mobile = m))
-    unsubscribe()
-    return mobile
-  }
-
-  getWindowWidth(): number {
-    let width = 0
-    const unsubscribe = this._windowWidth.subscribe((w: number) => (width = w))
-    unsubscribe()
-    return width
   }
 }
 
@@ -115,5 +115,7 @@ export const {
   isMobile,
   isDesktop,
   isSmallMobile,
+  isTinyMobile,
   documentWidth,
+  windowWidth,
 } = viewportManager

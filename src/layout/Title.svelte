@@ -3,6 +3,7 @@
   import db from '@db'
   import { nbFavorite } from '@lib/store'
   import { entityNames } from '@lib/constant'
+  import { appWidth } from '@lib/viewport-manager'
   import Head from '@frame/Head.svelte'
   import Icon from '@layout/Icon.svelte'
   import Favorite from '@favorite/Favorite.svelte'
@@ -46,12 +47,18 @@
   }
 
   let itemPage = id ? true : false
+  let fittyInstance: ReturnType<typeof fitty> | null = null
 
   onMount(() => {
-    fitty('.fitty', {
-      minSize: 14,
-      maxSize: 32,
-    })
+    fittyInstance = fitty('.fitty', { minSize: 14, maxSize: 32 })
+  })
+
+  $effect(() => {
+    if ($appWidth && fittyInstance) {
+      for (const instance of fittyInstance) {
+        instance.fit()
+      }
+    }
   })
 </script>
 
@@ -84,6 +91,7 @@
 
 <style lang="scss">
   .fitty-wrapper {
+    box-sizing: border-box;
     width: 100%;
     height: 80px;
     display: flex;
