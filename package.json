@@ -8,6 +8,7 @@
   "main": "src/main.ts",
   "scripts": {
     "dev": "vite",
+    "dev:proxy": "python3 public/python-scripts/proxy-llm.py",
     "build": "vite build",
     "build:analyze": "BUNDLE_VIEW=true vite build",
     "build:extension": "cd vscode-extension && npm install && npm run package",

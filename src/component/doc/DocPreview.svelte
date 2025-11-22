@@ -68,14 +68,14 @@
     }
   }
 
-  @media screen and (max-width: 1023px) {
+  :global(body.mobile) {
     .doc-content-wrapper {
       display: block;
       width: 100%;
       padding-top: 0;
     }
   }
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .doc-content-wrapper {
       padding: 10px;
     }

@@ -32,7 +32,7 @@
     right: 0px;
     z-index: 2;
   }
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .evolution-summary-wrapper {
       top: 40px;
       left: 5px;

@@ -3,6 +3,7 @@
 ## unreleased
 
 - add: customizable system prompts, junction tables for many-to-many relations, and date context to extension
+- add: LLM chat directly in the app
 - refactor: extension with test and better prompt
 
 ## 0.15.0 (2025-11-06)

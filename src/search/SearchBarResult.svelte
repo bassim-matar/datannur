@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onPageHomepage } from 'svelte-fileapp'
   import { whenAppReady } from '@lib/store'
+  import { appWidth } from '@lib/viewport-manager'
   import { debounce } from '@lib/util'
   import SearchBarResultRow from './SearchBarResultRow.svelte'
   import type { SearchResult } from './search'
@@ -49,6 +50,11 @@
 
   $effect(() => {
     if ($onPageHomepage !== undefined) debouncedUpdateHeight()
+  })
+
+  $effect(() => {
+    void $appWidth
+    debouncedUpdateHeight()
   })
 
   $effect(() => {

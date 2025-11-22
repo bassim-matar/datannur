@@ -29,7 +29,7 @@
     padding: 3.5rem 3.75rem;
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     div.main {
       padding: 1.5rem 1.75rem;
     }

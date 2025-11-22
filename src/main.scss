@@ -157,6 +157,12 @@ $rounded-top: $rounded-size $rounded-size 0 0;
 
 $menu-mobile-limit: 1023px;
 
+// Viewport manager custom properties
+:root {
+  --chat-width: 0px;
+  --app-width: 100vw;
+}
+
 $entities:
   'institution', 'folder', 'tag', 'dataset', 'variable', 'modality', 'value',
   'log', 'entity', 'option', 'search', 'favorite', 'about', 'diagram',

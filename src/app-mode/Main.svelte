@@ -1,15 +1,8 @@
 <script lang="ts">
   import db from '@db'
   import { whenAppReady, footerVisible } from '@lib/store'
-  import {
-    onPageHomepage,
-    onPageSearch,
-    UrlParam,
-    UrlHash,
-    hasTouchScreen,
-    isSmallMenu,
-    isHttp,
-  } from 'svelte-fileapp'
+  import { UrlParam, UrlHash, hasTouchScreen, isHttp } from 'svelte-fileapp'
+  import { isMobile } from '@lib/viewport-manager'
   import GenericRouter from 'svelte-fileapp/GenericRouter.svelte'
   import routerIndex from '@page/.router-index'
   import Logs from '@lib/logs'
@@ -26,6 +19,7 @@
   import Popup from '@layout/Popup.svelte'
   import StatBox from '@stat/StatBox.svelte'
   import SearchBar from '@search/SearchBar.svelte'
+  import FloatingChatButton from '@llm/FloatingChatButton.svelte'
   import { initApp } from '@src/app-mode/app-init'
   import type { AttributWithValues } from '@stat/stat'
   import type { MainEntityName, EntityName } from '@src/type'
@@ -136,31 +130,31 @@
 </svelte:head>
 
 {#await Options.loaded then}
-  <Header />
-  <div id="wrapper" class:no-footer={!$footerVisible}>
-    {#if errorLoadingDb}
-      <div class="error-loading-db">
-        <h2 class="title">Erreur de chargement</h2>
-        <p>Erreur durant le chargement de la base de données.</p>
-        <p>Veuillez réessayer de charger l'application plus tard.</p>
-        <p>Si le problème persiste, contactez le support.</p>
-      </div>
-    {:else}
-      {#if ($isSmallMenu && ($onPageSearch || $onPageHomepage)) || !$isSmallMenu}
+  <div class="main-container">
+    <Header />
+    <div id="wrapper" class:no-footer={!$footerVisible}>
+      {#if errorLoadingDb}
+        <div class="error-loading-db">
+          <h2 class="title">Erreur de chargement</h2>
+          <p>Erreur durant le chargement de la base de données.</p>
+          <p>Veuillez réessayer de charger l'application plus tard.</p>
+          <p>Si le problème persiste, contactez le support.</p>
+        </div>
+      {:else}
         <SearchBar />
+        <GenericRouter
+          {routerIndex}
+          whenAppReady={$whenAppReady}
+          onRouteChange={handleRouteChange}
+          getEntityData={(entity: string, id: string) =>
+            db.get(entity as EntityName, id)}
+        />
       {/if}
-      <GenericRouter
-        {routerIndex}
-        whenAppReady={$whenAppReady}
-        onRouteChange={handleRouteChange}
-        getEntityData={(entity: string, id: string) =>
-          db.get(entity as EntityName, id)}
-      />
+    </div>
+    {#if !$isMobile}
+      <Footer />
     {/if}
   </div>
-  {#if !$isSmallMenu}
-    <Footer />
-  {/if}
 {/await}
 
 <Popup bind:isOpen={isPopupColumnStatOpen}>
@@ -173,8 +167,19 @@
   {/if}
 </Popup>
 
+<FloatingChatButton />
+
 <style lang="scss">
   @use 'main.scss' as *;
+
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: var(--app-width);
+    width: 100%;
+    padding-top: 3.25rem;
+  }
 
   .error-loading-db {
     position: absolute;

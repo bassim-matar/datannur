@@ -51,7 +51,7 @@
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .frame {
       height: 100%;
       position: absolute;

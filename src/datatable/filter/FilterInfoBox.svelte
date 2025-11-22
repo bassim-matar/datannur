@@ -54,7 +54,7 @@
         opacity: 1;
       }
     }
-    @media screen and (max-width: 600px) {
+    :global(body.small-mobile) {
       position: fixed;
       top: 5px;
       left: calc(50% - 20px);

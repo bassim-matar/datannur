@@ -168,7 +168,7 @@
     text-align: center;
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .flex-cols {
       padding: 10px;
     }

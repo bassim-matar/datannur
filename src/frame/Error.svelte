@@ -198,7 +198,7 @@
     background-color: var(--error-page-color);
   }
 
-  @media only screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     ._error {
       transform: scale(0.5);
     }

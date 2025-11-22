@@ -90,7 +90,7 @@
     overflow-y: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: min(600px, calc(100vw - 220px));
+    max-width: min(600px, calc(var(--app-width) - 220px));
     &:global(.open) {
       white-space: pre-wrap;
     }

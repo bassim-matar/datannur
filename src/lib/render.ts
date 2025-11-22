@@ -77,12 +77,13 @@ export default class Render {
     return Render.tree(entity, elements, type)
   }
   static firstParent(data: AnyEntity[], type: string, row: AnyEntity) {
+    if (!data || data.length === 0) return wrapLongText()
     const parent = data.slice(-1)[0]
+    if (!parent) return wrapLongText()
     if (type !== 'display') {
       if ('name' in parent) return parent.name
       return ''
     }
-    if (data.length === 0) return wrapLongText()
     if (!('_entity' in row) || !row._entity) return wrapLongText()
     if (!('id' in parent) || !('name' in parent)) return wrapLongText()
     return wrapLongText(
