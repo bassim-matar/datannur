@@ -173,8 +173,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
             post_data = self.rfile.read(content_length)
             payload = json.loads(post_data.decode("utf-8"))
 
-            print(f"[DEBUG] Chat payload: {json.dumps(payload, indent=2)}")
-
             context = ssl.create_default_context()
             conn = http.client.HTTPSConnection(
                 "api.infomaniak.com", context=context, timeout=None
@@ -198,13 +196,12 @@ class ProxyHandler(BaseHTTPRequestHandler):
             )
             response = conn.getresponse()
 
-            print(f"[DEBUG] Infomaniak response status: {response.status}")
-            print(f"[DEBUG] Infomaniak response headers: {dict(response.getheaders())}")
-
             # Read response body for error details if status >= 400
             if response.status >= 400:
                 error_body = response.read().decode("utf-8")
-                print(f"[DEBUG] Infomaniak error response: {error_body}")
+                print(
+                    f"[ERROR] Infomaniak API error (status {response.status}): {error_body}"
+                )
                 self.send_response(response.status)
                 self.send_header("Access-Control-Allow-Origin", "*")
                 self.send_header("Content-Type", "application/json")
@@ -251,7 +248,7 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 pass
 
     def _handle_transcriptions(self):
-        """Handle /api/audio/transcriptions endpoint"""
+        """Handle /api/audio/transcriptions endpoint with internal polling"""
         creds = self._get_api_credentials()
         if not creds:
             return
@@ -278,6 +275,7 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 [("model", "whisper"), ("language", "fr"), ("response_format", "text")],
             )
 
+            # Upload audio and get batch_id
             url = f"https://api.infomaniak.com/1/ai/{product_id}/openai/audio/transcriptions"
             req = urllib.request.Request(url, data=body_data, method="POST")
             req.add_header("Authorization", f"Bearer {api_key}")
@@ -286,9 +284,49 @@ class ProxyHandler(BaseHTTPRequestHandler):
             )
 
             with urllib.request.urlopen(req, timeout=60) as response:
-                result = json.loads(response.read().decode("utf-8"))
+                upload_result = json.loads(response.read().decode("utf-8"))
 
-            self._send_json_response(200, result)
+            batch_id = upload_result.get("batch_id")
+            if not batch_id:
+                self._send_json_response(500, {"error": "No batch_id received"})
+                return
+
+            print(f"Batch ID received: {batch_id}, starting polling...")
+
+            # Poll for results (max 2 minutes)
+            import time
+
+            max_attempts = 30
+            poll_interval = 0.5
+
+            for attempt in range(max_attempts):
+                time.sleep(poll_interval)
+
+                result_url = (
+                    f"https://api.infomaniak.com/1/ai/{product_id}/results/{batch_id}"
+                )
+                result_req = urllib.request.Request(result_url, method="GET")
+                result_req.add_header("Authorization", f"Bearer {api_key}")
+
+                with urllib.request.urlopen(result_req, timeout=10) as result_response:
+                    result = json.loads(result_response.read().decode("utf-8"))
+
+                status = result.get("status")
+                print(f"Polling attempt {attempt + 1}: status={status}")
+                print(f"Full result: {result}")
+
+                if status in ["done", "success"]:
+                    transcription_text = result.get("data", "")
+                    print(f"Transcription text extracted: {transcription_text}")
+                    self._send_json_response(200, {"text": transcription_text})
+                    return
+                elif status == "error":
+                    error_msg = result.get("error", "Transcription failed")
+                    self._send_json_response(500, {"error": error_msg})
+                    return
+
+            # Timeout
+            self._send_json_response(500, {"error": "Transcription timeout"})
 
         except urllib.error.HTTPError as e:
             print(f"HTTP error: {e.code} - {e.reason}")
@@ -299,31 +337,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
             import traceback
 
             traceback.print_exc()
-            self._send_json_response(500, {"error": str(e)})
-
-    def _handle_results(self, batch_id):
-        """Handle /api/audio/results/{batch_id} endpoint"""
-        creds = self._get_api_credentials()
-        if not creds:
-            return
-
-        api_key, product_id = creds
-
-        try:
-            url = f"https://api.infomaniak.com/1/ai/{product_id}/results/{batch_id}"
-            req = urllib.request.Request(url, method="GET")
-            req.add_header("Authorization", f"Bearer {api_key}")
-
-            with urllib.request.urlopen(req, timeout=10) as response:
-                result = json.loads(response.read().decode("utf-8"))
-
-            self._send_json_response(200, result)
-
-        except urllib.error.HTTPError as e:
-            self._send_json_response(e.code, {"error": f"HTTP {e.code}"})
-
-        except Exception as e:
-            print(f"Result error: {e}")
             self._send_json_response(500, {"error": str(e)})
 
     def _handle_set_keys(self):
@@ -418,10 +431,7 @@ class ProxyHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle GET requests"""
-        if self.path.startswith("/api/audio/results/"):
-            batch_id = self.path.split("/")[-1]
-            self._handle_results(batch_id)
-        elif self.path == "/status":
+        if self.path == "/status":
             self._handle_get_status()
         else:
             self.send_response(404)

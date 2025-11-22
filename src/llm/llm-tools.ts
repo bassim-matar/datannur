@@ -10,9 +10,9 @@
 
 import db from '@db'
 import { router } from 'svelte-fileapp'
-import Favorites from '@favorite/favorites'
 import Search from '@search/search'
-import type { EntityName } from '@type'
+import type { EntityName, MainEntityName } from '@type'
+import { mainEntityNames } from '@lib/constant'
 
 /**
  * Tool definitions for LLM
@@ -33,74 +33,84 @@ export type LLMTool = {
   handler: (params: unknown) => unknown
 }
 
+const mainEntityEnumValues = Object.keys(mainEntityNames)
+
 /**
  * Database query tools
  */
 
+/**
+ * Find entities with optional filtering
+ * Returns count + lightweight list (max 20 items)
+ */
+function findEntitiesHelper(
+  entity: MainEntityName,
+  criteria?: Record<string, unknown>,
+): {
+  count: number
+  items: Array<{ id: string | number; name: string }>
+} {
+  let entities = db.getAll(entity)
+
+  if (criteria && Object.keys(criteria).length > 0) {
+    entities = entities.filter(e =>
+      Object.entries(criteria).every(
+        ([key, value]) => (e as Record<string, unknown>)[key] === value,
+      ),
+    )
+  }
+
+  return {
+    count: entities.length,
+    items: entities.slice(0, 20).map(entity => ({
+      id: entity.id as string | number,
+      name: entity.name as string,
+    })),
+  }
+}
+
 const findEntities: LLMTool = {
   name: 'findEntities',
-  description: 'Find entities matching criteria. Returns array of entities.',
-  descriptionFr: "Recherche d'entités",
+  description:
+    'Find entities matching criteria. Returns total count + first 20 items (id, name). Use getEntity() to get full details.',
+  descriptionFr:
+    'Rechercher des entités avec critères. Retourne le total + les 20 premiers (id, name). Utiliser getEntity() pour les détails complets.',
   parameters: {
     type: 'object',
     properties: {
       entity: {
         type: 'string',
         description: 'Entity type to query',
-        enum: [
-          'dataset',
-          'variable',
-          'folder',
-          'institution',
-          'tag',
-          'modality',
-          'doc',
-        ],
+        enum: mainEntityEnumValues,
       },
       criteria: {
         type: 'object',
-        description: 'Filter criteria (e.g., {type: "panel", folderId: "123"})',
-      },
-      limit: {
-        type: 'number',
-        description: 'Maximum number of results (default: 50)',
+        description:
+          'Filter criteria object. Matches entities where all specified fields equal the given values (e.g., {type: "panel"}, {folderId: "123", type: "cohort"})',
       },
     },
     required: ['entity'],
   },
   handler: ((params: {
-    entity: EntityName
+    entity: MainEntityName
     criteria?: Record<string, unknown>
-    limit?: number
   }) => {
-    const { entity, criteria = {}, limit = 50 } = params
-    const results = db.getAll(
-      entity,
-      criteria as Record<string, string | number>,
-    )
-    return results.slice(0, limit)
+    const { entity, criteria } = params
+    return findEntitiesHelper(entity, criteria)
   }) as (params: unknown) => unknown,
 }
 
 const getEntity: LLMTool = {
   name: 'getEntity',
   description: 'Get a single entity by ID',
-  descriptionFr: "Détails d'une entité",
+  descriptionFr: 'Obtenir une entité par son ID',
   parameters: {
     type: 'object',
     properties: {
       entity: {
         type: 'string',
         description: 'Entity type',
-        enum: [
-          'dataset',
-          'variable',
-          'folder',
-          'institution',
-          'tag',
-          'modality',
-          'doc',
-        ],
+        enum: mainEntityEnumValues,
       },
       id: {
         type: 'string',
@@ -114,52 +124,16 @@ const getEntity: LLMTool = {
   }) as (params: unknown) => unknown,
 }
 
-const countEntities: LLMTool = {
-  name: 'countEntities',
-  description: 'Count entities matching criteria',
-  descriptionFr: "Comptage d'entités",
-  parameters: {
-    type: 'object',
-    properties: {
-      entity: {
-        type: 'string',
-        description: 'Entity type to count',
-        enum: [
-          'dataset',
-          'variable',
-          'folder',
-          'institution',
-          'tag',
-          'modality',
-          'doc',
-        ],
-      },
-      criteria: {
-        type: 'object',
-        description: 'Filter criteria',
-      },
-    },
-    required: ['entity'],
-  },
-  handler: ((params: {
-    entity: EntityName
-    criteria?: Record<string, unknown>
-  }) => {
-    return db.getAll(
-      params.entity,
-      params.criteria as Record<string, string | number> | undefined,
-    ).length
-  }) as (params: unknown) => unknown,
-}
-
 /**
  * Search tools
  */
 
 const searchInCatalog: LLMTool = {
   name: 'searchInCatalog',
-  description: 'Full-text search across datasets and variables',
-  descriptionFr: 'Recherche texte intégral',
+  description:
+    'Full-text search across all entities. Returns lightweight results with id, name and entity type. Use getEntity() for full details.',
+  descriptionFr:
+    'Recherche plein texte dans toutes les entités. Retourne résultats légers avec id, name et type. Utiliser getEntity() pour les détails complets.',
   parameters: {
     type: 'object',
     properties: {
@@ -169,8 +143,8 @@ const searchInCatalog: LLMTool = {
       },
       entityType: {
         type: 'string',
-        description: 'Limit to entity type',
-        enum: ['dataset', 'variable', 'all'],
+        description: 'Limit to entity type (or "all" for all entities)',
+        enum: [...mainEntityEnumValues, 'all'],
       },
       limit: {
         type: 'number',
@@ -181,26 +155,25 @@ const searchInCatalog: LLMTool = {
   },
   handler: (async (params: {
     query: string
-    entityType?: 'dataset' | 'variable' | 'all'
+    entityType?: MainEntityName | 'all'
     limit?: number
   }) => {
     const { query, entityType = 'all', limit = 20 } = params
 
-    if (entityType === 'dataset') {
-      const results = await Search.find(query)
-      return results
-        .filter((r: { entity: string }) => r.entity === 'dataset')
-        .slice(0, limit)
-    }
-    if (entityType === 'variable') {
-      const results = await Search.find(query)
-      return results
-        .filter((r: { entity: string }) => r.entity === 'variable')
-        .slice(0, limit)
-    }
-
     const results = await Search.find(query)
-    return results.slice(0, limit)
+
+    const filtered =
+      entityType === 'all'
+        ? results
+        : results.filter((r: { entity: string }) => r.entity === entityType)
+
+    return filtered
+      .slice(0, limit)
+      .map((r: { id: string | number; name: string; entity: string }) => ({
+        id: r.id,
+        name: r.name,
+        entity: r.entity,
+      }))
   }) as (params: unknown) => unknown,
 }
 
@@ -211,21 +184,14 @@ const searchInCatalog: LLMTool = {
 const groupBy: LLMTool = {
   name: 'groupBy',
   description: 'Group entities by field and count occurrences',
-  descriptionFr: 'Groupement et comptage',
+  descriptionFr: 'Grouper les entités par champ et compter les occurrences',
   parameters: {
     type: 'object',
     properties: {
       entity: {
         type: 'string',
         description: 'Entity type',
-        enum: [
-          'dataset',
-          'variable',
-          'folder',
-          'institution',
-          'tag',
-          'modality',
-        ],
+        enum: mainEntityEnumValues,
       },
       field: {
         type: 'string',
@@ -243,10 +209,16 @@ const groupBy: LLMTool = {
     field: string
     criteria?: Record<string, unknown>
   }) => {
-    const entities = db.getAll(
-      params.entity,
-      params.criteria as Record<string, string | number> | undefined,
-    )
+    let entities = db.getAll(params.entity)
+
+    if (params.criteria && Object.keys(params.criteria).length > 0) {
+      entities = entities.filter((e: unknown) =>
+        Object.entries(params.criteria!).every(
+          ([key, value]) => (e as Record<string, unknown>)[key] === value,
+        ),
+      )
+    }
+
     const groups: { [key: string]: number } = {}
 
     for (const entity of entities) {
@@ -262,7 +234,7 @@ const groupBy: LLMTool = {
 const getStatistics: LLMTool = {
   name: 'getStatistics',
   description: 'Get statistical summary of a numeric field',
-  descriptionFr: 'Statistiques',
+  descriptionFr: "Obtenir un résumé statistique d'un champ numérique",
   parameters: {
     type: 'object',
     properties: {
@@ -287,10 +259,16 @@ const getStatistics: LLMTool = {
     field: string
     criteria?: Record<string, unknown>
   }) => {
-    const entities = db.getAll(
-      params.entity,
-      params.criteria as Record<string, string | number> | undefined,
-    )
+    let entities = db.getAll(params.entity, undefined)
+
+    if (params.criteria && Object.keys(params.criteria).length > 0) {
+      entities = entities.filter((e: unknown) =>
+        Object.entries(params.criteria!).every(
+          ([key, value]) => (e as Record<string, unknown>)[key] === value,
+        ),
+      )
+    }
+
     const values = entities
       .map((e: unknown) => (e as Record<string, unknown>)[params.field])
       .filter((v: unknown) => typeof v === 'number') as number[]
@@ -311,71 +289,6 @@ const getStatistics: LLMTool = {
   }) as (params: unknown) => unknown,
 }
 
-const getRelatedEntities: LLMTool = {
-  name: 'getRelatedEntities',
-  description:
-    'Get entities related to a given entity (e.g., variables of a dataset)',
-  descriptionFr: 'Entités liées',
-  parameters: {
-    type: 'object',
-    properties: {
-      entityType: {
-        type: 'string',
-        description: 'Source entity type',
-        enum: ['dataset', 'folder', 'institution'],
-      },
-      entityId: {
-        type: 'string',
-        description: 'Source entity ID',
-      },
-      relationType: {
-        type: 'string',
-        description: 'Type of relation to fetch',
-        enum: ['variables', 'datasets', 'tags', 'docs'],
-      },
-    },
-    required: ['entityType', 'entityId', 'relationType'],
-  },
-  handler: ((params: {
-    entityType: EntityName
-    entityId: string
-    relationType: string
-  }) => {
-    const { entityType, entityId, relationType } = params
-    const entity = db.get(entityType, entityId)
-
-    if (!entity) return null
-
-    if (relationType === 'variables' && entityType === 'dataset') {
-      return db.getAll('variable', { dataset: entityId })
-    }
-
-    if (relationType === 'datasets' && entityType === 'folder') {
-      return db.getAll('dataset', { folder: entityId })
-    }
-
-    if (relationType === 'tags') {
-      const tagIds = (entity as { tagIds?: string }).tagIds
-      if (!tagIds) return []
-      return tagIds
-        .split(',')
-        .map((id: string) => db.get('tag', id.trim()))
-        .filter(Boolean)
-    }
-
-    if (relationType === 'docs') {
-      const docIds = (entity as { docIds?: string }).docIds
-      if (!docIds) return []
-      return docIds
-        .split(',')
-        .map((id: string) => db.get('doc', id.trim()))
-        .filter(Boolean)
-    }
-
-    return null
-  }) as (params: unknown) => unknown,
-}
-
 /**
  * Navigation tools
  */
@@ -383,7 +296,7 @@ const getRelatedEntities: LLMTool = {
 const navigate: LLMTool = {
   name: 'navigate',
   description: 'Navigate to a page in the app',
-  descriptionFr: 'Navigation',
+  descriptionFr: "Naviguer vers une page de l'application",
   parameters: {
     type: 'object',
     properties: {
@@ -401,83 +314,20 @@ const navigate: LLMTool = {
 }
 
 /**
- * User data tools
- */
-
-const toggleFavorite: LLMTool = {
-  name: 'toggleFavorite',
-  description: 'Add or remove entity from favorites',
-  descriptionFr: 'Favoris',
-  parameters: {
-    type: 'object',
-    properties: {
-      entity: {
-        type: 'string',
-        description: 'Entity type',
-        enum: [
-          'dataset',
-          'variable',
-          'folder',
-          'institution',
-          'tag',
-          'modality',
-          'doc',
-        ],
-      },
-      id: {
-        type: 'string',
-        description: 'Entity ID',
-      },
-      action: {
-        type: 'string',
-        description: 'Action to perform',
-        enum: ['add', 'remove', 'toggle'],
-      },
-    },
-    required: ['entity', 'id'],
-  },
-  handler: ((params: {
-    entity: EntityName
-    id: string
-    action?: 'add' | 'remove' | 'toggle'
-  }) => {
-    const { entity, id, action = 'toggle' } = params
-    const item = db.get(entity, id)
-
-    if (!item) return { success: false, error: 'Entity not found' }
-
-    const isFavorite = (item as { isFavorite?: boolean }).isFavorite ?? false
-
-    if (action === 'add' || (action === 'toggle' && !isFavorite)) {
-      Favorites.add(entity as Parameters<typeof Favorites.add>[0], id)
-      return { success: true, action: 'added', isFavorite: true }
-    } else {
-      Favorites.remove(entity as Parameters<typeof Favorites.remove>[0], id)
-      return { success: true, action: 'removed', isFavorite: false }
-    }
-  }) as (params: unknown) => unknown,
-}
-
-/**
  * All available tools
  */
 export const llmTools: LLMTool[] = [
   // Query tools
   findEntities,
   getEntity,
-  countEntities,
   searchInCatalog,
 
   // Analysis tools
   groupBy,
   getStatistics,
-  getRelatedEntities,
 
-  // Navigation tools
+  // Navigation
   navigate,
-
-  // User data tools
-  toggleFavorite,
 ]
 
 export type ToolDefinition = {
@@ -507,20 +357,6 @@ export function getToolDefinitions(): ToolDefinition[] {
       parameters: tool.parameters,
     },
   }))
-}
-
-/**
- * Get display name for a tool
- */
-export function getToolDisplayName(
-  toolName: string,
-  locale: 'en' | 'fr' = 'fr',
-): string {
-  const tool = llmTools.find(t => t.name === toolName)
-  if (!tool) return toolName
-  return locale === 'fr' && tool.descriptionFr
-    ? tool.descriptionFr
-    : tool.description
 }
 
 /**

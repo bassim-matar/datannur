@@ -1,10 +1,7 @@
 <script lang="ts">
-  import { chatStream, transcribeAudio } from '@llm/llm-client'
-  import {
-    getToolDefinitions,
-    executeTool,
-    getToolDisplayName,
-  } from '@llm/llm-tools'
+  import { chatStream } from '@llm/llm-client'
+  import { transcribeAudio, stopChromeRecognition } from '@llm/stt-client'
+  import { getToolDefinitions, executeTool } from '@llm/llm-tools'
   import {
     isProxyAvailable,
     setProxyCredentials,
@@ -20,8 +17,10 @@
     windowBreakpoints,
     windowWidth,
   } from '@lib/viewport-manager'
-  import type { ChatMessage, TranscriptionResponse } from '@llm/llm-client'
+  import type { ChatMessage } from '@llm/llm-client'
+  import type { TranscriptionResponse } from '@llm/stt-client'
   import modelsConfig from './models.json'
+  import sttEnginesConfig from './stt-engines.json'
   import systemInstructions from './prompt/system-instructions.md?raw'
   import toolsGuidelines from './prompt/tools-guidelines.md?raw'
   import schemaDoc from './prompt/schema.md?raw'
@@ -44,6 +43,7 @@
   let isRecording = $state(false)
   let isProcessing = $state(false)
   let isCancelled = $state(false)
+  let voiceConversationMode = $state(false)
   let mediaRecorder = $state<MediaRecorder | null>(null)
   let audioChunks: Blob[] = []
   let silenceTimeout: number | null = null
@@ -57,6 +57,13 @@
   let lastAssistantMessageHeight = $state(0)
   let chatContainerHeight = $state(0)
 
+  let placeholderText = $derived.by(() => {
+    if (isRecording) return '🎤 Enregistrement en cours...'
+    if (isProcessing) return '⏳ Transcription en cours...'
+    if (voiceConversationMode) return '🎙️ Mode conversation vocale actif'
+    return 'Posez votre question...'
+  })
+
   const models = modelsConfig as {
     id: string
     name: string
@@ -66,11 +73,26 @@
   let selectedModel = $state(models[0]!)
   let showModelMenu = $state(false)
 
+  const sttEngines = sttEnginesConfig as {
+    id: string
+    name: string
+    description: string
+    provider: string
+  }[]
+  let selectedSTT = $state(sttEngines[0]!)
+  let showSTTMenu = $state(false)
+
   Options.loaded.then(() => {
     const savedModelId = Options.get('llmModel') as string | undefined
     if (savedModelId) {
       const model = models.find(m => m.id === savedModelId)
       if (model) selectedModel = model
+    }
+
+    const savedSTTId = Options.get('sttEngine') as string | undefined
+    if (savedSTTId) {
+      const stt = sttEngines.find(s => s.id === savedSTTId)
+      if (stt) selectedSTT = stt
     }
   })
 
@@ -189,9 +211,12 @@
    * Includes: instructions, current context, schema, and tools guidelines
    */
   function buildSystemPrompt() {
-    return `# DATANNUR DATA CATALOG ASSISTANT
+    const now = new Date()
+    const dateOnly = now.toISOString().split('T')[0] // YYYY-MM-DD only for cache stability
 
-Current datetime: ${new Date().toISOString()}
+    return `# datannur data catalog assistant
+
+Current date: ${dateOnly}
 
 ${systemInstructions}
 
@@ -250,7 +275,6 @@ ${toolsGuidelines}`
     const assistantMessage: ChatMessage = { role: 'assistant', content: '' }
     messages = [...messages, assistantMessage]
 
-    // Limite à 20 messages (10 échanges)
     const maxMessages = 20
     if (messages.length > maxMessages) {
       messages = messages.slice(-maxMessages)
@@ -262,131 +286,140 @@ ${toolsGuidelines}`
         content: buildSystemPrompt(),
       }
 
-      const allMessages = [systemMessage, ...messages.slice(0, -1)]
+      // Agent loop: continue while there are tool calls
+      let continueLoop = true
+      let loopCount = 0
+      const maxLoops = 10 // Safety limit
+      let hadToolCall = false
 
-      // Estimation tokens (approximation: 1 token ≈ 4 caractères)
-      const estimateTokens = (text: string) => Math.ceil(text.length / 4)
-      const totalTokens = allMessages.reduce((sum, msg) => {
-        const content = msg.content ?? ''
-        const tokens = estimateTokens(content)
+      while (continueLoop && loopCount < maxLoops) {
+        loopCount++
+        hadToolCall = false
+        const currentMessages = [systemMessage, ...messages.slice(0, -1)]
+        const tools = getToolDefinitions()
+
         console.log(
-          `[Tokens] ${msg.role}: ${tokens} tokens (${content.length} chars)`,
+          '[DEBUG] Sending messages:',
+          currentMessages.length,
+          'messages',
         )
-        return sum + tokens
-      }, 0)
+        console.log(
+          '[DEBUG] System prompt tokens est:',
+          Math.ceil(systemMessage.content.length / 4),
+        )
+        console.log(
+          '[DEBUG] Total chars:',
+          currentMessages.reduce((sum, m) => sum + m.content.length, 0),
+        )
+        console.log(
+          '[DEBUG] Tools definitions tokens est:',
+          Math.ceil(JSON.stringify(tools).length / 4),
+        )
 
-      console.log(
-        '[Send Message] Calling chatStream with',
-        allMessages.length,
-        'messages, ~',
-        totalTokens,
-        'tokens',
-      )
-
-      await chatStream(
-        allMessages,
-        (chunk: string) => {
-          const lastIndex = messages.length - 1
-          messages = [
-            ...messages.slice(0, lastIndex),
-            {
-              ...messages[lastIndex]!,
-              content: messages[lastIndex]!.content + chunk,
-            },
-          ]
-        },
-        {
-          model: selectedModel.id,
-          signal: currentAbortController.signal,
-          tools: getToolDefinitions(),
-          onToolCall: async toolCall => {
-            try {
-              console.log(
-                '[Tool Call] Calling tool:',
-                toolCall.function.name,
-                'with args:',
-                toolCall.function.arguments,
-              )
-              const toolArgs = JSON.parse(
-                toolCall.function.arguments,
-              ) as Record<string, unknown>
-              const result = await executeTool(toolCall.function.name, toolArgs)
-              console.log('[Tool Call] Result:', result)
-
-              // Update assistant message with tool_calls
-              const lastAssistantIndex = messages.length - 1
-              messages = [
-                ...messages.slice(0, lastAssistantIndex),
-                {
-                  ...messages[lastAssistantIndex]!,
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  tool_calls: [toolCall],
-                },
-              ]
-
-              // Add tool result message
-              messages = [
-                ...messages,
-                {
-                  role: 'tool',
-                  content: JSON.stringify(result),
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  tool_call_id: toolCall.id,
-                  name: toolCall.function.name,
-                },
-              ]
-
-              console.log(
-                '[Tool Call] Messages before second chatStream:',
-                messages.length,
-              )
-
-              // Add new assistant message for the response
-              messages = [
-                ...messages,
-                {
-                  role: 'assistant',
-                  content: '',
-                },
-              ]
-
-              const updatedAllMessages = [
-                systemMessage,
-                ...messages.slice(0, -1),
-              ]
-
-              await chatStream(
-                updatedAllMessages,
-                (chunk: string) => {
-                  const lastIndex = messages.length - 1
-                  messages = [
-                    ...messages.slice(0, lastIndex),
-                    {
-                      ...messages[lastIndex]!,
-                      content: messages[lastIndex]!.content + chunk,
-                    },
-                  ]
-                },
-                {
-                  model: selectedModel.id,
-                  signal: currentAbortController.signal,
-                  tools: getToolDefinitions(),
-                },
-              )
-              console.log('[Tool Call] Second chatStream completed')
-            } catch (toolError) {
-              console.error('Tool execution error:', toolError)
-              messages = [
-                ...messages,
-                {
-                  role: 'assistant',
-                  content: `Erreur lors de l'exécution de l'outil: ${toolError instanceof Error ? toolError.message : String(toolError)}`,
-                },
-              ]
-            }
+        await chatStream(
+          currentMessages,
+          (chunk: string) => {
+            const lastIndex = messages.length - 1
+            messages = [
+              ...messages.slice(0, lastIndex),
+              {
+                ...messages[lastIndex]!,
+                content: messages[lastIndex]!.content + chunk,
+              },
+            ]
           },
-        },
-      )
+          {
+            model: selectedModel.id,
+            signal: currentAbortController.signal,
+            tools,
+            onToolCall: async toolCall => {
+              try {
+                hadToolCall = true
+                console.log(
+                  '[Tool Call] Calling tool:',
+                  toolCall.function.name,
+                  'with args:',
+                  toolCall.function.arguments,
+                )
+                const toolArgs = JSON.parse(
+                  toolCall.function.arguments,
+                ) as Record<string, unknown>
+                const result = await executeTool(
+                  toolCall.function.name,
+                  toolArgs,
+                )
+                console.log('[Tool Call] Result:', result)
+
+                // Update assistant message with tool_calls
+                const lastAssistantIndex = messages.length - 1
+                messages = [
+                  ...messages.slice(0, lastAssistantIndex),
+                  {
+                    ...messages[lastAssistantIndex]!,
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    tool_calls: [toolCall],
+                  },
+                ]
+
+                // Add tool result message
+                messages = [
+                  ...messages,
+                  {
+                    role: 'tool',
+                    content: JSON.stringify(result),
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    tool_call_id: toolCall.id,
+                    name: toolCall.function.name,
+                  },
+                ]
+
+                // Add new assistant message for next iteration
+                messages = [
+                  ...messages,
+                  {
+                    role: 'assistant',
+                    content: '',
+                  },
+                ]
+              } catch (toolError) {
+                console.error('Tool execution error:', toolError)
+                messages = [
+                  ...messages,
+                  {
+                    role: 'assistant',
+                    content: `Erreur lors de l'exécution de l'outil: ${toolError instanceof Error ? toolError.message : String(toolError)}`,
+                  },
+                ]
+                continueLoop = false
+              }
+            },
+          },
+        )
+
+        // Check if we should continue looping
+        const lastMsg = messages[messages.length - 1]
+
+        // If we had a tool call AND the message already has content, stop (parallel tool calling worked!)
+        if (hadToolCall && lastMsg?.role === 'assistant' && lastMsg.content) {
+          continueLoop = false
+        }
+        // Continue if we had a tool call without content (need to get LLM response to the tool result)
+        else if (hadToolCall) {
+          continueLoop = true
+        }
+        // Stop if last message has content (LLM generated a text response)
+        else if (lastMsg?.role === 'assistant' && lastMsg.content) {
+          continueLoop = false
+        }
+        // Stop if last message is assistant without tool_calls (shouldn't happen but safety check)
+        else if (lastMsg?.role === 'assistant' && !lastMsg.tool_calls) {
+          continueLoop = false
+        }
+      }
+
+      if (loopCount >= maxLoops) {
+        console.warn('[Agent Loop] Max iterations reached')
+      }
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
         console.log('Stream stopped by user')
@@ -401,13 +434,73 @@ ${toolsGuidelines}`
     } finally {
       loading = false
       abortController = null
-      setTimeout(() => {
-        textareaRef?.focus()
-      }, 0)
+      if (voiceConversationMode) {
+        setTimeout(() => {
+          startRecording()
+        }, 500)
+      } else {
+        setTimeout(() => {
+          textareaRef?.focus()
+        }, 0)
+      }
     }
   }
 
   async function startRecording() {
+    if (selectedSTT.id === 'chrome-native') {
+      await startChromeNativeRecording()
+    } else {
+      await startWhisperRecording()
+    }
+  }
+
+  async function startChromeNativeRecording() {
+    try {
+      isRecording = true
+      isProcessing = false
+      console.log('Starting Chrome native speech recognition')
+
+      const result: TranscriptionResponse = await transcribeAudio(
+        new Blob(),
+        'chrome-native',
+      )
+      const transcription: string = result.text.trim()
+
+      console.log('Transcription:', transcription)
+      isRecording = false
+
+      if (transcription) {
+        input = transcription
+        await sendMessage()
+      } else {
+        console.log('No text detected in transcription')
+        if (voiceConversationMode) {
+          setTimeout(() => {
+            startRecording()
+          }, 500)
+        } else {
+          setTimeout(() => {
+            textareaRef?.focus()
+          }, 0)
+        }
+      }
+    } catch (err) {
+      console.error('Chrome native recognition error:', err)
+      isRecording = false
+      if (voiceConversationMode) {
+        setTimeout(() => {
+          startRecording()
+        }, 500)
+      } else {
+        alert('Erreur de reconnaissance vocale: ' + (err as Error).message)
+        setTimeout(() => {
+          textareaRef?.focus()
+        }, 0)
+      }
+    }
+  }
+
+  async function startWhisperRecording() {
     try {
       isCancelled = false
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -440,20 +533,16 @@ ${toolsGuidelines}`
         }
 
         if (isCancelled || audioChunks.length === 0) {
-          console.log('Recording cancelled, no audio to process')
           isCancelled = false
           return
         }
 
         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' })
-        console.log('Audio recorded:', audioBlob.size, 'bytes')
-
         await handleTranscription(audioBlob)
       }
 
       mediaRecorder.start()
       isRecording = true
-      console.log('Recording started')
 
       detectSilence()
     } catch (err) {
@@ -467,7 +556,6 @@ ${toolsGuidelines}`
       }
     }
   }
-
   function detectSilence() {
     if (!analyser || !isRecording) return
 
@@ -497,7 +585,6 @@ ${toolsGuidelines}`
         if (!silenceTimeout) {
           silenceTimeout = window.setTimeout(() => {
             if (isRecording) {
-              console.log('Silence detected, stopping recording')
               stopRecording()
             }
           }, 1500)
@@ -517,11 +604,18 @@ ${toolsGuidelines}`
       mediaRecorder.stop()
       isRecording = false
       isProcessing = true
-      console.log('Recording stopped')
     }
   }
 
   function cancelRecording() {
+    voiceConversationMode = false
+
+    if (selectedSTT.id === 'chrome-native') {
+      stopChromeRecognition()
+      isRecording = false
+      return
+    }
+
     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
       isCancelled = true
       const tracks = mediaRecorder.stream.getTracks()
@@ -537,7 +631,6 @@ ${toolsGuidelines}`
         clearTimeout(silenceTimeout)
         silenceTimeout = null
       }
-      console.log('Recording cancelled')
       setTimeout(() => {
         textareaRef?.focus()
       }, 0)
@@ -546,11 +639,11 @@ ${toolsGuidelines}`
 
   async function handleTranscription(audioBlob: Blob) {
     try {
-      console.log('Transcribing...')
-      const result: TranscriptionResponse = await transcribeAudio(audioBlob)
+      const result: TranscriptionResponse = await transcribeAudio(
+        audioBlob,
+        selectedSTT.id as 'whisper' | 'chrome-native',
+      )
       const transcription: string = result.text.trim()
-
-      console.log('Transcription:', transcription)
 
       if (transcription) {
         input = transcription
@@ -575,15 +668,35 @@ ${toolsGuidelines}`
 
   function handleVoiceClick() {
     if (isRecording) {
-      stopRecording()
+      voiceConversationMode = false
+      if (selectedSTT.id === 'chrome-native') {
+        stopChromeRecognition()
+        isRecording = false
+      } else {
+        stopRecording()
+      }
     } else {
+      voiceConversationMode = true
       startRecording()
+    }
+  }
+
+  function exitVoiceMode() {
+    voiceConversationMode = false
+    if (isRecording) {
+      if (selectedSTT.id === 'chrome-native') {
+        stopChromeRecognition()
+        isRecording = false
+      } else {
+        cancelRecording()
+      }
     }
   }
 
   function resetChat() {
     messages = []
     input = ''
+    voiceConversationMode = false
   }
 
   function handleKeyDown(e: KeyboardEvent) {
@@ -600,6 +713,7 @@ ${toolsGuidelines}`
       class="model-selector"
       onclick={() => (showModelMenu = !showModelMenu)}
     >
+      <i class="fa-solid fa-robot"></i>
       <span class="model-name">{selectedModel.name}</span>
       <i class="fa-solid fa-chevron-down" class:rotated={showModelMenu}></i>
     </button>
@@ -628,15 +742,55 @@ ${toolsGuidelines}`
       </div>
     {/if}
 
+    <button class="stt-selector" onclick={() => (showSTTMenu = !showSTTMenu)}>
+      <i class="fa-solid fa-microphone"></i>
+      <span class="stt-name">{selectedSTT.name}</span>
+      <i class="fa-solid fa-chevron-down" class:rotated={showSTTMenu}></i>
+    </button>
+
+    {#if showSTTMenu}
+      <div class="stt-menu" use:clickOutside={() => (showSTTMenu = false)}>
+        {#each sttEngines as engine (engine.id)}
+          <button
+            class="stt-option"
+            class:selected={engine.id === selectedSTT.id}
+            onclick={() => {
+              selectedSTT = engine
+              showSTTMenu = false
+              Options.set('sttEngine', engine.id)
+            }}
+          >
+            <div class="stt-content">
+              <span class="stt-name">{engine.name}</span>
+              <span class="stt-description">{engine.description}</span>
+            </div>
+            {#if engine.id === selectedSTT.id}
+              <i class="fa-solid fa-check"></i>
+            {/if}
+          </button>
+        {/each}
+      </div>
+    {/if}
+
     <div class="header-actions">
       {#if isConfigured && messages.length > 0}
-        <button
-          class="new-chat-btn"
-          onclick={resetChat}
-          aria-label="Nouveau chat"
-        >
-          <i class="fa-solid fa-plus"></i>
-        </button>
+        {#if voiceConversationMode}
+          <button
+            class="exit-voice-btn"
+            onclick={exitVoiceMode}
+            aria-label="Quitter mode vocal"
+          >
+            <i class="fa-solid fa-microphone-slash"></i>
+          </button>
+        {:else}
+          <button
+            class="new-chat-btn"
+            onclick={resetChat}
+            aria-label="Nouveau chat"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        {/if}
       {/if}
       <button
         class="close-btn"
@@ -756,7 +910,7 @@ ${toolsGuidelines}`
                 <div class="tool-call-box">
                   <div class="tool-call-header">
                     <i class="fa-solid fa-database"></i>
-                    <span>{getToolDisplayName(message.name ?? 'unknown')}</span>
+                    <span>{message.name ?? 'unknown'}</span>
                   </div>
                 </div>
               </div>
@@ -818,7 +972,7 @@ ${toolsGuidelines}`
               textareaRef.style.height = `${textareaRef.scrollHeight}px`
             }
           }}
-          placeholder="Posez votre question..."
+          placeholder={placeholderText}
           disabled={isRecording || isProcessing}
           rows="1"
         ></textarea>
@@ -916,6 +1070,8 @@ ${toolsGuidelines}`
     background: $background-1;
     position: relative;
     height: 47px;
+    z-index: 1;
+    box-shadow: 0 8px 8px $background-1;
 
     .model-selector {
       display: flex;
@@ -933,13 +1089,22 @@ ${toolsGuidelines}`
         background: rgba($color-3, 0.1);
       }
 
+      i:first-child {
+        font-size: 1rem;
+        color: $color-3;
+      }
+
       .model-name {
         font-size: 1rem;
         font-weight: 600;
         color: $color-1;
+
+        @media (max-width: 420px) {
+          display: none;
+        }
       }
 
-      i {
+      i:last-child {
         font-size: 0.75rem;
         color: $color-4;
         transition: transform 0.2s ease;
@@ -1008,10 +1173,136 @@ ${toolsGuidelines}`
       }
     }
 
+    .stt-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      margin: 0;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: rgba($color-3, 0.1);
+      }
+
+      i:first-child {
+        font-size: 1rem;
+        color: $color-3;
+      }
+
+      .stt-name {
+        font-size: 1rem;
+        font-weight: 600;
+        color: $color-1;
+
+        @media (max-width: 420px) {
+          display: none;
+        }
+      }
+
+      i:last-child {
+        font-size: 0.75rem;
+        color: $color-4;
+        transition: transform 0.2s ease;
+
+        &.rotated {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .stt-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: $background-2;
+      border-radius: $rounded;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1001;
+      min-width: 280px;
+      max-height: 400px;
+      overflow-y: auto;
+
+      .stt-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        background: transparent;
+        border: none;
+        width: 100%;
+        cursor: pointer;
+        transition: background 0.15s ease;
+        text-align: left;
+
+        &:hover {
+          background: rgba($color-3, 0.1);
+        }
+
+        &.selected {
+          background: rgba($color-3, 0.15);
+        }
+
+        .stt-content {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+        }
+
+        .stt-name {
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: $color-1;
+        }
+
+        .stt-description {
+          font-size: 0.75rem;
+          color: $color-2;
+          opacity: 0.8;
+        }
+
+        i {
+          color: $color-3;
+          font-size: 0.85rem;
+          flex-shrink: 0;
+        }
+      }
+    }
+
     .header-actions {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+
+    .exit-voice-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 36px;
+      height: 36px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      color: $color-2;
+      transition: all 0.2s;
+
+      i {
+        font-size: 1.1rem;
+      }
+
+      &:hover {
+        background: rgba(#ef4444, 0.1);
+        color: #ef4444;
+      }
     }
 
     .new-chat-btn {

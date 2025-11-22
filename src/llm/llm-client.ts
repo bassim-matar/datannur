@@ -72,6 +72,19 @@ type SSEParsed = {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     finish_reason?: string
   }>
+  usage?: {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    prompt_tokens?: number
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    completion_tokens?: number
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    total_tokens?: number
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    prompt_tokens_details?: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      cached_tokens?: number
+    }
+  }
 }
 
 type ErrorResponse = {
@@ -94,6 +107,11 @@ export type ChatCompletionResponse = {
     completion_tokens: number
     // eslint-disable-next-line @typescript-eslint/naming-convention
     total_tokens: number
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    prompt_tokens_details?: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      cached_tokens: number
+    }
   }
 }
 
@@ -120,23 +138,19 @@ export async function chatCompletion(
   const payload = {
     model,
     messages,
-    ...(tools && tools.length > 0 ? { tools } : {}),
+    ...(tools && tools.length > 0
+      ? {
+          tools,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          parallel_tool_calls: true,
+        }
+      : {}),
     temperature,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     max_tokens: maxTokens,
     stream,
+    user: 'datannur-user',
   }
-
-  console.log('=== LLM REQUEST PAYLOAD ===')
-  console.log('Model:', payload.model)
-  console.log('Messages:', payload.messages.length)
-  console.log('Tools:', payload.tools?.length ?? 0)
-  console.log(
-    '\nSystem prompt length:',
-    payload.messages[0]?.content?.length ?? 0,
-  )
-  console.log('\nFull payload:', payload)
-  console.log('=== END PAYLOAD ===\n')
 
   const useProxy = !!config.proxyURL
 
@@ -234,6 +248,25 @@ async function handleStreamingResponse(
             }
           }
 
+          if (parsed.usage?.prompt_tokens !== undefined) {
+            responseMetadata.usage = {
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              prompt_tokens: parsed.usage.prompt_tokens,
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              completion_tokens: parsed.usage.completion_tokens ?? 0,
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              total_tokens: parsed.usage.total_tokens ?? 0,
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              prompt_tokens_details: parsed.usage.prompt_tokens_details
+                ? {
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    cached_tokens:
+                      parsed.usage.prompt_tokens_details.cached_tokens ?? 0,
+                  }
+                : undefined,
+            }
+          }
+
           const delta = parsed.choices?.[0]?.delta
           const finishReason = parsed.choices?.[0]?.finish_reason
 
@@ -278,7 +311,7 @@ async function handleStreamingResponse(
       if (done) break
     }
 
-    return {
+    const response: ChatCompletionResponse = {
       id: responseMetadata.id ?? 'unknown',
       model: responseMetadata.model ?? 'unknown',
       choices: [
@@ -296,7 +329,23 @@ async function handleStreamingResponse(
           finish_reason: currentToolCalls.length > 0 ? 'tool_calls' : 'stop',
         },
       ],
+      ...(responseMetadata.usage ? { usage: responseMetadata.usage } : {}),
     }
+
+    if (response.usage) {
+      const cachedTokens =
+        response.usage.prompt_tokens_details?.cached_tokens ?? 0
+      const promptTokens = response.usage.prompt_tokens
+      const cacheHitRate =
+        promptTokens > 0
+          ? ((cachedTokens / promptTokens) * 100).toFixed(1)
+          : '0.0'
+      console.log(
+        `[LLM Usage] Prompt: ${promptTokens} tokens (${cachedTokens} cached, ${cacheHitRate}% hit rate) | Completion: ${response.usage.completion_tokens} | Total: ${response.usage.total_tokens}`,
+      )
+    }
+
+    return response
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
       throw error
@@ -345,84 +394,4 @@ export async function chatStream(
   })
 
   return fullText
-}
-
-/**
- * Speech-to-Text using Whisper API
- */
-export type TranscriptionResponse = {
-  text: string
-}
-
-export async function transcribeAudio(
-  audioBlob: Blob,
-): Promise<TranscriptionResponse> {
-  const config = getLLMConfig()
-
-  const useProxy = !!config.proxyURL
-
-  if (!useProxy) {
-    throw new Error(
-      'Proxy server required. Please start the local proxy server.',
-    )
-  }
-
-  const uploadURL = `${config.proxyURL}/api/audio/transcriptions`
-
-  const formData = new FormData()
-  formData.append('file', audioBlob, 'audio.webm')
-  formData.append('model', 'whisper')
-  formData.append('language', 'fr')
-  formData.append('response_format', 'text')
-
-  try {
-    const uploadResponse = await fetch(uploadURL, {
-      method: 'POST',
-      body: formData,
-    })
-
-    if (!uploadResponse.ok) {
-      const error: ErrorResponse = (await uploadResponse
-        .json()
-        .catch(() => ({ error: 'Upload failed' }))) as ErrorResponse
-      throw new Error(
-        `Upload Error: ${uploadResponse.status} - ${JSON.stringify(error)}`,
-      )
-    }
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const responseData = (await uploadResponse.json()) as { batch_id: string }
-    const batchId = responseData.batch_id
-
-    const resultURL = `${config.proxyURL}/api/audio/results/${batchId}`
-
-    for (let i = 0; i < 120; i++) {
-      await new Promise(resolve => setTimeout(resolve, 500))
-
-      const resultResponse = await fetch(resultURL, {
-        method: 'GET',
-      })
-
-      if (!resultResponse.ok) {
-        throw new Error(`Result Error: ${resultResponse.status}`)
-      }
-
-      const result = (await resultResponse.json()) as {
-        status: string
-        data?: string
-        error?: string
-      }
-
-      if (result.status === 'done' || result.status === 'success') {
-        return { text: result.data ?? '' }
-      } else if (result.status === 'error') {
-        throw new Error(result.error ?? 'Transcription failed')
-      }
-    }
-
-    throw new Error('Transcription timeout')
-  } catch (error) {
-    console.error('Whisper API Error:', error)
-    throw error
-  }
 }

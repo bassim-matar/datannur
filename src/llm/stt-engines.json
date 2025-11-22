@@ -1,0 +1,14 @@
+[
+  {
+    "id": "whisper",
+    "name": "Whisper V3",
+    "description": "Infomaniak - Haute précision",
+    "provider": "infomaniak"
+  },
+  {
+    "id": "chrome-native",
+    "name": "Google Speech",
+    "description": "Google Cloud - Temps réel",
+    "provider": "google"
+  }
+]

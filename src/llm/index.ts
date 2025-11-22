@@ -10,12 +10,7 @@ export {
   checkProxyStatus,
   isProxyAvailable,
 } from './llm-config'
-export {
-  llmTools,
-  getToolDefinitions,
-  executeTool,
-  getToolDisplayName,
-} from './llm-tools'
+export { llmTools, getToolDefinitions, executeTool } from './llm-tools'
 export { chatCompletion, chat, chatStream } from './llm-client'
 export type { LLMConfig } from './llm-config'
 export type { LLMTool, ToolDefinition } from './llm-tools'
