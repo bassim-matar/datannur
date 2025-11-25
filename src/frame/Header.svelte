@@ -1,12 +1,7 @@
 <script lang="ts">
   import { whenAppReady, nbFavorite, headerOpen } from '@lib/store'
-  import {
-    onPageHomepage,
-    onPageSearch,
-    isSmallMenu,
-    isSsgRendering,
-    router,
-  } from 'svelte-fileapp'
+  import { onPageHomepage, isSsgRendering, router } from 'svelte-fileapp'
+  import { isMobile } from '@lib/viewport-manager'
   import logo from '@img/logo.png'
   import logoDark from '@img/logo-dark.png'
   import Loading from '@frame/Loading.svelte'
@@ -34,6 +29,12 @@
     elem?.click()
   }
 
+  $effect(() => {
+    if (!$isMobile && $headerOpen) {
+      closeMenu()
+    }
+  })
+
   $whenAppReady.then(() => (loading = false))
 </script>
 
@@ -53,14 +54,6 @@
     </Link>
 
     <div class="mobile-right-btn">
-      {#if !$onPageSearch && !$onPageHomepage && !loading}
-        <div class="search-bar-btn-wrapper">
-          <HeaderLink href="search" pages={['search']}>
-            <i class="fas fa-magnifying-glass"></i>
-          </HeaderLink>
-        </div>
-      {/if}
-
       <button
         class="navbar-burger"
         class:is-active={$headerOpen}
@@ -150,7 +143,7 @@
     </div>
 
     <div class="navbar-end">
-      {#if $isSmallMenu && !isSsgRendering}
+      {#if $isMobile && !isSsgRendering}
         <Footer menuMobile={true} />
       {/if}
     </div>
@@ -164,6 +157,7 @@
     background: $background-1;
     border-bottom: 1px solid $color-5;
     border-color: $color-5;
+    z-index: 2000;
     transition:
       border-color $transition-basic-1,
       box-shadow $transition-basic-1;
@@ -226,37 +220,7 @@
     }
   }
 
-  .search-bar-btn-wrapper {
-    display: none;
-    width: 20px;
-    z-index: 100;
-    :global(a.is-active) {
-      color: color('search') !important;
-      text-shadow: 0 0 10px;
-    }
-  }
-
-  @media screen and (max-width: $menu-mobile-limit) {
-    .search-bar-btn-wrapper {
-      display: block;
-    }
-    .navbar .navbar-brand .search-bar-btn-wrapper {
-      padding-top: 16px;
-    }
-    .navbar .navbar-brand {
-      .mobile-right-btn {
-        padding-right: 2rem;
-      }
-    }
-    .navbar-menu {
-      padding-left: 1.75rem;
-      padding-right: 1.75rem;
-      margin-left: 7px;
-      margin-right: 7px;
-    }
-  }
-
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .navbar .navbar-brand {
       padding-left: 15px;
       padding-right: 0;
@@ -272,10 +236,13 @@
     }
   }
 
-  .visible-on-mobile {
-    display: none;
-    @media screen and (max-width: $menu-mobile-limit) {
+  :global(body.mobile) {
+    .visible-on-mobile {
       display: initial;
     }
+  }
+
+  .visible-on-mobile {
+    display: none;
   }
 </style>

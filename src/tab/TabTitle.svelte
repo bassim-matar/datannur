@@ -4,6 +4,7 @@
   import Loading from '@frame/Loading.svelte'
   import Number from '@layout/Number.svelte'
   import { onMount } from 'svelte'
+  import { chatWidth, appWidth } from '@lib/viewport-manager'
   import type { Tab } from './tabs-helper'
 
   let {
@@ -14,6 +15,7 @@
 
   let tabNb = $state(tab.nb)
   let minWidth = $state(0)
+  let initialMinWidth = $state(0)
 
   function toPercent(value: string) {
     const separator = '|'
@@ -25,8 +27,22 @@
   onMount(() => {
     const selector = `.tab-li-${tab.key}`
     const elem = document.querySelector(selector) as HTMLLIElement
-    minWidth = elem.offsetWidth
-    if (minWidth > 500) minWidth = 0
+    const width = elem.offsetWidth
+    initialMinWidth = width > 500 ? 0 : width
+    minWidth = initialMinWidth
+  })
+
+  $effect(() => {
+    if (
+      $chatWidth !== undefined &&
+      activeTab !== tab.key &&
+      initialMinWidth > 0 &&
+      $appWidth > 780
+    ) {
+      minWidth = initialMinWidth
+    } else if ($appWidth <= 780 && activeTab !== tab.key) {
+      minWidth = 0
+    }
   })
 
   $effect(() => {
@@ -275,7 +291,7 @@
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .tab-name {
       display: none;
     }

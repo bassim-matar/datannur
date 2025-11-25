@@ -61,7 +61,7 @@
     }
   }
 
-  @media screen and (max-width: 1023px) {
+  :global(body.mobile) {
     .table-wrapper {
       display: block;
       width: 100%;
@@ -71,7 +71,7 @@
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .table-wrapper {
       max-height: none;
       overflow-y: auto;

@@ -32,7 +32,7 @@
     text-overflow: ellipsis;
     word-break: break-word;
     white-space: normal;
-    max-width: min(600px, calc(100vw - 220px));
+    max-width: min(600px, calc(var(--app-width) - 220px));
     &:global(.open) {
       display: block;
       white-space: normal;
@@ -41,9 +41,9 @@
       overflow-y: auto;
     }
   }
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .extendable {
-      max-width: calc(100vw - 50px);
+      max-width: calc(var(--app-width) - 50px);
     }
   }
 </style>

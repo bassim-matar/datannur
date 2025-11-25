@@ -84,8 +84,8 @@
 <style lang="scss">
   @use 'main.scss' as *;
 
-  .fix-on-mobile {
-    @media screen and (max-width: $menu-mobile-limit) {
+  :global(body.mobile) {
+    .fix-on-mobile {
       padding-left: 0.25em;
       padding-right: 0.75em;
     }

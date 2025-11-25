@@ -294,7 +294,7 @@ export default class FilterHelper {
       }
     }
   }
-  getBtnInfoPopup(action = () => {}): ButtonInfo {
+  getBtnInfoPopup(action: () => void = () => {}): ButtonInfo {
     return {
       text: `<span class="icon"><i class="fa-solid fa-magnifying-glass-plus"></i></span>`,
       action,

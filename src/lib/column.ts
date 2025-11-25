@@ -1,5 +1,7 @@
 import escapeHtml from 'escape-html'
-import { link, isMobile } from 'svelte-fileapp'
+import { link } from 'svelte-fileapp'
+import { get } from 'svelte/store'
+import { viewportManager } from '@lib/viewport-manager'
 import { wrapLongText, getPercent, pluralize, capitalize } from '@lib/util'
 import { getTimeAgo, getDatetime, dateToTimestamp } from '@lib/time'
 import { entityNames, entityToIcon } from '@lib/constant'
@@ -172,7 +174,7 @@ export default class Column {
       const folderId: string | number = row[folderIdVar]
       const folderName = row[folderNameVar] as string
       if (type !== 'display') return folderName
-      return isMobile
+      return get(viewportManager.isMobile)
         ? wrapLongText(link('folder/' + folderId, escapeHtml(folderName)))
         : Render.withParentsFromId('folder', folderId, type)
     }
@@ -200,7 +202,9 @@ export default class Column {
     }
   }
   static parents(entity: keyof typeof entityNames): ColumnType {
-    const render = isMobile ? Render.firstParent : Render.parentsIndent
+    const render = get(viewportManager.isMobile)
+      ? Render.firstParent
+      : Render.parentsIndent
     return {
       data: 'parents',
       title: Render.icon(`folderTree${capitalize(entity)}`) + 'Partie de',
@@ -256,7 +260,7 @@ export default class Column {
   }
   static owner(): ColumnType {
     let render: ColumnType['render'] = () => {}
-    if (isMobile)
+    if (get(viewportManager.isMobile))
       render = (data, type, row: EntityWithInstitution) => {
         return wrapLongText(
           link(`institution/${row.ownerId}`, escapeHtml(row.ownerName)),
@@ -279,7 +283,7 @@ export default class Column {
   }
   static manager(): ColumnType {
     let render: ColumnType['render'] = () => {}
-    if (isMobile)
+    if (get(viewportManager.isMobile))
       render = (data, type, row: EntityWithInstitution) => {
         return wrapLongText(
           link(`institution/${row.managerId}`, escapeHtml(row.managerName)),

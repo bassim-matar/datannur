@@ -233,7 +233,7 @@
 
     .search-bar-container {
       position: fixed;
-      z-index: 40;
+      z-index: 2000;
       top: 2.5px;
       left: 680px;
       right: 3em;
@@ -266,7 +266,7 @@
 
     #header-search-input {
       position: relative;
-      width: calc(100vw - 730px);
+      width: calc(var(--app-width) - 730px);
       margin: 0;
       padding-left: 3.3rem;
       background: transparent;
@@ -309,6 +309,16 @@
     }
   }
 
+  .header-search-item .search-bar-container {
+    right: calc(3em + var(--chat-width));
+  }
+
+  :global(body.window-small-mobile) {
+    .header-search-item .search-bar-container {
+      right: 3em;
+    }
+  }
+
   :global(html.roundedDesign) {
     .search-bar-container {
       border-radius: $rounded;
@@ -323,19 +333,73 @@
     }
   }
 
-  @media screen and (max-width: 1023px) {
+  :global(body.mobile:not(.small-mobile)) {
+    .header-search-item .search-bar-container:not(.homepage):not(.page-search) {
+      left: 200px;
+      right: calc(50px + var(--chat-width));
+    }
+    .header-search-item #header-search-input {
+      width: 100%;
+    }
+  }
+
+  :global(body.mobile:not(.small-mobile).window-small-mobile) {
+    .header-search-item .search-bar-container:not(.homepage):not(.page-search) {
+      right: 50px;
+    }
+  }
+
+  :global(body.small-mobile:not(.tiny-mobile)) {
+    .header-search-item .search-bar-container:not(.homepage):not(.page-search) {
+      left: 200px;
+      right: calc(50px + var(--chat-width));
+    }
+    .header-search-item #header-search-input {
+      width: 100%;
+    }
+  }
+
+  :global(body.small-mobile:not(.tiny-mobile).window-small-mobile) {
+    .header-search-item .search-bar-container:not(.homepage):not(.page-search) {
+      right: 50px;
+    }
+  }
+
+  :global(body.tiny-mobile) {
+    .header-search-item .search-bar-container:not(.homepage):not(.page-search) {
+      left: 10px;
+      right: calc(50px + var(--chat-width));
+    }
+    .header-search-item #header-search-input {
+      width: 100%;
+    }
+  }
+
+  :global(body.tiny-mobile.window-small-mobile) {
+    .header-search-item .search-bar-container:not(.homepage):not(.page-search) {
+      right: 50px;
+    }
+  }
+
+  :global(body.mobile) {
     .header-search-item .search-bar-container.homepage {
       left: 50px;
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .header-search-item .search-bar-container.homepage,
     .header-search-item .search-bar-container.page-search {
-      left: 0px;
-      right: 0px;
+      left: 10px;
+      right: calc(10px + var(--chat-width));
       top: 80px;
-      max-width: 100vw;
+    }
+  }
+
+  :global(body.small-mobile.window-small-mobile) {
+    .header-search-item .search-bar-container.homepage,
+    .header-search-item .search-bar-container.page-search {
+      right: 10px;
     }
   }
 

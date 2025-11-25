@@ -139,7 +139,7 @@
     }
   }
 
-  @media screen and (max-width: 600px) {
+  :global(body.small-mobile) {
     .footer {
       padding-left: 0.75rem;
       padding-right: 0.75rem;
