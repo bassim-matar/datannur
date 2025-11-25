@@ -120,7 +120,7 @@
   })
 
   $effect(() => {
-    checkConfiguration()
+    checkConfiguration().catch(console.error)
   })
 
   $effect(() => {

@@ -54,6 +54,7 @@ class ViewportManager {
   windowWidth = this._windowWidth
 
   private unsubscribe?: () => void
+  private resizeHandler?: () => void
 
   constructor() {
     if (typeof window === 'undefined') return
@@ -94,13 +95,17 @@ class ViewportManager {
       document.body.dataset.appWidth = String($appWidth)
     })
 
-    window.addEventListener('resize', () => {
+    this.resizeHandler = () => {
       this._windowWidth.set(window.innerWidth)
-    })
+    }
+    window.addEventListener('resize', this.resizeHandler)
   }
 
   destroy() {
     this.unsubscribe?.()
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler)
+    }
   }
 
   setChatWidth(width: number) {
