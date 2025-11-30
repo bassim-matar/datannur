@@ -62,6 +62,7 @@
     "rollup-plugin-visualizer": "^6.0.5",
     "sass": "^1.94.2",
     "serve-handler": "^6.1.6",
+    "sitemap": "^8.0.2",
     "svelte": "^5.45.2",
     "svelte-check": "^4.3.4",
     "svelte-eslint-parser": "^1.4.0",

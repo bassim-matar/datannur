@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.15.1 (2025-11-30)
 
 - add: customizable system prompts, junction tables for many-to-many relations, and date context to extension
 - add: LLM chat directly in the app
