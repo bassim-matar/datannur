@@ -10,10 +10,13 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import http.client
 import ssl
+import traceback
 import urllib.request
 import urllib.error
 import os
 import sys
+import time
+import random
 from pathlib import Path
 
 
@@ -134,8 +137,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
 
     def _build_multipart(self, audio_data, fields):
         """Build multipart/form-data body"""
-        import random
-
         boundary_str = f"----WebKitFormBoundary{random.randbytes(8).hex()}"
         boundary_bytes = boundary_str.encode()
 
@@ -167,25 +168,24 @@ class ProxyHandler(BaseHTTPRequestHandler):
             return
 
         api_key, product_id = creds
+        conn = None
 
         try:
             content_length = int(self.headers["Content-Length"])
             post_data = self.rfile.read(content_length)
             payload = json.loads(post_data.decode("utf-8"))
+            is_stream = payload.get("stream", True)
 
-            context = ssl.create_default_context()
             conn = http.client.HTTPSConnection(
-                "api.infomaniak.com", context=context, timeout=None
+                "api.infomaniak.com",
+                context=ssl.create_default_context(),
+                timeout=None,
             )
 
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {api_key}",
-                "Accept": (
-                    "text/event-stream"
-                    if payload.get("stream", True)
-                    else "application/json"
-                ),
+                "Accept": "text/event-stream" if is_stream else "application/json",
             }
 
             conn.request(
@@ -196,7 +196,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
             )
             response = conn.getresponse()
 
-            # Read response body for error details if status >= 400
             if response.status >= 400:
                 error_body = response.read().decode("utf-8")
                 print(
@@ -207,45 +206,38 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-Type", "application/json")
                 self.end_headers()
                 self.wfile.write(error_body.encode())
-                conn.close()
                 return
 
             self.send_response(response.status)
             self.send_header("Access-Control-Allow-Origin", "*")
             self.send_header(
                 "Content-Type",
-                (
-                    "text/event-stream"
-                    if payload.get("stream", True)
-                    else "application/json"
-                ),
+                "text/event-stream" if is_stream else "application/json",
             )
-            if payload.get("stream", True):
+            if is_stream:
                 self.send_header("Cache-Control", "no-cache")
                 self.send_header("Connection", "close")
             self.end_headers()
 
-            try:
-                while chunk := response.read(1024):
-                    self.wfile.write(chunk)
-                    self.wfile.flush()
-            except (BrokenPipeError, ConnectionResetError):
-                pass
-            finally:
-                try:
-                    conn.close()
-                except:
-                    pass
+            while chunk := response.read(1024):
+                self.wfile.write(chunk)
+                self.wfile.flush()
 
+        except (BrokenPipeError, ConnectionResetError):
+            pass
         except Exception as e:
-            import traceback
-
             print(f"Chat error: {e}")
             print(f"Traceback: {traceback.format_exc()}")
             try:
                 self._send_json_response(500, {"error": str(e)})
-            except:
+            except (BrokenPipeError, ConnectionResetError):
                 pass
+        finally:
+            if conn:
+                try:
+                    conn.close()
+                except Exception:
+                    pass
 
     def _handle_transcriptions(self):
         """Handle /api/audio/transcriptions endpoint with internal polling"""
@@ -293,9 +285,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
 
             print(f"Batch ID received: {batch_id}, starting polling...")
 
-            # Poll for results (max 2 minutes)
-            import time
-
             max_attempts = 30
             poll_interval = 0.5
 
@@ -334,8 +323,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
 
         except Exception as e:
             print(f"Transcription error: {e}")
-            import traceback
-
             traceback.print_exc()
             self._send_json_response(500, {"error": str(e)})
 
