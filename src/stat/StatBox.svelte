@@ -16,8 +16,8 @@
     fromPopup?: boolean
   } = $props()
 
-  const totalValue = attribut.totalValue
-  const mainColor = getColor(entity)
+  const totalValue = $derived(attribut.totalValue)
+  const mainColor = $derived(getColor(entity))
 </script>
 
 <div

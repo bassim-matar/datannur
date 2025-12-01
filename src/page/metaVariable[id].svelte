@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import { filterKeys } from '@lib/db'
   import { getUserData } from '@lib/user-data'
@@ -7,7 +8,9 @@
   import Tabs from '@tab/Tabs.svelte'
   import type { MetaVariable } from '@type'
 
-  let { metaVariable }: { metaVariable: MetaVariable } = $props()
+  let { metaVariable: metaVariableProp }: { metaVariable: MetaVariable } =
+    $props()
+  const metaVariable = untrack(() => metaVariableProp)
 
   let variablePreview: Record<string, unknown>[] = []
   let datasetPreview: Record<string, unknown>[] = []

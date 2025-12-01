@@ -19,8 +19,7 @@
     icon.startsWith('fa-brands') ? icon : `fas fa-${icon}`,
   )
 
-  let isWithSvg = $state(false)
-  if (['github', 'md'].includes(type)) isWithSvg = true
+  const isWithSvg = $derived(['github', 'md'].includes(type))
 </script>
 
 {#if type}

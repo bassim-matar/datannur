@@ -1,11 +1,17 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import { getLocalFilter } from '@lib/db'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
   import type { Dataset } from '@type'
 
-  let { datasets, isMeta = false }: { datasets: Dataset[]; isMeta?: boolean } =
-    $props()
+  let {
+    datasets: datasetsProp,
+    isMeta: isMetaProp = false,
+  }: { datasets: Dataset[]; isMeta?: boolean } = $props()
+
+  const datasets = untrack(() => datasetsProp)
+  const isMeta = untrack(() => isMetaProp)
 
   const datasetPath = isMeta ? 'metaDataset/' : 'dataset/'
   const tabVariables = isMeta ? 'metaDatasetVariables' : 'datasetVariables'

@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
   import type { Value } from '@type'
 
-  let { values }: { values: Value[] } = $props()
+  let { values: valuesProp }: { values: Value[] } = $props()
+  const values = untrack(() => valuesProp)
 
   const hasDescription = values.some(value => value.description)
   const columns = [Column.value()]

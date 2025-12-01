@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
   import type { Modality } from '@type'
 
-  let { modality }: { modality: Modality } = $props()
+  let { modality: modalityProp }: { modality: Modality } = $props()
+  const modality = untrack(() => modalityProp)
 
   const variables = db.getAll('variable', { modality })
   const values = modality.values

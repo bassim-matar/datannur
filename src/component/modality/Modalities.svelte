@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
   import type { Modality } from '@type'
 
-  let { modalities }: { modalities: Modality[] } = $props()
+  let { modalities: modalitiesProp }: { modalities: Modality[] } = $props()
+  const modalities = untrack(() => modalitiesProp)
 
   let nbValueMax = 0
   let nbVariableMax = 0

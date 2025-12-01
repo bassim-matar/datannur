@@ -20,7 +20,7 @@
     children?: Snippet
   } = $props()
 
-  const base = href === '/' ? '' : getBaseLinkUrl()
+  const base = $derived(href === '/' ? '' : getBaseLinkUrl())
 
   const entityClass = $derived(entity ? `color-entity-${entity}` : '')
 

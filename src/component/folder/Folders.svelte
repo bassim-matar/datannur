@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import { link } from 'svelte-fileapp'
   import { wrapLongText, getPercent } from '@lib/util'
   import { getParentPath } from '@lib/db'
@@ -8,8 +9,13 @@
   import escapeHtml from 'escape-html'
   import type { Folder, Column as ColumnType } from '@type'
 
-  let { folders, isMeta = false }: { folders: Folder[]; isMeta?: boolean } =
-    $props()
+  let {
+    folders: foldersProp,
+    isMeta: isMetaProp = false,
+  }: { folders: Folder[]; isMeta?: boolean } = $props()
+
+  const folders = untrack(() => foldersProp)
+  const isMeta = untrack(() => isMetaProp)
 
   const foldersSorted = [...folders]
   const folderPath = isMeta ? 'metaFolder/' : 'folder/'

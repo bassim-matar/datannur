@@ -12,7 +12,7 @@
     mainColor,
   }: { value: ValueEntry; totalValue: number; mainColor: string } = $props()
 
-  const percent = getPercent(value.count / totalValue)
+  const percent = $derived(getPercent(value.count / totalValue))
 </script>
 
 <div class="value-box">

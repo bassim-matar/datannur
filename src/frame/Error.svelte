@@ -4,19 +4,22 @@
 
   let { type = 'page' }: { type?: string } = $props()
 
-  let item = "L'élément"
+  const itemMap: { [key: string]: string } = {
+    page: 'La page',
+    dataset: 'Le dataset',
+    institution: "L'institution",
+    folder: 'Le dossier',
+    tag: 'Le tag',
+    doc: 'La doc',
+    variable: 'La variable',
+    modality: 'La modalité',
+  }
 
-  if (type === 'page') item = 'La page'
-  if (type === 'dataset') item = 'Le dataset'
-  if (type === 'institution') item = "L'institution"
-  if (type === 'folder') item = 'Le dossier'
-  if (type === 'tag') item = 'Le tag'
-  if (type === 'doc') item = 'La doc'
-  if (type === 'variable') item = 'La variable'
-  if (type === 'modality') item = 'La modalité'
-
-  let title = item + " n'existe pas"
-  let description = 'Oops. ' + item + " que vous cherchez n'existe pas."
+  const item = $derived(itemMap[type] ?? "L'élément")
+  const title = $derived(item + " n'existe pas")
+  const description = $derived(
+    'Oops. ' + item + " que vous cherchez n'existe pas.",
+  )
 </script>
 
 <Head {title} {description} />

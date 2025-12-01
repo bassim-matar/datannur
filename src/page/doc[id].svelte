@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import { makeParentsRelative, addMinimumDeep } from '@lib/db'
   import Tabs from '@tab/Tabs.svelte'
@@ -6,7 +7,8 @@
   import Title from '@layout/Title.svelte'
   import type { Doc } from '@type'
 
-  let { doc }: { doc: Doc } = $props()
+  let { doc: docProp }: { doc: Doc } = $props()
+  const doc = untrack(() => docProp)
 
   const institutions = db.getAll('institution', { doc })
   const folders = db.getAll('folder', { doc })

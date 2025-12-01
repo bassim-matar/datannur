@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import { wrapLongText } from '@lib/util'
   import { getParentPath } from '@lib/db'
   import Column from '@lib/column'
@@ -7,7 +8,9 @@
   import escapeHtml from 'escape-html'
   import type { Institution, Column as ColumnType } from '@type'
 
-  let { institutions }: { institutions: Institution[] } = $props()
+  let { institutions: institutionsProp }: { institutions: Institution[] } =
+    $props()
+  const institutions = untrack(() => institutionsProp)
 
   const isRecursive = true
 

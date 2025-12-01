@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import Datatable from '@datatable/Datatable.svelte'
   import Column from '@lib/column'
   import type { FavoritableEntity } from '@type'
 
-  let { allFav }: { allFav: FavoritableEntity[] } = $props()
+  let { allFav: allFavProp }: { allFav: FavoritableEntity[] } = $props()
+  const allFav = untrack(() => allFavProp)
 
   allFav.sort((a, b) => (b.favoriteTimestamp ?? 0) - (a.favoriteTimestamp ?? 0))
 

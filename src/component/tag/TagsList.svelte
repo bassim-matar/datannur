@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import TagsListLevel from '@component/tag/TagsListLevel.svelte'
   import type { Tag, TagWithChildren } from '@type'
 
   type TagTree = { [key: Tag['id']]: TagWithChildren }
 
-  let { tags }: { tags: Tag[] } = $props()
+  let { tags: tagsProp }: { tags: Tag[] } = $props()
+  const tags = untrack(() => tagsProp)
 
   function buildTree(tags: Tag[]) {
     const tagsTree: TagTree = {}

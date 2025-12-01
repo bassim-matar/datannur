@@ -6,13 +6,15 @@
     value,
     nbRow,
     type,
-    percent = getPercent(value / (nbRow ?? 1)),
+    percent: percentProp,
   }: {
     value: number
     nbRow?: number
     type: string
     percent?: number
   } = $props()
+
+  const percent = $derived(percentProp ?? getPercent(value / (nbRow ?? 1)))
 </script>
 
 <span class="num-percent color-{type} placeholder" style="width: 100%"></span>

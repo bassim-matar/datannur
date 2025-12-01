@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import { tabSelected } from '@lib/store'
   import {
@@ -16,7 +17,8 @@
   import EvolutionSummarySwitch from '@layout/EvolutionSummarySwitch.svelte'
   import type { Institution } from '@type'
 
-  let { institution }: { institution: Institution } = $props()
+  let { institution: institutionProp }: { institution: Institution } = $props()
+  const institution = untrack(() => institutionProp)
 
   let keyTab = $state(1)
 

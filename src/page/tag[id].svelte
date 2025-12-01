@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import { tabSelected } from '@lib/store'
   import { isBigLimit } from '@lib/constant'
@@ -22,7 +23,8 @@
     MainEntityMap,
   } from '@type'
 
-  let { tag }: { tag: Tag } = $props()
+  let { tag: tagProp }: { tag: Tag } = $props()
+  const tag = untrack(() => tagProp)
 
   let opposite = $state(false)
   let tabs: Tab[] = $state([])

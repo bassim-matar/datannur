@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import { tabsHelper } from '@tab/tabs-helper'
   import { getLineage } from '@lib/db'
@@ -6,7 +7,8 @@
   import Tabs from '@tab/Tabs.svelte'
   import type { Variable } from '@type'
 
-  let { variable }: { variable: Variable } = $props()
+  let { variable: variableProp }: { variable: Variable } = $props()
+  const variable = untrack(() => variableProp)
 
   const dataset = db.get('dataset', variable.datasetId)
   let variablePreview: false | object = false

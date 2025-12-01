@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import { removeDuplicateById, getLineage } from '@lib/db'
   import { tabsHelper } from '@tab/tabs-helper'
@@ -7,7 +8,7 @@
   import type { Modality } from '@type'
 
   let { id }: { id: string | number } = $props()
-  const dataset = db.get('dataset', id)
+  const dataset = untrack(() => db.get('dataset', id))
 
   let datasetVariables = db.getAll('variable', { dataset })
   if (dataset) dataset.nbVariable = datasetVariables.length

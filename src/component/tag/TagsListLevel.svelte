@@ -1,13 +1,16 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import TagsListLevel from '@component/tag/TagsListLevel.svelte'
   import Link from '@layout/Link.svelte'
   import type { TagWithChildren } from '@type'
 
   let {
-    tag,
+    tag: tagProp,
   }: {
     tag: TagWithChildren | { children?: { [key: string]: TagWithChildren } }
   } = $props()
+
+  const tag = untrack(() => tagProp)
 
   const tagChildrenData: TagWithChildren[] = Object.values(tag.children || {})
 

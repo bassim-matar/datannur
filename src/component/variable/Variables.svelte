@@ -1,13 +1,17 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import { getLocalFilter } from '@lib/db'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
   import type { Variable } from '@type'
 
   let {
-    variables,
-    isMeta = false,
+    variables: variablesProp,
+    isMeta: isMetaProp = false,
   }: { variables: Variable[]; isMeta?: boolean } = $props()
+
+  const variables = untrack(() => variablesProp)
+  const isMeta = untrack(() => isMetaProp)
 
   const variablesSorted = [...variables]
   const metaPath = isMeta ? 'metaVariable' : undefined
