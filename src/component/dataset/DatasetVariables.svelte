@@ -1,13 +1,16 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
   import type { Variable, MetaVariable } from '@type'
 
   let {
-    datasetVariables,
-    isMeta = false,
+    datasetVariables: datasetVariablesProp,
+    isMeta: isMetaProp = false,
   }: { datasetVariables: (Variable | MetaVariable)[]; isMeta?: boolean } =
     $props()
+  const datasetVariables = untrack(() => datasetVariablesProp)
+  const isMeta = untrack(() => isMetaProp)
 
   const metaPath = isMeta ? 'metaVariable' : undefined
 

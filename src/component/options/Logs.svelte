@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import { link } from 'svelte-fileapp'
   import { wrapLongText } from '@lib/util'
   import Datatable from '@datatable/Datatable.svelte'
@@ -8,7 +9,8 @@
   import escapeHTML from 'escape-html'
   import type { Log, Column as ColumnType } from '@type'
 
-  let { logs }: { logs: Log[] } = $props()
+  let { logs: logsProp }: { logs: Log[] } = $props()
+  const logs = untrack(() => logsProp)
 
   for (const log of logs) {
     log._entityClean = log.entity

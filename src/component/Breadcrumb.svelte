@@ -1,17 +1,22 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import Link from '@layout/Link.svelte'
   import type { RecursiveEntityName } from '@type'
 
   let {
-    type,
-    elemId,
-    isSelf = false,
+    type: typeProp,
+    elemId: elemIdProp,
+    isSelf: isSelfProp = false,
   }: {
     type: RecursiveEntityName
     elemId: string | number
     isSelf?: boolean
   } = $props()
+
+  const type = untrack(() => typeProp)
+  const elemId = untrack(() => elemIdProp)
+  const isSelf = untrack(() => isSelfProp)
 
   const elems = db.getParents(type, elemId)
 

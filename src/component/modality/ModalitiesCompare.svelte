@@ -11,8 +11,6 @@
   import escapeHtml from 'escape-html'
   import type { ModalitySimilitute, Column as ColumnType } from '@type'
 
-  let { modalitiesCompare }: { modalitiesCompare: true } = $props()
-  void modalitiesCompare
   let similitutes: ModalitySimilitute[] = $state([])
   let loading = $state(true)
 

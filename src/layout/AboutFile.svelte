@@ -20,7 +20,7 @@
     ),
   )
 
-  const useMermaid = aboutFile.includes('mermaid(')
+  const useMermaid = $derived(aboutFile.includes('mermaid('))
 
   $effect(() => {
     if (useMermaid) {

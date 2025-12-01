@@ -16,7 +16,7 @@
     children?: Snippet
   } = $props()
 
-  let visible = $state(!ifUse)
+  let visible = $derived(!ifUse)
 
   $whenAppReady.then(() => {
     if (!ifUse) return

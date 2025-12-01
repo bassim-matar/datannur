@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import Render from '@lib/render'
   import Column from '@lib/column'
   import Datatable from '@datatable/Datatable.svelte'
@@ -7,9 +8,12 @@
   import type { Value, Column as ColumnType } from '@type'
 
   let {
-    variableValues,
-    isMeta = false,
+    variableValues: variableValuesProp,
+    isMeta: isMetaProp = false,
   }: { variableValues: Value[]; isMeta: boolean } = $props()
+
+  const variableValues = untrack(() => variableValuesProp)
+  const isMeta = untrack(() => isMetaProp)
 
   let hasDescription = false
   for (const value of variableValues) {

@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import Render from '@lib/render'
   import Datatable from '@datatable/Datatable.svelte'
   import { getPercent } from '@lib/util'
   import escapeHtml from 'escape-html'
   import type { Freq, Column as ColumnType } from '@type'
 
-  let { freq }: { freq: Freq[] } = $props()
+  let { freq: freqProp }: { freq: Freq[] } = $props()
+  const freq = untrack(() => freqProp)
 
   const freqSorted = [...freq].sort((a, b) => (b.freq || 0) - (a.freq || 0))
   const totalFreq = freq.reduce((sum, item) => sum + (item.freq || 0), 0)

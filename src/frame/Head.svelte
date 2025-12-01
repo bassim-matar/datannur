@@ -1,6 +1,10 @@
 <script lang="ts">
-  let { title, description = title }: { title: string; description?: string } =
-    $props()
+  let {
+    title,
+    description: descriptionProp,
+  }: { title: string; description?: string } = $props()
+
+  const description = $derived(descriptionProp ?? title)
 </script>
 
 <svelte:head>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import { filterKeys } from '@lib/db'
   import { getUserData } from '@lib/user-data'
@@ -7,7 +8,8 @@
   import Title from '@layout/Title.svelte'
   import type { Row, MetaDataset } from '@type'
 
-  let { metaDataset }: { metaDataset: MetaDataset } = $props()
+  let { metaDataset: metaDatasetProp }: { metaDataset: MetaDataset } = $props()
+  const metaDataset = untrack(() => metaDatasetProp)
 
   let metaDatasetVariables = db.getAll('metaVariable', { metaDataset })
 

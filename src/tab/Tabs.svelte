@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, untrack } from 'svelte'
   import { tabSelected, footerVisible, allTabs } from '@lib/store'
   import { UrlParam, isFirefox, getIsMobile } from 'svelte-fileapp'
   import { isBigLimit } from '@lib/constant'
@@ -8,7 +8,8 @@
   import TabTitle from '@tab/TabTitle.svelte'
   import type { Tab } from './tabs-helper'
 
-  let { tabs }: { tabs: Tab[] } = $props()
+  let { tabs: tabsProp }: { tabs: Tab[] } = $props()
+  const tabs = untrack(() => tabsProp)
 
   let isMobile = getIsMobile()
   let allKeys: unknown[] = []

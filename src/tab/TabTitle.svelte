@@ -13,7 +13,7 @@
     selectTab,
   }: { tab: Tab; activeTab: string; selectTab: (tab: Tab) => void } = $props()
 
-  let tabNb = $state(tab.nb)
+  let tabNb = $derived(tab.nb)
   let minWidth = $state(0)
   let initialMinWidth = $state(0)
 

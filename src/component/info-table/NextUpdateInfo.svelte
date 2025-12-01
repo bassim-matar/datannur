@@ -12,13 +12,12 @@
     fromTimestamp?: boolean
   } = $props()
 
-  let nextUpdateDateReadable = $state(nextUpdateDate)
-  let timeAgo = $state(getTimeAgo(nextUpdateDate, true, !intraday))
-
-  if (fromTimestamp) {
-    nextUpdateDateReadable = getDatetime(nextUpdateDate as number)
-    timeAgo = getTimeAgo(nextUpdateDate, false, !intraday)
-  }
+  const nextUpdateDateReadable = $derived(
+    fromTimestamp ? getDatetime(nextUpdateDate as number) : nextUpdateDate,
+  )
+  const timeAgo = $derived(
+    getTimeAgo(nextUpdateDate, !fromTimestamp, !intraday),
+  )
 </script>
 
 {#if nextUpdateDate}

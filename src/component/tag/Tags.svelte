@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import { onMount } from 'svelte'
   import db from '@db'
   import { page, link } from 'svelte-fileapp'
@@ -10,7 +11,8 @@
   import escapeHtml from 'escape-html'
   import type { Tag, Column as ColumnType } from '@type'
 
-  let { tags }: { tags: Tag[] } = $props()
+  let { tags: tagsProp }: { tags: Tag[] } = $props()
+  const tags = untrack(() => tagsProp)
 
   let isRecursive = $state(false)
   let mounted = $state(false)

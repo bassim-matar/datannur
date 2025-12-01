@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import InstitutionInfo from '@info-table/InstitutionInfo.svelte'
   import FolderInfo from '@info-table/FolderInfo.svelte'
@@ -14,7 +15,9 @@
   import TagsInfo from '@info-table/TagsInfo.svelte'
   import type { Variable } from '@type'
 
-  let { variable }: { variable: Variable } = $props()
+  let { variable: variableProp }: { variable: Variable } = $props()
+  const variable = untrack(() => variableProp)
+
   const dataset = db.get('dataset', variable.datasetId)
 </script>
 

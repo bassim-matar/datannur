@@ -29,24 +29,20 @@
     isFavoritePage?: boolean
   } = $props()
 
-  let title = $state(name)
-  let isFavorite = $state(false)
-  let entityFavoritable: FavoritableEntityName | undefined = $state()
+  const separator = ' | '
+  const entityName = $derived(entityNames[type as MainEntityName])
 
-  let separator = ' | '
-  const entityName = entityNames[type as MainEntityName]
+  const title = $derived(
+    mode !== 'mainTitle' ? entityName + separator + name : name,
+  )
 
-  if (mode !== 'mainTitle') {
-    title = entityName + separator + name
-  }
+  const item = $derived(id ? db.get(type as MainEntityName, id) : undefined)
+  const isFavorite = $derived(item?.isFavorite ?? false)
+  const entityFavoritable = $derived(
+    id ? (type as FavoritableEntityName) : undefined,
+  )
 
-  if (id) {
-    const item = db.get(type as MainEntityName, id)
-    isFavorite = item?.isFavorite ?? false
-    entityFavoritable = type as FavoritableEntityName
-  }
-
-  let itemPage = id ? true : false
+  const itemPage = $derived(id ? true : false)
   let fittyInstance: ReturnType<typeof fitty> | null = null
 
   onMount(() => {

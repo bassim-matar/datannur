@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import { page } from 'svelte-fileapp'
   import Column from '@lib/column'
   import Render from '@lib/render'
@@ -16,7 +17,8 @@
   import { evolutionTypes } from '@lib/constant'
   import type { Evolution, Column as ColumnType } from '@type'
 
-  let { evolutions }: { evolutions: Evolution[] } = $props()
+  let { evolutions: evolutionsProp }: { evolutions: Evolution[] } = $props()
+  const evolutions = untrack(() => evolutionsProp)
 
   let evolutionSummary = $state(Options.get('evolutionSummary'))
 

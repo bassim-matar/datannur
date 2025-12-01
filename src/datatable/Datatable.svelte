@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import jQuery from 'jquery'
   import DataTable from 'datatables.net-bm'
   import JSZip from 'jszip'
@@ -41,13 +42,13 @@
   import type { Row, Column } from '@type'
 
   let {
-    entity,
-    data,
-    columns,
-    sortByName = false,
-    keepAllCols = false,
-    metaPath = undefined,
-    isRecursive = false,
+    entity: entityProp,
+    data: dataProp,
+    columns: columnsProp,
+    sortByName: sortByNameProp = false,
+    keepAllCols: keepAllColsProp = false,
+    metaPath: metaPathProp = undefined,
+    isRecursive: isRecursiveProp = false,
     initied = () => {},
   }: {
     entity: string
@@ -59,6 +60,14 @@
     isRecursive?: boolean
     initied?: () => void
   } = $props()
+
+  const entity = untrack(() => entityProp)
+  const data = untrack(() => dataProp)
+  const columns = untrack(() => columnsProp)
+  const sortByName = untrack(() => sortByNameProp)
+  const keepAllCols = untrack(() => keepAllColsProp)
+  const metaPath = untrack(() => metaPathProp)
+  const isRecursive = untrack(() => isRecursiveProp)
 
   let loading = $state(true)
   let shortTable = $state(false)

@@ -14,8 +14,8 @@
     isSelf?: boolean
   } = $props()
 
-  const name = isSelf ? 'Partie de' : entityNames[type]
-  const icon = isSelf ? 'folderTreeInstitution' : 'institution'
+  const name = $derived(isSelf ? 'Partie de' : entityNames[type])
+  const icon = $derived(isSelf ? 'folderTreeInstitution' : 'institution')
 </script>
 
 {#if institutionId}

@@ -10,11 +10,11 @@
   import type { MainEntityName } from '@type'
 
   let {
-    href = $bindable(''),
-    icon = $bindable(''),
+    href: hrefProp = '',
+    icon: iconProp = '',
     className = 'navbar-item',
-    pages = $bindable([]),
-    ifUse = $bindable(null),
+    pages: pagesProp = [],
+    ifUse: ifUseProp = null,
     standard = '',
     info = '',
     children = null,
@@ -29,16 +29,12 @@
     children?: Snippet | null
   } = $props()
 
-  let standardReadable = $state('')
   let loading = $state(true)
-
-  if (standard) {
-    href = pluralize(standard)
-    pages = [standard, pluralize(standard)]
-    icon = standard
-    ifUse = standard
-    standardReadable = entityNames[standard] + 's'
-  }
+  let href = $derived(standard ? pluralize(standard) : hrefProp)
+  let pages = $derived(standard ? [standard, pluralize(standard)] : pagesProp)
+  let icon = $derived(standard ? standard : iconProp)
+  let ifUse = $derived(standard ? standard : ifUseProp)
+  let standardReadable = $derived(standard ? entityNames[standard] + 's' : '')
 
   const closeMenu = () => ($headerOpen = false)
 

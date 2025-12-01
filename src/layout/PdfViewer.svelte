@@ -1,8 +1,10 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import { hasTouchScreen } from 'svelte-fileapp'
   import Loading from '@frame/Loading.svelte'
 
-  let { pdf }: { pdf: string } = $props()
+  let { pdf: pdfProp }: { pdf: string } = $props()
+  const pdf = untrack(() => pdfProp)
 
   let loading = $state(true)
   let urlMobile = $state(

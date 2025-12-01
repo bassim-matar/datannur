@@ -14,8 +14,8 @@
     isMeta?: boolean
   } = $props()
 
-  const name = isSelf ? 'Partie de' : 'Dossier'
-  const icon = isSelf ? 'folderTreeFolder' : 'folder'
+  const name = $derived(isSelf ? 'Partie de' : 'Dossier')
+  const icon = $derived(isSelf ? 'folderTreeFolder' : 'folder')
 </script>
 
 {#if folderId}

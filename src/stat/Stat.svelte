@@ -1,6 +1,6 @@
 <script lang="ts">
   import MiniMasonry from 'minimasonry'
-  import { onMount, onDestroy } from 'svelte'
+  import { onMount, onDestroy, untrack } from 'svelte'
   import Icon from '@layout/Icon.svelte'
   import { onPageHomepage } from 'svelte-fileapp'
   import { documentWidth } from '@lib/viewport-manager'
@@ -32,7 +32,8 @@
     attributs?: AttributWithValues[]
   }
 
-  let { stat }: { stat: Stat[] } = $props()
+  let { stat: statProp }: { stat: Stat[] } = $props()
+  const stat = untrack(() => statProp)
 
   let showAll = $state(true)
   let visible: { [key: string]: boolean } = $state({})

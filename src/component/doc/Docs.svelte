@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import Column from '@lib/column'
   import Render from '@lib/render'
   import { link } from 'svelte-fileapp'
@@ -7,7 +8,8 @@
   import escapeHtml from 'escape-html'
   import type { Doc, Column as ColumnType } from '@type'
 
-  let { docs }: { docs: Doc[] } = $props()
+  let { docs: docsProp }: { docs: Doc[] } = $props()
+  const docs = untrack(() => docsProp)
 
   let institutionMax = 0
   let folderMax = 0

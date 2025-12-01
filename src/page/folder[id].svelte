@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import { tabSelected } from '@lib/store'
   import {
@@ -17,7 +18,8 @@
   import EvolutionSummarySwitch from '@layout/EvolutionSummarySwitch.svelte'
   import type { Folder } from '@type'
 
-  let { folder }: { folder: Folder } = $props()
+  let { folder: folderProp }: { folder: Folder } = $props()
+  const folder = untrack(() => folderProp)
 
   const docs = folder.docsRecursive
 

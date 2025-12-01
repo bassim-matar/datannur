@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { untrack } from 'svelte'
   import db from '@db'
   import Tabs from '@tab/Tabs.svelte'
   import { tabsHelper } from '@tab/tabs-helper'
   import Title from '@layout/Title.svelte'
   import type { MetaFolder } from '@type'
 
-  let { metaFolder }: { metaFolder: MetaFolder } = $props()
+  let { metaFolder: metaFolderProp }: { metaFolder: MetaFolder } = $props()
+  const metaFolder = untrack(() => metaFolderProp)
 
   let metaDatasets = db.getAll('metaDataset', { metaFolder })
 

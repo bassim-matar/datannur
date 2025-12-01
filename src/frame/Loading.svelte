@@ -3,27 +3,20 @@
 
   let {
     type = 'classic',
-    position = 'fixed',
+    position: positionProp = 'fixed',
     colorEntity = '',
   }: { type?: string; position?: string; colorEntity?: string } = $props()
 
-  let withHeight = $state(false)
-  let withTimer = $state(true)
+  let position = $derived(
+    type === 'tabBody' || type === 'tab' ? 'absolute' : positionProp,
+  )
+  let withHeight = $derived(type === 'tabBody')
+  let withTimer = $derived(type !== 'mini' && type !== 'tab')
   let timer = $state(0)
 
   let loadingTimer = setInterval(() => (timer += 1), 1000)
 
   onDestroy(() => clearInterval(loadingTimer))
-
-  if (type === 'tabBody') {
-    position = 'absolute'
-    withHeight = true
-  } else if (type === 'mini') {
-    withTimer = false
-  } else if (type === 'tab') {
-    withTimer = false
-    position = 'absolute'
-  }
 </script>
 
 {#if withHeight}
