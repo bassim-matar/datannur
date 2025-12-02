@@ -67,41 +67,6 @@ datannur is a client-side data catalog designed to organize and explore datasets
 3. **Explore** the demo metadata to understand how it works
 4. **Replace** the demo metadata in `/data/db/` with your own
 
-## VS Code Extension (Optional)
-
-For users with VS Code and GitHub Copilot, a language model tool is available to query the catalog using natural language:
-
-```bash
-# Install the extension
-code --install-extension vscode-extension.vsix
-
-# Use in Copilot Chat
-@datannur find datasets about health
-@datannur count variables by tag
-```
-
-**Requirements:** VS Code 1.85+ and active GitHub Copilot subscription.
-
-### Customizing the AI Assistant
-
-You can customize the assistant's behavior by creating prompt files in `data/`:
-
-**Option 1 - Add custom instructions** (recommended):
-
-```bash
-cp system-prompt-addon.template.txt data/system-prompt-addon.txt
-# Edit to add language preference, response format, domain focus, etc.
-```
-
-**Option 2 - Replace entire prompt** (advanced):
-
-```bash
-cp system-prompt.template.txt data/system-prompt.txt
-# Full control over system prompt
-```
-
-Changes apply immediately on your next message. Templates are in the `public/` folder.
-
 ## Project Structure
 
 > **📁 Context:** This structure represents the **distributed application** (inside the `app/` folder or downloaded package). For development structure, see the full repository.
@@ -111,7 +76,8 @@ Here is the top-level structure:
 ```
 ├── assets/                     # Static assets (JS, images, etc.)
 ├── data/                       # ⚠️ YOUR DATA - Only folder to modify
-├── node-scripts/               # Node.js scripts (deploy, static generation, sync db)
+├── node-scripts/               # Node.js scripts (deploy, static generation, sync db, etc.)
+├── python-scripts/             # Python scripts (update app, export dcat, proxy llm, etc.)
 ├── .htaccess                   # Apache configuration (clean URLs, cache)
 ├── .nojekyll                   # Disables Jekyll on GitHub Pages
 ├── CHANGELOG.md                # Application changelog
@@ -122,7 +88,6 @@ Here is the top-level structure:
 ├── deploy.config.template.json # Deployment config template
 ├── package.json                # Node.js package manifest for node-scripts/
 ├── tsconfig.json               # TypeScript configuration for node-scripts/
-├── update_app.py               # Automatic update script
 ```
 
 > **⚠️ Important:** Only the `/data/` folder should be modified by the user (adding/modifying your metadata). All other files constitute the application and should not be edited, except in exceptional cases or for advanced configuration.
@@ -266,7 +231,7 @@ The "About" content (both homepage tab and dedicated page) is composed of three 
 If you have Python installed, you can update automatically:
 
 ```bash
-python3 update_app.py
+python3 python-scripts/update_app.py
 ```
 
 > **💡 Note:** The update script uses only Python's standard library - no additional dependencies required! Just run it directly with any Python 3.8+ installation.
@@ -345,7 +310,7 @@ The included `.htaccess` file enables:
 
 datannur can export your catalog metadata to DCAT-AP-CH format, making it compatible with [opendata.swiss](https://opendata.swiss) and other semantic web portals.
 
-**Export script:** `python-scripts/export-dcat.py`
+**Export script:** `python-scripts/export_dcat.py`
 
 **Configuration:** Edit `/data/dcat-export.config.json` to set:
 
@@ -357,10 +322,10 @@ datannur can export your catalog metadata to DCAT-AP-CH format, making it compat
 
 ```bash
 # Export to RDF/XML (default)
-python python-scripts/export-dcat.py
+python python-scripts/export_dcat.py
 
 # Export to JSON-LD
-python python-scripts/export-dcat.py json-ld
+python python-scripts/export_dcat.py json-ld
 ```
 
 **Output:** Generated files in `/data/db-semantic/`:
@@ -434,7 +399,7 @@ The app uses a configuration automatically embedded in `index.html`:
 
 > **💡 Best Practice:** Instead of editing `index.html` directly, modify the configuration in `/data/jsonjsdb-config.html` and then:
 >
-> - Run `python3 update_app.py` to automatically apply the configuration, OR
+> - Run `python3 python-scripts/update_app.py` to automatically apply the configuration, OR
 > - Manually copy the configuration block from `/data/jsonjsdb-config.html` to `index.html`
 >
 > This approach ensures your configuration is preserved during application updates.
