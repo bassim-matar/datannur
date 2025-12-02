@@ -8,7 +8,7 @@
   "main": "src/main.ts",
   "scripts": {
     "dev": "vite",
-    "dev:proxy": "python3 public/python-scripts/proxy-llm.py",
+    "dev:proxy": "python3 public/python-scripts/proxy_llm.py",
     "build": "vite build",
     "build:analyze": "BUNDLE_VIEW=true vite build",
     "preview": "open-cli app/index.html",

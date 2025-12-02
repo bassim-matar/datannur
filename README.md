@@ -310,7 +310,7 @@ The included `.htaccess` file enables:
 
 datannur can export your catalog metadata to DCAT-AP-CH format, making it compatible with [opendata.swiss](https://opendata.swiss) and other semantic web portals.
 
-**Export script:** `python-scripts/export-dcat.py`
+**Export script:** `python-scripts/export_dcat.py`
 
 **Configuration:** Edit `/data/dcat-export.config.json` to set:
 
@@ -322,10 +322,10 @@ datannur can export your catalog metadata to DCAT-AP-CH format, making it compat
 
 ```bash
 # Export to RDF/XML (default)
-python python-scripts/export-dcat.py
+python python-scripts/export_dcat.py
 
 # Export to JSON-LD
-python python-scripts/export-dcat.py json-ld
+python python-scripts/export_dcat.py json-ld
 ```
 
 **Output:** Generated files in `/data/db-semantic/`:
