@@ -90,30 +90,16 @@ export default [
       'node_modules/',
       'public/assets/',
       'src/page/.router-index.ts',
-      'vscode-extension/out/',
-      'vscode-extension/node_modules/',
     ],
   },
   {
     files: ['**/*.ts', '**/*.svelte.ts'],
-    ignores: ['eslint.config.ts', 'vscode-extension/**/*.ts'],
+    ignores: ['eslint.config.ts'],
     languageOptions: {
       globals,
       parser: tseslint.parser,
       parserOptions: {
         project: './tsconfig.json',
-      },
-    },
-    rules: { ...namingConventionRules, ...strictTypeScriptRules },
-  },
-  {
-    files: ['vscode-extension/**/*.ts'],
-    ignores: ['vscode-extension/vite.config.ts'],
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        project: './vscode-extension/tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: { ...namingConventionRules, ...strictTypeScriptRules },
