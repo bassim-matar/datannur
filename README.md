@@ -76,7 +76,8 @@ Here is the top-level structure:
 ```
 ├── assets/                     # Static assets (JS, images, etc.)
 ├── data/                       # ⚠️ YOUR DATA - Only folder to modify
-├── node-scripts/               # Node.js scripts (deploy, static generation, sync db)
+├── node-scripts/               # Node.js scripts (deploy, static generation, sync db, etc.)
+├── python-scripts/             # Python scripts (update app, export dcat, proxy llm, etc.)
 ├── .htaccess                   # Apache configuration (clean URLs, cache)
 ├── .nojekyll                   # Disables Jekyll on GitHub Pages
 ├── CHANGELOG.md                # Application changelog
@@ -87,7 +88,6 @@ Here is the top-level structure:
 ├── deploy.config.template.json # Deployment config template
 ├── package.json                # Node.js package manifest for node-scripts/
 ├── tsconfig.json               # TypeScript configuration for node-scripts/
-├── update_app.py               # Automatic update script
 ```
 
 > **⚠️ Important:** Only the `/data/` folder should be modified by the user (adding/modifying your metadata). All other files constitute the application and should not be edited, except in exceptional cases or for advanced configuration.
@@ -231,7 +231,7 @@ The "About" content (both homepage tab and dedicated page) is composed of three 
 If you have Python installed, you can update automatically:
 
 ```bash
-python3 update_app.py
+python3 python-scripts/update_app.py
 ```
 
 > **💡 Note:** The update script uses only Python's standard library - no additional dependencies required! Just run it directly with any Python 3.8+ installation.
@@ -399,7 +399,7 @@ The app uses a configuration automatically embedded in `index.html`:
 
 > **💡 Best Practice:** Instead of editing `index.html` directly, modify the configuration in `/data/jsonjsdb-config.html` and then:
 >
-> - Run `python3 update_app.py` to automatically apply the configuration, OR
+> - Run `python3 python-scripts/update_app.py` to automatically apply the configuration, OR
 > - Manually copy the configuration block from `/data/jsonjsdb-config.html` to `index.html`
 >
 > This approach ensures your configuration is preserved during application updates.

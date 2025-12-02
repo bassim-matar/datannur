@@ -8,10 +8,10 @@
   "privateKeyPath": "~/.ssh/id_rsa",
   "ignore": [
     "node-scripts",
+    "python-scripts",
     "node_modules",
     ".DS_Store",
     "~$*",
-    "update_app.py",
     "package.json",
     "package-lock.json",
     ".nojekyll",
