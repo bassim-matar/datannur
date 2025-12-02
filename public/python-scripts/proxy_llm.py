@@ -18,6 +18,21 @@ import sys
 import time
 import random
 from pathlib import Path
+from typing import Optional
+
+REPO_PATH = Path(__file__).parent.parent
+UPDATE_APP_CONFIG = REPO_PATH / "data" / "update-app.json"
+
+
+def get_proxy_url() -> Optional[str]:
+    """Get proxy URL from update-app.json config file"""
+    if not UPDATE_APP_CONFIG.exists():
+        return None
+    try:
+        config = json.loads(UPDATE_APP_CONFIG.read_text())
+        return config.get("proxyUrl")
+    except (json.JSONDecodeError, OSError):
+        return None
 
 
 def get_config_dir():
@@ -65,6 +80,22 @@ def save_config(api_key, product_id):
 
     os.chmod(config_path, 0o600)
     return config_path
+
+
+def make_request(
+    req: urllib.request.Request,
+    proxy_url: Optional[str] = None,
+    timeout: int = 60,
+) -> bytes:
+    """Make HTTP request with optional proxy support."""
+    if proxy_url:
+        proxy_values = {"http": proxy_url, "https": proxy_url}
+        proxy_handler = urllib.request.ProxyHandler(proxy_values)
+        opener = urllib.request.build_opener(proxy_handler)
+        with opener.open(req, timeout=timeout) as response:
+            return response.read()
+    with urllib.request.urlopen(req, timeout=timeout) as response:
+        return response.read()
 
 
 class ProxyHandler(BaseHTTPRequestHandler):
@@ -169,6 +200,7 @@ class ProxyHandler(BaseHTTPRequestHandler):
 
         api_key, product_id = creds
         conn = None
+        proxy_url = get_proxy_url()
 
         try:
             content_length = int(self.headers["Content-Length"])
@@ -176,11 +208,28 @@ class ProxyHandler(BaseHTTPRequestHandler):
             payload = json.loads(post_data.decode("utf-8"))
             is_stream = payload.get("stream", True)
 
-            conn = http.client.HTTPSConnection(
-                "api.infomaniak.com",
-                context=ssl.create_default_context(),
-                timeout=None,
-            )
+            if proxy_url:
+                # Parse proxy URL to get host and port
+                proxy_parts = proxy_url.replace("http://", "").replace("https://", "")
+                if ":" in proxy_parts:
+                    proxy_host, proxy_port_str = proxy_parts.split(":")
+                    proxy_port = int(proxy_port_str)
+                else:
+                    proxy_host = proxy_parts
+                    proxy_port = 8080
+                conn = http.client.HTTPSConnection(
+                    proxy_host,
+                    proxy_port,
+                    context=ssl.create_default_context(),
+                    timeout=None,
+                )
+                conn.set_tunnel("api.infomaniak.com", 443)
+            else:
+                conn = http.client.HTTPSConnection(
+                    "api.infomaniak.com",
+                    context=ssl.create_default_context(),
+                    timeout=None,
+                )
 
             headers = {
                 "Content-Type": "application/json",
@@ -268,6 +317,7 @@ class ProxyHandler(BaseHTTPRequestHandler):
             )
 
             # Upload audio and get batch_id
+            proxy_url = get_proxy_url()
             url = f"https://api.infomaniak.com/1/ai/{product_id}/openai/audio/transcriptions"
             req = urllib.request.Request(url, data=body_data, method="POST")
             req.add_header("Authorization", f"Bearer {api_key}")
@@ -275,8 +325,8 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 "Content-Type", f"multipart/form-data; boundary={boundary_str}"
             )
 
-            with urllib.request.urlopen(req, timeout=60) as response:
-                upload_result = json.loads(response.read().decode("utf-8"))
+            response_data = make_request(req, proxy_url, timeout=60)
+            upload_result = json.loads(response_data.decode("utf-8"))
 
             batch_id = upload_result.get("batch_id")
             if not batch_id:
@@ -297,8 +347,8 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 result_req = urllib.request.Request(result_url, method="GET")
                 result_req.add_header("Authorization", f"Bearer {api_key}")
 
-                with urllib.request.urlopen(result_req, timeout=10) as result_response:
-                    result = json.loads(result_response.read().decode("utf-8"))
+                response_data = make_request(result_req, proxy_url, timeout=10)
+                result = json.loads(response_data.decode("utf-8"))
 
                 status = result.get("status")
                 print(f"Polling attempt {attempt + 1}: status={status}")
@@ -434,6 +484,12 @@ if __name__ == "__main__":
     else:
         print(f"⚠ No configuration found. Use /set_keys endpoint to configure.")
         print(f"  Config will be saved to: {get_config_path()}")
+
+    proxy_url = get_proxy_url()
+    if proxy_url:
+        print(f"✓ HTTP proxy configured: {proxy_url}")
+    else:
+        print(f"✓ No HTTP proxy configured (direct connection)")
 
     server = HTTPServer(("localhost", PORT), ProxyHandler)
     print(f"✓ LLM Proxy running on http://localhost:{PORT}")
