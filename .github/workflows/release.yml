@@ -75,6 +75,11 @@ jobs:
             echo "version=${{ steps.current_version.outputs.version }}" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Remove sensitive config before packaging
+        run: |
+          rm -f app/data/llm-web.config.json
+          rm -f app/data/deploy.config.json
+
       - name: Create package
         run: cd app && zip -r "../${{ steps.release.outputs.asset }}" .
 

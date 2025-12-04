@@ -4,9 +4,10 @@
 bundle-view.html
 /**/node_modules/
 /app/
-/deploy.config.json
 /public/assets/external/*.js
 /public/node_modules/
 /public/data/db-semantic/
+/public/data/deploy.config.json
+/public/data/llm-web.config.json
 /src/page/.router-index.ts
 /src/assets/db-schema.json

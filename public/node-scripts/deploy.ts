@@ -19,20 +19,9 @@ type DeployConfig = {
 const thisDirname = dirname(fileURLToPath(import.meta.url))
 process.chdir(join(thisDirname, '..'))
 
-const configPaths = [
-  join(thisDirname, '..', 'data', 'deploy.config.json'),
-  join(thisDirname, '..', '..', 'deploy.config.json'),
-]
+const configPath = join(thisDirname, '..', 'data', 'deploy.config.json')
 
-let configPath: string | null = null
-for (const path of configPaths) {
-  if (existsSync(path)) {
-    configPath = path
-    break
-  }
-}
-
-if (!configPath) {
+if (!existsSync(configPath)) {
   console.error('❌ No deploy config found!')
   console.log(
     '📝 Create deploy.config.json from data-template/deploy.config.json',
