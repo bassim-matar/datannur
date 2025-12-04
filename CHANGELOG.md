@@ -1,5 +1,12 @@
 # datannur
 
+## unreleased
+
+- fix: warning with state_referenced_locally
+- refactor: validate_schemas.py and start_app.py and put json template in own dir
+- refactor: make demo data more complete
+- remove: LLM vscode extension
+
 ## 0.15.1 (2025-11-30)
 
 - add: customizable system prompts, junction tables for many-to-many relations, and date context to extension
