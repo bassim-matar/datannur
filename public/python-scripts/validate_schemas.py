@@ -3,20 +3,99 @@
 
 import json
 import sys
+from collections import defaultdict
 from pathlib import Path
-from jsonschema import Draft7Validator
-from referencing import Registry, Resource
-from referencing.jsonschema import DRAFT7
+
+try:
+    from jsonschema import Draft7Validator
+    from referencing import Registry, Resource
+    from referencing.jsonschema import DRAFT7
+except ImportError as e:
+    missing = str(e).split("'")[1] if "'" in str(e) else "required packages"
+    print(f"❌ Missing dependency: {missing}")
+    print("   Install with: pip install jsonschema referencing")
+    sys.exit(1)
+
+
+def find_data_dir(base_dir: Path) -> Path | None:
+    """Find data directory: either db/ with JSON files or first subdirectory containing them."""
+    db_dir = base_dir / "data" / "db"
+    if not db_dir.exists():
+        return None
+
+    # Check if JSON files exist directly in db/
+    if list(db_dir.glob("*.json")):
+        return db_dir
+
+    # Otherwise find first subdirectory with JSON files
+    for subdir in db_dir.iterdir():
+        if (
+            subdir.is_dir()
+            and not subdir.name.startswith(".")
+            and list(subdir.glob("*.json"))
+        ):
+            return subdir
+
+    return None
+
+
+def find_schemas_dir(base_dir: Path) -> Path | None:
+    """Find schemas directory."""
+    schemas_dir = base_dir / "schemas"
+    if schemas_dir.exists() and list(schemas_dir.glob("*.schema.json")):
+        return schemas_dir
+    return None
+
+
+def format_validation_errors(validation_errors: list, entity_name: str) -> list[str]:
+    """Group errors by schema path (property) and format with counts or precise locations."""
+    # Group by schema_path (the property causing the error, e.g. "nb_row")
+    error_groups: dict[tuple[str, str], list[str]] = defaultdict(list)
+
+    for err in validation_errors:
+        # schema_path = property path in schema (e.g. "properties.nb_row.type")
+        schema_path = (
+            ".".join(str(p) for p in err.schema_path) if err.schema_path else ""
+        )
+        # absolute_path = location in data (e.g. "0.nb_row")
+        data_path = ".".join(str(p) for p in err.absolute_path) or entity_name
+        # Use schema message pattern (without specific value) for grouping
+        error_groups[(schema_path, err.validator)].append(data_path)
+
+    formatted = []
+    for (schema_path, validator), paths in error_groups.items():
+        # Get a sample error to show the message
+        sample_err = next(
+            e
+            for e in validation_errors
+            if ".".join(str(p) for p in e.schema_path) == schema_path
+            and e.validator == validator
+        )
+        # Extract property name from first path (e.g. "0.nb_row" -> "nb_row")
+        prop = paths[0].split(".")[-1] if "." in paths[0] else paths[0]
+
+        if len(paths) == 1:
+            formatted.append(f"  {paths[0]}: {sample_err.message}")
+        else:
+            formatted.append(f"  {prop}: {sample_err.message} (×{len(paths)} items)")
+
+    return formatted
+
 
 script_dir = Path(__file__).parent
 public_dir = script_dir.parent
 
-package_json = json.loads((public_dir / "package.json").read_text())
-db_path = package_json["datannur"]["dbPath"]
-schemas_path = package_json["datannur"]["schemasPath"]
+schemas_dir = find_schemas_dir(public_dir)
+if not schemas_dir:
+    print("❌ Schemas directory not found")
+    sys.exit(1)
 
-schemas_dir = public_dir / schemas_path
-data_dir = public_dir / db_path
+data_dir = find_data_dir(public_dir)
+if not data_dir:
+    print("❌ Data directory not found (no JSON files in data/db/)")
+    sys.exit(1)
+
+print(f"📁 Data: {data_dir.relative_to(public_dir)}")
 
 # Collect schema files
 data_schemas = [
@@ -27,7 +106,10 @@ data_schemas = [
 
 user_data_dir = schemas_dir / "userData"
 user_data_schemas = (
-    [{"file": f.name, "dir": user_data_dir, "type": "userData"} for f in user_data_dir.glob("*.schema.json")]
+    [
+        {"file": f.name, "dir": user_data_dir, "type": "userData"}
+        for f in user_data_dir.glob("*.schema.json")
+    ]
     if user_data_dir.exists()
     else []
 )
@@ -66,10 +148,12 @@ print(f"✅ {len(schema_files)} schemas valid\n")
 print("🔍 Validating data files...")
 total_items = 0
 
-registry = Registry().with_resources([
-    (name, Resource.from_contents(schema, default_specification=DRAFT7))
-    for name, schema in schemas.items()
-])
+registry = Registry().with_resources(
+    [
+        (name, Resource.from_contents(schema, default_specification=DRAFT7))
+        for name, schema in schemas.items()
+    ]
+)
 
 for item in schema_files:
     if item["type"] == "userData":
@@ -88,9 +172,8 @@ for item in schema_files:
 
         if validation_errors:
             print(f"❌ {entity_name}.json:")
-            for err in validation_errors:
-                path = ".".join(str(p) for p in err.absolute_path) or entity_name
-                print(f"  {path}: {err.message}")
+            for line in format_validation_errors(validation_errors, entity_name):
+                print(line)
             errors += 1
         elif isinstance(data, list):
             total_items += len(data)
