@@ -490,7 +490,7 @@ def main():
     # Configuration (load from data/ directory, fallback to template)
     config_file = data_dir / "dcat-export.config.json"
     if not config_file.exists():
-        config_file = public_dir / "dcat-export.config.template.json"
+        config_file = public_dir / "data-template" / "dcat-export.config.json"
     config = load_config(config_file)
 
     # Output format

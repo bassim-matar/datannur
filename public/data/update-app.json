@@ -3,6 +3,7 @@
   "include": [
     "api",
     "assets",
+    "data-template",
     "node-scripts",
     "python-scripts",
     "schemas",
@@ -12,8 +13,6 @@
     "CHANGELOG.md",
     ".htaccess",
     ".nojekyll",
-    "dcat-export.config.template.json",
-    "deploy.config.template.json",
     "manifest.json",
     "package.json",
     "tsconfig.json"

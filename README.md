@@ -76,6 +76,7 @@ Here is the top-level structure:
 ```
 ├── assets/                     # Static assets (JS, images, etc.)
 ├── data/                       # ⚠️ YOUR DATA - Only folder to modify
+├── data-template/              # Templates to copy into data/
 ├── node-scripts/               # Node.js scripts (deploy, static generation, sync db, etc.)
 ├── python-scripts/             # Python scripts (update app, export dcat, proxy llm, etc.)
 ├── .htaccess                   # Apache configuration (clean URLs, cache)
@@ -85,7 +86,6 @@ Here is the top-level structure:
 ├── README.md                   # This documentation
 ├── index.html                  # Application entry point
 ├── manifest.json               # PWA configuration
-├── deploy.config.template.json # Deployment config template
 ├── package.json                # Node.js package manifest for node-scripts/
 ├── tsconfig.json               # TypeScript configuration for node-scripts/
 ```
@@ -283,7 +283,7 @@ npm run deploy
 
 **How it works:**
 
-- Reads deployment settings from `deploy.config.json` (see `deploy.config.template.json` for an example).
+- Reads deployment settings from `deploy.config.json` (see `data-template/deploy.config.json` for an example).
 - Uses `rsync` to synchronize your local files to the remote server, with options for excluding files and deleting removed files.
 - Supports SSH key authentication and custom port configuration.
 - Shows progress and errors directly in the terminal.
@@ -295,7 +295,7 @@ npm run deploy
 - `ignore`: Array of file/folder patterns to exclude
 - `syncOption.delete`: If true, files deleted locally are also deleted remotely
 
-> If no config is found, the script will prompt you to create one from the template (`deploy.config.template.json`).
+> If no config is found, the script will prompt you to create one from the template (`data-template/deploy.config.json`).
 
 ### URL Rewriting
 
