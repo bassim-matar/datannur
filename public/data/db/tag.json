@@ -25,28 +25,28 @@
     "parent_id": "data_protection",
     "name": "Données sensibles",
     "description": "Les données 2 sensibles sont des catégories particulières de données personnelles qui révèlent des informations hautement confidentielles, comme l'origine raciale ou ethnique, les opinions politiques, les croyances religieuses, la santé, la vie sexuelle, ou les données biométriques. Leur traitement est soumis à des règles strictes pour éviter toute discrimination ou atteinte à la vie privée.",
-    "doc_ids": "pdf_online"
+    "doc_ids": null
   },
   {
     "id": "pseudonymous_data",
     "parent_id": "data_protection",
     "name": "Données pseudonymisées",
     "description": "Les données pseudonymisées sont des données personnelles qui ont été modifiées de manière à ce qu'elles ne puissent plus être attribuées à une personne spécifique sans informations supplémentaires. Cela permet de réduire les risques pour la vie privée, tout en conservant la possibilité de réidentifier les données si nécessaire, en gardant ces informations complémentaires séparées et protégées.",
-    "doc_ids": null
+    "doc_ids": "statpop-info"
   },
   {
     "id": "anonymous_data",
     "parent_id": "data_protection",
     "name": "Données anonymisées",
     "description": "Les données anonymisées sont des données personnelles qui ont été modifiées de façon irréversible afin qu'elles ne puissent plus être liées à une personne identifiable, directement ou indirectement. Contrairement à la pseudonymisation, l'anonymisation rend impossible la réidentification des individus, même avec des informations supplémentaires.",
-    "doc_ids": null
+    "doc_ids": "pdf-wiki"
   },
   {
     "id": "developpement_territorial",
     "parent_id": "theme_iso",
     "name": "Développement territorial",
     "description": "La naissance de la notion de développement territorial renvoie à de multiples acceptions possibles du développement et relève de diverses définitions possibles du territoire. Il est maintenant admis qu'elle élargit, diversifie et approfondit celles de développement local (Pecqueur (B.), 1989)), de développement régional, d'aménagement du territoire, voire les dépasse.",
-    "doc_ids": "pdf_online, bevnat-info"
+    "doc_ids": "pdf_online, bevnat-variable"
   },
   {
     "id": "cadastre_foncier",
@@ -74,7 +74,7 @@
     "parent_id": "theme_iso",
     "name": "Faune",
     "description": "Le terme faune désigne l'ensemble des espèces animales présentes dans un espace géographique ou un écosystème déterminé (par opposition à la flore), à une époque donnée.\nEn général, la notion ne comprend pas l'être humain, bien qu'il fasse partie du règne animal et qu'il soit classé physiologiquement comme un mammifère.\nLa biodiversité correspond à l'ensemble de la diversité du monde vivant. Elle englobe la faune et la flore, c'est-à-dire la totalité des formes que prennent les êtres vivants (animaux, végétaux, micro-organismes) au sein des environnements dans lesquels ils évoluent et se multiplient. La faune et la flore sont interdépendantes. La faune est essentielle à la survie de nombreuses espèces de plantes, certaines d'entre elles étant entièrement dépendantes d'un unique insecte pour leur pollinisation et donc leur reproduction éventuelle.\nDe nombreuses personnes pensent donc que l'être humain devrait agir sur la nature pour préserver la faune, dans l'intérêt de tout le monde. Cependant l'homme pourrait modifier l'équilibre naturel en voulant à tout prix maintenir certains caractères. D'autres, curieux de suivre l'évolution du phénomène naturel, préfèrent, comme au parc national du Serengeti et dans le cratère du Ngorongoro, laisser la nature agir d'elle-même. Dans ces parcs nationaux de Tanzanie, une population de lions a failli disparaître à la suite de la maladie de Carré transmise par les chiens domestiques. Le parti-pris de ne pas intervenir a été maintenu.",
-    "doc_ids": null
+    "doc_ids": "pdf-wiki, tourisme-exemple"
   },
   {
     "id": "protection_env_nature",
@@ -88,7 +88,7 @@
     "parent_id": "theme_iso",
     "name": "Édifices",
     "description": "Un édifice est un ouvrage bâti en travaux d'art de la construction. Il est synonyme de bâtiment ou de monument. Le terme n'est pourtant souvent employé qu'en parlant des temples, des palais et autres grands bâtiments publics (1694-1832). On élève un édifice quand on construit un « bâtiment durable au-dessus du sol » -Dicobat, 2005.\n« Le bâtiment, c'est tout ce qu'on bâtit; une cabane est un petit bâtiment; une caserne en peut être un grand. L'édifice suppose plus d'art, plus de grandeur, d'élévation, des matériaux plus solides. Un marché public qui n'a presque pas de hauteur, n'est qu'un grand bâtiment; l'église des Invalides est un édifice. Le monument est ce qui sert à instruire la postérité, ce qui reste comme une marque de la grandeur des peuples ou des hommes » -Littré, 1873. \nActuellement un édifice « peut désigner un bâtiment d'une certaine importance » -Dicobat, 2005.\nSont des édifices aussi bien : \n\ndes constructions utiles (un pont, une terrasse murée aménageant un terrain),\nque des constructions d'un ou plusieurs bâtiments organisés en ensemble d'espace habitable ou d'abri de marchandise qui sont des constructions jointives ou non ayant la même destination formant un ensemble architectural ou industriel,\nque des constructions d'apparat ou d'agrément  (un monument arc de triomphe, obélisque, château, hôtel de ville..., un décor de cinéma etc.)\nque des constructions à caractère religieux (églises, mosquées, temples)L'art de construire est tenu par les métiers du bâtiment, qui forment dans leur ensemble un secteur économique où on utilise la mécanisation et l'habileté manuelle. \nL'art de concevoir des édifices s'appelle architecture aussi bien pour leur forme globale que pour l'aménagement intérieur en différentes salles. La science d'édification est nommée génie civil, tandis que celui de disposer les constructions à l'échelle de la ville pour les raccorder en agglomération aux réseaux (voies, eau, égouts, etc.) s'appelle urbanisme.",
-    "doc_ids": null
+    "doc_ids": "bevnat-variable"
   },
   {
     "id": "infrastructures",
@@ -116,14 +116,14 @@
     "parent_id": "theme_iso",
     "name": "Hydrographie",
     "description": "L'hydrographie peut être définie de trois manières, selon le contexte :\n\nl'étude et la description des cours d'eau et des étendues d'eau (océans, mers, lacs...) qu'on peut observer à la surface de la terre ou dans le sous-sol (cours d'eau souterrains...) ;\nLe terme désigne aussi l'ensemble des cours d'eau d'une région donnée, organisés en bassins hydrographiques (ou bassin versant) ;\nla topographie maritime ou lacustre qui a pour objet de lever le plan du fond des mers et des fleuves, et de déterminer les diverses profondeurs de l'eau, la force des courants et des marées, dans le but d'établir des cartes marines,",
-    "doc_ids": null
+    "doc_ids": "statpop-info, tourisme-exemple"
   },
   {
     "id": "limites_pol_admin",
     "parent_id": "theme_iso",
     "name": "Limites politiques et administratives",
     "description": "Une région administrative, au Québec, est la première division du territoire après celle de l'État. Le Québec est divisé en 17 régions administratives. Comme leur nom l'indique, il s'agit de divisions administratives et non politiques.\nIl n'existe pas d'instance politique élective responsable de gérer une région et celles-ci ne bénéficient pas de la personnalité morale. Cependant, un ministre responsable, appelé à traiter des enjeux locaux avec le gouvernement provincial ou au nom de ce dernier auprès de la population, est nommé pour chaque région.\nLes régions servent à organiser les services gouvernementaux et le développement du territoire en fonction des particularités régionales. Elles jouent également un rôle identitaire important, les réalités socio-économiques et historiques variant parfois beaucoup en raison de la superficie et de la densité démographique du Québec.\nLes dix premières régions sont créées le 29 mars 1966, puis une réorganisation est faite le 22 décembre 1987.",
-    "doc_ids": null
+    "doc_ids": "pop-com-1, pdf_online"
   },
   {
     "id": "atmosphere",
@@ -144,7 +144,7 @@
     "parent_id": "theme_iso",
     "name": "Santé",
     "description": "La santé est « un état de complet bien-être physique, mental et social, et ne consiste pas seulement en une absence de maladie ou d'infirmité ». Dans cette définition par l'Organisation mondiale de la santé, OMS, depuis 1946, la santé représente « l’un des droits fondamentaux de tout être humain, quelles que soient sa race, sa religion, ses opinions politiques, sa condition économique ou sociale »,. Elle implique la satisfaction de tous les besoins fondamentaux de la personne, qu'ils soient affectifs, sanitaires, nutritionnels, sociaux ou culturels.. Mais cette définition confond les notions de santé et de bien-être.\nPar ailleurs, « la santé résulte d’une interaction constante entre l’individu et son milieu » et représente donc « cette « capacité physique, psychique et sociale des personnes d’agir dans leur milieu et d’accomplir les rôles qu’elles entendent assumer d’une manière acceptable pour elles-mêmes et pour les groupes dont elles font partie ». \nRené Dubos présente en 1973 la santé comme « la situation dans laquelle l'organisme réagit par une adaptation tout en préservant son intégrité individuelle. C'est l'état physique et mental relativement exempt de gênes et de souffrances qui permet à l'individu de fonctionner aussi longtemps que possible dans le milieu où le hasard ou le choix l'ont placé. »,Pour René Leriche en 1936, « la santé c'est la vie dans le silence des organes. »,",
-    "doc_ids": null
+    "doc_ids": "pdf-wiki"
   },
   {
     "id": "agriculture",
@@ -249,14 +249,14 @@
     "parent_id": "theme_iso",
     "name": "Localisation",
     "description": "En algèbre, la localisation est une des opérations de base de l'algèbre commutative. C'est une méthode qui construit à partir d'un anneau commutatif un nouvel anneau. La construction du corps des fractions est un cas particulier de la localisation.",
-    "doc_ids": null
+    "doc_ids": "tourisme-exemple"
   },
   {
     "id": "systemes_reference",
     "parent_id": "theme_iso",
     "name": "Systèmes de référence",
     "description": "Un système de référence en anatomie désigne la terminologie utilisée pour se repérer de façon précise dans la structure anatomique d'un organisme, humain ou non. Un système de référence anatomique repose sur un ensemble de plans et d'axes définis par rapport à la position standard de l'organisme décrit. Par exemple, on utilise cette terminologie pour indiquer l'orientation des coupes histologiques ou des vues utilisées dans les schémas et images en médecine ou en biologie humaine à partir de la position de Poirier, c'est-à-dire lorsque le sujet est debout face à l'observateur[réf. souhaitée].",
-    "doc_ids": null
+    "doc_ids": "bevnat-info, tourisme-exemple"
   },
   {
     "id": "cartes_reference",
@@ -270,7 +270,7 @@
     "parent_id": "theme_iso",
     "name": "Couverture du sol",
     "description": "La couverture du sol, aussi appelée occupation du sol, est constituée des matériaux physiques à la surface de la Terre, qu’ils soient naturels ou anthropogéniques, et incluant l’eau, le sol nu, l’herbe, les arbres, le pavage, les constructions, etc.  \nIl existe deux méthodes principales, et complémentaires pour obtenir de l’information sur la couverture du sol : \n\nles enquêtes terrain complétant la cartographie traditionnelle ;\nla télédétection.La nature de la « couverture du sol » est discutée dans Comber et al (2005).",
-    "doc_ids": null
+    "doc_ids": "statpop-info"
   },
   {
     "id": "images_aeriennes",

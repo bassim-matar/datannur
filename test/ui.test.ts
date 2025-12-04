@@ -49,8 +49,8 @@ const pageNames = [
   'tag/population',
   'dataset/accident_route',
   'dataset/dep_sante',
-  'variable/dep_sante___variable_4',
-  'variable/ser_pub_loc___variable_3',
+  'variable/pollution_air__source_donnee',
+  'variable/exportations__certification_requise',
   'modality/canton_sigle',
   '?tab=stat',
 ]
