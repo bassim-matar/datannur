@@ -34,7 +34,9 @@ for (const path of configPaths) {
 
 if (!configPath) {
   console.error('❌ No deploy config found!')
-  console.log('📝 Create deploy.config.json from deploy.config.template.json')
+  console.log(
+    '📝 Create deploy.config.json from data-template/deploy.config.json',
+  )
   process.exit(1)
 }
 
