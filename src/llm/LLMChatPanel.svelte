@@ -6,6 +6,8 @@
     isProxyAvailable,
     setProxyCredentials,
     checkProxyStatus,
+    isLocalProxy,
+    createSession,
   } from '@llm/llm-config'
   import markdownRender from '@lib/markdown'
   import { safeHtml } from '@lib/html-sanitizer'
@@ -37,6 +39,8 @@
   let apiKey = $state('')
   let productId = $state('')
   let isConfigured = $state(false)
+  let isSessionReady = $state(false)
+  let isCreatingSession = $state(false)
   let configError = $state('')
   let configSuccess = $state('')
 
@@ -121,6 +125,29 @@
 
   $effect(() => {
     checkConfiguration().catch(console.error)
+  })
+
+  // Create session only when chat is opened (avoids Turnstile noise at startup)
+  let sessionCreated = false
+  $effect(() => {
+    if (isOpen && isConfigured && !isLocalProxy() && !sessionCreated) {
+      sessionCreated = true
+      isCreatingSession = true
+      createSession()
+        .then(success => {
+          isSessionReady = success
+        })
+        .catch(() => {
+          isSessionReady = false
+        })
+        .finally(() => {
+          isCreatingSession = false
+        })
+    }
+    // For local proxy, session is always ready
+    if (isLocalProxy() && isConfigured) {
+      isSessionReady = true
+    }
   })
 
   $effect(() => {
@@ -959,81 +986,99 @@ ${toolsGuidelines}`
     </div>
 
     <div class="chat-input">
-      <div class="input-wrapper">
-        <textarea
-          id="llm-chat-input"
-          name="chatInput"
-          bind:this={textareaRef}
-          bind:value={input}
-          onkeydown={handleKeyDown}
-          oninput={() => {
-            if (textareaRef) {
-              textareaRef.style.height = 'auto'
-              textareaRef.style.height = `${textareaRef.scrollHeight}px`
-            }
-          }}
-          placeholder={placeholderText}
-          disabled={isRecording || isProcessing}
-          rows="1"
-        ></textarea>
-        <div class="input-buttons">
-          {#if isRecording}
-            <button
-              type="button"
-              onclick={handleVoiceClick}
-              aria-label="Arrêter l'enregistrement"
-              class="stop-btn"
-            >
-              <i class="fa-solid fa-stop"></i>
-            </button>
-            <button
-              type="button"
-              onclick={cancelRecording}
-              aria-label="Annuler"
-              class="cancel-btn"
-            >
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-          {:else if isProcessing}
-            <button
-              type="button"
-              class="voice-btn processing"
-              disabled
-              aria-label="Traitement en cours"
-            >
-              <i class="fa-solid fa-spinner fa-spin"></i>
-            </button>
-          {:else if loading}
-            <button
-              type="button"
-              onclick={() => abortController?.abort()}
-              aria-label="Arrêter"
-              class="stop-btn"
-            >
-              <i class="fa-solid fa-stop"></i>
-            </button>
-          {:else}
-            <button
-              type="button"
-              class="voice-btn"
-              onclick={handleVoiceClick}
-              disabled={loading}
-              aria-label="Reconnaissance vocale"
-            >
-              <i class="fa-solid fa-microphone"></i>
-            </button>
-            <button
-              type="button"
-              class="send-btn"
-              onclick={sendMessage}
-              disabled={!input.trim() || loading}
-              aria-label="Envoyer"
-            >
-              <i class="fa-solid fa-paper-plane"></i>
-            </button>
-          {/if}
+      {#if isCreatingSession}
+        <div class="session-loading">
+          <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <span>Vérification en cours...</span>
         </div>
-      </div>
+      {:else if !isSessionReady && !isLocalProxy() && isConfigured}
+        <div class="session-error">
+          <i class="fa-solid fa-exclamation-triangle"></i>
+          <span
+            >Impossible de créer la session. Veuillez recharger la page.</span
+          >
+        </div>
+      {:else}
+        <div class="input-wrapper">
+          <textarea
+            id="llm-chat-input"
+            name="chatInput"
+            bind:this={textareaRef}
+            bind:value={input}
+            onkeydown={handleKeyDown}
+            oninput={() => {
+              if (textareaRef) {
+                textareaRef.style.height = 'auto'
+                textareaRef.style.height = `${textareaRef.scrollHeight}px`
+              }
+            }}
+            placeholder={placeholderText}
+            disabled={isRecording || isProcessing}
+            rows="1"
+          ></textarea>
+          <div class="input-buttons">
+            {#if isRecording}
+              <button
+                type="button"
+                onclick={handleVoiceClick}
+                aria-label="Arrêter l'enregistrement"
+                class="stop-btn"
+              >
+                <i class="fa-solid fa-stop"></i>
+              </button>
+              <button
+                type="button"
+                onclick={cancelRecording}
+                aria-label="Annuler"
+                class="cancel-btn"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            {:else if isProcessing}
+              <button
+                type="button"
+                class="voice-btn processing"
+                disabled
+                aria-label="Traitement en cours"
+              >
+                <i class="fa-solid fa-spinner fa-spin"></i>
+              </button>
+            {:else if loading}
+              <button
+                type="button"
+                onclick={() => abortController?.abort()}
+                aria-label="Arrêter"
+                class="stop-btn"
+              >
+                <i class="fa-solid fa-stop"></i>
+              </button>
+            {:else}
+              <button
+                type="button"
+                class="voice-btn"
+                onclick={handleVoiceClick}
+                disabled={loading}
+                aria-label="Reconnaissance vocale"
+              >
+                <i class="fa-solid fa-microphone"></i>
+              </button>
+              <button
+                type="button"
+                class="send-btn"
+                onclick={sendMessage}
+                disabled={!input.trim() || loading}
+                aria-label="Envoyer"
+              >
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            {/if}
+          </div>
+        </div>
+      {/if}
     </div>
   {/if}
 </div>
@@ -1829,6 +1874,24 @@ ${toolsGuidelines}`
   .chat-input {
     padding: 0.5rem 1.5rem;
     background: $background-1;
+
+    .session-loading,
+    .session-error {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      color: $color-3;
+      font-size: 0.9rem;
+    }
+
+    .session-error {
+      color: #e67e22;
+      i {
+        font-size: 1.1rem;
+      }
+    }
 
     .input-wrapper {
       position: relative;

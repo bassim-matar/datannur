@@ -3,7 +3,7 @@
  * Handles both Whisper API and Chrome native speech recognition
  */
 
-import { getLLMConfig } from './llm-config'
+import { getLLMConfig, getSessionToken, isLocalProxy } from './llm-config'
 
 export type TranscriptionResponse = {
   text: string
@@ -36,10 +36,26 @@ async function transcribeWithWhisper(
     formData.append('language', 'fr')
     formData.append('response_format', 'text')
 
-    const url = `${config.proxyURL}/api/audio/transcriptions`
+    // Build URL based on environment
+    const url = config.isLocalProxy
+      ? `${config.proxyURL}/api/audio/transcriptions`
+      : `${config.proxyURL}/transcribe.php`
+
+    const headers: { [key: string]: string } = {}
+
+    // Add session token for online mode
+    if (!isLocalProxy()) {
+      const token = getSessionToken()
+      if (!token) {
+        throw new Error('Session required. Please reopen the chat panel.')
+      }
+
+      headers['X-Session-Token'] = token
+    }
 
     const response = await fetch(url, {
       method: 'POST',
+      headers,
       body: formData,
     })
 

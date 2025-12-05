@@ -347,22 +347,31 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 result_req = urllib.request.Request(result_url, method="GET")
                 result_req.add_header("Authorization", f"Bearer {api_key}")
 
-                response_data = make_request(result_req, proxy_url, timeout=10)
-                result = json.loads(response_data.decode("utf-8"))
+                try:
+                    response_data = make_request(result_req, proxy_url, timeout=10)
+                    result = json.loads(response_data.decode("utf-8"))
 
-                status = result.get("status")
-                print(f"Polling attempt {attempt + 1}: status={status}")
-                print(f"Full result: {result}")
+                    status = result.get("status")
+                    print(f"Polling attempt {attempt + 1}: status={status}")
 
-                if status in ["done", "success"]:
-                    transcription_text = result.get("data", "")
-                    print(f"Transcription text extracted: {transcription_text}")
-                    self._send_json_response(200, {"text": transcription_text})
-                    return
-                elif status == "error":
-                    error_msg = result.get("error", "Transcription failed")
-                    self._send_json_response(500, {"error": error_msg})
-                    return
+                    if status in ["done", "success"]:
+                        transcription_text = result.get("data", "")
+                        print(f"Transcription completed: {transcription_text[:50]}...")
+                        self._send_json_response(200, {"text": transcription_text})
+                        return
+                    elif status == "error":
+                        error_msg = result.get("error", "Transcription failed")
+                        self._send_json_response(500, {"error": error_msg})
+                        return
+                    # else: status is "pending" or similar, continue polling
+
+                except urllib.error.HTTPError as poll_err:
+                    # 404 means batch not ready yet, continue polling
+                    if poll_err.code == 404:
+                        print(f"Polling attempt {attempt + 1}: batch not ready (404)")
+                        continue
+                    # Other HTTP errors should be reported
+                    raise
 
             # Timeout
             self._send_json_response(500, {"error": "Transcription timeout"})

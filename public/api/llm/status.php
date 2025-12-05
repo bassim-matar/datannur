@@ -5,6 +5,8 @@
  * GET /api/llm/status.php
  */
 
+require_once __DIR__ . '/common.php';
+
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, OPTIONS');
@@ -16,25 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    http_response_code(405);
-    echo json_encode(['error' => 'Method not allowed']);
-    exit;
+    sendError(405, 'Method not allowed');
 }
 
-$configFile = __DIR__ . '/../../data/llm-web.config.json';
-
-if (!file_exists($configFile)) {
-    http_response_code(500);
-    echo json_encode(['error' => 'LLM config not found', 'enabled' => false]);
-    exit;
-}
-
-$config = json_decode(file_get_contents($configFile), true);
-
-if (json_last_error() !== JSON_ERROR_NONE) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Invalid config file', 'enabled' => false]);
-    exit;
+$config = loadConfig();
+if (!$config) {
+    sendError(500, 'LLM config not found');
 }
 
 $siteKey = $config['turnstile']['siteKey'] ?? null;
