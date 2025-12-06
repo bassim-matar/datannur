@@ -1,13 +1,12 @@
 <script lang="ts">
   let {
     input = $bindable(''),
-    placeholder,
-    disabled,
     isRecording,
     isProcessing,
     loading,
     isCreatingSession,
     showSessionError,
+    voiceConversationMode,
     onSend,
     onVoiceClick,
     onCancelRecording,
@@ -15,19 +14,27 @@
     textareaRef = $bindable<HTMLTextAreaElement | null>(null),
   }: {
     input: string
-    placeholder: string
-    disabled: boolean
     isRecording: boolean
     isProcessing: boolean
     loading: boolean
     isCreatingSession: boolean
     showSessionError: boolean
+    voiceConversationMode: boolean
     onSend: () => void
     onVoiceClick: () => void
     onCancelRecording: () => void
     onStopGeneration: () => void
     textareaRef?: HTMLTextAreaElement | null
   } = $props()
+
+  let placeholder = $derived.by(() => {
+    if (isRecording) return '🎙️ Enregistrement en cours...'
+    if (isProcessing) return '⏳ Transcription en cours...'
+    if (voiceConversationMode) return '🎙️ Mode conversation vocale actif'
+    return 'Posez votre question...'
+  })
+
+  let disabled = $derived(isRecording || isProcessing)
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter' && !e.shiftKey) {

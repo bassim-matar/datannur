@@ -345,19 +345,6 @@ async function handleStreamingResponse(
       ...(responseMetadata.usage ? { usage: responseMetadata.usage } : {}),
     }
 
-    if (response.usage) {
-      const cachedTokens =
-        response.usage.prompt_tokens_details?.cached_tokens ?? 0
-      const promptTokens = response.usage.prompt_tokens
-      const cacheHitRate =
-        promptTokens > 0
-          ? ((cachedTokens / promptTokens) * 100).toFixed(1)
-          : '0.0'
-      console.log(
-        `[LLM Usage] Prompt: ${promptTokens} tokens (${cachedTokens} cached, ${cacheHitRate}% hit rate) | Completion: ${response.usage.completion_tokens} | Total: ${response.usage.total_tokens}`,
-      )
-    }
-
     return response
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
@@ -368,22 +355,6 @@ async function handleStreamingResponse(
   } finally {
     reader.releaseLock()
   }
-}
-
-/**
- * Simple non-streaming chat completion
- */
-export async function chat(
-  messages: ChatMessage[],
-  options?: Partial<ChatCompletionOptions>,
-): Promise<string> {
-  const response = await chatCompletion({
-    messages,
-    stream: false,
-    ...options,
-  })
-
-  return response?.choices[0]?.message?.content ?? ''
 }
 
 /**

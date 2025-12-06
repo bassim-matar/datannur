@@ -89,13 +89,6 @@ export function getSessionToken(): string | null {
 }
 
 /**
- * Check if session is active
- */
-export function hasSession(): boolean {
-  return !!sessionToken
-}
-
-/**
  * Check if running on local proxy (no session needed)
  */
 export function isLocalProxy(): boolean {
@@ -167,13 +160,6 @@ export async function createSession(): Promise<boolean> {
   } finally {
     sessionPending = false
   }
-}
-
-/**
- * Clear the current session
- */
-export function clearSession(): void {
-  sessionToken = null
 }
 
 /**

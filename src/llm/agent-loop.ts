@@ -59,8 +59,6 @@ export async function runAgentLoop(
     const currentMessages = [systemMessage, ...messages.slice(0, -1)]
     const tools = getToolDefinitions()
 
-    logDebugInfo(systemMessage, currentMessages, tools)
-
     await chatStream(
       currentMessages,
       (chunk: string) => {
@@ -100,19 +98,13 @@ async function handleToolCall(
   setMessages: (messages: ChatMessage[]) => void,
 ): Promise<void> {
   try {
-    console.log(
-      '[Tool Call] Calling tool:',
-      toolCall.function.name,
-      'with args:',
-      toolCall.function.arguments,
-    )
+    console.log('[Tool]', toolCall.function.name)
 
     const toolArgs = JSON.parse(toolCall.function.arguments) as Record<
       string,
       unknown
     >
     const result = await executeTool(toolCall.function.name, toolArgs)
-    console.log('[Tool Call] Result:', result)
 
     const messages = getMessages()
     const lastAssistantIndex = messages.length - 1
@@ -174,24 +166,4 @@ function shouldContinueLoop(
     return false
   }
   return true
-}
-
-function logDebugInfo(
-  systemMessage: ChatMessage,
-  currentMessages: ChatMessage[],
-  tools: ReturnType<typeof getToolDefinitions>,
-): void {
-  console.log('[DEBUG] Sending messages:', currentMessages.length, 'messages')
-  console.log(
-    '[DEBUG] System prompt tokens est:',
-    Math.ceil(systemMessage.content.length / 4),
-  )
-  console.log(
-    '[DEBUG] Total chars:',
-    currentMessages.reduce((sum, m) => sum + m.content.length, 0),
-  )
-  console.log(
-    '[DEBUG] Tools definitions tokens est:',
-    Math.ceil(JSON.stringify(tools).length / 4),
-  )
 }

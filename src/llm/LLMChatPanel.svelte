@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { transcribeAudio, stopChromeRecognition } from '@llm/stt-client'
+  import {
+    transcribeFromMicrophone,
+    cancelMicrophoneRecording,
+    stopChromeRecognition,
+  } from '@llm/stt-client'
   import {
     isProxyAvailable,
     checkProxyStatus,
@@ -7,7 +11,6 @@
     createSession,
   } from '@llm/llm-config'
   import { runAgentLoop } from '@llm/agent-loop'
-  import markdownRender from '@lib/markdown'
   import Options from '@lib/options'
   import {
     viewportManager,
@@ -16,7 +19,6 @@
     windowWidth,
   } from '@lib/viewport-manager'
   import type { ChatMessage } from '@llm/llm-client'
-  import type { TranscriptionResponse } from '@llm/stt-client'
   import modelsConfig from './models.json'
   import sttEnginesConfig from './stt-engines.json'
   import systemInstructions from './prompt/system-instructions.md?raw'
@@ -24,9 +26,8 @@
   import schemaDoc from './prompt/schema.md?raw'
   import LLMConfigForm from '@llm/LLMConfigForm.svelte'
   import LLMDropdownSelector from '@llm/LLMDropdownSelector.svelte'
-  import LLMChatMessage from '@llm/LLMChatMessage.svelte'
+  import LLMChatMessages from '@llm/LLMChatMessages.svelte'
   import LLMChatInput from '@llm/LLMChatInput.svelte'
-  import LLMEmptyState from '@llm/LLMEmptyState.svelte'
 
   let {
     isOpen = $bindable(false),
@@ -47,27 +48,9 @@
 
   let isRecording = $state(false)
   let isProcessing = $state(false)
-  let isCancelled = $state(false)
   let voiceConversationMode = $state(false)
-  let mediaRecorder = $state<MediaRecorder | null>(null)
-  let audioChunks: Blob[] = []
-  let silenceTimeout: number | null = null
-  let audioContext: AudioContext | null = null
-  let analyser: AnalyserNode | null = null
-  let chatContainer = $state<HTMLElement | null>(null)
   let textareaRef = $state<HTMLTextAreaElement | null>(null)
-  let shouldAutoScroll = $state(true)
   let chatPanelRef = $state<HTMLElement | null>(null)
-  let lastAssistantMessageRef = $state<HTMLElement | null>(null)
-  let lastAssistantMessageHeight = $state(0)
-  let chatContainerHeight = $state(0)
-
-  let placeholderText = $derived.by(() => {
-    if (isRecording) return '🎤 Enregistrement en cours...'
-    if (isProcessing) return '⏳ Transcription en cours...'
-    if (voiceConversationMode) return '🎙️ Mode conversation vocale actif'
-    return 'Posez votre question...'
-  })
 
   type SelectableItem = { id: string; name: string; description: string }
   const models = modelsConfig as SelectableItem[]
@@ -88,29 +71,6 @@
       const stt = sttEngines.find(s => s.id === savedSTTId)
       if (stt) selectedSTT = stt
     }
-  })
-
-  let messagesWithHtml = $derived(
-    messages.map(msg => {
-      if (msg.role === 'assistant' && msg.content) {
-        const result = markdownRender(msg.content)
-        return {
-          ...msg,
-          html: result instanceof Promise ? '' : (result as string),
-        }
-      }
-      return { ...msg, html: '' }
-    }),
-  )
-
-  let isExecutingTool = $derived.by(() => {
-    if (!loading) return false
-    const lastMsg = messages[messages.length - 1]
-    return (
-      lastMsg?.role === 'assistant' &&
-      lastMsg.tool_calls &&
-      lastMsg.tool_calls.length > 0
-    )
   })
 
   $effect(() => {
@@ -166,63 +126,6 @@
     }
   })
 
-  $effect(() => {
-    if (shouldAutoScroll && chatContainer && loading) {
-      requestAnimationFrame(() => {
-        if (chatContainer) {
-          chatContainer.scrollTop = chatContainer.scrollHeight
-        }
-      })
-    }
-  })
-
-  $effect(() => {
-    if (!chatContainer) return
-
-    const observer = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        chatContainerHeight = entry.contentRect.height
-      }
-    })
-
-    observer.observe(chatContainer)
-
-    return () => {
-      observer.disconnect()
-    }
-  })
-
-  $effect(() => {
-    if (!lastAssistantMessageRef) return
-
-    const observer = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        lastAssistantMessageHeight = entry.contentRect.height
-      }
-    })
-
-    observer.observe(lastAssistantMessageRef)
-
-    return () => {
-      observer.disconnect()
-    }
-  })
-
-  let spacerHeight = $derived(
-    Math.max(0, chatContainerHeight - lastAssistantMessageHeight - 130),
-  )
-
-  function handleScroll(): void {
-    if (!chatContainer) return
-    const threshold = 100
-    const isNearBottom =
-      chatContainer.scrollHeight -
-        chatContainer.scrollTop -
-        chatContainer.clientHeight <
-      threshold
-    shouldAutoScroll = isNearBottom
-  }
-
   /**
    * Build complete system prompt for LLM
    * Includes: instructions, current context, schema, and tools guidelines
@@ -266,8 +169,6 @@ ${toolsGuidelines}`
     }
 
     loading = true
-    shouldAutoScroll = true
-    lastAssistantMessageHeight = 0
     abortController = new AbortController()
 
     const assistantMessage: ChatMessage = { role: 'assistant', content: '' }
@@ -289,9 +190,7 @@ ${toolsGuidelines}`
         },
       )
     } catch (error) {
-      if (error instanceof Error && error.name === 'AbortError') {
-        console.log('Stream stopped by user')
-      } else {
+      if (error instanceof Error && error.name !== 'AbortError') {
         console.error('Error:', error)
         const lastIndex = messages.length - 1
         messages = [
@@ -315,234 +214,73 @@ ${toolsGuidelines}`
   }
 
   async function startRecording() {
-    if (selectedSTT.id === 'chrome-native') {
-      await startChromeNativeRecording()
-    } else {
-      await startWhisperRecording()
-    }
-  }
-
-  async function startChromeNativeRecording() {
     try {
-      isRecording = true
-      isProcessing = false
-      console.log('Starting Chrome native speech recognition')
-
-      const result: TranscriptionResponse = await transcribeAudio(
-        new Blob(),
-        'chrome-native',
+      const result = await transcribeFromMicrophone(
+        selectedSTT.id as 'whisper' | 'chrome-native',
+        {
+          onRecordingStart: () => {
+            isRecording = true
+            isProcessing = false
+          },
+          onSilenceDetected: () => {
+            isRecording = false
+            isProcessing = true
+          },
+          onProcessingStart: () => {
+            isProcessing = true
+          },
+        },
       )
-      const transcription: string = result.text.trim()
 
-      console.log('Transcription:', transcription)
       isRecording = false
+      isProcessing = false
 
+      const transcription = result.text.trim()
       if (transcription) {
         input = transcription
         await sendMessage()
       } else {
-        console.log('No text detected in transcription')
-        if (voiceConversationMode) {
-          setTimeout(() => {
-            startRecording()
-          }, 500)
-        } else {
-          setTimeout(() => {
-            textareaRef?.focus()
-          }, 0)
-        }
+        handlePostRecording()
       }
     } catch (err) {
-      console.error('Chrome native recognition error:', err)
+      console.error('Recording error:', err)
       isRecording = false
+      isProcessing = false
+
       if (voiceConversationMode) {
-        setTimeout(() => {
-          startRecording()
-        }, 500)
+        setTimeout(() => startRecording(), 500)
       } else {
-        alert('Erreur de reconnaissance vocale: ' + (err as Error).message)
-        setTimeout(() => {
-          textareaRef?.focus()
-        }, 0)
+        alert((err as Error).message)
+        textareaRef?.focus()
       }
     }
   }
 
-  async function startWhisperRecording() {
-    try {
-      isCancelled = false
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      audioChunks = []
-
-      audioContext = new AudioContext()
-      analyser = audioContext.createAnalyser()
-      const source = audioContext.createMediaStreamSource(stream)
-      source.connect(analyser)
-      analyser.fftSize = 2048
-
-      const options = { mimeType: 'audio/webm;codecs=opus' }
-      mediaRecorder = new MediaRecorder(stream, options)
-
-      mediaRecorder.ondataavailable = (event: BlobEvent) => {
-        if (event.data.size > 0) {
-          audioChunks.push(event.data)
-        }
-      }
-
-      mediaRecorder.onstop = async () => {
-        stream.getTracks().forEach(track => track.stop())
-        if (audioContext) {
-          audioContext.close()
-          audioContext = null
-        }
-        if (silenceTimeout) {
-          clearTimeout(silenceTimeout)
-          silenceTimeout = null
-        }
-
-        if (isCancelled || audioChunks.length === 0) {
-          isCancelled = false
-          return
-        }
-
-        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' })
-        await handleTranscription(audioBlob)
-      }
-
-      mediaRecorder.start()
-      isRecording = true
-
-      detectSilence()
-    } catch (err) {
-      console.error('Microphone error:', err)
-      if (err instanceof Error && err.name === 'NotAllowedError') {
-        alert(
-          'Permission refusée. Autorisez le microphone dans les paramètres.',
-        )
-      } else {
-        alert("Impossible d'accéder au microphone: " + (err as Error).message)
-      }
-    }
-  }
-  function detectSilence() {
-    if (!analyser || !isRecording) return
-
-    const bufferLength = analyser.frequencyBinCount
-    const dataArray = new Uint8Array(bufferLength)
-    let hasDetectedSpeech = false
-
-    const checkAudio = () => {
-      if (!isRecording || !analyser) return
-
-      analyser.getByteTimeDomainData(dataArray)
-
-      let sum = 0
-      for (let i = 0; i < bufferLength; i++) {
-        const value = (dataArray[i] ?? 128) - 128
-        sum += value * value
-      }
-      const rms = Math.sqrt(sum / bufferLength)
-
-      if (rms > 3) {
-        hasDetectedSpeech = true
-        if (silenceTimeout) {
-          clearTimeout(silenceTimeout)
-          silenceTimeout = null
-        }
-      } else if (hasDetectedSpeech) {
-        if (!silenceTimeout) {
-          silenceTimeout = window.setTimeout(() => {
-            if (isRecording) {
-              stopRecording()
-            }
-          }, 1500)
-        }
-      }
-
-      if (isRecording) {
-        requestAnimationFrame(checkAudio)
-      }
-    }
-
-    checkAudio()
-  }
-
-  function stopRecording() {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop()
-      isRecording = false
-      isProcessing = true
+  function handlePostRecording() {
+    if (voiceConversationMode) {
+      setTimeout(() => startRecording(), 500)
+    } else {
+      textareaRef?.focus()
     }
   }
 
   function cancelRecording() {
     voiceConversationMode = false
+    isRecording = false
+    isProcessing = false
 
     if (selectedSTT.id === 'chrome-native') {
       stopChromeRecognition()
-      isRecording = false
-      return
+    } else {
+      cancelMicrophoneRecording()
     }
 
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      isCancelled = true
-      const tracks = mediaRecorder.stream.getTracks()
-      tracks.forEach(track => track.stop())
-      mediaRecorder.stop()
-      isRecording = false
-      audioChunks = []
-      if (audioContext) {
-        audioContext.close()
-        audioContext = null
-      }
-      if (silenceTimeout) {
-        clearTimeout(silenceTimeout)
-        silenceTimeout = null
-      }
-      setTimeout(() => {
-        textareaRef?.focus()
-      }, 0)
-    }
-  }
-
-  async function handleTranscription(audioBlob: Blob) {
-    try {
-      const result: TranscriptionResponse = await transcribeAudio(
-        audioBlob,
-        selectedSTT.id as 'whisper' | 'chrome-native',
-      )
-      const transcription: string = result.text.trim()
-
-      if (transcription) {
-        input = transcription
-        isProcessing = false
-        await sendMessage()
-      } else {
-        isProcessing = false
-        console.log('No text detected in transcription')
-        setTimeout(() => {
-          textareaRef?.focus()
-        }, 0)
-      }
-    } catch (err) {
-      console.error('Transcription error:', err)
-      isProcessing = false
-      alert('Erreur de transcription: ' + (err as Error).message)
-      setTimeout(() => {
-        textareaRef?.focus()
-      }, 0)
-    }
+    textareaRef?.focus()
   }
 
   function handleVoiceClick() {
     if (isRecording) {
-      voiceConversationMode = false
-      if (selectedSTT.id === 'chrome-native') {
-        stopChromeRecognition()
-        isRecording = false
-      } else {
-        stopRecording()
-      }
+      cancelRecording()
     } else {
       voiceConversationMode = true
       startRecording()
@@ -550,15 +288,7 @@ ${toolsGuidelines}`
   }
 
   function exitVoiceMode() {
-    voiceConversationMode = false
-    if (isRecording) {
-      if (selectedSTT.id === 'chrome-native') {
-        stopChromeRecognition()
-        isRecording = false
-      } else {
-        cancelRecording()
-      }
-    }
+    cancelRecording()
   }
 
   function resetChat() {
@@ -619,76 +349,16 @@ ${toolsGuidelines}`
   {#if !isConfigured}
     <LLMConfigForm onConfigured={() => (isConfigured = true)} />
   {:else}
-    <div class="chat-container-wrapper">
-      <div
-        class="chat-container"
-        bind:this={chatContainer}
-        onscroll={handleScroll}
-      >
-        {#if messagesWithHtml.length === 0}
-          <LLMEmptyState />
-        {/if}
-
-        <div>
-          {#each messagesWithHtml as message, i (i)}
-            {#if message.role === 'user'}
-              <LLMChatMessage role="user" content={message.content} />
-            {:else if message.role === 'tool'}
-              <LLMChatMessage
-                role="tool"
-                content={message.content}
-                name={message.name}
-              />
-            {:else if message.role === 'assistant' && !message.tool_calls && message.content}
-              <LLMChatMessage
-                role="assistant"
-                content={message.content}
-                html={message.html}
-                bind:elementRef={lastAssistantMessageRef}
-              />
-            {/if}
-          {/each}
-
-          {#if isExecutingTool}
-            <div class="message assistant">
-              <div class="tool-indicator">
-                <i class="fa-solid fa-database"></i>
-                <span>Interrogation de la base de données...</span>
-              </div>
-            </div>
-          {/if}
-
-          {#if loading && !isExecutingTool && messagesWithHtml.length > 0 && !messagesWithHtml[messagesWithHtml.length - 1]?.content}
-            <div class="message assistant">
-              <div class="loading-indicator">
-                <div class="loading-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-            </div>
-          {/if}
-        </div>
-
-        {#if messages.length > 0}
-          <div
-            class="dynamic-spacer"
-            style="min-height: {spacerHeight}px;"
-          ></div>
-        {/if}
-      </div>
-    </div>
+    <LLMChatMessages {messages} {loading} />
 
     <LLMChatInput
       bind:input
       bind:textareaRef
-      placeholder={placeholderText}
-      disabled={isRecording || isProcessing}
       {isRecording}
       {isProcessing}
       {loading}
       {isCreatingSession}
+      {voiceConversationMode}
       showSessionError={!isSessionReady && !isLocalProxy() && isConfigured}
       onSend={sendMessage}
       onVoiceClick={handleVoiceClick}
@@ -812,140 +482,6 @@ ${toolsGuidelines}`
         background: $background-3;
         color: $color-3;
       }
-    }
-  }
-
-  .chat-container-wrapper {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    background: $background-1;
-  }
-
-  .chat-container {
-    height: 100%;
-    padding: 1.5rem;
-    overflow-y: auto;
-    background: $background-1;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    overscroll-behavior: contain;
-
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: $color-5;
-      border-radius: 3px;
-    }
-  }
-
-  .dynamic-spacer {
-    min-height: 50vh;
-    flex-shrink: 0;
-  }
-
-  .message {
-    padding: 0 0.5rem;
-    margin-bottom: 0;
-    animation: slideIn 0.2s ease-out;
-
-    &.assistant {
-      background: transparent;
-    }
-
-    .tool-indicator {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      background: $background-2;
-      border-radius: $rounded;
-      color: $color-3;
-      font-size: 0.9em;
-      opacity: 0.8;
-      animation: pulse 1.5s ease-in-out infinite;
-
-      i {
-        font-size: 0.85em;
-      }
-    }
-
-    .loading-indicator {
-      display: flex;
-      align-items: center;
-      padding: 0.5rem 0.75rem;
-
-      .loading-dots {
-        display: flex;
-        gap: 0.4rem;
-
-        span {
-          width: 8px;
-          height: 8px;
-          background: $color-3;
-          border-radius: 50%;
-          animation: bounce 1.4s ease-in-out infinite;
-
-          &:nth-child(1) {
-            animation-delay: 0s;
-          }
-
-          &:nth-child(2) {
-            animation-delay: 0.2s;
-          }
-
-          &:nth-child(3) {
-            animation-delay: 0.4s;
-          }
-        }
-      }
-    }
-  }
-
-  @keyframes bounce {
-    0%,
-    80%,
-    100% {
-      transform: translateY(0);
-      opacity: 0.4;
-    }
-    40% {
-      transform: translateY(-10px);
-      opacity: 1;
-    }
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 0.6;
-    }
-    50% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.7;
     }
   }
 
