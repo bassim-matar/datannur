@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { chatStream } from '@llm/llm-client'
   import { transcribeAudio, stopChromeRecognition } from '@llm/stt-client'
-  import { getToolDefinitions, executeTool } from '@llm/llm-tools'
   import {
     isProxyAvailable,
     checkProxyStatus,
     isLocalProxy,
     createSession,
   } from '@llm/llm-config'
+  import { runAgentLoop } from '@llm/agent-loop'
   import markdownRender from '@lib/markdown'
   import Options from '@lib/options'
   import {
@@ -26,6 +25,8 @@
   import LLMConfigForm from '@llm/LLMConfigForm.svelte'
   import LLMDropdownSelector from '@llm/LLMDropdownSelector.svelte'
   import LLMChatMessage from '@llm/LLMChatMessage.svelte'
+  import LLMChatInput from '@llm/LLMChatInput.svelte'
+  import LLMEmptyState from '@llm/LLMEmptyState.svelte'
 
   let {
     isOpen = $bindable(false),
@@ -268,156 +269,25 @@ ${toolsGuidelines}`
     shouldAutoScroll = true
     lastAssistantMessageHeight = 0
     abortController = new AbortController()
-    const currentAbortController = abortController
 
     const assistantMessage: ChatMessage = { role: 'assistant', content: '' }
     messages = [...messages, assistantMessage]
 
-    const maxMessages = 20
-    if (messages.length > maxMessages) {
-      messages = messages.slice(-maxMessages)
-    }
-
     try {
-      const systemMessage: ChatMessage = {
-        role: 'system',
-        content: buildSystemPrompt(),
-      }
-
-      // Agent loop: continue while there are tool calls
-      let continueLoop = true
-      let loopCount = 0
-      const maxLoops = 10 // Safety limit
-      let hadToolCall = false
-
-      while (continueLoop && loopCount < maxLoops) {
-        loopCount++
-        hadToolCall = false
-        const currentMessages = [systemMessage, ...messages.slice(0, -1)]
-        const tools = getToolDefinitions()
-
-        console.log(
-          '[DEBUG] Sending messages:',
-          currentMessages.length,
-          'messages',
-        )
-        console.log(
-          '[DEBUG] System prompt tokens est:',
-          Math.ceil(systemMessage.content.length / 4),
-        )
-        console.log(
-          '[DEBUG] Total chars:',
-          currentMessages.reduce((sum, m) => sum + m.content.length, 0),
-        )
-        console.log(
-          '[DEBUG] Tools definitions tokens est:',
-          Math.ceil(JSON.stringify(tools).length / 4),
-        )
-
-        await chatStream(
-          currentMessages,
-          (chunk: string) => {
-            const lastIndex = messages.length - 1
-            messages = [
-              ...messages.slice(0, lastIndex),
-              {
-                ...messages[lastIndex]!,
-                content: messages[lastIndex]!.content + chunk,
-              },
-            ]
+      await runAgentLoop(
+        {
+          systemPrompt: buildSystemPrompt(),
+          model: selectedModel.id,
+          signal: abortController.signal,
+        },
+        {
+          getMessages: () => messages,
+          setMessages: newMessages => {
+            messages = newMessages
           },
-          {
-            model: selectedModel.id,
-            signal: currentAbortController.signal,
-            tools,
-            onToolCall: async toolCall => {
-              try {
-                hadToolCall = true
-                console.log(
-                  '[Tool Call] Calling tool:',
-                  toolCall.function.name,
-                  'with args:',
-                  toolCall.function.arguments,
-                )
-                const toolArgs = JSON.parse(
-                  toolCall.function.arguments,
-                ) as Record<string, unknown>
-                const result = await executeTool(
-                  toolCall.function.name,
-                  toolArgs,
-                )
-                console.log('[Tool Call] Result:', result)
-
-                // Update assistant message with tool_calls
-                const lastAssistantIndex = messages.length - 1
-                messages = [
-                  ...messages.slice(0, lastAssistantIndex),
-                  {
-                    ...messages[lastAssistantIndex]!,
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    tool_calls: [toolCall],
-                  },
-                ]
-
-                // Add tool result message
-                messages = [
-                  ...messages,
-                  {
-                    role: 'tool',
-                    content: JSON.stringify(result),
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    tool_call_id: toolCall.id,
-                    name: toolCall.function.name,
-                  },
-                ]
-
-                // Add new assistant message for next iteration
-                messages = [
-                  ...messages,
-                  {
-                    role: 'assistant',
-                    content: '',
-                  },
-                ]
-              } catch (toolError) {
-                console.error('Tool execution error:', toolError)
-                messages = [
-                  ...messages,
-                  {
-                    role: 'assistant',
-                    content: `Erreur lors de l'exécution de l'outil: ${toolError instanceof Error ? toolError.message : String(toolError)}`,
-                  },
-                ]
-                continueLoop = false
-              }
-            },
-          },
-        )
-
-        // Check if we should continue looping
-        const lastMsg = messages[messages.length - 1]
-
-        // If we had a tool call AND the message already has content, stop (parallel tool calling worked!)
-        if (hadToolCall && lastMsg?.role === 'assistant' && lastMsg.content) {
-          continueLoop = false
-        }
-        // Continue if we had a tool call without content (need to get LLM response to the tool result)
-        else if (hadToolCall) {
-          continueLoop = true
-        }
-        // Stop if last message has content (LLM generated a text response)
-        else if (lastMsg?.role === 'assistant' && lastMsg.content) {
-          continueLoop = false
-        }
-        // Stop if last message is assistant without tool_calls (shouldn't happen but safety check)
-        else if (lastMsg?.role === 'assistant' && !lastMsg.tool_calls) {
-          continueLoop = false
-        }
-      }
-
-      if (loopCount >= maxLoops) {
-        console.warn('[Agent Loop] Max iterations reached')
-      }
+          onChunk: () => {},
+        },
+      )
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
         console.log('Stream stopped by user')
@@ -696,13 +566,6 @@ ${toolsGuidelines}`
     input = ''
     voiceConversationMode = false
   }
-
-  function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      sendMessage()
-    }
-  }
 </script>
 
 <div class="llm-chat-panel" class:open={isOpen} bind:this={chatPanelRef}>
@@ -763,21 +626,7 @@ ${toolsGuidelines}`
         onscroll={handleScroll}
       >
         {#if messagesWithHtml.length === 0}
-          <div class="empty-state">
-            <i class="fa-solid fa-comment-dots"></i>
-            <p>Posez une question sur les données</p>
-            <div class="privacy-note">
-              <i class="fa-solid fa-shield-halved"></i>
-              <span
-                ><a
-                  href="https://www.infomaniak.com/fr/hebergement/ai-services"
-                  target="_blank"
-                  rel="noopener noreferrer">Infomaniak Suisse</a
-                >
-                • IA souveraine et open source</span
-              >
-            </div>
-          </div>
+          <LLMEmptyState />
         {/if}
 
         <div>
@@ -831,101 +680,21 @@ ${toolsGuidelines}`
       </div>
     </div>
 
-    <div class="chat-input">
-      {#if isCreatingSession}
-        <div class="session-loading">
-          <div class="loading-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <span>Vérification en cours...</span>
-        </div>
-      {:else if !isSessionReady && !isLocalProxy() && isConfigured}
-        <div class="session-error">
-          <i class="fa-solid fa-exclamation-triangle"></i>
-          <span
-            >Impossible de créer la session. Veuillez recharger la page.</span
-          >
-        </div>
-      {:else}
-        <div class="input-wrapper">
-          <textarea
-            id="llm-chat-input"
-            name="chatInput"
-            bind:this={textareaRef}
-            bind:value={input}
-            onkeydown={handleKeyDown}
-            oninput={() => {
-              if (textareaRef) {
-                textareaRef.style.height = 'auto'
-                textareaRef.style.height = `${textareaRef.scrollHeight}px`
-              }
-            }}
-            placeholder={placeholderText}
-            disabled={isRecording || isProcessing}
-            rows="1"
-          ></textarea>
-          <div class="input-buttons">
-            {#if isRecording}
-              <button
-                type="button"
-                onclick={handleVoiceClick}
-                aria-label="Arrêter l'enregistrement"
-                class="stop-btn"
-              >
-                <i class="fa-solid fa-stop"></i>
-              </button>
-              <button
-                type="button"
-                onclick={cancelRecording}
-                aria-label="Annuler"
-                class="cancel-btn"
-              >
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-            {:else if isProcessing}
-              <button
-                type="button"
-                class="voice-btn processing"
-                disabled
-                aria-label="Traitement en cours"
-              >
-                <i class="fa-solid fa-spinner fa-spin"></i>
-              </button>
-            {:else if loading}
-              <button
-                type="button"
-                onclick={() => abortController?.abort()}
-                aria-label="Arrêter"
-                class="stop-btn"
-              >
-                <i class="fa-solid fa-stop"></i>
-              </button>
-            {:else}
-              <button
-                type="button"
-                class="voice-btn"
-                onclick={handleVoiceClick}
-                disabled={loading}
-                aria-label="Reconnaissance vocale"
-              >
-                <i class="fa-solid fa-microphone"></i>
-              </button>
-              <button
-                type="button"
-                class="send-btn"
-                onclick={sendMessage}
-                disabled={!input.trim() || loading}
-                aria-label="Envoyer"
-              >
-                <i class="fa-solid fa-paper-plane"></i>
-              </button>
-            {/if}
-          </div>
-        </div>
-      {/if}
-    </div>
+    <LLMChatInput
+      bind:input
+      bind:textareaRef
+      placeholder={placeholderText}
+      disabled={isRecording || isProcessing}
+      {isRecording}
+      {isProcessing}
+      {loading}
+      {isCreatingSession}
+      showSessionError={!isSessionReady && !isLocalProxy() && isConfigured}
+      onSend={sendMessage}
+      onVoiceClick={handleVoiceClick}
+      onCancelRecording={cancelRecording}
+      onStopGeneration={() => abortController?.abort()}
+    />
   {/if}
 </div>
 
@@ -1073,53 +842,6 @@ ${toolsGuidelines}`
     }
   }
 
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 3rem 1rem;
-    text-align: center;
-    color: $color-4;
-
-    i {
-      font-size: 3rem;
-      opacity: 0.5;
-    }
-
-    p {
-      margin: 0;
-      font-size: 0.95rem;
-    }
-
-    .privacy-note {
-      font-size: 0.75rem;
-      color: $color-4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      margin-top: 0.5rem;
-
-      i {
-        font-size: 0.85rem;
-      }
-
-      a {
-        color: $color-4;
-        text-decoration: none;
-        border-bottom: 1px solid transparent;
-        transition: all 0.2s;
-
-        &:hover {
-          color: $color-3;
-          border-bottom-color: $color-3;
-        }
-      }
-    }
-  }
-
   .dynamic-spacer {
     min-height: 50vh;
     flex-shrink: 0;
@@ -1214,184 +936,6 @@ ${toolsGuidelines}`
     to {
       opacity: 1;
       transform: translateY(0);
-    }
-  }
-
-  .chat-input {
-    padding: 0.5rem 1.5rem;
-    background: $background-1;
-
-    .session-loading,
-    .session-error {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      padding: 1rem;
-      color: $color-3;
-      font-size: 0.9rem;
-    }
-
-    .session-error {
-      color: #e67e22;
-      i {
-        font-size: 1.1rem;
-      }
-    }
-
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-    }
-
-    textarea {
-      flex: 1;
-      padding: 0.75rem 5rem 0.75rem 1rem;
-      border: 1px solid transparent;
-      border-radius: 24px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      background: $background-2;
-      color: $color-1;
-      transition: all 0.15s ease;
-      min-height: 44px;
-      max-height: 200px;
-      height: 44px;
-      resize: none;
-      overflow-y: auto;
-      field-sizing: content;
-      box-sizing: border-box;
-
-      &:focus {
-        outline: none;
-      }
-
-      &::placeholder {
-        color: $color-4;
-      }
-
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        background: rgba($background-3, 0.5);
-      }
-
-      &::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: $color-5;
-        border-radius: 3px;
-      }
-    }
-
-    .input-buttons {
-      position: absolute;
-      right: 0.25rem;
-      bottom: 0;
-      top: 0;
-      display: flex;
-      gap: 0.25rem;
-      align-items: center;
-      padding: 0.25rem;
-    }
-
-    .voice-btn {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      padding: 0;
-      background: transparent;
-      color: $color-2;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      i {
-        font-size: 1.1rem;
-      }
-
-      &:hover:not(:disabled) {
-        background: rgba($color-3, 0.1);
-      }
-
-      &.processing {
-        background: #f59e0b;
-        color: white;
-      }
-
-      &:disabled {
-        cursor: not-allowed;
-        opacity: 0.4;
-      }
-    }
-
-    .stop-btn,
-    .cancel-btn {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      padding: 0;
-      background: #ef4444;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      i {
-        font-size: 1.1rem;
-      }
-
-      &:hover {
-        background: #dc2626;
-      }
-    }
-
-    .send-btn {
-      flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      padding: 0;
-      padding-top: 2px;
-      padding-right: 2px;
-      background: $color-3;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      i {
-        font-size: 0.9rem;
-      }
-
-      &:hover:not(:disabled) {
-        opacity: 0.9;
-        transform: scale(1.05);
-      }
-
-      &:active:not(:disabled) {
-        transform: scale(0.95);
-      }
-
-      &:disabled {
-        background: $color-4;
-        cursor: not-allowed;
-        opacity: 0.4;
-      }
     }
   }
 
