@@ -9,9 +9,7 @@
     createSession,
   } from '@llm/llm-config'
   import markdownRender from '@lib/markdown'
-  import { safeHtml } from '@lib/html-sanitizer'
   import Options from '@lib/options'
-  import { clickOutside } from '@lib/util'
   import {
     viewportManager,
     chatPanelWidth,
@@ -26,6 +24,8 @@
   import toolsGuidelines from './prompt/tools-guidelines.md?raw'
   import schemaDoc from './prompt/schema.md?raw'
   import LLMConfigForm from '@llm/LLMConfigForm.svelte'
+  import LLMDropdownSelector from '@llm/LLMDropdownSelector.svelte'
+  import LLMChatMessage from '@llm/LLMChatMessage.svelte'
 
   let {
     isOpen = $bindable(false),
@@ -68,23 +68,12 @@
     return 'Posez votre question...'
   })
 
-  const models = modelsConfig as {
-    id: string
-    name: string
-    description: string
-    category: string
-  }[]
-  let selectedModel = $state(models[0]!)
-  let showModelMenu = $state(false)
+  type SelectableItem = { id: string; name: string; description: string }
+  const models = modelsConfig as SelectableItem[]
+  let selectedModel = $state(models[0])
 
-  const sttEngines = sttEnginesConfig as {
-    id: string
-    name: string
-    description: string
-    provider: string
-  }[]
-  let selectedSTT = $state(sttEngines[0]!)
-  let showSTTMenu = $state(false)
+  const sttEngines = sttEnginesConfig as SelectableItem[]
+  let selectedSTT = $state(sttEngines[0])
 
   Options.loaded.then(() => {
     const savedModelId = Options.get('llmModel') as string | undefined
@@ -718,68 +707,20 @@ ${toolsGuidelines}`
 
 <div class="llm-chat-panel" class:open={isOpen} bind:this={chatPanelRef}>
   <div class="chat-header">
-    <button
-      class="model-selector"
-      onclick={() => (showModelMenu = !showModelMenu)}
-    >
-      <i class="fa-solid fa-robot"></i>
-      <span class="model-name">{selectedModel.name}</span>
-      <i class="fa-solid fa-chevron-down" class:rotated={showModelMenu}></i>
-    </button>
+    <LLMDropdownSelector
+      icon="fa-robot"
+      items={models}
+      bind:selected={selectedModel}
+      optionKey="llmModel"
+    />
 
-    {#if showModelMenu}
-      <div class="model-menu" use:clickOutside={() => (showModelMenu = false)}>
-        {#each models as model (model.id)}
-          <button
-            class="model-option"
-            class:selected={model.id === selectedModel.id}
-            onclick={() => {
-              selectedModel = model
-              showModelMenu = false
-              Options.set('llmModel', model.id)
-            }}
-          >
-            <div class="model-content">
-              <span class="model-name">{model.name}</span>
-              <span class="model-description">{model.description}</span>
-            </div>
-            {#if model.id === selectedModel.id}
-              <i class="fa-solid fa-check"></i>
-            {/if}
-          </button>
-        {/each}
-      </div>
-    {/if}
-
-    <button class="stt-selector" onclick={() => (showSTTMenu = !showSTTMenu)}>
-      <i class="fa-solid fa-microphone"></i>
-      <span class="stt-name">{selectedSTT.name}</span>
-      <i class="fa-solid fa-chevron-down" class:rotated={showSTTMenu}></i>
-    </button>
-
-    {#if showSTTMenu}
-      <div class="stt-menu" use:clickOutside={() => (showSTTMenu = false)}>
-        {#each sttEngines as engine (engine.id)}
-          <button
-            class="stt-option"
-            class:selected={engine.id === selectedSTT.id}
-            onclick={() => {
-              selectedSTT = engine
-              showSTTMenu = false
-              Options.set('sttEngine', engine.id)
-            }}
-          >
-            <div class="stt-content">
-              <span class="stt-name">{engine.name}</span>
-              <span class="stt-description">{engine.description}</span>
-            </div>
-            {#if engine.id === selectedSTT.id}
-              <i class="fa-solid fa-check"></i>
-            {/if}
-          </button>
-        {/each}
-      </div>
-    {/if}
+    <LLMDropdownSelector
+      icon="fa-microphone"
+      items={sttEngines}
+      bind:selected={selectedSTT}
+      optionKey="sttEngine"
+      menuPosition="center"
+    />
 
     <div class="header-actions">
       {#if isConfigured && messages.length > 0}
@@ -793,11 +734,12 @@ ${toolsGuidelines}`
           </button>
         {:else}
           <button
-            class="new-chat-btn"
+            class="new-chat-btn use-tooltip"
             onclick={resetChat}
             aria-label="Nouveau chat"
+            title="Nouveau chat"
           >
-            <i class="fa-solid fa-plus"></i>
+            <i class="fa-solid fa-pen-to-square"></i>
           </button>
         {/if}
       {/if}
@@ -841,30 +783,20 @@ ${toolsGuidelines}`
         <div>
           {#each messagesWithHtml as message, i (i)}
             {#if message.role === 'user'}
-              <div class="message {message.role}">
-                <div class="user-bubble">
-                  <div class="message-content">{message.content}</div>
-                </div>
-              </div>
+              <LLMChatMessage role="user" content={message.content} />
             {:else if message.role === 'tool'}
-              <div class="message {message.role}">
-                <div class="tool-call-box">
-                  <div class="tool-call-header">
-                    <i class="fa-solid fa-database"></i>
-                    <span>{message.name ?? 'unknown'}</span>
-                  </div>
-                </div>
-              </div>
+              <LLMChatMessage
+                role="tool"
+                content={message.content}
+                name={message.name}
+              />
             {:else if message.role === 'assistant' && !message.tool_calls && message.content}
-              <div
-                class="message {message.role}"
-                bind:this={lastAssistantMessageRef}
-              >
-                <div
-                  class="message-content markdown"
-                  use:safeHtml={message.html ?? ''}
-                ></div>
-              </div>
+              <LLMChatMessage
+                role="assistant"
+                content={message.content}
+                html={message.html}
+                bind:elementRef={lastAssistantMessageRef}
+              />
             {/if}
           {/each}
 
@@ -1032,207 +964,6 @@ ${toolsGuidelines}`
     z-index: 1;
     box-shadow: 0 8px 8px $background-1;
 
-    .model-selector {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      margin: 0;
-      background: transparent;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-
-      &:hover {
-        background: rgba($color-3, 0.1);
-      }
-
-      i:first-child {
-        font-size: 1rem;
-        color: $color-3;
-      }
-
-      .model-name {
-        font-size: 1rem;
-        font-weight: 600;
-        color: $color-1;
-
-        @media (max-width: 420px) {
-          display: none;
-        }
-      }
-
-      i:last-child {
-        font-size: 0.75rem;
-        color: $color-4;
-        transition: transform 0.2s ease;
-
-        &.rotated {
-          transform: rotate(180deg);
-        }
-      }
-    }
-
-    .model-menu {
-      position: absolute;
-      top: 100%;
-      left: 1.5rem;
-      background: $background-2;
-      border-radius: $rounded;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-      z-index: 1001;
-      min-width: 320px;
-      max-height: 500px;
-      overflow-y: auto;
-
-      .model-option {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.75rem 1rem;
-        background: transparent;
-        border: none;
-        width: 100%;
-        cursor: pointer;
-        transition: background 0.15s ease;
-        text-align: left;
-
-        &:hover {
-          background: rgba($color-3, 0.1);
-        }
-
-        &.selected {
-          background: rgba($color-3, 0.15);
-        }
-
-        .model-content {
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-
-        .model-name {
-          font-size: 0.95rem;
-          font-weight: 600;
-          color: $color-1;
-        }
-
-        .model-description {
-          font-size: 0.8rem;
-          color: $color-2;
-          opacity: 0.8;
-        }
-
-        i {
-          color: $color-3;
-          font-size: 0.9rem;
-          flex-shrink: 0;
-        }
-      }
-    }
-
-    .stt-selector {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      margin: 0;
-      background: transparent;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-
-      &:hover {
-        background: rgba($color-3, 0.1);
-      }
-
-      i:first-child {
-        font-size: 1rem;
-        color: $color-3;
-      }
-
-      .stt-name {
-        font-size: 1rem;
-        font-weight: 600;
-        color: $color-1;
-
-        @media (max-width: 420px) {
-          display: none;
-        }
-      }
-
-      i:last-child {
-        font-size: 0.75rem;
-        color: $color-4;
-        transition: transform 0.2s ease;
-
-        &.rotated {
-          transform: rotate(180deg);
-        }
-      }
-    }
-
-    .stt-menu {
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: $background-2;
-      border-radius: $rounded;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-      z-index: 1001;
-      min-width: 280px;
-      max-height: 400px;
-      overflow-y: auto;
-
-      .stt-option {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.75rem 1rem;
-        background: transparent;
-        border: none;
-        width: 100%;
-        cursor: pointer;
-        transition: background 0.15s ease;
-        text-align: left;
-
-        &:hover {
-          background: rgba($color-3, 0.1);
-        }
-
-        &.selected {
-          background: rgba($color-3, 0.15);
-        }
-
-        .stt-content {
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-
-        .stt-name {
-          font-size: 0.9rem;
-          font-weight: 600;
-          color: $color-1;
-        }
-
-        .stt-description {
-          font-size: 0.75rem;
-          color: $color-2;
-          opacity: 0.8;
-        }
-
-        i {
-          color: $color-3;
-          font-size: 0.85rem;
-          flex-shrink: 0;
-        }
-      }
-    }
-
     .header-actions {
       display: flex;
       align-items: center;
@@ -1399,141 +1130,8 @@ ${toolsGuidelines}`
     margin-bottom: 0;
     animation: slideIn 0.2s ease-out;
 
-    &.user {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      margin: 10px auto;
-    }
-
-    .user-bubble {
-      display: inline-block;
-      background: $background-2;
-      padding: 0.75rem 1rem;
-      border-radius: $rounded;
-      max-width: 85%;
-
-      .message-content {
-        white-space: pre-wrap;
-      }
-    }
-
-    .message-content {
-      color: $color-1;
-      word-wrap: break-word;
-
-      &.markdown {
-        :global(p) {
-          margin: 0.5em 0;
-          &:first-child {
-            margin-top: 0;
-          }
-          &:last-child {
-            margin-bottom: 0;
-          }
-        }
-
-        :global(pre) {
-          background: $background-3;
-          padding: 0.75rem;
-          border-radius: 6px;
-          overflow-x: auto;
-          margin: 0.75em 0;
-          border: 1px solid $color-5;
-        }
-
-        :global(code) {
-          background: $background-3;
-          padding: 0.2em 0.4em;
-          border-radius: 4px;
-          font-size: 0.9em;
-          font-family: 'Courier New', monospace;
-        }
-
-        :global(pre code) {
-          background: none;
-          padding: 0;
-          border: none;
-        }
-
-        :global(ul),
-        :global(ol) {
-          padding-left: 2em;
-        }
-
-        :global(ul) {
-          list-style-type: disc;
-        }
-
-        :global(ol) {
-          list-style-type: decimal;
-        }
-
-        :global(blockquote) {
-          border-left: 3px solid $color-3;
-          padding-left: 1em;
-          margin: 0.75em 0;
-          opacity: 0.9;
-        }
-
-        :global(a) {
-          color: $color-3;
-          text-decoration: none;
-          border-bottom: 1px solid currentColor;
-
-          &:hover {
-            opacity: 0.8;
-          }
-        }
-
-        :global(h1),
-        :global(h2),
-        :global(h3) {
-          margin: 1em 0 0.5em;
-          font-weight: 600;
-        }
-      }
-    }
-
-    &.user {
-      background: transparent;
-    }
-
     &.assistant {
       background: transparent;
-    }
-
-    &.tool {
-      background: transparent;
-      padding: 0.25rem 0.5rem;
-    }
-
-    .tool-call-box {
-      display: inline-flex;
-      align-items: center;
-      background: $background-2;
-      border: 1px solid $color-5;
-      border-radius: $rounded;
-      padding: 0.4rem 0.75rem;
-      margin: 0.25rem 0;
-      font-size: 0.85em;
-      color: $color-2;
-      opacity: 0.9;
-
-      .tool-call-header {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-
-        i {
-          font-size: 0.9em;
-          color: $color-3;
-        }
-
-        span {
-          font-weight: 500;
-        }
-      }
     }
 
     .tool-indicator {
