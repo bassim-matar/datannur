@@ -4,6 +4,7 @@
 
 - add: LLM chat web version (php) with turnstile captcha
 - fix: warning with state_referenced_locally
+- fix: search bar initial position on homepage
 - refactor: validate_schemas.py and start_app.py and put json template in own dir
 - refactor: make demo data more complete
 - refactor: extract in module and component the different parts of LLMChatPanel

@@ -3,6 +3,7 @@
   import search from '@search/search'
   import {
     router,
+    page,
     onPageSearch,
     onPageHomepage,
     isSmallMenu,
@@ -27,6 +28,7 @@
     isFocusIn && ($searchValue !== '' || nbResult > 0 || !dbInitied),
   )
   let isHiddenByMobileMenu = $derived($isSmallMenu && $headerOpen)
+  let routerReady = $derived($page !== '')
 
   const maxSearchResult = 100
   let navPosition = 0
@@ -164,64 +166,66 @@
 
 <svelte:window onkeydown={windowKeydown} />
 
-<div
-  class="navbar-item header-search-item"
-  class:hidden-by-mobile-menu={isHiddenByMobileMenu}
-  use:clickOutside={focusout}
->
+{#if routerReady}
   <div
-    class="search-bar-container box-shadow-color shadow-search"
-    class:box-shadow={isFocusIn}
-    class:focus={isFocusIn}
-    class:homepage={$onPageHomepage}
-    class:page-search={$onPageSearch}
+    class="navbar-item header-search-item"
+    class:hidden-by-mobile-menu={isHiddenByMobileMenu}
+    use:clickOutside={focusout}
   >
-    <p class="control has-icons-right">
-      <button
-        class="icon is-small is-left"
-        class:active={$searchValue !== '' &&
-          $searchValue !== undefined &&
-          isFocusIn &&
-          nbResult > 0}
-        onclick={goToPageSearch}
-        aria-label="Rechercher"
-      >
-        <i class="fas fa-magnifying-glass"></i>
-      </button>
-      <input
-        id="header-search-input"
-        class="input"
-        type="text"
-        placeholder="Rechercher..."
-        bind:value={$searchValue}
-        oninput={debounce(searchInputChange, 200)}
-        onkeyup={keyup}
-        onkeydown={keydown}
-        onfocusin={focusin}
-        onclick={onClick}
-        bind:this={inputElement}
-        autocomplete="off"
-        enterkeyhint="search"
-      />
-      {#if $searchValue !== ''}
-        <span class="btn-clear-input-wrapper">
-          <BtnClearInput click={clearInput} />
-        </span>
-      {/if}
-    </p>
+    <div
+      class="search-bar-container box-shadow-color shadow-search"
+      class:box-shadow={isFocusIn}
+      class:focus={isFocusIn}
+      class:homepage={$onPageHomepage}
+      class:page-search={$onPageSearch}
+    >
+      <p class="control has-icons-right">
+        <button
+          class="icon is-small is-left"
+          class:active={$searchValue !== '' &&
+            $searchValue !== undefined &&
+            isFocusIn &&
+            nbResult > 0}
+          onclick={goToPageSearch}
+          aria-label="Rechercher"
+        >
+          <i class="fas fa-magnifying-glass"></i>
+        </button>
+        <input
+          id="header-search-input"
+          class="input"
+          type="text"
+          placeholder="Rechercher..."
+          bind:value={$searchValue}
+          oninput={debounce(searchInputChange, 200)}
+          onkeyup={keyup}
+          onkeydown={keydown}
+          onfocusin={focusin}
+          onclick={onClick}
+          bind:this={inputElement}
+          autocomplete="off"
+          enterkeyhint="search"
+        />
+        {#if $searchValue !== ''}
+          <span class="btn-clear-input-wrapper">
+            <BtnClearInput click={clearInput} />
+          </span>
+        {/if}
+      </p>
 
-    {#if !$onPageSearch}
-      <SearchBarResult
-        {isOpen}
-        {nbResult}
-        {allSearch}
-        searchValue={searchValueDebounced}
-        {selectInput}
-        bind:isFocusIn
-      />
-    {/if}
+      {#if !$onPageSearch}
+        <SearchBarResult
+          {isOpen}
+          {nbResult}
+          {allSearch}
+          searchValue={searchValueDebounced}
+          {selectInput}
+          bind:isFocusIn
+        />
+      {/if}
+    </div>
   </div>
-</div>
+{/if}
 
 <style lang="scss">
   @use 'main.scss' as *;
