@@ -1,6 +1,6 @@
 # datannur
 
-## unreleased
+## 0.15.2 (2025-12-07)
 
 - add: LLM chat web version (php) with turnstile captcha
 - fix: warning with state_referenced_locally
