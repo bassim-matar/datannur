@@ -346,9 +346,9 @@ export async function checkProxyStatus(): Promise<LLMStatus> {
 
     if (!response.ok) {
       return {
-        available: true,
+        available: false,
         configured: false,
-        error: 'Failed to check status',
+        error: `Proxy not available (${response.status})`,
       }
     }
 
