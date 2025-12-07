@@ -3,7 +3,7 @@
  * Handles streaming chat completions and tool calls
  */
 
-import { getLLMConfig } from './llm-config'
+import { getLLMConfig, getSessionToken, isLocalProxy } from './llm-config'
 
 export type ChatMessage = {
   role: 'system' | 'user' | 'assistant' | 'tool'
@@ -160,17 +160,30 @@ export async function chatCompletion(
     )
   }
 
-  const url = `${config.proxyURL}/api/chat/completions`
+  // Build URL based on environment
+  const url = config.isLocalProxy
+    ? `${config.proxyURL}/api/chat/completions`
+    : `${config.proxyURL}/index.php`
 
   try {
     const contentType = 'application/json'
     const accept = stream ? 'text/event-stream' : 'application/json'
 
-    const headers = {
+    const headers: { [key: string]: string } = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'Content-Type': contentType,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       Accept: accept,
+    }
+
+    // Add session token for online mode
+    if (!isLocalProxy()) {
+      const token = getSessionToken()
+      if (!token) {
+        throw new Error('Session required. Please reopen the chat panel.')
+      }
+
+      headers['X-Session-Token'] = token
     }
 
     const response = await fetch(url, {
@@ -332,19 +345,6 @@ async function handleStreamingResponse(
       ...(responseMetadata.usage ? { usage: responseMetadata.usage } : {}),
     }
 
-    if (response.usage) {
-      const cachedTokens =
-        response.usage.prompt_tokens_details?.cached_tokens ?? 0
-      const promptTokens = response.usage.prompt_tokens
-      const cacheHitRate =
-        promptTokens > 0
-          ? ((cachedTokens / promptTokens) * 100).toFixed(1)
-          : '0.0'
-      console.log(
-        `[LLM Usage] Prompt: ${promptTokens} tokens (${cachedTokens} cached, ${cacheHitRate}% hit rate) | Completion: ${response.usage.completion_tokens} | Total: ${response.usage.total_tokens}`,
-      )
-    }
-
     return response
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
@@ -355,22 +355,6 @@ async function handleStreamingResponse(
   } finally {
     reader.releaseLock()
   }
-}
-
-/**
- * Simple non-streaming chat completion
- */
-export async function chat(
-  messages: ChatMessage[],
-  options?: Partial<ChatCompletionOptions>,
-): Promise<string> {
-  const response = await chatCompletion({
-    messages,
-    stream: false,
-    ...options,
-  })
-
-  return response?.choices[0]?.message?.content ?? ''
 }
 
 /**

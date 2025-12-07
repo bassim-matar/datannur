@@ -17,6 +17,11 @@ RewriteRule ^([a-zA-Z0-9_\-]+)/([a-zA-Z0-9_\-]+)$ /static/$1/$2.html [L]
 
 ErrorDocument 404 /static/_error.html
 
+# Block access to sensitive config files
+<FilesMatch "(llm-web\.config\.json|deploy\.config\.json)$">
+  Require all denied
+</FilesMatch>
+
 # CORS and Security Headers for API
 <FilesMatch "\.json$">
   Header set Access-Control-Allow-Origin "*"
