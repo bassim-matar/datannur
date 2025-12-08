@@ -9,8 +9,15 @@ import sys
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional, TYPE_CHECKING
-from rdflib import Graph, Namespace, Literal, URIRef, BNode
-from rdflib.namespace import RDF, RDFS, DCTERMS, FOAF, XSD
+
+try:
+    from rdflib import Graph, Namespace, Literal, URIRef, BNode
+    from rdflib.namespace import RDF, RDFS, DCTERMS, FOAF, XSD
+except ImportError as e:
+    missing = str(e).split("'")[1] if "'" in str(e) else "rdflib"
+    print(f"❌ Missing dependency: {missing}")
+    print("   Install with: pip install rdflib")
+    sys.exit(1)
 
 if TYPE_CHECKING:
     from pyshacl import validate

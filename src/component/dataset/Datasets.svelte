@@ -14,7 +14,7 @@
   const isMeta = untrack(() => isMetaProp)
 
   const datasetPath = isMeta ? 'metaDataset/' : 'dataset/'
-  const tabVariables = isMeta ? 'metaDatasetVariables' : 'datasetVariables'
+  const tabVariables = isMeta ? 'metaVariables' : 'variables'
   const metaPath = isMeta ? 'metaDataset' : undefined
   const datasetsSorted = [...datasets]
 

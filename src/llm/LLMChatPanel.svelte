@@ -21,9 +21,7 @@
   import type { ChatMessage } from '@llm/llm-client'
   import modelsConfig from './models.json'
   import sttEnginesConfig from './stt-engines.json'
-  import systemInstructions from './prompt/system-instructions.md?raw'
-  import toolsGuidelines from './prompt/tools-guidelines.md?raw'
-  import schemaDoc from './prompt/schema.md?raw'
+  import { buildSystemPrompt } from '@llm/system-prompt'
   import LLMConfigForm from '@llm/LLMConfigForm.svelte'
   import LLMDropdownSelector from '@llm/LLMDropdownSelector.svelte'
   import LLMChatMessages from '@llm/LLMChatMessages.svelte'
@@ -125,25 +123,6 @@
       textareaRef.style.height = `${textareaRef.scrollHeight}px`
     }
   })
-
-  /**
-   * Build complete system prompt for LLM
-   * Includes: instructions, current context, schema, and tools guidelines
-   */
-  function buildSystemPrompt() {
-    const now = new Date()
-    const dateOnly = now.toISOString().split('T')[0] // YYYY-MM-DD only for cache stability
-
-    return `# datannur data catalog assistant
-
-Current date: ${dateOnly}
-
-${systemInstructions}
-
-${schemaDoc}
-
-${toolsGuidelines}`
-  }
 
   async function checkConfiguration(): Promise<void> {
     if (!isProxyAvailable()) {

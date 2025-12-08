@@ -117,7 +117,9 @@ user_data_schemas = (
 schema_files = data_schemas + user_data_schemas
 
 # Load meta-schema
-meta_schema = json.loads((schemas_dir / "__meta__.schema.json").read_text())
+meta_schema = json.loads(
+    (schemas_dir / "__meta__.schema.json").read_text(encoding="utf-8")
+)
 meta_validator = Draft7Validator(meta_schema)
 
 errors = 0
@@ -126,7 +128,7 @@ schemas: dict[str, dict] = {}
 print("📋 Validating schemas...")
 for item in schema_files:
     schema_path = item["dir"] / item["file"]
-    schema = json.loads(schema_path.read_text())
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
 
     meta_errors = list(meta_validator.iter_errors(schema))
     if meta_errors:
@@ -166,7 +168,7 @@ for item in schema_files:
         continue
 
     try:
-        data = json.loads(data_file.read_text())
+        data = json.loads(data_file.read_text(encoding="utf-8"))
         validator = Draft7Validator(schemas[entity_name], registry=registry)
         validation_errors = list(validator.iter_errors(data))
 

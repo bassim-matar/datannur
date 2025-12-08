@@ -11,7 +11,7 @@
 import db from '@db'
 import { router } from 'svelte-fileapp'
 import Search from '@search/search'
-import type { EntityName, MainEntityName } from '@type'
+import type { EntityName, MainEntity, MainEntityName } from '@type'
 import { mainEntityNames } from '@lib/constant'
 
 /**
@@ -43,13 +43,10 @@ const mainEntityEnumValues = Object.keys(mainEntityNames)
  * Find entities with optional filtering
  * Returns count + lightweight list (max 20 items)
  */
-function findEntitiesHelper(
+function filterEntities(
   entity: MainEntityName,
   criteria?: Record<string, unknown>,
-): {
-  count: number
-  items: Array<{ id: string | number; name: string }>
-} {
+): MainEntity[] {
   let entities = db.getAll(entity)
 
   if (criteria && Object.keys(criteria).length > 0) {
@@ -60,33 +57,26 @@ function findEntitiesHelper(
     )
   }
 
-  return {
-    count: entities.length,
-    items: entities.slice(0, 20).map(entity => ({
-      id: entity.id as string | number,
-      name: entity.name as string,
-    })),
-  }
+  return entities
 }
 
-const findEntities: LLMTool = {
-  name: 'findEntities',
+const countEntities: LLMTool = {
+  name: 'countEntities',
   description:
-    'Find entities matching criteria. Returns total count + first 20 items (id, name). Use getEntity() to get full details.',
+    'Count entities matching criteria. Use for "how many" questions.',
   descriptionFr:
-    'Rechercher des entités avec critères. Retourne le total + les 20 premiers (id, name). Utiliser getEntity() pour les détails complets.',
+    'Compter les entités selon critères. Pour les questions "combien".',
   parameters: {
     type: 'object',
     properties: {
       entity: {
         type: 'string',
-        description: 'Entity type to query',
+        description: 'Entity type to count',
         enum: mainEntityEnumValues,
       },
       criteria: {
         type: 'object',
-        description:
-          'Filter criteria object. Matches entities where all specified fields equal the given values (e.g., {type: "panel"}, {folderId: "123", type: "cohort"})',
+        description: 'Filter criteria (e.g., {type: "panel"})',
       },
     },
     required: ['entity'],
@@ -96,7 +86,44 @@ const findEntities: LLMTool = {
     criteria?: Record<string, unknown>
   }) => {
     const { entity, criteria } = params
-    return findEntitiesHelper(entity, criteria)
+    return { count: filterEntities(entity, criteria).length }
+  }) as (params: unknown) => unknown,
+}
+
+const listEntities: LLMTool = {
+  name: 'listEntities',
+  description:
+    'List entities matching criteria. Returns first 20 items (id, name) + total count. Use when user asks for a list.',
+  descriptionFr:
+    'Lister les entités selon critères. Retourne les 20 premiers (id, name) + total. Quand on demande une liste.',
+  parameters: {
+    type: 'object',
+    properties: {
+      entity: {
+        type: 'string',
+        description: 'Entity type to list',
+        enum: mainEntityEnumValues,
+      },
+      criteria: {
+        type: 'object',
+        description: 'Filter criteria (e.g., {type: "panel"})',
+      },
+    },
+    required: ['entity'],
+  },
+  handler: ((params: {
+    entity: MainEntityName
+    criteria?: Record<string, unknown>
+  }) => {
+    const { entity, criteria } = params
+    const entities = filterEntities(entity, criteria)
+    return {
+      count: entities.length,
+      items: entities.slice(0, 20).map(e => ({
+        id: e.id as string | number,
+        name: e.name as string,
+      })),
+    }
   }) as (params: unknown) => unknown,
 }
 
@@ -318,7 +345,8 @@ const navigate: LLMTool = {
  */
 export const llmTools: LLMTool[] = [
   // Query tools
-  findEntities,
+  countEntities,
+  listEntities,
   getEntity,
   searchInCatalog,
 

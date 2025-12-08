@@ -27,6 +27,7 @@
       "@lib/*": ["src/lib/*"],
       "@layout/*": ["src/layout/*"],
       "@llm/*": ["src/llm/*"],
+      "@llm-prompt/*": ["src/assets/llm-prompt/*"],
       "@markdown/*": ["src/assets/markdown/*"],
       "@page/*": ["src/page/*"],
       "@search/*": ["src/search/*"],

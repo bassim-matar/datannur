@@ -61,7 +61,7 @@ def get_config() -> Config:
         print(f"{ERROR} Config file '{CONFIG_FILE}' does not exist.")
         sys.exit(1)
     try:
-        config = json.loads(CONFIG_FILE.read_text())
+        config = json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         print(f"{ERROR} '{CONFIG_FILE}' is not valid JSON.")
         sys.exit(1)

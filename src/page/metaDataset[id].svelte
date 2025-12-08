@@ -11,12 +11,12 @@
   let { metaDataset: metaDatasetProp }: { metaDataset: MetaDataset } = $props()
   const metaDataset = untrack(() => metaDatasetProp)
 
-  let metaDatasetVariables = db.getAll('metaVariable', { metaDataset })
+  let metaVariables = db.getAll('metaVariable', { metaDataset })
 
   let datasetPreview: Row[] = []
   if (metaDataset.metaFolderId === 'data') {
     const datasetPreviewRaw = db.getAll(metaDataset.name)
-    const keysToKeep = metaDatasetVariables.map(a => a.name)
+    const keysToKeep = metaVariables.map(a => a.name)
     datasetPreview = filterKeys(datasetPreviewRaw, keysToKeep)
   } else if (metaDataset.metaFolderId === 'userData') {
     const userData = getUserData()
@@ -25,7 +25,7 @@
 
   let tabs = tabsHelper({
     metaDataset,
-    metaDatasetVariables,
+    metaVariables,
     datasetPreview,
   })
 </script>

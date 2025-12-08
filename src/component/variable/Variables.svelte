@@ -8,11 +8,15 @@
   let {
     variables: variablesProp,
     isMeta: isMetaProp = false,
-  }: { variables: Variable[]; isMeta?: boolean } = $props()
+  }: {
+    variables?: Variable[]
+    isMeta?: boolean
+  } = $props()
 
-  const variables = untrack(() => variablesProp)
+  const variables = untrack(() => variablesProp!)
   const isMeta = untrack(() => isMetaProp)
 
+  const hasMultipleDatasets = new Set(variables.map(v => v.datasetId)).size > 1
   const variablesSorted = [...variables]
   const metaPath = isMeta ? 'metaVariable' : undefined
 
@@ -40,8 +44,10 @@
   for (const variable of variables) {
     nbRowMax = Math.max(nbRowMax, variable.nbRow ?? 0)
     nbValueMax = Math.max(nbValueMax, variable.nbValue ?? 0)
-    nbSourcesMax = Math.max(nbSourcesMax, variable.sourceIds?.size ?? 0)
-    nbDerivedMax = Math.max(nbDerivedMax, variable.derivedIds?.size ?? 0)
+    if ('sourceIds' in variable && 'derivedIds' in variable) {
+      nbSourcesMax = Math.max(nbSourcesMax, variable.sourceIds?.size ?? 0)
+      nbDerivedMax = Math.max(nbDerivedMax, variable.derivedIds?.size ?? 0)
+    }
   }
 
   function defineColumns() {
@@ -54,7 +60,7 @@
       Column.lineageType(),
       Column.nbSources(nbSourcesMax, 'variable'),
       Column.nbDerived(nbDerivedMax, 'variable'),
-      Column.nbRow(nbRowMax),
+      ...(hasMultipleDatasets ? [Column.nbRow(nbRowMax)] : []),
       Column.nbMissing(),
       Column.nbDuplicates(),
       Column.nbValues(nbValueMax),
@@ -65,18 +71,23 @@
       return [
         ...base,
         Column.metaLocalisation(),
-        Column.dataset(isMeta),
-        Column.metaFolder(),
+        ...(hasMultipleDatasets
+          ? [Column.dataset(isMeta), Column.metaFolder()]
+          : []),
       ]
     }
     return [
       Column.favorite(),
       ...base,
       Column.modality(),
-      Column.dataset(isMeta),
-      Column.folder(),
-      Column.owner(),
-      Column.manager(),
+      ...(hasMultipleDatasets
+        ? [
+            Column.dataset(isMeta),
+            Column.folder(),
+            Column.owner(),
+            Column.manager(),
+          ]
+        : []),
       Column.tag(),
       Column.startDate(),
       Column.endDate(),

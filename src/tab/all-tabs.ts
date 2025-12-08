@@ -6,7 +6,6 @@ import Datasets from '@component/dataset/Datasets.svelte'
 import Variables from '@component/variable/Variables.svelte'
 import Modalities from '@component/modality/Modalities.svelte'
 import ModalitiesCompare from '@component/modality/ModalitiesCompare.svelte'
-import DatasetVariables from '@component/dataset/DatasetVariables.svelte'
 import Values from '@component/modality/Values.svelte'
 import VariableValues from '@component/variable/VariableValues.svelte'
 import Freq from '@component/variable/Freq.svelte'
@@ -69,11 +68,6 @@ export const allTabs: Record<string, TabConfig> = {
     component: ModalitiesCompare,
     loadAsync: true,
   },
-  datasetVariables: {
-    name: 'Variable',
-    icon: 'variable',
-    component: DatasetVariables,
-  },
   values: {
     name: 'Valeur',
     icon: 'value',
@@ -124,13 +118,6 @@ export const allTabs: Record<string, TabConfig> = {
     component: Variables,
     isMeta: true,
     metaKey: 'variables',
-  },
-  metaDatasetVariables: {
-    name: 'Variable',
-    icon: 'variable',
-    component: DatasetVariables,
-    isMeta: true,
-    metaKey: 'datasetVariables',
   },
   variableMetaValues: {
     name: 'Valeur',
