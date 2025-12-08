@@ -10,10 +10,10 @@
   let { id }: { id: string | number } = $props()
   const dataset = untrack(() => db.get('dataset', id))
 
-  let datasetVariables = db.getAll('variable', { dataset })
-  if (dataset) dataset.nbVariable = datasetVariables.length
+  let variables = db.getAll('variable', { dataset })
+  if (dataset) dataset.nbVariable = variables.length
 
-  let modalities: Modality[] = datasetVariables.flatMap(
+  let modalities: Modality[] = variables.flatMap(
     variable => variable.modalities ?? [],
   )
   modalities = removeDuplicateById(modalities)
@@ -46,7 +46,7 @@
 
   const stat = [
     { entity: 'doc', items: dataset?.docs },
-    { entity: 'variable', items: datasetVariables },
+    { entity: 'variable', items: variables },
     { entity: 'modality', items: modalities },
   ]
 
@@ -54,7 +54,7 @@
     dataset,
     docs: dataset?.docs,
     datasets,
-    datasetVariables,
+    variables,
     modalities,
     datasetPreview,
     evolutions,
