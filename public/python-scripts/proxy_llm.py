@@ -29,7 +29,7 @@ def get_proxy_url() -> Optional[str]:
     if not UPDATE_APP_CONFIG.exists():
         return None
     try:
-        config = json.loads(UPDATE_APP_CONFIG.read_text())
+        config = json.loads(UPDATE_APP_CONFIG.read_text(encoding="utf-8"))
         return config.get("proxyUrl")
     except (json.JSONDecodeError, OSError):
         return None
