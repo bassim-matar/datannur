@@ -6,7 +6,8 @@
 
 **Query:**
 
-- `findEntities` - Find entities with criteria. Returns `{count, items}` where items is max 20 with `{id, name}`
+- `countEntities` - Count entities matching criteria. Returns `{count}`. Use for "how many" questions.
+- `listEntities` - List entities matching criteria. Returns `{count, items}` (max 20 items with id, name). Use when user asks for a list.
 - `getEntity` - Get single entity by ID (full details)
 - `searchInCatalog` - Full-text search. Returns `{id, name, entity}` (max 20)
 
@@ -22,8 +23,8 @@
 ### Quick Examples
 
 ```
-"Combien de datasets ?" → findEntities({entity: "dataset"}) → check count
-"Liste des datasets panel" → findEntities({entity: "dataset", criteria: {type: "panel"}})
+"Combien de datasets ?" → countEntities({entity: "dataset"})
+"Liste des datasets panel" → listEntities({entity: "dataset", criteria: {type: "panel"}})
 "Détails du dataset X" → getEntity({entity: "dataset", id: "X"})
 "Datasets avec le mot emploi" → searchInCatalog({query: "emploi", entityType: "dataset"})
 "Taille moyenne des datasets" → getStatistics({entity: "dataset", field: "nbRow"})
@@ -34,10 +35,8 @@
 
 - Call tool FIRST, answer SECOND
 - Use exact results from tools
-- **`findEntities` returns `{count, items}`:**
-  - If user asks "combien" (how many), mention ONLY the count, DO NOT list items
-  - If user asks for a list, show the items and mention total if > 20
-  - Example: "Combien de datasets ?" → "Il y a 45 datasets" (NO list)
-  - Example: "Liste les datasets" → "45 datasets dont voici les 20 premiers: ..." (WITH list)
-- For full details, use `getEntity` after finding IDs
+- **Tool selection:**
+  - "Combien", "how many", counting → `countEntities`
+  - "Liste", "quels sont", "montre-moi" → `listEntities`
+- For full details of a specific item, use `getEntity` after finding its ID
 - If no results, say so clearly
