@@ -322,8 +322,10 @@ const getStatistics: LLMTool = {
 
 const navigate: LLMTool = {
   name: 'navigate',
-  description: 'Navigate to a page in the app',
-  descriptionFr: "Naviguer vers une page de l'application",
+  description:
+    'Navigate to a page in the app, optionally to a specific tab. Available tabs by entity: institution (folders, tags, docs, datasets, variables, modalities, evolutions, stat), folder (folders, tags, docs, datasets, variables, modalities, evolutions, stat), tag (tags, institutions, folders, docs, datasets, variables), dataset (docs, datasets, variables, modalities, datasetPreview, evolutions, stat), variable (variables, variableValues, freq, variablePreview, evolutions), modality (values, variables, evolutions)',
+  descriptionFr:
+    "Naviguer vers une page de l'application, optionnellement vers un onglet spécifique",
   parameters: {
     type: 'object',
     properties: {
@@ -331,12 +333,30 @@ const navigate: LLMTool = {
         type: 'string',
         description: 'Route path (e.g., "/dataset/123", "/variable/456", "/")',
       },
+      tab: {
+        type: 'string',
+        description:
+          'Tab to display (e.g., "folders", "variables", "datasets", "modalities", "docs", "evolutions", "stat")',
+      },
     },
     required: ['path'],
   },
-  handler: ((params: { path: string }) => {
-    router.navigate(params.path)
-    return { success: true, path: params.path }
+  handler: ((params: { path: string; tab?: string }) => {
+    const fullPath = params.tab
+      ? `${params.path}?tab=${params.tab}`
+      : params.path
+    router.navigate(fullPath)
+
+    // Emit event to change tab when staying on same page
+    if (params.tab) {
+      setTimeout(() => {
+        window.dispatchEvent(
+          new CustomEvent('llm-tab-change', { detail: params.tab }),
+        )
+      }, 50)
+    }
+
+    return { success: true, path: fullPath }
   }) as (params: unknown) => unknown,
 }
 

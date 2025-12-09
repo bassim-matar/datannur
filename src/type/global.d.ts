@@ -20,6 +20,7 @@ declare global {
     continuous: boolean
     interimResults: boolean
     maxAlternatives: number
+    onstart: (() => void) | null
     onresult: ((event: SpeechRecognitionEvent) => void) | null
     onerror: ((event: SpeechRecognitionErrorEvent) => void) | null
     start: () => void

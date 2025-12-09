@@ -3,6 +3,7 @@
     transcribeFromMicrophone,
     cancelMicrophoneRecording,
     stopChromeRecognition,
+    type STTError,
   } from '@llm/stt-client'
   import {
     isProxyAvailable,
@@ -226,10 +227,14 @@
       isRecording = false
       isProcessing = false
 
-      if (voiceConversationMode) {
+      const sttError = err as STTError
+      const isRecoverable = sttError.isRecoverable ?? false
+
+      if (isRecoverable && voiceConversationMode) {
         setTimeout(() => startRecording(), 500)
       } else {
-        alert((err as Error).message)
+        voiceConversationMode = false
+        alert(sttError.message)
         textareaRef?.focus()
       }
     }

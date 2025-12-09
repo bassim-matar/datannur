@@ -9,10 +9,88 @@ export type TranscriptionResponse = {
   text: string
 }
 
+export type STTError = Error & {
+  code?: 'network' | 'not-allowed' | 'not-supported' | 'aborted' | 'unknown'
+  isRecoverable?: boolean
+}
+
 let activeChromeRecognition: SpeechRecognition | null = null
 
 type ErrorResponse = {
   error: string
+}
+
+/**
+ * Create a typed STT error
+ */
+function createSTTError(
+  message: string,
+  code: STTError['code'],
+  isRecoverable = false,
+): STTError {
+  const error = new Error(message) as STTError
+  error.code = code
+  error.isRecoverable = isRecoverable
+  return error
+}
+
+/**
+ * Check if browser is Chromium-based (Chrome, Edge, Brave, Opera, etc.)
+ */
+function isChromiumBrowser(): boolean {
+  const ua = navigator.userAgent
+  return (
+    (/Chrome/.test(ua) && !/Edg/.test(ua)) || /Edg/.test(ua) || /OPR/.test(ua)
+  )
+}
+
+/**
+ * Check if Google Speech (Web Speech API) is available in this browser
+ * Only works reliably on Chromium-based browsers
+ */
+export function isGoogleSpeechAvailable(): boolean {
+  if (!isChromiumBrowser()) return false
+  return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window
+}
+
+/**
+ * Test if Google Speech actually works (not just exists)
+ * Returns a promise that resolves to true if working, false otherwise
+ */
+export async function testGoogleSpeechAvailability(): Promise<boolean> {
+  if (!isGoogleSpeechAvailable()) return false
+
+  return new Promise(resolve => {
+    try {
+      const speechRecognitionConstructor = (window.webkitSpeechRecognition ??
+        window.SpeechRecognition) as { new (): SpeechRecognition }
+      const recognition = new speechRecognitionConstructor()
+
+      const timeout = setTimeout(() => {
+        recognition.stop()
+        resolve(false)
+      }, 3000)
+
+      recognition.onstart = () => {
+        clearTimeout(timeout)
+        recognition.stop()
+        resolve(true)
+      }
+
+      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+        clearTimeout(timeout)
+        if (event.error === 'network' || event.error === 'not-allowed') {
+          resolve(false)
+        } else {
+          resolve(true)
+        }
+      }
+
+      recognition.start()
+    } catch {
+      resolve(false)
+    }
+  })
 }
 
 /**
@@ -96,19 +174,20 @@ export function stopChromeRecognition(): void {
  */
 function transcribeWithChromeNative(): Promise<TranscriptionResponse> {
   return new Promise((resolve, reject) => {
-    if (!('webkitSpeechRecognition' in window)) {
+    if (!isGoogleSpeechAvailable()) {
       reject(
-        new Error(
-          'Speech recognition not supported in this browser. Please use Chrome.',
+        createSTTError(
+          "Google Speech n'est pas supporté par ce navigateur (Firefox, Safari...). Veuillez utiliser Whisper ou un navigateur basé sur Chromium (Chrome, Edge).",
+          'not-supported',
+          false,
         ),
       )
       return
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const SpeechRecognitionConstructor = (window.webkitSpeechRecognition ??
+    const speechRecognitionConstructor = (window.webkitSpeechRecognition ??
       window.SpeechRecognition) as { new (): SpeechRecognition }
-    const recognition = new SpeechRecognitionConstructor()
+    const recognition = new speechRecognitionConstructor()
     activeChromeRecognition = recognition
 
     recognition.lang = 'fr-FR'
@@ -127,17 +206,50 @@ function transcribeWithChromeNative(): Promise<TranscriptionResponse> {
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       recognition.stop()
       activeChromeRecognition = null
+
       if (event.error === 'no-speech') {
         resolve({ text: '' })
+      } else if (event.error === 'network') {
+        reject(
+          createSTTError(
+            "Google Speech n'est pas disponible. Ce service est bloqué par votre navigateur (ex: Brave). Veuillez utiliser Whisper ou changer de navigateur.",
+            'network',
+            false,
+          ),
+        )
+      } else if (event.error === 'not-allowed') {
+        reject(
+          createSTTError(
+            'Permission microphone refusée. Autorisez le microphone dans les paramètres.',
+            'not-allowed',
+            false,
+          ),
+        )
+      } else if (event.error === 'aborted') {
+        reject(
+          createSTTError('Reconnaissance vocale annulée.', 'aborted', true),
+        )
       } else {
-        reject(new Error(`Speech recognition error: ${event.error}`))
+        reject(
+          createSTTError(
+            `Erreur reconnaissance vocale: ${event.error}`,
+            'unknown',
+            true,
+          ),
+        )
       }
     }
 
     try {
       recognition.start()
-    } catch (error) {
-      reject(error)
+    } catch {
+      reject(
+        createSTTError(
+          'Impossible de démarrer la reconnaissance vocale.',
+          'unknown',
+          false,
+        ),
+      )
     }
   })
 }

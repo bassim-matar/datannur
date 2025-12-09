@@ -179,6 +179,11 @@
     max-width: var(--app-width);
     width: 100%;
     padding-top: 3.25rem;
+
+    :global(body.chat-open) & {
+      height: 100vh;
+      overflow-y: auto;
+    }
   }
 
   .error-loading-db {
