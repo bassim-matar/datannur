@@ -115,8 +115,41 @@
     }
   }
 
+  function handleExternalTabChange(event: CustomEvent<string>) {
+    const tabKey = event.detail
+    const tab = tabs.find(t => t.key === tabKey)
+    if (tab) {
+      selectTab(tab)
+    }
+  }
+
+  function handlePopState() {
+    const urlTabKey = UrlParam.get('tab') ?? tabs[0]?.key
+    if (urlTabKey && urlTabKey !== activeTab) {
+      const tab = tabs.find(t => t.key === urlTabKey)
+      if (tab) {
+        loadTab(urlTabKey)
+        setFooter(tab)
+        $tabSelected = tab
+        centerActiveTab()
+      }
+    }
+  }
+
   onMount(() => {
     centerActiveTab()
+    window.addEventListener(
+      'llm-tab-change',
+      handleExternalTabChange as EventListener,
+    )
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener(
+        'llm-tab-change',
+        handleExternalTabChange as EventListener,
+      )
+      window.removeEventListener('popstate', handlePopState)
+    }
   })
 
   $effect(() => {

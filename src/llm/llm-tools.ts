@@ -346,6 +346,16 @@ const navigate: LLMTool = {
       ? `${params.path}?tab=${params.tab}`
       : params.path
     router.navigate(fullPath)
+
+    // Emit event to change tab when staying on same page
+    if (params.tab) {
+      setTimeout(() => {
+        window.dispatchEvent(
+          new CustomEvent('llm-tab-change', { detail: params.tab }),
+        )
+      }, 50)
+    }
+
     return { success: true, path: fullPath }
   }) as (params: unknown) => unknown,
 }
