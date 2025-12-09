@@ -40214,5 +40214,203 @@
     "old_value": null,
     "new_value": "statpop-info",
     "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "ser_pub_loc",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://statistique.admin.ch/view/ser-pub-loc",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "accident_route",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://statistique.admin.ch/view/accident-route",
+    "new_value": "dataset/accident_route.xlsx",
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "dep_sante",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://statistique.admin.ch/view/dep-sante",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "temperature_moy",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://opendata.swiss/view/temperature-moy",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "pop_region",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://raw.githubusercontent.com/ofs-data/view/pop-region",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "eco_energies",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://opendata.swiss/view/eco-energies",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "tourisme_annu",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://opendata.swiss/view/tourisme-annu",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "pollution_air",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://raw.githubusercontent.com/ofs-data/view/pollution-air",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "transport_pub",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://raw.githubusercontent.com/ofs-data/view/transport-pub",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "usage_internet",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://statistique.admin.ch/view/usage-internet",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "emplois_tech",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://statistique.admin.ch/view/emplois-tech",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "accidents_travail",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://data.admin.ch/view/accidents-travail",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "vente_voitures",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://data.admin.ch/view/vente-voitures",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "immobilier_prix",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://statistique.admin.ch/view/immobilier-prix",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "conso_energie",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://raw.githubusercontent.com/ofs-data/view/conso-energie",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "revenus_menages",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://opendata.swiss/view/revenus-menages",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "emploi_jeunes",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://opendata.swiss/view/emploi-jeunes",
+    "new_value": null,
+    "name": null
+  },
+  {
+    "timestamp": 1765279134,
+    "type": "update",
+    "entity": "dataset",
+    "entity_id": "emplois_tech2",
+    "parent_entity_id": null,
+    "variable": "link",
+    "old_value": "https://opendata.swiss/view/emplois-tech2",
+    "new_value": null,
+    "name": null
   }
 ]

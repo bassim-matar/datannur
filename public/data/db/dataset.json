@@ -15,7 +15,7 @@
     "end_date": 2023,
     "localisation": "Valais",
     "delivery_format": "csv",
-    "link": "https://statistique.admin.ch/view/ser-pub-loc",
+    "link": null,
     "data_path": "https://raw.githubusercontent.com/ofs-data/data/ser-pub-loc.csv",
     "tag_ids": "theme_iso, securite, approvisionnement, anonymous_data",
     "doc_ids": null
@@ -36,7 +36,7 @@
     "end_date": "2023/12",
     "localisation": "Suisse",
     "delivery_format": "xlsx",
-    "link": "https://statistique.admin.ch/view/accident-route",
+    "link": "dataset/accident_route.xlsx",
     "data_path": "https://raw.githubusercontent.com/ofs-data/data/accident-route.json",
     "tag_ids": "systemes_reference, armee, developpement_territorial",
     "doc_ids": null
@@ -57,7 +57,7 @@
     "end_date": null,
     "localisation": "Genève",
     "delivery_format": "csv",
-    "link": "https://statistique.admin.ch/view/dep-sante",
+    "link": null,
     "data_path": "https://raw.githubusercontent.com/ofs-data/data/dep-sante.xlsx",
     "tag_ids": "geologie, infrastructures, theme_iso, systemes_reference, sensible_data",
     "doc_ids": null
@@ -78,7 +78,7 @@
     "end_date": null,
     "localisation": "Valais",
     "delivery_format": "sas",
-    "link": "https://opendata.swiss/view/temperature-moy",
+    "link": null,
     "data_path": "https://opendata.swiss/data/temperature-moy.parquet",
     "tag_ids": "infrastructures, images_aeriennes_2, edifices, cadastre_foncier, ouvrages, elimination",
     "doc_ids": null
@@ -99,7 +99,7 @@
     "end_date": "2024",
     "localisation": "Suisse",
     "delivery_format": "csv",
-    "link": "https://raw.githubusercontent.com/ofs-data/view/pop-region",
+    "link": null,
     "data_path": "https://data.admin.ch/data/pop-region.json",
     "tag_ids": "climatologie, personal_data, localisation, transport, faune, cadastre_foncier",
     "doc_ids": "statpop-info"
@@ -120,7 +120,7 @@
     "end_date": "2024t2",
     "localisation": "Genève",
     "delivery_format": "xlsx",
-    "link": "https://opendata.swiss/view/eco-energies",
+    "link": null,
     "data_path": "https://opendata.swiss/data/eco-energies.parquet",
     "tag_ids": "sols, images_aeriennes_2",
     "doc_ids": "pdf-wiki"
@@ -162,7 +162,7 @@
     "end_date": "2024",
     "localisation": "Suisse",
     "delivery_format": "sas",
-    "link": "https://opendata.swiss/view/tourisme-annu",
+    "link": null,
     "data_path": "https://data.admin.ch/data/tourisme-annu.parquet",
     "tag_ids": "personal_data, data_protection, sensible_data, images_aeriennes_1",
     "doc_ids": null
@@ -183,7 +183,7 @@
     "end_date": "2024",
     "localisation": "Vaud",
     "delivery_format": "csv",
-    "link": "https://raw.githubusercontent.com/ofs-data/view/pollution-air",
+    "link": null,
     "data_path": "https://data.admin.ch/data/pollution-air.csv",
     "tag_ids": "sols, localisation, altimetrie, pseudonymous_data, dangers_naturels, theme_iso",
     "doc_ids": null
@@ -204,7 +204,7 @@
     "end_date": "2024",
     "localisation": "Valais",
     "delivery_format": "csv",
-    "link": "https://raw.githubusercontent.com/ofs-data/view/transport-pub",
+    "link": null,
     "data_path": "https://statistique.admin.ch/data/transport-pub.xlsx",
     "tag_ids": "pseudonymous_data, transport, approvisionnement, infrastructures, theme_iso",
     "doc_ids": null
@@ -225,7 +225,7 @@
     "end_date": "2025",
     "localisation": "Suisse",
     "delivery_format": "sas",
-    "link": "https://statistique.admin.ch/view/usage-internet",
+    "link": null,
     "data_path": null,
     "tag_ids": "sante, cadastre_foncier",
     "doc_ids": "pdf-wiki, tourisme-exemple"
@@ -246,7 +246,7 @@
     "end_date": "2026",
     "localisation": "Genève",
     "delivery_format": "csv",
-    "link": "https://statistique.admin.ch/view/emplois-tech",
+    "link": null,
     "data_path": "https://statistique.admin.ch/data/emplois-tech.xlsx",
     "tag_ids": "dangers_naturels",
     "doc_ids": null
@@ -267,7 +267,7 @@
     "end_date": "2023",
     "localisation": "Valais",
     "delivery_format": "sas",
-    "link": "https://data.admin.ch/view/accidents-travail",
+    "link": null,
     "data_path": "https://opendata.swiss/data/accidents-travail.parquet",
     "tag_ids": null,
     "doc_ids": "bevnat-variable"
@@ -288,7 +288,7 @@
     "end_date": "2024",
     "localisation": "Suisse",
     "delivery_format": "csv",
-    "link": "https://data.admin.ch/view/vente-voitures",
+    "link": null,
     "data_path": "https://opendata.swiss/data/vente-voitures.parquet",
     "tag_ids": null,
     "doc_ids": null
@@ -330,7 +330,7 @@
     "end_date": "2024",
     "localisation": "Suisse romande",
     "delivery_format": "csv",
-    "link": "https://statistique.admin.ch/view/immobilier-prix",
+    "link": null,
     "data_path": "https://statistique.admin.ch/data/immobilier-prix.xlsx",
     "tag_ids": "activites_economiques, flore",
     "doc_ids": null
@@ -351,7 +351,7 @@
     "end_date": "2024",
     "localisation": "Suisse",
     "delivery_format": "sas",
-    "link": "https://raw.githubusercontent.com/ofs-data/view/conso-energie",
+    "link": null,
     "data_path": "https://data.admin.ch/data/conso-energie.xlsx",
     "tag_ids": "altimetrie, approvisionnement, armee, faune, images_aeriennes, culture",
     "doc_ids": "statpop-info, tourisme-exemple"
@@ -372,7 +372,7 @@
     "end_date": "2027",
     "localisation": "Vaud",
     "delivery_format": "csv",
-    "link": "https://opendata.swiss/view/revenus-menages",
+    "link": null,
     "data_path": "https://data.admin.ch/data/revenus-menages.parquet",
     "tag_ids": "communication, anonymous_data, dangers_naturels, transport",
     "doc_ids": "pop-com-1, pdf_online"
@@ -393,7 +393,7 @@
     "end_date": "2024",
     "localisation": "Valais",
     "delivery_format": "csv",
-    "link": "https://opendata.swiss/view/emploi-jeunes",
+    "link": null,
     "data_path": "https://raw.githubusercontent.com/ofs-data/data/emploi-jeunes.parquet",
     "tag_ids": "localisation",
     "doc_ids": null
@@ -414,7 +414,7 @@
     "end_date": "2026",
     "localisation": "Genève",
     "delivery_format": "csv",
-    "link": "https://opendata.swiss/view/emplois-tech2",
+    "link": null,
     "data_path": "https://opendata.swiss/data/emplois-tech2.json",
     "tag_ids": null,
     "doc_ids": null
