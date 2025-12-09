@@ -77,6 +77,10 @@ body {
     Helvetica Neue,
     sans-serif;
   transition: font-weight $transition-basic-1;
+
+  &.chat-open {
+    overflow: hidden;
+  }
 }
 
 a {

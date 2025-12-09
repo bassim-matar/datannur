@@ -91,6 +91,7 @@ class ViewportManager {
         'window-small-mobile',
         $windowWidth <= windowBreakpoints.smallMobile,
       )
+      document.body.classList.toggle('chat-open', $chatWidth > 0)
 
       document.body.dataset.appWidth = String($appWidth)
     })
