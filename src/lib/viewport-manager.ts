@@ -71,10 +71,16 @@ class ViewportManager {
         '--chat-width',
         `${$chatWidth}px`,
       )
-      document.documentElement.style.setProperty(
-        '--app-width',
-        `${$appWidth}px`,
-      )
+      // Only set --app-width when chat is open to avoid overriding CSS default (100vw)
+      // This prevents static HTML generation from baking in a fixed pixel width
+      if ($chatWidth > 0) {
+        document.documentElement.style.setProperty(
+          '--app-width',
+          `${$appWidth}px`,
+        )
+      } else {
+        document.documentElement.style.removeProperty('--app-width')
+      }
 
       document.body.classList.toggle(
         'small-mobile',
