@@ -6,6 +6,7 @@
 - change: split countEntities and listEntities llm tools
 - fix: json reading with utf8 encoding in python scripts
 - fix: main scrollbar postion with chatPanel open
+- fix: conditionally set app width to prevent fixed pixel width during static HTML generation
 - refactor: remove datasetVariables tab and use variables tab instead
 
 ## 0.15.2 (2025-12-07)
